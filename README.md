@@ -17,5 +17,6 @@ You can look at /debian/control for the Ubuntu specific requirements, however th
  Any help cleaning up the code or working on new features and implementing unfinished features would be appreciated
  :)
  
+ more information will come soon.
  
  'A live dog is better than a dead Lion'
