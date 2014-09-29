@@ -1,0 +1,4 @@
+?package(jwm-settings-manager):needs="X11" section="Applications/System" \
+  title="Jwm Settings Manager" hints="System" command="/usr/bin/jwm-settings-manager" \
+  longtitle="Jwm Settings Manager" \
+  icon32x32="/usr/share/pixmaps/jwm-settings-manager.xpm"

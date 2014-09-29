@@ -1,0 +1,308 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+i18n_type 1 
+i18n_include <libintl.h> 
+i18n_function gettext 
+header_name {.h} 
+code_name {.cxx}
+comment {/*                 Joe's Window Manager Configuration
+ *
+ * This program configures JWM using tinyxml2 and FLTK
+ *
+ *         Copyright (C) 2014  Israel <israel@torios.org>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This has been developed as a part of the ToriOS Project
+ * This has been developed by Israel<israel@torios.org>
+ *
+ *
+ * You may redistribute this, but you must keep this comment in place
+ * Jesus is my Lord, and if you don't like it feel free to ignore it.
+ */} {in_source in_header
+} 
+
+decl {\#include <libintl.h>} {public global
+} 
+
+decl {\#include <FL/Fl_File_Chooser.H>} {public global
+} 
+
+decl {\#include <string>} {public global
+} 
+
+decl {\#include <stdlib.h>} {public global
+} 
+
+decl {\#include <iostream>} {public global
+} 
+
+decl {\#include "../include/Config.h"} {public global
+} 
+
+decl {\#include "../include/flDesktop.h"} {public global
+} 
+
+decl {\#include <FL/Fl_PNG_Image.H>} {public global
+} 
+
+decl {\#include <FL/Fl_Color_Chooser.H>} {public global
+} 
+
+decl {\#include <algorithm>} {public global
+} 
+
+decl {//\#include <FL/Fl_Image.H>} {public global
+} 
+
+decl {\#include <FL/Fl_JPEG_Image.H>} {public global
+} 
+
+decl {\#include "../include/ui.h"} {public global
+} 
+
+class DesktopUI {open
+} {
+  Function {make_window()} {open
+  } {
+    Fl_Window desktop_window {
+      label {Desktop Settings} open
+      xywh {365 138 530 530} type Double color 31 hide resizable
+    } {
+      Fl_Scroll {} {open
+        xywh {0 0 550 555} color 31
+      } {
+        Fl_Box background_displayer_thingie {
+          callback {background(o);}
+          xywh {15 85 345 270} box GTK_DOWN_BOX color 37 when 6
+          code0 {background(o);}
+        }
+        Fl_Button {} {
+          label {Choose Image}
+          callback {bg_chooser_cb();}
+          xywh {375 90 125 25} box GTK_UP_BOX
+        }
+        Fl_Output current_bg {
+          label {Current Background}
+          xywh {20 390 505 30} box GTK_DOWN_BOX color 50 selection_color 72 align 33
+          code0 {flDesktop desktop;desktop.loadTemp();}
+          code1 {const char * bg = desktop.getBackground();}
+          code2 {o->value(bg);}
+        }
+        Fl_Check_Button {} {
+          label {Multiple Desktops}
+          callback {flDesktop desktop;desktop.loadTemp();
+int multi=o->value();
+bool multiValue = bool(multi);
+int x,y;
+x = num_desktop_w->value();
+y = num_desktop_h->value();
+desktop.useMultiDesktop(multiValue,x,y);}
+          tooltip {This allows you to have multiple screens to work on from one Display} xywh {25 430 155 25} down_box GTK_DOWN_BOX selection_color 59 when 1
+          code0 {flDesktop desktop;desktop.loadTemp();}
+          code1 {bool m = desktop.multipleDesktops();}
+          code2 {if(m){o->value(1);}}
+          code3 {else{o->value(0);}}
+        }
+        Fl_Value_Input num_desktop_w {
+          label {Number of Desktops Wide}
+          callback {flDesktop desktop;desktop.loadTemp();
+desktop.setMultiDeskWidth(o->value());}
+          xywh {400 430 20 25} box GTK_DOWN_BOX color 53
+          code0 {flDesktop desktop;desktop.loadTemp();}
+          code1 {o->value(desktop.getMultiDeskWidth());}
+        }
+        Fl_Value_Input num_desktop_h {
+          label {Number of Desktops High }
+          callback {flDesktop desktop;desktop.loadTemp();
+desktop.setMultiDeskHeight(o->value());}
+          xywh {400 455 20 25} box GTK_DOWN_BOX color 53
+          code0 {flDesktop desktop;desktop.loadTemp();}
+          code1 {o->value(desktop.getMultiDeskHeight());}
+        }
+        Fl_Button {} {
+          label Cancel
+          callback {flDesktop desktop;desktop.cancel();
+desktop_window->hide();
+UI ux;
+ux.showSettings();} selected
+          xywh {385 490 65 25} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
+        }
+        Fl_Button {} {
+          label OK
+          callback {flDesktop desktop;desktop.loadTemp();
+desktop.saveChanges();
+desktop_window->hide();
+UI ux;
+ux.showSettings();}
+          tooltip {Write to configuration file} xywh {460 490 45 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
+        }
+        Fl_Check_Button {} {
+          label {Icons on Desktop}
+          callback {flDesktop desktop;
+int val = o->value();
+bool choice = bool(val);
+desktop.useRox(choice);
+background(background_displayer_thingie);}
+          xywh {370 265 150 25} down_box GTK_DOWN_BOX selection_color 59 when 1
+          code0 {flDesktop desktop;}
+          code1 {bool active = desktop.roxActive();}
+          code2 {if(active){o->value(1);}}
+          code3 {else{o->value(0);}}
+        }
+        Fl_Button {} {
+          label {Choose Gradient}
+          callback {two_color();}
+          tooltip {Make the background a Color Gradient} xywh {375 150 125 25} box GTK_UP_BOX
+        }
+        Fl_Button {} {
+          label {Choose Command}
+          callback {flDesktop desktop;desktop.loadTemp();}
+          tooltip {Use a command to set the background} xywh {370 200 135 25} box GTK_UP_BOX deactivate
+        }
+        Fl_Box {} {
+          label {Desktop  }
+          image {../data/img/jsm-desktop.png} xywh {135 10 215 70} labelfont 1 labelsize 18 labelcolor 35 align 288
+        }
+        Fl_Button {} {
+          label {Choose Color}
+          callback {one_color();}
+          xywh {375 120 125 25} box GTK_UP_BOX
+        }
+        Fl_Box color_display1 {
+          xywh {15 85 345 270} box GTK_DOWN_BOX color 37 when 6 hide
+        }
+        Fl_Box color_display2 {
+          xywh {15 215 345 140} box GTK_DOWN_BOX color 37 when 6 hide
+        }
+        Fl_Button {} {
+          label Choose
+          callback {int e =system("rox-filer -n /usr/share/applications &disown");
+if(e){/*do something*/}}
+          tooltip {Drag the files onto the desktop} xywh {405 320 85 25} box GTK_UP_BOX
+        }
+        Fl_Box {} {
+          label {This ONLY USES ROX-FILER}
+          xywh {370 285 160 35} labelfont 1 align 128
+        }
+      }
+      Fl_Button {} {
+        label {@<-  Main Settings Window}
+        callback {flDesktop desktop;desktop.cancel();
+desktop_window->hide();
+UI ux;
+ux.showSettings();}
+        xywh {20 490 200 25} box GTK_UP_BOX
+        code0 {///@<- is an arrow symbol}
+      }
+    }
+  }
+  Function {bg_chooser_cb()} {open
+  } {
+    code {flDesktop desktop;
+desktop.loadTemp();
+const char * bg = "/usr/share/backgrounds";
+const char * m="Choose a Background";
+const char *p="*.{jpg,JPG,png,PNG}";
+int r = 0;
+char *result = fl_file_chooser(m,p,bg,r);
+if(result!=NULL){
+	//Is it a png or JPG?
+	std::string extention, resultStr;
+	resultStr = result;
+	extention = resultStr.substr((strlen(result)-4),4);
+	std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
+	if (extention == ".png" || extention == ".jpg"||extention == ".jpeg"||extention == ".svg"){
+		current_bg->value(result);
+		const char* type="image";
+		desktop.setBackground(type,result);
+		color_display1->hide();
+		color_display2->hide();
+		desktop.setFlImage(background_displayer_thingie,result);
+	}
+}} {}
+  }
+  Function {one_color()} {open
+  } {
+    code {flDesktop desktop;desktop.loadTemp();
+uchar r;
+uchar g;
+uchar b;
+
+int c;
+const char * label ="choose";
+c= fl_color_chooser(label,r,g,b,2);
+
+double* colors = new double[4];
+colors[0] = int(r); 
+colors[1] = int(g);
+colors[2] = int(b);
+colors[3] = 0;
+if(c!=0){ //If color chooser isn't canceled... do stuff
+	desktop.setBackground(colors);
+	unsigned int unusedColor;
+	unsigned int colorSet = desktop.getBackground(unusedColor);
+	color_display1->color(colorSet);
+	color_display1->show();
+	color_display2->hide();
+	background_displayer_thingie->hide();
+	desktop.saveChangesTemp();
+}} {}
+  }
+  Function {two_color()} {open
+  } {
+    code {flDesktop desktop;desktop.loadTemp();
+uchar r;
+uchar g;
+uchar b;
+int c;
+const char * label ="Choose 1st Color";
+c= fl_color_chooser(label,r,g,b,2);
+double* gradient1 = new double[4];
+gradient1[0] = int(r); 
+gradient1[1] = int(g);
+gradient1[2] = int(b);
+gradient1[3] = 0;
+if(c!=0){ //If color chooser isn't canceled... do stuff
+	uchar r2;
+	uchar g2;
+	uchar b2;
+	int c2;
+	const char * label2 ="Choose 2nd Color";
+	c2= fl_color_chooser(label2,r2,g2,b2,2);
+	double* gradient2 = new double[4];
+	gradient2[0] = int(r2); 
+	gradient2[1] = int(g2);
+	gradient2[2] = int(b2);
+	gradient2[3] = 0;
+	if(c2!=0){ //If color chooser isn't canceled... do stuff
+		desktop.setBackground(gradient1,gradient2);
+		unsigned int color2;
+		unsigned int color1 = desktop.getBackground(color2);
+		color_display1->color(color1);
+		color_display2->color(color2);
+		color_display1->show();
+		color_display2->show();
+		background_displayer_thingie->hide();
+		color_display1->redraw();
+		color_display2->redraw();
+		desktop.saveChangesTemp();
+	}
+}} {}
+  }
+  Function {background(Fl_Box*o)} {open
+  } {
+    code {flDesktop desktop;desktop.loadTemp();
+const char * bg = desktop.getBackground();
+desktop.setFlImage(o,bg);} {}
+  }
+} 

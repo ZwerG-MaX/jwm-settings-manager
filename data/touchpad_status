@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# toggle synaptic touchpad on/off
+
+# get current state
+SYNSTATE=$(synclient -l | grep TouchpadOff | awk '{ print $3 }')
+
+# change to other state
+if [ $SYNSTATE = 0 ]; then
+	exit 0
+elif [ $SYNSTATE = 1 ]; then
+	exit 1
+else
+    echo "Couldn't get touchpad status from synclient"
+    exit 42
+fi

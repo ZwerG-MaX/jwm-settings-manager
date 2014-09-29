@@ -1,0 +1,438 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+i18n_type 1 
+i18n_include <libintl.h> 
+i18n_function gettext 
+header_name {.h} 
+code_name {.cxx}
+comment {/*                 Joe's Window Manager Configuration
+ *
+ * This program configures JWM using tinyxml2 and FLTK
+ *
+ *         Copyright (C) 2014  Israel <israel@torios.org>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This has been developed as a part of the ToriOS Project
+ * This has been developed by Israel<israel@torios.org>
+ *
+ *
+ * You may redistribute this, but you must keep this comment in place
+ * Jesus is my Lord, and if you don't like it feel free to ignore it.
+ */} {in_source in_header
+} 
+
+decl {\#include "../include/flFont.h"} {public global
+} 
+
+decl {\#include <libintl.h>} {public global
+} 
+
+decl {\#include <FL/Fl_File_Chooser.H>} {public global
+} 
+
+decl {\#include <string>} {public global
+} 
+
+decl {\#include "jwm-desktop.h"} {public global
+} 
+
+decl {\#include <stdlib.h>} {public global
+} 
+
+decl {\#include <iostream>} {public global
+} 
+
+decl {\#include <FL/Fl_Color_Chooser.H>} {public global
+} 
+
+decl {\#include "../include/Config.h"} {public global
+} 
+
+decl {\#include "../include/ui.h"} {selected public global
+} 
+
+class FontUI {open
+} {
+  decl {const char* currentElement} {private local
+  }
+  decl {Fl_Output* Widget} {private local
+  }
+  Function {make_window()} {open
+  } {
+    Fl_Window font_window {
+      label {Font Settings} open
+      xywh {255 172 525 700} type Double color 31 resizable visible
+    } {
+      Fl_Scroll {} {open
+        xywh {0 -5 525 705} color 31
+      } {
+        Fl_Box {} {
+          label {Font Settings  }
+          image {../data/img/jsm-fonts.png} xywh {160 5 225 65} labelfont 1 labelsize 18 labelcolor 35 align 288
+        }
+        Fl_Button {} {
+          label Cancel
+          callback {flFont f; f.cancel();
+font_window->hide();
+UI ux;
+ux.showSettings();}
+          tooltip {No changes will be saved} xywh {375 665 60 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+        }
+        Fl_Button {} {
+          label OK
+          callback {flFont f;
+f.loadTemp();
+f.saveChanges();
+font_window->hide();
+UI ux;
+ux.showSettings();}
+          tooltip {Write to configuration file} xywh {455 665 45 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+        }
+        Fl_Tabs {} {open
+          xywh {20 65 485 585} box GTK_DOWN_BOX selection_color 51
+        } {
+          Fl_Group {} {
+            label {General Settings} open
+            xywh {20 90 485 555} selection_color 48
+          } {
+            Fl_Box window_box {
+              xywh {30 110 465 125} box GTK_DOWN_BOX color 46
+            }
+            Fl_Output window_font {
+              label {Window Title Font Name}
+              xywh {245 125 165 25} box GTK_DOWN_BOX selection_color 72 when 1
+              code0 {std::string result;}
+              code1 {flFont font;font.loadTemp();}
+              code2 {const char * element = "WindowStyle";}
+              code3 {result = font.getFontName(element);o->value(result.c_str());}
+            }
+            Fl_Box {} {
+              label {Active Window Color}
+              xywh {65 159 150 25}
+            }
+            Fl_Button a_window_font_color_button {
+              callback {w_color(a_window_font_color_button, "Active");}
+              xywh {220 159 60 25} box GTK_UP_BOX when 6
+              code0 {flFont w;w.loadTemp();}
+              code1 {unsigned int c = w.getWindowFontColor("Active");}
+              code2 {o->color(c);}
+            }
+            Fl_Button {} {
+              label Choose
+              callback {currentElement = "WindowStyle";
+Widget=window_font;
+font_chooser_window()->show();
+//system("xfontsel &disown");}
+              tooltip {Open the font list Window} xywh {420 125 65 25} box GTK_UP_BOX
+            }
+            Fl_Box {} {
+              label {Inactive Window Color}
+              xywh {55 200 160 25}
+            }
+            Fl_Button window_font_color_button {
+              callback {w_color(window_font_color_button, "Inactive");}
+              xywh {220 200 60 25} box GTK_UP_BOX when 6
+              code0 {flFont w;w.loadTemp();}
+              code1 {unsigned int c = w.getWindowFontColor("Inactive");}
+              code2 {o->color(c);}
+            }
+            Fl_Value_Input {} {
+              label Size
+              callback {w_setSize(o, "WindowStyle");}
+              xywh {355 175 25 25} box GTK_DOWN_BOX
+              code0 {w_getSize(o, "WindowStyle");}
+            }
+            Fl_Box menu_box {
+              xywh {30 240 465 190} box GTK_DOWN_BOX color 46
+            }
+            Fl_Output menu_font {
+              label {Menu Font Name}
+              xywh {250 265 160 25} box GTK_DOWN_BOX selection_color 72
+              code0 {std::string result;}
+              code1 {flFont font;font.loadTemp();}
+              code2 {const char * element = "MenuStyle";}
+              code3 {result = font.getFontName(element);o->value(result.c_str());}
+            }
+            Fl_Button {} {
+              label Choose
+              callback {currentElement = "MenuStyle";
+Widget=menu_font;
+font_chooser_window()->show();}
+              tooltip {Open the font list Window} xywh {420 265 65 25} box GTK_UP_BOX
+            }
+            Fl_Box {} {
+              label Color
+              xywh {160 298 60 25}
+            }
+            Fl_Button menu_font_color_button {
+              callback {f_color(menu_font_color_button, "MenuStyle");}
+              xywh {220 300 60 25} box GTK_UP_BOX when 6
+              code0 {flFont w; w.loadTemp();}
+              code1 {unsigned int c = w.getFontColor("MenuStyle");}
+              code2 {o->color(c);}
+            }
+            Fl_Value_Input {} {
+              label Size
+              callback {setSize(o, "MenuStyle");}
+              xywh {355 298 25 25} box GTK_DOWN_BOX
+              code0 {getSize(o, "MenuStyle");}
+            }
+            Fl_Output panel_button_font {
+              label {Panel Button Font Name}
+              xywh {250 345 160 25} box GTK_DOWN_BOX selection_color 72
+              code0 {std::string result;}
+              code1 {flFont font;font.loadTemp();}
+              code2 {const char * element = "TrayButtonStyle";}
+              code3 {result = font.getFontName(element);o->value(result.c_str());}
+            }
+            Fl_Button {} {
+              label Choose
+              callback {currentElement = "TrayButtonStyle";
+Widget=panel_button_font;
+font_chooser_window()->show();}
+              tooltip {Open the font list Window} xywh {420 345 65 25} box GTK_UP_BOX
+            }
+            Fl_Box {} {
+              label Color
+              xywh {160 397 60 25}
+            }
+            Fl_Button traybutton_font_color_button {
+              callback {f_color(traybutton_font_color_button, "TrayButtonStyle");}
+              xywh {220 397 60 25} box GTK_UP_BOX when 6
+              code0 {flFont w; w.loadTemp();}
+              code1 {unsigned int c = w.getFontColor("TrayButtonStyle");}
+              code2 {o->color(c);}
+            }
+            Fl_Value_Input {} {
+              label Size
+              callback {setSize(o,"TrayButtonStyle");}
+              xywh {355 397 25 25} box GTK_DOWN_BOX
+              code0 {getSize(o,"TrayButtonStyle");}
+            }
+            Fl_Box panel_box {
+              xywh {30 435 465 200} box GTK_DOWN_BOX color 46
+            }
+            Fl_Output panel_font {
+              label {Panel Font Name}
+              xywh {250 460 160 25} box GTK_DOWN_BOX selection_color 72
+              code0 {std::string result;}
+              code1 {flFont font;font.loadTemp();}
+              code2 {const char * element = "TrayStyle";}
+              code3 {result = font.getFontName(element);o->value(result.c_str());}
+            }
+            Fl_Button {} {
+              label Choose
+              callback {currentElement = "TrayStyle";
+Widget=panel_font;
+font_chooser_window()->show();}
+              tooltip {Open the font list Window} xywh {420 460 65 25} box GTK_UP_BOX
+            }
+            Fl_Button panel_font_color_button {
+              callback {f_color(panel_font_color_button, "TrayStyle");}
+              xywh {220 496 60 25} box GTK_UP_BOX when 6
+              code0 {flFont w; w.loadTemp();}
+              code1 {unsigned int c = w.getFontColor("TrayStyle");}
+              code2 {o->color(c);}
+            }
+            Fl_Value_Input {} {
+              label Size
+              callback {setSize(o,"TrayStyle");}
+              xywh {355 496 25 25} box GTK_DOWN_BOX minimum 1 maximum 128 step 1 value 12
+              code0 {getSize(o,"TrayStyle");}
+            }
+            Fl_Value_Input task_size {
+              label Size
+              callback {setSize(task_size,"TaskListStyle");}
+              xywh {355 595 25 25} box GTK_DOWN_BOX minimum 1 maximum 128 step 1 value 12
+              code0 {getSize(task_size,"TaskListStyle");}
+            }
+            Fl_Box {} {
+              label Color
+              xywh {165 495 60 25}
+            }
+            Fl_Button task_font_color_button {
+              callback {f_color(task_font_color_button, "TaskListStyle");}
+              xywh {220 595 60 25} box GTK_UP_BOX when 6
+              code0 {flFont w; w.loadTemp();}
+              code1 {unsigned int c = w.getFontColor("TaskListStyle");}
+              code2 {o->color(c);}
+            }
+            Fl_Box {} {
+              label Color
+              xywh {165 595 60 25}
+            }
+            Fl_Output task_font {
+              label {Running App List Font Name}
+              xywh {250 540 160 25} box GTK_DOWN_BOX selection_color 72
+              code0 {std::string result;}
+              code1 {flFont font;font.loadTemp();}
+              code2 {const char * element = "TaskListStyle";}
+              code3 {result = font.getFontName(element);o->value(result.c_str());}
+            }
+            Fl_Button {} {
+              label Choose
+              callback {currentElement = "TaskListStyle";
+Widget=task_font;
+font_chooser_window()->show();}
+              tooltip {Open the font list Window} xywh {420 540 65 25} box GTK_UP_BOX
+            }
+          }
+          Fl_Group {} {
+            label Advanced open
+            xywh {25 90 475 560} hide
+          } {
+            Fl_Box {} {
+              label {JWM has so many options for fonts, so this area will be the catch all for the MULTITUDE of options, eventually... right now, there is nothing to see here}
+              xywh {45 145 375 235} box GTK_DOWN_BOX color 46 labelsize 24 align 128
+            }
+            Fl_Check_Button {} {
+              label Antialias
+              xywh {100 395 95 25} down_box GTK_DOWN_BOX value 1 selection_color 59 deactivate
+            }
+          }
+        }
+        Fl_Button {} {
+          label {@<-  Main Settings Window}
+          callback {flFont f; f.cancel();
+font_window->hide();
+UI ux;
+ux.showSettings();}
+          xywh {35 665 195 25} box GTK_UP_BOX
+        }
+      }
+    }
+  }
+  Function {f_color(Fl_Widget *o, const char * active)} {open
+  } {
+    code {flFont f;
+f.loadTemp();
+
+uchar r;
+uchar g;
+uchar b;
+Fl::get_color((o->color()),r,g,b);
+
+int c;
+const char * label ="choose";
+c= fl_color_chooser(label,r,g,b,2);
+
+double* colors = new double[4];
+colors[0] = int(r); 
+colors[1] = int(g);
+colors[2] = int(b);
+colors[3] = 0;
+
+if(c!=0){ //If color chooser isn't canceled... do stuff
+	f.setFontColor(colors, active);
+	unsigned int colorSet = f.getFontColor(active);
+	o->color(colorSet);
+	o->redraw();
+}} {}
+  }
+  Function {getSize(Fl_Value_Input *o, const char * active)} {open
+  } {
+    code {flFont f;
+f.loadTemp();
+unsigned int size = f.getFontSize(active);
+o->value(size);} {}
+  }
+  Function {setSize(Fl_Value_Input *o, const char * active)} {open
+  } {
+    code {flFont f;
+f.loadTemp();
+unsigned int size = o->value();
+f.setSize(size,active);
+f.saveChangesTemp();} {}
+  }
+  Function {w_color(Fl_Widget *o, const char * active)} {open
+  } {
+    code {flFont f;
+f.loadTemp();
+
+uchar r;
+uchar g;
+uchar b;
+Fl::get_color((o->color()),r,g,b);
+
+int c;
+const char * label ="choose";
+c= fl_color_chooser(label,r,g,b,2);
+
+double* colors = new double[4];
+colors[0] = int(r); 
+colors[1] = int(g);
+colors[2] = int(b);
+colors[3] = 0;
+
+if(c!=0){ //If color chooser isn't canceled... do stuff
+	f.setWindowFontColor(colors, active);
+	unsigned int colorSet = f.getWindowFontColor(active);
+	o->color(colorSet);
+	o->redraw();
+}} {}
+  }
+  Function {w_getSize(Fl_Value_Input *o, const char * active)} {open
+  } {
+    code {flFont f;
+f.loadTemp();
+unsigned int size = f.getFontSize(active);
+o->value(size);} {}
+  }
+  Function {w_setSize(Fl_Value_Input *o, const char * active)} {open
+  } {
+    code {flFont f;
+f.loadTemp();
+unsigned int size = o->value();
+f.setSize(size,active);
+f.saveChangesTemp();} {}
+  }
+  Function {font_chooser_window()} {open
+  } {
+    Fl_Window font_choosing {
+      label {Choose a Font} open
+      xywh {1265 213 345 345} type Double visible
+    } {
+      Fl_Button {} {
+        label Cancel
+        callback {font_choosing->hide();}
+        tooltip {No changes will be saved} xywh {195 295 60 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+      }
+      Fl_Button {} {
+        label OK
+        callback {const char * whichElement = "WindowStyle";
+flFont font;font.loadTemp();
+const char* fontFamily = font_name->value();
+std::string family = std::string(fontFamily);
+std::transform(family.begin(), family.end(), family.begin(), ::tolower);
+font.setFontName(family.c_str(), currentElement);
+Widget->value(fontFamily);
+Widget->redraw();
+font_choosing->hide();}
+        tooltip {Write to configuration file} xywh {275 295 45 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+      }
+      Fl_Browser font_browser {
+        callback {const char * item = font_browser->text(font_browser->value());
+font_name->value(item);
+font_name->redraw();}
+        xywh {20 15 305 260} when 4
+        code0 {flFont font;font.fontconfigLIST(font_browser);}
+        code1 {o->type(FL_SELECT_BROWSER);}
+      }
+      Fl_Output font_name {
+        callback {const char * item = font_browser->text(font_browser->value());
+o->redraw();}
+        xywh {5 290 175 25} box GTK_DOWN_BOX color 52 selection_color 80 when 6
+      }
+    }
+  }
+} 

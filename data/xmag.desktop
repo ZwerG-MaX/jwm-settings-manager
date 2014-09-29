@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Screen Magnifier
+GenericName=Screen Magnifier
+Comment=Light and fast Screen Magnifier
+Icon=search
+Exec=xmag
+Terminal=false
+Type=Application
+Categories=Utility;

@@ -1,0 +1,1146 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+i18n_type 1 
+i18n_include <libintl.h> 
+i18n_function gettext 
+header_name {.h} 
+code_name {.cxx}
+comment {/*                 Joe's Window Manager Configuration
+ *
+ * This program configures JWM using tinyxml2 and FLTK
+ *
+ *         Copyright (C) 2014  Israel <israel@torios.org>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This has been developed as a part of the ToriOS Project
+ * This has been developed by Israel<israel@torios.org>
+ *
+ *
+ * You may redistribute this, but you must keep this comment in place
+ * Jesus is my Lord, and if you don't like it feel free to ignore it.
+ */} {in_source in_header
+} 
+
+decl {\#include <libintl.h>} {public global
+} 
+
+decl {\#include <string>} {public global
+} 
+
+decl {\#include <algorithm>} {public global
+} 
+
+decl {\#include <stdlib.h>} {public global
+} 
+
+decl {\#include "../include/tinyxml2.h"} {public global
+} 
+
+decl {\#include <iostream>} {public global
+} 
+
+decl {\#include "../include/Config.h"} {public global
+} 
+
+decl {\#include <FL/Fl_File_Chooser.H>} {public global
+} 
+
+decl {\#include "../include/flPanel.h"} {public global
+} 
+
+decl {\#include "../include/Apps.h"} {public global
+} 
+
+decl {\#include <FL/Fl_PNG_Image.H>} {public global
+} 
+
+decl {\#include <FL/Fl_Color_Chooser.H>} {public global
+} 
+
+decl {\#include "../include/ui.h"} {public global
+} 
+
+decl {\#include <FL/Fl_XPM_Image.H>} {public global
+} 
+
+decl {\#include <FL/Fl_Browser.H>} {public global
+} 
+
+class PanelUI {open
+} {
+  Function {make_window()} {open
+  } {
+    code {flPanel panel;  panel.load();
+panel.saveChangesTemp();} {}
+    Fl_Window panel_window {
+      label {Panel Settings} open
+      xywh {1108 167 335 665} type Double color 31 selection_color 22 align 80 hide resizable
+    } {
+      Fl_Scroll {} {open
+        xywh {0 0 335 665} color 31
+      } {
+        Fl_Box {} {
+          label {Panel Settings  }
+          image {../data/img/jsm-panel.png} xywh {60 5 230 60} labelfont 1 labelsize 18 labelcolor 35 align 288
+        }
+        Fl_Menu_Button panel_chooser {open
+          xywh {20 50 115 25} box GTK_UP_BOX selection_color 80
+          code0 {panel_label(o);}
+          code1 {Config panel;panel.loadTemp();panel.numPanels(o);}
+        } {
+          MenuItem {} {
+            label {Add a Panel  +}
+            callback {flPanel panel;panel.loadTemp();
+panel.addPanel(panel_chooser);
+new_panel_window()->show();}
+            xywh {5 5 100 20}
+          }
+        }
+        Fl_Button {} {
+          label {@<-  Main Settings Window}
+          callback {flPanel fl_panel;fl_panel.cancel();
+panel_window->hide();
+UI ux;
+ux.showSettings();}
+          xywh {10 625 185 25} box GTK_UP_BOX color 46
+        }
+        Fl_Box {} {
+          xywh {130 80 175 25} box GTK_DOWN_BOX color 42
+        }
+        Fl_Output vh_display {
+          xywh {235 80 90 25} box NO_BOX selection_color 72 textcolor 52
+          code0 {Config config; config.loadTemp();}
+          code1 {const char* l = config.getPanelLayout(2);}
+          code2 {o->value(l);}
+        }
+        Fl_Output layout_display {
+          label {Current Panel: }
+          xywh {135 80 90 25} box NO_BOX selection_color 73 textcolor 52
+          code0 {Config config; config.loadTemp();}
+          code1 {const char* l = config.checkLayout(2);}
+          code2 {o->value(l);}
+        }
+        Fl_Tabs {} {open
+          xywh {5 115 330 490} box PLASTIC_THIN_UP_BOX
+        } {
+          Fl_Group {} {
+            label Apps open
+            xywh {5 145 330 425} hide
+          } {
+            Fl_Box {} {
+              label {Panel Apps}
+              xywh {85 145 150 45} labelfont 1 labelsize 18
+            }
+            Fl_Check_Button c_shortcuts {
+              label {App Shortcuts}
+              callback {Apps apps;
+apps.loadTemp();
+int shortcuts=o->value();
+if(shortcuts){
+	make_shortcut_window()->show();
+}
+else{apps.deleteALLshortcuts();}}
+              xywh {20 200 125 25} down_box GTK_DOWN_BOX value 1 selection_color 60
+              code0 {Apps apps; apps.loadTemp();}
+              code1 {bool shortcuts = apps.isShortcuts();}
+              code2 {if(shortcuts){o->value(1);}else{o->value(0);}}
+            }
+            Fl_Check_Button c_clock {
+              label Clock
+              callback {Apps apps;apps.loadTemp();
+int is=o->value();
+if(is){apps.addClock();
+clock_menu->activate();
+}
+else{apps.deleteClock();
+clock_menu->deactivate();
+}}
+              tooltip {Show a clock in the panel} xywh {20 230 60 25} down_box GTK_DOWN_BOX value 1 selection_color 60
+              code0 {Apps apps;apps.loadTemp();}
+              code1 {bool is = apps.isClock();}
+              code2 {if(is){o->value(1);}else{o->value(0);}}
+            }
+            Fl_Check_Button {} {
+              label {CPU monitor}
+              callback {Apps apps;apps.loadTemp();
+int xl=o->value();
+if(xl){apps.addAppXload();}
+else{apps.deleteAppXload();}}
+              tooltip {This shows a graph in the Panel of your CPU usage} xywh {20 255 110 25} down_box GTK_DOWN_BOX value 1 selection_color 60 when 1
+              code0 {Apps apps;apps.loadTemp();}
+              code1 {bool lx = apps.xloadLoaded();}
+              code2 {if(lx){o->value(1);}else{o->value(0);}}
+            }
+            Fl_Check_Button c_desktop {
+              label {Desktop Switcher}
+              callback {Apps apps;apps.loadTemp();
+int p=o->value();
+if(p){apps.addPager();}
+else{apps.deletePager();}
+o->redraw();}
+              tooltip {Use this to show the Desktop Switcher in the Panel} xywh {20 276 200 25} down_box GTK_DOWN_BOX value 1 selection_color 60
+              code0 {Apps apps;apps.loadTemp();}
+              code1 {bool p = apps.isPager();}
+              code2 {if(p){o->value(1);}else{o->value(0);}}
+              code3 {//Pager}
+            }
+            Fl_Check_Button c_tasklist {
+              label {Running App List}
+              callback {Apps apps;apps.loadTemp();
+int tl=o->value();
+if(tl){apps.addTaskList();}
+else{apps.deleteTaskList();}}
+              tooltip {This shows the running applications in the Panel} xywh {20 297 155 25} down_box GTK_DOWN_BOX value 1 selection_color 60
+              code0 {Apps apps;apps.loadTemp();}
+              code1 {bool tl = apps.isTaskList();}
+              code2 {if(tl){o->value(1);}else{o->value(0);}}
+            }
+            Fl_Check_Button c_shutdown {
+              label {Shutdown Menu}
+              callback {Apps apps;apps.loadTemp();
+int sd=o->value();
+if(sd==1){
+	apps.addShutdown();
+	shutdown_icon->activate();
+}
+else{
+	apps.deleteShutdown();
+	shutdown_icon->activate();
+}}
+              tooltip {This includes the Shutdown Menu on the right side of your panel} xywh {20 318 140 25} down_box GTK_DOWN_BOX value 1 selection_color 60
+              code0 {Apps apps;apps.loadTemp();}
+              code1 {bool sd = apps.isShutdown();}
+              code2 {if(sd){o->value(1);}else{o->value(0);}}
+            }
+            Fl_Check_Button c_indicators {
+              label Indicators
+              callback {Apps apps;apps.loadTemp();
+int d=o->value();
+if(d){apps.addDock();}
+else{apps.deleteDock();}}
+              tooltip {This is a dock for system notifications} xywh {20 339 125 25} down_box GTK_DOWN_BOX value 1 selection_color 60
+              code0 {Apps apps;apps.loadTemp();}
+              code1 {bool d = apps.isDock();}
+              code2 {if(d){o->value(1);}else{o->value(0);}}
+            }
+            Fl_Check_Button c_places {
+              label {Home Folder Menu}
+              callback {Apps apps;apps.loadTemp();
+int placesValue=o->value();
+if(placesValue==1){apps.addPlaces();}
+else if(placesValue==0){apps.deletePlaces();}
+else{std::cout<<"Error in the places menu\\n";}}
+              tooltip {This adds in your Home Folder, and some Favorite folders.} xywh {20 360 160 25} down_box GTK_DOWN_BOX value 1 selection_color 60
+              code0 {Apps apps;apps.loadTemp();}
+              code1 {bool places = apps.isPlaces();}
+              code2 {if(places){o->value(1);}else{o->value(0);}}
+            }
+            Fl_Check_Button c_battery {
+              label {Battery Applet}
+              user_data {"battery"}
+              callback {Apps apps;apps.loadTemp();}
+              tooltip {This can monitor your Laptop Battery and display it in the panel} xywh {20 395 190 25} down_box GTK_DOWN_BOX selection_color 60 deactivate
+              code0 {Apps apps;apps.loadTemp();}
+            }
+            Fl_Check_Button c_volume {
+              label {Volume control}
+              callback {Apps apps;apps.loadTemp();
+int d=o->value();
+if(d){apps.addVolume();}
+else{apps.deleteVolume();}}
+              tooltip {This will add a volume icon to the panel} xywh {20 425 190 25} down_box GTK_DOWN_BOX value 1 selection_color 60
+              code0 {Apps apps;apps.loadTemp();}
+              code1 {bool d = apps.isVolume();}
+              code2 {if(d){o->value(1);}else{o->value(0);}}
+            }
+            Fl_Check_Button c_network {
+              label {Network applet}
+              callback {Apps apps;apps.loadTemp();
+int d=o->value();
+if(d){apps.addNetworkMonitor();}
+else{apps.deleteNetworkMonitor();}}
+              tooltip {Choose this to show the Network applet in the panel} xywh {20 455 135 20} down_box GTK_DOWN_BOX value 1 selection_color 60
+              code0 {Apps apps;apps.loadTemp();}
+              code1 {bool d = apps.isNetworkMonitor();}
+              code2 {if(d){o->value(1);}else{o->value(0);}}
+            }
+            Fl_Button choose_apps {
+              label Choose
+              callback {make_shortcut_window()->show();}
+              xywh {150 200 70 25} box GTK_UP_BOX
+            }
+            Fl_Menu_Button clock_menu {
+              label {Clock Format}
+              callback {Apps apps;apps.loadTemp();
+apps.saveChangesTemp();}
+              xywh {85 230 130 25} box GTK_UP_BOX selection_color 72
+            } {
+              MenuItem {} {
+                label {Day name Month Day 12 Hour}
+                callback {Apps apps;apps.loadTemp();
+apps.changeClock("Day");
+apps.saveChangesTemp();}
+                tooltip {%a, %e %b %l:%M %p} xywh {30 30 100 20}
+              }
+              MenuItem {} {
+                label {24 Hour Clock}
+                callback {Apps apps;apps.loadTemp();
+apps.changeClock("24");
+apps.saveChangesTemp();}
+                tooltip {%H:%M} xywh {30 30 100 20}
+              }
+              MenuItem {} {
+                label {12 Hour Clock}
+                callback {Apps apps;apps.loadTemp();
+apps.changeClock("12");
+apps.saveChangesTemp();}
+                tooltip {%l:%M %p} xywh {30 30 100 20}
+              }
+              MenuItem {} {
+                label {Year Month Day 24 Hour clock}
+                callback {Apps apps;apps.loadTemp();
+apps.changeClock("Year");
+apps.saveChangesTemp();}
+                tooltip {%F %H:%M %p} xywh {30 30 100 20}
+              }
+              MenuItem {} {
+                label {(Advanced) User Defined}
+                callback {Apps apps;apps.loadTemp();
+//fl_panel.changeClock(//userInput);}
+                tooltip {Use this to add a custom Unix time} xywh {40 40 100 20} deactivate
+              }
+            }
+            Fl_Button shutdown_icon {
+              label {Choose Icon}
+              callback {Apps apps;apps.loadTemp();
+const char * f = "/usr/share/pixmaps";
+const char * m="Choose an Icon";
+const char *p="*.{svg,SVG,xpm,XPM,png,PNG}";
+int r = 0;
+char *result = fl_file_chooser(m,p,f,r);
+if(result!=NULL){
+	apps.setShutdownImage(result);
+}}
+              xywh {170 315 125 25} box GTK_UP_BOX
+            }
+          }
+          Fl_Group {} {
+            label Appearance open selected
+            xywh {5 140 330 455}
+          } {
+            Fl_Box {} {
+              xywh {15 160 310 100} box GTK_DOWN_BOX color 45
+            }
+            Fl_Input {} {
+              label {Menu Label}
+              callback {flPanel fl_panel;
+fl_panel.loadTemp();
+std::cout<<o->value();
+const char * label=o->value();
+fl_panel.menuLabel(label);}
+              xywh {105 175 130 25} box GTK_DOWN_BOX color 53 selection_color 72 when 1
+              code0 {flPanel fl_panel;fl_panel.loadTemp();}
+              code1 {std::string l = fl_panel.getMenuLabel();}
+              code2 {o->value(l.c_str());}
+            }
+            Fl_Box {} {
+              label {Menu Icon   }
+              xywh {20 230 85 15}
+            }
+            Fl_Button icon_view {
+              callback {flPanel panel;panel.loadTemp();
+const char * f = "/usr/share/pixmaps";
+const char * m="Choose an Icon";
+const char *p="*.{xpm,XPM,png,PNG}";
+int r = 0;
+char *result = fl_file_chooser(m,p,f,r);
+if(result!=NULL){
+	panel.setMenuImage(result);
+	display(result);
+}}
+              xywh {170 205 50 50} box NO_BOX
+              code0 {flPanel f;f.loadTemp();}
+              code1 {std::string icon=f.getMenuImage();}
+              code2 {display(icon.c_str());}
+            }
+            Fl_Box {} {
+              label {Panel Button Color }
+              xywh {20 305 135 15}
+            }
+            Fl_Button button_color {
+              callback {one_color(o,"TrayButtonStyle");}
+              xywh {165 300 60 25} box GTK_UP_BOX
+              code0 {flPanel panel;panel.loadTemp();unsigned int c;}
+              code1 {unsigned int color = panel.getBackground(c,"TrayButtonStyle");}
+              code2 {o->color(color);}
+            }
+            Fl_Slider o_slider {
+              label {Opacity of Panel  }
+              callback {flPanel panel;
+panel.loadTemp();
+float opacity=o->value();
+panel.setOpacity(opacity,"TrayStyle");
+o_slider_v->value(opacity*100);
+panel.saveChangesTemp();}
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {145 335 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 step 0.02 value 1
+              code0 {flPanel panel;panel.loadTemp();}
+              code1 {float h = panel.getOpacity("TrayStyle");}
+              code2 {o->value(h);}
+            }
+            Fl_Value_Input o_slider_v {
+              label {%}
+              callback {flPanel panel;
+panel.loadTemp();
+float opacity=o->value();
+panel.setOpacity(opacity,"TrayStyle");
+o_slider->value(opacity);
+panel.saveChangesTemp();}
+              xywh {245 335 40 25} box GTK_DOWN_BOX labelsize 10 align 8
+              code0 {float v = o_slider->value();}
+              code1 {o->value(v*100.0f);}
+            }
+            Fl_Box {} {
+              label {Menu Background}
+              xywh {15 390 150 25}
+            }
+            Fl_Button menu_bg_color {
+              callback {one_color(o,"MenuStyle");}
+              xywh {165 389 60 25} box GTK_UP_BOX
+              code0 {flPanel fl_panel;fl_panel.loadTemp();unsigned int c;}
+              code1 {unsigned int color = fl_panel.getBackground(c,"MenuStyle");}
+              code2 {o->color(color);}
+            }
+            Fl_Button menu_fg_color {
+              callback {one_color_active(o,"MenuStyle");}
+              xywh {165 420 60 25} box GTK_UP_BOX
+              code0 {flPanel panel;panel.loadTemp();unsigned int c;}
+              code1 {unsigned int color = panel.getActiveBackground(c,"MenuStyle");}
+              code2 {o->color(color);}
+            }
+            Fl_Box {} {
+              label {Running Apps}
+              xywh {75 500 135 25} labelfont 1 labelsize 16
+            }
+            Fl_Button task_bg_color {
+              callback {one_color(o,"TaskListStyle");}
+              xywh {165 565 60 25} box GTK_UP_BOX
+              code0 {flPanel panel;panel.loadTemp();unsigned int c;}
+              code1 {unsigned int color = panel.getBackground(c,"TaskListStyle");}
+              code2 {o->color(color);}
+            }
+            Fl_Button task_fg_color {
+              callback {one_color_active(o,"TaskListStyle");}
+              xywh {165 530 60 25} box GTK_UP_BOX
+              code0 {flPanel panel;panel.loadTemp();unsigned int c;}
+              code1 {unsigned int color = panel.getActiveBackground(c,"TaskListStyle");}
+              code2 {o->color(color);}
+            }
+            Fl_Box {} {
+              label {Panel Color }
+              xywh {20 265 85 15}
+            }
+            Fl_Button b_color {
+              callback {one_color(o, "TrayStyle");}
+              xywh {165 265 60 25} box GTK_UP_BOX
+              code0 {flPanel fl_panel;fl_panel.loadTemp();unsigned int c;}
+              code1 {unsigned int color = fl_panel.getBackground(c, "TrayStyle");}
+              code2 {o->color(color);}
+            }
+            Fl_Slider o_menu_slider {
+              label {Opacity of Menu}
+              callback {flPanel panel;
+panel.loadTemp();
+float opacity=o->value();
+panel.setOpacity(opacity,"MenuStyle");
+o_menu_slider_v->value(opacity*100);
+panel.saveChangesTemp();}
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {140 450 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 step 0.02 value 1
+              code0 {flPanel panel;panel.loadTemp();}
+              code1 {float h = panel.getOpacity("MenuStyle");}
+              code2 {o->value(h);}
+            }
+            Fl_Value_Input o_menu_slider_v {
+              label {%}
+              callback {flPanel panel;
+panel.loadTemp();
+float opacity=o->value();
+panel.setOpacity(opacity,"MenuStyle");
+o_menu_slider->value(opacity);
+panel.saveChangesTemp();}
+              xywh {245 450 40 25} box GTK_DOWN_BOX labelsize 10 align 8
+              code0 {float v = o_menu_slider->value();}
+              code1 {o->value(v*100.0f);}
+            }
+            Fl_Box {} {
+              label {Menu Selection}
+              xywh {20 420 120 25}
+            }
+            Fl_Box {} {
+              label {Open Apps}
+              xywh {55 565 95 25}
+            }
+            Fl_Box {} {
+              label {Current App}
+              xywh {55 530 95 25}
+            }
+          }
+          Fl_Group {} {
+            label {Size And Position}
+            xywh {5 140 330 465} hide
+          } {
+            Fl_Box {} {
+              label {Advanced Options}
+              xywh {65 345 185 30} labelfont 1 labelsize 18
+            }
+            Fl_Slider border_slider {
+              label {Width of Panel Border}
+              callback {flPanel fl_panel;
+fl_panel.loadTemp();
+int panelSize=o->value();
+fl_panel.borderWidth(panelSize);
+border_slider_v->value(panelSize);
+fl_panel.saveChangesTemp();}
+              xywh {190 495 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 4 when 4 maximum 32 step 1 value 1
+              code0 {flPanel fl_panel;fl_panel.loadTemp();}
+              code1 {int h = fl_panel.getBorder();}
+              code2 {o->value(h);}
+            }
+            Fl_Value_Output border_slider_v {
+              label pixels
+              xywh {190 535 35 25} box GTK_DOWN_BOX labelsize 10 align 8 when 3
+              code0 {int v = border_slider->value();}
+              code1 {o->value(v);}
+            }
+            Fl_Value_Input {} {
+              label {Y position of panel}
+              callback {flPanel panel;panel.loadTemp();
+int y=o->value();
+panel.setCoordinate("y",y);
+panel.saveChangesTemp();}
+              xywh {185 440 25 25} box GTK_DOWN_BOX minimum -100 maximum 2000
+              code0 {flPanel panel;panel.loadTemp();}
+              code1 {int y = panel.getCoordinate("y");}
+              code2 {o->value(y);}
+            }
+            Fl_Value_Input {} {
+              label {X position of panel}
+              callback {flPanel panel;panel.loadTemp();
+int x=o->value();
+panel.setCoordinate("x",x);
+panel.saveChangesTemp();}
+              xywh {185 395 25 25} box GTK_DOWN_BOX minimum -100 maximum 2000
+              code0 {flPanel panel;panel.loadTemp();}
+              code1 {int x = panel.getCoordinate("x");}
+              code2 {o->value(x);}
+            }
+            Fl_Menu_Button {} {
+              label {Panel Position} open
+              xywh {20 190 125 25} box GTK_UP_BOX selection_color 80
+            } {
+              MenuItem {} {
+                label top
+                callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionVert("top");
+fl_panel.saveChangesTemp();}
+                xywh {30 30 100 20}
+              }
+              MenuItem {} {
+                label bottom
+                callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionVert("bottom");
+fl_panel.saveChangesTemp();}
+                xywh {40 40 100 20}
+              }
+              MenuItem {} {
+                label right
+                callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionHoriz("right");
+fl_panel.saveChangesTemp();}
+                xywh {50 50 100 20}
+              }
+              MenuItem {} {
+                label left
+                callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionHoriz("left");
+fl_panel.saveChangesTemp();}
+                xywh {60 60 100 20}
+              }
+              Submenu {} {
+                label {Vertical Alignment} open
+                xywh {30 30 100 20}
+              } {
+                MenuItem {} {
+                  label center
+                  callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionVert("center");
+fl_panel.saveChangesTemp();}
+                  xywh {65 65 100 20}
+                }
+                MenuItem {} {
+                  label fixed
+                  callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionVert("fixed");
+fl_panel.saveChangesTemp();}
+                  xywh {55 55 100 20}
+                }
+              }
+              Submenu {} {
+                label {Horizontal Alignment} open
+                xywh {30 30 100 20}
+              } {
+                MenuItem {} {
+                  label center
+                  callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionHoriz("center");
+fl_panel.saveChangesTemp();}
+                  xywh {75 75 100 20}
+                }
+                MenuItem {} {
+                  label fixed
+                  callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionHoriz("fixed");
+fl_panel.saveChangesTemp();}
+                  xywh {85 85 100 20}
+                }
+              }
+            }
+            Fl_Slider w_slider {
+              label {Width of Panel  }
+              callback {flPanel fl_panel;
+fl_panel.loadTemp();
+int panelSize=o->value();
+fl_panel.panelWidth(panelSize);
+width_input->value(panelSize);
+fl_panel.saveChangesTemp();}
+              tooltip {0 is Full Length} xywh {140 243 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 4 when 4 maximum 2000 step 2 value 32
+              code0 {flPanel panel;panel.loadTemp();}
+              code1 {int h = panel.getWidth();}
+              code2 {o->value(h);}
+            }
+            Fl_Slider h_slider {
+              label {Height of Panel  }
+              callback {flPanel fl_panel;
+fl_panel.loadTemp();
+int panelSize=o->value();
+fl_panel.panelHeight(panelSize);
+fl_panel.saveChangesTemp();
+height_input->value(panelSize);}
+              tooltip {Panel Size between 14 and 78} xywh {140 290 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 4 when 4 minimum 14 maximum 78 step 2 value 32
+              code0 {flPanel panel;panel.loadTemp();}
+              code1 {int h = panel.getHeight();}
+              code2 {o->value(h);}
+            }
+            Fl_Value_Input height_input {
+              label pixels
+              callback {flPanel fl_panel;
+fl_panel.loadTemp();
+int panelSize=o->value();
+fl_panel.panelHeight(panelSize);
+fl_panel.saveChangesTemp();
+h_slider->value(panelSize);}
+              xywh {235 290 35 25} box GTK_DOWN_BOX labelsize 10 align 8
+              code0 {int v = h_slider->value();}
+              code1 {o->value(v);}
+            }
+            Fl_Value_Input width_input {
+              label pixels
+              callback {flPanel fl_panel;
+fl_panel.loadTemp();
+int panelSize=o->value();
+fl_panel.panelHeight(panelSize);
+fl_panel.saveChangesTemp();
+w_slider->value(panelSize);}
+              xywh {240 245 35 25} box GTK_DOWN_BOX labelsize 10 align 8
+              code0 {int v = w_slider->value();}
+              code1 {o->value(v);}
+            }
+            Fl_Check_Button {} {
+              label {Autohide?}
+              callback {flPanel fl_panel;
+fl_panel.loadTemp();
+int autohide=o->value();
+bool autohideValue = bool(autohide);
+fl_panel.panelAutohide(autohideValue);}
+              tooltip {This will make the Panel hide when you aren't using it.} xywh {205 190 95 25} down_box GTK_DOWN_BOX selection_color 59 when 1
+              code0 {flPanel fl_panel;fl_panel.loadTemp();}
+              code1 {std::string a = fl_panel.getAutohide();}
+              code2 {if(a=="true"){o->value(1);}}
+              code3 {else{o->value(0);}}
+            }
+          }
+        }
+        Fl_Button {} {
+          label Cancel
+          callback {flPanel fl_panel;fl_panel.cancel();
+panel_window->hide();
+UI ux;
+ux.showSettings();}
+          xywh {209 625 57 25} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
+        }
+        Fl_Button save_button {
+          label OK
+          callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.saveChanges();
+panel_window->hide();
+UI ux;
+ux.showSettings();}
+          tooltip {Write to configuration file} xywh {275 625 45 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
+        }
+      }
+    }
+  }
+  Function {make_shortcut_window()} {open
+  } {
+    Fl_Window shortcut_window {
+      label {Choose an application to add} open
+      xywh {296 162 500 255} type Double hide
+    } {
+      Fl_Button {} {
+        label Application
+        callback {Apps apps;apps.loadTemp();
+const char * f = "/usr/bin/";
+const char * m="Choose a program";
+const char *p="*";
+int r = 0;
+const char *result = fl_file_chooser(m,p,f,r);
+if(result!=NULL){
+	std::string icon = result;
+	unsigned found = icon.find_last_of("//");
+	icon=icon.erase(0,found+1);
+	result = icon.c_str();
+	app_command->value(result);
+	tooltip->value(result);
+	icon+=".png";
+	std::string iconPath = "/usr/share/pixmaps/"+icon;
+	displayAPPicon(iconPath.c_str());
+	app_icon_box->redraw();
+	icon_name->value(icon.c_str());
+}}
+        xywh {25 25 105 25} box GTK_UP_BOX
+      }
+      Fl_Button {} {
+        label Icon
+        callback {Apps apps;apps.loadTemp();
+const char * f = "/usr/share/pixmaps";
+const char * m="Choose an Icon";
+const char *p="*.{xbm,XBM,xpm,XPM,png,PNG}";
+int r = 0;
+const char * program = app_command->value();
+char *result = fl_file_chooser(m,p,f,r);
+if(result!=NULL && program !=NULL){
+	icon_name->value(result);
+	displayAPPicon(result);
+}}
+        xywh {20 100 65 25} box GTK_UP_BOX
+      }
+      Fl_Input app_command {
+        callback {const char* result = o->value();
+if(result!=NULL){
+	std::string icon = result;
+	unsigned found = icon.find_last_of("//");
+	icon=icon.erase(0,found+1);
+	result = icon.c_str();
+	app_command->value(result);
+	tooltip->value(result);
+	icon+=".png";
+	std::string iconPath = "/usr/share/pixmaps/"+icon;
+	displayAPPicon(iconPath.c_str());
+	app_icon_box->redraw();
+	icon_name->value(icon.c_str());
+}}
+        tooltip {You can add arguments here} xywh {135 25 125 25} box GTK_DOWN_BOX selection_color 80 align 8 when 8
+      }
+      Fl_Box app_icon_box {
+        xywh {30 137 48 48} box GTK_DOWN_BOX color 42
+      }
+      Fl_Input tooltip {
+        label {Tooltip Label}
+        xywh {135 60 125 25} box GTK_DOWN_BOX selection_color 80
+      }
+      Fl_Output icon_name {
+        xywh {115 100 140 25} box GTK_DOWN_BOX selection_color 80
+      }
+      Fl_Button {} {
+        label {@+  Add to panel}
+        callback {Apps apps;apps.loadTemp();
+const char* icon = icon_name->value();
+const char* program = app_command->value();
+const char* popup = tooltip->value();
+int border = shortcut_border->value();
+apps.addShortcut(icon,program,popup, border);
+c_shortcuts->value(1);
+shortcut_browser->add(program);
+shortcut_browser->redraw();}
+        xywh {95 145 125 35} box GTK_UP_BOX
+      }
+      Fl_Button ok_button {
+        label SAVE
+        callback {Apps apps;apps.loadTemp();
+apps.saveChanges();
+shortcut_window->hide();}
+        tooltip {Write to configuration file} xywh {225 220 45 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
+      }
+      Fl_Check_Button shortcut_border {
+        label {Show a Border around the Button?}
+        tooltip {The button you are adding can be borderless, if you like} xywh {10 195 265 25} down_box GTK_DOWN_BOX selection_color 60 deactivate
+      }
+      Fl_Browser shortcut_browser {
+        xywh {305 15 170 150} box GTK_DOWN_BOX when 2
+        code0 {Apps apps;apps.loadTemp();o->type(FL_SELECT_BROWSER);}
+        code1 {apps.getShortcuts(o);o->redraw();}
+      }
+      Fl_Button {} {
+        label {@  Remove from panel}
+        callback {Apps apps;apps.loadTemp();
+const char* program = shortcut_browser->text(shortcut_browser->value());
+apps.deleteShortcut(program);
+shortcut_browser->redraw();
+if(!apps.isShortcuts()){
+c_shortcuts->value(0);
+}}
+        xywh {310 175 170 35} box GTK_UP_BOX
+      }
+    }
+  }
+  Function {make_help_window()} {} {
+    Fl_Window help_window {open
+      xywh {728 468 380 505} type Double hide
+    } {
+      Fl_Text_Display {} {
+        label HELP
+        callback {const char* text ="Hi, this is the help\\nYou will notice it is quite empty\\nSorry... we are working on this :)\\n";}
+        xywh {40 40 295 400} box GTK_DOWN_BOX selection_color 72
+      }
+      Fl_Button {} {
+        label OK
+        callback {help_window->hide();}
+        tooltip {Close the Help Window} xywh {155 470 45 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
+      }
+    }
+  }
+  Function {one_color(Fl_Widget *o, const char* whichElement)} {open
+  } {
+    code {flPanel panel;panel.loadTemp();
+uchar r;
+uchar g;
+uchar b;
+Fl::get_color((o->color()),r,g,b);
+
+int c;
+const char * label ="choose";
+c= fl_color_chooser(label,r,g,b,2);
+
+double* colors = new double[4];
+colors[0] = int(r); 
+colors[1] = int(g);
+colors[2] = int(b);
+colors[3] = 0;
+
+if(c!=0){ //If color chooser isn't canceled... do stuff
+	panel.setBackground(colors, whichElement);
+	unsigned int unusedColor;
+	unsigned int colorSet = panel.getBackground(unusedColor, whichElement);
+	o->color(colorSet);
+	o->redraw();
+	panel.saveChangesTemp();
+}} {}
+  }
+  Function {display(const char* filename)} {open
+  } {
+    code {std::string extention, filenameStr;
+filenameStr = filename;
+extention = filenameStr.substr((strlen(filename)-4),4);
+//std::cout<<extention<<"\\n";
+std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
+Fl_Image* image;
+std::string png =".png";
+std::string xpm =".xpm";
+if (extention.compare(png) ==0){
+	image = new Fl_PNG_Image(filename);
+	Fl_Image * image2 = image->copy(48,48);
+	icon_view->image(image2);
+	icon_view->redraw();
+}
+else if(extention.compare(xpm) ==0){
+	image = new Fl_XPM_Image(filename);
+	Fl_Image * image2 = image->copy(48,48);
+	icon_view->image(image2);
+	icon_view->redraw();
+}} {}
+  }
+  Function {displayAPPicon(const char* filename)} {open
+  } {
+    code {std::string extention, filenameStr;
+filenameStr = filename;
+extention = filenameStr.substr((strlen(filename)-4),4);
+std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
+Fl_Image* image;
+std::string png =".png";
+std::string xpm =".xpm";
+if (extention.compare(png) ==0){
+	image = new Fl_PNG_Image(filename);
+	Fl_Image * image2 = image->copy(48,48);
+	app_icon_box->image(image2);
+	app_icon_box->redraw();
+}
+else if(extention.compare(xpm) ==0){
+	image = new Fl_XPM_Image(filename);
+	Fl_Image * image2 = image->copy(48,48);
+	app_icon_box->image(image2);
+	app_icon_box->redraw();
+}} {}
+  }
+  Function {one_color_active(Fl_Widget *o, const char* whichElement)} {open
+  } {
+    code {flPanel panel;panel.loadTemp();
+uchar r;
+uchar g;
+uchar b;
+Fl::get_color((o->color()),r,g,b);
+
+int c;
+const char * label ="choose";
+c= fl_color_chooser(label,r,g,b,2);
+
+double* colors = new double[4];
+colors[0] = int(r); 
+colors[1] = int(g);
+colors[2] = int(b);
+colors[3] = 0;
+
+if(c!=0){ //If color chooser isn't canceled... do stuff
+	panel.setActiveBackground(colors, whichElement);
+	unsigned int unusedColor;
+	unsigned int colorSet = panel.getActiveBackground(unusedColor, whichElement);
+	panel.saveChangesTemp();
+	o->color(colorSet);
+	o->redraw();
+}} {}
+  }
+  Function {Menu_CB()} {open
+  } {
+    code {//} {}
+  }
+  Function {panel_label(Fl_Menu_Button *o)} {open
+  } {
+    code {flPanel panel;panel.loadTemp();
+unsigned int num = 1;
+std::string x = panel.convert(num);
+std::string l = "Panel ";
+l+=x;
+o->copy_label(l.c_str());
+o->redraw();} {}
+  }
+  Function {new_panel_window()} {open
+  } {
+    Fl_Window new_panel {
+      label {Add a Panel} open
+      xywh {429 164 340 225} type Double hide
+    } {
+      Fl_Menu_Button {} {
+        label {Panel Position} open
+        xywh {30 30 125 25} box GTK_UP_BOX selection_color 80
+      } {
+        MenuItem {} {
+          label top
+          callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionVert("top");
+fl_panel.saveChangesTemp();}
+          xywh {50 50 100 20}
+        }
+        MenuItem {} {
+          label bottom
+          callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionVert("bottom");
+fl_panel.saveChangesTemp();}
+          xywh {60 60 100 20}
+        }
+        MenuItem {} {
+          label right
+          callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionHoriz("right");
+fl_panel.saveChangesTemp();}
+          xywh {70 70 100 20}
+        }
+        MenuItem {} {
+          label left
+          callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionHoriz("left");
+fl_panel.saveChangesTemp();}
+          xywh {80 80 100 20}
+        }
+        Submenu {} {
+          label {Vertical Alignment} open
+          xywh {50 50 100 20}
+        } {
+          MenuItem {} {
+            label center
+            callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionVert("center");
+fl_panel.saveChangesTemp();}
+            xywh {85 85 100 20}
+          }
+          MenuItem {} {
+            label fixed
+            callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionVert("fixed");
+fl_panel.saveChangesTemp();}
+            xywh {75 75 100 20}
+          }
+        }
+        Submenu {} {
+          label {Horizontal Alignment} open
+          xywh {50 50 100 20}
+        } {
+          MenuItem {} {
+            label center
+            callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionHoriz("center");
+fl_panel.saveChangesTemp();}
+            xywh {95 95 100 20}
+          }
+          MenuItem {} {
+            label fixed
+            callback {flPanel fl_panel;
+fl_panel.loadTemp();
+fl_panel.panelPositionHoriz("fixed");
+fl_panel.saveChangesTemp();}
+            xywh {105 105 100 20}
+          }
+        }
+      }
+      Fl_Check_Button {} {
+        label {Autohide?}
+        callback {flPanel fl_panel;
+fl_panel.loadTemp();
+int autohide=o->value();
+bool autohideValue = bool(autohide);
+fl_panel.panelAutohide(autohideValue);}
+        tooltip {This will make the Panel hide when you aren't using it.} xywh {170 30 95 25} down_box GTK_DOWN_BOX selection_color 59 when 1
+        code0 {flPanel fl_panel;fl_panel.loadTemp();}
+        code1 {std::string a = fl_panel.getAutohide();}
+        code2 {if(a=="true"){o->value(1);}}
+        code3 {else{o->value(0);}}
+      }
+      Fl_Slider w_slide {
+        label {Width of Panel  }
+        callback {flPanel fl_panel;
+fl_panel.loadTemp();
+int panelSize=o->value();
+fl_panel.panelWidth(panelSize);
+width_input->value(panelSize);
+fl_panel.saveChangesTemp();}
+        tooltip {0 is Full Length} xywh {140 73 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 4 when 4 maximum 2000 step 2 value 32
+        code0 {flPanel panel;panel.loadTemp();}
+        code1 {int h = panel.getWidth();}
+        code2 {o->value(h);}
+      }
+      Fl_Slider h_slide {
+        label {Height of Panel  }
+        callback {flPanel fl_panel;
+fl_panel.loadTemp();
+int panelSize=o->value();
+fl_panel.panelHeight(panelSize);
+fl_panel.saveChangesTemp();
+height_input->value(panelSize);}
+        tooltip {Panel Size between 14 and 78} xywh {140 120 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 4 when 4 minimum 14 maximum 78 step 2 value 32
+        code0 {flPanel panel;panel.loadTemp();}
+        code1 {int h = panel.getHeight();}
+        code2 {o->value(h);}
+      }
+      Fl_Value_Input height_in {
+        label pixels
+        callback {flPanel fl_panel;
+fl_panel.loadTemp();
+int panelSize=o->value();
+fl_panel.panelHeight(panelSize);
+fl_panel.saveChangesTemp();
+h_slider->value(panelSize);}
+        xywh {235 120 35 25} box GTK_DOWN_BOX labelsize 10 align 8
+        code0 {int v = h_slider->value();}
+        code1 {o->value(v);}
+      }
+      Fl_Value_Input width_in {
+        label pixels
+        callback {flPanel fl_panel;
+fl_panel.loadTemp();
+int panelSize=o->value();
+fl_panel.panelHeight(panelSize);
+fl_panel.saveChangesTemp();
+w_slider->value(panelSize);}
+        xywh {240 75 35 25} box GTK_DOWN_BOX labelsize 10 align 8
+        code0 {int v = w_slider->value();}
+        code1 {o->value(v);}
+      }
+      Fl_Box {} {
+        label {Panel Color }
+        xywh {25 155 85 15}
+      }
+      Fl_Button color_button {
+        callback {one_color(o, "TrayStyle");}
+        xywh {170 155 60 25} box GTK_UP_BOX
+        code0 {flPanel fl_panel;fl_panel.loadTemp();unsigned int c;}
+        code1 {unsigned int color = fl_panel.getBackground(c, "TrayStyle");}
+        code2 {o->color(color);}
+      }
+      Fl_Check_Button shortcuts_check {
+        label {App Shortcuts}
+        callback {Apps apps;apps.loadTemp();
+int shortcuts=o->value();
+if(shortcuts){
+	make_shortcut_window()->show();
+}
+else{apps.deleteALLshortcuts();}}
+        xywh {25 185 125 25} down_box GTK_DOWN_BOX value 1 selection_color 60
+        code0 {Apps apps;apps.loadTemp();}
+        code1 {bool shortcuts = apps.isShortcuts();}
+        code2 {if(shortcuts){o->value(1);}else{o->value(0);}}
+      }
+      Fl_Button add_apps {
+        label Choose
+        callback {make_shortcut_window()->show();}
+        xywh {155 185 70 25} box GTK_UP_BOX
+      }
+    }
+  }
+  Function {switch_panel(Fl_Menu_Item *o)} {open return_type {unsigned int}
+  } {
+    code {flPanel panel; panel.loadTemp();
+unsigned int whichPanel = o->value();
+return whichPanel;} {}
+  }
+  Function {get_vh()} {open return_type {const char*}
+  } {
+    code {return vh_display->value();} {}
+  }
+  Function {get_layout()} {open return_type {const char*}
+  } {
+    code {return layout_display->value();} {}
+  }
+} 

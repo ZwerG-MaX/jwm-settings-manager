@@ -1,0 +1,274 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+i18n_type 1 
+i18n_include <libintl.h> 
+i18n_function gettext 
+header_name {.h} 
+code_name {.cxx}
+comment {/*                 Joe's Window Manager Configuration
+ *
+ * This program configures JWM using tinyxml2 and FLTK
+ *
+ *         Copyright (C) 2014  Israel <israel@torios.org>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This has been developed as a part of the ToriOS Project
+ * This has been developed by Israel<israel@torios.org>
+ *
+ *
+ * You may redistribute this, but you must keep this comment in place
+ * Jesus is my Lord, and if you don't like it feel free to ignore it.
+ */} {in_source in_header
+} 
+
+decl {\#include <libintl.h>} {public global
+} 
+
+decl {\#include <string>} {public global
+} 
+
+decl {\#include <stdlib.h>} {public global
+} 
+
+decl {\#include <iostream>} {public global
+} 
+
+decl {\#include "../include/Config.h"} {public global
+} 
+
+decl {\#include "../include/flThemes.h"} {public global
+} 
+
+decl {\#include "../include/ui.h"} {public global
+} 
+
+decl {\#include <FL/fl_ask.H>} {public global
+} 
+
+decl {\#include <FL/Fl_PNG_Image.H>} {public global
+} 
+
+class ThemesUI {open
+} {
+  Function {make_window()} {open
+  } {
+    Fl_Window themes_window {
+      label Themes open
+      xywh {964 393 540 495} type Double color 31 labelcolor 7 resizable visible
+    } {
+      Fl_Scroll {} {open
+        xywh {0 0 540 495} color 31
+      } {
+        Fl_Box {} {
+          label {Themes  }
+          image {../data/img/jsm-theme.png} xywh {315 10 200 65} labelfont 1 labelsize 18 labelcolor 36 align 288
+        }
+        Fl_Button {} {
+          label {@<-  Main Settings Window}
+          callback {themes_window->hide();
+UI ux;
+ux.showSettings();}
+          xywh {10 20 200 25} box GTK_UP_BOX
+        }
+        Fl_Tabs {} {open
+          xywh {0 55 540 440} box GTK_UP_BOX
+        } {
+          Fl_Group {} {
+            label Normal open
+            xywh {0 80 540 415} hide
+          } {
+            Fl_Button {} {
+              label {Gnome 2 Light Theme}
+              callback {flThemes theme;
+theme.change("LightGnome2");
+flPanel panel;
+panel.loadTemp();
+panel.saveChanges();
+
+flWindow window;
+window.loadTemp();
+window.saveChanges();
+
+flDesktop dekstop;
+dekstop.loadTemp();
+dekstop.saveChanges();
+
+themes_window->hide();
+UI ux;
+ux.showSettings();}
+              xywh {335 140 190 35} box GTK_UP_BOX color 61 selection_color 59 labelcolor 7
+            }
+            Fl_Box {} {
+              xywh {20 135 300 49} box GTK_DOWN_BOX color 42
+              code0 {display(o,"LightGnome2");}
+            }
+            Fl_Button {} {
+              label {Gnome 2 Dark Theme}
+              callback {flThemes theme;
+theme.change("DarkGnome2");
+
+flPanel panel;
+panel.loadTemp();
+panel.saveChanges();
+
+flWindow window;
+window.loadTemp();
+window.saveChanges();
+
+flDesktop dekstop;
+dekstop.loadTemp();
+dekstop.saveChanges();
+
+themes_window->hide();
+UI ux;
+ux.showSettings();}
+              xywh {335 223 190 35} box GTK_UP_BOX color 61 selection_color 59 labelcolor 7
+            }
+            Fl_Box {} {
+              xywh {20 217 300 49} box GTK_DOWN_BOX color 42
+              code0 {display(o,"DarkGnome2");}
+            }
+            Fl_Button {} {
+              label {Bassem Dark Theme}
+              callback {flThemes theme;
+theme.change("Bassem");
+
+flPanel panel;
+panel.loadTemp();
+panel.saveChanges();
+
+flWindow window;
+window.loadTemp();
+window.saveChanges();
+
+flDesktop dekstop;
+dekstop.loadTemp();
+dekstop.saveChanges();
+
+themes_window->hide();
+UI ux;
+ux.showSettings();}
+              xywh {335 306 190 35} box GTK_UP_BOX color 61 selection_color 59 labelcolor 7
+            }
+            Fl_Box {} {
+              xywh {20 299 300 49} box GTK_DOWN_BOX color 42
+              code0 {display(o,"Bassem");}
+            }
+            Fl_Button {} {
+              label {Ambiance Dark Theme}
+              callback {flThemes theme;
+theme.change("Ambiance");
+themes_window->hide();
+UI ux;
+ux.showSettings();}
+              xywh {335 390 190 35} box GTK_UP_BOX color 61 selection_color 59 labelcolor 7
+            }
+            Fl_Box {} {
+              xywh {20 381 300 49} box GTK_DOWN_BOX color 42
+              code0 {//display(o,"Ambiance");}
+            }
+            Fl_Button defaults_button {
+              label Default
+              callback {//doesn't matter which one I call
+flPanel panel;
+panel.recover();
+
+themes_window->hide();
+UI ux;
+ux.showSettings();}
+              tooltip {This will overwrite your current configuration} xywh {220 450 75 30} box GTK_UP_BOX color 94
+            }
+          }
+          Fl_Group {} {
+            label Expert open
+            xywh {0 100 540 335}
+          } {
+            Fl_Button save_button {
+              label {Save Current ~/.jwmrc file as something else}
+              callback {flThemes theme;
+const char* dir = NULL;
+const char* filename = file_input->value();
+std::cout<<filename<<'\\n';
+dir = save_dir->value();
+std::string name = dir;
+name += filename;
+const char* file = name.c_str();
+///HOW DO I DO THIS???
+if(name.find_first_of("/")){
+	int result = theme.saveAs(file);
+	if(result==0){fl_alert("Saved %s",file);}
+}
+else{fl_alert("There was an error, please use a correct Path!");}} selected
+              tooltip {This will copy your current theme somewhere else} xywh {50 125 410 45} box GTK_UP_BOX color 61 labelcolor 7
+            }
+            Fl_Button open_button {
+              label {Open other  JWM XML File to use as theme}
+              callback {flThemes themes;
+const char* m = "Choose Configuration File";
+std::string path = themes.homePathNoFile();
+const char * f = path.c_str();
+const char * p="*";
+int r = 0;
+char *result = fl_file_chooser(m,p,f,r);
+if(result!=NULL){
+	themes.other(result);
+}
+else{
+	fl_alert("There was an error, this shouldn't happen often!");
+}}
+              tooltip {This will overwrite your current configuration} xywh {70 255 315 40} box GTK_UP_BOX color 61 labelcolor 7 deactivate
+            }
+            Fl_Input file_input {
+              label {Filename to save as}
+              tooltip {use FULL path... this is expert mode} xywh {220 215 160 25} box GTK_DOWN_BOX selection_color 72 align 132
+              code0 {flThemes theme;const char * user = theme.userName();}
+              code1 {o->value(user);}
+            }
+            Fl_Button {} {
+              label {Choose Directory}
+              callback {flThemes themes;
+const char* m = "Choose Directory";
+std::string path = themes.homePathNoFile();
+const char * f = path.c_str();
+int r = 0;
+char* dir = fl_dir_chooser(m,f,r);
+if (dir !=NULL){
+	const char* pathname = dir;
+	save_dir->value(pathname);
+}}
+              xywh {65 180 150 25}
+            }
+            Fl_Output save_dir {
+              xywh {220 180 155 25} box GTK_DOWN_BOX selection_color 72
+            }
+          }
+        }
+      }
+    }
+  }
+  Function {display(Fl_Widget *o, const char* whichTheme)} {open
+  } {
+    code {Fl_Image* image;
+flThemes theme;
+const char * file;
+std::string test ="/usr/share/jwm-settings-manager/themes/";
+test+=whichTheme;
+test+="/theme.png";
+file = test.c_str();
+image = new Fl_PNG_Image(file);
+Fl_Image * image2 = image->copy(300,49);
+o->image(image2);
+themes_window->redraw();
+o->redraw();} {}
+  }
+} 

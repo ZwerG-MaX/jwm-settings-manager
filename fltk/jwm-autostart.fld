@@ -1,0 +1,161 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+i18n_type 1 
+i18n_include <libintl.h> 
+i18n_function gettext 
+header_name {.h} 
+code_name {.cxx}
+comment {/*                 Joe's Window Manager Configuration
+ *
+ * This program configures JWM using tinyxml2 and FLTK
+ *
+ *         Copyright (C) 2014  Israel <israel@torios.org>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This has been developed as a part of the ToriOS Project
+ * This has been developed by Israel<israel@torios.org>
+ *
+ *
+ * You may redistribute this, but you must keep this comment in place
+ * Jesus is my Lord, and if you don't like it feel free to ignore it.
+ */} {in_source in_header
+} 
+
+decl {\#include <libintl.h>} {public global
+} 
+
+decl {\#include <FL/Fl_File_Chooser.H>} {public global
+} 
+
+decl {\#include <string>} {public global
+} 
+
+decl {\#include <stdlib.h>} {public global
+} 
+
+decl {\#include <iostream>} {public global
+} 
+
+decl {\#include "../include/Config.h"} {public global
+} 
+
+decl {\#include "../include/flAutostart.h"} {public global
+} 
+
+decl {\#include <FL/Fl_Select_Browser.H>} {public global
+} 
+
+decl {\#include "../include/ui.h"} {public global
+} 
+
+class AutostartUI {open
+} {
+  Function {make_window()} {open
+  } {
+    Fl_Window autostart_window {
+      label {Autostart Programs} open
+      xywh {610 172 315 390} type Double color 31 hide resizable
+    } {
+      Fl_Scroll {} {open
+        xywh {0 0 315 390} color 31
+      } {
+        Fl_Box {} {
+          label {Autostart  }
+          image {../data/img/jsm-autostart.png} xywh {50 5 170 60} labelfont 1 labelsize 18 labelcolor 35 align 288
+        }
+        Fl_Input program_name {
+          tooltip {You can add extra arguments here} xywh {15 315 200 25} box GTK_DOWN_BOX align 1 when 8
+        }
+        Fl_Button {} {
+          label {Choose a New Program to start when your computer starts up}
+          callback {flAutostart a;a.loadTemp();
+const char * f = "/usr/bin/";
+const char * m="Choose a program";
+const char *p="*";
+int r = 0;
+const char *result = fl_file_chooser(m,p,f,r);
+if(result!=NULL){
+//program_name->show();
+std::string String = result;
+unsigned found = String.find_last_of("/");
+String.erase(0,found+1);
+result = String.c_str();
+program_name->value(result);
+}}
+          tooltip {Choose a program to add} xywh {15 270 265 40} box GTK_UP_BOX align 128
+        }
+        Fl_Button {} {
+          label Cancel
+          callback {flAutostart a;a.cancel();
+autostart_window->hide();
+UI ux;
+ux.showSettings();} selected
+          xywh {190 355 57 25} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
+        }
+        Fl_Button save_button {
+          label OK
+          callback {flAutostart a;
+a.loadTemp();
+a.saveChanges();
+autostart_window->hide();
+UI ux;
+ux.showSettings();}
+          tooltip {Write to configuration file} xywh {256 355 49 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
+        }
+        Fl_Button {} {
+          label {@+  Add}
+          callback {flAutostart a;a.loadTemp();
+const char * input = program_name->value();
+if(input!=NULL){
+	autoStartBrowser->clear();
+	a.addAutostart(input);
+	a.getAutostart(autoStartBrowser);
+	autoStartBrowser->redraw();
+}
+else{
+	fl_message("You have to select a program to add, or type one in!");
+}}
+          tooltip {Add the chosen program} xywh {230 315 70 25} box GTK_UP_BOX selection_color 47
+        }
+        Fl_Browser autoStartBrowser {
+          xywh {40 80 225 140} box GTK_DOWN_BOX selection_color 80
+          code0 {flAutostart a;a.loadTemp();o->type(FL_SELECT_BROWSER);}
+          code1 {a.getAutostart(autoStartBrowser);}
+        }
+        Fl_Button {} {
+          label {Remove Selected Program}
+          callback {flAutostart a;a.loadTemp();
+const char * item = autoStartBrowser->text(autoStartBrowser->value());
+if (item !=NULL){
+	a.removeAutostart(item);
+	autoStartBrowser->clear();
+	a.getAutostart(autoStartBrowser);
+	autoStartBrowser->redraw();
+}
+else{
+	fl_message("Please click on an item to remove!");
+}}
+          xywh {50 225 205 25} box GTK_UP_BOX
+        }
+        Fl_Button {} {
+          label {@<-  Main Settings Window}
+          callback {flAutostart a;a.cancel();
+autostart_window->hide();
+UI ux;
+ux.showSettings();}
+          xywh {5 355 180 25} box GTK_UP_BOX
+        }
+      }
+    }
+  }
+} 

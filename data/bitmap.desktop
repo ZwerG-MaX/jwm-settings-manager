@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Bitmap
+GenericName=bitmap editor
+Comment=Light and fast bitmap editor
+Icon=gnome-paint
+Exec=bitmap
+Terminal=false
+Type=Application
+Categories=Graphics;

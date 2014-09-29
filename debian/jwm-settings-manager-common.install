@@ -1,0 +1,13 @@
+data/Buttons/ usr/share/jwm-settings-manager/
+data/themes/ usr/share/jwm-settings-manager/
+data/toriOSmenu etc/menu-methods
+data/jwm-settings-manager.xpm usr/share/pixmaps/
+data/distributor-logo.png usr/share/pixmaps
+data/jwm-settings-manager.svg usr/share/icons
+data/jwm-settings-manager.png usr/share/pixmaps
+data/touchpad_toggle /usr/bin
+data/touchpad_status usr/bin
+data/*.desktop usr/share/applications/
+data/desktop-directories/ usr/share/
+data/pb_JWM usr/share/jwm-settings-manager/
+data/icons usr/share/icons

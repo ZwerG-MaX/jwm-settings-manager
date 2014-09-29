@@ -1,0 +1,258 @@
+#!/bin/bash
+#MANY thanks to Puppy!!!
+shopt -s nullglob
+MENUFILE=${HOME}/.config/torimenu
+TORIPDF=${HOME}/torios.pdf
+DD=/usr/share/desktop-directories
+rm ${MENUFILE}
+echo "replacing '$MENUFILE'"
+{	#localization block
+[ $myLANG ] || myLANG=${LANGUAGE%% *}
+[ $myLANG ] || myLANG=${LANG%_*}
+
+[ -f /usr/share/locale/$myLANG/LC_MESSAGES/jwm ] && . /usr/share/locale/$myLANG/LC_MESSAGES/jwm
+}
+
+{	#parse .desktop files and sort generated menu entries into subcategories
+for DESKTOP_FILE in /usr/share/applications/*.desktop ; do
+	NAME="" ICON="" CATS="" EXEC="" LINE="" #prevent carryover from previous file
+	while read LINE || [ "$LINE" ]; do
+		case $LINE in
+			Name?${myLANG%_*}?=*|Name=*) NAME="${LINE#*=}"'' ;; # sc0ttman... should use "Name[$myLANG]=" if found
+			TryExec=*|Exec=*) EXEC="${LINE#*=}"'' ;;
+			Categories=*) CATS="${LINE#*=}"'' ;;
+			Icon=*) ICON="${LINE#*=}"''  ;;
+			Terminal=*) TERM="${LINE#*=}"''  ;;
+			# Comment=*|Comment?${LANG%_*}?=*) COMMENT="${LINE#*=}"''  ;; #jwm doesn't support tooltips on menu items yet ... uncomment this if it ever does
+		esac
+	done < $DESKTOP_FILE
+
+##TODO: Compare the icon filename... if it has an absolute path (i.e. /path/to/whatever.png) don't add .png
+#Also, need to check if the default Icons are svg or png
+if [ "${TERM}" == "true" ]
+then
+EXEC="x-terminal-emulator -e ${EXEC}"
+fi
+
+if [[ "${ICON##*.}" == "xpm" ]] || [[ "${ICON##*.}" == "svg" ]] || [[ "${ICON##*.}" == "png" ]] || [[ "${ICON}" == "/*" ]]
+then
+	MenuEntry='<Program label="'${NAME}'" icon="'${ICON}'">'${EXEC%\ \%?}'</Program>
+ '
+else
+	MenuEntry='<Program label="'${NAME}'" icon="'${ICON}'.svg">'${EXEC%\ \%?}'</Program>
+ '
+fi
+
+##Need to check if Terminal=true also...
+
+#	[ "${EXEC}" ] && MenuEntry='<Program label="'${NAME}'" icon="'${ICON}'.svg">'${EXEC%\ \%?}'</Program> '
+	#CATS="${CATS%;*}" # sc0ttman, keep just the first (or only) category.. everything before the semi-colon ;...no we may want multiple entries?
+	for CAT in `echo ${CATS//;/	}` ; do
+	#We are just going to build in the /etc/xdg/menus/hierarchy b/c its faster to inline it ... and Ctrl+Tab gets annoying
+	case "$CAT" in
+		AudioVideo)AV=${AV}${MenuEntry};;
+		Development)DEV=${DEV}${MenuEntry};;
+		Education)ED=${ED}${MenuEntry};;
+		Game)GAME=${GAME}${MenuEntry};;
+		Graphics)ART=${ART}${MenuEntry};;
+		Network)NET=${NET}${MenuEntry};;
+		Office)OFF=${OFF}${MenuEntry};;
+		Science)SCI=${SCI}${MenuEntry};;
+		Settings)SET=${SET}${MenuEntry};;
+		System)SYS=${SYS}${MenuEntry};;
+		Utility)ACC=${ACC}${MenuEntry};;
+		*)Misc=${MISC}${MenuEntry};; #add Miscellaneous category?
+	esac
+	done
+done
+}
+for MENU_NAME in ${DD}/jwm-appl* ; do
+	while read NAME_LINE || [ "$NAME_LINE" ]; do
+		case $NAME_LINE in
+			Name?${myLANG%_*}?=*|Name=*) NAME_NAME="${NAME_LINE#*=}"'';;
+		esac
+	done < $MENU_NAME
+done
+for MENU_A in ${DD}/jwm-accessories* ; do
+	A_NAME="" A_ICON="" A_LINE="" #prevent carryover from previous file
+	while read A_LINE || [ "$A_LINE" ]; do
+		case $A_LINE in
+			Name?${myLANG%_*}?=*|Name=*) A_NAME="${A_LINE#*=}"'';;
+			Icon=*) A_ICON="${A_LINE#*=}"''  ;;
+		esac
+	done < $MENU_A
+done
+for MENU_D in ${DD}/jwm-development* ; do
+	D_NAME="" D_ICON="" D_LINE="" #prevent carryover from previous file
+	while read D_LINE || [ "$D_LINE" ]; do
+		case $D_LINE in
+			Name?${myLANG%_*}?=*|Name=*) D_NAME="${D_LINE#*=}"'';;
+			Icon=*) D_ICON="${D_LINE#*=}"''  ;;
+		esac
+	done < $MENU_D
+done
+for MENU_E in ${DD}/jwm-education* ; do
+	while read E_LINE || [ "$E_LINE" ]; do
+		case $E_LINE in
+			Name?${myLANG%_*}?=*|Name=*) E_NAME="${E_LINE#*=}"'';;
+			Icon=*) E_ICON="${E_LINE#*=}"''  ;;
+		esac
+	done < $MENU_E
+done
+for MENU_G in ${DD}/jwm-graphics* ; do
+	while read G_LINE || [ "$G_LINE" ]; do
+		case $G_LINE in
+			Name?${myLANG%_*}?=*|Name=*) G_NAME="${G_LINE#*=}"'';;
+			Icon=*) G_ICON="${G_LINE#*=}"''  ;;
+		esac
+	done < $MENU_G
+done
+for MENU_I in ${DD}/jwm-network* ; do
+	while read I_LINE || [ "$I_LINE" ]; do
+		case $I_LINE in
+			Name?${myLANG%_*}?=*|Name=*) I_NAME="${I_LINE#*=}"'';;
+			Icon=*) I_ICON="${I_LINE#*=}"''  ;;
+		esac
+	done < $MENU_I
+done
+for MENU_SYS in ${DD}/jwm-sys* ; do
+	while read SYS_LINE || [ "$SYS_LINE" ]; do
+		case $SYS_LINE in
+			Name?${myLANG%_*}?=*|Name=*) SYS_NAME="${SYS_LINE#*=}"'';;
+			Icon=*) SYS_ICON="${SYS_LINE#*=}"''  ;;
+		esac
+	done < $MENU_SYS
+done
+for MENU_SETT in ${DD}/jwm-settings* ; do
+	while read SETT_LINE || [ "$SETT_LINE" ]; do
+		case $SETT_LINE in
+			Name?${myLANG%_*}?=*|Name=*) SETT_NAME="${SETT_LINE#*=}"'';;
+			Icon=*) SETT_ICON="${SETT_LINE#*=}"''  ;;
+		esac
+	done < $MENU_SETT
+done
+for MENU_GAME in ${DD}/jwm-games* ; do
+	while read GAME_LINE || [ "$GAME_LINE" ]; do
+		case $GAME_LINE in
+			Name?${myLANG%_*}?=*|Name=*) GAME_NAME="${GAME_LINE#*=}"'';;
+			Icon=*) GAME_ICON="${GAME_LINE#*=}"''  ;;
+		esac
+	done < $MENU_GAME
+done
+for MENU_O in ${DD}/jwm-office* ; do
+	while read O_LINE || [ "$O_LINE" ]; do
+		case $O_LINE in
+			Name?${myLANG%_*}?=*|Name=*) O_NAME="${O_LINE#*=}"'';;
+			Icon=*) O_ICON="${O_LINE#*=}"''  ;;
+		esac
+	done < $MENU_O
+done
+for MENU_OTHER in ${DD}/jwm-other* ; do
+	while read OTHER_LINE || [ "$OTHER_LINE" ]; do
+		case $OTHER_LINE in
+			Name?${myLANG%_*}?=*|Name=*) OTHER_NAME="${OTHER_LINE#*=}"'';;
+			Icon=*) OTHER_ICON="${OTHER_LINE#*=}"''  ;;
+		esac
+	done < $MENU_OTHER
+done
+for MENU_M in ${DD}/jwm-multimedia* ; do
+	while read M_LINE || [ "$M_LINE" ]; do
+		case $M_LINE in
+			Name?${myLANG%_*}?=*|Name=*) M_NAME="${M_LINE#*=}"'';;
+			Icon=*) M_ICON="${M_LINE#*=}"''  ;;
+		esac
+	done < $MENU_M
+done
+{	#Now generate the full menu with some formatting
+
+if [ ! -z "${ACC}" ]
+then
+MENU='<Menu label="'${A_NAME}'" icon="'${A_ICON}'.svg" height="0">
+	'${ACC}'
+</Menu>'
+fi
+if [ ! -z "${ED}" ]
+then
+MENU=''${MENU}'
+<Menu label="'${E_NAME}'" icon="'${E_ICON}'.svg" height="16">
+	'${ED}'
+</Menu>'
+fi
+if [ ! -z "${NET}" ]
+then
+MENU=''${MENU}'
+<Menu label="'${I_NAME}'" icon="'${I_ICON}'.svg" height="0">
+	'${NET}'
+</Menu>'
+fi
+if [ ! -z "${OFF}" ]
+then
+MENU=''${MENU}'
+<Menu label="'${O_NAME}'" icon="'${O_ICON}'.svg" height="0">
+	'${OFF}'
+</Menu>'
+fi
+if [ ! -z "${GAME}" ]
+then
+MENU=''${MENU}'
+<Menu label="'${GAME_NAME}'" icon="'${GAME_ICON}'.svg" height="0">
+	'${GAME}'
+</Menu>'
+fi
+if [ ! -z "${ART}" ]
+then
+MENU=''${MENU}'
+<Menu label="'${G_NAME}'" icon="'${G_ICON}'.svg" height="0">
+	'${ART}'
+</Menu>'
+fi
+if [ ! -z "${AV}" ]
+then
+MENU=''${MENU}'
+<Menu label="'${M_NAME}'" icon="'${M_ICON}'.svg" height="0">
+	'${AV}'
+</Menu>'
+fi
+if [ ! -z "${DEV}" ]
+then
+MENU=''${MENU}'
+<Menu label="'${D_NAME}'" icon="'${D_ICON}'.svg" height="0">
+	'${DEV}'
+</Menu>'
+fi
+if [ ! -z "${SCI}" ]
+then
+MENU=''${MENU}'
+<Menu label="'${OTHER_NAME}'" icon="'${OTHER_ICON}'.svg" height="0">
+	'${SCI}'
+</Menu>'
+fi
+if [ ! -z "${SCI}" ]
+then
+MENU=''${MENU}'
+<Menu label="'${SETT_NAME}'" icon="'${SETT_ICON}'.svg" height="0">
+	'${SET}'
+</Menu>'
+fi
+if [ ! -z "${SYS}" ]
+then
+MENU=''${MENU}'
+<Menu label="'${SYS_NAME}'" icon="'${SYS_ICON}'.svg" height="0">
+	'${SYS}'
+</Menu>'
+fi
+}
+{	#Add the header and footer to the Menu
+MENU='<?xml version="1.0"?><JWM>
+<!-- generated by '$0' -->
+    <RootMenu height="0" onroot="5" label="'${NAME_NAME}'">
+'"$MENU"'
+        <Separator/>
+	<Program label="ToriOS Manual" icon="help-faq.svg">xpdf -title "ToriOS Manual" -cont '${TORIPDF}'</Program>
+        <Program icon="system-shutdown.svg" label="Quit">jwm-settings-manager --halt</Program>
+    </RootMenu></JWM>'
+}
+echo "$MENU" >> ${MENUFILE}
+sed -i 's/&/&amp;/g' ${MENUFILE}
+echo "Done!"
+jwm -reload

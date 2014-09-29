@@ -1,0 +1,447 @@
+jwm-settings-manager (0.043ubuntu4) UNRELEASED; urgency=medium
+  *sync with testing branch  Fixes are below..
+  *fltk/jwm-panel
+   - visual fixes for 'Size and Position' tab
+  *Config.cpp
+   - made general executable testing
+  *Apps.cpp
+   - added initial tests for volumeicon and xfce's power manager
+  *Refactoring
+   - moved all executable testing to Config
+  *fltk/*.fld
+   - visual fixes for numerous components
+  *Apps.cpp
+   - fixed nmapplet to nm-applet for network monitor
+   - check the system for either wicd or nm-applet, use that for 'add network monitor'
+  * flThemes
+   - Added some safety checks to make sure things exist
+  *fltk/*.fld
+   - made all 'OK' and 'CANCEL' buttons return to the main settings window
+  */usr/share/applications
+   - added desktop files for ALL configuration options
+  * flDesktop
+   - Added real Rox recovery  to create the entire directory structure if missing
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sun, 28 Sep 2014 09:12:21 -0500
+
+jwm-settings-manager (0.042ubuntu3) UNRELEASED; urgency=medium
+  
+  * toriOSmenu
+   - fixed issue with ^TryExec and ^Exec
+  * flDesktop
+   - Fixed background setter
+  * General refactoring and code clean-up
+  * Updated Cmakelists to be current
+  * Config
+   - fixed some issues with Multipanel and reworked initial ideas
+ 
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 06 Sep 2014 11:45:21 -0500
+
+jwm-settings-manager (0.042ubuntu2) UNRELEASED; urgency=medium
+  
+  * toriOSmenu
+   - updated to match the live version capabilities
+  * flDesktop
+   - hopefully fixed Rox issues with pinboard file and recovery
+ 
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 06 Sep 2014 11:45:21 -0500
+
+jwm-settings-manager (0.042ubuntu1) UNRELEASED; urgency=medium
+  
+  * toriOSmenu
+   - localized categories
+   - added desktop directories files taken from xdg-menumaker
+  * flFont
+   - some code cleanup
+ 
+ -- Israel Dahl <israeldahl@gmail.com>  Thur, 04 Sep 2014 07:51:21 -0500
+
+jwm-settings-manager (0.041ubuntu3) UNRELEASED; urgency=medium
+  
+  * data/rox.desktop
+   - added mime handler
+ 
+ -- Israel Dahl <israeldahl@gmail.com>  Fri, 25 Aug 2014 07:54:21 -0500
+
+jwm-settings-manager (0.041ubuntu3) UNRELEASED; urgency=medium
+  
+  * po
+   - renamed messages.po to messages.pot to facilitate translations
+  * debian/control
+   - modified dependencies a bit to work in precise
+  * CmakeLists 
+   - setup to use cmake 2.8.7 for precise (thanks to ngladitz on #cmake)
+ 
+ -- Israel Dahl <israeldahl@gmail.com>  Thur, 24 Aug 2014 21:02:21 -0500
+
+jwm-settings-manager (0.041ubuntu3) UNRELEASED; urgency=medium
+  
+  * toriOSmenu
+   - fixed &amp; with sed at the end
+  * Mouse
+   - fixed toggle switches to work correctly
+  * Panel
+   - more work to get 2 panel support
+ 
+ -- Israel Dahl <israeldahl@gmail.com>  Thur, 14 Aug 2014 08:09:21 -0500
+
+jwm-settings-manager (0.041ubuntu2) UNRELEASED; urgency=medium
+  
+  *Config
+   - Added support for X11 colornames (thanks Paul Sladen http://irclogs.ubuntu.com/2014/08/13/%23ubuntu-devel.html#t19:52) 
+ 
+ -- Israel Dahl <israeldahl@gmail.com>  Thur, 14 Aug 2014 08:09:21 -0500
+
+jwm-settings-manager (0.041ubuntu2) UNRELEASED; urgency=medium
+  
+  *Cmake
+   - Added FindFontconfig.cmake to find fontconfig :)
+   - edited CMakeLists to reflect the changes (fontconfig and Apps)
+ 
+ -- Israel Dahl <israeldahl@gmail.com>  Tue, 12 Aug 2014 23:00:21 -0500
+
+jwm-settings-manager (0.041ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (JWM 2.2.2 ONLY)
+    *Font
+      - Implemented basic font chooser for all aspects of JWM
+    *Panel
+      - refactored flPanel so the 'Panel Apps' would be separate
+    *Menu
+      - fixed toriOSmenu to use absolute patsh for icons, or icons with an extention (i.e. png)
+    *install file
+      - moved jwm-settings-manager.svg to install in pixmaps (not sure if this is ok...)
+    *keyboard (fltk UI)
+      - minor tweaking to element positioning and beginning work on Keygrab
+
+ -- Israel Dahl <israeldahl@gmail.com>  Tue, 12 Aug 2014 23:00:21 -0500
+jwm-settings-manager (0.040ubuntu2) UNRELEASED; urgency=medium
+
+  * Alpha Version (JWM 2.2.2 ONLY)
+    *Themes
+      - Actually fixed all themes to use XF86 volume keys :)
+      - tweaked some colors a little in the default
+      - fixed the menu to use reload instead of restart
+
+ -- Israel Dahl <israeldahl@gmail.com>  Wed, 6 Aug 2014 08:08:21 -0500
+ 
+jwm-settings-manager (0.040ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (JWM 2.2.2 ONLY)
+    *Desktop
+      - fixed more bugs with use of rox (set both backgrounds correctly)
+    *Window
+      - Fixed new png images not showing up.
+      - Fixed file extention to include png and svg
+    *Themes
+      - fixed all themes to use XF86 volume keys
+      - all themes use Numix svg icons
+      - updated pop-ups
+      - minor tweaking of some colors
+    *Menu
+      - a small fix to allow inkscapre to show up
+    *data
+      - added in png buttons to default and ToriOS
+
+ -- Israel Dahl <israeldahl@gmail.com>  Wed, 6 Aug 2014 00:36:21 -0500
+ 
+jwm-settings-manager (0.034ubuntu2) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *Misc
+      - install touchpad scripts
+      - install rox.desktop
+      - clean up some things...
+
+ -- Israel Dahl <israeldahl@gmail.com>  Mon, 4 Aug 2014 22:08:21 -0500
+
+jwm-settings-manager (0.034ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *Misc
+      - edited theme menus
+      - added rox.desktop to use xdg-open (TODO: set xdg-mime default rox.desktop inode/directory on torios install)
+      - major panel under-the-hood work for multipanel support
+      - added sub window for "new panel" creation
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sun, 3 Aug 2014 22:08:21 -0500
+
+jwm-settings-manager (0.033ubuntu2) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *Menu
+       - added Education (oops)
+    *Themes
+       - made previews work again
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 2 Aug 2014 08:14:21 -0500
+
+jwm-settings-manager (0.033ubuntu2) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *General
+       - .jwmrc file has $HOME now
+    *Desktop
+      - fixed some bugs with use of rox (set both backgrounds), and added better testing for elements
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 2 Aug 2014 08:14:21 -0500
+
+jwm-settings-manager (0.033ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *General
+      - added synclient MaxTapTime=0 to startup
+      - begun work to give wicd a better theme in the Panel
+    *Icons
+      - added some error checking and begun work to include all subdirectories for icon themes
+    *Window
+      - added live previews of Buttons
+      - cleaned up the UI a bit
+      - made active and inactive portions have a box behind them to make it easier to visually understand
+
+ -- Israel Dahl <israeldahl@gmail.com>  Fri, 1 Aug 2014 21:14:21 -0500
+
+ jwm-settings-manager (0.032ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *Main Settings Window Button
+      - Added @<-  'back arrow' and lightened it to make it more visible
+     *Panel
+      - Removed 'Choose' Buttons and made colors clickable
+      - Removed Choose button for icon and made it clickable
+     *Window
+      - Removed 'Choose' Buttons and made colors clickable
+      - shrunk the UI size (made it more compact)
+      - code clean-up
+
+ -- Israel Dahl <israeldahl@gmail.com>  Fri, 1 Aug 2014 00:25:21 -0500
+
+jwm-settings-manager (0.031ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *Desktop
+      - fix jpg backgrounds (use rox until JWM gets updated)
+     *Autostart (Config.cpp jwm-autostart*)
+      - fix crash when NO autostart items are present
+     *Panel
+      - fix overwriting of temp file when switching to Size/Position menu (use loadTemp() instead of load() )
+      - fix autostart for adding wicd and volumeicon, etc...
+      - fixed Shortcut adding window (not completely finished, but it works)
+     *Themes
+      - add wicd and volumeicon to autostart
+      - begun 'expert' tab to allow loading custom config files
+     *Window
+      - tested making clickable colors, got some ideas on how to do this.
+     *Mouse
+      - touchpad tap enable/disable
+      - touchpad enable/disable
+
+
+ -- Israel Dahl <israeldahl@gmail.com>  Wed, 30 Jul 2014 15:29:21 -0500
+
+jwm-settings-manager (0.030ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *Shutdown
+     - Hide the window when suspending
+     *ToriOS MENU
+      -Alpha version of Tori menu. It parses all desktop files and makes a menu (when you install things)
+      - there are some things that don't fully work yet
+      *Panel
+       - Some important initial work to get the multiple panel support going not much to show for it yet...
+
+ -- Israel Dahl <israeldahl@gmail.com>  Wed, 30 Jul 2014 15:29:21 -0500
+
+jwm-settings-manager (0.022ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *Shutdown
+     - Hide the window when suspending
+     *ToriOS MENU
+      -Alpha version of Tori menu. It parses all desktop files and makes a menu (when you install things)
+      - there are some things that don't fully work yet
+      *Panel
+       - Some important initial work to get the multiple panel support going not much to show for it yet...
+
+ -- Israel Dahl <israeldahl@gmail.com>  Wed, 30 Jul 2014 15:29:21 -0500
+
+jwm-settings-manager (0.022ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *Shutdown
+     - use system() to call dbus to shutdown/restart/suspend without root.
+
+ -- Israel Dahl <israeldahl@gmail.com>  Mon, 28 Jul 2014 07:47:21 -0500
+
+jwm-settings-manager (0.022ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *Added intial 'Shutdown Dialog' for adding to the panel
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sun, 26 Jul 2014 11:32:21 -0500
+
+jwm-settings-manager (0.021ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *Added 'Main Settings Window' Button to all sub programs.
+     -clicking a button on the main window hides it, and opens the other window.
+     -the main settings window button hides the current 'app' and shows the main window
+
+ -- Israel Dahl <israeldahl@gmail.com>  Fri, 25 Jul 2014 07:12:21 -0500
+
+jwm-settings-manager (0.020ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    *jwm.cpp
+     - added command line arguments in for each sub window
+     - added --recover cli arg
+     - added --help cli arg
+
+ -- Israel Dahl <israeldahl@gmail.com>  Fri, 25 Jul 2014 07:12:21 -0500
+
+jwm-settings-manager (0.014ubuntu2) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    * Keyboard
+      - Finished getting the Keyboard modifiers to work
+      - this now works completely (AFAIK)
+  *Update
+     - Made Themes window resizable
+     - added Volume Icon checkbox to Panel window
+     - started Multi panel support
+
+ -- Israel Dahl <israeldahl@gmail.com>  Tue, 22 Jul 2014 10:29:21 -0500
+
+jwm-settings-manager (0.013ubuntu2) UNRELEASED; urgency=medium
+
+  * Alpha Version (testing)
+    - redid all GUI elements to have a scroll bar and become resizeable for
+      screens that cannot handle the size of my windows
+    * Keyboard
+      - added code to set Modifiers
+      - begun work to make everything function correctly
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sun, 20 Jul 2014 15:11:37 -0500
+
+jwm-settings-manager (0.012ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (the DEBut part duex)
+   * debian
+     -added the install files (whoops)
+   * Config
+    - fix recovery that was broken on refactor
+   * CMakeLists
+    - hopefully prettied everything up, to make it work in a non-debian form...
+
+ -- Israel Dahl <israeldahl@gmail.com>  Thu, 17 Jul 2014 07:28:12 -0500
+
+jwm-settings-manager (0.012ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (the DEBut)
+   * Config
+    - refactor everything to account for .jwmrc on non ToriOS systems
+   * Debian
+    - fixed missing depends in control (and 'section')
+   * CMakeLists
+    - install themes and buttons, etc... into correct directory
+    - don't install jwmrc file
+   * TODO
+    - the list got longer :)
+
+ -- Israel Dahl <israeldahl@gmail.com>  Wed, 16 Jul 2014 21:44:12 -0500
+
+jwm-settings-manager (0.012ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (go ahead CMake my day)
+   * Cmake
+   - after wrestling with ${FLTK_LIBRARIES} the #cmake team helped me.
+   - apparently the Cmake fltk script doesn't work... but Fltk's does hurray!!
+   * Other
+   - honestly, there are most likely other things I did... however cmake made me forget
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 05 Jul 2014 21:44:12 -0500
+
+jwm-settings-manager (0.012ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version update
+   * Desktop
+   - finished Rox support, and added recovery, though gradients/solid colors aren't supported for ROX yet.
+   * CMake
+   - begun CMake integration
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 05 Jul 2014 21:44:12 -0500
+
+jwm-settings-manager (0.011ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version update
+   * Desktop
+   - Added Rox checkers, and getters and setters, but haven't finished/enabled it
+   - Finished gradient support
+   - finished Single color support
+   - moved the image setting code to flDesktop(h/cpp)
+   * Window
+   - fixed Window icon code to reliably open the directory containing icons
+   - added 'BoxShaped' window buttons
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 05 Jul 2014 21:44:12 -0500
+
+
+jwm-settings-manager (0.01ubuntu1) UNRELEASED; urgency=medium
+
+  * Alpha Version (Sorn)
+    - there is a makefile (not very good... but temorary)
+    - since a lot of things work, and there is a makefile, others could potentially use this... more or less...
+  * Themes
+    - Added Themes and previews, and fixed up the theme files to be legit.
+    - Shrunk the window for small screens, just in case...
+  * Fonts
+   - Added a temporary solution to set fonts... hand typing, and a button that brings up xfontsel
+   - Added error checking for getFontName, getFontSize, setFontName
+   * Desktop
+   - Added incomplete support for using a gradient color, and begun work for ROX filer desktop...
+
+ -- Israel Dahl <israeldahl@gmail.com>  Fri, 04 Jul 2014 18:11:12 -0500
+
+jwm-settings-manager (0.008ubuntu1) UNRELEASED; urgency=medium
+
+  * Prealpha Version (Perelandra)
+  * Panel
+   - Added Color chooser and Opacity for Menu
+   - Added Color chooser for TaskList
+   - Added x,y coordinates for panel
+   - refactored code to make use of existing color/opacity
+     functions for the other elements
+   - added border option to incomplete Add Shortcut window
+   - fixed icon display to work with the default image
+   - reorganized things so it looks nicer, and makes more sense
+   - changed Advanced Options tab to Size And Position tab
+  * Window
+   - fixed 2 color not displaying correctly
+
+ -- Israel Dahl <israeldahl@gmail.com>  Thur, 03 Jul 2014 07:58:12 -0500
+
+jwm-settings-manager (0.007ubuntu1) UNRELEASED; urgency=medium
+
+  * Prealpha Version (Thulacandra)
+  * Panel
+    - Initial Shortcuts code
+    - Advanced options - Border
+    - Places Menu
+    - Shutdown Menu
+  * Autostart
+    - Display autostart programs
+    - add/remove programs
+    - live update
+  * Keyboard
+   - Display current setup
+   - remove
+   - add (incomplete)
+  * Icons
+   - display current search paths
+   - add/remove
+  * Other
+   - some code cleanup and better error checking
+   - Sam Hewitt icons in all sub-apps and settings screen
+   - some debian folder stuff, not much
+
+ -- Israel Dahl <israeldahl@gmail.com>  Tue, 01 Jul 2014 15:37:16 -0500

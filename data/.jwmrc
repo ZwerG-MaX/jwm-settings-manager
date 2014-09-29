@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<JWM>
+
+<!-- MENUS -->
+
+    <!-- Main Menu -->
+    <RootMenu height="0" onroot="5">
+        <Program icon="terminal.png" label="Terminal">x-terminal-emulator</Program>
+        <Program icon="firefox.png" label="Firefox">firefox</Program>
+        <Program icon="text-editor.png" label="Text Editor">gedit</Program>
+        <Program icon="applets-screenshooter.png" label="Screenshot">import -window root $(date -Iminutes).png</Program>
+        <Program icon="system-file-manager.png" label="Files">rox-filer -n </Program>
+        <Separator/>
+        <Program icon="lock.png" label="Lock">xscreensaver-command -activate</Program>
+        <Include>/etc/jwm/debian-menu</Include>
+        <Separator/>
+        <Restart label="Restart" icon="system-restart.png"/>
+        <Exit label="Exit" confirm="true" icon="exit.png"/>
+    </RootMenu>
+
+    <!--Shudown Menu-->
+    <RootMenu height="0" onroot="9">
+        <Program icon="terminal.png" label="Terminal">x-terminal-emulator</Program>
+        <Restart label="Restart" icon="system-restart.png"/>
+        <Exit label="Exit" confirm="true" icon="exit.png"/>
+    </RootMenu>
+
+    <!--Places Menu-->
+    <RootMenu height="0" onroot="7">
+        <Program icon="folder-home.png" label="Home">rox-filer -n ~/</Program>
+        <Program icon="folder-documents.png" label="Documents">rox-filer -n ~/Documents</Program>
+        <Program icon="folder-downloads.png" label="Downloads">rox-filer -n ~/Downloads</Program>
+        <Program icon="folder-music.png" label="Music">rox-filer -n ~/Music</Program>
+        <Program icon="folder-pictures.png" label="Pictures">rox-filer -n ~/Pictures</Program>
+        <Program icon="folder-video.png" label="Videos">rox-filer -n ~/Videos</Program>
+        <Program icon="user-trash.png" label="Trash">rox-filer -n ~/.local/share/Trash/files</Program>
+        <Program icon="file-manager.png" label="Connected Devices">rox-filer -n /media</Program>
+    </RootMenu>
+<!-- END MENUS -->
+
+
+<!-- GROUP -->
+    <Group>
+        <Class>Pidgin</Class>
+        <Option>sticky</Option>
+    </Group>
+    <Group>
+        <Name>gkrellm</Name>
+        <Option>nolist</Option>
+        <Option>sticky</Option>
+    </Group>
+    <Group>
+        <Name>conky</Name>
+        <Option>nolist</Option>
+        <Option>sticky</Option>
+    </Group>
+    <Group>
+        <Name>xterm</Name>
+        <Option>vmax</Option>
+        <Option>icon:terminal.png</Option>
+    </Group>
+
+
+<!-- PANEL -->
+    <Tray x="0" y="-1" height="34" autohide="false" valign="top" width="0" halign="fixed" layout="horizontal">
+        <TrayButton label="Apps" icon="/usr/share/pixmaps/distributor-logo.png">root:5</TrayButton>
+        <TrayButton label="Places" icon="folder.png">root:7</TrayButton>
+        <TrayButton icon="firefox.png">exec:firefox</TrayButton>
+        <Pager labeled="true"/>
+        <TaskList maxwidth="256"/>
+        <Dock/>
+        <Swallow name="xload" width="64">xload -nolabel -bg black -fg red -hl white</Swallow>
+        <Clock format="%a, %e %b %l:%M %p">xclock</Clock>
+        <TrayButton label="Shutdown" icon="system-shutdown.png">root:9</TrayButton>
+    </Tray>
+
+    <!-- Panel Style -->
+    <TaskListStyle>
+        <ActiveBackground>#940000</ActiveBackground>
+        <Background>#383838</Background>
+        <Font>ubuntu-12:antialias=true</Font>
+        <Foreground>#ffffff</Foreground>
+    </TaskListStyle>
+    <TrayStyle>
+        <Font>ubuntu-12:antialias=true</Font>
+        <Foreground>#ffffff</Foreground>
+        <Background>#000000</Background>
+        <Opacity>0.75</Opacity>
+    </TrayStyle>
+    <TrayButtonStyle>
+	    <Font>ubuntu-12:antialias=true</Font>
+        <Foreground>#ffffff</Foreground>
+        <Background>#000000</Background>
+    </TrayButtonStyle>
+    <PagerStyle>
+        <Outline>#000000</Outline>
+        <Foreground>#ffffff</Foreground>
+        <Background>#383838</Background>
+        <ActiveForeground>#ffffff</ActiveForeground>
+        <ActiveBackground>#940000</ActiveBackground>
+    </PagerStyle>
+    <MenuStyle>
+        <Font>ubuntu-12:antialias=true</Font>
+        <Foreground>#ffffff</Foreground>
+        <Background>#383838</Background>
+        <ActiveBackground>#940000</ActiveBackground>
+        <Opacity>0.85</Opacity>
+    </MenuStyle>
+
+<!-- WINDOW -->
+    <WindowStyle>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
+        <Width>4</Width>
+        <Height>20</Height>
+        <Active>
+            <Text>#C7C7C7</Text>
+            <Title>#000000:#383838</Title>
+            <Outline>#000000</Outline>
+            <Opacity>1.0</Opacity>
+        </Active>
+        <Inactive>
+            <Text>#940000</Text>
+            <Title>#383838:#000000</Title>
+            <Outline>#000000</Outline>
+            <Opacity>0.7</Opacity>
+        </Inactive>
+    </WindowStyle>
+    <ButtonClose>/usr/share/jwm-settings-manager/themes/Default/Buttons/close.xbm</ButtonClose>
+    <ButtonMax>/usr/share/jwm-settings-manager/themes/Default/Buttons/max.xbm</ButtonMax>
+    <ButtonMaxActive>/usr/share/jwm-settings-manager/themes/Default/Buttons/max_toggled.xbm</ButtonMaxActive>
+    <ButtonMin>/usr/share/jwm-settings-manager/themes/Default/Buttons/iconify.xbm</ButtonMin>
+    <FocusModel>click</FocusModel>
+    <SnapMode distance="10">border</SnapMode>
+    <MoveMode>opaque</MoveMode>
+    <ResizeMode>opaque</ResizeMode>
+
+<!-- KEYBOARD -->
+    <Key key="Up">up</Key>
+    <Key key="Down">down</Key>
+    <Key key="Right">right</Key>
+    <Key key="Left">left</Key>
+    <Key key="a">left</Key>
+    <Key key="s">down</Key>
+    <Key key="w">up</Key>
+    <Key key="d">right</Key>
+    <Key key="F12">fullscreen</Key>
+    <Key key="Return">select</Key>
+    <Key key="Escape">escape</Key>
+    <Key mask="CA" key="p">exec:import -window root $(date -I).png</Key>
+    <Key mask="CA" key="t">exec:x-terminal-emulator</Key>
+    <Key mask="CA" key="Delete">exec:htop</Key>
+    <Key mask="A" key="Tab">next</Key>
+    <Key mask="CA" key="Tab">nextstacked</Key>
+    <Key mask="A" key="F4">close</Key>
+    <Key mask="A" key="#">desktop#</Key>
+    <Key mask="A" key="F1">root:1</Key>
+    <Key mask="A" key="F2">window</Key>
+    <Key mask="A" key="F10">maximize</Key>
+    <Key mask="CA" key="Right">rdesktop</Key>
+    <Key mask="CA" key="Left">ldesktop</Key>
+    <Key mask="CA" key="Up">udesktop</Key>
+    <Key mask="CA" key="Down">ddesktop</Key>
+    <Key mask="A" key="F4">close</Key>
+
+<!-- MOUSE -->
+    <DoubleClickSpeed>400</DoubleClickSpeed>
+    <DoubleClickDelta>2</DoubleClickDelta>
+
+<!-- ICONS -->
+    <IconPath>/usr/share/pixmaps</IconPath>
+
+<!-- DESKTOP -->
+    <Desktops width="2" height="1">
+        <Background type="image">/usr/share/backgrounds/default.png</Background>
+    </Desktops>
+
+<!-- AUTOSTART -->
+   <StartupCommand>gkrellm</StartupCommand>
+
+<!--POP UP -->
+    <PopupStyle>
+        <Font>ubuntu-12:antialias=true</Font>
+        <Outline>#000000</Outline>
+        <Foreground>#ffffff</Foreground>
+        <Background>#383838</Background>
+    </PopupStyle>
+
+</JWM>

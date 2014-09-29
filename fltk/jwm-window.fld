@@ -1,0 +1,776 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+i18n_type 1 
+i18n_include <libintl.h> 
+i18n_function gettext 
+header_name {.h} 
+code_name {.cxx}
+comment {/*                 Joe's Window Manager Configuration
+ *
+ * This program configures JWM using tinyxml2 and FLTK
+ *
+ *         Copyright (C) 2014  Israel <israel@torios.org>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This has been developed as a part of the ToriOS Project
+ * This has been developed by Israel<israel@torios.org>
+ *
+ *
+ * You may redistribute this, but you must keep this comment in place
+ * Jesus is my Lord, and if you don't like it feel free to ignore it.
+ */} {in_source in_header
+} 
+
+decl {\#include <libintl.h>} {public global
+} 
+
+decl {\#include <string>} {public global
+} 
+
+decl {\#include <stdlib.h>} {public global
+} 
+
+decl {\#include <iostream>} {public global
+} 
+
+decl {\#include "../include/Config.h"} {public global
+} 
+
+decl {\#include <FL/Fl_Color_Chooser.H>} {public global
+} 
+
+decl {\#include "../include/flWindow.h"} {public global
+} 
+
+decl {\#include <FL/Fl_File_Chooser.H>} {public global
+} 
+
+decl {\#include "../include/ui.h"} {public global
+} 
+
+decl {\#include <FL/Fl_XBM_Image.H>} {public global
+} 
+
+decl {\#include <FL/Fl_PNG_Image.H>} {public global
+} 
+
+class WindowUI {open
+} {
+  Function {make_window()} {open
+  } {
+    Fl_Window window_window {
+      label {Window Settings} open
+      xywh {65 82 670 455} type Double color 31 resizable visible
+    } {
+      Fl_Scroll {} {open
+        xywh {0 0 670 455} color 31
+      } {
+        Fl_Box {} {
+          label {Window Settings  }
+          image {../data/img/jsm-windows.png} xywh {245 10 275 70} labelfont 1 labelsize 18 labelcolor 35 align 288
+        }
+        Fl_Button {} {
+          label Cancel
+          callback {flWindow w;w.cancel();
+window_window->hide();
+UI ux;
+ux.showSettings();}
+          xywh {510 415 55 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+        }
+        Fl_Button {} {
+          label OK
+          callback {flWindow w;
+w.loadTemp();
+w.saveChanges();
+window_window->hide();
+UI ux;
+ux.showSettings();} selected
+          tooltip {Write to configuration file} xywh {595 415 45 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+        }
+        Fl_Tabs {} {open
+          xywh {0 80 670 330} box PLASTIC_THIN_UP_BOX
+        } {
+          Fl_Group {} {
+            label Appearance open
+            xywh {10 100 660 305}
+          } {
+            Fl_Box {} {
+              xywh {10 110 330 175} box GTK_DOWN_BOX color 51
+            }
+            Fl_Box {} {
+              label {Active Window}
+              xywh {100 115 160 25} labelfont 1 labelcolor 35 align 384
+            }
+            Fl_Box {} {
+              label {Titlebar Background}
+              xywh {20 155 145 25} labelcolor 35
+            }
+            Fl_Button a_title_color1 {
+              callback {w_one_color(a_title_color1, a_title_color2, "Active");
+get_button(max_a_image,"ButtonMaxActive");
+get_button(max_image,"ButtonMax");
+get_button(min_image,"ButtonMin");
+get_button(close_image,"ButtonClose");}
+              xywh {180 155 60 25} box GTK_UP_BOX
+              code0 {flWindow w; w.loadTemp();unsigned int color;}
+              code1 {unsigned int c = w.getWindowColor(color,"Active");}
+              code2 {o->color(c);}
+            }
+            Fl_Button a_title_color2 {
+              callback {w_two_color(a_title_color1, a_title_color2, "Active");}
+              xywh {245 155 60 25} box GTK_UP_BOX
+              code0 {flWindow w; w.loadTemp();unsigned int color;}
+              code1 {unsigned int c = w.getWindowColor(color,"Active");}
+              code2 {o->color(color);}
+            }
+            Fl_Box {} {
+              label {Font and Button Color}
+              xywh {15 185 160 25} labelcolor 35
+            }
+            Fl_Box {} {
+              label {Window Border Color}
+              xywh {15 215 155 25} labelcolor 35
+            }
+            Fl_Slider active_o_slider {
+              label {Opacity of Title Bar}
+              callback {flWindow w;w.loadTemp();
+const char* Active="Active";
+float opacity=o->value();
+active_o_slider_v->value(opacity*100);
+w.windowOpacity(opacity,Active);
+w.saveChangesTemp();}
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {180 245 90 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 29 align 4 when 4 step 0.01 value 1
+              code0 {flWindow w;w.loadTemp();const char* Active="Active";}
+              code1 {float h = w.getOpacity(Active);}
+              code2 {o->value(h);}
+            }
+            Fl_Value_Input active_o_slider_v {
+              label {%}
+              callback {flWindow w; w.loadTemp();
+float y_cb = o->value();
+active_o_slider->value(y_cb);
+w.windowOpacity(y_cb,"Active");
+w.saveChangesTemp();}
+              xywh {280 245 35 25} box GTK_DOWN_BOX selection_color 80 labelsize 10 align 8 when 3
+              code0 {float v = active_o_slider->value();}
+              code1 {o->value(v*100);}
+            }
+            Fl_Box {} {
+              xywh {350 110 315 175} box GTK_DOWN_BOX color 45
+            }
+            Fl_Box {} {
+              label {Background  Window}
+              xywh {385 115 220 25} labelfont 1 labelcolor 32 align 128
+            }
+            Fl_Box {} {
+              label {Titlebar Background}
+              xywh {360 160 140 25} labelcolor 35
+            }
+            Fl_Box {} {
+              label {Font and Button Color}
+              xywh {355 187 160 25} labelcolor 35
+            }
+            Fl_Box {} {
+              label {Window Border Color}
+              xywh {355 215 155 25} labelcolor 35
+            }
+            Fl_Button a_font_color {
+              callback {f_color(a_font_color, "Active");
+get_button(max_a_image,"ButtonMaxActive");
+get_button(max_image,"ButtonMax");
+get_button(min_image,"ButtonMin");
+get_button(close_image,"ButtonClose");}
+              xywh {180 185 60 25} box GTK_UP_BOX when 6
+              code0 {flWindow w; w.loadTemp();}
+              code1 {unsigned int c = w.getFontColor("Active");}
+              code2 {o->color(c);}
+            }
+            Fl_Button a_border_color {
+              callback {b_color(a_border_color, "Active");}
+              xywh {180 215 60 25} box GTK_UP_BOX when 6
+              code0 {flWindow w; w.loadTemp();}
+              code1 {unsigned int c = w.getBorderColor("Active");}
+              code2 {o->color(c);}
+            }
+            Fl_Button inactive_color {
+              callback {w_one_color(inactive_color, inactive_color2, "Inactive");
+get_button_inactive(i_max_a_image,"ButtonMaxActive");
+get_button_inactive(i_max_image,"ButtonMax");
+get_button_inactive(i_min_image,"ButtonMin");
+get_button_inactive(i_close_image,"ButtonClose");}
+              xywh {515 155 60 25} box GTK_UP_BOX when 6
+              code0 {flWindow w; w.loadTemp();unsigned int color;}
+              code1 {unsigned int c = w.getWindowColor(color,"Inactive");}
+              code2 {inactive_color->color(c);}
+            }
+            Fl_Button inactive_color2 {
+              callback {w_two_color(inactive_color, inactive_color2, "Inactive");}
+              xywh {580 155 60 25} box GTK_UP_BOX when 6
+              code0 {flWindow w; w.loadTemp();unsigned int color;}
+              code1 {unsigned int c = w.getWindowColor(color,"Inactive");}
+              code2 {inactive_color2->color(color);}
+            }
+            Fl_Button inactive_font_color {
+              callback {f_color(inactive_font_color, "Inactive");
+get_button_inactive(i_max_a_image,"ButtonMaxActive");
+get_button_inactive(i_max_image,"ButtonMax");
+get_button_inactive(i_min_image,"ButtonMin");
+get_button_inactive(i_close_image,"ButtonClose");}
+              xywh {515 185 60 25} box GTK_UP_BOX when 6
+              code0 {flWindow w; w.loadTemp();}
+              code1 {unsigned int c = w.getFontColor("Inactive");}
+              code2 {inactive_font_color->color(c);}
+            }
+            Fl_Button inactive_border_color {
+              callback {b_color(inactive_border_color, "Inactive");}
+              xywh {515 215 60 25} box GTK_UP_BOX when 6
+              code0 {flWindow w; w.loadTemp();}
+              code1 {unsigned int c = w.getBorderColor("Inactive");}
+              code2 {inactive_border_color->color(c);}
+            }
+            Fl_Slider inactive_o_slider {
+              label {Opacity of Title Bar}
+              callback {flWindow w;w.loadTemp();
+const char* Inactive="Inactive";
+float opacity=o->value();
+inactive_o_slider_v->value(opacity*100);
+w.windowOpacity(opacity,Inactive);
+w.saveChangesTemp();}
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {500 245 90 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 29 align 4 when 4 step 0.01 value 1
+              code0 {flWindow w;w.loadTemp();const char* Inactive="Inactive";}
+              code1 {float h = w.getOpacity(Inactive);}
+              code2 {o->value(h);}
+            }
+            Fl_Value_Input inactive_o_slider_v {
+              label {%}
+              callback {flWindow w; w.loadTemp();
+float y_cb = o->value();
+inactive_o_slider->value(y_cb);
+w.windowOpacity(y_cb,"Inactive");
+w.saveChangesTemp();}
+              xywh {614 245 35 25} box GTK_DOWN_BOX selection_color 80 labelsize 10 align 8 when 3
+              code0 {float v = inactive_o_slider->value();}
+              code1 {o->value(v*100);}
+            }
+            Fl_Box {} {
+              label {Change the Window Button Images}
+              xywh {205 290 315 25} labelfont 1 labelcolor 35
+            }
+            Fl_Button {} {
+              label {Close Button}
+              callback {flWindow w;w.loadTemp();
+std::string label = "Choose ";
+label += o->label();
+std::string tempPath = w.buttonPath();
+const char *path = tempPath.c_str();
+const char * f = path;
+const char * m=label.c_str();
+const char * p="*.{xbm,XBM,png,PNG,svg,SVG}";
+int r = 0;
+char *result = fl_file_chooser(m,p,f,r);
+if(result!=NULL){
+	w.setButton(result,"ButtonClose");
+	//display(result,o);
+}}
+              tooltip {Choose a XBM for the close button} xywh {150 360 115 25} box GTK_UP_BOX align 256
+            }
+            Fl_Button {} {
+              label {Maximize Button}
+              callback {flWindow w;w.loadTemp();
+std::string label = "Choose ";
+label += o->label();
+std::string tempPath = w.buttonPath();
+const char *path = tempPath.c_str();
+const char * f = path;
+const char * m=label.c_str();
+const char * p="*.{xbm,XBM,png,PNG,svg,SVG}";
+int r = 0;
+char *result = fl_file_chooser(m,p,f,r);
+if(result!=NULL){
+	w.setButton(result,"ButtonMax");
+	//display(result,o);
+}}
+              tooltip {Choose an image (XBM) for the Maximize button} xywh {395 315 145 25} box GTK_UP_BOX align 256
+            }
+            Fl_Button {} {
+              label { Maximize Button (Activated)}
+              callback {flWindow w;w.loadTemp();
+std::string label = "Choose ";
+label += o->label();
+std::string tempPath = w.buttonPath();
+const char *path = tempPath.c_str();
+const char * f = path;
+const char * m=label.c_str();
+const char * p="*.{xbm,XBM,png,PNG,svg,SVG}";
+int r = 0;
+const char *result = fl_file_chooser(m,p,f,r);
+if(result!=NULL){
+	w.setButton(result,"ButtonMaxActive");
+}
+get_button(max_a_image, "ButtonMaxActive");}
+              tooltip {Choose an image (XBM) for the Maximized button} xywh {40 315 225 25} box GTK_UP_BOX align 256
+            }
+            Fl_Button {} {
+              label {Minimize Button}
+              callback {flWindow w;w.loadTemp();
+std::string label = "Choose ";
+label += o->label();
+std::string tempPath = w.buttonPath();
+const char *path = tempPath.c_str();
+const char * f = path;
+const char * m=label.c_str();
+const char * p="*.{xbm,XBM,png,PNG,svg,SVG}";
+int r = 0;
+char *result = fl_file_chooser(m,p,f,r);
+if(result!=NULL){
+	w.setButton(result,"ButtonMin");
+	//display(result,o);
+}}
+              tooltip {Choose an image (XBM) for the Minimize button} xywh {395 360 145 25} box GTK_UP_BOX align 256
+            }
+            Fl_Box {} {
+              label {Color 1}
+              xywh {180 140 60 15} labelcolor 35
+            }
+            Fl_Box {} {
+              label {Color 2}
+              xywh {245 140 60 15} labelcolor 35
+            }
+            Fl_Box {} {
+              label {Color 1}
+              xywh {515 140 60 15} labelcolor 35
+            }
+            Fl_Box {} {
+              label {Color 2}
+              xywh {580 140 60 15} labelcolor 35
+            }
+            Fl_Box max_a_image {
+              callback {get_button(max_a_image,"ButtonMaxActive");}
+              xywh {275 315 30 30} box GTK_DOWN_BOX color 43 when 6
+              code0 {get_button(max_a_image,"ButtonMaxActive");}
+            }
+            Fl_Box close_image {
+              callback {get_button(o,"ButtonClose");}
+              xywh {275 355 30 30} box GTK_DOWN_BOX color 43 when 6
+              code0 {get_button(o,"ButtonClose");}
+            }
+            Fl_Box max_image {
+              callback {get_button(o,"ButtonMax");}
+              xywh {550 315 30 30} box GTK_DOWN_BOX color 43 when 6
+              code0 {get_button(o,"ButtonMax");}
+            }
+            Fl_Box min_image {
+              callback {get_button(o,"ButtonMin");}
+              xywh {550 355 30 30} box GTK_DOWN_BOX color 43 when 6
+              code0 {get_button(o,"ButtonMin");}
+            }
+            Fl_Box i_max_a_image {
+              callback {get_button_inactive(o,"ButtonMaxActive");}
+              xywh {310 315 30 30} box GTK_DOWN_BOX color 43 when 6
+              code0 {get_button_inactive(o,"ButtonMaxActive");}
+            }
+            Fl_Box i_close_image {
+              callback {get_button_inactive(o,"ButtonClose");}
+              xywh {310 355 30 30} box GTK_DOWN_BOX color 43 when 6
+              code0 {get_button_inactive(o,"ButtonClose");}
+            }
+            Fl_Box i_max_image {
+              callback {get_button_inactive(o,"ButtonMax");}
+              xywh {585 315 30 30} box GTK_DOWN_BOX color 43 when 6
+              code0 {get_button_inactive(o,"ButtonMax");}
+            }
+            Fl_Box i_min_image {
+              callback {get_button_inactive(o,"ButtonMin");}
+              xywh {585 355 30 30} box GTK_DOWN_BOX color 43 when 6
+              code0 {get_button_inactive(o,"ButtonMin");}
+            }
+          }
+          Fl_Group {} {
+            label Settings
+            xywh {100 100 525 305} hide
+          } {
+            Fl_Slider b_slider {
+              label {Size of the Window Frame}
+              callback {flWindow w; w.loadTemp();
+int x_cb = o->value();
+b_slider_v->value(x_cb);
+w.setBorderWidth(x_cb);}
+              tooltip {This makes the edges of the window larger or smaller to help you grab them more easily} xywh {325 150 125 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 50 align 4 minimum 1 maximum 28 step 1 value 4
+              code0 {flWindow w; w.loadTemp();}
+              code1 {int x = w.getBorderWidth();}
+              code2 {o->value(x);}
+            }
+            Fl_Slider t_slider {
+              label {Window Title Bar Size}
+              callback {flWindow w; w.loadTemp();
+int y_cb = o->value();
+t_slider_v->value(y_cb);
+w.setBorderHeight(y_cb);
+w.saveChangesTemp();}
+              tooltip {This is the top with the program name, and close button, etc..} xywh {325 120 125 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 50 align 4 minimum 2 maximum 78 step 1 value 20
+              code0 {flWindow w; w.loadTemp();}
+              code1 {int y = w.getBorderHeight();}
+              code2 {o->value(y);}
+            }
+            Fl_Menu_Button resize_menu {
+              label {Appearance of the Window while Resizing} open
+              tooltip {What the windows look like while resizing} xywh {170 180 325 25} box GTK_UP_BOX color 48 selection_color 72 labelcolor 35 textcolor 35
+            } {
+              MenuItem {} {
+                label {Make it an Opaque box}
+                callback {flWindow f;f.loadTemp();
+const char *mode ="opaque";
+f.setResize(mode);}
+                xywh {10 10 100 20}
+              }
+              MenuItem {} {
+                label {Show an Outline only}
+                callback {flWindow f;f.loadTemp();
+const char *mode ="outline";
+f.setResize(mode);}
+                xywh {5 5 100 20}
+              }
+            }
+            Fl_Menu_Button move_menu {
+              label {Appearance of Window while Moving} open
+              tooltip {What the windows look like while moving} xywh {180 215 305 25} box GTK_UP_BOX color 48 selection_color 72 labelcolor 35 textcolor 35
+            } {
+              MenuItem {} {
+                label {Make it an Opaque box}
+                callback {flWindow f;f.loadTemp();
+const char *mode ="opaque";
+f.setMoveMode(mode);}
+                xywh {20 20 100 20}
+              }
+              MenuItem {} {
+                label {Show an Outline only}
+                callback {flWindow f;f.loadTemp();
+const char *mode ="outline";
+f.setMoveMode(mode);}
+                xywh {15 15 100 20}
+              }
+            }
+            Fl_Menu_Button focus_menu {
+              label {Choose how the Window comes to the front of the screen} open
+              tooltip {This determines how windows are brought to the front} xywh {115 310 450 25} box GTK_UP_BOX color 48 selection_color 72 labelcolor 35 textcolor 35
+            } {
+              MenuItem {} {
+                label {By Clicking on it}
+                callback {flWindow f;f.loadTemp();
+const char *mode ="click";
+f.setFocusModel(mode);}
+                xywh {30 30 100 20}
+              }
+              MenuItem {} {
+                label {By moving the mouse over it}
+                callback {flWindow f;f.loadTemp();
+const char *mode ="sloppy";
+f.setFocusModel(mode);}
+                xywh {25 25 100 20}
+              }
+            }
+            Fl_Value_Input t_slider_v {
+              label pixels
+              callback {flWindow w; w.loadTemp();
+int y_cb = o->value();
+t_slider->value(y_cb);
+w.setBorderHeight(y_cb);}
+              xywh {460 120 31 25} box GTK_DOWN_BOX labelsize 10 align 8 when 3
+              code0 {int v = t_slider->value();}
+              code1 {o->value(v);}
+            }
+            Fl_Value_Input b_slider_v {
+              label pixels
+              callback {flWindow w; w.loadTemp();
+int x_cb = o->value();
+b_slider->value(x_cb);
+w.setBorderHeight(x_cb);}
+              xywh {460 150 31 25} box GTK_DOWN_BOX labelsize 10 align 8 when 3
+              code0 {int v = t_slider->value();}
+              code1 {o->value(v);}
+            }
+            Fl_Menu_Button snap_menu {
+              label {Choose what the Windows will snap to} open
+              tooltip {This determines how windows 'Snap' to other windows, and screen edges} xywh {180 250 310 25} box GTK_UP_BOX color 48 selection_color 72 labelcolor 35 textcolor 35
+            } {
+              MenuItem {} {
+                label {The Screen's Edges}
+                callback {flWindow f;f.loadTemp();
+int i = snap_int->value();
+const char *mode ="screen";
+f.setSnap(mode,i);}
+                xywh {40 40 100 20}
+              }
+              MenuItem {} {
+                label {The Border of other Windows}
+                callback {flWindow f;f.loadTemp();
+int i = snap_int->value();
+const char *mode ="border";
+f.setSnap(mode,i);}
+                xywh {50 50 100 20}
+              }
+              MenuItem {} {
+                label {No snapping}
+                callback {flWindow f;f.loadTemp();
+int i = 0;
+const char *mode ="none";
+f.setSnap(mode,i);}
+                xywh {50 50 100 20}
+              }
+            }
+            Fl_Value_Input snap_int {
+              label {How close (in pixels) does the window need to be to snap?}
+              callback {flWindow w; w.loadTemp();
+int d = o->value();
+w.setSnap(d);}
+              xywh {185 280 30 25} box GTK_DOWN_BOX labelsize 10 align 8 when 3 minimum 1 maximum 32 step 1 value 5
+              code0 {flWindow w; w.loadTemp();}
+              code1 {int value = w.getSnap();}
+              code2 {o->value(value);}
+            }
+          }
+          Fl_Group {} {
+            label Advanced
+            xywh {70 105 565 295} hide
+          } {
+            Fl_Slider a_b_slider {
+              label {Window Border Size}
+              callback {flWindow w; w.loadTemp();
+int x_cb = o->value();
+a_b_slider_v->value(x_cb);
+w.setBorderWidth(x_cb);}
+              tooltip {Width of the window borders} xywh {240 240 125 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 50 align 4 minimum 1 maximum 128 step 1 value 4
+              code0 {flWindow w; w.loadTemp();}
+              code1 {int x = w.getBorderWidth();}
+              code2 {o->value(x);}
+            }
+            Fl_Slider a_t_slider {
+              label {Window Title Bar Size}
+              callback {flWindow w; w.loadTemp();
+int y_cb = o->value();
+a_t_slider_v->value(y_cb);
+w.setBorderHeight(y_cb);}
+              tooltip {Height of the Window's Title Bar} xywh {240 280 125 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 50 align 4 minimum 2 maximum 256 step 1 value 20
+              code0 {flWindow w; w.loadTemp();}
+              code1 {int y = w.getBorderHeight();}
+              code2 {o->value(y);}
+            }
+            Fl_Value_Output a_b_slider_v {
+              label pixels
+              xywh {370 240 35 25} box GTK_DOWN_BOX labelsize 10 align 8 when 3
+              code0 {int v = a_b_slider->value();}
+              code1 {o->value(v);}
+            }
+            Fl_Value_Output a_t_slider_v {
+              label pixels
+              xywh {370 280 35 25} box GTK_DOWN_BOX labelsize 10 align 8 when 3
+              code0 {int v = a_t_slider->value();}
+              code1 {o->value(v);}
+            }
+            Fl_Box {} {
+              label {This can make your window borders and Title bar}
+              xywh {100 125 355 15}
+            }
+            Fl_Box {} {
+              label {REALLY HUGE!}
+              xywh {135 160 250 50} labelfont 1 labelsize 24
+            }
+          }
+        }
+      }
+      Fl_Button {} {
+        label {@<-  Main Settings Window}
+        callback {flWindow w;w.cancel();
+window_window->hide();
+UI ux;
+ux.showSettings();}
+        xywh {20 415 185 25} box GTK_UP_BOX
+      }
+    }
+  }
+  Function {w_one_color(Fl_Widget *o, Fl_Widget *o2, const char * active)} {open
+  } {
+    code {flWindow f;f.loadTemp();
+uchar r;
+uchar g;
+uchar b;
+
+Fl::get_color((o->color()),r,g,b);
+
+int c;
+const char * label ="choose";
+c= fl_color_chooser(label,r,g,b,2);
+
+
+double* colors = new double[4];
+colors[0] = int(r); 
+colors[1] = int(g);
+colors[2] = int(b);
+colors[3] = 0;
+
+uchar r2;
+uchar g2;
+uchar b2;
+
+Fl::get_color((o2->color()),r2,g2,b2);
+double*colors2 = new double[4];
+colors2[0] = int(r2); 
+colors2[1] = int(g2);
+colors2[2] = int(b2);
+colors2[3] = 0;
+
+
+
+if(c!=0){ //If color chooser isn't canceled... do stuff
+	
+	f.setWindowColor(colors, colors2, active);
+	unsigned int unusedColor;
+	unsigned int colorSet = f.getWindowColor(unusedColor,active);
+	o->color(colorSet);
+	o->redraw();
+}} {}
+  }
+  Function {w_two_color(Fl_Widget *o, Fl_Widget *o2, const char * active)} {open
+  } {
+    code {flWindow f;f.loadTemp();
+uchar r;
+uchar g;
+uchar b;
+Fl::get_color((o->color()),r,g,b);
+
+double* colors = new double[4];
+colors[0] = int(r); 
+colors[1] = int(g);
+colors[2] = int(b);
+colors[3] = 0;
+
+uchar r2;
+uchar g2;
+uchar b2;
+Fl::get_color((o2->color()),r2,g2,b2);
+
+int c2;
+const char * label ="choose";
+c2= fl_color_chooser(label,r2,g2,b2,2);
+
+double*colors2 = new double[4];
+colors2[0] = int(r2); 
+colors2[1] = int(g2);
+colors2[2] = int(b2);
+colors2[3] = 0;
+
+
+if (c2!=0){ //If the user doesn't cancel do stuff
+//Otherwise you will get weird colors
+	f.setWindowColor(colors, colors2, active);
+	unsigned int unusedColor;
+	unsigned int colorSet = f.getWindowColor(unusedColor,active);
+	o->color(colorSet);
+	o->redraw();
+	o2->color(unusedColor);
+	o2->redraw();
+}} {}
+  }
+  Function {f_color(Fl_Widget *o, const char * active)} {open
+  } {
+    code {flWindow f;f.loadTemp();
+uchar r;
+uchar g;
+uchar b;
+Fl::get_color((o->color()),r,g,b);
+
+int c;
+const char * label ="choose";
+c= fl_color_chooser(label,r,g,b,2);
+
+double* colors = new double[4];
+colors[0] = int(r); 
+colors[1] = int(g);
+colors[2] = int(b);
+colors[3] = 0;
+
+if(c!=0){
+	f.setFontColor(colors, active);
+	unsigned int c = f.getFontColor(active);
+	o->color(c);
+	o->redraw();
+}} {}
+  }
+  Function {b_color(Fl_Widget *o, const char * active)} {open
+  } {
+    code {flWindow f;f.loadTemp();
+uchar r;
+uchar g;
+uchar b;
+Fl::get_color((o->color()),r,g,b);
+
+int c;
+const char * label ="choose";
+c= fl_color_chooser(label,r,g,b,2);
+
+double* colors = new double[4];
+colors[0] = int(r); 
+colors[1] = int(g);
+colors[2] = int(b);
+colors[3] = 0;
+
+if(c!=0){
+	f.setBorderColor(colors, active);
+	unsigned int c = f.getBorderColor(active);
+	o->color(c);
+	o->redraw();
+}} {}
+  }
+  Function {display(const char* filename, Fl_Widget *o)} {open
+  } {
+    code {std::string extention, filenameStr;
+filenameStr = filename;
+extention = filenameStr.substr((strlen(filename)-4),4);
+std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
+Fl_Image* image;
+std::string png =".png";
+std::string xpm =".xpm";
+if (extention.compare(png) ==0){
+	image = new Fl_PNG_Image(filename);
+	Fl_Image * image2 = image->copy(12,12);
+	o->image(image2);
+	o->redraw();
+}
+else if(extention.compare(xpm) ==0){
+	image = new Fl_XPM_Image(filename);
+	Fl_Image * image2 = image->copy(12,12);
+	o->image(image2);
+	o->redraw();
+}} {}
+  }
+  Function {get_button(Fl_Widget*o, const char* whichElement)} {open
+  } {
+    code {flWindow w;w.loadTemp();
+o->color(a_title_color1->color());
+o->labelcolor(a_font_color->color());
+const char * result = w.getButton(whichElement);
+std::cout<<result<<std::endl;
+if(result != "x"){display(result,o);}
+o->redraw();} {}
+  }
+  Function {get_button_inactive(Fl_Widget*o, const char* whichElement)} {open
+  } {
+    code {flWindow w;w.loadTemp();
+o->color(inactive_color->color());
+o->labelcolor(inactive_font_color->color());
+const char * result = w.getButton(whichElement);
+std::cout<<result<<std::endl;
+if(result != "x"){display(result,o);}
+o->redraw();} {}
+  }
+} 

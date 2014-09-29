@@ -1,0 +1,472 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+i18n_type 1 
+i18n_include <libintl.h> 
+i18n_function gettext 
+header_name {.h} 
+code_name {.cxx}
+comment {/*                 Joe's Window Manager Configuration
+ *
+ * This program configures JWM using tinyxml2 and FLTK
+ *
+ *         Copyright (C) 2014  Israel <israel@torios.org>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This has been developed as a part of the ToriOS Project
+ * This has been developed by Israel<israel@torios.org>
+ *
+ *
+ * You may redistribute this, but you must keep this comment in place
+ * Jesus is my Lord, and if you don't like it feel free to ignore it.
+ */} {in_source in_header
+} 
+
+decl {\#include <libintl.h>} {public global
+} 
+
+decl {\#include <FL/Fl_File_Chooser.H>} {public global
+} 
+
+decl {\#include <string>} {public global
+} 
+
+decl {\#include <stdlib.h>} {public global
+} 
+
+decl {\#include <iostream>} {public global
+} 
+
+decl {\#include "../include/Config.h"} {selected public global
+} 
+
+decl {\#include "../include/flKeyboard.h"} {public global
+} 
+
+decl {\#include "../include/ui.h"} {public global
+} 
+
+class KeyboardUI {open
+} {
+  Function {make_window()} {open
+  } {
+    Fl_Window keyboard_window {
+      label {Keyboard Settings} open
+      xywh {377 288 495 590} type Double color 31 resizable visible
+    } {
+      Fl_Scroll {} {open
+        xywh {0 0 500 590} color 31
+      } {
+        Fl_Browser key_browser {
+          callback {int line_number = o->value();}
+          xywh {15 95 460 145} box GTK_DOWN_BOX selection_color 80
+          code0 {o->type(FL_SELECT_BROWSER);}
+          code1 {static int widths[] = {35,75,105,0};o->column_widths(widths);}
+          code2 {flKeyboard keyboard;keyboard.loadTemp();}
+          code3 {keyboard.getKeys(key_browser);}
+        }
+        Fl_Button {} {
+          label {Remove Selected Item}
+          callback {flKeyboard keyboard;keyboard.loadTemp();
+const char * keyShortcut = key_browser->text(key_browser->value());
+if (keyShortcut !=NULL){
+	keyboard.deleteKey(keyShortcut);
+	key_browser->clear();
+	keyboard.getKeys(key_browser);
+	key_browser->redraw();
+}
+else{
+	fl_message("Please click on an item to remove!");
+}}
+          xywh {140 245 170 30} box GTK_UP_BOX
+        }
+        Fl_Input key {
+          label Key
+          xywh {325 290 135 30} box GTK_DOWN_BOX
+        }
+        Fl_Button {} {
+          label Cancel
+          callback {flKeyboard keyboard; 
+keyboard.cancel();
+keyboard_window->hide();
+UI ux;
+ux.showSettings();}
+          xywh {340 550 65 30} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
+        }
+        Fl_Button {} {
+          label OK
+          callback {flKeyboard keyboard;
+keyboard.loadTemp();
+keyboard.saveChanges();
+keyboard_window->hide();
+UI ux;
+ux.showSettings();}
+          tooltip {Write to configuration file} xywh {415 550 45 30} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
+        }
+        Fl_Button {} {
+          label {Choose Layout}
+          xywh {335 40 115 25} deactivate
+        }
+        Fl_Box {} {
+          label {Keyboard  }
+          image {../data/img/jsm-keyboard.png} xywh {110 0 235 80} labelfont 1 labelsize 18 align 288
+        }
+        Fl_Menu_Button key_mod {
+          label {Choose a Key Modifier} open
+          tooltip {These are keys like Ctrl, Alt, Shift, and Super (Windows or Apple key)} xywh {20 290 195 30} box GTK_UP_BOX
+        } {
+          MenuItem C {
+            label Ctrl
+            callback {const char* mod = "C";
+mod_cb(mod);}
+            tooltip Control xywh {5 5 100 20}
+          }
+          MenuItem A {
+            label Alt
+            callback {const char* mod = "A";
+mod_cb(mod);}
+            xywh {5 5 100 20}
+          }
+          MenuItem mod4 {
+            label Super
+            callback {const char* mod = "4";
+mod_cb(mod);}
+            xywh {5 5 100 20}
+          }
+          MenuItem S {
+            label Shift
+            callback {const char* mod = "S";
+mod_cb(mod);}
+            xywh {5 5 100 20}
+          }
+        }
+        Fl_Group {} {open
+          xywh {270 340 205 140} box GTK_DOWN_BOX
+        } {
+          Fl_Box {} {
+            label {Or, Choose an Action}
+            xywh {290 350 150 30}
+          }
+          Fl_Menu_Button {} {
+            label Action open
+            xywh {300 375 125 25} box GTK_UP_BOX selection_color 80
+          } {
+            MenuItem next {
+              label {move to the next window in the task list}
+              callback {const char * action = "next";
+menu_cb(action);}
+              xywh {10 10 100 20}
+            }
+            MenuItem nextstacked {
+              label {move to the next window in the stacking order}
+              callback {const char * action = "nextstacked";
+menu_cb(action);}
+              xywh {20 20 100 20}
+            }
+            MenuItem prev {
+              label {move to the previous window in the task list}
+              callback {const char * action = "prev";
+menu_cb(action);}
+              xywh {20 20 100 20}
+            }
+            MenuItem prevstacked {
+              label {move to the previous window in the stacking order}
+              callback {const char * action = "prevstacked";
+menu_cb(action);}
+              xywh {30 30 100 20}
+            }
+            MenuItem close {
+              label {close window}
+              callback {const char * action = "close";
+menu_cb(action);}
+              xywh {30 30 100 20}
+            }
+            MenuItem fullscreen {
+              label {fullscreen window}
+              callback {const char * action = "fullscreen";
+menu_cb(action);}
+              xywh {40 40 100 20}
+            }
+            MenuItem minimize {
+              label {minimize window}
+              callback {const char * action = "minimize";
+menu_cb(action);}
+              xywh {50 50 100 20}
+            }
+            MenuItem maximize {
+              label {maximize window}
+              callback {const char * action = "maximize";
+menu_cb(action);}
+              xywh {60 60 100 20}
+            }
+            MenuItem shade {
+              label {roll up window}
+              callback {const char * action = "shade";
+menu_cb(action);}
+              xywh {70 70 100 20}
+            }
+            MenuItem move {
+              label {move window}
+              callback {const char * action = "move";
+menu_cb(action);}
+              xywh {80 80 100 20}
+            }
+            MenuItem resize {
+              label {resize window}
+              callback {const char * action = "resize";
+menu_cb(action);}
+              xywh {90 90 100 20}
+            }
+            MenuItem window {
+              label {show window menu}
+              callback {const char * action = "window";
+menu_cb(action);}
+              xywh {100 100 100 20}
+            }
+            MenuItem root_menu_apps {
+              label {Show Application menu}
+              callback {const char * action = "root:5";
+menu_cb(action);}
+              xywh {110 110 100 20}
+            }
+            MenuItem root_menu_places {
+              label {Show Places Menu}
+              callback {const char * action = "root:7";
+menu_cb(action);}
+              xywh {120 120 100 20}
+            }
+            MenuItem root_menu_shutdown {
+              label {Show Shutdown menu}
+              callback {const char * action = "root:9";
+menu_cb(action);}
+              xywh {130 130 100 20}
+            }
+            MenuItem rdesktop {
+              label {move one desktop to the right}
+              callback {const char * action = "rdesktop";
+menu_cb(action);}
+              xywh {90 90 100 20}
+            }
+            MenuItem ldesktop {
+              label {move one desktop to the left}
+              callback {const char * action = "ldesktop";
+menu_cb(action);}
+              xywh {100 100 100 20}
+            }
+            MenuItem udesktop {
+              label {move one desktop up}
+              callback {const char * action = "udesktop";
+menu_cb(action);}
+              xywh {110 110 100 20}
+            }
+            MenuItem ddesktop {
+              label {move one desktop down}
+              callback {const char * action = "ddesktop";
+menu_cb(action);}
+              xywh {120 120 100 20}
+            }
+            MenuItem restart {
+              label {restart the Window Manager}
+              callback {const char * action = "restart";
+menu_cb(action);}
+              xywh {130 130 100 20}
+            }
+            MenuItem exit {
+              label {exit the Window Manager}
+              callback {const char * action = "exit";
+menu_cb(action);}
+              xywh {140 140 100 20}
+            }
+            MenuItem showtray {
+              label {Show any hidden Panels}
+              callback {const char * action = "showtray";
+menu_cb(action);}
+              xywh {150 150 100 20}
+            }
+          }
+          Fl_Button {} {
+            label {@+}
+            callback {action_cb();}
+            xywh {435 440 35 30} box GTK_UP_BOX
+          }
+          Fl_Output action_output {
+            label Action
+            xywh {280 440 145 30} box GTK_DOWN_BOX align 1
+          }
+        }
+        Fl_Group {} {open
+          xywh {25 370 200 200} box GTK_DOWN_BOX
+        } {
+          Fl_Box {} {
+            label {Choose a Program}
+            xywh {30 390 195 25}
+          }
+          Fl_Button {} {
+            label {Choose New Program}
+            callback {const char * file = "/usr/bin/";
+const char * label="Choose a program";
+const char *filter="*";
+int r = 0;
+const char *result = fl_file_chooser(label,filter,file,r);
+if(result!=NULL){
+	std::string String = result;
+	unsigned found = String.find_last_of("/");
+	String.erase(0,found+1);
+	result = String.c_str();
+	program_name->value(result);
+}}
+            tooltip {Choose a program to add} xywh {42 420 170 30} box GTK_UP_BOX
+          }
+          Fl_Input program_name {
+            label {You can edit the program arguments here}
+            xywh {75 515 135 30} box GTK_DOWN_BOX align 129
+          }
+          Fl_Button {} {
+            label {@+}
+            callback {program_cb();}
+            xywh {30 515 35 30} box GTK_UP_BOX
+          }
+        }
+        Fl_Output mod_output {
+          xywh {220 290 50 30} box GTK_DOWN_BOX
+        }
+        Fl_Menu_Button key_mod2 {
+          label {Choose a 2nd Key Modifier} open
+          tooltip {This is optional} xywh {20 330 230 30} box GTK_UP_BOX
+        } {
+          MenuItem {} {
+            label Ctrl
+            callback {const char* mod = "C";
+mod2_cb(mod);}
+            tooltip Control xywh {15 15 100 20}
+          }
+          MenuItem {} {
+            label Alt
+            callback {const char* mod = "A";
+mod2_cb(mod);}
+            xywh {15 15 100 20}
+          }
+          MenuItem {} {
+            label Super
+            callback {const char* mod = "4";
+mod2_cb(mod);}
+            xywh {15 15 100 20}
+          }
+          MenuItem {} {
+            label Shift
+            callback {const char* mod = "S";
+mod2_cb(mod);}
+            xywh {15 15 100 20}
+          }
+        }
+        Fl_Button {} {
+          label {@<-  Main Settings Window}
+          callback {flKeyboard keyboard; 
+keyboard.cancel();
+keyboard_window->hide();
+UI ux;
+ux.showSettings();}
+          xywh {290 510 190 25} box GTK_UP_BOX
+        }
+        Fl_Button {} {
+          label Modifier
+          callback {grabber_window()->show();}
+          xywh {20 255 105 25} hide
+        }
+      }
+    }
+  }
+  Function {menu_cb(const char* action)} {open
+  } {
+    code {action_output->value(action);} {}
+  }
+  Function {mod_cb(const char* mod)} {open
+  } {
+    code {mod_output->value(mod);} {}
+  }
+  Function {mod2_cb(const char* mod)} {open
+  } {
+    code {const char* test = mod_output->value();
+if(test !=NULL){
+	std::string modifier = mod_output->value();
+	std::string inputMod = mod;
+	modifier += mod;
+	mod_output->value(modifier.c_str());
+}} {}
+  }
+  Function {program_cb()} {open
+  } {
+    code {std::string action ="exec:";
+const char * test =program_name->value();
+if(test!=NULL){
+	std::string p_name =program_name->value();
+	action +=p_name;
+	add_cb(action);
+}} {}
+  }
+  Function {action_cb()} {open
+  } {
+    code {std::string action;
+const char * test =action_output->value();
+if(test!=NULL){
+	action = test;
+	add_cb(action);
+}} {}
+  }
+  Function {add_cb(std::string action)} {open
+  } {
+    code {flKeyboard keyboard;
+keyboard.loadTemp();
+const char* keyInput = key->value();
+if((action.c_str())!=NULL && keyInput !=NULL){
+	const char* mod = mod_output->value();
+	if(mod!=NULL){
+		keyboard.addKey(mod,keyInput,action.c_str());
+		std::cout<<mod<<'\\t'<<keyInput<<'\\t'<<action<<'\\n';
+	}
+	else{	
+		keyboard.addKey(keyInput,action.c_str());
+		std::cout<<keyInput<<'\\t'<<action<<'\\n';
+	}
+}} {}
+  }
+  Function {grabber_window()} {open
+  } {
+    Fl_Window {} {
+      callback {key_event();} open
+      xywh {710 352 225 105} type Double when 6
+      code0 {key_event();} visible
+    } {
+      Fl_Output mod_grab {
+        label Modifier
+        xywh {25 25 70 25} align 1
+      }
+      Fl_Output {} {
+        label Shortcut
+        xywh {110 25 95 25} align 1
+      }
+      Fl_Button {} {
+        label OK
+        xywh {60 70 80 25}
+      }
+    }
+  }
+  Function {key_event()} {open
+  } {
+    code {int alt=Fl::event_alt();
+int ctrl = Fl::event_ctrl();
+int shift = Fl::event_shift();
+if (alt !=0 || ctrl !=0 || shift !=0){
+mod_grab->value("yup");
+}} {}
+  }
+} 

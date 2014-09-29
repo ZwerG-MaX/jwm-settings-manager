@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Rox
+GenericName=File Manager
+Icon=file-manager
+Exec=rox-filer -n
+Keywords=folder;manager;explore;disk;filesystem;
+Terminal=false
+Type=Application
+Categories=Utilities;Core;FileManager;
+Name[en_US]=Rox
+MimeType=inode/directory;

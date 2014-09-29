@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Manual Browser
+GenericName=xman
+Comment=Light and fast Man-page browser
+Icon=help-faq
+Exec=xman
+Terminal=false
+Type=Application
+Categories=System;

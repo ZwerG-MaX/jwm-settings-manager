@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Keyboard Settings
+GenericName=Configuration Tool
+GenericName[fr]=Outil de configuration
+GenericName[lv]=Konfigurācijas rīks
+Icon=/usr/share/icons/jsm-keyboard.svg
+Exec=jwm-settings-manager --keyboard
+Terminal=false
+Type=Application
+Categories=Settings;System;
+NotShowIn=GNOME;KDE;LXDE;MATE;Razor;TDE;Unity;XFCE;EDE;Cinnamon;
+Name[en_US]=Keyboard Settings

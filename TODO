@@ -1,0 +1,54 @@
+TODO:
+
+*Panel
+ -Two Panel support
+ - figure out how to rework the functions to edit the correct panel
+Do I need a configuration file, example
+~/.config/jwm-settings-manager/panel
+also add directories and file if it doesn't exist using the default one and editing it once it is added.
+
+I think this would be a good solution as I don't need memory to hold anything.
+Do I need
+ - make the program check for the menu being in the current panel, and deal with it if it is not.
+ - add dynamic creation of places, and shutdown menu, I also need to figure out localization for these two things  I can add something to menu methods to make these menus when the menu is updated (i.e. localization change )
+ -Refactor this to make smaller classes (in progress)
+
+*Icons
+ - figure out a good way to include all subdirectories of a certain icon theme...
+ -  Maybe read the theme file???  I should see if Puppy does this for anything.
+#include <sys/types.h>
+#include <dirent.h>
+for doing it manually...
+
+*Desktop
+ - eventually provide support for different bg on each desktop, or at least check for this possibility
+
+*themes
+ - redo the themes so that it dynamically generates the elements
+ - pass in an Fl_Box (image) and Fl_Button (theme name) to be generated for each item?
+Maybe I can make a function in Config that reads the directory, and use it for Icons and themes.
+In themes, I could list all the directories 'as themes'
+
+*Keyboard
+- add a key grabber, as the current implementation is pretty ugly and inefficient and hard to use (though it works)
+
+*Fonts
+ - fix the font chooser to be alphabetical, also find out if it is possible to display a real preview of it using fltk, otherwise use something else (zenity?)
+
+*Windows
+ - add something to the fltk part that calls a check to see if the button files exist
+
+SCRIPTS
+background changer - fix this eventually
+
+REFACTORING
+*jwmrc
+First check for
+~/.jwmrc
+if that doesn't exist
+//copy default jwmrc file to the Home path to edit
+if(system("cp /etc/jwm/system.jwmrc "+homePath()+ "/.jwmrc";)!=0){
+errorJWM("You have no defaults... must recover\n");
+recover();
+}
+This should be fairly easy to do now that X11 colors are supported.

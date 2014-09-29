@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=XCalc
+GenericName=Calculator
+Comment=Light and fast calculator
+Icon=calc
+Exec=xcalc
+Terminal=false
+Type=Application
+Categories=Utility;
