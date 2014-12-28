@@ -12,8 +12,6 @@ Build-Depends:
  libfltk1.3,
  libfltk1.3-dev,
  libfltk1.3-compat-headers,
- libfontconfig1,
- libfontconfig1-dev,
  libgcc1,
  libstdc++6,
  libx11-6,
@@ -22,9 +20,9 @@ Homepage: http://www.torios.org/
 
 Package: jwm-settings-manager
 Architecture: any
-Depends: jwm-settings-manager-common (>= ${source:Version}) , ${shlibs:Depends}, ${misc:Depends}, rox-filer, jwm
-Recommends: wicd, volumeicon-alsa
-Suggests: xcompmgr
+Depends: jwm-settings-manager-common (>= ${source:Version}) , ${shlibs:Depends}, ${misc:Depends}, jwm
+Recommends:
+Suggests: volumeicon-alsa
 Description: JWM Settings Manager
   A tool to easily configure JWM.  Built using FLTK and Tinyxml2,
   this fast, and light, but doesn't sacrifice aesthetics.

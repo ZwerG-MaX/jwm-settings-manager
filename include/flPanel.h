@@ -41,6 +41,7 @@
 //Hopefully you already know what these are for
 #include <iostream>
 #include <string>
+#include <list>
 
 //FLTK stuff
 #include "../fltk/jwm-panel.h"
@@ -55,20 +56,14 @@ class flPanel : public Config{
 
 public:
 
-    //How many panels?
-    /*
-    unsigned int numPanels();
-    unsigned int numPanels(Fl_Menu_Button* o);
-    bool multipanel();
-    //check the attributes of the element passed in
-    std::string checkLayout(tinyxml2::XMLElement* tray);
-    std::string checkAlign(tinyxml2::XMLElement* tray);
-    std::string getHalign(tinyxml2::XMLElement* tray);
-    std::string getValign(tinyxml2::XMLElement* tray);
-    //get the position of the panel passed in (top, bottom, right, left)
-    std::string getPanelLayout(tinyxml2::XMLElement* tray);
-*/    //add a Panel
-    void addPanel(Fl_Menu_Button *o);
+   //add a Panel
+    void addPanel();
+    const char* smartPosition();
+    const char* smartAlign(const char* layout);
+    int whichAlign(const char* Align); //1 is valign 2 is halign 3 is unknown
+    void setPanelText(const char* element);
+    std::string getPanelText(const char* element);
+    void deletePanel();
 
     //testers
     bool test(tinyxml2::XMLElement *element);
@@ -78,35 +73,49 @@ public:
     unsigned int getBackground(unsigned int  &color2, const char * whichElement);
     void setActiveBackground(const double* rgb, const char * whichElement);
     unsigned int getActiveBackground(unsigned int  &color2, const char * whichElement);
-
+    //Opacity
     float getOpacity(const char* whichElement);
     void setOpacity(float &opacity, const char* whichElement);
-
-    //Sizing
-    void panelWidth(int &panelSize);
-    void panelHeight(int &panelSize);
-    void borderWidth(int &panelSize);
-      //get the value for FLTK
-    int getHeight();
-    int getWidth();
-    int getBorder();
+    void setPosition(const char* attribute, const char* value);
+    void setValue(const char* attribute, int &value);
+    void createValue(const char* attribute, const char* value);
+    void createValue(const char* attribute, int &value);
+    int getValue(const char* attribute);
+    std::string getStringValue(const char* attribute);
+    void setValue(const char* attribute, const char* value);
+    const char* getValue(std::string attribute);
+    //Width
+    void panelWidth(int &panelSize){setValue("width", panelSize);}
+    int getWidth(){return getValue("width");}
+    //Height
+    void panelHeight(int &panelSize){setValue("height",panelSize);}
+    int getHeight(){return getValue("height");}
+    //xy
+    int getCoordinate(const char * xy){return getValue(xy);}
+    void setCoordinate(const char * xy, int value){setValue(xy,value);}
+    //Border
+    void borderWidth(int &panelSize){setValue("border",panelSize);}
+    int getBorder(){return getValue("border");}
+    const char* horizontalORvertical(int horizontalValue, int verticalValue);
 
     //Menu
     void menuLabel(const char * label);
-    std::string getMenuLabel();
-    std::string getMenuImage();
-    void setMenuImage(const char* icon);
+    std::string getMenuLabel(){return getLabelMenu(5);}
+    std::string getMenuImage(){return getImageMenu(5);}
+    void setMenuImage(const char* icon){setImageMenu(icon, 5);}
 
     //Layout and Positioning (including Autohide)
-    int getCoordinate(const char * xy);
-    void setCoordinate(const char * xy, int value);
-    void panelLayout(const char* layout);
-    void panelLayer(const char* layer);
-    void panelPositionVert(const char* position);
-    std::string getVertPosition();
-    void panelPositionHoriz(const char* position);
+    void panelLayout(const char* layout){setValue("layout",layout);}
+    void panelLayer(const char* layer){setValue("layer",layer);}
+    void panelPositionVert(const char* position){setValue("valign",position);}
+    std::string getVertPosition(){return getStringValue("valign");}
+    void panelPositionHoriz(const char* position){setValue("halign",position);}
     void panelAutohide(bool &yesOrNo);
-    std::string getAutohide();
+    std::string getAutohide(){return getStringValue("autohide");}
+
+    ///JSM
+    void setJSM(const char* element, const char* value);
+    void updatePanels(int panel){recoverJSM(panel);}
 
     //constructors and destructor
     flPanel();
@@ -117,6 +126,7 @@ public:
     std::string align;
     unsigned int counter;
     unsigned int whichPanel;
+    unsigned int howmanyPanels;
 
 private:
 

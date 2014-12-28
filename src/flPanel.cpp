@@ -46,236 +46,322 @@ bool flPanel::test(tinyxml2::XMLElement *element){
 
 ///ADD PANEL
 
-void flPanel::addPanel(Fl_Menu_Button* o){
-    const char* out;
+void flPanel::addPanel(){
+    int a = numPanels();
+    if(a==4){return;}
+    std::cout<<"add Panel"<<std::endl;
     tinyxml2::XMLNode *tray = doc.FirstChildElement("JWM");
-    tinyxml2::XMLNode *node = doc.FirstChildElement("JWM")->FirstChildElement("Tray");
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    tinyxml2::XMLNode *node = panelElement;
     tinyxml2::XMLNode *newTray = doc.NewElement("Tray");
+    const char* position = smartPosition();
+    const char* align = smartAlign(position);
+    int vertORhoriz = whichAlign(align);
+    std::cout<<"position: "<<position<<" vertORhoriz: "<<vertORhoriz<<std::endl;
     tinyxml2::XMLNode *spacer = doc.NewElement("Spacer");
     tray->InsertAfterChild(node,newTray);
     newTray->InsertEndChild(spacer);
-    std::string label = "Panel ";
+    tinyxml2::XMLElement *thisone = newTray->ToElement();
+    thisone->SetAttribute("layout",position);
+   if(vertORhoriz == 1){
+        thisone->SetAttribute("valign",align);
+        thisone->SetAttribute("halign","fixed");
+        thisone->SetAttribute("width",0);
+        thisone->SetAttribute("height",34);
+    }
+    else if(vertORhoriz == 2){
+        thisone->SetAttribute("valign","fixed");
+        thisone->SetAttribute("halign",align);
+        thisone->SetAttribute("width",55);
+        thisone->SetAttribute("height",0);
+    }
+    else{
+        thisone->SetAttribute("valign","center");
+        thisone->SetAttribute("halign","center");
+        thisone->SetAttribute("width",0);
+        thisone->SetAttribute("height",34);
+    }
+    thisone->SetAttribute("border",0);
     saveChangesTemp();
-    unsigned int panels = numPanels();
-    std::string num = convert(panels);
-    label+=num;
-    out = label.c_str();
-    o->add(out,0,0,0,0);
-   // setWhichPanel(panels);
+    saveChanges();
+    int panels = numPanels();
+    updatePanels(panels);
+}
+void flPanel::deletePanel(){
+    int i = 1;
+    int panel = currentPanel();
+    int num = numPanels();
+    if (num ==1 ){return;}
+    tinyxml2::XMLElement* Base = doc.FirstChildElement( "JWM" );
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    tinyxml2::XMLNode * node = panelElement;
+    Base->DeleteChild(node);
+    saveChangesTemp();
+    saveChanges();
+}
+
+const char* flPanel::horizontalORvertical(int horizontalValue, int verticalValue){
+    const char* horizontal = "horizontal";
+    const char* vertical= "vertical";
+    if((horizontalValue == 0)){return horizontal;}
+    else if ((horizontalValue ==1)&&(verticalValue == 0)){return horizontal;}
+    else if((horizontalValue==2) && (verticalValue == 0)){return vertical;}
+    else if(horizontalValue>verticalValue){return vertical;}
+    else if((verticalValue>=2) && (horizontalValue == 1)){return horizontal;}
+    else if(verticalValue>horizontalValue){return horizontal;}
+    else if (verticalValue == horizontalValue){ return vertical;}
+    else {return "center";}
+}
+
+const char* flPanel::smartPosition(){
+//TODO: check all panels and find ALL alignments to figure things out.
+    tinyxml2::XMLElement* tray=doc.FirstChildElement("JWM")->FirstChildElement("Tray");
+    const char* smartiePosition ="";
+    int horizontl = 1, verticl = 0, errors = 0;
+    std::string layout,lay;
+    std::list<std::string> layouts;
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    while(panelElement->NextSiblingElement("Tray")){
+        panelElement=panelElement->NextSiblingElement("Tray");
+        if(panelElement->Attribute("layout")){
+            lay = panelElement->Attribute("layout");
+            layouts.push_back(lay);
+        }
+    }
+    for (std::list<std::string>::iterator it = layouts.begin(); it != layouts.end(); ++it){
+        layout = *it;
+        if(layout.compare("horizontal")==0){++horizontl;}
+        else if(layout.compare("vertical")==0){++verticl;}
+        else {errors++;}
+    }
+    if (errors != 0){std::cout<<"Something is wrong"<<std::endl;}
+    std::cout<<"horizontl: "<<horizontl<<" verticl: "<<verticl<<std::endl;
+    smartiePosition = horizontalORvertical(horizontl,verticl);
+    return smartiePosition;
+}
+
+const char* flPanel::smartAlign(const char* layout){
+    std::string layoutSTRING = layout;
+    std::string valign,halign,vLayout,hLayout;
+    std::list<std::string> valignLayouts;
+    std::list<std::string> halignLayouts;
+    int valignCounter = 0;
+    int halignCounter = 0;
+    int top = 0, bottom = 0, left = 0, right = 0, otherH = 0, otherV = 0;
+    const char* smartieAlign;
+
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if(layoutSTRING.compare("horizontal")==0){
+        while(panelElement->NextSiblingElement("Tray")){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            if(panelElement->Attribute("valign")){
+                valign = panelElement->Attribute("valign");
+                valignLayouts.push_back(valign);
+                valignCounter++;
+            }
+        }
+        for (std::list<std::string>::iterator it = valignLayouts.begin(); it != valignLayouts.end(); ++it){
+            vLayout = *it;
+            if(vLayout.compare("top")==0){top++;}
+            else if(vLayout.compare("bottom")==0){bottom++;}
+            else {otherV++;}
+        }
+        if (top==1 && bottom == 0){smartieAlign ="bottom";}
+        else if (top==0 && bottom == 1){smartieAlign ="top";}
+        else if (top==0 && bottom == 0){smartieAlign ="bottom";}
+        else{smartieAlign ="top";}
+    }
+    else{
+        while(panelElement->NextSiblingElement("Tray")){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            if(panelElement->Attribute("halign")){
+                halign = panelElement->Attribute("halign");
+                halignLayouts.push_back(halign);
+                halignCounter++;
+            }
+        }
+        for (std::list<std::string>::iterator it = halignLayouts.begin(); it != halignLayouts.end(); ++it){
+            hLayout = *it;
+            if(hLayout.compare("right")==0){right++;}
+            else if(hLayout.compare("left")==0){left++;}
+            else {otherH++;}
+        }
+        if (left==1 && right == 0){smartieAlign ="right";}
+        else if (left==0 && right == 1){smartieAlign ="left";}
+        else if (left==0 && right == 0){smartieAlign ="right";}
+        else{smartieAlign ="left";}
+    }
+    std::cout<<"smartieAlign: "<<smartieAlign<<std::endl;
+    return smartieAlign;
+}
+
+int flPanel::whichAlign(const char* Align){
+    std::string align = Align;
+    if(align.compare("top")==0 || align.compare("bottom")==0){return 1;}
+    else if(align.compare("left")==0 || align.compare("right")==0){return 2;}
+    else {return 3;}
+}
+void flPanel::setJSM(const char* element,const char* value){
+    int loadedJSM = loadJSM();
+  //  std::cout<<"element: "<<element<<" "<<"value: "<<value<<std::endl;
+    tinyxml2::XMLElement* ele = jsm.FirstChildElement(element);
+    ele->SetText(value);
+    saveJSM();
 }
 //########################################### END MULTIPLE PANELS ###########################################
 
-//************************************  PANEL POSITIONING & AUTOHIDE *************************************************
-
-/** ! @addtogroup PanelPositioning
- * @{
- */
-
-/**!
- *
- * @brief Vertical positioning function.
- * @param position can be "top","bottom","fixed" or "center"
- */
-void flPanel::panelPositionVert(const char* position){
-    bool test = multipanel();
-    tinyxml2::XMLElement* positionElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    if(!test){
-        positionElement->SetAttribute("valign",position);
-    }
-    else{
-        //const char* layout = loadWhichPanel();
-
-    }
-}
-/**!
- *
- * @brief Gets the current positioning of the 'Tray' (panel)
- */
- std::string flPanel::getVertPosition(){
-    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-    std::string valign = panelElement->Attribute("valign");
-    //std::cout<<valign<<"\n";//Debug
-    return valign;
-}
-
- //Horizontal
-void flPanel::panelPositionHoriz(const char* position){
-    tinyxml2::XMLElement* positionElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    positionElement->SetAttribute("halign",position);
-}
-
-//Layout
-void flPanel::panelLayout(const char* layout){
-    tinyxml2::XMLElement* layoutElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    layoutElement->SetAttribute("layout",layout);
-}
-
-//Layer
-void flPanel::panelLayer(const char* layer){
-    tinyxml2::XMLElement* layerElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    layerElement->SetAttribute("layer",layer);
-}
 
  /*! @} */
 //Autohide
 void flPanel::panelAutohide(bool &yesOrNo){
     bool autohide;
     const char* autohideValue;
-    tinyxml2::XMLElement* autohideElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    autohideElement->QueryBoolAttribute("autohide", &autohide);
-    if (yesOrNo){
-        autohideValue ="true";
-        //std::cout<<"Autohide is set to true\n";
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
     }
-    else{
-        autohideValue ="false";
-        //std::cout<<"Autohide is set to false\n";
-    }
-    autohideElement->SetAttribute("autohide",autohideValue);
-    autohideElement->QueryBoolAttribute("autohide", &autohide);
+    if (yesOrNo){autohideValue ="true";}
+    else{autohideValue ="false";}
+    panelElement->SetAttribute("autohide",autohideValue);
+    panelElement->QueryBoolAttribute("autohide", &autohide);
     saveChangesTemp();
 }
 
- std::string flPanel::getAutohide(){
+///******************************  PANEL SIZE setters and getters  *************************************
+
+int flPanel::getValue(const char* attribute){
+    int value = 0;
+    int i = 1;
+    int panel = currentPanel();
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
-    std::string autohide = panelElement->Attribute("autohide");
-    //std::cout<<autohide<<"\n";//Debug
-    return autohide;
- }
-//########################################### PANEL POSITIONING & AUTOHIDE ########################################################
-
-
-
-//******************************  PANEL SIZE setters and getters  *************************************
-
-//Height
-void flPanel::panelHeight(int &panelSize){
-    int sizeOfPanel = 0;
-    tinyxml2::XMLElement* sizeElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    sizeElement->QueryIntAttribute("height", &sizeOfPanel);
-    sizeElement->SetAttribute("height",panelSize);
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    if (panelElement->Attribute(attribute)){panelElement->QueryIntAttribute(attribute, &value);}
+    return value;
+}
+std::string flPanel::getStringValue(const char* attribute){
+    std::string value = "";
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    if (panelElement->Attribute(attribute)){panelElement->Attribute(attribute);}
+    return value;
+}
+void flPanel::createValue(const char* attribute, const char* value){
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    tinyxml2::XMLAttribute * newAttribute;
+    //newAttribute->Name(attribute);
+    //newAttribute->Value(value);
+//    panelElement-
+}
+void flPanel::createValue(const char* attribute, int &value){
+    std::string result = convert(value);
+    createValue(attribute, result.c_str());
+}
+void flPanel::setValue(const char* attribute, int &value){
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    std::string VALUE = convert(value);
+    if (panelElement->Attribute(attribute)){panelElement->SetAttribute(attribute,VALUE.c_str());}
+    else{createValue(attribute,value);}
+    setJSM(attribute, VALUE.c_str());
+}
+const char* flPanel::getValue(std::string attribute){
+    std::string result ="";
+    int i = 1;
+    const char* attrib = attribute.c_str();
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    if (panelElement->Attribute(attrib)){result = panelElement->Attribute(attrib);}
+    return result.c_str();
 }
 
-int flPanel::getHeight(){
-    int sizeOfPanel = 0;
-    tinyxml2::XMLElement* sizeElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    sizeElement->QueryIntAttribute("height", &sizeOfPanel);
-    return sizeOfPanel;
-}
-int flPanel::getCoordinate(const char * xy){
-    int coordinate = 0;
-    tinyxml2::XMLElement* sizeElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    sizeElement->QueryIntAttribute(xy, &coordinate);
-    return coordinate;
-}
-void flPanel::setCoordinate(const char * xy, int value){
-    int coordinate = 0;
-    tinyxml2::XMLElement* sizeElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    sizeElement->QueryIntAttribute(xy, &coordinate);
-    sizeElement->SetAttribute(xy, value);
-}
-
-//Width
-void flPanel::panelWidth(int &panelSize){
-    int sizeOfPanel = 0;
-    tinyxml2::XMLElement* sizeElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    sizeElement->QueryIntAttribute("width", &sizeOfPanel);
-    sizeElement->SetAttribute("width",panelSize);
-}
-int flPanel::getWidth(){
-    int sizeOfPanel = 0;
-    tinyxml2::XMLElement* sizeElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    sizeElement->QueryIntAttribute("width", &sizeOfPanel);
-    return sizeOfPanel;
-}
-
-//Border
-void flPanel::borderWidth(int &panelSize){
-    int sizeOfPanel = 0;
-    tinyxml2::XMLElement* sizeElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    sizeElement->QueryIntAttribute("border", &sizeOfPanel);
-    sizeElement->SetAttribute("border",panelSize);
-}
-int flPanel::getBorder(){
-    int sizeOfPanel = 0;
-    tinyxml2::XMLElement* sizeElement = doc.FirstChildElement("JWM")->FirstChildElement( "Tray" );
-    sizeElement->QueryIntAttribute("border", &sizeOfPanel);
-    return sizeOfPanel;
+void flPanel::setValue(const char* attribute, const char* value){
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    if (panelElement->Attribute(attribute)){panelElement->SetAttribute(attribute,value);}
+    else{createValue(attribute,value);}
+//    setJSM(attribute, VALUE.c_str());
 }
 
 //############################################ END PANEL SIZE ########################################################
 
 
-//*******************************************  MENU  ************************************************
+///Label  MENU  ************************************************
 
-///Label
 void flPanel::menuLabel(const char * label){
-    /*tinyxml2::XMLElement* current;
-    currentPanel(current);
-    tinyxml2::XMLElement* panelElement = current->*/
-    tinyxml2::XMLElement* panelElement =doc.FirstChildElement("JWM")->FirstChildElement("Tray")->FirstChildElement( "TrayButton" );
-    if(panelElement){
-        panelElement->SetAttribute("label",label);
-        saveChangesTemp();
-    }
+    const char* image = getMenuImage().c_str();
+    labelMenu(image, 5, label);
 }
 
-std::string flPanel::getMenuLabel(){
-   /* tinyxml2::XMLElement *check;
-    currentPanel(check);
-    tinyxml2::XMLElement * current = check;*/
-    bool test = false;
-    const char * label;
-    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        //current->
-                                        FirstChildElement( "TrayButton" );
-    for(tinyxml2::XMLElement* node=doc.FirstChildElement( "JWM" )->FirstChildElement( "Tray" )->FirstChildElement( "TrayButton" );
-    node;
-    node=node->NextSiblingElement("TrayButton")){
-        test=true;
-    }
-    if(!test){return "error";}
-    //This will save the Attribute from label="whatever" to a string label
-    //i.e. const char* label ="whatever"
-    label = panelElement->Attribute("label");
-    std::string labelString;
-    if (label!=NULL){
-        labelString = label;
-    }
-    else{labelString = "";}
-   // std::cout<<label<<"\n";
-    return labelString;
-}
-
-///Image
- std::string flPanel::getMenuImage(){
-    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "TrayButton" );
-    std::string icon = panelElement->Attribute("icon");
-    std::string text = panelElement->GetText();
-    ///TODO: check if menu exists
-
-    ///TODO: how do I return a usable value for FLTK??
-    /*This, by default, returns "distributor-logo.png"
-     * rather than "/path/to/icon/distributor-logo.png"
-     * Should I change it to a hardcoded path every single time the image is changed???
-     *  Yeah... that is what I should do.
-     */
-    return icon;
- }
- void flPanel::setMenuImage(const char* icon){
-     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "TrayButton" );
-    panelElement->SetAttribute("icon",icon);
-    saveChangesTemp();
- }
-
-//########################################### END MENU #########################################################
 
 
 
@@ -355,11 +441,10 @@ void flPanel::setOpacity(float &opacity, const char* whichElement){
 float flPanel::getOpacity(const char* whichElement){
     tinyxml2::XMLElement* opacityElement = doc.FirstChildElement("JWM")->FirstChildElement( whichElement )->FirstChildElement( "Opacity" );
     std::string opacityString;
-    if (test(opacityElement)){
-            opacityString = opacityElement->GetText();
-        }
+
+    if (test(opacityElement)){opacityString = opacityElement->GetText();}
     else {std::cout<<errorMessage; return 42;}
+
     float opacity = float(strtold(opacityString.c_str(),NULL));
     return opacity;
 }
-//######################################### END PANEL BACKGROUND ##############################################

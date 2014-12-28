@@ -8,13 +8,12 @@ INCLUDE(AddFileDependencies)
 INCLUDE(CheckIncludeFiles)
 INCLUDE(FindPkgConfig)
 
-set(ICON "jwm-settings-manager.png")
+set(ICON "jwm-settings-manager")
 set(EXEC "jwm-settings-manager")
 
 #compiler and linker
 FIND_PACKAGE(FLTK REQUIRED NO_MODULE)
 FIND_PACKAGE(X11 REQUIRED)
-find_package(Fontconfig REQUIRED)
 set(FLTK_SKIP_OPENGL True)
 set(FLTK_SKIP_FLUID True)
 set(CMAKE_INSTALL_PREFIX "/usr")
@@ -24,8 +23,7 @@ FILE(RELATIVE_PATH LIB_DIR_RELATIVE "/${BIN_DIR}" "/${LIB_DIR}")
 set(CMAKE_BUILD_TYPE "RELEASE")
 set(CMAKE_CONFIGURATION_TYPE "RELEASE")
 
-INCLUDE_DIRECTORIES("${FONTCONFIG_INCLUDE_DIR}"
-		    "${FLTK_INCLUDE_DIR}"
+INCLUDE_DIRECTORIES("${FLTK_INCLUDE_DIR}"
 		    "${X11_INCLUDE_DIR}"
                     "${CMAKE_SOURCE_DIR}/include"
                     "${CMAKE_SOURCE_DIR}/fltk"
@@ -63,7 +61,7 @@ set(
 add_library(JSM STATIC ${JSM_SRCS})
 add_subdirectory(data)
 add_executable(jwm-settings-manager src/jwm.cpp)
-TARGET_LINK_LIBRARIES(jwm-settings-manager JSM fltk_SHARED fltk_images_SHARED ${FONTCONFIG_LIBRARIES} ${X11_LIBRARIES})
+TARGET_LINK_LIBRARIES(jwm-settings-manager JSM fltk_SHARED fltk_images_SHARED ${X11_LIBRARIES})
 install(TARGETS jwm-settings-manager JSM
 	RUNTIME DESTINATION bin
 	ARCHIVE DESTINATION lib/jwm-settings-manager

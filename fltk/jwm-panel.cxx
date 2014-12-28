@@ -460,18 +460,79 @@ static unsigned char idata_jsm[] =
 255,255,0,255,255,255,0};
 static Fl_RGB_Image image_jsm(idata_jsm, 48, 48, 4, 0);
 
+void PanelUI::cb_panel_chooser_i(Fl_Menu_Button* o, void*) {
+  Config conf;
+std::string panel = conf.convert(conf.currentPanel());
+std::string LABEL = "Panel ";
+LABEL +=panel;
+o->copy_label(LABEL.c_str());
+}
+void PanelUI::cb_panel_chooser(Fl_Menu_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_panel_chooser_i(o,v);
+}
+
 void PanelUI::cb_Add_i(Fl_Menu_*, void*) {
   flPanel panel;panel.loadTemp();
-panel.addPanel(panel_chooser);
+int a = panel.numPanels();
+if(a==4){
 new_panel_window()->show();
+}
+else{
+panel.addPanel();
+a = panel.numPanels();
+Menu_CB(a);
+};
 }
 void PanelUI::cb_Add(Fl_Menu_* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Add_i(o,v);
 }
 
+void PanelUI::cb_Panel_i(Fl_Menu_*, void*) {
+  Menu_CB(1);
+}
+void PanelUI::cb_Panel(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Panel_i(o,v);
+}
+
+void PanelUI::cb_Panel1_i(Fl_Menu_*, void*) {
+  Menu_CB(2);
+}
+void PanelUI::cb_Panel1(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Panel1_i(o,v);
+}
+
+void PanelUI::cb_Panel2_i(Fl_Menu_*, void*) {
+  Menu_CB(3);
+}
+void PanelUI::cb_Panel2(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Panel2_i(o,v);
+}
+
+void PanelUI::cb_Panel3_i(Fl_Menu_*, void*) {
+  Menu_CB(4);
+}
+void PanelUI::cb_Panel3(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Panel3_i(o,v);
+}
+
+void PanelUI::cb_Remove_i(Fl_Menu_*, void*) {
+  flPanel panel;panel.loadTemp();
+panel.deletePanel();
+int a = panel.numPanels();
+Menu_CB(a);
+}
+void PanelUI::cb_Remove(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Remove_i(o,v);
+}
+
 unsigned char PanelUI::menu_panel_chooser_i18n_done = 0;
 Fl_Menu_Item PanelUI::menu_panel_chooser[] = {
  {"Add a Panel  +", 0,  (Fl_Callback*)PanelUI::cb_Add, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Panel 1", 0,  (Fl_Callback*)PanelUI::cb_Panel, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Panel 2", 0,  (Fl_Callback*)PanelUI::cb_Panel1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Panel 3", 0,  (Fl_Callback*)PanelUI::cb_Panel2, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Panel 4", 0,  (Fl_Callback*)PanelUI::cb_Panel3, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Remove Current  Panel", 0,  (Fl_Callback*)PanelUI::cb_Remove, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
 
@@ -489,7 +550,9 @@ void PanelUI::cb_c_shortcuts_i(Fl_Check_Button* o, void*) {
   Apps apps;
 apps.loadTemp();
 int shortcuts=o->value();
-if(shortcuts){
+bool shorty = apps.isShortcuts();
+if(shorty){o->value(1);}else{o->value(0);}
+if(shortcuts==1){
 	make_shortcut_window()->show();
 }
 else{apps.deleteALLshortcuts();};
@@ -501,12 +564,8 @@ void PanelUI::cb_c_shortcuts(Fl_Check_Button* o, void* v) {
 void PanelUI::cb_c_clock_i(Fl_Check_Button* o, void*) {
   Apps apps;apps.loadTemp();
 int is=o->value();
-if(is){apps.addClock();
-clock_menu->activate();
-}
-else{apps.deleteClock();
-clock_menu->deactivate();
-};
+if(is==1){apps.addClock();}
+else{apps.deleteClock();};
 }
 void PanelUI::cb_c_clock(Fl_Check_Button* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_c_clock_i(o,v);
@@ -515,7 +574,7 @@ void PanelUI::cb_c_clock(Fl_Check_Button* o, void* v) {
 void PanelUI::cb_CPU_i(Fl_Check_Button* o, void*) {
   Apps apps;apps.loadTemp();
 int xl=o->value();
-if(xl){apps.addAppXload();}
+if(xl==1){apps.addAppXload();}
 else{apps.deleteAppXload();};
 }
 void PanelUI::cb_CPU(Fl_Check_Button* o, void* v) {
@@ -525,7 +584,7 @@ void PanelUI::cb_CPU(Fl_Check_Button* o, void* v) {
 void PanelUI::cb_c_desktop_i(Fl_Check_Button* o, void*) {
   Apps apps;apps.loadTemp();
 int p=o->value();
-if(p){apps.addPager();}
+if(p == 1){apps.addPager();}
 else{apps.deletePager();}
 o->redraw();
 }
@@ -536,7 +595,7 @@ void PanelUI::cb_c_desktop(Fl_Check_Button* o, void* v) {
 void PanelUI::cb_c_tasklist_i(Fl_Check_Button* o, void*) {
   Apps apps;apps.loadTemp();
 int tl=o->value();
-if(tl){apps.addTaskList();}
+if(tl == 1){apps.addTaskList();}
 else{apps.deleteTaskList();};
 }
 void PanelUI::cb_c_tasklist(Fl_Check_Button* o, void* v) {
@@ -562,7 +621,7 @@ void PanelUI::cb_c_shutdown(Fl_Check_Button* o, void* v) {
 void PanelUI::cb_c_indicators_i(Fl_Check_Button* o, void*) {
   Apps apps;apps.loadTemp();
 int d=o->value();
-if(d){apps.addDock();}
+if(d ==1){apps.addDock();}
 else{apps.deleteDock();};
 }
 void PanelUI::cb_c_indicators(Fl_Check_Button* o, void* v) {
@@ -580,8 +639,11 @@ void PanelUI::cb_c_places(Fl_Check_Button* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_c_places_i(o,v);
 }
 
-void PanelUI::cb_c_battery_i(Fl_Check_Button*, void*) {
+void PanelUI::cb_c_battery_i(Fl_Check_Button* o, void*) {
   Apps apps;apps.loadTemp();
+int d=o->value();
+if(d==1){apps.addBattery();}
+else{apps.deleteBattery();};
 }
 void PanelUI::cb_c_battery(Fl_Check_Button* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_c_battery_i(o,v);
@@ -590,7 +652,7 @@ void PanelUI::cb_c_battery(Fl_Check_Button* o, void* v) {
 void PanelUI::cb_c_volume_i(Fl_Check_Button* o, void*) {
   Apps apps;apps.loadTemp();
 int d=o->value();
-if(d){apps.addVolume();}
+if(d==1){apps.addVolume();}
 else{apps.deleteVolume();};
 }
 void PanelUI::cb_c_volume(Fl_Check_Button* o, void* v) {
@@ -600,7 +662,7 @@ void PanelUI::cb_c_volume(Fl_Check_Button* o, void* v) {
 void PanelUI::cb_c_network_i(Fl_Check_Button* o, void*) {
   Apps apps;apps.loadTemp();
 int d=o->value();
-if(d){apps.addNetworkMonitor();}
+if(d==1){apps.addNetworkMonitor();}
 else{apps.deleteNetworkMonitor();};
 }
 void PanelUI::cb_c_network(Fl_Check_Button* o, void* v) {
@@ -691,15 +753,15 @@ void PanelUI::cb_shutdown_icon(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_shutdown_icon_i(o,v);
 }
 
-void PanelUI::cb_Menu_i(Fl_Input* o, void*) {
+void PanelUI::cb_app_menu_i(Fl_Input* o, void*) {
   flPanel fl_panel;
 fl_panel.loadTemp();
 std::cout<<o->value();
 const char * label=o->value();
 fl_panel.menuLabel(label);
 }
-void PanelUI::cb_Menu(Fl_Input* o, void* v) {
-  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Menu_i(o,v);
+void PanelUI::cb_app_menu(Fl_Input* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_app_menu_i(o,v);
 }
 
 void PanelUI::cb_icon_view_i(Fl_Button*, void*) {
@@ -808,16 +870,20 @@ void PanelUI::cb_o_menu_slider_v(Fl_Value_Input* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_o_menu_slider_v_i(o,v);
 }
 
-void PanelUI::cb_border_slider_i(Fl_Slider* o, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-int panelSize=o->value();
-fl_panel.borderWidth(panelSize);
-border_slider_v->value(panelSize);
-fl_panel.saveChangesTemp();
+void PanelUI::cb_Applications_i(Fl_Check_Button* o, void*) {
+  Apps apps;apps.loadTemp();
+int xl=o->value();
+if(xl == 1){apps.addAppMenu();
+//apps.saveChangesTemp();
+//panel_window->hide();
+//UI ux;
+//ux.showPanel();
 }
-void PanelUI::cb_border_slider(Fl_Slider* o, void* v) {
-  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_border_slider_i(o,v);
+else if(xl == 0){apps.deleteAppMenu();}
+else {std::cout<<"error with App Menu"<<std::endl;};
+}
+void PanelUI::cb_Applications(Fl_Check_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Applications_i(o,v);
 }
 
 void PanelUI::cb_Y_i(Fl_Value_Input* o, void*) {
@@ -942,8 +1008,8 @@ void PanelUI::cb_w_slider_i(Fl_Slider* o, void*) {
 fl_panel.loadTemp();
 int panelSize=o->value();
 fl_panel.panelWidth(panelSize);
-width_input->value(panelSize);
 fl_panel.saveChangesTemp();
+width_input->value(panelSize);
 }
 void PanelUI::cb_w_slider(Fl_Slider* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_w_slider_i(o,v);
@@ -971,6 +1037,18 @@ h_slider->value(panelSize);
 }
 void PanelUI::cb_height_input(Fl_Value_Input* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_height_input_i(o,v);
+}
+
+void PanelUI::cb_border_slider_i(Fl_Slider* o, void*) {
+  flPanel fl_panel;
+fl_panel.loadTemp();
+int panelSize=o->value();
+fl_panel.borderWidth(panelSize);
+fl_panel.saveChangesTemp();
+border_slider_v->value(panelSize);
+}
+void PanelUI::cb_border_slider(Fl_Slider* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_border_slider_i(o,v);
 }
 
 void PanelUI::cb_width_input_i(Fl_Value_Input* o, void*) {
@@ -1090,6 +1168,7 @@ apps.addShortcut(icon,program,popup, border);
 c_shortcuts->value(1);
 shortcut_browser->add(program);
 shortcut_browser->redraw();
+apps.saveChangesTemp();
 }
 void PanelUI::cb_Add1(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_Add1_i(o,v);
@@ -1104,7 +1183,7 @@ void PanelUI::cb_ok_button(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_ok_button_i(o,v);
 }
 
-void PanelUI::cb_Remove_i(Fl_Button*, void*) {
+void PanelUI::cb_Remove1_i(Fl_Button*, void*) {
   Apps apps;apps.loadTemp();
 const char* program = shortcut_browser->text(shortcut_browser->value());
 apps.deleteShortcut(program);
@@ -1113,8 +1192,8 @@ if(!apps.isShortcuts()){
 c_shortcuts->value(0);
 };
 }
-void PanelUI::cb_Remove(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Remove_i(o,v);
+void PanelUI::cb_Remove1(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_Remove1_i(o,v);
 }
 
 void PanelUI::cb_HELP_i(Fl_Text_Display*, void*) {
@@ -1131,197 +1210,23 @@ void PanelUI::cb_OK(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_OK_i(o,v);
 }
 
-void PanelUI::cb_top1_i(Fl_Menu_*, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-fl_panel.panelPositionVert("top");
-fl_panel.saveChangesTemp();
+void PanelUI::cb_OK1_i(Fl_Button*, void*) {
+  new_panel->hide();
 }
-void PanelUI::cb_top1(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_top1_i(o,v);
-}
-
-void PanelUI::cb_bottom1_i(Fl_Menu_*, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-fl_panel.panelPositionVert("bottom");
-fl_panel.saveChangesTemp();
-}
-void PanelUI::cb_bottom1(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_bottom1_i(o,v);
-}
-
-void PanelUI::cb_right1_i(Fl_Menu_*, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-fl_panel.panelPositionHoriz("right");
-fl_panel.saveChangesTemp();
-}
-void PanelUI::cb_right1(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_right1_i(o,v);
-}
-
-void PanelUI::cb_left1_i(Fl_Menu_*, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-fl_panel.panelPositionHoriz("left");
-fl_panel.saveChangesTemp();
-}
-void PanelUI::cb_left1(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_left1_i(o,v);
-}
-
-void PanelUI::cb_center2_i(Fl_Menu_*, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-fl_panel.panelPositionVert("center");
-fl_panel.saveChangesTemp();
-}
-void PanelUI::cb_center2(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_center2_i(o,v);
-}
-
-void PanelUI::cb_fixed2_i(Fl_Menu_*, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-fl_panel.panelPositionVert("fixed");
-fl_panel.saveChangesTemp();
-}
-void PanelUI::cb_fixed2(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_fixed2_i(o,v);
-}
-
-void PanelUI::cb_center3_i(Fl_Menu_*, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-fl_panel.panelPositionHoriz("center");
-fl_panel.saveChangesTemp();
-}
-void PanelUI::cb_center3(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_center3_i(o,v);
-}
-
-void PanelUI::cb_fixed3_i(Fl_Menu_*, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-fl_panel.panelPositionHoriz("fixed");
-fl_panel.saveChangesTemp();
-}
-void PanelUI::cb_fixed3(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_fixed3_i(o,v);
-}
-
-unsigned char PanelUI::menu_Panel1_i18n_done = 0;
-Fl_Menu_Item PanelUI::menu_Panel1[] = {
- {"top", 0,  (Fl_Callback*)PanelUI::cb_top1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"bottom", 0,  (Fl_Callback*)PanelUI::cb_bottom1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"right", 0,  (Fl_Callback*)PanelUI::cb_right1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"left", 0,  (Fl_Callback*)PanelUI::cb_left1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Vertical Alignment", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"center", 0,  (Fl_Callback*)PanelUI::cb_center2, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"fixed", 0,  (Fl_Callback*)PanelUI::cb_fixed2, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {0,0,0,0,0,0,0,0,0},
- {"Horizontal Alignment", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"center", 0,  (Fl_Callback*)PanelUI::cb_center3, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"fixed", 0,  (Fl_Callback*)PanelUI::cb_fixed3, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {0,0,0,0,0,0,0,0,0},
- {0,0,0,0,0,0,0,0,0}
-};
-
-void PanelUI::cb_Autohide1_i(Fl_Check_Button* o, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-int autohide=o->value();
-bool autohideValue = bool(autohide);
-fl_panel.panelAutohide(autohideValue);
-}
-void PanelUI::cb_Autohide1(Fl_Check_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Autohide1_i(o,v);
-}
-
-void PanelUI::cb_w_slide_i(Fl_Slider* o, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-int panelSize=o->value();
-fl_panel.panelWidth(panelSize);
-width_input->value(panelSize);
-fl_panel.saveChangesTemp();
-}
-void PanelUI::cb_w_slide(Fl_Slider* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_w_slide_i(o,v);
-}
-
-void PanelUI::cb_h_slide_i(Fl_Slider* o, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-int panelSize=o->value();
-fl_panel.panelHeight(panelSize);
-fl_panel.saveChangesTemp();
-height_input->value(panelSize);
-}
-void PanelUI::cb_h_slide(Fl_Slider* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_h_slide_i(o,v);
-}
-
-void PanelUI::cb_height_in_i(Fl_Value_Input* o, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-int panelSize=o->value();
-fl_panel.panelHeight(panelSize);
-fl_panel.saveChangesTemp();
-h_slider->value(panelSize);
-}
-void PanelUI::cb_height_in(Fl_Value_Input* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_height_in_i(o,v);
-}
-
-void PanelUI::cb_width_in_i(Fl_Value_Input* o, void*) {
-  flPanel fl_panel;
-fl_panel.loadTemp();
-int panelSize=o->value();
-fl_panel.panelHeight(panelSize);
-fl_panel.saveChangesTemp();
-w_slider->value(panelSize);
-}
-void PanelUI::cb_width_in(Fl_Value_Input* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_width_in_i(o,v);
-}
-
-void PanelUI::cb_color_button_i(Fl_Button* o, void*) {
-  one_color(o, "TrayStyle");
-}
-void PanelUI::cb_color_button(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_color_button_i(o,v);
-}
-
-void PanelUI::cb_shortcuts_check_i(Fl_Check_Button* o, void*) {
-  Apps apps;apps.loadTemp();
-int shortcuts=o->value();
-if(shortcuts){
-	make_shortcut_window()->show();
-}
-else{apps.deleteALLshortcuts();};
-}
-void PanelUI::cb_shortcuts_check(Fl_Check_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_shortcuts_check_i(o,v);
-}
-
-void PanelUI::cb_add_apps_i(Fl_Button*, void*) {
-  make_shortcut_window()->show();
-}
-void PanelUI::cb_add_apps(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_add_apps_i(o,v);
+void PanelUI::cb_OK1(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_OK1_i(o,v);
 }
 
 Fl_Double_Window* PanelUI::make_window() {
   flPanel panel;  panel.load();
   panel.saveChangesTemp();
-  { panel_window = new Fl_Double_Window(335, 665, gettext("Panel Settings"));
+  //panel.recoverJSM();
+  { Fl_Double_Window* o = panel_window = new Fl_Double_Window(335, 665, gettext("Panel Settings"));
     panel_window->color((Fl_Color)31);
     panel_window->selection_color((Fl_Color)22);
     panel_window->user_data((void*)(this));
     panel_window->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
-    { Fl_Scroll* o = new Fl_Scroll(0, 0, 335, 665);
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 340, 665);
       o->color((Fl_Color)31);
       { Fl_Box* o = new Fl_Box(60, 5, 230, 60, gettext("Panel Settings  "));
         o->image(image_jsm);
@@ -1333,43 +1238,59 @@ Fl_Double_Window* PanelUI::make_window() {
       { Fl_Menu_Button* o = panel_chooser = new Fl_Menu_Button(20, 50, 115, 25);
         panel_chooser->box(FL_GTK_UP_BOX);
         panel_chooser->selection_color((Fl_Color)80);
+        panel_chooser->callback((Fl_Callback*)cb_panel_chooser);
+        panel_chooser->when(3);
+        { Fl_Menu_Item* o = &menu_panel_chooser[2];
+          hide_menu(o,2);
+        }
+        { Fl_Menu_Item* o = &menu_panel_chooser[3];
+          hide_menu(o,3);
+        }
+        { Fl_Menu_Item* o = &menu_panel_chooser[4];
+          hide_menu(o,4);
+        }
         if (!menu_panel_chooser_i18n_done) {
           int i=0;
-          for ( ; i<1; i++)
+          for ( ; i<6; i++)
             if (menu_panel_chooser[i].label())
               menu_panel_chooser[i].label(gettext(menu_panel_chooser[i].label()));
           menu_panel_chooser_i18n_done = 1;
         }
         panel_chooser->menu(menu_panel_chooser);
-        panel_label(o);
-        Config panel;panel.loadTemp();panel.numPanels(o);
+        Config conf;int n = conf.currentPanel();
+        std::string panel = conf.convert(n);
+        std::string LABEL = "Panel ";LABEL +=panel;
+        o->copy_label(LABEL.c_str());
       } // Fl_Menu_Button* panel_chooser
       { Fl_Button* o = new Fl_Button(10, 625, 185, 25, gettext("@<-  Main Settings Window"));
         o->box(FL_GTK_UP_BOX);
         o->color((Fl_Color)46);
         o->callback((Fl_Callback*)cb_Main);
       } // Fl_Button* o
-      { Fl_Box* o = new Fl_Box(130, 80, 175, 25);
+      { Fl_Box* o = new Fl_Box(130, 80, 190, 25);
         o->box(FL_GTK_DOWN_BOX);
         o->color((Fl_Color)42);
+        o->hide();
       } // Fl_Box* o
-      { Fl_Output* o = vh_display = new Fl_Output(235, 80, 90, 25);
+      { Fl_Output* o = vh_display = new Fl_Output(215, 80, 90, 25);
         vh_display->box(FL_NO_BOX);
         vh_display->selection_color(FL_DARK_RED);
         vh_display->textcolor(FL_LIGHT2);
+        vh_display->hide();
         Config config; config.loadTemp();
-        const char* l = config.getPanelLayout(2);
+        const char* l = config.checkLayout();
         o->value(l);
       } // Fl_Output* vh_display
       { Fl_Output* o = layout_display = new Fl_Output(135, 80, 90, 25, gettext("Current Panel: "));
         layout_display->box(FL_NO_BOX);
         layout_display->selection_color((Fl_Color)73);
         layout_display->textcolor(FL_LIGHT2);
+        layout_display->hide();
         Config config; config.loadTemp();
-        const char* l = config.checkLayout(2);
+        const char* l = config.getPanelLayout();
         o->value(l);
       } // Fl_Output* layout_display
-      { Fl_Tabs* o = new Fl_Tabs(5, 115, 330, 490);
+      { Fl_Tabs* o = new Fl_Tabs(5, 115, 335, 490);
         o->box(FL_PLASTIC_THIN_UP_BOX);
         { Fl_Group* o = new Fl_Group(5, 145, 330, 425, gettext("Apps"));
           o->hide();
@@ -1382,6 +1303,7 @@ Fl_Double_Window* PanelUI::make_window() {
             c_shortcuts->value(1);
             c_shortcuts->selection_color(FL_DARK_GREEN);
             c_shortcuts->callback((Fl_Callback*)cb_c_shortcuts);
+            c_shortcuts->when(FL_WHEN_RELEASE_ALWAYS);
             Apps apps; apps.loadTemp();
             bool shortcuts = apps.isShortcuts();
             if(shortcuts){o->value(1);}else{o->value(0);}
@@ -1392,6 +1314,7 @@ Fl_Double_Window* PanelUI::make_window() {
             c_clock->value(1);
             c_clock->selection_color(FL_DARK_GREEN);
             c_clock->callback((Fl_Callback*)cb_c_clock);
+            c_clock->when(3);
             Apps apps;apps.loadTemp();
             bool is = apps.isClock();
             if(is){o->value(1);}else{o->value(0);}
@@ -1402,7 +1325,7 @@ Fl_Double_Window* PanelUI::make_window() {
             o->value(1);
             o->selection_color(FL_DARK_GREEN);
             o->callback((Fl_Callback*)cb_CPU);
-            o->when(FL_WHEN_CHANGED);
+            o->when(3);
             Apps apps;apps.loadTemp();
             bool lx = apps.xloadLoaded();
             if(lx){o->value(1);}else{o->value(0);}
@@ -1458,13 +1381,15 @@ Fl_Double_Window* PanelUI::make_window() {
             bool places = apps.isPlaces();
             if(places){o->value(1);}else{o->value(0);}
           } // Fl_Check_Button* c_places
-          { c_battery = new Fl_Check_Button(20, 395, 190, 25, gettext("Battery Applet"));
+          { Fl_Check_Button* o = c_battery = new Fl_Check_Button(20, 395, 190, 25, gettext("Battery Applet"));
             c_battery->tooltip(gettext("This can monitor your Laptop Battery and display it in the panel"));
             c_battery->down_box(FL_GTK_DOWN_BOX);
+            c_battery->value(1);
             c_battery->selection_color(FL_DARK_GREEN);
             c_battery->callback((Fl_Callback*)cb_c_battery, (void*)("battery"));
-            c_battery->deactivate();
             Apps apps;apps.loadTemp();
+            bool d = apps.isBattery();
+            if(d){o->value(1);}else{o->value(0);}
           } // Fl_Check_Button* c_battery
           { Fl_Check_Button* o = c_volume = new Fl_Check_Button(20, 425, 190, 25, gettext("Volume control"));
             c_volume->tooltip(gettext("This will add a volume icon to the panel"));
@@ -1509,28 +1434,30 @@ Fl_Double_Window* PanelUI::make_window() {
           } // Fl_Button* shutdown_icon
           o->end();
         } // Fl_Group* o
-        { Fl_Group* o = new Fl_Group(5, 140, 330, 455, gettext("Appearance"));
+        { Fl_Group* o = new Fl_Group(5, 140, 335, 455, gettext("Appearance"));
+          o->hide();
           { Fl_Box* o = new Fl_Box(15, 160, 310, 100);
             o->box(FL_GTK_DOWN_BOX);
             o->color(FL_DARK2);
           } // Fl_Box* o
-          { Fl_Input* o = new Fl_Input(105, 175, 130, 25, gettext("Menu Label"));
-            o->box(FL_GTK_DOWN_BOX);
-            o->color((Fl_Color)53);
-            o->selection_color(FL_DARK_RED);
-            o->callback((Fl_Callback*)cb_Menu);
-            o->when(FL_WHEN_CHANGED);
+          { Fl_Input* o = app_menu = new Fl_Input(105, 175, 130, 25, gettext("Menu Label"));
+            app_menu->box(FL_GTK_DOWN_BOX);
+            app_menu->color((Fl_Color)53);
+            app_menu->selection_color(FL_DARK_RED);
+            app_menu->callback((Fl_Callback*)cb_app_menu);
+            app_menu->when(FL_WHEN_CHANGED);
             flPanel fl_panel;fl_panel.loadTemp();
-            std::string l = fl_panel.getMenuLabel();
+            std::string l= fl_panel.getMenuLabel();
             o->value(l.c_str());
-          } // Fl_Input* o
+          } // Fl_Input* app_menu
           { new Fl_Box(20, 230, 85, 15, gettext("Menu Icon   "));
           } // Fl_Box* o
-          { icon_view = new Fl_Button(170, 205, 50, 50);
-            icon_view->box(FL_NO_BOX);
+          { icon_view = new Fl_Button(130, 205, 50, 50);
+            icon_view->box(FL_GTK_DOWN_BOX);
             icon_view->callback((Fl_Callback*)cb_icon_view);
+            icon_view->align(Fl_Align(FL_ALIGN_WRAP));
             flPanel f;f.loadTemp();
-            std::string icon=f.getMenuImage();
+            std::string icon =f.getMenuImage();
             display(icon.c_str());
           } // Fl_Button* icon_view
           { new Fl_Box(20, 305, 135, 15, gettext("Panel Button Color "));
@@ -1637,37 +1564,25 @@ Fl_Double_Window* PanelUI::make_window() {
           } // Fl_Box* o
           { new Fl_Box(55, 530, 95, 25, gettext("Current App"));
           } // Fl_Box* o
+          { Fl_Check_Button* o = new Fl_Check_Button(200, 215, 110, 25, gettext("Applications Menu"));
+            o->tooltip(gettext("Add Applications menu to the panel"));
+            o->down_box(FL_GTK_DOWN_BOX);
+            o->value(1);
+            o->selection_color(FL_DARK_GREEN);
+            o->callback((Fl_Callback*)cb_Applications);
+            o->align(Fl_Align(132|FL_ALIGN_INSIDE));
+            o->when(FL_WHEN_CHANGED);
+            Apps apps;apps.loadTemp();
+            bool lx = apps.isAppMenu();
+            if(lx){o->value(1);}else{o->value(0);}
+          } // Fl_Check_Button* o
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(5, 140, 330, 465, gettext("Size And Position"));
-          o->hide();
           { Fl_Box* o = new Fl_Box(65, 345, 185, 30, gettext("Advanced Options"));
             o->labelfont(1);
             o->labelsize(18);
           } // Fl_Box* o
-          { Fl_Slider* o = border_slider = new Fl_Slider(190, 495, 90, 25, gettext("Width of Panel Border"));
-            border_slider->type(1);
-            border_slider->box(FL_GTK_DOWN_BOX);
-            border_slider->color((Fl_Color)42);
-            border_slider->selection_color((Fl_Color)29);
-            border_slider->maximum(32);
-            border_slider->step(1);
-            border_slider->value(1);
-            border_slider->callback((Fl_Callback*)cb_border_slider);
-            border_slider->align(Fl_Align(FL_ALIGN_LEFT));
-            border_slider->when(FL_WHEN_RELEASE);
-            flPanel fl_panel;fl_panel.loadTemp();
-            int h = fl_panel.getBorder();
-            o->value(h);
-          } // Fl_Slider* border_slider
-          { Fl_Value_Output* o = border_slider_v = new Fl_Value_Output(190, 535, 35, 25, gettext("pixels"));
-            border_slider_v->box(FL_GTK_DOWN_BOX);
-            border_slider_v->labelsize(10);
-            border_slider_v->align(Fl_Align(FL_ALIGN_RIGHT));
-            border_slider_v->when(3);
-            int v = border_slider->value();
-            o->value(v);
-          } // Fl_Value_Output* border_slider_v
           { Fl_Value_Input* o = new Fl_Value_Input(185, 440, 25, 25, gettext("Y position of panel"));
             o->box(FL_GTK_DOWN_BOX);
             o->minimum(-100);
@@ -1720,7 +1635,6 @@ Fl_Double_Window* PanelUI::make_window() {
             h_slider->box(FL_GTK_DOWN_BOX);
             h_slider->color((Fl_Color)42);
             h_slider->selection_color((Fl_Color)29);
-            h_slider->minimum(14);
             h_slider->maximum(78);
             h_slider->step(2);
             h_slider->value(32);
@@ -1739,6 +1653,27 @@ Fl_Double_Window* PanelUI::make_window() {
             int v = h_slider->value();
             o->value(v);
           } // Fl_Value_Input* height_input
+          { Fl_Slider* o = border_slider = new Fl_Slider(190, 495, 90, 25, gettext("Width of Panel Border"));
+            border_slider->type(1);
+            border_slider->box(FL_GTK_DOWN_BOX);
+            border_slider->color((Fl_Color)42);
+            border_slider->selection_color((Fl_Color)29);
+            border_slider->maximum(32);
+            border_slider->step(1);
+            border_slider->callback((Fl_Callback*)cb_border_slider);
+            border_slider->align(Fl_Align(FL_ALIGN_LEFT));
+            border_slider->when(FL_WHEN_RELEASE);
+            flPanel panel;panel.loadTemp();
+            int h = panel.getBorder();
+            o->value(h);
+          } // Fl_Slider* border_slider
+          { Fl_Value_Output* o = border_slider_v = new Fl_Value_Output(205, 530, 35, 25, gettext("pixels"));
+            border_slider_v->box(FL_GTK_DOWN_BOX);
+            border_slider_v->labelsize(10);
+            border_slider_v->align(Fl_Align(FL_ALIGN_RIGHT));
+            int v = border_slider->value();
+            o->value(v);
+          } // Fl_Value_Output* border_slider_v
           { Fl_Value_Input* o = width_input = new Fl_Value_Input(240, 245, 35, 25, gettext("pixels"));
             width_input->box(FL_GTK_DOWN_BOX);
             width_input->labelsize(10);
@@ -1779,6 +1714,7 @@ Fl_Double_Window* PanelUI::make_window() {
       } // Fl_Button* save_button
       o->end();
     } // Fl_Scroll* o
+    //o->icon("/usr/share/icons/jsm-panel.png");
     panel_window->end();
     panel_window->resizable(panel_window);
   } // Fl_Double_Window* panel_window
@@ -1842,7 +1778,7 @@ Fl_Double_Window* PanelUI::make_shortcut_window() {
     } // Fl_Browser* shortcut_browser
     { Fl_Button* o = new Fl_Button(310, 175, 170, 35, gettext("@  Remove from panel"));
       o->box(FL_GTK_UP_BOX);
-      o->callback((Fl_Callback*)cb_Remove);
+      o->callback((Fl_Callback*)cb_Remove1);
     } // Fl_Button* o
     shortcut_window->end();
   } // Fl_Double_Window* shortcut_window
@@ -1900,12 +1836,14 @@ void PanelUI::one_color(Fl_Widget *o, const char* whichElement) {
 void PanelUI::display(const char* filename) {
   std::string extention, filenameStr;
   filenameStr = filename;
+  if (filenameStr.length() == 0)return;
   extention = filenameStr.substr((strlen(filename)-4),4);
   //std::cout<<extention<<"\n";
   std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
   Fl_Image* image;
   std::string png =".png";
   std::string xpm =".xpm";
+  std::string svg =".svg";
   if (extention.compare(png) ==0){
   	image = new Fl_PNG_Image(filename);
   	Fl_Image * image2 = image->copy(48,48);
@@ -1917,6 +1855,12 @@ void PanelUI::display(const char* filename) {
   	Fl_Image * image2 = image->copy(48,48);
   	icon_view->image(image2);
   	icon_view->redraw();
+  }
+  else if(extention.compare(svg) ==0){
+  return;
+  }
+  else {
+  	icon_view->label("FLTK cannot display");
   }
 }
 
@@ -1969,13 +1913,9 @@ void PanelUI::one_color_active(Fl_Widget *o, const char* whichElement) {
   }
 }
 
-void PanelUI::Menu_CB() {
-  //
-}
-
 void PanelUI::panel_label(Fl_Menu_Button *o) {
   flPanel panel;panel.loadTemp();
-  unsigned int num = 1;
+  int num = 1;
   std::string x = panel.convert(num);
   std::string l = "Panel ";
   l+=x;
@@ -1984,102 +1924,15 @@ void PanelUI::panel_label(Fl_Menu_Button *o) {
 }
 
 Fl_Double_Window* PanelUI::new_panel_window() {
-  { new_panel = new Fl_Double_Window(340, 225, gettext("Add a Panel"));
+  { new_panel = new Fl_Double_Window(290, 115, gettext("Add a Panel"));
     new_panel->user_data((void*)(this));
-    { Fl_Menu_Button* o = new Fl_Menu_Button(30, 30, 125, 25, gettext("Panel Position"));
-      o->box(FL_GTK_UP_BOX);
-      o->selection_color((Fl_Color)80);
-      if (!menu_Panel1_i18n_done) {
-        int i=0;
-        for ( ; i<11; i++)
-          if (menu_Panel1[i].label())
-            menu_Panel1[i].label(gettext(menu_Panel1[i].label()));
-        menu_Panel1_i18n_done = 1;
-      }
-      o->menu(menu_Panel1);
-    } // Fl_Menu_Button* o
-    { Fl_Check_Button* o = new Fl_Check_Button(170, 30, 95, 25, gettext("Autohide?"));
-      o->tooltip(gettext("This will make the Panel hide when you aren\'t using it."));
-      o->down_box(FL_GTK_DOWN_BOX);
-      o->selection_color((Fl_Color)59);
-      o->callback((Fl_Callback*)cb_Autohide1);
-      o->when(FL_WHEN_CHANGED);
-      flPanel fl_panel;fl_panel.loadTemp();
-      std::string a = fl_panel.getAutohide();
-      if(a=="true"){o->value(1);}
-      else{o->value(0);}
-    } // Fl_Check_Button* o
-    { Fl_Slider* o = w_slide = new Fl_Slider(140, 73, 90, 25, gettext("Width of Panel  "));
-      w_slide->tooltip(gettext("0 is Full Length"));
-      w_slide->type(1);
-      w_slide->box(FL_GTK_DOWN_BOX);
-      w_slide->color((Fl_Color)42);
-      w_slide->selection_color((Fl_Color)29);
-      w_slide->maximum(2000);
-      w_slide->step(2);
-      w_slide->value(32);
-      w_slide->callback((Fl_Callback*)cb_w_slide);
-      w_slide->align(Fl_Align(FL_ALIGN_LEFT));
-      w_slide->when(FL_WHEN_RELEASE);
-      flPanel panel;panel.loadTemp();
-      int h = panel.getWidth();
-      o->value(h);
-    } // Fl_Slider* w_slide
-    { Fl_Slider* o = h_slide = new Fl_Slider(140, 120, 90, 25, gettext("Height of Panel  "));
-      h_slide->tooltip(gettext("Panel Size between 14 and 78"));
-      h_slide->type(1);
-      h_slide->box(FL_GTK_DOWN_BOX);
-      h_slide->color((Fl_Color)42);
-      h_slide->selection_color((Fl_Color)29);
-      h_slide->minimum(14);
-      h_slide->maximum(78);
-      h_slide->step(2);
-      h_slide->value(32);
-      h_slide->callback((Fl_Callback*)cb_h_slide);
-      h_slide->align(Fl_Align(FL_ALIGN_LEFT));
-      h_slide->when(FL_WHEN_RELEASE);
-      flPanel panel;panel.loadTemp();
-      int h = panel.getHeight();
-      o->value(h);
-    } // Fl_Slider* h_slide
-    { Fl_Value_Input* o = height_in = new Fl_Value_Input(235, 120, 35, 25, gettext("pixels"));
-      height_in->box(FL_GTK_DOWN_BOX);
-      height_in->labelsize(10);
-      height_in->callback((Fl_Callback*)cb_height_in);
-      height_in->align(Fl_Align(FL_ALIGN_RIGHT));
-      int v = h_slider->value();
-      o->value(v);
-    } // Fl_Value_Input* height_in
-    { Fl_Value_Input* o = width_in = new Fl_Value_Input(240, 75, 35, 25, gettext("pixels"));
-      width_in->box(FL_GTK_DOWN_BOX);
-      width_in->labelsize(10);
-      width_in->callback((Fl_Callback*)cb_width_in);
-      width_in->align(Fl_Align(FL_ALIGN_RIGHT));
-      int v = w_slider->value();
-      o->value(v);
-    } // Fl_Value_Input* width_in
-    { new Fl_Box(25, 155, 85, 15, gettext("Panel Color "));
+    { Fl_Box* o = new Fl_Box(25, 25, 240, 50, gettext("Only Four Panels are supported Currently"));
+      o->align(Fl_Align(FL_ALIGN_WRAP));
     } // Fl_Box* o
-    { Fl_Button* o = color_button = new Fl_Button(170, 155, 60, 25);
-      color_button->box(FL_GTK_UP_BOX);
-      color_button->callback((Fl_Callback*)cb_color_button);
-      flPanel fl_panel;fl_panel.loadTemp();unsigned int c;
-      unsigned int color = fl_panel.getBackground(c, "TrayStyle");
-      o->color(color);
-    } // Fl_Button* color_button
-    { Fl_Check_Button* o = shortcuts_check = new Fl_Check_Button(25, 185, 125, 25, gettext("App Shortcuts"));
-      shortcuts_check->down_box(FL_GTK_DOWN_BOX);
-      shortcuts_check->value(1);
-      shortcuts_check->selection_color(FL_DARK_GREEN);
-      shortcuts_check->callback((Fl_Callback*)cb_shortcuts_check);
-      Apps apps;apps.loadTemp();
-      bool shortcuts = apps.isShortcuts();
-      if(shortcuts){o->value(1);}else{o->value(0);}
-    } // Fl_Check_Button* shortcuts_check
-    { add_apps = new Fl_Button(155, 185, 70, 25, gettext("Choose"));
-      add_apps->box(FL_GTK_UP_BOX);
-      add_apps->callback((Fl_Callback*)cb_add_apps);
-    } // Fl_Button* add_apps
+    { Fl_Button* o = new Fl_Button(85, 80, 105, 30, gettext("OK"));
+      o->box(FL_GTK_UP_BOX);
+      o->callback((Fl_Callback*)cb_OK1);
+    } // Fl_Button* o
     new_panel->end();
   } // Fl_Double_Window* new_panel
   return new_panel;
@@ -2091,10 +1944,25 @@ unsigned int PanelUI::switch_panel(Fl_Menu_Item *o) {
   return whichPanel;
 }
 
-const char* PanelUI::get_vh() {
-  return vh_display->value();
+void PanelUI::Menu_CB(int num) {
+  flPanel panel;
+  panel.recoverJSM(num);
+  panel.loadTemp();
+  panel.saveChanges();
+  int n = panel.currentPanel();
+  std::string l = panel.convert(n);
+  std::string LABEL = "Panel ";LABEL +=l;
+  panel_chooser->copy_label(LABEL.c_str());
+  panel_window->hide();
+  //panel_window->show();
+  UI ux;
+  ux.showPanel();
 }
 
-const char* PanelUI::get_layout() {
-  return layout_display->value();
+void PanelUI::hide_menu(Fl_Menu_Item * o, int whichOne) {
+  flPanel panel;
+  panel.loadTemp();
+  int num = panel.numPanels();
+  if (whichOne > num) o->hide();
+  else o->show();
 }

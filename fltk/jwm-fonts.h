@@ -128,6 +128,8 @@ public:
 private:
   inline void cb_Choose4_i(Fl_Button*, void*);
   static void cb_Choose4(Fl_Button*, void*);
+  inline void cb_Advanced_i(Fl_Button*, void*);
+  static void cb_Advanced(Fl_Button*, void*);
   inline void cb_Main_i(Fl_Button*, void*);
   static void cb_Main(Fl_Button*, void*);
 public:
@@ -154,5 +156,7 @@ public:
 private:
   inline void cb_font_name_i(Fl_Output*, void*);
   static void cb_font_name(Fl_Output*, void*);
+public:
+  void font_populate(Fl_Browser *o);
 };
 #endif

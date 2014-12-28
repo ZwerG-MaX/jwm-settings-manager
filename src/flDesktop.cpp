@@ -24,6 +24,7 @@
  */
 #include "../include/flDesktop.h"
 flDesktop::flDesktop(){
+    roxPresent = roxExists();
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLDocument roxDoc;
     m_useRox = false;
@@ -32,6 +33,8 @@ flDesktop::flDesktop(){
     std::string defaultWallpaper = homePathNoFile() + "Pictures/Wallpapers/dandyLion.png";
     roxFileName = "pb_JWM";
     roxCommand = "rox -p pb_JWM";
+    pcmanFMfilename = ".config/pcmanfm/default/pcmanfm.conf";
+    m_usePCmanFM = false;
 }
 flDesktop::~flDesktop(){
 
@@ -85,6 +88,9 @@ const char* flDesktop::getBackground(){// , const char * rgb, const char* rgb2){
     std::string background;
     //check if ROX is being used
     if(!m_useRox){
+    // && m_usePCmanFM){
+    // getPCmanFMBG}
+    //else if(!m_useRox){
         ///JWM background options
         tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Desktops" )->FirstChildElement("Background");
@@ -181,12 +187,25 @@ void flDesktop::setBackground(const char* type, const char* value){
 
 
 //************************************************* ROX Functions *******************************************************************
+
+///Set the string for the path to the Rox config file
 std::string flDesktop::roxPath(){
     std::string fileName = homePathNoFile();
     fileName+=".config/rox.sourceforge.net/ROX-Filer/";
     fileName+=roxFileName;
     return fileName;
 }
+/// check to see if Rox is installed
+bool flDesktop::roxExists(){
+    const char* filemanager = whichFileManager();
+    if (filemanager == "rox" || filemanager == "both" || filemanager == "rox-filer"){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 ///TODO handle other pb files
 int flDesktop::loadRox(){
     std::string fileName = roxPath();
@@ -201,36 +220,26 @@ int flDesktop::loadRox(){
     else{recoverRox(); loadRox();}
     return 0;
 }
-
+/// check if Rox is the active background handler and return true or false
 bool flDesktop::roxActive(){
+    if (!roxPresent){return false;}
     loadTemp();
-    bool test = false;
-    for(const tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");node;node=node->NextSiblingElement("StartupCommand")){
-        test=true;
-    }
-    if(test){
-        for(const tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");node;node=node->NextSiblingElement("StartupCommand")){
-            std::string text  = node->GetText();
-            std::string valueP = text.substr(0,7);
-            std::string valuePinboard = text.substr(0,14);
-            //std::cout<<"value = "<<valuePinboard<<std::endl;
-            if(valueP.c_str() !=NULL){
-                if((valueP.compare("rox -p ")==0)||(valuePinboard.compare("rox --pinboard")==0)){
-                    m_useRox = true;
-                    //std::cout<<"Rox found\n";
-                    return m_useRox;
-                }
-            }
-        }
-    }
-    if(system("pkill rox")!=0){
+    bool testP = isAutostart("rox -p");
+    bool testPinboard = isAutostart("rox --pinboard");
+    if (testP || testPinboard){m_useRox = true;}
+    else {
+       // if(system("pkill rox")!=0){
         //std::cout<<"No Rox\n";
+        //}
+        m_useRox = false;
     }
-    m_useRox = false;
     return m_useRox;
 }
 
 void flDesktop::useRox(bool rox){
+    if (!roxPresent){
+        /// //////////////////////////////////////////////////////call ERROR dialog
+    }
     m_useRox=rox;
     loadTemp();
     bool configFileExists = configExists();
@@ -276,48 +285,29 @@ bool flDesktop::configExists(){
         }
         else{return false;}
 }
-void flDesktop::setRoxBackground(const char* value){
-    const char* style = "Stretched";
+int flDesktop::addRoxFileAttribute(const char* element, const char* attribute, const char* value, const char* text){
+    if (!roxPresent){return 42;}
     loadRox();
-    tinyxml2::XMLElement* element = roxDoc.FirstChildElement( "pinboard" )->FirstChildElement( "backdrop" );
-    if(element){
-        element->Attribute("style",style);
-        element->SetText(value);
+    tinyxml2::XMLElement* roxElement = roxDoc.FirstChildElement( "pinboard" )->FirstChildElement( element );
+    if(roxElement){
+        roxElement->Attribute(attribute,value);
+        roxElement->SetText(text);
         saveRox();
     }
     else{
-        tinyxml2::XMLNode * newNode = roxDoc.NewElement("backdrop");
-        element= roxDoc.FirstChildElement( "pinboard" );
-        element->InsertFirstChild(newNode);
-        tinyxml2::XMLText *bgText = doc.NewText(value);
+        tinyxml2::XMLNode * newNode = roxDoc.NewElement(element);
+        roxElement= roxDoc.FirstChildElement( "pinboard" );
+        roxElement->InsertFirstChild(newNode);
+        tinyxml2::XMLText *bgText = doc.NewText(text);
         newNode->LinkEndChild(bgText);
         tinyxml2::XMLElement *node = newNode->ToElement();
-        element->SetAttribute("style",style);
+        roxElement->SetAttribute(attribute,value);
         saveRox();
     }
 }
 
-void flDesktop::setRoxBackground(const char* style, const char* value){
-    loadRox();
-    tinyxml2::XMLElement* element = roxDoc.FirstChildElement( "pinboard" )->FirstChildElement( "backdrop" );
-    if(element){
-        element->Attribute("style",style);
-        element->SetText(value);
-        useRox(true);
-        saveRox();
-    }
-    else{
-        tinyxml2::XMLNode * newNode = roxDoc.NewElement("backdrop");
-        element= roxDoc.FirstChildElement( "pinboard" );
-        element->InsertFirstChild(newNode);
-        tinyxml2::XMLText *bgText = doc.NewText(value);
-        newNode->LinkEndChild(bgText);
-        tinyxml2::XMLElement *node = newNode->ToElement();
-        element->SetAttribute("style",style);
-        useRox(true);
-        saveRox();
-    }
-}
+void flDesktop::setRoxBackground(const char* value){int result = addRoxFileAttribute("backdrop","style","Stretched", value);std::cout<<result<<std::endl;}
+void flDesktop::setRoxBackground(const char* style, const char* value){int result = addRoxFileAttribute("backdrop","style",style, value);std::cout<<result<<std::endl;}
 
 const char * flDesktop::getRoxBackground(){
     const char* background;
@@ -417,44 +407,12 @@ void flDesktop::useMultiDesktop(bool &multiValue, int &height, int &width){
 }
 
 //Gets the number of desktops wide
-int flDesktop::getMultiDeskWidth(){
-    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Desktops" );
-    ///NEED error checking here
-    std::string multiDesktopW = element->Attribute("width");
-    //std::cout<<multiDesktopW<<"\n";//Debug
-    int mdW = strtoul(multiDesktopW.c_str(),0,10);
-    return mdW;
-}
-
+int flDesktop::getMultiDeskWidth(){return getIntAttribute("Desktops","width");}
 //Gets the number of desktops high
-int flDesktop::getMultiDeskHeight(){
-    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Desktops" );
-    ///NEED error checking here
-    std::string multiDesktopH = element->Attribute("height");
-    //std::cout<<multiDesktopH<<"\n";//Debug
-    int mdH = strtoul(multiDesktopH.c_str(),0,10);
-    return mdH;
-}
+int flDesktop::getMultiDeskHeight(){return getIntAttribute("Desktops","height");}
 
-void flDesktop::setMultiDeskWidth(double width){
-    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Desktops" );
-    std::ostringstream w;
-    w<< width;
-    std::string dw = w.str();
-    element->SetAttribute("width",dw.c_str());
-}
-
-void flDesktop::setMultiDeskHeight(double height){
-    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Desktops" );
-    std::ostringstream h;
-    h<< height;
-    std::string hw = h.str();
-    element->SetAttribute("height",hw.c_str());
-}
+void flDesktop::setMultiDeskWidth(double width){setAttribute("Desktops","width",width);}
+void flDesktop::setMultiDeskHeight(double height){setAttribute("Desktops","height",height);}
 
 bool flDesktop::multipleDesktops(){
     int mdW = getMultiDeskWidth();
@@ -467,3 +425,39 @@ bool flDesktop::multipleDesktops(){
 }
 
 //################################################# END Desktop Functions ###################################################################
+
+///Which Filemanager
+//TODO: find how xdg-open stores inode/directory
+const char* flDesktop::whichFileManager(){
+    std::string result;
+    std::string inode ="inode/directory=";
+    const char* defaults="/usr/share/applications/defaults.list";
+    bool defaultsList = testFile(defaults);
+    if (!defaultsList){
+        bool roxInstalled = testExec("rox-filer");
+        bool pcmanfmInstalled = testExec("pcmanfm");
+        bool nautilusInstalled = testExec("nautilus");
+        bool thunarInstalled = testExec("thunar");
+        if (roxInstalled){result += "rox ";}
+        else if (pcmanfmInstalled){result += "pcmanfm ";}
+        else if (nautilusInstalled){result += "nautilus ";}
+        else if (thunarInstalled){result += "thunar ";}
+        else{result = "unknown ";}
+        result += "INSTALLED";
+        return result.c_str();
+    }
+    result = grep(inode.c_str(), defaults);
+    //std::cout<<result<<std::endl;
+    int len = inode.length();
+    std::string testResult = result;
+    if (len >= testResult.length()){return result.c_str();}
+    std::string STRresult = result;
+    STRresult = STRresult.substr(len, std::string::npos);
+    //std::cout<<STRresult<<std::endl;
+    int position = STRresult.find('.');
+    STRresult = STRresult.erase(position, std::string::npos);
+    std::cout<<STRresult<<std::endl;
+    result=STRresult;
+    //std::cout<<result<<"\n";
+    return result.c_str();
+}

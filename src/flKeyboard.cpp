@@ -35,7 +35,8 @@ void flKeyboard::getKeys(Fl_Browser *o){
     }
 }
 
-void flKeyboard::addKey(const char * key, const char* shortcut){
+void flKeyboard::addKey(const char * key, const char* shortcut){setAttribute("Key","key",key,shortcut);
+    #if 0
     tinyxml2::XMLNode *keyboard = doc.FirstChildElement("JWM");
 
     tinyxml2::XMLNode *node = doc.NewElement("Key");
@@ -47,6 +48,7 @@ void flKeyboard::addKey(const char * key, const char* shortcut){
     tinyxml2::XMLElement* element=doc.FirstChildElement("JWM")->LastChildElement("Key");
     element->SetAttribute("key",key);
     saveChangesTemp();
+    #endif
 }
 
 ///Overload addKey to accept a Modifier ('mask' in JWM terminology)

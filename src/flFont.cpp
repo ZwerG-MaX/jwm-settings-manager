@@ -3,6 +3,10 @@
 flFont::flFont()
 {
     tinyxml2::XMLDocument doc;
+    antialias = "antialias";
+    weight = "weight";
+    slant = "slant";
+    spacing = "spacing";
 }
 
 flFont::~flFont()
@@ -27,7 +31,7 @@ void flFont::missingFont(const char* whichElement){
     tinyxml2::XMLElement * currentFont = doc.FirstChildElement("JWM")->FirstChildElement(whichElement)->FirstChildElement("Font");
     std::cout<<"The current Element doesn't have a font name or is missing a size.\n Recovering by rewriting default values\n";
     currentFont->SetText("ubuntu-12:antialias=true");
-    getFontName(whichElement);//Is this a good Idea??  Is there a case that can make this loop endlessly?
+    //getFontName(whichElement);//Is this a good Idea??  Is there a case that can make this loop endlessly?
 }
 std::string flFont::getFontName(const char* whichElement){
     std::string font =fontTest(whichElement);
@@ -41,8 +45,8 @@ std::string flFont::getFontName(const char* whichElement){
         }
     }
     else{
-        std:: string error = "no font\n";
-        std::cout<<"This is an error, there is "<< error;
+        std:: string error = "no font";
+        std::cout<<"This is an error, there is "<< error<<std::endl;
         return error;
     }
     std::cout<<"ERROR in getFontName(const char*), this shouldn't happen\n";
@@ -141,32 +145,75 @@ unsigned int flFont::getFontColor(const char *element){
 }
 
 //######################################### END Font Color ##############################################
+bool flFont::isValue(const char* whichElement, const char* name, const char* value){
+    std::string n = name, v = value;
+    const char* love = isValue(whichElement,n,v);
+    if (love != "LOVE"){return true;}
+	return false;
 
+}
+bool flFont::isValue(const char* whichElement, std::string name){
+    loadTemp();
+    std::string font =fontTest(whichElement);
+    std::cout<<font<<std::endl;
+    if (font.c_str() != NULL){if((font.find(name)!=std::string::npos)){return true;}}
+    return false;
+}
+const char* flFont::isValue(const char* whichElement, std::string name, std::string value){
+    loadTemp();
+    std::string font =fontTest(whichElement);
+    //std::cout<<font<<std::endl;
+    if (font.c_str() != NULL){
+        name+="=";
+        int sizeOfName = name.length();
+        //NAME+= value;
+        //std::cout<<name<<std::endl;
+        std::string N;
+        int sizeOfValue =value.length();
+        std::string::size_type namePosition = font.find(name);
+        std::string::size_type position = (namePosition);
+        //std::cout<<"namePosition: "<<namePosition<<" position: "<<position<<std::endl;
+        if((font.find(':')!=std::string::npos)){
+            if((font.find(name)!=std::string::npos)){
+                N = font.substr ((position+sizeOfName),sizeOfValue);
+                //std::cout<<"Value: "<< N <<"\n";
+                if (N==value){return N.c_str();}
+            }
+        }
+    }
+    return "LOVE";
+}
+void flFont::changeValue(const char* whichElement, std::string name, std::string value){
+    if (isValue(whichElement, name)){
+        loadTemp();
+        std::string font =fontTest(whichElement);
+        if (font.c_str() != NULL){
+            name+="=";
+            int sizeOfName = name.length();
+            std::cout<<name<<std::endl;
+            std::string Begin, End;
+            int sizeOfValue =value.length();
+            std::string::size_type namePosition = font.find(name);
+            std::string::size_type position = (namePosition);
+            std::cout<<"namePosition: "<<namePosition<<" position: "<<position<<std::endl;
+            if((font.find(':')!=std::string::npos)){
+                if((font.find(name)!=std::string::npos)){
+                    Begin = font.substr (0,position);
+                    ///TODO:::: Find ':' after atrribute and value??
+                    End = font.substr((position+sizeOfName+sizeOfValue),std::string::npos);
+                    Begin +=value;
+                    Begin += End;
+                    std::cout<<"Value: "<< Begin <<"\n";
 
+                }
+            }
+        }
+    }
+}
 //AntiAlias
 //This needs to be hooked into the UI eventually, as well as all the multitudes of options... I think I will apply advanced options to ALL fonts.
 // I might also make a checkbox that sets all fonts the same if the user wants.
-bool flFont::getAntialias(const char* whichElement){
-    std::string font =fontTest(whichElement);
-    if (font.c_str() != NULL){
-        std::string A; //String antialias
-        std::string::size_type antialias = font.find("antialias=");
-        std::string::size_type position = font.find(':');
-        if((font.find(':')!=std::string::npos)){
-            if((font.find("antialias=")!=std::string::npos)){
-            /*antialias +10 is 10 characters after the beginning of the string
-			 * "antialias=" is 10 characters long
-			 */
-                A = font.substr (antialias+10,std::string::npos);
-                if (A=="true"){return true;}else{return false;}
-			//std::cout<<"Antialias = "<< A <<"\n";
-            }
-            else{return false;}
-        }
-        else{return false;}
-    }
-	return false;
-}
+bool flFont::getAntialias(const char* whichElement){return isValue(whichElement, antialias, "true");}
 
 /// Window STUFF
 
@@ -192,10 +239,15 @@ unsigned int flFont::getWindowFontColor(const char *element){
     color = getColor(colorXML, u);
     return color;
 }
-
+#if 0
 ///FONT CONFIG STUFF
 void flFont::fontconfigLIST(Fl_Browser *o){
-    FcObjectSet *object = FcObjectSetBuild(FC_FAMILY, (char *) 0);
+    std::list<std::string> fontList;
+    std::string cast;// = new std::string;
+    std::string n;
+    //int fontIterator= 0;
+    Fl_Font fontie = 0;
+    FcObjectSet *object = FcObjectSetBuild(FC_FAMILY, FC_STYLE, (char *) 0);
     FcPattern *pattern = FcPatternCreate();
     FcConfig *config = FcInitLoadConfigAndFonts();
     FcFontSet *fontSet = FcFontList(config, pattern, object);
@@ -206,8 +258,23 @@ void flFont::fontconfigLIST(Fl_Browser *o){
     if (FcPatternGetString(font, FC_FAMILY, 0, &family) == FcResultMatch){
             //printf("Font: %s\n", family);
             const char * fontName = reinterpret_cast<const char*>(family);
-            o->add(fontName);
+            fontList.push_back(fontName);
+            //o->add(fontName);
     }
-}
+    }
+    fontList.sort();
+    fontList.unique();
+    std::list<std::string>::iterator it = std::unique (fontList.begin(), fontList.end());
+    fontList.resize(std::distance(fontList.begin(),it));
+    for(it = fontList.begin(); it != fontList.end(); ++it){
+        std::cout << *it << std::endl;
+        cast = *it;
+        //Fl::set_font(fontie, cast.c_str());
+        std::cout << "--------------------" << std::endl;
+        o->add(cast.c_str());
+        fontie++;
+    }
+
 if (fontSet) FcFontSetDestroy(fontSet);
 }
+#endif

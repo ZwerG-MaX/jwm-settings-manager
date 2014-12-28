@@ -63,11 +63,23 @@ public:
   Fl_Double_Window* make_window();
   Fl_Double_Window *panel_window;
   Fl_Menu_Button *panel_chooser;
+private:
+  inline void cb_panel_chooser_i(Fl_Menu_Button*, void*);
+  static void cb_panel_chooser(Fl_Menu_Button*, void*);
   static unsigned char menu_panel_chooser_i18n_done;
   static Fl_Menu_Item menu_panel_chooser[];
-private:
   inline void cb_Add_i(Fl_Menu_*, void*);
   static void cb_Add(Fl_Menu_*, void*);
+  inline void cb_Panel_i(Fl_Menu_*, void*);
+  static void cb_Panel(Fl_Menu_*, void*);
+  inline void cb_Panel1_i(Fl_Menu_*, void*);
+  static void cb_Panel1(Fl_Menu_*, void*);
+  inline void cb_Panel2_i(Fl_Menu_*, void*);
+  static void cb_Panel2(Fl_Menu_*, void*);
+  inline void cb_Panel3_i(Fl_Menu_*, void*);
+  static void cb_Panel3(Fl_Menu_*, void*);
+  inline void cb_Remove_i(Fl_Menu_*, void*);
+  static void cb_Remove(Fl_Menu_*, void*);
   inline void cb_Main_i(Fl_Button*, void*);
   static void cb_Main(Fl_Button*, void*);
 public:
@@ -151,8 +163,11 @@ public:
 private:
   inline void cb_shutdown_icon_i(Fl_Button*, void*);
   static void cb_shutdown_icon(Fl_Button*, void*);
-  inline void cb_Menu_i(Fl_Input*, void*);
-  static void cb_Menu(Fl_Input*, void*);
+public:
+  Fl_Input *app_menu;
+private:
+  inline void cb_app_menu_i(Fl_Input*, void*);
+  static void cb_app_menu(Fl_Input*, void*);
 public:
   Fl_Button *icon_view;
 private:
@@ -208,14 +223,8 @@ public:
 private:
   inline void cb_o_menu_slider_v_i(Fl_Value_Input*, void*);
   static void cb_o_menu_slider_v(Fl_Value_Input*, void*);
-public:
-  Fl_Slider *border_slider;
-private:
-  inline void cb_border_slider_i(Fl_Slider*, void*);
-  static void cb_border_slider(Fl_Slider*, void*);
-public:
-  Fl_Value_Output *border_slider_v;
-private:
+  inline void cb_Applications_i(Fl_Check_Button*, void*);
+  static void cb_Applications(Fl_Check_Button*, void*);
   inline void cb_Y_i(Fl_Value_Input*, void*);
   static void cb_Y(Fl_Value_Input*, void*);
   inline void cb_X_i(Fl_Value_Input*, void*);
@@ -254,6 +263,12 @@ private:
   inline void cb_height_input_i(Fl_Value_Input*, void*);
   static void cb_height_input(Fl_Value_Input*, void*);
 public:
+  Fl_Slider *border_slider;
+private:
+  inline void cb_border_slider_i(Fl_Slider*, void*);
+  static void cb_border_slider(Fl_Slider*, void*);
+public:
+  Fl_Value_Output *border_slider_v;
   Fl_Value_Input *width_input;
 private:
   inline void cb_width_input_i(Fl_Value_Input*, void*);
@@ -296,8 +311,8 @@ public:
   Fl_Check_Button *shortcut_border;
   Fl_Browser *shortcut_browser;
 private:
-  inline void cb_Remove_i(Fl_Button*, void*);
-  static void cb_Remove(Fl_Button*, void*);
+  inline void cb_Remove1_i(Fl_Button*, void*);
+  static void cb_Remove1(Fl_Button*, void*);
 public:
   Fl_Double_Window* make_help_window();
   Fl_Double_Window *help_window;
@@ -311,69 +326,15 @@ public:
   void display(const char* filename);
   void displayAPPicon(const char* filename);
   void one_color_active(Fl_Widget *o, const char* whichElement);
-  void Menu_CB();
   void panel_label(Fl_Menu_Button *o);
   Fl_Double_Window* new_panel_window();
   Fl_Double_Window *new_panel;
-  static unsigned char menu_Panel1_i18n_done;
-  static Fl_Menu_Item menu_Panel1[];
 private:
-  inline void cb_top1_i(Fl_Menu_*, void*);
-  static void cb_top1(Fl_Menu_*, void*);
-  inline void cb_bottom1_i(Fl_Menu_*, void*);
-  static void cb_bottom1(Fl_Menu_*, void*);
-  inline void cb_right1_i(Fl_Menu_*, void*);
-  static void cb_right1(Fl_Menu_*, void*);
-  inline void cb_left1_i(Fl_Menu_*, void*);
-  static void cb_left1(Fl_Menu_*, void*);
-  inline void cb_center2_i(Fl_Menu_*, void*);
-  static void cb_center2(Fl_Menu_*, void*);
-  inline void cb_fixed2_i(Fl_Menu_*, void*);
-  static void cb_fixed2(Fl_Menu_*, void*);
-  inline void cb_center3_i(Fl_Menu_*, void*);
-  static void cb_center3(Fl_Menu_*, void*);
-  inline void cb_fixed3_i(Fl_Menu_*, void*);
-  static void cb_fixed3(Fl_Menu_*, void*);
-  inline void cb_Autohide1_i(Fl_Check_Button*, void*);
-  static void cb_Autohide1(Fl_Check_Button*, void*);
-public:
-  Fl_Slider *w_slide;
-private:
-  inline void cb_w_slide_i(Fl_Slider*, void*);
-  static void cb_w_slide(Fl_Slider*, void*);
-public:
-  Fl_Slider *h_slide;
-private:
-  inline void cb_h_slide_i(Fl_Slider*, void*);
-  static void cb_h_slide(Fl_Slider*, void*);
-public:
-  Fl_Value_Input *height_in;
-private:
-  inline void cb_height_in_i(Fl_Value_Input*, void*);
-  static void cb_height_in(Fl_Value_Input*, void*);
-public:
-  Fl_Value_Input *width_in;
-private:
-  inline void cb_width_in_i(Fl_Value_Input*, void*);
-  static void cb_width_in(Fl_Value_Input*, void*);
-public:
-  Fl_Button *color_button;
-private:
-  inline void cb_color_button_i(Fl_Button*, void*);
-  static void cb_color_button(Fl_Button*, void*);
-public:
-  Fl_Check_Button *shortcuts_check;
-private:
-  inline void cb_shortcuts_check_i(Fl_Check_Button*, void*);
-  static void cb_shortcuts_check(Fl_Check_Button*, void*);
-public:
-  Fl_Button *add_apps;
-private:
-  inline void cb_add_apps_i(Fl_Button*, void*);
-  static void cb_add_apps(Fl_Button*, void*);
+  inline void cb_OK1_i(Fl_Button*, void*);
+  static void cb_OK1(Fl_Button*, void*);
 public:
   unsigned int switch_panel(Fl_Menu_Item *o);
-  const char* get_vh();
-  const char* get_layout();
+  void Menu_CB(int num);
+  void hide_menu(Fl_Menu_Item * o, int whichOne);
 };
 #endif

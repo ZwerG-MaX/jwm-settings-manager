@@ -18,17 +18,7 @@ MIT license copyright 2014
         <Exit label="Logout" confirm="true" icon="system-logout.svg"/>
     </RootMenu>
     <!--Places Menu-->
-    <RootMenu height="0" onroot="7">
-        <Program icon="application-default-icon.svg" label="Applications">xdg-open /usr/share/applications</Program>
-        <Program icon="folder-home.svg" label="Home">xdg-open ~/</Program>
-        <Program icon="folder-documents.svg" label="Documents">xdg-open ~/Documents</Program>
-        <Program icon="folder-downloads.svg" label="Downloads">xdg-open ~/Downloads</Program>
-        <Program icon="folder-music.svg" label="Music">xdg-open -n ~/Music</Program>
-        <Program icon="folder-pictures.svg" label="Pictures">xdg-open ~/Pictures</Program>
-        <Program icon="folder-video.svg" label="Videos">xdg-open ~/Videos</Program>
-        <Program icon="user-trash.svg" label="Trash">xdg-open ~/.local/share/Trash/files</Program>
-        <Program icon="file-manager.svg" label="Connected Devices">xdg-open /media</Program>
-    </RootMenu>
+    <Include>$HOME/.config/placesmenu</Include>
     <!-- Mouse Menu-->
     <RootMenu height="16" onroot="23">
         <Program icon="application-default-icon.svg" label="Applications">xdg-open /usr/share/applications</Program>
@@ -55,27 +45,22 @@ MIT license copyright 2014
         <Option>sticky</Option>
     </Group>
     <Group>
-        <Name>xterm</Name>
-        <Option>vmax</Option>
-        <Option>icon:terminal.png</Option>
+        <Name>jwm-settings-manager</Name>
+        <Option>icon:jwm-settings-manager.png</Option>
     </Group>
 
 
 <!-- PANEL -->
-
-        <!-- Panel 1 -->
     <Tray height="34" autohide="false" valign="top" width="0" halign="fixed" layout="horizontal">
         <TrayButton label="Apps" icon="/usr/share/pixmaps/distributor-logo.png" border="false">root:5</TrayButton>
         <TrayButton label="Places" icon="folder.svg" border="false">root:7</TrayButton>
-        <TrayButton icon="firefox.svg" border="false">exec:firefox</TrayButton>
+        <TrayButton icon="browser.svg" border="false">exec:xdg-open /usr/share/doc/ToriOS/startpage.html</TrayButton>
         <Spacer/>
         <Dock/>
         <Swallow name="xload" width="64">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>
         <Clock format="%a, %e %b %l:%M %p">xclock</Clock>
         <TrayButton label="Shutdown" icon="system-shutdown.svg" border="false">root:9</TrayButton>
     </Tray>
-
-    <!-- Panel 2 -->
     <Tray x="0" y="-1" height="34" autohide="false" valign="bottom" width="0" halign="fixed" layout="horizontal">
 	<TrayButton icon="preferences-system-hotcorners.png" border="false">showdesktop</TrayButton>
         <TaskList maxwidth="256"/>
@@ -87,17 +72,17 @@ MIT license copyright 2014
     <TaskListStyle>
         <ActiveBackground>#C2C2BE</ActiveBackground>
         <Background>#E2E2DE</Background>
-        <Font>ubuntu-12:antialias=true</Font>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
         <Foreground>#000000</Foreground>
     </TaskListStyle>
     <TrayStyle>
-        <Font>ubuntu-12:antialias=true</Font>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
         <Foreground>#000000</Foreground>
         <Background>#E2E2DE</Background>
         <Opacity>0.75</Opacity>
     </TrayStyle>
     <TrayButtonStyle>
-	    <Font>ubuntu-12:antialias=true</Font>
+	    <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
         <Foreground>#000000</Foreground>
         <Background>#E2E2DE</Background>
     </TrayButtonStyle>
@@ -109,7 +94,7 @@ MIT license copyright 2014
         <ActiveBackground>#406477</ActiveBackground>
     </PagerStyle>
     <MenuStyle>
-        <Font>ubuntu-12:antialias=true</Font>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
         <Foreground>#000000</Foreground>
         <Background>#E2E2DE</Background>
         <ActiveBackground>#406477</ActiveBackground>
@@ -155,8 +140,8 @@ MIT license copyright 2014
     <Key key="XF86AudioLowerVolume">exec:amixer -q sset Master 3%- unmute</Key>
     <Key key="XF86WWW">exec:sensible-browser</Key>
     <Key key="XF86Calculator">exec:xcalc</Key>
-    <Key key="Print">exec:import -window root $(date -I).png</Key>
-    <Key mask="CA" key="p">exec:import -window root $(date -I).png</Key>
+    <Key key="Print">screenie</Key>
+    <Key mask="CA" key="p">screenie</Key>
     <Key mask="CA" key="t">exec:x-terminal-emulator</Key>
     <Key mask="CA" key="Delete">exec:xterm htop</Key>
     <Key mask="A" key="Tab">next</Key>
@@ -188,13 +173,13 @@ MIT license copyright 2014
     </Desktops>
 
 <!-- AUTOSTART -->
-   <StartupCommand>wicd-gtk -t</StartupCommand>
+   <StartupCommand>nm-applet</StartupCommand>
    <StartupCommand>volumeicon</StartupCommand>
    <StartupCommand>synclient MaxTapTime=0</StartupCommand>
 
 <!--POP UP -->
     <PopupStyle>
-        <Font>ubuntu-12:antialias=true</Font>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
         <Outline>#000000</Outline>
         <Foreground>#000000</Foreground>
         <Background>#E2E2DE</Background>

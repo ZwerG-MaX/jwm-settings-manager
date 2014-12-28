@@ -699,6 +699,16 @@ Fl_Double_Window* DesktopUI::make_window() {
         o->labelfont(1);
         o->align(Fl_Align(FL_ALIGN_WRAP));
       } // Fl_Box* o
+      { Fl_Output* o = new Fl_Output(355, 30, 145, 30);
+        o->box(FL_GTK_DOWN_BOX);
+        o->color(FL_LIGHT1);
+        o->selection_color(FL_DARK_RED);
+        o->align(Fl_Align(33));
+        o->hide();
+        flDesktop desktop;desktop.loadTemp();
+        const char* result = desktop.whichFileManager();
+        o->value(result);
+      } // Fl_Output* o
       o->end();
     } // Fl_Scroll* o
     { Fl_Button* o = new Fl_Button(20, 490, 200, 25, gettext("@<-  Main Settings Window"));

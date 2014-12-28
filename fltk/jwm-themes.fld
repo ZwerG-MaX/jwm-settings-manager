@@ -64,7 +64,7 @@ class ThemesUI {open
   } {
     Fl_Window themes_window {
       label Themes open
-      xywh {964 393 540 495} type Double color 31 labelcolor 7 resizable visible
+      xywh {964 421 540 495} type Double color 31 labelcolor 7 resizable visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 540 495} color 31
@@ -84,8 +84,8 @@ ux.showSettings();}
           xywh {0 55 540 440} box GTK_UP_BOX
         } {
           Fl_Group {} {
-            label Normal open
-            xywh {0 80 540 415} hide
+            label Normal open selected
+            xywh {0 80 540 415}
           } {
             Fl_Button {} {
               label {Gnome 2 Light Theme}
@@ -191,7 +191,7 @@ ux.showSettings();}
           }
           Fl_Group {} {
             label Expert open
-            xywh {0 100 540 335}
+            xywh {0 100 540 335} hide
           } {
             Fl_Button save_button {
               label {Save Current ~/.jwmrc file as something else}
@@ -208,7 +208,7 @@ if(name.find_first_of("/")){
 	int result = theme.saveAs(file);
 	if(result==0){fl_alert("Saved %s",file);}
 }
-else{fl_alert("There was an error, please use a correct Path!");}} selected
+else{fl_alert("There was an error, please use a correct Path!");}}
               tooltip {This will copy your current theme somewhere else} xywh {50 125 410 45} box GTK_UP_BOX color 61 labelcolor 7
             }
             Fl_Button open_button {

@@ -4,12 +4,12 @@
 
 Apps::Apps()
 {
-    volumeiconBin = "/usr/bin/volumeicon";
+    volumeiconBin = "volumeicon";
     volumeiconExists = testExec(volumeiconBin);
-    xfcepowerBin = "/usr/bin/xfce4-power-manager";
+    xfcepowerBin = "xfce4-power-manager";
     xfcepower = testExec(xfcepowerBin);
-    nmapplet="/usr/bin/nm-applet";
-    wicd="/usr/bin/wicd-gtk";
+    nmapplet="nm-applet";
+    wicd="wicd-gtk";
     wicdExists= testExec(wicd);
     nmappletExists = testExec(nmapplet);
 }
@@ -31,25 +31,59 @@ Apps::~Apps()
     supports X11 color names
 */
 /*TODO: add configuration options for xload colors might be hard*/
+bool Apps::isTrayElement(const char* element, std::string text){
+    int length = text.length();
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    for(panelElement = panelElement->FirstChildElement( element );
+        panelElement;
+        panelElement=panelElement->NextSiblingElement(element)){
+
+        std::string fromDoc = panelElement->GetText();
+        fromDoc = fromDoc.erase(length,std::string::npos);
+        const char* value  = fromDoc.c_str();
+        if(text.compare(value) ==0){
+            return true;
+        }
+    }
+    return false;
+}
+
 void Apps::addAppXload(){
-    //Check to see if there are other swallows... make test=true if there are
+    ///TODO: get colors for xload some how... probably just guess programatically what will look good...
+    //otherwise I may need to use a GUI
     bool test = false;
-    for(tinyxml2::XMLElement* testNode=doc.FirstChildElement("JWM")->
-    FirstChildElement( "Tray" )->FirstChildElement( "Swallow" );
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    for(tinyxml2::XMLElement* testNode=panelElement->FirstChildElement( "Swallow" );
     testNode;testNode=testNode->NextSiblingElement("Swallow")){
         test= true;
     }
-    tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
+    tinyxml2::XMLNode *trayNode = panelElement;
     tinyxml2::XMLNode *node = doc.NewElement("Swallow");
     if(test){
         //if there are other swallows, add this after them
-        tinyxml2::XMLNode *swallowNode = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->FirstChildElement( "Swallow" );
+        tinyxml2::XMLNode *swallowNode = panelElement->FirstChildElement( "Swallow" );
         trayNode->InsertAfterChild(swallowNode,node);
     }
     else{trayNode->InsertEndChild(node);}
-    tinyxml2::XMLText *xloadCommand = doc.NewText("xload -nolabel -bg black -fg red -hl white");
+    tinyxml2::XMLText *xloadCommand = doc.NewText("xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey");
     node->LinkEndChild(xloadCommand);
     tinyxml2::XMLElement *trayElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" )->
@@ -59,30 +93,7 @@ void Apps::addAppXload(){
     trayElement->SetAttribute("width","64");
     saveChangesTemp();
 }
-bool Apps::xloadLoaded(){
-    bool test = false;
-    for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->
-        FirstChildElement( "Tray" )->FirstChildElement( "Swallow" );
-        node;node=node->NextSiblingElement("Swallow")){
-     test= true;
-    }
-    if(test){
-        for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->
-        FirstChildElement( "Tray" )->FirstChildElement( "Swallow" );
-        node;node=node->NextSiblingElement("Swallow")){
-            std::string fromDoc = node->GetText();
-            fromDoc = fromDoc.erase(5,std::string::npos);
-            const char* value  = fromDoc.c_str();
-            //std::cout<<value<<'\n';//debug looking for xload to show up :)
-            std::string xload = "xload";
-            if(xload.compare(value) ==0){
-                return true;
-            }
-        }
-    }
-//outside the for loop...
-return false;
-}
+
 
 void Apps::deleteAppXload(){
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "Tray" );
@@ -114,90 +125,44 @@ void Apps::changeClock(std::string style){
     bool exists = isClock();
     //if it doesn't exist... return from this function without doing anything
     if(!exists){return;}
-
-    if (style=="Day"){
-        tinyxml2::XMLElement *trayElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Clock" );
-
-        trayElement->SetAttribute("format","%a, %e %b %l:%M %p");
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
     }
-    else if(style=="12"){
-        tinyxml2::XMLElement *trayElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Clock" );
-
-        trayElement->SetAttribute("format","%l:%M %p");
-    }
-    else if(style=="24"){
-        tinyxml2::XMLElement *trayElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Clock" );
-
-        trayElement->SetAttribute("format","%H:%M");
-    }
-    else if(style=="Year"){
-        tinyxml2::XMLElement *trayElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Clock" );
-
-        trayElement->SetAttribute("format","%F %H:%M");
-    }
-    else{tinyxml2::XMLElement *trayElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Clock" );
-
-    trayElement->SetAttribute("format","%c");}
+    panelElement=panelElement->FirstChildElement("Clock");
+    if (style=="Day"){panelElement->SetAttribute("format","%a, %e %b %l:%M %p");}
+    else if(style=="12"){panelElement->SetAttribute("format","%l:%M %p");}
+    else if(style=="24"){panelElement->SetAttribute("format","%H:%M");}
+    else if(style=="Year"){panelElement->SetAttribute("format","%F %H:%M");}
+    else{panelElement->SetAttribute("format","%c");}
 }
 /*
 
 TODO: Add function for choosing which program to use for the clock/calender.
 Also, add a better default option.
 */
-void Apps::addClock(){
-    tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-    tinyxml2::XMLNode *node = doc.NewElement("Clock");
-    trayNode->InsertEndChild(node);
-    tinyxml2::XMLText *clockCommand = doc.NewText("xclock");
-    node->LinkEndChild(clockCommand);
-    tinyxml2::XMLElement *trayElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Clock" );
 
-    trayElement->SetAttribute("format","%a, %e %b %l:%M %p");
-    saveChangesTemp();
-}
-
-void Apps::deleteClock(){
-    //Check to make sure there is REALLY a clock... just in case
-    bool exists = isClock();
-    //if it doesn't exist... return from this function without doing anything
-    if(!exists){return;}
-    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-    tinyxml2::XMLNode* node= doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Clock" );
-    panelElement->DeleteChild(node);
-    //std::cout<<"Removed Clock\n";
-    saveChangesTemp();
-}
-
-bool Apps::isClock(){
-    if(tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Clock" )){return true;}
-    else {return false;}
-}
 std::string Apps::getClock(){
     //Check to make sure there is REALLY a clock... just in case
     bool exists = isClock();
     //if it doesn't exist... return from this function without doing anything
     if(!exists){return "Error no clock";}
-    tinyxml2::XMLElement* panelElement= doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Clock" );
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
     std::string clock = panelElement->Attribute("format");
     if (clock == "%a, %e %b %l:%M %p"){return "Saturday, June 21 7:02 PM";}
     else if(clock =="%l:%M %p"){return "7:02 PM";}
@@ -205,166 +170,113 @@ std::string Apps::getClock(){
     else if(clock =="%F %H:%M"){return "2014-06-21 19:02";}
     else{return clock;}
 }
+
 //++++++++++++++++++++++++++++++++++++++++++++ END Clock +++++++++++++++++++++++++++++++++++++++++++++
 
-//---------------------------------------------  TaskList (Running App list) ----------------------------------------------
 
-bool Apps::isTaskList(){
-    if(tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "TaskList" )){return true;}
+/// GENERAL APP FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////////
+bool Apps::isAPP(const char* app){
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            ++i;
+            std::cout << i;
+        }
+    }
+    if(panelElement->FirstChildElement( app )){return true;}
     else {return false;}
 }
-
-void Apps::addTaskList(){
-    tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" )->
+void Apps::deleteAPP(const char* app){
+    bool checkAPP = isAPP(app);
+    if(checkAPP){
+        int i = 1;
+        int panel = currentPanel();
+        tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
-    tinyxml2::XMLNode *node = doc.NewElement("TaskList");
-    trayNode->InsertEndChild(node);
-    //set up the Tasklist
-    ///TODO: allow user to configure this eventually
-    tinyxml2::XMLElement *trayElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "TaskList" );
-
-    trayElement->SetAttribute("maxwidth","256");
+        if (panel != i){
+            while(panelElement->NextSiblingElement("Tray") && i!=panel){
+                panelElement=panelElement->NextSiblingElement("Tray");
+                i++;
+            }
+        }
+        tinyxml2::XMLNode* node= panelElement->FirstChildElement( app );
+        panelElement->DeleteChild(node);
+    }
+    saveChangesTemp();
+}
+void Apps::addAPP(const char* app, const char* attribute, const char* value){
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    tinyxml2::XMLNode *node = doc.NewElement(app);
+    panelElement->InsertEndChild(node);
+    panelElement=panelElement->FirstChildElement(app);
+    panelElement->SetAttribute(attribute,value);
+    saveChangesTemp();
+}
+void Apps::addAPP(const char* app){
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    tinyxml2::XMLNode *node = doc.NewElement(app);
+    panelElement->InsertEndChild(node);
     saveChangesTemp();
 }
 
-void Apps::deleteTaskList(){
-    bool test = isTaskList();
-    if (test){
-        tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+void Apps::addAPP(const char* app, const char* attribute, const char* value, const char* newText){
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
-        tinyxml2::XMLNode* node= doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "TaskList" );
-        panelElement->DeleteChild(node);
-        saveChangesTemp();
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
     }
-}
-//++++++++++++++++++++++++++++++++++++++++++++ END TaskList +++++++++++++++++++++++++++++++++++++++++++++
-
-//---------------------------------------------  Pager (Desktop Switcher)----------------------------------------------
-
-bool Apps::isPager(){
-    if(tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Pager" )){return true;}
-    else {return false;}
-}
-
-void Apps::addPager(){
-    tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-    tinyxml2::XMLNode *node = doc.NewElement("Pager");
-    trayNode->InsertEndChild(node);
-    tinyxml2::XMLElement *trayElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Pager" );
-
-    trayElement->SetAttribute("labeled","true");
+    tinyxml2::XMLNode *node = doc.NewElement(app);
+    panelElement->InsertEndChild(node);
+    tinyxml2::XMLText *textNode = doc.NewText(newText);
+    node->LinkEndChild(textNode);
+    panelElement=panelElement->FirstChildElement(app);
+    panelElement->SetAttribute(attribute,value);
     saveChangesTemp();
 }
 
-void Apps::deletePager(){
-    bool test = isPager();
-    if (test){
-        tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-        tinyxml2::XMLNode* node= doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Pager" );
-        panelElement->DeleteChild(node);
-        saveChangesTemp();
-    }
-}
-//++++++++++++++++++++++++++++++++++++++++++++ END Pager +++++++++++++++++++++++++++++++++++++++++++++
-
-//---------------------------------------------  Dock (Indicators) ----------------------------------------------
-
-bool Apps::isDock(){
-    if(tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Dock" )){return true;}
-    else {return false;}
-}
-
-void Apps::addDock(){
-    tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-    tinyxml2::XMLNode *node = doc.NewElement("Dock");
-    trayNode->InsertEndChild(node);
-    tinyxml2::XMLElement *trayElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Dock" );
-
-    trayElement->SetAttribute("labeled","true");
-    saveChangesTemp();
-}
-
-void Apps::deleteDock(){
-    bool test = isDock();
-    if(test){
-        tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-        tinyxml2::XMLNode* node= doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "Dock" );
-        panelElement->DeleteChild(node);
-        saveChangesTemp();
-    }
-}
-//++++++++++++++++++++++++++++++++++++++++++++ END Dock +++++++++++++++++++++++++++++++++++++++++++++
 
 //---------------------------------------------  Shutdown Menu ----------------------------------------------
 
-bool Apps::isShutdown(){
-    for(tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "TrayButton" );
-    panelElement;
-    panelElement = panelElement->NextSiblingElement()){
-        if(panelElement->Attribute("label","Shutdown")){return true;}
-    }
-    return false;
-}
 void Apps::addShutdown(){
-    tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-    tinyxml2::XMLNode *node = doc.NewElement("TrayButton");
-    trayNode->InsertEndChild(node);
-    tinyxml2::XMLText *shutdown = doc.NewText("root:9");
-    node->LinkEndChild(shutdown);
-    tinyxml2::XMLElement *trayElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        LastChildElement( "TrayButton" );
-
-    trayElement->SetAttribute("label","Shutdown");
-    ///TODO: add in ability for user to set the icon name
-    trayElement->SetAttribute("icon","system-shutdown.png");
-    saveChangesTemp();
+    bool test = isShutdown();
+    if(!test){
+    const char* menu = gettext("Shutdown");
+    addMenu(9,menu,"system-shutdown");
+    }
 }
+
 void Apps::deleteShutdown(){
     bool test = isShutdown();
-    if(!test){return;}
-
-    tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-    tinyxml2::XMLNode *shutdownNode = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "TrayButton");
-
-    tinyxml2::XMLElement *element = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        LastChildElement("TrayButton");
-    std::string shutdown = element->GetText();
-    std::string value ="root:9";
-    if(shutdown.compare(value) ==0){
-        shutdownNode->DeleteChild(element);
-        saveChangesTemp();
-    }
+    if(test){deleteMenu(9);}
 }
+
 void Apps::setShutdownImage(const char* icon){
     for(tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" )->
@@ -379,74 +291,50 @@ void Apps::setShutdownImage(const char* icon){
 }
 //++++++++++++++++++++++++++++++++++++++++++++ END Shutdown Menu +++++++++++++++++++++++++++++++++++++++++++++
 
+//---------------------------------------------  App Menu ----------------------------------------------
+void Apps::addAppMenu(){
+    bool test = isAppMenu();
+    if(!test){
+        const char* MenuName = gettext("Apps");
+        addMenu(5,MenuName,"/usr/share/pixmaps/distributor-logo");
+    }
+}
+
+void Apps::deleteAppMenu(){
+    bool test = isAppMenu();
+    if(test){deleteMenu(5);}
+}
 
 //---------------------------------------------  Places Menu ----------------------------------------------
-
 void Apps::addPlaces(){
-    tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-    tinyxml2::XMLNode *node = doc.NewElement("TrayButton");
-    trayNode->InsertEndChild(node);
-    tinyxml2::XMLText *places = doc.NewText("root:7");
-    node->LinkEndChild(places);
-    tinyxml2::XMLElement *trayElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        LastChildElement( "TrayButton" );
-
-    trayElement->SetAttribute("label","Places");
-    trayElement->SetAttribute("icon","folder.png");
-    saveChangesTemp();
+    bool test = isPlaces();
+    if(!test){
+        const char* MenuName = gettext("Places");
+        addMenu(7,MenuName,"folder");
+    }
 }
 
 void Apps::deletePlaces(){
-    tinyxml2::XMLElement* rootNode=doc.FirstChildElement("JWM")->
-                                        FirstChildElement( "Tray" );
-    for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "TrayButton" );
-    node;
-    node=node->NextSiblingElement()){
-        std::string root = node->GetText();
-        std::string places ="root:7";
-        if(root.compare(places)==0){
-            rootNode->DeleteChild(node);
-            saveChangesTemp();
-        }
-    }
-}
-
-bool Apps::isPlaces(){
-    for(tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "TrayButton" );
-    panelElement;
-    panelElement = panelElement->NextSiblingElement()){
-        if(panelElement->Attribute("label","Places")){return true;}
-    }
-    return false;
+    bool test = isPlaces();
+    if(test){deleteMenu(7);}
 }
 //++++++++++++++++++++++++++++++++++++++++++++ END Places Menu +++++++++++++++++++++++++++++++++++++++++++++
 
 
 //-----------------------------------------------  Shortcuts -------------------------------------------------
 void Apps::getShortcuts(Fl_Browser *o){
-    //Multipanel test
-   //int panel = checkWhichPanel();
     int i = 1;
-    ///WHAT AM I DOING WRONG HERE??
-    //tinyxml2::XMLElement* panelElement = ;
-/*    bool test = multipanel();
-    if(test){
-        for(panelElement;i<=panel;i++){
-            panelElement = panelElement->NextSiblingElement("Tray");
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
         }
     }
-    //end MultiPanel
-*/
-    /*for(tinyxml2::XMLElement* panelElement=doc.FirstChildElement( "JWM" )->FirstChildElement( "Tray" )->FirstChildElement( "TrayButton" );
-    panelElement->Name() != "TrayButton";
-    panelElement = panelElement->NextSiblingElement()){
-
+    panelElement = panelElement->FirstChildElement("TrayButton");
+    for(panelElement;panelElement;panelElement = panelElement->NextSiblingElement("TrayButton")){
         //Get the documents text
         std::string programs = panelElement->GetText();
         std::string exec = "exec:";
@@ -459,7 +347,7 @@ void Apps::getShortcuts(Fl_Browser *o){
         //find out if what is left is 'exec:'
         if(progTester.compare(exec)==0){
             //check for the colon
-            unsigned found = programs.find_first_of(":");
+            unsigned found2 = programs.find_first_of(":");
             //delete everything before and including the colon (i.e. 'exec:')
             programs = programs.erase(0,found+1);
             //add it to the Fl_Browser
@@ -467,33 +355,30 @@ void Apps::getShortcuts(Fl_Browser *o){
             o->add(programs.c_str());
         }
     }
-*/
 }
 bool Apps::isShortcuts(){
     std::string programs;
     std::string exec = "exec:";
     //Multipanel test
-//    int panel = checkWhichPanel();
-    int i = 0;
-    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "Tray" );
-    bool test = multipanel();
-  /*  if(test){
-        for(panelElement;i<=panel;i++){
-            panelElement = panelElement->NextSiblingElement("Tray");
-        }
-    }*/
-    //end MultiPanel
-    tinyxml2::XMLElement *check =panelElement->FirstChildElement( "TrayButton" );
-    if(check){
-    for(panelElement=panelElement->FirstChildElement( "TrayButton" );
-    panelElement;
-    panelElement = panelElement->NextSiblingElement("TrayButton")){
-        if(panelElement->GetText()){programs = panelElement->GetText();
-            unsigned found = programs.find_first_of(":");
-            programs = programs.erase(found+1,std::string::npos);
-            if(programs.compare(exec)==0){return true;}
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
         }
     }
+    panelElement =panelElement->FirstChildElement( "TrayButton" );
+    if(panelElement){
+        for(panelElement;panelElement;panelElement = panelElement->NextSiblingElement("TrayButton")){
+            if(panelElement->GetText()){programs = panelElement->GetText();
+                unsigned found = programs.find_first_of(":");
+                programs = programs.erase(found+1,std::string::npos);
+                if(programs.compare(exec)==0){return true;}
+            }
+        }
     }
     return false;
 }
@@ -505,36 +390,38 @@ void Apps::deleteShortcut(const char* shortcut){
     std::string programs;
     std::string input = shortcut;
     std::string exec = "exec:";
-    //Multipanel test
-   //int panel = checkWhichPanel();
-    int i = 0;
-    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "Tray" );
-    bool test = multipanel();
-    /*if(test){
-        for(panelElement;i<=panel;i++){
-            panelElement = panelElement->NextSiblingElement("Tray");
+   int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
         }
-    }*/
-    //end MultiPanel
-    for(panelElement=panelElement->FirstChildElement( "TrayButton" );
-    panelElement;
-    panelElement = panelElement->NextSiblingElement("TrayButton")){
+    }
+    panelElement=panelElement->FirstChildElement( "TrayButton" );
+    if(panelElement){
+        for(panelElement;panelElement;panelElement = panelElement->NextSiblingElement("TrayButton")){
         ///make sure there is text
-        if(panelElement->GetText()){
-            programs = panelElement->GetText();
-            unsigned found = programs.find_first_of(":");
-            programs = programs.erase(found+1,std::string::npos);
-            ///find an instance of 'exec:'
-            if(programs.compare(exec)==0){
+            if(panelElement->GetText()){
                 programs = panelElement->GetText();
-                if(programs.compare(input)){
-                    rootNode->DeleteChild(panelElement);
-                    saveChangesTemp();
-                }//if input is program in file (delete the program)
-            }//if 'exec:'
-        }//if GetText()
-    }//for loop
+                unsigned found = programs.find_first_of(":");
+                programs = programs.erase(found+1,std::string::npos);
+            ///find an instance of 'exec:'
+                if(programs.compare(exec)==0){
+                    programs = panelElement->GetText();
+                    if(programs.compare(input)){
+                        rootNode->DeleteChild(panelElement);
+                        saveChangesTemp();
+                    }//if input is program in file (delete the program)
+                }//if 'exec:'
+            }//if GetText()
+        }//for loop
+    }
 }
+
+///Can I delete this one now that I have multipanel?
 void Apps::insertShortcut(const char* icon, const char * program, const char* popup, int border, tinyxml2::XMLElement* element){
     tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" )->FirstChildElement("Tray");
     tinyxml2::XMLNode *buttonNode = element;
@@ -550,9 +437,18 @@ void Apps::insertShortcut(const char* icon, const char * program, const char* po
 }
 
 void Apps::insertShortcut(const char* icon, const char * program, const char* popup, int border){
-    tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" )->FirstChildElement("Tray");
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
     tinyxml2::XMLNode *newNode = doc.NewElement("TrayButton");
-    trayNode->InsertEndChild(newNode);
+    panelElement->InsertEndChild(newNode);
     tinyxml2::XMLText *programText = doc.NewText(program);
     newNode->LinkEndChild(programText);
     tinyxml2::XMLElement *node = newNode->ToElement();
@@ -567,22 +463,20 @@ void Apps::addShortcut(const char* icon, const char * program, const char* popup
     std::string exec = "exec:";
     std::string root= "root:";
     std::string shortcut = exec;
-    //Multipanel test
-//    int panel = checkWhichPanel();
-    int i = 0;
-    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "Tray" );
-    bool test = multipanel();
-  /*  if(test){
-        for(panelElement;i<=panel;i++){
-            panelElement = panelElement->NextSiblingElement("Tray");
+    shortcut += program;
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
         }
-    }*/
-    //end MultiPanel
-    tinyxml2::XMLElement *check =panelElement->FirstChildElement( "TrayButton" );
-    if(check){
-    for(panelElement=panelElement->FirstChildElement( "TrayButton" );
-    panelElement;
-    panelElement = panelElement->NextSiblingElement("TrayButton")){
+    }
+    panelElement=panelElement->FirstChildElement( "TrayButton" );
+    if(panelElement){
+        for(panelElement;panelElement;panelElement = panelElement->NextSiblingElement("TrayButton")){
             programs = panelElement->GetText();
             unsigned int found = programs.find_first_of(":");
 
@@ -600,13 +494,11 @@ void Apps::addShortcut(const char* icon, const char * program, const char* popup
             else if(isExec.compare(root)==0){
 
                 std::cout<<"There is a root:\n";
-              //  insertShortcut(icon, program, popup, border, panelElement);
+                insertShortcut(icon, shortcut.c_str(), popup, border, panelElement);
             }
         }
     }
-    else{
-        insertShortcut(icon, shortcut.c_str(), popup, border);
-    }
+    else{insertShortcut(icon, shortcut.c_str(), popup, border);}
 
     ///TODO: search for other exec: buttons... if existing, add a sibiling right after it.
     /* if other exec don't exist... look for places menu. add after that.
@@ -619,14 +511,20 @@ void Apps::addShortcut(const char* icon, const char * program, const char* popup
 void Apps::deleteALLshortcuts(){
     std::string programs;
     std::string exec = "exec:";
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    panelElement = panelElement->FirstChildElement("TrayButton");
+    ///TODO multipanel checking here too...
     tinyxml2::XMLNode* node = doc.FirstChildElement( "JWM" )->
                                     FirstChildElement( "Tray" );
-
-    for(tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" )->
-                                        FirstChildElement( "TrayButton" );
-    panelElement;
-    panelElement = panelElement->NextSiblingElement("TrayButton")){
+    for(panelElement;panelElement;panelElement = panelElement->NextSiblingElement("TrayButton")){
         if(panelElement->GetText()){programs = panelElement->GetText();
             unsigned found = programs.find_first_of(":");
             programs = programs.erase(found+1,std::string::npos);
@@ -641,48 +539,36 @@ void Apps::deleteALLshortcuts(){
 
 //----------------------------------------------- Network Monitor -----------------------------------------------
 bool Apps::isNetworkMonitor(){
-    for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");node;node=node->NextSiblingElement("StartupCommand")){
-        std::string fromDoc = node->GetText();
-        const char* value  = fromDoc.c_str();
-        std::string wicd = "wicd-gtk -t";
-        std::string nmapplet = "nm-applet";
-        if(wicd.compare(value) ==0){
-            return true;
-        }
-        else if(nmapplet.compare(value) ==0){
-            return true;
-        }
-            ///TODO any other network applets?
-    }
-         //this is outside the loop so if those aren't found...
+    bool n = isAutostart("nm-applet");
+    bool w = isAutostart("wicd-gtk -t");
+    bool dock = isDock();
+    if (n && dock){return true;}
+    else if (w && dock){return true;}
     return false;
 }
 
 void Apps::addNetworkMonitor(){
-    const char* nmapplet="/usr/bin/nm-applet";
-    const char* wicd="/usr/bin/wicd-gtk";
-    bool wicdExists= testExec(wicd);
-    bool nmappletExists = testExec(nmapplet);
+    if (!isDock()){addDock();}
+    if (isNetworkMonitor()) return;
     if (nmappletExists){
-        std::cout << "using " << nmapplet << " for Network\n";
+        //std::cout << "using " << nmapplet << " for Network\n";
         addAutostart("nm-applet");
     }
     else if (wicdExists){
-        std::cout << "using " << wicd << " for Network\n";
+        //std::cout << "using " << wicd << " for Network\n";
         addAutostart("wicd-gtk -t");
     }
     else{
             ///TODO: check other places?
             //add fl error dialog to explain this
-        std::string noNetwork=wicd;
-        noNetwork += " and ";
-        noNetwork += nmapplet;
-        noNetwork += " not found";
+        std::string noNetwork=wicd; noNetwork += " and "; noNetwork += nmapplet; noNetwork += " not found";
         std::cout << noNetwork << std::endl;
     }
+    saveChangesTemp();
 }
 
 void Apps::deleteNetworkMonitor(){
+    if (isDock()){deleteDock();}
     removeAutostart("wicd-gtk -t");
     removeAutostart("nm-applet");
 }
@@ -691,72 +577,58 @@ void Apps::deleteNetworkMonitor(){
 
 
 //----------------------------------------------- Volume Control -----------------------------------------------
+///TODO: other volume applets
     bool Apps::isVolume(){
-        std::string volume;
-        if(volumeiconExists){
-            volume = "volumeicon";
+        bool dock = isDock();
+        bool volume = isAutostart("volumeicon");
+        if (dock && volume){
+            return true;
         }
-        else {
-            //todo other volume icons, do they work?
-            return false;
-        }
-        for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");node;node=node->NextSiblingElement("StartupCommand")){
-            std::string fromDoc = node->GetText();
-            const char* value  = fromDoc.c_str();
-            if(volume.compare(value) ==0){
-                return true;
-            }
-        }
-        //this is outside the for loop so if the compare fails...
         return false;
     }
-
     void Apps::addVolume(){
-        if(volumeiconExists){
-            addAutostart("volumeicon");
-        }
+        if (!isDock()){addDock();}
+        if (isVolume()) return;
+        if(volumeiconExists){addAutostart("volumeicon");}
     }
-
     void Apps::deleteVolume(){
+        if (isDock()){deleteDock();}
         removeAutostart("volumeicon");
     }
 //++++++++++++++++++++++++++++++++++++++++++++++ END Volume Control +++++++++++++++++++++++++++++++++++++++++++++++
 
 //----------------------------------------------- Battery -----------------------------------------------
     bool Apps::isBattery(){
-        std::string powermanager;
-        const char* gnome = "/usr/bin/???";
-        //other power managers?
-        for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");node;node=node->NextSiblingElement("StartupCommand")){
-            std::string fromDoc = node->GetText();
-            const char* value  = fromDoc.c_str();
-            if(xfcepower){
-                powermanager = "xfce4-power-manager";
-            }
-            if(powermanager.compare(value) ==0){
-                return true;
-            }
-        }
-        //this is outside the for loop so if the compare fails...
+        bool dock = isDock();
+        bool xf = isAutostart("xfce4-power-manager");
+        bool gnome = false;
+        bool sdesk = false;
+        if (xf && dock ){return true;}
+        //else if (gnome){return true;}
         return false;
     }
 
     void Apps::addBattery(){
+        if (!isDock()){addDock();}
+        if (isBattery()) return;
         if(xfcepower){
             addAutostart("xfce4-power-manager");
         }
         else{
             errorJWM("No power manager");
         }
+        saveChangesTemp();
     }
 
     void Apps::deleteBattery(){
+        if (isDock()){deleteDock();}
         if(xfcepower){
             removeAutostart("xfce4-power-manager");
         }
         else{
             errorJWM("No power manager");
         }
+        saveChangesTemp();
     }
 //++++++++++++++++++++++++++++++++++++++++++++++ END Battery +++++++++++++++++++++++++++++++++++++++++++++++
 

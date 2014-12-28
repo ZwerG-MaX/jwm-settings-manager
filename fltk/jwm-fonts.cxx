@@ -613,6 +613,13 @@ void FontUI::cb_Choose4(Fl_Button* o, void* v) {
   ((FontUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Choose4_i(o,v);
 }
 
+void FontUI::cb_Advanced_i(Fl_Button*, void*) {
+  currentElement = "WindowStyle";
+}
+void FontUI::cb_Advanced(Fl_Button* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Advanced_i(o,v);
+}
+
 void FontUI::cb_Main_i(Fl_Button*, void*) {
   flFont f; f.cancel();
 font_window->hide();
@@ -635,10 +642,12 @@ void FontUI::cb_OK1_i(Fl_Button*, void*) {
 flFont font;font.loadTemp();
 const char* fontFamily = font_name->value();
 std::string family = std::string(fontFamily);
-std::transform(family.begin(), family.end(), family.begin(), ::tolower);
-font.setFontName(family.c_str(), currentElement);
-Widget->value(fontFamily);
-Widget->redraw();
+if (family.compare("")!=0){
+	std::transform(family.begin(), family.end(), family.begin(), ::tolower);
+	font.setFontName(family.c_str(), currentElement);
+	Widget->value(fontFamily);
+	Widget->redraw();
+}
 font_choosing->hide();
 }
 void FontUI::cb_OK1(Fl_Button* o, void* v) {
@@ -648,6 +657,9 @@ void FontUI::cb_OK1(Fl_Button* o, void* v) {
 void FontUI::cb_font_browser_i(Fl_Browser*, void*) {
   const char * item = font_browser->text(font_browser->value());
 font_name->value(item);
+Fl_Font b = font_browser->value();
+std::cout<< Fl::get_font_name(b,0)<<std::endl;
+font_name->textfont(b);
 font_name->redraw();
 }
 void FontUI::cb_font_browser(Fl_Browser* o, void* v) {
@@ -656,6 +668,8 @@ void FontUI::cb_font_browser(Fl_Browser* o, void* v) {
 
 void FontUI::cb_font_name_i(Fl_Output* o, void*) {
   const char * item = font_browser->text(font_browser->value());
+Fl_Fontsize fs = 20;
+o->textsize(fs);
 o->redraw();
 }
 void FontUI::cb_font_name(Fl_Output* o, void* v) {
@@ -869,6 +883,12 @@ Fl_Double_Window* FontUI::make_window() {
             o->box(FL_GTK_UP_BOX);
             o->callback((Fl_Callback*)cb_Choose4);
           } // Fl_Button* o
+          { Fl_Button* o = new Fl_Button(405, 175, 80, 25, gettext("Advanced"));
+            o->tooltip(gettext("Open the Advanced Settings"));
+            o->box(FL_GTK_UP_BOX);
+            o->callback((Fl_Callback*)cb_Advanced);
+            o->deactivate();
+          } // Fl_Button* o
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(25, 90, 475, 560, gettext("Advanced"));
@@ -884,7 +904,8 @@ Fl_Double_Window* FontUI::make_window() {
             o->down_box(FL_GTK_DOWN_BOX);
             o->value(1);
             o->selection_color((Fl_Color)59);
-            o->deactivate();
+            flFont f;bool a = f.getAntialias("TrayStyle");
+            if (a){o->value(1);}else{o->value(0);}
           } // Fl_Check_Button* o
           o->end();
         } // Fl_Group* o
@@ -987,9 +1008,9 @@ void FontUI::w_setSize(Fl_Value_Input *o, const char * active) {
 }
 
 Fl_Double_Window* FontUI::font_chooser_window() {
-  { font_choosing = new Fl_Double_Window(345, 345, gettext("Choose a Font"));
+  { font_choosing = new Fl_Double_Window(335, 355, gettext("Choose a Font"));
     font_choosing->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(195, 295, 60, 25, gettext("Cancel"));
+    { Fl_Button* o = new Fl_Button(205, 310, 60, 25, gettext("Cancel"));
       o->tooltip(gettext("No changes will be saved"));
       o->box(FL_GTK_UP_BOX);
       o->down_box(FL_GTK_DOWN_BOX);
@@ -998,7 +1019,7 @@ Fl_Double_Window* FontUI::font_chooser_window() {
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_Cancel1);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(275, 295, 45, 25, gettext("OK"));
+    { Fl_Button* o = new Fl_Button(275, 310, 45, 25, gettext("OK"));
       o->tooltip(gettext("Write to configuration file"));
       o->box(FL_GTK_UP_BOX);
       o->down_box(FL_GTK_DOWN_BOX);
@@ -1008,19 +1029,31 @@ Fl_Double_Window* FontUI::font_chooser_window() {
       o->callback((Fl_Callback*)cb_OK1);
     } // Fl_Button* o
     { Fl_Browser* o = font_browser = new Fl_Browser(20, 15, 305, 260);
+      font_browser->labelfont(8);
       font_browser->callback((Fl_Callback*)cb_font_browser);
       font_browser->when(FL_WHEN_RELEASE);
-      flFont font;font.fontconfigLIST(font_browser);
-      o->type(FL_SELECT_BROWSER);
+      o->type(FL_SELECT_BROWSER);const char* v;
+      font_populate(o);
     } // Fl_Browser* font_browser
-    { font_name = new Fl_Output(5, 290, 175, 25);
+    { font_name = new Fl_Output(5, 290, 185, 50);
       font_name->box(FL_GTK_DOWN_BOX);
       font_name->color(FL_LIGHT2);
       font_name->selection_color((Fl_Color)80);
+      font_name->labelsize(20);
       font_name->callback((Fl_Callback*)cb_font_name);
       font_name->when(FL_WHEN_RELEASE_ALWAYS);
     } // Fl_Output* font_name
     font_choosing->end();
   } // Fl_Double_Window* font_choosing
   return font_choosing;
+}
+
+void FontUI::font_populate(Fl_Browser *o) {
+  Fl_Font a;a = Fl::set_fonts("-*");
+  std::string v;
+  Fl_Font i;
+  for (i=1;i!=a;++i){
+  	v = Fl::get_font_name(i,0);
+  	o->add(v.c_str());
+  }
 }

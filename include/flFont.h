@@ -26,9 +26,12 @@
 #define FLFONT_H
 #include "flPanel.h"
 #include "flWindow.h"
+#include <list>
+#include <string>
+#include <algorithm>
 #include "../fltk/jwm-fonts.h"
 #include "Config.h"
-#include <fontconfig/fontconfig.h>
+//#include <fontconfig/fontconfig.h>
 
 class flFont : public Config
 {
@@ -39,9 +42,18 @@ class flFont : public Config
         std::string fontTest(const char* font);
         void missingFont(const char* whichElement);
 
-        void fontconfigLIST(Fl_Browser *o);
+        //void fontconfigLIST(Fl_Browser *o);
         //Config options
         bool getAntialias(const char* whichElement);
+        bool isValue (const char* whichElement, const char* name, const char* value);
+        bool isValue(const char* whichElement, std::string name);
+        const char* isValue(const char* whichElement, std::string name, std::string value);
+        //bool isValue (const char* name, const char* value);///TODO
+        void addValue (const char* whichElement, const char* name, const char* value);
+        void deleteValue (const char* whichElement, const char* name);
+        void changeValue (const char* whichElement, std::string name, std::string value);
+        void changeValue (const char* whichElement, const char* name, bool value);
+        const char* getValue(const char* whichElement, const char* name);
 
         //Color
         void setFontColor(const double* rgb,const char* whichElement);
@@ -58,6 +70,10 @@ class flFont : public Config
         flFont();
         virtual ~flFont();
     protected:
+    const char* weight;
+    const char* slant;
+    const char* spacing;
+    const char* antialias;
     private:
 };
 

@@ -58,7 +58,7 @@ decl {\#include <FL/Fl_Color_Chooser.H>} {public global
 decl {\#include "../include/Config.h"} {public global
 } 
 
-decl {\#include "../include/ui.h"} {selected public global
+decl {\#include "../include/ui.h"} {public global
 } 
 
 class FontUI {open
@@ -71,7 +71,7 @@ class FontUI {open
   } {
     Fl_Window font_window {
       label {Font Settings} open
-      xywh {255 172 525 700} type Double color 31 resizable visible
+      xywh {68 83 525 700} type Double color 31 hide resizable
     } {
       Fl_Scroll {} {open
         xywh {0 -5 525 705} color 31
@@ -286,6 +286,11 @@ Widget=task_font;
 font_chooser_window()->show();}
               tooltip {Open the font list Window} xywh {420 540 65 25} box GTK_UP_BOX
             }
+            Fl_Button {} {
+              label Advanced
+              callback {currentElement = "WindowStyle";}
+              tooltip {Open the Advanced Settings} xywh {405 175 80 25} box GTK_UP_BOX deactivate
+            }
           }
           Fl_Group {} {
             label Advanced open
@@ -297,7 +302,9 @@ font_chooser_window()->show();}
             }
             Fl_Check_Button {} {
               label Antialias
-              xywh {100 395 95 25} down_box GTK_DOWN_BOX value 1 selection_color 59 deactivate
+              xywh {100 395 95 25} down_box GTK_DOWN_BOX value 1 selection_color 59
+              code0 {flFont f;bool a = f.getAntialias("TrayStyle");}
+              code1 {if (a){o->value(1);}else{o->value(0);}}
             }
           }
         }
@@ -400,12 +407,12 @@ f.saveChangesTemp();} {}
   } {
     Fl_Window font_choosing {
       label {Choose a Font} open
-      xywh {1265 213 345 345} type Double visible
+      xywh {610 99 335 355} type Double visible
     } {
       Fl_Button {} {
         label Cancel
         callback {font_choosing->hide();}
-        tooltip {No changes will be saved} xywh {195 295 60 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+        tooltip {No changes will be saved} xywh {205 310 60 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
       }
       Fl_Button {} {
         label OK
@@ -413,26 +420,43 @@ f.saveChangesTemp();} {}
 flFont font;font.loadTemp();
 const char* fontFamily = font_name->value();
 std::string family = std::string(fontFamily);
-std::transform(family.begin(), family.end(), family.begin(), ::tolower);
-font.setFontName(family.c_str(), currentElement);
-Widget->value(fontFamily);
-Widget->redraw();
+if (family.compare("")!=0){
+	std::transform(family.begin(), family.end(), family.begin(), ::tolower);
+	font.setFontName(family.c_str(), currentElement);
+	Widget->value(fontFamily);
+	Widget->redraw();
+}
 font_choosing->hide();}
-        tooltip {Write to configuration file} xywh {275 295 45 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+        tooltip {Write to configuration file} xywh {275 310 45 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
       }
       Fl_Browser font_browser {
         callback {const char * item = font_browser->text(font_browser->value());
 font_name->value(item);
-font_name->redraw();}
-        xywh {20 15 305 260} when 4
-        code0 {flFont font;font.fontconfigLIST(font_browser);}
-        code1 {o->type(FL_SELECT_BROWSER);}
+Fl_Font b = font_browser->value();
+std::cout<< Fl::get_font_name(b,0)<<std::endl;
+font_name->textfont(b);
+font_name->redraw();} selected
+        xywh {20 15 305 260} labelfont 8 when 4
+        code1 {o->type(FL_SELECT_BROWSER);const char* v;}
+        code2 {font_populate(o);}
       }
       Fl_Output font_name {
         callback {const char * item = font_browser->text(font_browser->value());
+Fl_Fontsize fs = 20;
+o->textsize(fs);
 o->redraw();}
-        xywh {5 290 175 25} box GTK_DOWN_BOX color 52 selection_color 80 when 6
+        xywh {5 290 185 50} box GTK_DOWN_BOX color 52 selection_color 80 labelsize 20 when 6
       }
     }
+  }
+  Function {font_populate(Fl_Browser *o)} {open
+  } {
+    code {Fl_Font a;a = Fl::set_fonts("-*");
+std::string v;
+Fl_Font i;
+for (i=1;i!=a;++i){
+	v = Fl::get_font_name(i,0);
+	o->add(v.c_str());
+}} {}
   }
 } 

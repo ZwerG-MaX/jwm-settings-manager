@@ -42,42 +42,45 @@ class Apps : public Config {
         void deleteALLshortcuts();
 
         //xload
-        void addAppXload();
+        bool xloadLoaded(){ return isTrayElement("Swallow","xload");}
         void deleteAppXload();
-        bool xloadLoaded();
+        void addAppXload();
 
         //clock
+        void addClock(){addAPP("Clock","format","%a, %e %b %l:%M %p","xclock");} ///TODO add clock to jsm file and add a configurer...
+        void deleteClock(){deleteAPP("Clock");}
+        bool isClock(){return isAPP("Clock" );}
         void changeClock(std::string style);
-        void addClock();
-        void deleteClock();
-        bool isClock();
         std::string getClock();
 
-        //TaskList
-        bool isTaskList();
-        void addTaskList();
-        void deleteTaskList();
-
-        //Pager
-        bool isPager();
-        void addPager();
-        void deletePager();
-
-        //Dock
-        bool isDock();
-        void addDock();
-        void deleteDock();
+//---------------------------------------------  TaskList (Running App list) ----------------------------------------------
+    bool isTaskList(){return isAPP("TaskList" );}
+    void addTaskList(){addAPP("TaskList","maxwidth","256");}
+    void deleteTaskList(){deleteAPP("TaskList");}
+//---------------------------------------------  Pager (Desktop Switcher)----------------------------------------------
+    bool isPager(){return isAPP("Pager");}
+    void addPager(){addAPP("Pager");}
+    void deletePager(){deleteAPP("Pager");}
+//---------------------------------------------  Dock (Indicators) ----------------------------------------------
+    bool isDock(){return isAPP("Dock");}
+    void addDock(){addAPP("Dock");}
+    void deleteDock(){deleteAPP("Dock");}
 
         //Shutdown
-        bool isShutdown();
+        bool isShutdown(){return isMenu(9);}
         void addShutdown();
         void deleteShutdown();
         void setShutdownImage(const char * icon);
 
         //Places
-        bool isPlaces();
+        bool isPlaces(){return isMenu(7);}
         void addPlaces();
         void deletePlaces();
+
+        //App Menu
+        bool isAppMenu(){return isMenu(5);}
+        void addAppMenu();
+        void deleteAppMenu();
 
       //NetworkMonitor
         bool isNetworkMonitor();
@@ -93,6 +96,13 @@ class Apps : public Config {
         bool isBattery();
         void addBattery();
         void deleteBattery();
+
+        bool isTrayElement(const char* element, std::string text);
+        bool isAPP(const char* app);
+        void addAPP(const char* app);
+        void addAPP(const char* app, const char* attribute, const char* value);
+        void addAPP(const char* app, const char* attribute, const char* value, const char* newText);
+        void deleteAPP(const char* app);
 
         Apps();
         virtual ~Apps();

@@ -582,6 +582,7 @@ dir = save_dir->value();
 std::string name = dir;
 name += filename;
 const char* file = name.c_str();
+///HOW DO I DO THIS???
 if(name.find_first_of("/")){
 	int result = theme.saveAs(file);
 	if(result==0){fl_alert("Saved %s",file);}
@@ -648,7 +649,6 @@ Fl_Double_Window* ThemesUI::make_window() {
       { Fl_Tabs* o = new Fl_Tabs(0, 55, 540, 440);
         o->box(FL_GTK_UP_BOX);
         { Fl_Group* o = new Fl_Group(0, 80, 540, 415, gettext("Normal"));
-          o->hide();
           { Fl_Button* o = new Fl_Button(335, 140, 190, 35, gettext("Gnome 2 Light Theme"));
             o->box(FL_GTK_UP_BOX);
             o->color((Fl_Color)61);
@@ -706,6 +706,7 @@ Fl_Double_Window* ThemesUI::make_window() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(0, 100, 540, 335, gettext("Expert"));
+          o->hide();
           { save_button = new Fl_Button(50, 125, 410, 45, gettext("Save Current ~/.jwmrc file as something else"));
             save_button->tooltip(gettext("This will copy your current theme somewhere else"));
             save_button->box(FL_GTK_UP_BOX);

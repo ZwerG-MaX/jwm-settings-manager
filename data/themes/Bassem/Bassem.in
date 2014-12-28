@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<!--
+ToriOS Bassem Theme
+Israel <israel@torios.org>
+MIT license copyright 2014
+-->
+
+<JWM>
+
+<!-- MENUS -->
+<!-- Main Menu -->
+    <Include>$HOME/.config/torimenu</Include>
+    <!--Shudown Menu-->
+    <RootMenu height="0" onroot="9">
+        <Program icon="preferences-system-session.svg" label="Shutdown Menu">jwm-settings-manager --halt</Program>
+        <Program icon="system-restart.svg" label="Restart Computer">dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart</Program>
+        <Restart label="Reload Desktop" icon="system-restart.svg"/>
+        <Exit label="Logout" confirm="true" icon="system-logout.svg"/>
+    </RootMenu>
+    <!--Places Menu-->
+    <Include>$HOME/.config/placesmenu</Include>
+    <!-- Mouse Menu-->
+    <RootMenu height="16" onroot="23">
+        <Program icon="application-default-icon.svg" label="Applications">xdg-open /usr/share/applications</Program>
+        <Program icon="folder-home.svg" label="Home">xdg-open ~/</Program>
+        <Program icon="jwm-settings-manager.svg" label="Settings">jwm-settings-manager</Program>
+        <Program icon="preferences-desktop-wallpaper.svg" label="Change Desktop Background">jwm-settings-manager --desktop</Program>
+    </RootMenu>
+    <!-- END MENUS -->
+
+
+<!-- GROUP -->
+    <Group>
+        <Class>Pidgin</Class>
+        <Option>sticky</Option>
+    </Group>
+    <Group>
+        <Name>gkrellm</Name>
+        <Option>nolist</Option>
+        <Option>sticky</Option>
+    </Group>
+    <Group>
+        <Name>conky</Name>
+        <Option>nolist</Option>
+        <Option>sticky</Option>
+    </Group>
+    <Group>
+        <Name>jwm-settings-manager</Name>
+        <Option>icon:jwm-settings-manager.png</Option>
+    </Group>
+
+
+<!-- PANEL -->
+    <Tray x="0" y="-1" height="34" autohide="false" valign="top" width="0" halign="fixed" layout="horizontal">
+        <TrayButton icon="distributor-logo.png" border="false">root:5</TrayButton>
+        <Spacer/>
+        <Clock format="%a, %e %b %l:%M %p">@XCLOCK@</Clock>
+        <Spacer/>
+        <TrayButton label="Shutdown" icon="system-shutdown.svg" border="false">root:9</TrayButton>
+    </Tray>
+    <Tray x="0" y="-1" height="34" autohide="false" valign="bottom" width="0" halign="fixed" layout="horizontal">
+        <Pager labeled="true"/>
+        <TaskList maxwidth="256"/>
+        <Swallow name="xload" width="64">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>
+        <TrayButton label="Places" icon="folder.svg" border="false">root:7</TrayButton>
+        <Dock/>
+    </Tray>
+
+<!-- Panel Style -->
+    <TaskListStyle>
+        <ActiveBackground>#4A24AB</ActiveBackground>
+        <Background>#353535</Background>
+        <Font>@FONT@</Font>
+        <Foreground>#ffffff</Foreground>
+    </TaskListStyle>
+    <TrayStyle>
+        <Font>@FONT@</Font>
+        <Foreground>#ffffff</Foreground>
+        <Background>#353535</Background>
+        <Opacity>0.75</Opacity>
+    </TrayStyle>
+    <TrayButtonStyle>
+        <Font>@FONT@</Font>
+        <Foreground>#ffffff</Foreground>
+        <Background>#353535</Background>
+    </TrayButtonStyle>
+    <PagerStyle>
+        <Outline>#000000</Outline>
+        <Foreground>#ffffff</Foreground>
+        <Background>#353535</Background>
+        <ActiveForeground>#ffffff</ActiveForeground>
+        <ActiveBackground>#4A24AB</ActiveBackground>
+    </PagerStyle>
+    <MenuStyle>
+        <Font>@FONT@</Font>
+        <Foreground>#ffffff</Foreground>
+        <Background>#353535</Background>
+        <ActiveBackground>#4A24AB</ActiveBackground>
+        <Opacity>0.85</Opacity>
+    </MenuStyle>
+
+<!-- WINDOW -->
+    <WindowStyle>
+        <Font>@FONT@</Font>
+        <Width>4</Width>
+        <Height>20</Height>
+        <Active>
+            <Text>#eaeaea</Text>
+            <Title>#737373:#353535</Title>
+            <Outline>#353535</Outline>
+            <Opacity>1.0</Opacity>
+        </Active>
+        <Inactive>
+            <Text>#6E35FF</Text>
+            <Title>#737373:#353535</Title>
+            <Outline>#353535</Outline>
+            <Opacity>0.7</Opacity>
+        </Inactive>
+    </WindowStyle>
+    <FocusModel>click</FocusModel>
+    <SnapMode distance="10">border</SnapMode>
+    <MoveMode>opaque</MoveMode>
+    <ResizeMode>opaque</ResizeMode>
+
+<Key key="Up">up</Key>
+    <Key key="Down">down</Key>
+    <Key key="Right">right</Key>
+    <Key key="Left">left</Key>
+    <Key key="a">left</Key>
+    <Key key="s">down</Key>
+    <Key key="w">up</Key>
+    <Key key="d">right</Key>
+    <Key key="F12">fullscreen</Key>
+    <Key key="Return">select</Key>
+    <Key key="Escape">escape</Key>
+    <Key key="XF86AudioMute">exec:amixer -q sset Master toggle</Key>
+    <Key key="XF86AudioRaiseVolume">exec:amixer -q sset Master 3%+ unmute</Key>
+    <Key key="XF86AudioLowerVolume">exec:amixer -q sset Master 3%- unmute</Key>
+    <Key key="XF86WWW">exec:sensible-browser</Key>
+    <Key key="XF86Calculator">exec:xcalc</Key>
+    <Key key="Print">@SCREENIE@</Key>
+    <Key mask="CA" key="p">@SCREENIE@</Key>
+    <Key mask="CA" key="t">exec:x-terminal-emulator</Key>
+    <Key mask="CA" key="Delete">exec:xterm htop</Key>
+    <Key mask="A" key="Tab">next</Key>
+    <Key mask="CA" key="Tab">nextstacked</Key>
+    <Key mask="A" key="F4">close</Key>
+    <Key mask="A" key="#">desktop#</Key>
+    <Key mask="A" key="F1">root:1</Key>
+    <Key mask="A" key="F2">window</Key>
+    <Key mask="A" key="F10">maximize</Key>
+    <Key mask="CA" key="Right">rdesktop</Key>
+    <Key mask="CA" key="Left">ldesktop</Key>
+    <Key mask="CA" key="Up">udesktop</Key>
+    <Key mask="CA" key="Down">ddesktop</Key>
+    <Key mask="A" key="F4">close</Key>
+    <!-- MOUSE -->
+    <DoubleClickSpeed>400</DoubleClickSpeed>
+    <DoubleClickDelta>2</DoubleClickDelta>
+    <!-- ICONS -->
+    <IconPath>/usr/share/pixmaps</IconPath>
+    <IconPath>/usr/share/icons/Numix/48x48/actions/</IconPath>
+    <IconPath>/usr/share/icons/Numix/48x48/categories/</IconPath>
+    <IconPath>/usr/share/icons/Numix/48x48/places/</IconPath>
+    <IconPath>/usr/share/icons/Numix/48x48/status/</IconPath>
+    <IconPath>/usr/share/icons/Numix-Circle/48x48/apps</IconPath>
+
+<!-- DESKTOP -->
+    <Desktops width="2" height="1">
+        <Background type="image">@BG@</Background>
+    </Desktops>
+
+<!-- AUTOSTART -->
+   <StartupCommand>@WIFI@</StartupCommand>
+   <StartupCommand>@VOLUME@</StartupCommand>
+   <StartupCommand>synclient MaxTapTime=0</StartupCommand>
+
+<!--POP UP -->
+    <PopupStyle>
+        <Font>@FONT@</Font>
+        <Outline>#000000</Outline>
+        <Foreground>#ffffff</Foreground>
+        <Background>#353535</Background>
+    </PopupStyle>
+
+</JWM>

@@ -1,27 +1,18 @@
 <?xml version="1.0"?>
 <JWM>
+<!-- NOTE, if you hand edit this root:5 is the app menu and root:7 is the places menu  you have been duly warned :) -->
     <!-- MENUS -->
     <!-- Main Menu -->
     <Include>$HOME/.config/torimenu</Include>
     <!--Shudown Menu-->
     <RootMenu height="0" onroot="9">
         <Program icon="preferences-system-session.svg" label="Shutdown Menu">jwm-settings-manager --halt</Program>
-        <Program icon="system-restart.svg" label="Restart Computer">dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart</Program>
+        <Program icon="system-restart.svg" label="Restart Computer NOW">dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart</Program>
         <Restart label="Reload Desktop" icon="system-restart.svg"/>
         <Exit label="Logout" confirm="true" icon="system-logout.svg"/>
     </RootMenu>
     <!--Places Menu-->
-    <RootMenu height="0" onroot="7">
-        <Program icon="application-default-icon.svg" label="Applications">xdg-open /usr/share/applications</Program>
-        <Program icon="folder-home.svg" label="Home">xdg-open ~/</Program>
-        <Program icon="folder-documents.svg" label="Documents">xdg-open ~/Documents</Program>
-        <Program icon="folder-downloads.svg" label="Downloads">xdg-open ~/Downloads</Program>
-        <Program icon="folder-music.svg" label="Music">xdg-open -n ~/Music</Program>
-        <Program icon="folder-pictures.svg" label="Pictures">xdg-open ~/Pictures</Program>
-        <Program icon="folder-video.svg" label="Videos">xdg-open ~/Videos</Program>
-        <Program icon="user-trash.svg" label="Trash">xdg-open ~/.local/share/Trash/files</Program>
-        <Program icon="file-manager.svg" label="Connected Devices">xdg-open /media</Program>
-    </RootMenu>
+    <Include>$HOME/.config/placesmenu</Include>
     <!-- Mouse Menu-->
     <RootMenu height="16" onroot="23">
         <Program icon="application-default-icon.svg" label="Applications">xdg-open /usr/share/applications</Program>
@@ -46,15 +37,14 @@
         <Option>sticky</Option>
     </Group>
     <Group>
-        <Name>xterm</Name>
-        <Option>vmax</Option>
-        <Option>icon:terminal.png</Option>
+        <Name>jwm-settings-manager</Name>
+        <Option>icon:jwm-settings-manager.png</Option>
     </Group>
     <!-- PANEL -->
     <Tray x="0" y="-1" height="34" autohide="false" valign="top" width="0" halign="fixed" layout="horizontal">
         <TrayButton label="Apps" icon="/usr/share/pixmaps/distributor-logo.png" border="false">root:5</TrayButton>
         <TrayButton label="Places" icon="folder.svg" border="false">root:7</TrayButton>
-        <TrayButton icon="browser.svg" border="false">exec:sensible-browser</TrayButton>
+        <TrayButton icon="browser.svg" border="false">exec:xdg-open /usr/share/doc/ToriOS/startpage.html</TrayButton>
         <Pager labeled="true"/>
         <TaskList maxwidth="256"/>
         <Dock/>
@@ -66,19 +56,19 @@
     <TaskListStyle>
         <ActiveBackground>#940000</ActiveBackground>
         <Background>#383838</Background>
-        <Font>ubuntu-12:antialias=true</Font>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
         <Foreground>#ffffff</Foreground>
     </TaskListStyle>
     <TrayStyle>
-        <Font>ubuntu-12:antialias=true</Font>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
         <Foreground>#ffffff</Foreground>
-        <Background>#000000</Background>
+        <Background>#383838</Background>
         <Opacity>0.75</Opacity>
     </TrayStyle>
     <TrayButtonStyle>
-        <Font>ubuntu-12:antialias=true</Font>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
         <Foreground>#ffffff</Foreground>
-        <Background>#000000</Background>
+        <Background>#383838</Background>
     </TrayButtonStyle>
     <PagerStyle>
         <Outline>#000000</Outline>
@@ -88,7 +78,7 @@
         <ActiveBackground>#940000</ActiveBackground>
     </PagerStyle>
     <MenuStyle>
-        <Font>ubuntu-12:antialias=true</Font>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
         <Foreground>#ffffff</Foreground>
         <Background>#383838</Background>
         <ActiveBackground>#940000</ActiveBackground>
@@ -136,8 +126,8 @@
     <Key key="XF86AudioLowerVolume">exec:amixer -q sset Master 3%- unmute</Key>
     <Key key="XF86WWW">exec:sensible-browser</Key>
     <Key key="XF86Calculator">exec:xcalc</Key>
-    <Key key="Print">exec:import -window root $(date -I).png</Key>
-    <Key mask="CA" key="p">exec:import -window root $(date -I).png</Key>
+    <Key key="Print">exec:screenie</Key>
+    <Key mask="CA" key="p">exec:screenie</Key>
     <Key mask="CA" key="t">exec:x-terminal-emulator</Key>
     <Key mask="CA" key="Delete">exec:xterm htop</Key>
     <Key mask="A" key="Tab">next</Key>
@@ -157,6 +147,7 @@
     <DoubleClickDelta>2</DoubleClickDelta>
     <!-- ICONS -->
     <IconPath>/usr/share/pixmaps</IconPath>
+    <IconPath>/usr/share/icons</IconPath>
     <IconPath>/usr/share/icons/Numix/48x48/actions/</IconPath>
     <IconPath>/usr/share/icons/Numix/48x48/categories/</IconPath>
     <IconPath>/usr/share/icons/Numix/48x48/places/</IconPath>
@@ -167,12 +158,13 @@
         <Background type="image">/usr/share/backgrounds/default.png</Background>
     </Desktops>
     <!-- AUTOSTART -->
-    <StartupCommand>wicd-gtk -t</StartupCommand>
+    <StartupCommand>nm-applet</StartupCommand>
     <StartupCommand>volumeicon</StartupCommand>
+    <StartupCommand>synclient VertEdgeScroll=1</StartupCommand>
     <StartupCommand>synclient MaxTapTime=0</StartupCommand>
     <!--POP UP -->
     <PopupStyle>
-        <Font>ubuntu-12:antialias=true</Font>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
         <Outline>#000000</Outline>
         <Foreground>#ffffff</Foreground>
         <Background>#383838</Background>

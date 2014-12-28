@@ -1,45 +1,27 @@
 <?xml version="1.0"?>
 <JWM>
-
-<!-- MENUS -->
-
+<!-- NOTE, if you hand edit this root:5 is the app menu and root:7 is the places menu  you have been duly warned :) -->
+    <!-- MENUS -->
     <!-- Main Menu -->
-    <RootMenu height="0" onroot="5">
-        <Program icon="terminal.png" label="Terminal">x-terminal-emulator</Program>
-        <Program icon="firefox.png" label="Firefox">firefox</Program>
-        <Program icon="text-editor.png" label="Text Editor">gedit</Program>
-        <Program icon="applets-screenshooter.png" label="Screenshot">import -window root $(date -Iminutes).png</Program>
-        <Program icon="system-file-manager.png" label="Files">rox-filer -n </Program>
-        <Separator/>
-        <Program icon="lock.png" label="Lock">xscreensaver-command -activate</Program>
-        <Include>/etc/jwm/debian-menu</Include>
-        <Separator/>
-        <Restart label="Restart" icon="system-restart.png"/>
-        <Exit label="Exit" confirm="true" icon="exit.png"/>
-    </RootMenu>
-
+    <Include>$HOME/.config/torimenu</Include>
     <!--Shudown Menu-->
     <RootMenu height="0" onroot="9">
-        <Program icon="terminal.png" label="Terminal">x-terminal-emulator</Program>
-        <Restart label="Restart" icon="system-restart.png"/>
-        <Exit label="Exit" confirm="true" icon="exit.png"/>
+        <Program icon="preferences-system-session.svg" label="Shutdown Menu">jwm-settings-manager --halt</Program>
+        <Program icon="system-restart.svg" label="Restart Computer NOW">dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart</Program>
+        <Restart label="Reload Desktop" icon="system-restart.svg"/>
+        <Exit label="Logout" confirm="true" icon="system-logout.svg"/>
     </RootMenu>
-
     <!--Places Menu-->
-    <RootMenu height="0" onroot="7">
-        <Program icon="folder-home.png" label="Home">rox-filer -n ~/</Program>
-        <Program icon="folder-documents.png" label="Documents">rox-filer -n ~/Documents</Program>
-        <Program icon="folder-downloads.png" label="Downloads">rox-filer -n ~/Downloads</Program>
-        <Program icon="folder-music.png" label="Music">rox-filer -n ~/Music</Program>
-        <Program icon="folder-pictures.png" label="Pictures">rox-filer -n ~/Pictures</Program>
-        <Program icon="folder-video.png" label="Videos">rox-filer -n ~/Videos</Program>
-        <Program icon="user-trash.png" label="Trash">rox-filer -n ~/.local/share/Trash/files</Program>
-        <Program icon="file-manager.png" label="Connected Devices">rox-filer -n /media</Program>
+    <Include>$HOME/.config/placesmenu</Include>
+    <!-- Mouse Menu-->
+    <RootMenu height="16" onroot="23">
+        <Program icon="application-default-icon.svg" label="Applications">xdg-open /usr/share/applications</Program>
+        <Program icon="folder-home.svg" label="Home">xdg-open ~/</Program>
+        <Program icon="/usr/share/icons/jwm-settings-manager.svg" label="Settings">jwm-settings-manager</Program>
+        <Program icon="preferences-desktop-wallpaper.svg" label="Change Desktop Background">jwm-settings-manager --desktop</Program>
     </RootMenu>
-<!-- END MENUS -->
-
-
-<!-- GROUP -->
+    <!-- END MENUS -->
+    <!-- GROUP -->
     <Group>
         <Class>Pidgin</Class>
         <Option>sticky</Option>
@@ -59,21 +41,18 @@
         <Option>vmax</Option>
         <Option>icon:terminal.png</Option>
     </Group>
-
-
-<!-- PANEL -->
+    <!-- PANEL -->
     <Tray x="0" y="-1" height="34" autohide="false" valign="top" width="0" halign="fixed" layout="horizontal">
-        <TrayButton label="Apps" icon="/usr/share/pixmaps/distributor-logo.png">root:5</TrayButton>
-        <TrayButton label="Places" icon="folder.png">root:7</TrayButton>
-        <TrayButton icon="firefox.png">exec:firefox</TrayButton>
+        <TrayButton label="Apps" icon="/usr/share/pixmaps/distributor-logo.png" border="false">root:5</TrayButton>
+        <TrayButton label="Places" icon="folder.svg" border="false">root:7</TrayButton>
+        <TrayButton icon="browser.svg" border="false">exec:xdg-open /usr/share/doc/ToriOS/startpage.html</TrayButton>
         <Pager labeled="true"/>
         <TaskList maxwidth="256"/>
         <Dock/>
-        <Swallow name="xload" width="64">xload -nolabel -bg black -fg red -hl white</Swallow>
+        <Swallow name="xload" width="64">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>
         <Clock format="%a, %e %b %l:%M %p">xclock</Clock>
-        <TrayButton label="Shutdown" icon="system-shutdown.png">root:9</TrayButton>
+        <TrayButton label="Shutdown" icon="system-shutdown.svg" border="false">root:9</TrayButton>
     </Tray>
-
     <!-- Panel Style -->
     <TaskListStyle>
         <ActiveBackground>#940000</ActiveBackground>
@@ -84,17 +63,17 @@
     <TrayStyle>
         <Font>ubuntu-12:antialias=true</Font>
         <Foreground>#ffffff</Foreground>
-        <Background>#000000</Background>
+        <Background>#383838</Background>
         <Opacity>0.75</Opacity>
     </TrayStyle>
     <TrayButtonStyle>
-	    <Font>ubuntu-12:antialias=true</Font>
+        <Font>ubuntu-12:antialias=true</Font>
         <Foreground>#ffffff</Foreground>
-        <Background>#000000</Background>
+        <Background>#383838</Background>
     </TrayButtonStyle>
     <PagerStyle>
         <Outline>#000000</Outline>
-        <Foreground>#ffffff</Foreground>
+        <Foreground>#808080</Foreground>
         <Background>#383838</Background>
         <ActiveForeground>#ffffff</ActiveForeground>
         <ActiveBackground>#940000</ActiveBackground>
@@ -106,8 +85,7 @@
         <ActiveBackground>#940000</ActiveBackground>
         <Opacity>0.85</Opacity>
     </MenuStyle>
-
-<!-- WINDOW -->
+    <!-- WINDOW -->
     <WindowStyle>
         <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
         <Width>4</Width>
@@ -125,16 +103,14 @@
             <Opacity>0.7</Opacity>
         </Inactive>
     </WindowStyle>
-    <ButtonClose>/usr/share/jwm-settings-manager/themes/Default/Buttons/close.xbm</ButtonClose>
-    <ButtonMax>/usr/share/jwm-settings-manager/themes/Default/Buttons/max.xbm</ButtonMax>
-    <ButtonMaxActive>/usr/share/jwm-settings-manager/themes/Default/Buttons/max_toggled.xbm</ButtonMaxActive>
-    <ButtonMin>/usr/share/jwm-settings-manager/themes/Default/Buttons/iconify.xbm</ButtonMin>
+    <ButtonClose>/usr/share/jwm-settings-manager/themes/Default/Buttons/close.png</ButtonClose>
+    <ButtonMax>/usr/share/jwm-settings-manager/themes/Default/Buttons/max.png</ButtonMax>
+    <ButtonMaxActive>/usr/share/jwm-settings-manager/themes/Default/Buttons/max-toggle.png</ButtonMaxActive>
+    <ButtonMin>/usr/share/jwm-settings-manager/themes/Default/Buttons/min.png</ButtonMin>
     <FocusModel>click</FocusModel>
     <SnapMode distance="10">border</SnapMode>
     <MoveMode>opaque</MoveMode>
     <ResizeMode>opaque</ResizeMode>
-
-<!-- KEYBOARD -->
     <Key key="Up">up</Key>
     <Key key="Down">down</Key>
     <Key key="Right">right</Key>
@@ -146,9 +122,15 @@
     <Key key="F12">fullscreen</Key>
     <Key key="Return">select</Key>
     <Key key="Escape">escape</Key>
+    <Key key="XF86AudioMute">exec:amixer -q sset Master toggle</Key>
+    <Key key="XF86AudioRaiseVolume">exec:amixer -q sset Master 3%+ unmute</Key>
+    <Key key="XF86AudioLowerVolume">exec:amixer -q sset Master 3%- unmute</Key>
+    <Key key="XF86WWW">exec:sensible-browser</Key>
+    <Key key="XF86Calculator">exec:xcalc</Key>
+    <Key key="Print">exec:import -window root $(date -I).png</Key>
     <Key mask="CA" key="p">exec:import -window root $(date -I).png</Key>
     <Key mask="CA" key="t">exec:x-terminal-emulator</Key>
-    <Key mask="CA" key="Delete">exec:htop</Key>
+    <Key mask="CA" key="Delete">exec:xterm htop</Key>
     <Key mask="A" key="Tab">next</Key>
     <Key mask="CA" key="Tab">nextstacked</Key>
     <Key mask="A" key="F4">close</Key>
@@ -160,29 +142,34 @@
     <Key mask="CA" key="Left">ldesktop</Key>
     <Key mask="CA" key="Up">udesktop</Key>
     <Key mask="CA" key="Down">ddesktop</Key>
-    <Key mask="A" key="F4">close</Key>
-
-<!-- MOUSE -->
+    <Key mask="CA" key="q">close</Key>
+    <!-- MOUSE -->
     <DoubleClickSpeed>400</DoubleClickSpeed>
     <DoubleClickDelta>2</DoubleClickDelta>
-
-<!-- ICONS -->
+    <!-- ICONS -->
     <IconPath>/usr/share/pixmaps</IconPath>
-
-<!-- DESKTOP -->
+    <IconPath>/usr/share/icons</IconPath>
+    <IconPath>/usr/share/icons/Numix/48x48/actions/</IconPath>
+    <IconPath>/usr/share/icons/Numix/48x48/categories/</IconPath>
+    <IconPath>/usr/share/icons/Numix/48x48/places/</IconPath>
+    <IconPath>/usr/share/icons/Numix/48x48/status/</IconPath>
+    <IconPath>/usr/share/icons/Numix-Circle/48x48/apps</IconPath>
+    <!-- DESKTOP -->
     <Desktops width="2" height="1">
         <Background type="image">/usr/share/backgrounds/default.png</Background>
     </Desktops>
-
-<!-- AUTOSTART -->
-   <StartupCommand>gkrellm</StartupCommand>
-
-<!--POP UP -->
+    <!-- AUTOSTART -->
+    <StartupCommand>wicd-gtk -t</StartupCommand>
+    <StartupCommand>udiskie --tray</StartupCommand>
+    <StartupCommand>xfce4-power-manager</StartupCommand>
+    <StartupCommand>volumeicon</StartupCommand>
+    <StartupCommand>synclient VertEdgeScroll=1</StartupCommand>
+    <StartupCommand>synclient MaxTapTime=0</StartupCommand>
+    <!--POP UP -->
     <PopupStyle>
         <Font>ubuntu-12:antialias=true</Font>
         <Outline>#000000</Outline>
         <Foreground>#ffffff</Foreground>
         <Background>#383838</Background>
     </PopupStyle>
-
 </JWM>

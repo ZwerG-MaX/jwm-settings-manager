@@ -57,9 +57,12 @@ public:
     void setBackground(const double* rgb, const double* rgb2);
     void setBackground(const char* type, const char* value);  //set background image, a tiled image or command.  type = image value = filename(or command)
 
+    const char* whichFileManager();
     //ROX
+    int addRoxFileAttribute(const char* element, const char* attribute, const char* value, const char* text);
     void useRox(bool rox);//Set Rox use to TRUE or FALSE
     bool roxActive(); //is rox in startup?
+    bool roxExists(); //does the binary exist?
     bool configExists();
     void makeConfig();
     void createRoxDir();
@@ -77,8 +80,11 @@ public:
     virtual ~flDesktop();
 
 private:
+    bool roxPresent;
     const char *roxCommand;
     bool m_useRox;
+    bool m_usePCmanFM;
+    std::string pcmanFMfilename;
     std::string roxFileName;
     tinyxml2::XMLDocument roxDoc;
 

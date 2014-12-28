@@ -76,7 +76,7 @@ class DesktopUI {open
   } {
     Fl_Window desktop_window {
       label {Desktop Settings} open
-      xywh {365 138 530 530} type Double color 31 hide resizable
+      xywh {365 222 530 530} type Double color 31 hide resizable
     } {
       Fl_Scroll {} {open
         xywh {0 0 550 555} color 31
@@ -134,7 +134,7 @@ desktop.setMultiDeskHeight(o->value());}
           callback {flDesktop desktop;desktop.cancel();
 desktop_window->hide();
 UI ux;
-ux.showSettings();} selected
+ux.showSettings();}
           xywh {385 490 65 25} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button {} {
@@ -193,6 +193,12 @@ if(e){/*do something*/}}
         Fl_Box {} {
           label {This ONLY USES ROX-FILER}
           xywh {370 285 160 35} labelfont 1 align 128
+        }
+        Fl_Output {} {selected
+          xywh {355 30 145 30} box GTK_DOWN_BOX color 50 selection_color 72 align 33 hide
+          code0 {flDesktop desktop;desktop.loadTemp();}
+          code1 {const char* result = desktop.whichFileManager();}
+          code2 {o->value(result);}
         }
       }
       Fl_Button {} {
