@@ -1,0 +1,936 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+i18n_type 1 
+i18n_include <libintl.h> 
+i18n_function gettext 
+header_name {.h} 
+code_name {.cxx}
+comment {/*                 Joe's Window Manager Configuration
+ *
+ * This program configures JWM using tinyxml2 and FLTK
+ *
+ *         Copyright (C) 2014  Israel <israel@torios.org>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This has been developed as a part of the ToriOS Project
+ * This has been developed by Israel<israel@torios.org>
+ *
+ *
+ * You may redistribute this, but you must keep this comment in place
+ * Jesus is my Lord, and if you don't like it feel free to ignore it.
+ */} {in_source in_header
+} 
+
+comment {//Many thanks to flSynclient (c) 2006 Matteo Lucarelli <matteo@matteolucarelli.net>} {in_source in_header
+} 
+
+decl {\#include <libintl.h>} {public global
+} 
+
+decl {\#include <string>} {public global
+} 
+
+decl {\#include <stdlib.h>} {public global
+} 
+
+decl {\#include <iostream>} {public global
+} 
+
+decl {\#include "../include/Config.h"} {public global
+} 
+
+decl {\#include "../include/ui.h"} {public global
+} 
+
+decl {\#include "../include/flMouse.h"} {public global
+} 
+
+decl {\#include <getopt.h>} {public global
+} 
+
+decl {\#include <stdio.h>} {public global
+} 
+
+decl {\#include <unistd.h>} {public global
+} 
+
+decl {\#include <signal.h>} {public global
+} 
+
+decl {\#include <sys/types.h>} {public global
+} 
+
+decl {\#include <sys/wait.h>} {public global
+} 
+
+decl {\#include <FL/filename.H>} {public global
+} 
+
+decl {\#include <FL/fl_draw.H>} {public global
+} 
+
+decl {\#include <FL/fl_message.H>} {public global
+} 
+
+class MouseUI {open : {public Config}
+} {
+  decl {bool verbose;int m_pid;} {public local
+  }
+  Function {make_window()} {open
+  } {
+    code {load();
+saveChangesTemp();} {}
+    Fl_Window mouse_window {
+      label {Mouse Settings} open
+      xywh {979 351 440 535} type Double color 31 hide resizable
+      code0 {readsynclientoutput();}
+      code1 {Config config;config.under_mouse(o);}
+    } {
+      Fl_Scroll {} {open
+        xywh {0 10 440 525} color 31
+      } {
+        Fl_Button {} {
+          label Cancel
+          callback {cancel();
+mouse_window->hide();
+UI ux;
+ux.showSettings();}
+          xywh {300 505 65 25} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
+        }
+        Fl_Button {} {
+          label OK
+          callback {saveChanges();
+add_to_profile();
+mouse_window->hide();
+UI ux;
+ux.showSettings();}
+          tooltip {Write to configuration file} xywh {380 505 45 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
+        }
+        Fl_Tabs {} {open
+          xywh {45 85 345 415} box GTK_THIN_UP_BOX
+        } {
+          Fl_Group {} {
+            label TouchPad open
+            xywh {55 115 320 365}
+          } {
+            Fl_Choice TouchpadOff {
+              label {Touchpad Mode}
+              callback {synclient("TouchpadOff",o->value());} open
+              tooltip {Toggle the pad ON/OFF or only move (no scroll, tap, ecc.)} xywh {230 150 65 20} box GTK_DOWN_BOX down_box GTK_DOWN_BOX color 50 selection_color 50
+            } {
+              MenuItem {} {
+                label ON
+                xywh {30 30 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label Off
+                xywh {40 40 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {Tap Off}
+                xywh {50 50 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+            }
+            Fl_Value_Slider FingerLowHigh {
+              label {Touch Sensitivity}
+              callback {synclient("FingerLow",o->value());
+synclient("FingerHigh",o->value());}
+              tooltip {The minimum pressure to react to} xywh {105 315 205 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 5 when 4 textcolor 55
+              code0 {o->range(0,150);}
+              code1 {o->precision(0);}
+            }
+            Fl_Value_Slider EmulateMidButtonTime {
+              label {Middle Button Emulation Time}
+              callback {synclient("EmulateMidButtonTime",o->value());}
+              tooltip {Maximum time for middle button emulation.} xywh {105 430 205 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 5 when 4 textcolor 55
+              code0 {o->precision(0);}
+              code1 {o->range(0,500);}
+            }
+            Fl_Value_Slider ClickTime {
+              label {Click Emulation Time}
+              callback {synclient("ClickTime",o->value());}
+              tooltip {The duration of the mouse click generated by tapping} xywh {105 372 205 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 5 when 4 textcolor 55
+              code0 {o->precision(0);}
+              code1 {o->range(0,500);}
+            }
+            Fl_Check_Button GuestMouseOff {
+              label {Guest Mouse Off}
+              callback {synclient("GuestMouseOff",o->value());}
+              tooltip {Toggle on/of the secondary pointer (tipically a joypad)} xywh {280 215 20 22} down_box GTK_DOWN_BOX color 55 selection_color 2 align 4
+            }
+            Fl_Check_Button CircularPad {
+              label {Circular Pad}
+              callback {synclient("CircularPad",o->value());}
+              tooltip {Use this if your touchpad is circular} xywh {280 247 20 23} down_box GTK_DOWN_BOX color 55 selection_color 2 align 4
+            }
+          }
+          Fl_Group {} {
+            label Tapping
+            xywh {45 130 340 365} hide
+          } {
+            Fl_Choice TapButton1 {
+              label {One Finger}
+              callback {synclient("TapButton1",o->value());}
+              tooltip {Which mouse button is reported on a non-corner one-finger tap} xywh {215 140 110 20} box NO_BOX down_box GTK_DOWN_BOX color 50 selection_color 50
+            } {
+              MenuItem {} {
+                label disable
+                xywh {15 15 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {left button}
+                xywh {5 5 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {center button}
+                xywh {25 25 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {right button}
+                xywh {15 15 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {up wheel}
+                xywh {35 35 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {down wheel}
+                xywh {45 45 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {left wheel}
+                xywh {55 55 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {right wheel}
+                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50
+              }
+            }
+            Fl_Choice TapButton2 {
+              label {Two Finger}
+              callback {synclient("TapButton2",o->value());}
+              tooltip {Which mouse button is reported on a non-corner two-finger tap} xywh {216 171 110 20} box NO_BOX down_box GTK_DOWN_BOX color 50 selection_color 50
+            } {
+              MenuItem {} {
+                label disable
+                xywh {25 25 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {left button}
+                xywh {15 15 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {center button}
+                xywh {35 35 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {right button}
+                xywh {25 25 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {up wheel}
+                xywh {45 45 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {down wheel}
+                xywh {55 55 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {left wheel}
+                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {right wheel}
+                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50
+              }
+            }
+            Fl_Choice TapButton3 {
+              label {Three Finger}
+              callback {synclient("TapButton3",o->value());}
+              tooltip {Which mouse button is reported on a non-corner three-finger tap} xywh {216 204 110 20} box NO_BOX down_box GTK_DOWN_BOX color 50 selection_color 50
+            } {
+              MenuItem {} {
+                label disable
+                xywh {35 35 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {left button}
+                xywh {25 25 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {center button}
+                xywh {45 45 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {right button}
+                xywh {35 35 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {up wheel}
+                xywh {55 55 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {down wheel}
+                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {left wheel}
+                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {right wheel}
+                xywh {85 85 100 20} box NO_BOX color 50 selection_color 50
+              }
+            }
+            Fl_Choice LTCornerButton {
+              label {Top Left Corner}
+              callback {synclient("LTCornerButton",o->value());}
+              tooltip {Which mouse button is reported on a  top left corner finger tap} xywh {217 235 110 20} box NO_BOX down_box GTK_DOWN_BOX color 50 selection_color 50
+            } {
+              MenuItem {} {
+                label disable
+                xywh {45 45 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {left button}
+                xywh {35 35 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {center button}
+                xywh {55 55 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {right button}
+                xywh {45 45 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {up wheel}
+                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {down wheel}
+                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {left wheel}
+                xywh {85 85 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {right wheel}
+                xywh {95 95 100 20} box NO_BOX color 50 selection_color 50
+              }
+            }
+            Fl_Choice RTCornerButton {
+              label {Top Right Corner}
+              callback {synclient("RTCornerButton",o->value());}
+              tooltip {RTCornerButtonWhich mouse button is reported on a  top right corner finger tap} xywh {216 265 110 20} box NO_BOX down_box GTK_DOWN_BOX color 50 selection_color 50
+            } {
+              MenuItem {} {
+                label disable
+                xywh {55 55 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {left button}
+                xywh {45 45 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {center button}
+                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {right button}
+                xywh {55 55 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {up wheel}
+                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {down wheel}
+                xywh {85 85 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {left wheel}
+                xywh {95 95 100 20} box NO_BOX color 50 selection_color 50
+              }
+              MenuItem {} {
+                label {right wheel}
+                xywh {105 105 100 20} box NO_BOX color 50 selection_color 50
+              }
+            }
+            Fl_Choice LBCornerButton {
+              label {Bottom Left Corner}
+              callback {synclient("LBCornerButton",o->value());}
+              tooltip {LBCornerButtonWhich mouse button is reported on a  bottom left corner finger tap} xywh {216 295 110 20} box NO_BOX down_box GTK_DOWN_BOX color 50 selection_color 50
+            } {
+              MenuItem {} {
+                label disable
+                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {left button}
+                xywh {55 55 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {center button}
+                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {right button}
+                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {up wheel}
+                xywh {85 85 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {down wheel}
+                xywh {95 95 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {left wheel}
+                xywh {105 105 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {right wheel}
+                xywh {115 115 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+            }
+            Fl_Choice RBCornerButton {
+              label {Bottom Right Corner}
+              callback {synclient("RBCornerButton",o->value());}
+              tooltip {Which mouse button is reported on a  bottom right corner finger tap} xywh {216 325 110 20} box NO_BOX down_box GTK_DOWN_BOX color 50 selection_color 50
+            } {
+              MenuItem {} {
+                label disable
+                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {left button}
+                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {center button}
+                xywh {85 85 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {right button}
+                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {up wheel}
+                xywh {95 95 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {down wheel}
+                xywh {105 105 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {left wheel}
+                xywh {115 115 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+              MenuItem {} {
+                label {right wheel}
+                xywh {125 125 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+              }
+            }
+            Fl_Value_Slider MaxTapTime {
+              label {Tap Time}
+              callback {synclient("MaxTapTime",o->value());}
+              tooltip {Maximum time for detecting a tap.} xywh {200 360 135 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 textcolor 55
+              code0 {o->precision(0);}
+              code1 {o->range(0,300);}
+            }
+            Fl_Value_Slider MaxDoubleTapTime {
+              label {Double Tap Time}
+              callback {synclient("MaxDoubleTapTime",o->value());}
+              tooltip {Maximum time for detecting a double tap} xywh {200 397 135 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 textcolor 55
+              code0 {o->precision(0);}
+              code1 {o->range(0,300);}
+            }
+            Fl_Value_Slider MaxTapMove {
+              label {Tap Move}
+              callback {synclient("MaxTapMove",o->value());}
+              tooltip {Maximum movement of the finger for detecting a tap} xywh {200 435 135 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 textcolor 55
+              code0 {o->precision(0);}
+              code1 {o->range(0,300);}
+            }
+          }
+          Fl_Group {} {
+            label Scrolling
+            xywh {50 120 325 365} hide
+          } {
+            Fl_Check_Button UpDownScrolling {
+              label {Up Down Buttons Scroll}
+              callback {synclient("UpDownScrolling",o->value());}
+              tooltip {If on, the up/down buttons generate button 4/5 events} xywh {310 150 20 25} down_box GTK_DOWN_BOX color 55 selection_color 2 align 4
+            }
+            Fl_Check_Button LeftRightScrolling {
+              label {Left Right Buttons Scroll}
+              callback {synclient("LeftRightScrolling",o->value());}
+              tooltip {If on, the left/right buttons generate button 6/7 events} xywh {310 168 20 25} down_box GTK_DOWN_BOX color 55 selection_color 2 align 4
+            }
+            Fl_Value_Slider VertScrollDelta {
+              label {VScroll Delta}
+              callback {synclient("VertScrollDelta",o->value());}
+              tooltip {Move distance of the finger for a scroll event} xywh {200 195 135 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 textcolor 55
+              code0 {o->precision(0);}
+              code1 {o->range(10,1000);}
+            }
+            Fl_Value_Slider HorizScrollDelta {
+              label {HScroll Delta}
+              callback {synclient("HorizScrollDelta",o->value());}
+              tooltip {Move distance of the finger for a scroll event} xywh {200 230 135 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 textcolor 55
+              code0 {o->precision(0);}
+              code1 {o->range(10,1000);}
+            }
+            Fl_Check_Button CircularScrolling {
+              label {Circular Scroll}
+              callback {synclient("CircularScrolling",o->value());}
+              tooltip {If on, circular scrolling is used} xywh {245 267 20 25} down_box GTK_DOWN_BOX color 55 selection_color 2 align 4
+            }
+            Fl_Value_Slider CircScrollDelta {
+              label {CScroll Delta}
+              callback {synclient("CircScrollDelta",o->value());}
+              tooltip {Move angle (radians) of finger to generate a scroll event} xywh {201 291 135 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 textcolor 55
+              code0 {o->precision(2);}
+              code1 {o->range(0.01,5);}
+            }
+            Fl_Choice CircScrollTrigger {
+              label {CScroll Start}
+              callback {synclient("CircScrollTrigger",o->value());}
+              xywh {200 325 135 20} box NO_BOX down_box FLAT_BOX color 50 selection_color 50
+            } {
+              MenuItem {} {
+                label Everywhere
+                xywh {20 20 100 25} box NO_BOX color 42 selection_color 50
+              }
+              MenuItem {} {
+                label Top
+                xywh {30 30 100 25} box NO_BOX color 42 selection_color 50
+              }
+              MenuItem {} {
+                label {Top Right}
+                xywh {40 40 100 25} box NO_BOX color 42 selection_color 50
+              }
+              MenuItem {} {
+                label Right
+                xywh {50 50 100 25} box NO_BOX color 42 selection_color 50
+              }
+              MenuItem {} {
+                label {Bottom Right}
+                xywh {40 40 100 25} box NO_BOX color 42 selection_color 50
+              }
+              MenuItem {} {
+                label Bottom
+                xywh {50 50 100 25} box NO_BOX color 42 selection_color 50
+              }
+              MenuItem {} {
+                label {Bottom Left}
+                xywh {60 60 100 25} box NO_BOX color 42 selection_color 50
+              }
+              MenuItem {} {
+                label Left
+                xywh {50 50 100 25} box NO_BOX color 42 selection_color 50
+              }
+              MenuItem {} {
+                label {Top Left}
+                xywh {60 60 100 25} box NO_BOX color 42 selection_color 50
+              }
+            }
+            Fl_Value_Slider EdgeMotionMinSpeed {
+              label {Edge Min Speed}
+              callback {synclient("EdgeMotionMinSpeed",o->value());}
+              tooltip {Slowest setting for edge motion speed} xywh {185 366 152 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 textcolor 55
+              code0 {o->precision(0);}
+              code1 {o->range(0,300);}
+            }
+            Fl_Value_Slider EdgeMotionMaxSpeed {
+              label {Edge Max Speed}
+              callback {synclient("EdgeMotionMaxSpeed",o->value());}
+              tooltip {Fastest setting for edge motion speed} xywh {185 400 152 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 textcolor 55
+              code0 {o->precision(0);}
+              code1 {o->range(0,300);}
+            }
+            Fl_Value_Slider EdgeMotionMinMaxZ {
+              label {Edge Sensitivity}
+              callback {synclient("EdgeMotionMinZ",o->value());
+synclient("EdgeMotionMaxZ",o->value()*2);}
+              tooltip {Finger pressure for  motion speed} xywh {185 435 152 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 textcolor 55
+              code0 {o->precision(0);}
+              code1 {o->range(1,150);}
+            }
+          }
+          Fl_Group {} {
+            label Movement
+            xywh {50 135 340 365} hide
+          } {
+            Fl_Value_Output TopEdge {
+              label {Top @8->|}
+              tooltip {Y coordinate for top edge} xywh {172 179 50 25} box GTK_DOWN_BOX color 53 selection_color 50
+            }
+            Fl_Button {} {
+              label Calibrate
+              callback {CalibrateEdge(0);}
+              tooltip {To calibrate push button and move finger on the top of the pad} xywh {225 179 90 25} box GTK_UP_BOX color 50 selection_color 50
+            }
+            Fl_Value_Output BottomEdge {
+              label {Bottom @2->|}
+              tooltip {Y coordinate for bottom edge} xywh {172 209 50 25} box GTK_DOWN_BOX color 53 selection_color 50
+            }
+            Fl_Button {} {
+              label Calibrate
+              callback {CalibrateEdge(1);}
+              tooltip {To calibrate push button and move finger on the bottom of the pad} xywh {225 209 90 25} box GTK_UP_BOX color 50 selection_color 50
+            }
+            Fl_Value_Output LeftEdge {
+              label {Left @4->|}
+              tooltip {X coordinate for left edge} xywh {172 239 50 25} box GTK_DOWN_BOX color 53 selection_color 50
+            }
+            Fl_Button {} {
+              label Calibrate
+              callback {CalibrateEdge(2);}
+              tooltip {To calibrate push button and move finger on the left of the pad} xywh {225 239 90 25} box GTK_UP_BOX color 50 selection_color 50
+            }
+            Fl_Value_Output RightEdge {
+              label {Right @->|}
+              tooltip {X coordinate for right edge} xywh {172 269 50 25} box GTK_DOWN_BOX color 53 selection_color 50
+            }
+            Fl_Button {} {
+              label Calibrate
+              callback {CalibrateEdge(3);}
+              tooltip {To calibrate push button and move finger on the right of the pad} xywh {225 269 90 25} box GTK_UP_BOX color 50 selection_color 50
+            }
+            Fl_Value_Slider MinSpeed {
+              label {Min Speed}
+              callback {synclient("MinSpeed",o->value());}
+              tooltip {Minimum speed factor} xywh {110 340 215 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 5 when 4 textcolor 55
+              code0 {o->range(0,10);}
+              code1 {o->precision(2);}
+            }
+            Fl_Value_Slider MaxSpeed {
+              label {Max Speed}
+              callback {synclient("MaxSpeed",o->value());}
+              tooltip {Maximum speed factor} xywh {110 380 215 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 5 when 4 textcolor 55
+              code0 {o->range(0,10);}
+              code1 {o->precision(2);}
+            }
+            Fl_Value_Slider AccelFactor {
+              label Acceleration
+              callback {synclient("AccelFactor",o->value());}
+              tooltip {Acceleration factor} xywh {110 420 215 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 5 when 4 textcolor 55
+              code0 {o->precision(4);}
+              code1 {o->range(0.0001,0.01);}
+            }
+          }
+        }
+        Fl_Slider double_click_slider {
+          label {Double Click Speed}
+          callback {flMouse mouse;
+int speed=o->value();
+mouse.setDoubleClick(speed);
+double_v->value(speed);
+saveChangesTemp();}
+          tooltip {This sets how fast you must click to Double Click} xywh {165 20 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 minimum 1 maximum 2000 step 1 value 400
+          code0 {flMouse mouse;}
+          code1 {int h = mouse.getDoubleClick();}
+          code2 {o->value(h);}
+        }
+        Fl_Slider delta_slider {
+          label {Double Click Delta}
+          callback {flMouse mouse;
+int delta=o->value();
+mouse.setDelta(delta);
+delta_v->value(delta);
+saveChangesTemp();}
+          tooltip {This sets how fast you must click to Double Click} xywh {165 55 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 minimum 1 maximum 32 step 1 value 2
+          code0 {flMouse mouse;}
+          code1 {int h = mouse.getDelta();}
+          code2 {o->value(h);}
+        }
+        Fl_Value_Input delta_v {
+          label Pixels
+          callback {flMouse mouse;
+int delta=o->value();
+mouse.setDelta(delta);
+delta_slider->value(delta);
+saveChangesTemp()}
+          xywh {270 55 40 25} box GTK_DOWN_BOX labelsize 12 align 8 minimum 1 maximum 32 value 2
+          code0 {o->value(delta_slider->value());}
+        }
+        Fl_Value_Input double_v {
+          label Miliseconds
+          callback {flMouse mouse;
+int speed=o->value();
+mouse.setDoubleClick(speed);
+double_click_slider->value(speed);
+saveChangesTemp();}
+          xywh {270 20 60 25} box GTK_DOWN_BOX labelsize 12 align 8 minimum 1 maximum 2000 value 400
+          code0 {o->value(double_click_slider->value());}
+        }
+      }
+    }
+  }
+  Function {CalibrateEdge(int edge)} {open
+  } {
+    code {int fds[2];
+pipe(fds);
+char tmp[1024];
+m_pid=fork();	
+
+  if (m_pid==(pid_t)0){
+    close(fds[0]);
+    dup2(fds[1],2);
+    close(fds[1]);
+    snprintf(tmp,1024,"(%s) 1>&2","synclient -m 100");
+    if (verbose) printf("Executing: %s\\n",tmp);
+    execlp("/bin/sh", "sh", "-c", tmp, 0);
+  }	
+  fl_cursor(FL_CURSOR_WAIT);
+  Fl::check();
+	
+  close(fds[1]);
+  FILE* fp=fdopen(fds[0],"r");	
+  char* argv[3];
+  int xmax=0;
+  int xmin=100000;
+  int ymax=0;
+  int ymin=100000;
+  fgets(tmp,1024,fp);
+  for (int i=0; i<10 ; i++){
+    fgets(tmp,1024,fp);
+    if (verbose) printf("%s\\n",tmp);
+    parseline(tmp,argv,3);
+    if (atoi(argv[1])>xmax) xmax=atoi(argv[1]);
+    if (atoi(argv[1])<xmin) xmin=atoi(argv[1]);
+    if (atoi(argv[2])>ymax) ymax=atoi(argv[2]);
+    if (atoi(argv[2])<ymin) ymin=atoi(argv[2]);
+  }
+  kill(m_pid,SIGTERM);
+  fclose(fp);	
+  switch (edge){
+    case 0: TopEdge->value(ymin);synclient("TopEdge",ymin);break;
+    case 1: BottomEdge->value(ymax);synclient("BottomEdge",ymax);break;
+    case 2: LeftEdge->value(xmin);synclient("LeftEdge",xmin);break;
+    case 3: RightEdge->value(xmax);synclient("RightEdge",xmax);break;
+}
+	
+fl_cursor(FL_CURSOR_DEFAULT);
+Fl::check();} {}
+  }
+  Function {parsesynclientoutput(std::string filename)} {open
+  } {
+    code {std::string full_line = "";
+std::string line = "";
+std::string line_substring ="";
+int starter_element = 0;
+int ender_element = 0;
+int mid = 0;
+int starter = 0;
+std::ifstream ifs(filename.c_str(), std::ifstream::in);
+if(ifs.is_open()){
+//std::cout<<filename<<" is open"<<std::endl;
+  while (getline(ifs,full_line)){
+    starter_element = full_line.find_first_not_of(' ');
+    ender_element = full_line.find_first_of(' ',starter_element);
+    mid = ender_element - starter_element;
+    line = full_line.substr(starter_element,mid);
+    starter = full_line.find_first_of('=');
+    line_substring = full_line.substr((starter+2),std::string::npos);
+if (line.compare("synclient")!=0){
+    double dub = convert(line_substring);
+//CHECK VALUES
+    if (line.compare("LeftEdge")==0){
+      LeftEdge->value(dub);
+    }
+    else if (line.compare("RightEdge")==0){
+      RightEdge->value(dub);
+    }
+    else if (line.compare("TopEdge")==0){
+      TopEdge->value(dub);
+    }
+    else if (line.compare("BottomEdge")==0){
+      BottomEdge->value(dub);
+    }
+    else if (line.compare("FingerLow")==0){
+      FingerLowHigh->value(dub);
+    }
+    else if (line.compare("MaxTapTime")==0){
+      MaxTapTime->value(dub);
+    }
+    else if (line.compare("MaxTapMove")==0){
+      MaxTapMove->value(dub);
+    }
+    else if (line.compare("MaxDoubleTapTime")==0){
+      MaxDoubleTapTime->value(dub);
+    }
+    else if (line.compare("ClickTime")==0){
+      ClickTime->value(dub);
+    }
+    else if (line.compare("EmulateMidButtonTime")==0){
+      EmulateMidButtonTime->value(dub);
+    }
+    else if (line.compare("VertScrollDelta")==0){
+      VertScrollDelta->value(dub);
+    }
+    else if (line.compare("HorizScrollDelta")==0){
+      HorizScrollDelta->value(dub);
+    }
+    else if (line.compare("MinSpeed")==0){
+      MinSpeed->value(dub);
+    }
+    else if (line.compare("MaxSpeed")==0){
+      MaxSpeed->value(dub);
+    }
+    else if (line.compare("AccelFactor")==0){
+      AccelFactor->value(dub);
+    }
+    else if (line.compare("EdgeMotionMinZ")==0){
+      EdgeMotionMinMaxZ->value(dub);
+    }
+    else if (line.compare("EdgeMotionMinSpeed")==0){
+      EdgeMotionMinSpeed->value(dub);
+    }
+    else if (line.compare("EdgeMotionMaxSpeed")==0){
+      EdgeMotionMaxSpeed->value(dub);
+    }
+    else if (line.compare("UpDownScrolling")==0){
+      UpDownScrolling->value(dub);
+    }
+    else if (line.compare("LeftRightScrolling")==0){
+      LeftRightScrolling->value(dub);
+    }
+    else if (line.compare("TouchpadOff")==0){
+      TouchpadOff->value(dub);
+    }
+    else if (line.compare("GuestMouseOff")==0){
+      GuestMouseOff->value(dub);
+    }
+    else if (line.compare("RTCornerButton")==0){
+      RTCornerButton->value(dub);
+    }
+    else if (line.compare("RBCornerButton")==0){
+      RBCornerButton->value(dub);
+    }
+    else if (line.compare("LTCornerButton")==0){
+      LTCornerButton->value(dub);
+    }
+    else if (line.compare("LBCornerButton")==0){
+      LBCornerButton->value(dub);
+    }
+    else if (line.compare("TapButton1")==0){
+      TapButton1->value(dub);
+    }
+    else if (line.compare("TapButton2")==0){
+      TapButton2->value(dub);
+    }
+    else if (line.compare("TapButton3")==0){
+      TapButton3->value(dub);
+    }
+    else if (line.compare("CircularScrolling")==0){
+      CircularScrolling->value(dub);
+    }
+    else if (line.compare("CircScrollDelta")==0){
+      CircScrollDelta->value(dub);
+    }
+    else if (line.compare("CircScrollTrigger")==0){
+      CircScrollTrigger->value(dub);
+    }
+    else if (line.compare("CircularPad")==0){
+      CircularPad->value(dub);
+    }
+//END CHECK VALUES
+
+}//not Parameter
+  }//while
+}//if ifstream} {}
+  }
+  Function {readsynclientoutput()} {open
+  } {
+    code {std::string filename = getenv("HOME");
+filename += "/.jsm-mouse";
+std::string command = "synclient -l >";
+command += filename;
+int start = system(command.c_str());
+if(start !=0){std::cout<<command<<" did not return 0"<<std::endl;;}
+parsesynclientoutput(filename);} {}
+  }
+  Function {SaveSettings()} {open
+  } {
+    code {int config = system("synclient -l >~/.jsm-mouse");
+if (config!=0){std::cout<<"system did not return 0"<<std::endl;}} {}
+  }
+  Function {synclient(const char* field, double value)} {open
+  } {
+    code {std::string tmp = "synclient ";
+tmp +=field;
+tmp +="=";
+tmp += convert(value);
+int check =system(tmp.c_str());
+//std::cout<<tmp<<" returns: "<<check<<std::endl;} {}
+  }
+  Function {convert(std::string number)} {open return_type double
+  } {
+    code {std::stringstream out;
+out << number;
+double integer;
+out >> integer;
+return integer;} {}
+  }
+  Function {convert(double number)} {open return_type {std::string}
+  } {
+    code {std::string num;
+std::stringstream out;
+out << number;
+num = out.str();
+return num;} {}
+  }
+  Function {add_to_profile()} {open
+  } {
+    code {std::string string_command = "sed -i 's/Parameter settings:/synclient/' ";
+string_command += getenv("HOME");
+string_command += "/.jsm-mouse";
+const char* command = string_command.c_str();
+int working_sed = system(command);
+string_command = "awk '{$1=$1}{gsub(/[ ]/,\\"\\"); print}' ORS=' ' ";
+string_command += getenv("HOME");
+string_command += "/.jsm-mouse >";
+string_command += getenv("HOME");
+string_command += "/.config/jsm-mouse";
+working_sed = system(string_command.c_str());
+string_command = "chmod +x ";
+string_command += getenv("HOME");
+string_command += "/.config/jsm-mouse";
+working_sed = system(string_command.c_str());
+string_command = "sed -i '1i\#!/bin/bash' ";
+string_command += getenv("HOME");
+string_command += "/.config/jsm-mouse";
+working_sed = system(string_command.c_str());
+if(working_sed!=0){
+  //std::cout<< string_command<<" did not return 0"<<std::endl;
+}} {selected
+    }
+  }
+  Function {parseline(char *line, char **argv, int maxarg)} {open return_type int
+  } {
+    code {int argc=0;
+while (*line!=0 && argc<maxarg) {      
+  while (*line==' ' || *line=='\\t' || *line =='\\n') *line++=0;     
+  *argv++ = line;
+  argc++;
+  while (*line!=0 && *line!=' ' && *line!='\\t' && *line!='\\n') line++;             
+}
+*argv = 0;
+return argc;} {}
+  }
+} 

@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=@NAME@
+GenericName=Configuration Tool
+GenericName[fr]=Outil de configuration
+GenericName[lv]=Konfigurācijas rīks
+Comment=Easy configuration of JWM
+Comment[fr]=Configuration facile de JWM
+Comment[lv]=Vienkārša JWM konfigurācija
+Icon=@ICON@
+Exec=@EXEC@
+Terminal=false
+Type=Application
+Categories=Settings;System;
+NotShowIn=GNOME;KDE;LXDE;MATE;Razor;TDE;Unity;XFCE;EDE;Cinnamon;
+Name[en_US]=JWM Settings Manager
+Name[fr]=Gestionnaire de paramètres de JWM
+Name[lv]=JWM Iestatījumu pārvaldnieks

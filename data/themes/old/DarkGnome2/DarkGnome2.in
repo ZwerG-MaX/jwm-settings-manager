@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!--
+ToriOS Gnome2 Dark Theme
+Israel <israel@torios.org>
+MIT license copyright 2014
+-->
+<JWM>
+<!-- MENUS -->
+    @GNOME_MENUS_LIST@
+<!-- END MENUS -->
+<!-- GROUP -->
+    @GROUPS@
+<!-- PANEL -->
+    <Tray height="34" autohide="false" valign="top" width="0" halign="fixed" layout="horizontal">
+        <TrayButton label="Apps" icon="/usr/share/pixmaps/distributor-logo.png" border="false">root:5</TrayButton>
+        <TrayButton label="Places" icon="folder.svg" border="false">root:7</TrayButton>
+	<TrayButton label="System" icon="applications-system.svg" border="false">root:8</TrayButton>
+        <TrayButton icon="browser.svg" border="false">@STARTPAGE@</TrayButton>
+        <Spacer/>
+        <Dock/>
+        <Swallow name="xload" width="64">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>
+        <Clock format="%a, %e %b %l:%M %p">@CLOCK@</Clock>
+        <TrayButton label="Shutdown" icon="system-shutdown.svg" border="false">root:9</TrayButton>
+    </Tray>
+    <Tray x="0" y="-1" height="34" autohide="false" valign="bottom" width="0" halign="fixed" layout="horizontal">
+	<TrayButton icon="preferences-system-hotcorners.png" border="false">showdesktop</TrayButton>
+        <TaskList maxwidth="256"/>
+        <Pager labeled="false"/>
+    </Tray>
+    <!-- Panel Style -->
+    <TaskListStyle>
+        <ActiveBackground>#A5A5A5</ActiveBackground>
+        <Background>#595959</Background>
+        <Font>@FONT@</Font>
+        <ActiveForeground>#ffffff</ActiveForeground>
+        <Foreground>#BFBFBF</Foreground>
+    </TaskListStyle>
+    <TrayStyle>
+        <Font>@FONT@</Font>
+        <Foreground>#ffffff</Foreground>
+        <Background>#464646</Background>
+        <Opacity>0.75</Opacity>
+    </TrayStyle>
+    <TrayButtonStyle>
+	<Font>@FONT@</Font>
+        <Foreground>#ffffff</Foreground>
+        <Background>#2F2F2F</Background>
+    </TrayButtonStyle>
+    <PagerStyle>
+        <Outline>#000000</Outline>
+        <Foreground>#ffffff</Foreground>
+        <Background>#58564D</Background>
+        <ActiveForeground>#ffffff</ActiveForeground>
+        <ActiveBackground>#406477</ActiveBackground>
+    </PagerStyle>
+    <MenuStyle>
+        <Font>@FONT@</Font>
+        <Foreground>#ffffff</Foreground>
+        <Background>#58564D</Background>
+        <ActiveBackground>#406477</ActiveBackground>
+        <Opacity>0.85</Opacity>
+    </MenuStyle>
+<!-- WINDOW -->
+    <WindowStyle>
+        <Font>@FONT@</Font>
+        <Width>4</Width>
+        <Height>20</Height>
+        <Active>
+            <Text>#ffffff</Text>
+            <Title>#58564D:#46443F</Title>
+            <Outline>#353535</Outline>
+            <Opacity>1.0</Opacity>
+        </Active>
+        <Inactive>
+            <Text>#A1A1A1</Text>
+            <Title>#58564D:#46443F</Title>
+            <Outline>#353535</Outline>
+            <Opacity>0.7</Opacity>
+        </Inactive>
+    </WindowStyle>
+    @DEFAULT_BUTTONS@
+    <FocusModel>click</FocusModel>
+    <SnapMode distance="10">border</SnapMode>
+    <MoveMode>opaque</MoveMode>
+    <ResizeMode>opaque</ResizeMode>
+<!-- KEYSHORTCUTS -->
+    @KEYSHORTCUTS@
+<!-- MOUSE -->
+    @MOUSE@
+<!-- ICONS -->
+    @ICONS_LIST@
+<!-- DESKTOP -->
+    <Desktops width="2" height="1">
+        <Background type="image">@BG@</Background>
+    </Desktops>
+<!-- AUTOSTART -->
+   @STARTUP@
+    <PopupStyle>
+        <Font>@FONT@</Font>
+        <Outline>#000000</Outline>
+        <Foreground>#ffffff</Foreground>
+        <Background>#464646</Background>
+    </PopupStyle>
+
+</JWM>

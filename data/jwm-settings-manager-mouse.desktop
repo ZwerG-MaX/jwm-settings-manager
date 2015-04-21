@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Mouse/Touchpad Settings
+GenericName=Configuration Tool
+GenericName[fr]=Outil de configuration
+GenericName[lv]=Konfigurācijas rīks
+Icon=/usr/share/icons/jsm/mouse.svg
+Exec=jwm-settings-manager --mouse
+Terminal=false
+Type=Application
+Categories=Settings;System;
+NotShowIn=GNOME;KDE;LXDE;MATE;Razor;TDE;Unity;XFCE;EDE;Cinnamon;
+Name[en_US]=Mouse/Touchpad Settings

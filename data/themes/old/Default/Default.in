@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<JWM>
+<!-- MENUS -->
+    @MENUS_LIST@
+<!-- END MENUS -->
+<!-- GROUP -->
+    @GROUPS@
+<!-- PANEL -->
+    <Tray x="0" y="-1" height="34" autohide="false" valign="top" width="0" halign="fixed" layout="horizontal">
+        <TrayButton label="Apps" icon="/usr/share/pixmaps/distributor-logo.png" border="false">root:5</TrayButton>
+        <TrayButton label="Places" icon="folder.svg" border="false">root:7</TrayButton>
+        <TrayButton icon="browser.svg" border="false">@STARTPAGE@</TrayButton>
+        <Pager labeled="true"/>
+        <TaskList maxwidth="256"/>
+        <Dock/>
+        <Swallow name="xload" width="64">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>
+        <Clock format="%a, %e %b %l:%M %p">@CLOCK@</Clock>
+        <TrayButton label="Shutdown" icon="system-shutdown.svg" border="false">root:9</TrayButton>
+    </Tray>
+<!-- Panel Style -->
+    <!-- Panel Style -->
+    <TaskListStyle>
+        <ActiveBackground>#940000</ActiveBackground>
+        <Background>#383838</Background>
+        <Font>@FONT@</Font>
+        <Foreground>#ffffff</Foreground>
+    </TaskListStyle>
+    <TrayStyle>
+        <Font>@FONT@</Font>
+        <Foreground>#ffffff</Foreground>
+        <Background>#383838</Background>
+        <Opacity>0.75</Opacity>
+    </TrayStyle>
+    <TrayButtonStyle>
+        <Font>@FONT@</Font>
+        <Foreground>#ffffff</Foreground>
+        <Background>#383838</Background>
+    </TrayButtonStyle>
+    <PagerStyle>
+        <Outline>#000000</Outline>
+        <Foreground>#808080</Foreground>
+        <Background>#383838</Background>
+        <ActiveForeground>#ffffff</ActiveForeground>
+        <ActiveBackground>#940000</ActiveBackground>
+    </PagerStyle>
+    <MenuStyle>
+        <Font>@FONT@</Font>
+        <Foreground>#ffffff</Foreground>
+        <Background>#383838</Background>
+        <ActiveBackground>#940000</ActiveBackground>
+        <Opacity>0.85</Opacity>
+    </MenuStyle>
+    <!-- WINDOW -->
+    <WindowStyle>
+        <Font>@FONT@</Font>
+        <Width>4</Width>
+        <Height>20</Height>
+        <Active>
+            <Text>#C7C7C7</Text>
+            <Title>#000000:#383838</Title>
+            <Outline>#000000</Outline>
+            <Opacity>1.0</Opacity>
+        </Active>
+        <Inactive>
+            <Text>#940000</Text>
+            <Title>#383838:#000000</Title>
+            <Outline>#000000</Outline>
+            <Opacity>0.7</Opacity>
+        </Inactive>
+    </WindowStyle>
+    @DEFAULT_BUTTONS@
+    <FocusModel>click</FocusModel>
+    <SnapMode distance="10">border</SnapMode>
+    <MoveMode>opaque</MoveMode>
+    <ResizeMode>opaque</ResizeMode>
+<!-- KEYSHORTCUTS -->
+    @KEYSHORTCUTS@
+<!-- MOUSE -->
+    @MOUSE@
+<!-- ICONS -->
+    @ICONS_LIST@
+<!-- DESKTOP -->
+    <Desktops width="2" height="1">
+        <Background type="image">@BG@</Background>
+    </Desktops>
+<!-- AUTOSTART -->
+   @STARTUP@
+<!--POP UP -->
+    <PopupStyle>
+        <Font>@FONT@</Font>
+        <Outline>#000000</Outline>
+        <Foreground>#ffffff</Foreground>
+        <Background>#383838</Background>
+    </PopupStyle>
+</JWM>

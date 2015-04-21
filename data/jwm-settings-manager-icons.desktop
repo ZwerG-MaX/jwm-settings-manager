@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Icon Settings
+GenericName=Configuration Tool
+GenericName[fr]=Outil de configuration
+GenericName[lv]=Konfigurācijas rīks
+Icon=/usr/share/icons/jsm/icons.svg
+Exec=jwm-settings-manager --icons
+Terminal=false
+Type=Application
+Categories=Settings;System;
+NotShowIn=GNOME;KDE;LXDE;MATE;Razor;TDE;Unity;XFCE;EDE;Cinnamon;
+Name[en_US]=Icon Settings

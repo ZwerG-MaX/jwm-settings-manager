@@ -1,0 +1,904 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-08-18 17:06-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../fltk/jwm-autostart.cxx:555
+msgid "Autostart Programs"
+msgstr ""
+
+#: ../fltk/jwm-autostart.cxx:560
+msgid "Autostart  "
+msgstr ""
+
+#: ../fltk/jwm-autostart.cxx:568
+msgid "You can add extra arguments here"
+msgstr ""
+
+#: ../fltk/jwm-autostart.cxx:573
+msgid "Choose a New Program to start when your computer starts up"
+msgstr ""
+
+#: ../fltk/jwm-autostart.cxx:574 ../fltk/jwm-keyboard.cxx:972
+msgid "Choose a program to add"
+msgstr ""
+
+#: ../fltk/jwm-autostart.cxx:579 ../fltk/jwm-desktop.cxx:630
+#: ../fltk/jwm-fonts.cxx:674 ../fltk/jwm-fonts.cxx:991
+#: ../fltk/jwm-icons.cxx:572 ../fltk/jwm-keyboard.cxx:906
+#: ../fltk/jwm-mouse.cxx:581 ../fltk/jwm-panel.cxx:1725
+#: ../fltk/jwm-shutdown.cxx:541 ../fltk/jwm-window.cxx:951
+msgid "Cancel"
+msgstr ""
+
+#: ../fltk/jwm-autostart.cxx:586 ../fltk/jwm-desktop.cxx:637
+#: ../fltk/jwm-fonts.cxx:683 ../fltk/jwm-fonts.cxx:1000
+#: ../fltk/jwm-icons.cxx:579 ../fltk/jwm-keyboard.cxx:913
+#: ../fltk/jwm-keyboard.cxx:1083 ../fltk/jwm-mouse.cxx:588
+#: ../fltk/jwm-panel.cxx:1732 ../fltk/jwm-panel.cxx:1843
+#: ../fltk/jwm-window.cxx:959
+msgid "OK"
+msgstr ""
+
+#: ../fltk/jwm-autostart.cxx:587 ../fltk/jwm-desktop.cxx:638
+#: ../fltk/jwm-fonts.cxx:684 ../fltk/jwm-fonts.cxx:1001
+#: ../fltk/jwm-icons.cxx:580 ../fltk/jwm-keyboard.cxx:914
+#: ../fltk/jwm-mouse.cxx:589 ../fltk/jwm-panel.cxx:1733
+#: ../fltk/jwm-panel.cxx:1807 ../fltk/jwm-window.cxx:960
+msgid "Write to configuration file"
+msgstr ""
+
+#: ../fltk/jwm-autostart.cxx:594 ../fltk/jwm-icons.cxx:587
+msgid "@+  Add"
+msgstr ""
+
+#: ../fltk/jwm-autostart.cxx:595
+msgid "Add the chosen program"
+msgstr ""
+
+#: ../fltk/jwm-autostart.cxx:606
+msgid "Remove Selected Program"
+msgstr ""
+
+#: ../fltk/jwm-autostart.cxx:610 ../fltk/jwm-desktop.cxx:696
+#: ../fltk/jwm-fonts.cxx:892 ../fltk/jwm-icons.cxx:602
+#: ../fltk/jwm-keyboard.cxx:1001 ../fltk/jwm-mouse.cxx:667
+#: ../fltk/jwm-panel.cxx:1758 ../fltk/jwm-themes.cxx:603
+#: ../fltk/jwm-window.cxx:1412
+msgid "@<-  Main Settings Window"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:580
+msgid "Desktop Settings"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:592
+msgid "Choose Image"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:596
+msgid "Current Background"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:605
+msgid "Multiple Desktops"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:606
+msgid "This allows you to have multiple screens to work on from one Display"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:616
+msgid "Number of Desktops Wide"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:623
+msgid "Number of Desktops High "
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:645
+msgid "Icons on Desktop"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:655
+msgid "Choose Gradient"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:656
+msgid "Make the background a Color Gradient"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:660
+msgid "Choose Command"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:661
+msgid "Use a command to set the background"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:666
+msgid "Desktop  "
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:673
+msgid "Choose Color"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:689 ../fltk/jwm-fonts.cxx:716
+#: ../fltk/jwm-fonts.cxx:721 ../fltk/jwm-fonts.cxx:733
+#: ../fltk/jwm-fonts.cxx:753 ../fltk/jwm-fonts.cxx:765
+#: ../fltk/jwm-fonts.cxx:781 ../fltk/jwm-fonts.cxx:793
+#: ../fltk/jwm-fonts.cxx:813 ../fltk/jwm-fonts.cxx:823
+#: ../fltk/jwm-fonts.cxx:854 ../fltk/jwm-fonts.cxx:867
+#: ../fltk/jwm-panel.cxx:1445 ../fltk/jwm-panel.cxx:2075
+msgid "Choose"
+msgstr ""
+
+#: ../fltk/jwm-desktop.cxx:690
+msgid "Drag the files onto the desktop"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:662
+msgid "Font Settings"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:667
+msgid "Font Settings  "
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:675 ../fltk/jwm-fonts.cxx:992
+msgid "No changes will be saved"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:695
+msgid "General Settings"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:701
+msgid "Window Title Font Name"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:708
+msgid "Active Window Color"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:725
+msgid "Inactive Window Color"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:738 ../fltk/jwm-fonts.cxx:770
+#: ../fltk/jwm-fonts.cxx:798 ../fltk/jwm-fonts.cxx:828
+#: ../fltk/jwm-fonts.cxx:837
+msgid "Size"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:747
+msgid "Menu Font Name"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:757 ../fltk/jwm-fonts.cxx:785
+#: ../fltk/jwm-fonts.cxx:846 ../fltk/jwm-fonts.cxx:859
+msgid "Color"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:775
+msgid "Panel Button Font Name"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:807
+msgid "Panel Font Name"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:861
+msgid "Running App List Font Name"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:873 ../fltk/jwm-window.cxx:1350
+msgid "Advanced"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:875
+msgid ""
+"JWM has so many options for fonts, so this area will be the catch all for "
+"the MULTITUDE of options, eventually... right now, there is nothing to see "
+"here"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:882
+msgid "Antialias"
+msgstr ""
+
+#: ../fltk/jwm-fonts.cxx:989
+msgid "Choose a Font"
+msgstr ""
+
+#: ../fltk/jwm-icons.cxx:549 ../fltk/jwm-icons.cxx:554
+#: ../fltk/jwm-settings.cxx:6570
+msgid "Icons"
+msgstr ""
+
+#: ../fltk/jwm-icons.cxx:562
+msgid "The Icons path!"
+msgstr ""
+
+#: ../fltk/jwm-icons.cxx:567
+msgid "Choose Icon Directory"
+msgstr ""
+
+#: ../fltk/jwm-icons.cxx:568
+msgid "Choose a SPECIFIC directory to add"
+msgstr ""
+
+#: ../fltk/jwm-icons.cxx:588
+msgid "Add the chosen icon path"
+msgstr ""
+
+#: ../fltk/jwm-icons.cxx:599 ../fltk/jwm-keyboard.cxx:899
+msgid "Remove Selected Item"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:885
+msgid "Keyboard Settings"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:903
+msgid "Key"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:921
+msgid "Choose Layout"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:924
+msgid "Keyboard  "
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:930
+msgid "Choose a Key Modifier"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:931
+msgid "These are keys like Ctrl, Alt, Shift, and Super (Windows or Apple key)"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:944
+msgid "Or, Choose an Action"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:946 ../fltk/jwm-keyboard.cxx:962
+msgid "Action"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:958 ../fltk/jwm-keyboard.cxx:980
+msgid "@+"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:969
+msgid "Choose a Program"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:971
+msgid "Choose New Program"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:976
+msgid "You can edit the program arguments here"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:989
+msgid "Choose a 2nd Key Modifier"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:990
+msgid "This is optional"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:1005 ../fltk/jwm-keyboard.cxx:1077
+msgid "Modifier"
+msgstr ""
+
+#: ../fltk/jwm-keyboard.cxx:1080
+msgid "Shortcut"
+msgstr ""
+
+#: ../fltk/jwm-mouse.cxx:576
+msgid "Mouse Settings"
+msgstr ""
+
+#: ../fltk/jwm-mouse.cxx:596
+msgid "Double Click Speed"
+msgstr ""
+
+#: ../fltk/jwm-mouse.cxx:597 ../fltk/jwm-mouse.cxx:614
+msgid "This sets how fast you must click to Double Click"
+msgstr ""
+
+#: ../fltk/jwm-mouse.cxx:613
+msgid "Double Click Delta"
+msgstr ""
+
+#: ../fltk/jwm-mouse.cxx:630 ../fltk/jwm-mouse.cxx:640
+msgid "Pixels"
+msgstr ""
+
+#: ../fltk/jwm-mouse.cxx:650
+msgid "Disable Touchpad Tap to Click"
+msgstr ""
+
+#: ../fltk/jwm-mouse.cxx:651
+msgid "Enable/Disable Synaptics Touchpads Clicking"
+msgstr ""
+
+#: ../fltk/jwm-mouse.cxx:660
+msgid "Mouse  "
+msgstr ""
+
+#: ../fltk/jwm-mouse.cxx:672
+msgid "Enable Touchpad"
+msgstr ""
+
+#: ../fltk/jwm-mouse.cxx:673
+msgid "Enable/Disable Synaptics Touchpads"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1322
+msgid "Panel Settings"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1331
+msgid "Apps"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1332
+msgid "Panel Apps"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1336 ../fltk/jwm-panel.cxx:2066
+msgid "App Shortcuts"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1345
+msgid "Clock"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1346
+msgid "Show a clock in the panel"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1355
+msgid "CPU monitor"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1356
+msgid "This shows a graph in the Panel of your CPU usage"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1366
+msgid "Desktop Switcher"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1367
+msgid "Use this to show the Desktop Switcher in the Panel"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1377
+msgid "Running App List"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1378
+msgid "This shows the running applications in the Panel"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1387
+msgid "Shutdown Menu"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1388
+msgid "This includes the Shutdown Menu on the right side of your panel"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1397
+msgid "Indicators"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1398
+msgid "This is a dock for system notifications"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1407
+msgid "Home Folder Menu"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1408
+msgid "This adds in your Home Folder, and some Favorite folders."
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1417
+msgid "Battery Applet"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1418
+msgid "This can monitor your Laptop Battery and display it in the panel"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1425
+msgid "Volume control"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1426
+msgid "This will add a volume icon to the panel"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1435
+msgid "Network applet"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1436
+msgid "Choose this to show the Network applet in the panel"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1449
+msgid "Clock Format"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1462
+msgid "Choose Icon"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1468 ../fltk/jwm-window.cxx:970
+msgid "Appearance"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1470
+msgid "Menu Label"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1480
+msgid "Menu Icon   "
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1489
+msgid "Panel Button Color "
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1498
+msgid "Opacity of Panel  "
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1499 ../fltk/jwm-panel.cxx:1565
+#: ../fltk/jwm-window.cxx:1004 ../fltk/jwm-window.cxx:1095
+msgid "A compositor (like xcompmgr) must be installed"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1513 ../fltk/jwm-panel.cxx:1579
+#: ../fltk/jwm-window.cxx:1018 ../fltk/jwm-window.cxx:1109
+msgid "%"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1521
+msgid "Menu Background"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1537
+msgid "Running Apps"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1555 ../fltk/jwm-panel.cxx:2057
+msgid "Panel Color "
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1564
+msgid "Opacity of Menu"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1587
+msgid "Menu Selection"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1589
+msgid "Open Apps"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1591
+msgid "Current App"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1595
+msgid "Size And Position"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1597
+msgid "Advanced Options"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1601
+msgid "Width of Panel Border"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1616 ../fltk/jwm-panel.cxx:1687
+#: ../fltk/jwm-panel.cxx:1695 ../fltk/jwm-panel.cxx:2041
+#: ../fltk/jwm-panel.cxx:2049 ../fltk/jwm-window.cxx:1300
+#: ../fltk/jwm-window.cxx:1309 ../fltk/jwm-window.cxx:1384
+#: ../fltk/jwm-window.cxx:1392
+msgid "pixels"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1624
+msgid "Y position of panel"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1633
+msgid "X position of panel"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1642 ../fltk/jwm-panel.cxx:1985
+msgid "Panel Position"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1654 ../fltk/jwm-panel.cxx:2008
+msgid "Width of Panel  "
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1655 ../fltk/jwm-panel.cxx:2009
+msgid "0 is Full Length"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1670 ../fltk/jwm-panel.cxx:2024
+msgid "Height of Panel  "
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1671 ../fltk/jwm-panel.cxx:2025
+msgid "Panel Size between 14 and 78"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1703 ../fltk/jwm-panel.cxx:1997
+msgid "Autohide?"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1704 ../fltk/jwm-panel.cxx:1998
+msgid "This will make the Panel hide when you aren't using it."
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1718
+msgid "Panel Settings  "
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1740
+msgid "Help"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1772
+msgid "Choose an application to add"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1774
+msgid "Application"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1778
+msgid "Icon"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1783
+msgid "You can add arguments here"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1794
+msgid "Tooltip Label"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1802
+msgid "@+  Add to panel"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1806
+msgid "SAVE"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1814
+msgid "Show a Border around the Button?"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1815
+msgid "The button you are adding can be borderless, if you like"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1826
+msgid "@  Remove from panel"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1838
+msgid "HELP"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1844
+msgid "Close the Help Window"
+msgstr ""
+
+#: ../fltk/jwm-panel.cxx:1983
+msgid "Add a Panel"
+msgstr ""
+
+#: ../fltk/jwm-settings.cxx:6518 ../fltk/jwm-settings.cxx:6522
+msgid "Settings Manager"
+msgstr ""
+
+#: ../fltk/jwm-settings.cxx:6527
+msgid "Panel"
+msgstr ""
+
+#: ../fltk/jwm-settings.cxx:6534
+msgid "Keyboard"
+msgstr ""
+
+#: ../fltk/jwm-settings.cxx:6541
+msgid "Desktop"
+msgstr ""
+
+#: ../fltk/jwm-settings.cxx:6548
+msgid "Mouse"
+msgstr ""
+
+#: ../fltk/jwm-settings.cxx:6555
+msgid "Windows"
+msgstr ""
+
+#: ../fltk/jwm-settings.cxx:6562 ../fltk/jwm-themes.cxx:590
+msgid "Themes"
+msgstr ""
+
+#: ../fltk/jwm-settings.cxx:6563
+msgid "This is for Predefined Thems"
+msgstr ""
+
+#: ../fltk/jwm-settings.cxx:6577
+msgid "Fonts"
+msgstr ""
+
+#: ../fltk/jwm-settings.cxx:6584
+msgid "Autostart"
+msgstr ""
+
+#: ../fltk/jwm-shutdown.cxx:509 ../fltk/jwm-shutdown.cxx:512
+msgid "Shutdown"
+msgstr ""
+
+#: ../fltk/jwm-shutdown.cxx:519
+msgid "Restart"
+msgstr ""
+
+#: ../fltk/jwm-shutdown.cxx:526
+msgid "Logout"
+msgstr ""
+
+#: ../fltk/jwm-shutdown.cxx:533
+msgid "Suspend"
+msgstr ""
+
+#: ../fltk/jwm-shutdown.cxx:534
+msgid "NOTE: this does not work with all computers"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:596
+msgid "Themes  "
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:609
+msgid "Normal"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:610
+msgid "Gnome 2 Light Theme"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:622
+msgid "Gnome 2 Dark Theme"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:634
+msgid "Bassem Dark Theme"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:646
+msgid "Ambiance Dark Theme"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:658
+msgid "Default"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:659 ../fltk/jwm-themes.cxx:676
+msgid "This will overwrite your current configuration"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:666
+msgid "Expert"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:668
+msgid "Save Current ~/.jwmrc file as something else"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:669
+msgid "This will copy your current theme somewhere else"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:675
+msgid "Open other  JWM XML File to use as theme"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:683
+msgid "Filename to save as"
+msgstr ""
+
+#: ../fltk/jwm-themes.cxx:684
+msgid "use FULL path... this is expert mode"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:939
+msgid "Window Settings"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:944
+msgid "Window Settings  "
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:975
+msgid "Active Window"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:980 ../fltk/jwm-window.cxx:1037
+msgid "Titlebar Background"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:997 ../fltk/jwm-window.cxx:1040
+msgid "Font and Button Color"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1000 ../fltk/jwm-window.cxx:1043
+msgid "Window Border Color"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1003 ../fltk/jwm-window.cxx:1094
+msgid "Opacity of Title Bar"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1032
+msgid "Background  Window"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1119
+msgid "Change the Window Button Images"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1123
+msgid "Close Button"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1124
+msgid "Choose a XBM for the close button"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1129
+msgid "Maximize Button"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1130
+msgid "Choose an image (XBM) for the Maximize button"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1135
+msgid " Maximize Button (Activated)"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1136
+msgid "Choose an image (XBM) for the Maximized button"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1141
+msgid "Minimize Button"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1142
+msgid "Choose an image (XBM) for the Minimize button"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1147 ../fltk/jwm-window.cxx:1153
+msgid "Color 1"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1150 ../fltk/jwm-window.cxx:1156
+msgid "Color 2"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1217
+msgid "Settings"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1219
+msgid "Size of the Window Frame"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1220
+msgid ""
+"This makes the edges of the window larger or smaller to help you grab them "
+"more easily"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1236 ../fltk/jwm-window.cxx:1368
+msgid "Window Title Bar Size"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1237
+msgid "This is the top with the program name, and close button, etc.."
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1252
+msgid "Appearance of the Window while Resizing"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1253
+msgid "What the windows look like while resizing"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1268
+msgid "Appearance of Window while Moving"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1269
+msgid "What the windows look like while moving"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1284
+msgid "Choose how the Window comes to the front of the screen"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1285
+msgid "This determines how windows are brought to the front"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1318
+msgid "Choose what the Windows will snap to"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1319
+msgid "This determines how windows 'Snap' to other windows, and screen edges"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1334
+msgid "How close (in pixels) does the window need to be to snap?"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1352
+msgid "Window Border Size"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1353
+msgid "Width of the window borders"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1369
+msgid "Height of the Window's Title Bar"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1400
+msgid "This can make your window borders and Title bar"
+msgstr ""
+
+#: ../fltk/jwm-window.cxx:1402
+msgid "REALLY HUGE!"
+msgstr ""

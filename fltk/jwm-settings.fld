@@ -1,0 +1,155 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+i18n_type 1 
+i18n_include <libintl.h> 
+i18n_function gettext 
+header_name {.h} 
+code_name {.cxx}
+comment {/*                 Joe's Window Manager Configuration
+ *
+ * This program configures JWM using tinyxml2 and FLTK
+ *
+ *         Copyright (C) 2014  Israel <israel@torios.org>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This has been developed as a part of the ToriOS Project
+ * This has been developed by Israel<israel@torios.org>
+ *
+ *
+ * You may redistribute this, but you must keep this comment in place
+ * Jesus is my Lord, and if you don't like it feel free to ignore it.
+ */} {in_source in_header
+} 
+
+decl {\#include <libintl.h>} {public global
+} 
+
+decl {\#include "../include/flDesktop.h"} {public global
+} 
+
+decl {\#include "../include/flPanel.h"} {public global
+} 
+
+decl {\#include "../include/flWindow.h"} {public global
+} 
+
+decl {\#include "../include/flFont.h"} {public global
+} 
+
+decl {\#include "../include/flAutostart.h"} {public global
+} 
+
+decl {\#include "../include/flKeyboard.h"} {public global
+} 
+
+decl {\#include "../include/flMouse.h"} {public global
+} 
+
+decl {\#include "../include/flThemes.h"} {public global
+} 
+
+decl {\#include "../include/flIcons.h"} {public global
+} 
+
+decl {\#include "../include/ui.h"} {public global
+} 
+
+decl {\#include "../include/tinyxml2.h"} {public global
+} 
+
+decl {//\#include "../data/icons/jwm-settings-manager.xpm"} {public global
+} 
+
+decl {//\#include <FL/x.H>} {public global
+} 
+
+decl {//\#include <X11/xpm.h>} {public global
+} 
+
+class SettingsUI {open
+} {
+  Function {make_window()} {open
+  } {
+    code {//fl_open_display();
+/*static Pixmap p;
+Pixmap mask;
+XpmCreatePixmapFromData(fl_display, DefaultRootWindow(fl_display), (char **)jsm,&p,&mask,0);
+settings_window->icon((char *)p);
+*/
+//settings_window->icon(UI::Get_Fl_Icon(jsm));} {}
+    Fl_Window settings_window {
+      label {Settings Manager} open selected
+      xywh {703 487 395 375} type Double color 45 labelcolor 7 hide
+      code0 {Config config;config.under_mouse(o);}
+    } {
+      Fl_Box {} {
+        label {Settings Manager}
+        xywh {80 10 245 40} labelfont 1 labelsize 24 labelcolor 35
+      }
+      Fl_Button {} {
+        label Panel
+        callback {settings_window->hide();
+UI ui;ui.showPanel();}
+        image {../data/img/jsm-panel.png} xywh {30 65 95 85} box GTK_UP_BOX color 39 labelcolor 55
+      }
+      Fl_Button {} {
+        label Keyboard
+        callback {settings_window->hide();
+UI ui;ui.showKeyboard();}
+        image {../data/img/jsm-keyboard.png} xywh {147 65 95 85} box GTK_UP_BOX color 39 labelcolor 55
+      }
+      Fl_Button {} {
+        label Desktop
+        callback {settings_window->hide();
+UI ui;ui.showDesktop();}
+        image {../data/img/jsm-desktop.png} xywh {30 165 95 85} box GTK_UP_BOX color 39 labelcolor 55
+      }
+      Fl_Button {} {
+        label Mouse
+        callback {settings_window->hide();
+UI ui;ui.showMouse();}
+        image {../data/img/jsm-mouse.png} xywh {147 165 95 85} box GTK_UP_BOX color 39 labelcolor 55
+      }
+      Fl_Button {} {
+        label Windows
+        callback {settings_window->hide();
+UI ui;ui.showWindow();}
+        image {../data/img/jsm-windows.png} xywh {30 265 95 85} box GTK_UP_BOX color 39 labelcolor 55
+      }
+      Fl_Button {} {
+        label Themes
+        callback {settings_window->hide();
+UI ui;ui.showThemes();}
+        tooltip {This is for Predefined Thems} image {../data/img/jsm-theme.png} xywh {147 265 95 85} box GTK_UP_BOX color 39 labelcolor 55
+      }
+      Fl_Button {} {
+        label Icons
+        callback {settings_window->hide();
+UI ui;ui.showIcons();}
+        image {../data/img/jsm-icons.png} xywh {265 65 95 85} box GTK_UP_BOX color 39 labelcolor 55
+      }
+      Fl_Button {} {
+        label Fonts
+        callback {settings_window->hide();
+UI ui;ui.showFonts();}
+        image {../data/img/jsm-fonts.png} xywh {265 165 95 85} box GTK_UP_BOX color 39 labelcolor 55
+      }
+      Fl_Button {} {
+        label Autostart
+        callback {settings_window->hide();
+UI ui;ui.showAutostart();}
+        image {../data/img/jsm-autostart.png} xywh {265 265 95 85} box GTK_UP_BOX color 39 labelcolor 55
+      }
+    }
+  }
+} 

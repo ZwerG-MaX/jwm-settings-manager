@@ -1,0 +1,45 @@
+.TH jwm-settings-manager 1 "March 04, 2015" "version @VERSION@" "User Commands"
+.SH NAME
+@EXEC@ \- configure JWM easily
+
+.SH SYNOPSIS
+.B @NAME@
+[OPTIONS]
+.SH DESCTIPTION
+A tool to easily configure JWM.  Built using FLTK and Tinyxml2,
+this fast, and light, but doesn't sacrifice aesthetics.
+.PP
+configure JWM easily
+
+.SH OPTIONS
+.TP
+
+.TP
+\-a  --autostart   show autostart settings
+.TP
+\-d  --desktop     show desktop settings
+.TP
+\-f  --font        show font settings
+.TP
+\-h  --help        show this listing
+.TP
+\-i  --icons       show icon settings
+.TP
+\-k  --keyboard    show keyboard settings
+.TP
+\-m  --mouse       show mouse settings
+.TP
+\-p  --panel       show panel settings
+.TP
+\-t  --themes      show theme settings
+.TP
+\-w  --window      show window settings
+.TP
+\-r  --recover     recover settings file
+.TP
+.B X ONLY OPTION
+.TP
+\--halt           show shutdown menu
+
+.SH AUTHOR
+israeldahl

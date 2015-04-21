@@ -1,0 +1,117 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+i18n_type 1 
+i18n_include <libintl.h> 
+i18n_function gettext 
+header_name {.h} 
+code_name {.cxx}
+comment {/*                 Joe's Window Manager Configuration
+ *
+ * This program configures JWM using tinyxml2 and FLTK
+ *
+ *         Copyright (C) 2014  Israel <israel@torios.org>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This has been developed as a part of the ToriOS Project
+ * This has been developed by Israel<israel@torios.org>
+ *
+ *
+ * You may redistribute this, but you must keep this comment in place
+ * Jesus is my Lord, and if you don't like it feel free to ignore it.
+ */} {in_source in_header
+} 
+
+decl {\#include <libintl.h>} {public global
+} 
+
+decl {\#include <string>} {public global
+} 
+
+decl {\#include <stdlib.h>} {public global
+} 
+
+decl {\#include <iostream>} {public global
+} 
+
+decl {\#include "../include/flPanel.h"} {public global
+} 
+
+class shutdown {open
+} {
+  Function {make_window()} {open
+  } {
+    Fl_Window shutdown_window {
+      label Shutdown open
+      xywh {351 113 250 230} type Double color 45
+      code0 {window_bg();} noborder visible
+    } {
+      Fl_Button shut {
+        label Shutdown
+        callback {int warn =system("dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop");
+if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}}
+        image {../data/img/preferences-system-session.png} xywh {10 20 105 65} box GTK_UP_BOX color 41 labelcolor 55
+      }
+      Fl_Button restart {
+        label Restart
+        callback {int warn =system("dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart");
+if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}}
+        image {../data/img/system-restart.png} xywh {130 20 105 65} box GTK_UP_BOX color 41 labelcolor 55
+      }
+      Fl_Button log {
+        label Logout
+        callback {int warn =system("jwm -exit");
+if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}}
+        image {../data/img/system-switch-user.png} xywh {130 95 105 65} box GTK_UP_BOX color 41 labelcolor 55
+      }
+      Fl_Button sus {
+        label Suspend
+        callback {int warn = system("dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend");
+if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}
+shutdown_window->hide();}
+        tooltip {NOTE: this does not work with all computers} image {../data/img/system-suspend.png} xywh {10 95 105 65} box GTK_UP_BOX color 41 labelcolor 55
+      }
+      Fl_Button can {
+        label Cancel
+        callback {shutdown_window->hide();}
+        xywh {70 175 105 45} box GTK_UP_BOX color 80 selection_color 72 labelfont 1 labelsize 15 labelcolor 52
+      }
+    }
+  }
+  Function {window_bg()} {open
+  } {
+    code {flPanel panel;
+unsigned int c;
+unsigned int color= panel.getBackground(c,"MenuStyle");
+shutdown_window->color(color);
+unsigned int color2 = panel.getFontColor(c,"MenuStyle");
+unsigned int color3 = panel.getActiveBackground(c,"MenuStyle");
+shut->color(color3);
+shut->labelcolor(color2);
+restart->color(color3);
+restart->labelcolor(color2);
+log->color(color3);
+log->labelcolor(color2);
+sus->color(color3);
+sus->labelcolor(color2);
+//can->color(color3);
+//can->labelcolor(color2);
+panel.under_mouse(shutdown_window);} {selected
+    }
+  }
+  Function {under_mouse(Fl_Window *o)} {open
+  } {
+    code {int mx,my;
+Fl::get_mouse(mx,my);
+o->position(mx,my);} {}
+  }
+} 
