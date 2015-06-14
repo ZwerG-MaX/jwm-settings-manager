@@ -1,4 +1,4 @@
-# Install script for directory: /home/lovejesus/computerstuff/bzr/jwm-settings-manager/data/themes
+# Install script for directory: /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/data/themes
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,12 +34,12 @@ ENDIF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 
 IF(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  INCLUDE("/home/lovejesus/computerstuff/bzr/jwm-settings-manager/data/themes/Default/cmake_install.cmake")
-  INCLUDE("/home/lovejesus/computerstuff/bzr/jwm-settings-manager/data/themes/Ambiance/cmake_install.cmake")
-  INCLUDE("/home/lovejesus/computerstuff/bzr/jwm-settings-manager/data/themes/DarkGnome2/cmake_install.cmake")
-  INCLUDE("/home/lovejesus/computerstuff/bzr/jwm-settings-manager/data/themes/LightGnome2/cmake_install.cmake")
-  INCLUDE("/home/lovejesus/computerstuff/bzr/jwm-settings-manager/data/themes/Bassem/cmake_install.cmake")
-  INCLUDE("/home/lovejesus/computerstuff/bzr/jwm-settings-manager/data/themes/Numix/cmake_install.cmake")
+  INCLUDE("/home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/data/themes/Default/cmake_install.cmake")
+  INCLUDE("/home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/data/themes/Ambiance/cmake_install.cmake")
+  INCLUDE("/home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/data/themes/DarkGnome2/cmake_install.cmake")
+  INCLUDE("/home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/data/themes/LightGnome2/cmake_install.cmake")
+  INCLUDE("/home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/data/themes/Bassem/cmake_install.cmake")
+  INCLUDE("/home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/data/themes/Numix/cmake_install.cmake")
 
 ENDIF(NOT CMAKE_INSTALL_LOCAL_ONLY)
 

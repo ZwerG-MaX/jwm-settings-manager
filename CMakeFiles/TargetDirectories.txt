@@ -1,0 +1,2 @@
+/home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/CMakeFiles/JSM.dir
+/home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/CMakeFiles/jwm-settings-manager.dir

@@ -1,4 +1,4 @@
-# Install script for directory: /home/lovejesus/computerstuff/bzr/jwm-settings-manager/data/themes/Numix
+# Install script for directory: /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/data/themes/Numix
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)

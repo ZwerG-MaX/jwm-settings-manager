@@ -1,4 +1,4 @@
-# Install script for directory: /home/lovejesus/computerstuff/bzr/jwm-settings-manager/data/themes/Bassem
+# Install script for directory: /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/data/themes/Bassem
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)

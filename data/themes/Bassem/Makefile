@@ -42,10 +42,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/bin/cmake-gui
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lovejesus/computerstuff/bzr/jwm-settings-manager
+CMAKE_SOURCE_DIR = /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lovejesus/computerstuff/bzr/jwm-settings-manager
+CMAKE_BINARY_DIR = /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -113,14 +113,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/lovejesus/computerstuff/bzr/jwm-settings-manager && $(CMAKE_COMMAND) -E cmake_progress_start /home/lovejesus/computerstuff/bzr/jwm-settings-manager/CMakeFiles /home/lovejesus/computerstuff/bzr/jwm-settings-manager/data/themes/Bassem/CMakeFiles/progress.marks
-	cd /home/lovejesus/computerstuff/bzr/jwm-settings-manager && $(MAKE) -f CMakeFiles/Makefile2 data/themes/Bassem/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lovejesus/computerstuff/bzr/jwm-settings-manager/CMakeFiles 0
+	cd /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager && $(CMAKE_COMMAND) -E cmake_progress_start /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/CMakeFiles /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/data/themes/Bassem/CMakeFiles/progress.marks
+	cd /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager && $(MAKE) -f CMakeFiles/Makefile2 data/themes/Bassem/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/lovejesus/computerstuff/bzr/jwm-settings-manager && $(MAKE) -f CMakeFiles/Makefile2 data/themes/Bassem/clean
+	cd /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager && $(MAKE) -f CMakeFiles/Makefile2 data/themes/Bassem/clean
 .PHONY : clean
 
 # The main clean target
@@ -129,17 +129,17 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/lovejesus/computerstuff/bzr/jwm-settings-manager && $(MAKE) -f CMakeFiles/Makefile2 data/themes/Bassem/preinstall
+	cd /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager && $(MAKE) -f CMakeFiles/Makefile2 data/themes/Bassem/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/lovejesus/computerstuff/bzr/jwm-settings-manager && $(MAKE) -f CMakeFiles/Makefile2 data/themes/Bassem/preinstall
+	cd /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager && $(MAKE) -f CMakeFiles/Makefile2 data/themes/Bassem/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/lovejesus/computerstuff/bzr/jwm-settings-manager && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Help Target
@@ -165,6 +165,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/lovejesus/computerstuff/bzr/jwm-settings-manager && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/lovejesus/computerstuff/bzr/github-jwm-settings-manager && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
