@@ -67,7 +67,7 @@ saveChangesTemp();} {}
     Fl_Window autostart_window {
       label {Autostart Programs} open selected
       xywh {610 312 315 290} type Double color 31 resizable
-      code0 {Config config;config.under_mouse(o);} visible
+      code0 {Config config;config.under_mouse(o);} xclass {jsm-autostart} visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 315 285} color 31

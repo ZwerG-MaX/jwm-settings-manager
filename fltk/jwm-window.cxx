@@ -27,23 +27,102 @@
 #include <libintl.h>
 #include "jwm-window.h"
 
+void WindowUI::cb_options_available_i(Fl_Browser*, void*) {
+  int line = options_available->value();
+options_desc->select(line);
+const char* value = options_available->text(line);
+check_opts(value);
+}
+void WindowUI::cb_options_available(Fl_Browser* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_options_available_i(o,v);
+}
+
+void WindowUI::cb_Add_i(Fl_Button*, void*) {
+  add_option_to_group();
+}
+void WindowUI::cb_Add(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Add_i(o,v);
+}
+
 void WindowUI::cb_Cancel_i(Fl_Button*, void*) {
-  window_window->hide();
-cancel();
-UI ui;
-ui.showSettings();
+  add_opt_window->hide();
 }
 void WindowUI::cb_Cancel(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Cancel_i(o,v);
 }
 
 void WindowUI::cb_OK_i(Fl_Button*, void*) {
+  saveJWMRC(add_opt_window);
+populate_groups();
+}
+void WindowUI::cb_OK(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK_i(o,v);
+}
+
+void WindowUI::cb_below_i(Fl_Menu_*, void*) {
+  layer_value->value("below");
+}
+void WindowUI::cb_below(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_below_i(o,v);
+}
+
+void WindowUI::cb_normal_i(Fl_Menu_*, void*) {
+  layer_value->value("normal");
+}
+void WindowUI::cb_normal(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_normal_i(o,v);
+}
+
+void WindowUI::cb_above_i(Fl_Menu_*, void*) {
+  layer_value->value("above");
+}
+void WindowUI::cb_above(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_above_i(o,v);
+}
+
+unsigned char WindowUI::menu_layer_chooser_i18n_done = 0;
+Fl_Menu_Item WindowUI::menu_layer_chooser[] = {
+ {"below", 0,  (Fl_Callback*)WindowUI::cb_below, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"normal", 0,  (Fl_Callback*)WindowUI::cb_normal, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"above", 0,  (Fl_Callback*)WindowUI::cb_above, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void WindowUI::cb_OK1_i(Fl_Button*, void*) {
+  add_class();
+populate_groups();
+class_win->hide();
+}
+void WindowUI::cb_OK1(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_OK1_i(o,v);
+}
+
+void WindowUI::cb_OK2_i(Fl_Button*, void*) {
+  add_prog();
+populate_groups();
+prog_win->hide();
+}
+void WindowUI::cb_OK2(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_OK2_i(o,v);
+}
+
+void WindowUI::cb_Cancel1_i(Fl_Button*, void*) {
+  window_window->hide();
+cancel();
+UI ui;
+ui.showSettings();
+}
+void WindowUI::cb_Cancel1(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Cancel1_i(o,v);
+}
+
+void WindowUI::cb_OK3_i(Fl_Button*, void*) {
   saveJWMRC(window_window);
 UI ui;
 ui.showSettings();
 }
-void WindowUI::cb_OK(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK_i(o,v);
+void WindowUI::cb_OK3(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK3_i(o,v);
 }
 
 void WindowUI::cb_a_title_color1_i(Fl_Button*, void*) {
@@ -364,6 +443,13 @@ Fl_Menu_Item WindowUI::menu_focus_menu[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
+void WindowUI::cb_corner_slider_i(Fl_Slider* o, void*) {
+  corner_change(o);
+}
+void WindowUI::cb_corner_slider(Fl_Slider* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_corner_slider_i(o,v);
+}
+
 void WindowUI::cb_a_b_slider_i(Fl_Slider* o, void*) {
   //flWindow w;
 border_modifier(o,a_b_slider_v);
@@ -383,6 +469,263 @@ void WindowUI::cb_a_t_slider(Fl_Slider* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_a_t_slider_i(o,v);
 }
 
+void WindowUI::cb_groups_browser_i(Fl_Browser*, void*) {
+  populate_groups();
+}
+void WindowUI::cb_groups_browser(Fl_Browser* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_groups_browser_i(o,v);
+}
+
+void WindowUI::cb_group_add_i(Fl_Button*, void*) {
+  flWindow win;
+win.addGroup();
+
+win.getGroups(groups_browser);
+}
+void WindowUI::cb_group_add(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_group_add_i(o,v);
+}
+
+void WindowUI::cb_rm_group_i(Fl_Button*, void*) {
+  int hidethis = groups_browser->value();
+if ((hidethis == 0) || (hidethis > groups_browser->size())){return;}
+else{
+ flWindow win;
+  win.removeGroup(hidethis);
+  win.getGroups(groups_browser);
+};
+}
+void WindowUI::cb_rm_group(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_rm_group_i(o,v);
+}
+
+#include <FL/Fl_Bitmap.H>
+static unsigned char idata_minus[] =
+{0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,255,255,255,255,255,0,0,0,0,0,0,0,0,0,
+0,0,0};
+static Fl_Bitmap image_minus(idata_minus, 16, 16);
+
+void WindowUI::cb_opt_add_i(Fl_Button*, void*) {
+  int hidethis = groups_browser->value();
+if ((hidethis == 0) || (hidethis > groups_browser->size())){return;}
+else{
+const char* value = groups_browser->text(hidethis);
+add_option_window()->show();
+options_desc->copy_label(value);
+};
+}
+void WindowUI::cb_opt_add(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_opt_add_i(o,v);
+}
+
+void WindowUI::cb_rm_opt_i(Fl_Button*, void*) {
+  int hidethis = groups_browser->value();
+if ((hidethis == 0) || (hidethis > groups_browser->size())){return;}
+else{
+ int testthis = opt_browser->value();
+  if ((testthis == 0) ||
+     (testthis > opt_browser->size())){return;}
+  else{
+    flWindow win;
+    const char* value = opt_browser->text(testthis);
+    win.removeGroupItem(hidethis,value);
+    return;
+ }
+}
+populate_groups();
+}
+void WindowUI::cb_rm_opt(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_rm_opt_i(o,v);
+}
+
+void WindowUI::cb_prog_add_i(Fl_Button*, void*) {
+  int hidethis = groups_browser->value();
+if ((hidethis == 0) || (hidethis > groups_browser->size())){return;}
+else{add_program_window()->show();};
+}
+void WindowUI::cb_prog_add(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_prog_add_i(o,v);
+}
+
+void WindowUI::cb_rm_prog_i(Fl_Button*, void*) {
+  int hidethis = groups_browser->value();
+if ((hidethis == 0) || (hidethis > groups_browser->size())){return;}
+else{
+  int testthis = name_browser->value();
+  if ((testthis == 0) ||
+     (testthis > name_browser->size())){return;}
+  else{
+    flWindow win;
+    const char* value = name_browser->text(testthis);
+    win.removeGroupProgram(hidethis,value);
+ }
+}
+populate_groups();
+}
+void WindowUI::cb_rm_prog(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_rm_prog_i(o,v);
+}
+
+void WindowUI::cb_class_add_i(Fl_Button*, void*) {
+  int hidethis = groups_browser->value();
+if ((hidethis == 0) || (hidethis > groups_browser->size())){return;}
+else{add_class_window()->show();};
+}
+void WindowUI::cb_class_add(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_class_add_i(o,v);
+}
+
+void WindowUI::cb_rm_class_i(Fl_Button*, void*) {
+  int hidethis = groups_browser->value();
+if ((hidethis == 0) || (hidethis > groups_browser->size())){return;}
+else{
+  int testthis = class_browser->value();
+  if ((testthis == 0) ||
+     (testthis > class_browser->size())){return;}
+  else{
+    flWindow win;
+    const char* value = class_browser->text(testthis);
+    win.removeGroupClass(hidethis,value);
+ }
+}
+populate_groups();
+}
+void WindowUI::cb_rm_class(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_rm_class_i(o,v);
+}
+
+Fl_Double_Window* WindowUI::add_option_window() {
+  { add_opt_window = new Fl_Double_Window(435, 435, gettext("Add an Option"));
+    add_opt_window->user_data((void*)(this));
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 430, 430);
+      { Fl_Browser* o = options_available = new Fl_Browser(10, 10, 115, 375);
+        options_available->type(2);
+        options_available->box(FL_GTK_DOWN_BOX);
+        options_available->selection_color((Fl_Color)80);
+        options_available->callback((Fl_Callback*)cb_options_available);
+        flWindow win;win.populateOptions(o);
+        ;
+      } // Fl_Browser* options_available
+      { Fl_Button* o = new Fl_Button(25, 400, 80, 25, gettext("@+  Add"));
+        o->box(FL_GTK_UP_BOX);
+        o->color(FL_YELLOW);
+        o->callback((Fl_Callback*)cb_Add);
+      } // Fl_Button* o
+      { Fl_Browser* o = options_desc = new Fl_Browser(135, 10, 285, 220);
+        options_desc->type(2);
+        options_desc->box(FL_GTK_DOWN_BOX);
+        options_desc->selection_color((Fl_Color)80);
+        options_desc->labeltype(FL_NO_LABEL);
+        options_desc->align(Fl_Align(FL_ALIGN_TOP));
+        flWindow win;win.populateDesc(o);
+      } // Fl_Browser* options_desc
+      { icon_value = new Fl_Input(195, 255, 100, 25, gettext("Icon"));
+        icon_value->box(FL_GTK_DOWN_BOX);
+        icon_value->deactivate();
+      } // Fl_Input* icon_value
+      { opacity_value = new Fl_Slider(195, 358, 100, 25, gettext("Opacity"));
+        opacity_value->type(1);
+        opacity_value->box(FL_GTK_DOWN_BOX);
+        opacity_value->color((Fl_Color)41);
+        opacity_value->step(0.2);
+        opacity_value->value(1);
+        opacity_value->align(Fl_Align(FL_ALIGN_LEFT));
+        opacity_value->deactivate();
+      } // Fl_Slider* opacity_value
+      { desktop_num = new Fl_Value_Input(195, 395, 35, 25, gettext("Desktop"));
+        desktop_num->box(FL_GTK_DOWN_BOX);
+        desktop_num->maximum(10000);
+        desktop_num->deactivate();
+      } // Fl_Value_Input* desktop_num
+      { add_tracker = new Fl_Browser(310, 255, 110, 125, gettext("Adding"));
+        add_tracker->box(FL_GTK_DOWN_BOX);
+        add_tracker->align(Fl_Align(FL_ALIGN_TOP));
+      } // Fl_Browser* add_tracker
+      { Fl_Button* o = new Fl_Button(300, 400, 55, 25, gettext("Cancel"));
+        o->box(FL_GTK_UP_BOX);
+        o->down_box(FL_GTK_DOWN_BOX);
+        o->color((Fl_Color)80);
+        o->selection_color((Fl_Color)81);
+        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->callback((Fl_Callback*)cb_Cancel);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(375, 400, 45, 25, gettext("OK"));
+        o->tooltip(gettext("Write to configuration file"));
+        o->box(FL_GTK_UP_BOX);
+        o->down_box(FL_GTK_DOWN_BOX);
+        o->color((Fl_Color)61);
+        o->selection_color((Fl_Color)59);
+        o->labelcolor((Fl_Color)55);
+        o->callback((Fl_Callback*)cb_OK);
+      } // Fl_Button* o
+      { layer_chooser = new Fl_Menu_Button(195, 290, 100, 25, gettext("Layer"));
+        layer_chooser->box(FL_GTK_UP_BOX);
+        layer_chooser->deactivate();
+        if (!menu_layer_chooser_i18n_done) {
+          int i=0;
+          for ( ; i<3; i++)
+            if (menu_layer_chooser[i].label())
+              menu_layer_chooser[i].label(gettext(menu_layer_chooser[i].label()));
+          menu_layer_chooser_i18n_done = 1;
+        }
+        layer_chooser->menu(menu_layer_chooser);
+      } // Fl_Menu_Button* layer_chooser
+      { layer_value = new Fl_Output(195, 325, 100, 25);
+        layer_value->box(FL_GTK_DOWN_BOX);
+        layer_value->deactivate();
+      } // Fl_Output* layer_value
+      o->end();
+    } // Fl_Scroll* o
+    add_opt_window->xclass("jsm-windows");
+    add_opt_window->end();
+  } // Fl_Double_Window* add_opt_window
+  return add_opt_window;
+}
+
+Fl_Double_Window* WindowUI::add_class_window() {
+  { Fl_Double_Window* o = class_win = new Fl_Double_Window(375, 50, gettext("Add Class"));
+    class_win->user_data((void*)(this));
+    { input_to_add_class = new Fl_Input(105, 10, 195, 25, gettext("Class to Add"));
+      input_to_add_class->box(FL_GTK_DOWN_BOX);
+    } // Fl_Input* input_to_add_class
+    { Fl_Button* o = new Fl_Button(315, 10, 45, 25, gettext("OK"));
+      o->tooltip(gettext("Write to configuration file"));
+      o->box(FL_GTK_UP_BOX);
+      o->down_box(FL_GTK_DOWN_BOX);
+      o->color((Fl_Color)61);
+      o->selection_color((Fl_Color)59);
+      o->labelcolor((Fl_Color)55);
+      o->callback((Fl_Callback*)cb_OK1);
+    } // Fl_Button* o
+    Config config;config.under_mouse(o);
+    class_win->xclass("jsm-windows");
+    class_win->end();
+  } // Fl_Double_Window* class_win
+  return class_win;
+}
+
+Fl_Double_Window* WindowUI::add_program_window() {
+  { Fl_Double_Window* o = prog_win = new Fl_Double_Window(425, 50, gettext("Program to add"));
+    prog_win->user_data((void*)(this));
+    { input_to_add_prog = new Fl_Input(135, 10, 195, 25, gettext("Program to Add"));
+      input_to_add_prog->box(FL_GTK_DOWN_BOX);
+    } // Fl_Input* input_to_add_prog
+    { Fl_Button* o = new Fl_Button(350, 10, 45, 25, gettext("OK"));
+      o->tooltip(gettext("Write to configuration file"));
+      o->box(FL_GTK_UP_BOX);
+      o->down_box(FL_GTK_DOWN_BOX);
+      o->color((Fl_Color)61);
+      o->selection_color((Fl_Color)59);
+      o->labelcolor((Fl_Color)55);
+      o->callback((Fl_Callback*)cb_OK2);
+    } // Fl_Button* o
+    Config config;config.under_mouse(o);
+    prog_win->xclass("jsm-windows");
+    prog_win->end();
+  } // Fl_Double_Window* prog_win
+  return prog_win;
+}
+
 Fl_Double_Window* WindowUI::make_window() {
   load();
   saveChangesTemp();
@@ -397,7 +740,7 @@ Fl_Double_Window* WindowUI::make_window() {
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
         o->labelcolor(FL_BACKGROUND2_COLOR);
-        o->callback((Fl_Callback*)cb_Cancel);
+        o->callback((Fl_Callback*)cb_Cancel1);
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(595, 360, 45, 25, gettext("OK"));
         o->tooltip(gettext("Write to configuration file"));
@@ -406,11 +749,12 @@ Fl_Double_Window* WindowUI::make_window() {
         o->color((Fl_Color)61);
         o->selection_color((Fl_Color)59);
         o->labelcolor((Fl_Color)55);
-        o->callback((Fl_Callback*)cb_OK);
+        o->callback((Fl_Callback*)cb_OK3);
       } // Fl_Button* o
       { Fl_Tabs* o = new Fl_Tabs(0, 25, 680, 330);
         o->box(FL_PLASTIC_THIN_UP_BOX);
         { Fl_Group* o = new Fl_Group(10, 45, 670, 305, gettext("Appearance"));
+          o->hide();
           { Fl_Box* o = new Fl_Box(10, 55, 330, 175);
             o->box(FL_GTK_DOWN_BOX);
             o->color((Fl_Color)51);
@@ -556,40 +900,40 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelfont(1);
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
-          { Fl_Button* o = new Fl_Button(40, 260, 225, 25, gettext(" Maximize Button (Activated)"));
+          { Fl_Button* o = new Fl_Button(30, 260, 225, 25, gettext(" Maximize Button (Activated)"));
             o->tooltip(gettext("Choose an image (XBM) for the Maximized button"));
             o->box(FL_GTK_UP_BOX);
             o->callback((Fl_Callback*)cb_Maximize);
             o->align(Fl_Align(256));
           } // Fl_Button* o
-          { Fl_Box* o = max_a_image = new Fl_Box(275, 260, 30, 30);
+          { Fl_Box* o = max_a_image = new Fl_Box(265, 260, 30, 30);
             max_a_image->box(FL_GTK_DOWN_BOX);
             max_a_image->color((Fl_Color)43);
             max_a_image->callback((Fl_Callback*)cb_max_a_image);
             max_a_image->when(FL_WHEN_RELEASE_ALWAYS);
             get_button(o,"ButtonMaxActive");
           } // Fl_Box* max_a_image
-          { Fl_Box* o = i_max_a_image = new Fl_Box(310, 260, 30, 30);
+          { Fl_Box* o = i_max_a_image = new Fl_Box(300, 260, 30, 30);
             i_max_a_image->box(FL_GTK_DOWN_BOX);
             i_max_a_image->color((Fl_Color)43);
             i_max_a_image->callback((Fl_Callback*)cb_i_max_a_image);
             i_max_a_image->when(FL_WHEN_RELEASE_ALWAYS);
             get_button_inactive(o,"ButtonMaxActive");
           } // Fl_Box* i_max_a_image
-          { Fl_Button* o = new Fl_Button(150, 305, 115, 25, gettext("Close Button"));
+          { Fl_Button* o = new Fl_Button(140, 305, 115, 25, gettext("Close Button"));
             o->tooltip(gettext("Choose a XBM for the close button"));
             o->box(FL_GTK_UP_BOX);
             o->callback((Fl_Callback*)cb_Close);
             o->align(Fl_Align(256));
           } // Fl_Button* o
-          { Fl_Box* o = close_image = new Fl_Box(275, 300, 30, 30);
+          { Fl_Box* o = close_image = new Fl_Box(265, 300, 30, 30);
             close_image->box(FL_GTK_DOWN_BOX);
             close_image->color((Fl_Color)43);
             close_image->callback((Fl_Callback*)cb_close_image);
             close_image->when(FL_WHEN_RELEASE_ALWAYS);
             get_button(o,"ButtonClose");
           } // Fl_Box* close_image
-          { Fl_Box* o = i_close_image = new Fl_Box(310, 300, 30, 30);
+          { Fl_Box* o = i_close_image = new Fl_Box(300, 300, 30, 30);
             i_close_image->box(FL_GTK_DOWN_BOX);
             i_close_image->color((Fl_Color)43);
             i_close_image->callback((Fl_Callback*)cb_i_close_image);
@@ -639,7 +983,6 @@ Fl_Double_Window* WindowUI::make_window() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(100, 45, 525, 305, gettext("Settings"));
-          o->hide();
           { Fl_Slider* o = b_slider = new Fl_Slider(325, 95, 125, 25, gettext("Size of the Window Frame"));
             b_slider->tooltip(gettext("This makes the edges of the window larger or smaller to help you grab them mo\
 re easily"));
@@ -769,6 +1112,18 @@ re easily"));
             }
             focus_menu->menu(menu_focus_menu);
           } // Fl_Menu_Button* focus_menu
+          { Fl_Slider* o = corner_slider = new Fl_Slider(330, 300, 60, 25, gettext("Size of Corner"));
+            corner_slider->tooltip(gettext("This changes the curvature of the window\'s corners"));
+            corner_slider->type(1);
+            corner_slider->box(FL_GTK_DOWN_BOX);
+            corner_slider->color((Fl_Color)41);
+            corner_slider->maximum(5);
+            corner_slider->step(1);
+            corner_slider->value(4);
+            corner_slider->callback((Fl_Callback*)cb_corner_slider);
+            corner_slider->align(Fl_Align(FL_ALIGN_LEFT));
+            corner_load(o);
+          } // Fl_Slider* corner_slider
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(70, 50, 565, 295, gettext("Advanced"));
@@ -829,11 +1184,81 @@ re easily"));
           } // Fl_Box* o
           o->end();
         } // Fl_Group* o
+        { Fl_Group* o = new Fl_Group(25, 50, 655, 305, gettext("Groups"));
+          o->hide();
+          { Fl_Browser* o = groups_browser = new Fl_Browser(80, 95, 85, 155, gettext("Current Groups"));
+            groups_browser->tooltip(gettext("Program groups allow one to specify options which apply to a group of program\
+s by their name and/or class. A program group is created with the Group tag. A\
+s many program groups can be created as desired."));
+            groups_browser->type(2);
+            groups_browser->box(FL_GTK_DOWN_BOX);
+            groups_browser->callback((Fl_Callback*)cb_groups_browser);
+            groups_browser->align(Fl_Align(FL_ALIGN_TOP));
+            flWindow win;
+            win.getGroups(o);
+          } // Fl_Browser* groups_browser
+          { group_add = new Fl_Button(80, 260, 35, 30, gettext("@+"));
+            group_add->box(FL_GTK_UP_BOX);
+            group_add->callback((Fl_Callback*)cb_group_add);
+          } // Fl_Button* group_add
+          { rm_group = new Fl_Button(120, 260, 35, 30);
+            rm_group->box(FL_GTK_UP_BOX);
+            rm_group->image(image_minus);
+            rm_group->callback((Fl_Callback*)cb_rm_group);
+          } // Fl_Button* rm_group
+          { opt_browser = new Fl_Browser(203, 95, 120, 155, gettext("Current Options"));
+            opt_browser->type(2);
+            opt_browser->box(FL_GTK_DOWN_BOX);
+            opt_browser->align(Fl_Align(FL_ALIGN_TOP));
+          } // Fl_Browser* opt_browser
+          { opt_add = new Fl_Button(203, 260, 35, 30, gettext("@+"));
+            opt_add->box(FL_GTK_UP_BOX);
+            opt_add->callback((Fl_Callback*)cb_opt_add);
+          } // Fl_Button* opt_add
+          { rm_opt = new Fl_Button(245, 260, 35, 30);
+            rm_opt->box(FL_GTK_UP_BOX);
+            rm_opt->image(image_minus);
+            rm_opt->callback((Fl_Callback*)cb_rm_opt);
+            rm_opt->deactivate();
+          } // Fl_Button* rm_opt
+          { name_browser = new Fl_Browser(346, 95, 115, 155, gettext("Program Name"));
+            name_browser->type(2);
+            name_browser->box(FL_GTK_DOWN_BOX);
+            name_browser->align(Fl_Align(FL_ALIGN_TOP));
+          } // Fl_Browser* name_browser
+          { prog_add = new Fl_Button(346, 260, 35, 30, gettext("@+"));
+            prog_add->box(FL_GTK_UP_BOX);
+            prog_add->callback((Fl_Callback*)cb_prog_add);
+          } // Fl_Button* prog_add
+          { rm_prog = new Fl_Button(390, 260, 35, 30);
+            rm_prog->box(FL_GTK_UP_BOX);
+            rm_prog->image(image_minus);
+            rm_prog->callback((Fl_Callback*)cb_rm_prog);
+            rm_prog->deactivate();
+          } // Fl_Button* rm_prog
+          { class_browser = new Fl_Browser(485, 95, 115, 155, gettext("Window Class"));
+            class_browser->type(2);
+            class_browser->box(FL_GTK_DOWN_BOX);
+            class_browser->align(Fl_Align(FL_ALIGN_TOP));
+          } // Fl_Browser* class_browser
+          { class_add = new Fl_Button(485, 260, 35, 30, gettext("@+"));
+            class_add->box(FL_GTK_UP_BOX);
+            class_add->callback((Fl_Callback*)cb_class_add);
+          } // Fl_Button* class_add
+          { rm_class = new Fl_Button(525, 260, 35, 30);
+            rm_class->box(FL_GTK_UP_BOX);
+            rm_class->image(image_minus);
+            rm_class->callback((Fl_Callback*)cb_rm_class);
+            rm_class->deactivate();
+          } // Fl_Button* rm_class
+          o->end();
+        } // Fl_Group* o
         o->end();
       } // Fl_Tabs* o
       o->end();
     } // Fl_Scroll* o
     Config config;config.under_mouse(o);
+    window_window->xclass("jsm-windows");
     window_window->end();
     window_window->resizable(window_window);
   } // Fl_Double_Window* window_window
@@ -846,6 +1271,59 @@ void WindowUI::active_color_loader(Fl_Button *o, int one_or_two) {
   unsigned int c = w.getActiveWindowColor(color);
   if(one_or_two ==1){o->color(c);}
   else{o->color(color);}
+}
+
+void WindowUI::add_option_to_group() {
+  int line =options_available->value();
+  if((line == 0)||(line>options_available->size())){return;}
+  else{
+    std::string group = options_desc->label();
+    unsigned int found = group.find_first_of(' ');
+    group = group.substr(found+1,std::string::npos);
+    unsigned int whichGroup = convert(group.c_str());
+    std::string val = options_available->text(line);
+    std::string thisitem;
+    std::string result = val;
+    if(result.compare("")==0){return;}
+    
+    if(val.compare("icon:")==0){
+      thisitem=icon_value->value();
+      if(thisitem.compare("")==0){return;}
+    }
+    else if(val.compare("desktop:")==0){
+      thisitem=convert(desktop_num->value());
+      result+=thisitem;
+      if(thisitem.compare("")==0){return;}
+    }
+    else if(val.compare("layer:")==0){
+      thisitem=layer_value->value();
+      result+=thisitem;
+      if(thisitem.compare("")==0){return;}
+    }
+    else if(val.compare("opacity:")==0){
+      thisitem = convert(opacity_value->value());
+      result+=thisitem;
+      if(thisitem.compare("")==0){return;}
+    }
+    const char* itemName = result.c_str();
+    add_tracker->add(itemName);
+    flWindow win;
+    win.addGroupItem( whichGroup, itemName);
+  }
+}
+
+void WindowUI::add_class() {
+  const char* input = input_to_add_class->value();
+  unsigned int line = groups_browser->value();
+  flWindow win;
+  win.addGroupClass(line,input);
+}
+
+void WindowUI::add_prog() {
+  const char* input = input_to_add_prog->value();
+  unsigned int line = groups_browser->value();
+  flWindow win;
+  win.addGroupProgram(line,input);
 }
 
 void WindowUI::border_color_loader(Fl_Widget *o, int Active1_Inactive2) {
@@ -880,6 +1358,28 @@ void WindowUI::border_modifier(Fl_Slider *o1, Fl_Value_Output *o2) {
   window.setBorderWidth(slider);
 }
 
+void WindowUI::check_opts(const char* itemValue) {
+  std::string val = itemValue;
+  desktop_num->deactivate();
+  layer_value->deactivate();
+  opacity_value->deactivate();
+  icon_value->deactivate();
+  layer_chooser->deactivate();
+  if(val.compare("icon:")==0){
+    icon_value->activate();
+  }
+  else if(val.compare("desktop:")==0){
+    desktop_num->activate();
+  }
+  else if(val.compare("layer:")==0){
+    layer_value->activate();
+    layer_chooser->activate();
+  }
+  else if(val.compare("opacity:")==0){
+    opacity_value->activate();
+  }
+}
+
 void WindowUI::choose_button(const char* whichButton) {
   flWindow w;
   std::string label = "Choose ";
@@ -907,6 +1407,24 @@ void WindowUI::choose_button(const char* whichButton) {
       const char *result =fnfc.filename();
       if(result!=NULL){w.setButton(result,whichButton);}
       break; // FILE CHOSEN
+  }
+}
+
+void WindowUI::corner_load(Fl_Slider *o) {
+  flWindow win;
+  if(!newStyle()){o->hide();}
+  else{
+    unsigned int corner = win.getCorner();
+    o->value(corner);
+  }
+}
+
+void WindowUI::corner_change(Fl_Slider *o) {
+  flWindow win;
+  if(!newStyle()){o->hide();}
+  else{
+    unsigned int corner =o->value();
+    win.setCorner(corner);
   }
 }
 
@@ -978,6 +1496,21 @@ void WindowUI::opacity_loader(Fl_Slider *o, int Active1_Inactive2) {
   if (Active1_Inactive2==1){opacity= window.getActiveOpacity();}
   else{opacity = window.getOpacity();}
   o->value(opacity);
+}
+
+void WindowUI::populate_groups() {
+  int line = groups_browser->value();
+  if ((line == 0) || (line > groups_browser->size())){
+    opt_browser->clear();
+    class_browser->clear();
+    name_browser->clear();
+  }
+  else{
+    flWindow win;
+    win.getGroupClasses(class_browser,line);
+    win.getGroupItems(opt_browser,line);
+    win.getGroupPrograms(name_browser,line);
+  }
 }
 
 void WindowUI::set_border_color(Fl_Widget *o, int Active1_Inactive2) {

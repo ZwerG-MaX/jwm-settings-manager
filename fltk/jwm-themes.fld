@@ -66,18 +66,20 @@ class ThemesUI {open
   Function {make_window()} {open
   } {
     Fl_Window themes_window {
-      label Themes open selected
-      xywh {247 403 610 345} type Double color 31 labelcolor 7 hide
-      code0 {Config config;config.under_mouse(o);} xclass JSM
+      label Themes open
+      xywh {200 462 610 345} type Double color 31 labelcolor 7
+      code0 {Config config;config.under_mouse(o);} xclass jsm-theme visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 845 660} color 31
       } {
         Fl_Button ok {
-          label OK
+          label {Change Colors ONLY}
           callback {const char* result = current_theme->label();
-change_theme(result);}
-          tooltip {This will copy your current theme somewhere else} xywh {505 240 65 30} box GTK_UP_BOX color 61 selection_color 58 labelcolor 7
+if(result!=NULL){
+  change_theme(result,false);
+}}
+          tooltip {This will copy your current theme somewhere else} xywh {400 210 185 30} box GTK_UP_BOX color 61 selection_color 58 labelcolor 7
         }
         Fl_Browser sys_theme {
           label Themes
@@ -107,7 +109,7 @@ change_theme(result);}
         Fl_Box iwin {
           xywh {160 155 425 40} box FLAT_BOX
         }
-        Fl_Box iwin2 {
+        Fl_Box iwin2 {selected
           xywh {160 165 425 30} box FLAT_BOX
         }
         Fl_Box iwin_text {
@@ -117,14 +119,14 @@ change_theme(result);}
         Fl_Button save_button {
           label {Save Custom Theme}
           callback {save_theme();}
-          tooltip {This will copy your current theme somewhere else} xywh {165 240 160 30} box GTK_UP_BOX color 94
+          tooltip {This will copy your current theme somewhere else} xywh {170 210 160 30} box GTK_UP_BOX color 94
         }
         Fl_Button cancel {
           label Cancel
           callback {themes_window->hide();
 UI ux;
 ux.showSettings();}
-          tooltip {This will copy your current theme somewhere else} xywh {430 240 65 30} box GTK_UP_BOX color 80 selection_color 64 labelcolor 7
+          tooltip {This will copy your current theme somewhere else} xywh {215 255 65 30} box GTK_UP_BOX color 80 selection_color 64 labelcolor 7
         }
         Fl_Browser usr_theme {
           label {User Themes}
@@ -135,6 +137,12 @@ ux.showSettings();}
         }
         Fl_Box button_icon {
           xywh {160 30 45 40} box FLAT_BOX
+        }
+        Fl_Button overwritten {
+          label {Overwrite Current Theme}
+          callback {const char* result = current_theme->label();
+change_theme(result,true);}
+          tooltip {This will copy your current theme somewhere else} xywh {400 250 190 35} box GTK_UP_BOX color 61 selection_color 58 labelcolor 7
         }
       }
       Fl_Box current_theme {
@@ -160,10 +168,11 @@ ux.showSettings();}
       }
     }
   }
-  Function {change_theme(const char* whichTheme)} {open
+  Function {change_theme(const char* whichTheme, bool overwrite)} {open
   } {
     code {flThemes theme;
-theme.copier(whichTheme);
+if (overwrite){theme.copier(whichTheme);}
+else if (!overwrite){theme.modCurrentTheme(button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,whichTheme);}
 theme.saveJWMRC(themes_window);
 UI ux;
 ux.showSettings();} {}
@@ -239,11 +248,6 @@ switch ( fnfc.show() ){
     break; // FILE SAVE NAME
 }
 return result;} {}
-  }
-  Function {save_system_theme()} {open
-  } {
-    code {std::string themeName = sys_theme->text(sys_theme->value());
-change_theme(themeName.c_str());} {}
   }
   Function {theme_cb(Fl_Browser* browser,bool systemTheme)} {open
   } {

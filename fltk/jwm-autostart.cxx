@@ -129,6 +129,7 @@ Fl_Double_Window* AutostartUI::make_window() {
       o->end();
     } // Fl_Scroll* o
     Config config;config.under_mouse(o);
+    autostart_window->xclass("jsm-autostart");
     autostart_window->end();
     autostart_window->resizable(autostart_window);
   } // Fl_Double_Window* autostart_window

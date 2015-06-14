@@ -971,6 +971,7 @@ tap"));
     } // Fl_Scroll* o
     readsynclientoutput();
     Config config;config.under_mouse(o);
+    mouse_window->xclass("jsm-mouse");
     mouse_window->end();
     mouse_window->resizable(mouse_window);
   } // Fl_Double_Window* mouse_window

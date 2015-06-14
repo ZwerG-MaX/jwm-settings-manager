@@ -29,7 +29,9 @@
 
 void ThemesUI::cb_ok_i(Fl_Button*, void*) {
   const char* result = current_theme->label();
-change_theme(result);
+if(result!=NULL){
+  change_theme(result,false);
+};
 }
 void ThemesUI::cb_ok(Fl_Button* o, void* v) {
   ((ThemesUI*)(o->parent()->parent()->user_data()))->cb_ok_i(o,v);
@@ -65,6 +67,14 @@ void ThemesUI::cb_usr_theme(Fl_Browser* o, void* v) {
   ((ThemesUI*)(o->parent()->parent()->user_data()))->cb_usr_theme_i(o,v);
 }
 
+void ThemesUI::cb_overwritten_i(Fl_Button*, void*) {
+  const char* result = current_theme->label();
+change_theme(result,true);
+}
+void ThemesUI::cb_overwritten(Fl_Button* o, void* v) {
+  ((ThemesUI*)(o->parent()->parent()->user_data()))->cb_overwritten_i(o,v);
+}
+
 Fl_Double_Window* ThemesUI::make_window() {
   { Fl_Double_Window* o = themes_window = new Fl_Double_Window(610, 345, gettext("Themes"));
     themes_window->color((Fl_Color)31);
@@ -72,7 +82,7 @@ Fl_Double_Window* ThemesUI::make_window() {
     themes_window->user_data((void*)(this));
     { Fl_Scroll* o = new Fl_Scroll(0, 0, 845, 660);
       o->color((Fl_Color)31);
-      { ok = new Fl_Button(505, 240, 65, 30, gettext("OK"));
+      { ok = new Fl_Button(400, 210, 185, 30, gettext("Change Colors ONLY"));
         ok->tooltip(gettext("This will copy your current theme somewhere else"));
         ok->box(FL_GTK_UP_BOX);
         ok->color((Fl_Color)61);
@@ -111,13 +121,13 @@ Fl_Double_Window* ThemesUI::make_window() {
       } // Fl_Box* iwin2
       { iwin_text = new Fl_Box(160, 155, 425, 40, gettext("Window (Inactive)"));
       } // Fl_Box* iwin_text
-      { save_button = new Fl_Button(165, 240, 160, 30, gettext("Save Custom Theme"));
+      { save_button = new Fl_Button(170, 210, 160, 30, gettext("Save Custom Theme"));
         save_button->tooltip(gettext("This will copy your current theme somewhere else"));
         save_button->box(FL_GTK_UP_BOX);
         save_button->color((Fl_Color)94);
         save_button->callback((Fl_Callback*)cb_save_button);
       } // Fl_Button* save_button
-      { cancel = new Fl_Button(430, 240, 65, 30, gettext("Cancel"));
+      { cancel = new Fl_Button(215, 255, 65, 30, gettext("Cancel"));
         cancel->tooltip(gettext("This will copy your current theme somewhere else"));
         cancel->box(FL_GTK_UP_BOX);
         cancel->color((Fl_Color)80);
@@ -137,6 +147,14 @@ Fl_Double_Window* ThemesUI::make_window() {
       { button_icon = new Fl_Box(160, 30, 45, 40);
         button_icon->box(FL_FLAT_BOX);
       } // Fl_Box* button_icon
+      { overwritten = new Fl_Button(400, 250, 190, 35, gettext("Overwrite Current Theme"));
+        overwritten->tooltip(gettext("This will copy your current theme somewhere else"));
+        overwritten->box(FL_GTK_UP_BOX);
+        overwritten->color((Fl_Color)61);
+        overwritten->selection_color((Fl_Color)58);
+        overwritten->labelcolor(FL_BACKGROUND2_COLOR);
+        overwritten->callback((Fl_Callback*)cb_overwritten);
+      } // Fl_Button* overwritten
       o->end();
     } // Fl_Scroll* o
     { current_theme = new Fl_Box(25, 305, 570, 30);
@@ -156,15 +174,16 @@ Fl_Double_Window* ThemesUI::make_window() {
     { iclose = new Fl_Box(545, 160, 30, 30);
     } // Fl_Box* iclose
     Config config;config.under_mouse(o);
-    themes_window->xclass("JSM");
+    themes_window->xclass("jsm-theme");
     themes_window->end();
   } // Fl_Double_Window* themes_window
   return themes_window;
 }
 
-void ThemesUI::change_theme(const char* whichTheme) {
+void ThemesUI::change_theme(const char* whichTheme, bool overwrite) {
   flThemes theme;
-  theme.copier(whichTheme);
+  if (overwrite){theme.copier(whichTheme);}
+  else if (!overwrite){theme.modCurrentTheme(button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,whichTheme);}
   theme.saveJWMRC(themes_window);
   UI ux;
   ux.showSettings();
@@ -240,11 +259,6 @@ std::string ThemesUI::choose_file() {
       break; // FILE SAVE NAME
   }
   return result;
-}
-
-void ThemesUI::save_system_theme() {
-  std::string themeName = sys_theme->text(sys_theme->value());
-  change_theme(themeName.c_str());
 }
 
 void ThemesUI::theme_cb(Fl_Browser* browser,bool systemTheme) {

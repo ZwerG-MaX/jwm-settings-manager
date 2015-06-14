@@ -1,4 +1,4 @@
-.TH jwm-settings-manager 1 "March 04, 2015" "version @VERSION@" "User Commands"
+.TH jwm-settings-manager 1 "@DATE@" "version @VERSION@" "User Commands"
 .SH NAME
 @EXEC@ \- configure JWM easily
 
@@ -36,6 +36,10 @@ configure JWM easily
 \-w  --window      show window settings
 .TP
 \-r  --recover     recover settings file
+.TP
+\-v  --version     show version number
+.TP
+\-c  --copyright   show copyright information
 .TP
 .B X ONLY OPTION
 .TP

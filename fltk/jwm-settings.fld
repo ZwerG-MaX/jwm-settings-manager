@@ -80,17 +80,10 @@ class SettingsUI {open
 } {
   Function {make_window()} {open
   } {
-    code {//fl_open_display();
-/*static Pixmap p;
-Pixmap mask;
-XpmCreatePixmapFromData(fl_display, DefaultRootWindow(fl_display), (char **)jsm,&p,&mask,0);
-settings_window->icon((char *)p);
-*/
-//settings_window->icon(UI::Get_Fl_Icon(jsm));} {}
     Fl_Window settings_window {
       label {Settings Manager} open selected
       xywh {703 487 395 375} type Double color 45 labelcolor 7 hide
-      code0 {Config config;config.under_mouse(o);}
+      code0 {Config config;config.under_mouse(o);} xclass {jwm-settings-manager}
     } {
       Fl_Box {} {
         label {Settings Manager}

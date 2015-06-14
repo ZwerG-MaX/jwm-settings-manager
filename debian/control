@@ -15,11 +15,11 @@ Build-Depends:
  libgcc1,
  libstdc++6,
 Standards-Version: 3.9.5
-Homepage: http://www.torios.org/
+Homepage: http://www.torios.net/
 
 Package: jwm-settings-manager
 Architecture: any
-Depends: jwm-settings-manager-common (>= ${source:Version}) , ${shlibs:Depends}, ${misc:Depends}, jwm
+Depends: jwm-settings-manager-common (>= ${source:Version}) , ${shlibs:Depends}, ${misc:Depends}, jwm, jwm-menu
 Recommends:
 Suggests: volumeicon-alsa
 Description: JWM Settings Manager

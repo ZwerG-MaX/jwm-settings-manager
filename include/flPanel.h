@@ -59,7 +59,8 @@ public:
    //add a Panel
     void addPanel();
     const char* smartPosition();
-    const char* smartAlign(const char* layout);
+    const char* smartVertAlign(const char* layout);
+    const char* smartHorizAlign(const char* layout);
     int whichAlign(const char* Align); //1 is valign 2 is halign 3 is unknown
     void setPanelText(const char* element);
     std::string getPanelText(const char* element);
@@ -116,9 +117,11 @@ public:
     std::string getMenuLabel(){return getLabelMenu(rootMenu);}
     std::string getMenuImage(){return getImageMenu(rootMenu);}
     void setMenuImage(const char* icon){setImageMenu(icon, rootMenu);}
-    //switch
+
+    //switchers
     void switchMenu(int whichStyle, const char* MenuName);
     void switchMenuInclude(std::string changeTHIS, std::string toTHIS);
+    void switchButton(std::string OLD,std::string NEW,std::string tooltip,std::string icon);
     ///VARIABLES for menu
     std::string torimenu;
     std::string gnomemenu;
@@ -132,10 +135,9 @@ public:
     void panelPositionHoriz(const char* position){setValue("halign",position);}
     void panelAutohide(bool &yesOrNo);
     void panelAutohide(const char* hideWhere);
-    std::string getAutohide(){return getStringValue("autohide");}
+    std::string getAutohide();
     ///JSM
     void setJSM(const char* element, const char* value);
-    void updatePanels(int panel){recoverJSM(panel);}
 
     //constructors and destructor
     flPanel();
@@ -150,7 +152,6 @@ public:
     unsigned int counter;
     unsigned int whichPanel;
     unsigned int howmanyPanels;
-    bool isNewStyle;
 
 private:
 

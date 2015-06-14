@@ -341,6 +341,7 @@ Fl_Double_Window* FontUI::make_window() {
       o->end();
     } // Fl_Scroll* o
     Config config;config.under_mouse(o);
+    font_window->xclass("jsm-fonts");
     font_window->end();
     font_window->resizable(font_window);
   } // Fl_Double_Window* font_window
@@ -412,6 +413,7 @@ Fl_Double_Window* FontUI::font_chooser_window() {
       o->value(fs);
     } // Fl_Value_Output* chooser_size
     Config config;config.under_mouse(o);
+    font_choosing->xclass("jsm-fonts");
     font_choosing->end();
   } // Fl_Double_Window* font_choosing
   return font_choosing;

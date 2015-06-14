@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(jwm-settings-manager CXX C)
 set(PROJECT_NAME jwm-settings-manager)
-SET(VERSION "0.99")
+SET(VERSION "1.0.0")
+SET(DATE "May 24, 2015")
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 INCLUDE(AddFileDependencies)
@@ -41,7 +42,7 @@ INCLUDE_DIRECTORIES("${FLTK_INCLUDE_DIR}"
 		    "${CMAKE_BINARY_DIR}/data/icons")
 
 ## Compiler flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Os -finline-small-functions -finline-functions-called-once -fno-unwind-tables -fno-asynchronous-unwind-tables")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Os -finline-small-functions -finline-functions-called-once -fno-unwind-tables -fno-asynchronous-unwind-tables -s")
 
 ### ALL the source code
 set(JSM_SRCS
@@ -65,6 +66,7 @@ set(JSM_SRCS
 	fltk/jwm-icons.cxx
 	fltk/jwm-keyboard.cxx
 	fltk/jwm-mouse.cxx
+	fltk/jwm-menu.cxx
 	fltk/jwm-panel.cxx
 	fltk/jwm-settings.cxx
 	fltk/jwm-themes.cxx

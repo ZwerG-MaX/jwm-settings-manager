@@ -23,7 +23,6 @@
  * Jesus is my Lord, and if you don't like it feel free to ignore it.
  */
 
-/*Version 0.005*/
 
 /*Project Includes*/
 //JWM config stuff
@@ -36,23 +35,47 @@
 #include "../include/Config.h"
 
 //main UI
-
 #include "../include/ui.h"
-#include "../fltk/jwm-panel.h"
-#include "../fltk/jwm-autostart.h"
-#include "../fltk/jwm-keyboard.h"
-#include "../fltk/jwm-desktop.h"
-#include "../fltk/jwm-window.h"
-#include "../fltk/jwm-mouse.h"
-#include "../fltk/jwm-themes.h"
-#include "../fltk/jwm-icons.h"
 
 //For argc argv stuff
 #include <iostream>
 #include <iomanip>
 #include <string>
-void showHelp();
 
+#include "../fltk/jwm-shutdown.h"
+
+void showHelp();
+int shutdownWindow();
+const char* copyright="                 Joe's Window Manager Configuration\n\
+\n\
+  This program configures JWM using tinyxml2 and FLTK\n\
+\n\
+          Copyright (C) 2014-2015  Israel <israel@torios.org>\n\
+  This program is free software: you can redistribute it and/or modify\n\
+  it under the terms of the GNU General Public License as published by\n\
+  the Free Software Foundation, either version 3 of the License, or\n\
+  (at your option) any later version.\n\
+\n\
+  This program is distributed in the hope that it will be useful,\n\
+  but WITHOUT ANY WARRANTY; without even the implied warranty of\n\
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n\
+  GNU General Public License for more details.\n\
+\n\
+  You should have received a copy of the GNU General Public License\n\
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.\n\
+\n\
+  This has been developed as a part of the ToriOS Project\n\
+  http://www.torios.net\n\
+  This has been developed by Israel<israel@torios.org>\n\
+\n\
+\n\
+  You may redistribute this, but you must keep this comment in place\n\
+  Jesus is my Lord, and if you don't like it feel free to ignore it.\n\
+ ";
+const char* programName = "jwm-settings-manager";
+unsigned int versionMajor = 9;
+unsigned int versionMinor = 9;
+unsigned int revNo = 9;
 int main(int argc, char *argv[]){
     //make the UI
     UI ux;
@@ -102,40 +125,42 @@ int main(int argc, char *argv[]){
                     ux.showThemes();
                     return 0;
                 }
+                else if((command.compare("--clock-settings")==0)||(command.compare("-clock")==0)){
+                    ux.showClock();
+                    return 0;
+                }
                 else if((command.compare("--recover")==0)||(command.compare("-r")==0)){
                     Config config;
                     config.recover();
                     return 0;
                 }
-                else if(command == "--halt"){
-                    ux.jwmShutdown();
+                else if((command.compare("--version")==0)||(command.compare("-v")==0)){
+                    std::cout<<programName<<" Version: "<<versionMajor<<"."<<versionMinor<<"."<<revNo<<" by Israel Dahl\nA full-featured program to configure JWM easily"<<std::endl;
                     return 0;
                 }
+                else if((command.compare("--copyright")==0)||(command.compare("-c")==0)){
+                    std::cout<<copyright<<std::endl;
+                    return 0;
+                }
+                else if(command == "--halt"){
+                    return shutdownWindow();
+                }
                 else {
-                    std::cout<< "Invalid command";
+                    std::cout<< "Invalid command"<<std::endl;
                     showHelp();
                     return 0;
                 }
             }
         }
     }
-
-    //What is this for again??
-    Fl::visual(FL_RGB);
-
-    Config config;
-    config.checkFiles();
-    config.load();
-    config.saveChangesTemp();
-
     ux.showSettings();
     return 0;
 }
 
 
 void showHelp(){
-    std::cout << "Usage: jwm-settings-manager [Option]\n\n"
-        <<"jwm-settings-manager will open the Main settings screen if no options are supplied\n\n"
+    std::cout << "Usage: "<<programName<<" [Option]\n\n"
+        <<programName<<" will open the Main settings screen if no options are supplied\n\n"
         <<"Options:\n"
         <<" -a --autostart   show autostart settings\n"
         <<" -d --desktop     show desktop settings\n"
@@ -148,7 +173,17 @@ void showHelp(){
         <<" -t --themes      show theme settings\n"
         <<" -w --window      show window settings\n"
         <<" -r --recover     recover settings file\n"
+        <<" -v --version     show current version\n"
+        <<" -c --copyright   show copyright information\n"
         <<" GUI ONLY OPTION\n"
-        <<"  --halt           show shutdown menu\n"
+        <<"  --halt           show shutdown menu\n\n"
+        <<" Version: "<<versionMajor<<"."<<versionMinor<<"."<<revNo
         << std::endl;
+
+}
+int shutdownWindow(){
+    shutdown shut;
+    shut.make_window()->xclass("JSM");
+    shut.make_window()->show();
+    return Fl::run();
 }

@@ -54,11 +54,11 @@ class Apps : public Config {
         void deleteAppXload();
         void addAppXload();
 
-        //clock
+//----------------------------------------- Clock --------------------------------
         ///Clock browser
         void populateClocks(Fl_Browser *o);
         ///Default clock
-        void addClock(){addAPP("Clock","format","%a, %e %b %l:%M %p","xclock");} ///TODO add clock to jsm file and add a configurer...
+        void addClock(); ///TODO add clock to jsm file and add a configurer...
         ///Delete clock for current panel
         void deleteClock(){deleteAPP("Clock");}
         bool isClock(){return isAPP("Clock" );}
@@ -82,23 +82,24 @@ class Apps : public Config {
     void addDock(){addAPP("Dock");}
     void deleteDock(){deleteAPP("Dock");}
     void getIndicators(Fl_Browser *o);
-        //Shutdown
+
+    //Shutdown
         bool isShutdown(){return isMenu(9);}
         void addShutdown();
         void deleteShutdown();
         void setShutdownImage(const char * icon);
 
-        //Places
+    //Places
         bool isPlaces(){return isMenu(7);}
         void addPlaces();
         void deletePlaces();
 
-        //App Menu
+    //App Menu
         bool isAppMenu(){return isMenu(5);}
         void addAppMenu();
         void deleteAppMenu();
 
-      //NetworkMonitor
+    //NetworkMonitor
         bool isNetworkMonitor();
         void addNetworkMonitor();
         void deleteNetworkMonitor();
@@ -113,6 +114,34 @@ class Apps : public Config {
         void addBattery();
         void deleteBattery();
 
+    //Menu
+        void removeMenuItem(Fl_Browser *elementName, Fl_Browser *elementText);
+        int getMenus(Fl_Browser *menuBrowser);
+        void ConfigMenuItem(Fl_Browser *elementName,
+                            Fl_Browser *elementText,
+                            Fl_Input *itemLabel,
+                            Fl_Input *itemIcon,
+                            Fl_Input *itemProgram,
+                            Fl_Check_Button *itemCheck);
+
+        int addMenuItem(Fl_Browser *menuElement,
+                    Fl_Browser *menuElementText,
+                    Fl_Input *add_label,
+                    Fl_Input *add_icon,
+                    Fl_Input *add_input,
+                    Fl_Check_Button *add_button,
+                    std::string whichElement);
+
+        int createMenuItem(std::string whichElement, std::string whichMenu, Fl_Browser *menuElement,Fl_Browser *menuElementText);
+        int createMenuItem(std::string whichElement, std::string whichMenu, Fl_Browser *menuElement,Fl_Browser *menuElementText, std::string text);
+        int createMenu(const char* whichElement, Fl_Browser *menuElement,Fl_Browser *menuElementText);
+        int removeMenu(const char* whichElement);
+        void getMenuItems(Fl_Browser *elementName, const char* rootmenu, Fl_Browser *elementText);
+        int setMenuAttribute(const char* whichElement, const char* attribute, std::string value, const char* rootmenu);
+        int setMenuText(const char* whichElement, const char* text, const char* rootmenu, const char* oldtext);
+        void listMenus(Fl_Browser *list_browser);
+
+    //General
         bool isTrayElement(const char* element, std::string text);
         bool isAPP(const char* app);
         void addAPP(const char* app);
@@ -123,17 +152,26 @@ class Apps : public Config {
         Apps();
         virtual ~Apps();
     protected:
-        const char* volumeiconBin;
+        //battery apps
         const char* xfcepowerBin;
         const char* sdeskPowerBin;
         const char* sdeskPowerPlugin;
         bool xfcepower;
         bool sdeskpower;
+
+        //volume apps
+        const char* volumeiconBin;
+        const char* gnomeVolume;
         bool volumeiconExists;
+        bool gnomeVolumeExists;
+
+        //network apps
         const char* nmapplet;
         const char* wicd;
+        const char* wicd_tray;
         bool wicdExists;
         bool nmappletExists;
+
     private:
 };
 

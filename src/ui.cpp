@@ -1,20 +1,12 @@
 
 #include "../include/ui.h"
-#include "../data/icons/jwm-settings-manager.xpm"
+//#include "../data/icons/jwm-settings-manager.xpm"
 //These functions simply call the UI
 UI::UI(){
 }
 UI::~UI(){
     exit(0);
 }
-//shutdown
-int UI::jwmShutdown(){
-    shutdown shut;
-    shut.make_window()->xclass("JSM");
-    shut.make_window()->show();
-    return Fl::run();
-}
-
 //main window
 int UI::showSettings(){
     SettingsUI uiSettings;
@@ -27,7 +19,7 @@ int UI::showSettings(){
     //fl_open_display();
     //Pixmap p = XCreateBitmapFromData(fl_display, DefaultRootWindow(fl_display), (char *)jsm,48,48);
     //uiSettings.settings_window->icon((char *)p);
-    uiSettings.make_window()->xclass("JSM");
+    uiSettings.make_window()->xclass("jwm-settings-manager");
     uiSettings.make_window()->show();
 return Fl::run();
 }
@@ -35,15 +27,22 @@ return Fl::run();
 //panel
 int UI::showPanel(){
     PanelUI uiPanel;
-    uiPanel.make_window()->xclass("JSM");
+    uiPanel.make_window()->xclass("jsm-panel");
     uiPanel.make_window()->show();
 return Fl::run();
 }
-
+//clock
+int UI::showClock(){
+    PanelUI uiPanel;
+    uiPanel.make_window()->xclass("jsm-panel");
+    uiPanel.make_window()->show();
+    uiPanel.config_clock_window()->show();
+return Fl::run();
+}
 //desktop
 int UI::showDesktop(){
     DesktopUI uiDesktop;
-    uiDesktop.make_window()->xclass("JSM");
+    uiDesktop.make_window()->xclass("jsm-desktop");
     uiDesktop.make_window()->show();
 return Fl::run();
 }
@@ -51,7 +50,7 @@ return Fl::run();
 //windows
 int UI::showWindow(){
     WindowUI uiWindow;
-    uiWindow.make_window()->xclass("JSM");
+    uiWindow.make_window()->xclass("jsm-windows");
     uiWindow.make_window()->show();
     return Fl::run();
 }
@@ -59,7 +58,7 @@ int UI::showWindow(){
 //Autostart
 int UI::showAutostart(){
     AutostartUI uiAutostart;
-    uiAutostart.make_window()->xclass("JSM");
+    uiAutostart.make_window()->xclass("jsm-autostart");
     uiAutostart.make_window()->show();
 return Fl::run();
 }
@@ -67,7 +66,7 @@ return Fl::run();
 //fonts
 int UI::showFonts(){
     FontUI uiFonts;
-    uiFonts.make_window()->xclass("JSM");
+    uiFonts.make_window()->xclass("jsm-fonts");
     uiFonts.make_window()->show();
 return Fl::run();
 }
@@ -75,7 +74,7 @@ return Fl::run();
 //keyboard
 int UI::showKeyboard(){
     KeyboardUI uiKeyboard;
-    uiKeyboard.make_window()->xclass("JSM");
+    uiKeyboard.make_window()->xclass("jsm-keyboard");
     uiKeyboard.make_window()->show();
 return Fl::run();
 }
@@ -83,7 +82,7 @@ return Fl::run();
 //Themes
 int UI::showThemes(){
     ThemesUI uiThemes;
-    uiThemes.make_window()->xclass("JSM");
+    uiThemes.make_window()->xclass("jsm-theme");
     uiThemes.make_window()->show();
 return Fl::run();
 }
@@ -91,7 +90,7 @@ return Fl::run();
 //icons
 int UI::showIcons(){
     IconsUI uiIcons;
-    uiIcons.make_window()->xclass("JSM");
+    uiIcons.make_window()->xclass("jsm-icons");
     uiIcons.make_window()->show();
 return Fl::run();
 }
@@ -99,8 +98,15 @@ return Fl::run();
 //mouse
 int UI::showMouse(){
     MouseUI uiMouse;
-    uiMouse.make_window()->xclass("JSM");
+    uiMouse.make_window()->xclass("jsm-mouse");
     uiMouse.make_window()->show();
+return Fl::run();
+}
+//mouse
+int UI::showMenu(){
+    MenuUI Menu;
+    Menu.make_window()->xclass("jsm-panel");
+    Menu.make_window()->show();
 return Fl::run();
 }
 #if 0

@@ -9,18 +9,13 @@ configure_file(${EXEC}.desktop.in ${EXEC}.desktop)
 FILE(GLOB APPS "*.desktop")
 FILE(GLOB ICONS "icons/*.svg")
 FILE(GLOB ICONS_PNG "icons/*.png")
+FILE(GLOB ICONS_XPM "icons/*.xpm")
 
 # make sure the Cmake list in themes is included
 add_subdirectory(themes)
 
-#install menus
-install (FILES toriOSmenu DESTINATION /etc/menu-methods)
-install (FILES gnomeapps DESTINATION /etc/menu-methods)
-install (FILES gnomesystem DESTINATION /etc/menu-methods)
-install (FILES places DESTINATION /etc/menu-methods)
-
-# install the localization files for the menus
-install (DIRECTORY desktop-directories DESTINATION /usr/share/)
+# install icon finder script
+install (FILES jwmIconFinder DESTINATION usr/bin)
 
 #install themes 
 install (DIRECTORY themes DESTINATION share/jwm-settings-manager)
@@ -32,8 +27,9 @@ install (FILES pb_JWM DESTINATION share/jwm-settings-manager)
 install(FILES icons/jwm-settings-manager.png icons/jwm-settings-manager.xpm DESTINATION share/pixmaps)
 
 # install all icons to our own icon directory
-install(FILES ${ICONS} DESTINATION usr/share/icons/jsm)
-install(FILES ${ICONS_PNG} DESTINATION usr/share/icons/jsm)
+install(FILES ${ICONS} DESTINATION usr/share/icons/hicolor/scalable/apps)
+install(FILES ${ICONS_PNG} DESTINATION usr/share/icons/hicolor/48x48/apps)
+install(FILES ${ICONS_XPM} DESTINATION usr/share/pixmaps)
 
 # install ALL desktop files into /usr/share/applications
 install(FILES ${APPS} DESTINATION share/applications)

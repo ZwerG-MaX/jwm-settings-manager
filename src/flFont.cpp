@@ -7,6 +7,9 @@ flFont::flFont()
     weight = "weight";
     slant = "slant";
     spacing = "spacing";
+    defaultFont = "ubuntu-12:antialias=true";
+    defaultFontName = "ubuntu";
+    defaultFontColor = "#ffffff";
 }
 
 flFont::~flFont()
@@ -15,8 +18,13 @@ flFont::~flFont()
 }
 //Font NAME
 std::string flFont::fontTest(const char* whichElement){
+    if(!testElement(whichElement,"Font")){
+        createElement(whichElement,"Font");
+        missingFont(whichElement);
+        return defaultFont;
+    }
     tinyxml2::XMLElement * currentFont = doc.FirstChildElement("JWM")->FirstChildElement(whichElement)->FirstChildElement("Font");
-    std::string font ="";
+    std::string font;
     const char* fontTester = currentFont->GetText();
     if(fontTester!=NULL){
         font=fontTester;
@@ -24,20 +32,23 @@ std::string flFont::fontTest(const char* whichElement){
     }
     else {
         missingFont(whichElement);
+        return defaultFont;
     }
     return NULL;
 }
 void flFont::missingFont(const char* whichElement){
+    if(!testElement(whichElement,"Font")){createElement(whichElement,"Font");}
     tinyxml2::XMLElement * currentFont = doc.FirstChildElement("JWM")->FirstChildElement(whichElement)->FirstChildElement("Font");
     std::cerr<<"The current Element doesn't have a font name or is missing a size.\n Recovering by rewriting default values\n";
     ///TODO member var for default font
-    currentFont->SetText("ubuntu-12:antialias=true");
-    //getFontName(whichElement);//Is this a good Idea??  Is there a case that can make this loop endlessly?
+    currentFont->SetText(defaultFont);
+    saveChanges();
+    saveChangesTemp();
 }
 std::string flFont::getFontName(const char* whichElement){
     std::string font =fontTest(whichElement);
     if (font.c_str() != NULL){
-        std::string fontName ="";
+        std::string fontName;
         std::string::size_type size = font.find_first_of('-');
         if((font.find_last_of('-')!=std::string::npos)){
             fontName = font.substr (0,size);
@@ -56,6 +67,10 @@ std::string flFont::getFontName(const char* whichElement){
 
 void flFont::setFontName(const char* name, const char* whichElement){
     if(name==NULL){return;}
+    if(!testElement(whichElement,"Font")){
+        createElement(whichElement,"Font");
+        missingFont(whichElement);
+    }
     tinyxml2::XMLElement * currentFont = doc.FirstChildElement("JWM")->FirstChildElement(whichElement)->FirstChildElement("Font");
     std::string font =fontTest(whichElement);
     if (font.c_str() != NULL){
@@ -103,6 +118,10 @@ unsigned int flFont::getFontSize(std::string whichElement){
 
 ///Everything below here needs ERROR CHECKING
 void flFont::setSize(unsigned int &fontSize,std::string whichElement){
+    if(!testElement(whichElement.c_str(),"Font")){
+        createElement(whichElement.c_str(),"Font");
+        missingFont(whichElement.c_str());
+    }
     tinyxml2::XMLElement * currentFont = doc.FirstChildElement("JWM")->FirstChildElement(whichElement.c_str())->FirstChildElement("Font");
     std::string font = currentFont->GetText();
     //std::cout<<"setSize input: "<<font<<std::endl;//Debug
@@ -127,18 +146,24 @@ void flFont::setSize(unsigned int &fontSize,std::string whichElement){
 //****************************  Font Color  ***********************************
 ///@param whichElement is something like TaskListStyle or TrayStyle or MenuStyle, etc..
 void flFont::setFontColor(const double* rgb,const char* whichElement){
-    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichElement )->
-                            FirstChildElement( "Foreground" );
+
+    if(!testElement(whichElement,"Foreground")){createElement(whichElement,"Foreground");}
+
+    tinyxml2::XMLElement * colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Foreground" );
     std::string color1 = colorToString(rgb);
     colorElement->SetText(color1.c_str());
     saveChangesTemp();
 }
 
-unsigned int flFont::getFontColor(const char *element){
-    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( element )->
-                            FirstChildElement( "Foreground" );
+unsigned int flFont::getFontColor(const char *whichElement){
+if(!testElement(whichElement,"Foreground")){
+        createElement(whichElement,"Foreground");
+        tinyxml2::XMLElement * testElement = doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Foreground" );
+        testElement->SetText(defaultFontColor);
+        unsigned int unused = 1;
+        return getColor(defaultFontColor,unused);
+    }
+    tinyxml2::XMLElement * colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Foreground" );
     std::string colorXML = colorElement->GetText();
     //this unsigned int isn't used here, because there is only 1 color...
     //TODO: overload the getColor function :)

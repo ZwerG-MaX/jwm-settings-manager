@@ -30,6 +30,8 @@
 #include <FL/Fl_Browser.H>
 #include "../fltk/jwm-themes.h"
 #include "Config.h"
+#include "flPanel.h"
+#include "flWindow.h"
 #include <dirent.h>
 
 class flThemes : public Config
@@ -38,37 +40,72 @@ class flThemes : public Config
     public:
         ///Dynamic themes
         int loadTheme(std::string themePath);
+        void checkThemeVersion();
+        void updateTheme(Fl_Box * button, Fl_Box * button_icon, Fl_Box *tray, Fl_Box *activeW,Fl_Box *activeW2,Fl_Box *activeW_text, Fl_Box *inactiveW, Fl_Box *inactiveW2,Fl_Box *inactiveW_text,Fl_Box *active_min_button, Fl_Box *active_max_button, Fl_Box *active_close_button, Fl_Box *inactive_min_button, Fl_Box *inactive_max_button, Fl_Box *inactive_close_button,std::string filename);
+        void modCurrentTheme(Fl_Box * button, Fl_Box * button_icon, Fl_Box *tray, Fl_Box *activeW,Fl_Box *activeW2,Fl_Box *activeW_text, Fl_Box *inactiveW, Fl_Box *inactiveW2,Fl_Box *inactiveW_text,std::string filename);
+
+        //Multiuse functions to get colors, text, etc... from themes
         std::string getThemeItemText(const char* whichOne);
         unsigned int getThemeItemInt(const char* whichOne, const char* whatToGet,unsigned int &color2);
         unsigned int getThemeItemInt(const char* whichOne, const char* whatToGet);
-        unsigned int getTheme2ItemInt(const char * whichElement, const char * whichElement2, const char* whatToGet,unsigned int &color2);
-        void updateTheme(Fl_Box * button, Fl_Box * button_icon, Fl_Box *tray, Fl_Box *activeW,Fl_Box *activeW2,Fl_Box *activeW_text, Fl_Box *inactiveW, Fl_Box *inactiveW2,Fl_Box *inactiveW_text,Fl_Box *active_min_button, Fl_Box *active_max_button, Fl_Box *active_close_button, Fl_Box *inactive_min_button, Fl_Box *inactive_max_button, Fl_Box *inactive_close_button,std::string filename);
-        void checkThemeVersion();
-        std::string getMaxButton(){return getThemeItemText("ButtonMaxActive");}
+        unsigned int getTheme2ItemInt(const char * whichElement, const char * whichElement2, const char* whatToGet);
+        unsigned int getTheme2ItemInt_secondColor(const char * whichElement, const char * whichElement2, const char* whatToGet);
+        const double* convertINTcolor2Double(unsigned int colorToConvert);
+        const double* getItemColor(Fl_Box*o);
+
+        //button getters from theme file
+        std::string getMaxButton(){return getThemeItemText("ButtonMax");}
+        std::string getMaxActiveButton(){return getThemeItemText("ButtonMaxActive");}
         std::string getMinButton(){return getThemeItemText("ButtonMin");}
         std::string getCloseButton(){return getThemeItemText("ButtonClose");}
 
-        unsigned int  getPanel();
-        unsigned int  getPanelText();
-        unsigned int getPanelButton();
+        ///used by the functions below
+        unsigned int getActiveFG(const char* whichElement);
+        unsigned int getActiveBG(const char* whichElement);
+
+        //TaskList getters from theme file
+        unsigned int getTaskActiveFG(){return getActiveFG("TaskListStyle");}
+        unsigned int getTaskActiveBG(){return getActiveBG("TaskListStyle");}
+        unsigned int getTaskFG(){return getThemeItemInt("TaskListStyle","Foreground");}
+        unsigned int getTaskBG(){return getThemeItemInt("TaskListStyle","Background");}
+
+        //menu getters
+        unsigned int getMenuActiveFG(){return getActiveFG("MenuStyle");}
+        unsigned int getMenuActiveBG(){return getActiveBG("MenuStyle");}
+        unsigned int getMenuFG(){return getThemeItemInt("MenuStyle","Foreground");}
+        unsigned int getMenuBG(){return getThemeItemInt("MenuStyle","Background");}
+
+        //panel getters
+        unsigned int getPanel(){return getThemeItemInt("TrayStyle","Background");}
+        unsigned int getPanelButton(){return getThemeItemInt("TrayButtonStyle","Background");}
+        unsigned int getPanelText(){return getThemeItemInt("TrayStyle","Foreground");}
+        unsigned int getPanelButtonText(){return getThemeItemInt("TrayButtonStyle","Foreground");}
         std::string getPanelButtonIcon();
-        unsigned int getPanelButtonText();
         std::string getPanelLabel();
+
+        //window getters
         unsigned int getWindow(unsigned int &color2);
+        unsigned int getWindow_secondColor();
         unsigned int getWindowText();
         unsigned int getActiveWindowText();
-        unsigned int getActiveWindow(unsigned int &color2);
+        unsigned int getActiveWindow();
+        unsigned int getActiveWindow2();
+
         bool themesExist();
         bool oldThemesExist();
+
+        //mostly used in the FLTK file
         std::string userThemeDir(){return userThemePATH;};
         std::string sysThemeDir();
         bool checkForTheme(std::string theme);
         int populateThemes(Fl_Browser* o);
         int populateUserThemes(Fl_Browser* o);
         int saveAs(const char* filename);
-        const char* getTheme(const char* whichTheme);
-        void change(const char* themeName);
         void copier(std::string theme);
+
+        //TODO: check these functions and get rid of the unused old ones
+        void change(const char* themeName);
+        const char* getTheme(const char* whichTheme);
         void userTheme();
         void other(const char* themeName);
         tinyxml2::XMLDocument themeDoc;

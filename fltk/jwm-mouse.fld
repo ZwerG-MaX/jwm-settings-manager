@@ -91,10 +91,10 @@ class MouseUI {open : {public Config}
     code {load();
 saveChangesTemp();} {}
     Fl_Window mouse_window {
-      label {Mouse Settings} open
-      xywh {979 351 440 535} type Double color 31 hide resizable
+      label {Mouse Settings} open selected
+      xywh {1165 257 440 535} type Double color 31 resizable
       code0 {readsynclientoutput();}
-      code1 {Config config;config.under_mouse(o);}
+      code1 {Config config;config.under_mouse(o);} xclass {jsm-mouse} visible
     } {
       Fl_Scroll {} {open
         xywh {0 10 440 525} color 31
@@ -918,8 +918,7 @@ string_command += "/.config/jsm-mouse";
 working_sed = system(string_command.c_str());
 if(working_sed!=0){
   //std::cout<< string_command<<" did not return 0"<<std::endl;
-}} {selected
-    }
+}} {}
   }
   Function {parseline(char *line, char **argv, int maxarg)} {open return_type int
   } {

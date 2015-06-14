@@ -57,7 +57,7 @@ class flFont : public Config
 
         //Color
         void setFontColor(const double* rgb,const char* whichElement);
-        unsigned int getFontColor(const char *element);
+        unsigned int getFontColor(const char *whichElement);
 
         //SIZE
         unsigned int getFontSize(std::string whichElement);
@@ -72,6 +72,9 @@ class flFont : public Config
     const char* slant;
     const char* spacing;
     const char* antialias;
+    const char* defaultFont;
+    const char* defaultFontName;
+    const char* defaultFontColor;
     private:
 };
 

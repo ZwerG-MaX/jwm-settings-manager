@@ -41,24 +41,73 @@
 #include "../include/flWindow.h"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
+#include <FL/Fl_Browser.H>
 #include <FL/Fl_Button.H>
-#include <FL/Fl_Tabs.H>
-#include <FL/Fl_Group.H>
-#include <FL/Fl_Box.H>
+#include <FL/Fl_Input.H>
 #include <FL/Fl_Slider.H>
 #include <FL/Fl_Value_Input.H>
 #include <FL/Fl_Menu_Button.H>
+#include <FL/Fl_Output.H>
+#include <FL/Fl_Tabs.H>
+#include <FL/Fl_Group.H>
+#include <FL/Fl_Box.H>
 #include <FL/Fl_Value_Output.H>
 
 class WindowUI : public Config {
 public:
-  Fl_Double_Window* make_window();
-  Fl_Double_Window *window_window;
+  Fl_Double_Window* add_option_window();
+  Fl_Double_Window *add_opt_window;
+  Fl_Browser *options_available;
+private:
+  inline void cb_options_available_i(Fl_Browser*, void*);
+  static void cb_options_available(Fl_Browser*, void*);
+  inline void cb_Add_i(Fl_Button*, void*);
+  static void cb_Add(Fl_Button*, void*);
+public:
+  Fl_Browser *options_desc;
+  Fl_Input *icon_value;
+  Fl_Slider *opacity_value;
+  Fl_Value_Input *desktop_num;
+  Fl_Browser *add_tracker;
 private:
   inline void cb_Cancel_i(Fl_Button*, void*);
   static void cb_Cancel(Fl_Button*, void*);
   inline void cb_OK_i(Fl_Button*, void*);
   static void cb_OK(Fl_Button*, void*);
+public:
+  Fl_Menu_Button *layer_chooser;
+  static unsigned char menu_layer_chooser_i18n_done;
+  static Fl_Menu_Item menu_layer_chooser[];
+private:
+  inline void cb_below_i(Fl_Menu_*, void*);
+  static void cb_below(Fl_Menu_*, void*);
+  inline void cb_normal_i(Fl_Menu_*, void*);
+  static void cb_normal(Fl_Menu_*, void*);
+  inline void cb_above_i(Fl_Menu_*, void*);
+  static void cb_above(Fl_Menu_*, void*);
+public:
+  Fl_Output *layer_value;
+  Fl_Double_Window* add_class_window();
+  Fl_Double_Window *class_win;
+  Fl_Input *input_to_add_class;
+private:
+  inline void cb_OK1_i(Fl_Button*, void*);
+  static void cb_OK1(Fl_Button*, void*);
+public:
+  Fl_Double_Window* add_program_window();
+  Fl_Double_Window *prog_win;
+  Fl_Input *input_to_add_prog;
+private:
+  inline void cb_OK2_i(Fl_Button*, void*);
+  static void cb_OK2(Fl_Button*, void*);
+public:
+  Fl_Double_Window* make_window();
+  Fl_Double_Window *window_window;
+private:
+  inline void cb_Cancel1_i(Fl_Button*, void*);
+  static void cb_Cancel1(Fl_Button*, void*);
+  inline void cb_OK3_i(Fl_Button*, void*);
+  static void cb_OK3(Fl_Button*, void*);
 public:
   Fl_Button *a_title_color1;
 private:
@@ -231,6 +280,11 @@ private:
   inline void cb_By1_i(Fl_Menu_*, void*);
   static void cb_By1(Fl_Menu_*, void*);
 public:
+  Fl_Slider *corner_slider;
+private:
+  inline void cb_corner_slider_i(Fl_Slider*, void*);
+  static void cb_corner_slider(Fl_Slider*, void*);
+public:
   Fl_Slider *a_b_slider;
 private:
   inline void cb_a_b_slider_i(Fl_Slider*, void*);
@@ -243,17 +297,72 @@ private:
   static void cb_a_t_slider(Fl_Slider*, void*);
 public:
   Fl_Value_Output *a_t_slider_v;
+  Fl_Browser *groups_browser;
+private:
+  inline void cb_groups_browser_i(Fl_Browser*, void*);
+  static void cb_groups_browser(Fl_Browser*, void*);
+public:
+  Fl_Button *group_add;
+private:
+  inline void cb_group_add_i(Fl_Button*, void*);
+  static void cb_group_add(Fl_Button*, void*);
+public:
+  Fl_Button *rm_group;
+private:
+  inline void cb_rm_group_i(Fl_Button*, void*);
+  static void cb_rm_group(Fl_Button*, void*);
+public:
+  Fl_Browser *opt_browser;
+  Fl_Button *opt_add;
+private:
+  inline void cb_opt_add_i(Fl_Button*, void*);
+  static void cb_opt_add(Fl_Button*, void*);
+public:
+  Fl_Button *rm_opt;
+private:
+  inline void cb_rm_opt_i(Fl_Button*, void*);
+  static void cb_rm_opt(Fl_Button*, void*);
+public:
+  Fl_Browser *name_browser;
+  Fl_Button *prog_add;
+private:
+  inline void cb_prog_add_i(Fl_Button*, void*);
+  static void cb_prog_add(Fl_Button*, void*);
+public:
+  Fl_Button *rm_prog;
+private:
+  inline void cb_rm_prog_i(Fl_Button*, void*);
+  static void cb_rm_prog(Fl_Button*, void*);
+public:
+  Fl_Browser *class_browser;
+  Fl_Button *class_add;
+private:
+  inline void cb_class_add_i(Fl_Button*, void*);
+  static void cb_class_add(Fl_Button*, void*);
+public:
+  Fl_Button *rm_class;
+private:
+  inline void cb_rm_class_i(Fl_Button*, void*);
+  static void cb_rm_class(Fl_Button*, void*);
+public:
   void active_color_loader(Fl_Button *o, int one_or_two);
+  void add_option_to_group();
+  void add_class();
+  void add_prog();
   void border_color_loader(Fl_Widget *o, int Active1_Inactive2);
   void border_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2);
   void border_modifier(Fl_Slider *o1, Fl_Value_Output *o2);
+  void check_opts(const char* itemValue);
   void choose_button(const char* whichButton);
+  void corner_load(Fl_Slider *o);
+  void corner_change(Fl_Slider *o);
   void display(const char* filename, Fl_Widget *o);
   void font_color_loader(Fl_Widget *o, int Active1_Inactive2);
   void get_button(Fl_Widget*o, const char* whichElement);
   void get_button_inactive(Fl_Widget*o, const char* whichElement);
   void inactive_color_loader(Fl_Button *o, int one_or_two);
   void opacity_loader(Fl_Slider *o, int Active1_Inactive2);
+  void populate_groups();
   void set_border_color(Fl_Widget *o, int Active1_Inactive2);
   void set_font_color(Fl_Widget *o, int Active1_Inactive2);
   void set_one_title_color(Fl_Widget *o, Fl_Widget *o2, int Active1_Inactive2);

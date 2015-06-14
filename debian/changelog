@@ -1,4 +1,136 @@
-jwm-settings-manager (0.99.9ubuntu37) UNRELEASED; urgency=medium
+jwm-settings-manager (1.0.1ubuntu3) UNRELEASED; urgency=medium
+  * moved menus to separate package jwm-menus
+  * center all windows as per Ali's request
+  * removed reboot dialog (moved to ToriOS core)
+  * updated all themes 
+    - use system app menu in /etc/jwm/jwm-menu 
+
+ -- Israel Dahl <israeldahl@gmail.com>  Tue, 09 Jun 2015 18:18:50 -0500
+
+jwm-settings-manager (1.0.0ubuntu17) UNRELEASED; urgency=medium
+  * Windows
+    - added group browsers
+    - ability to add new groups, programs, classes and options
+    - began the heavy commentary of my code
+    - began adding the 'Remove' button for groups,options,class,program  
+  * data/places
+    - updated to add gtk boomarks automatically when menu is updated
+    - dynamically update menu, and explicitly check variables
+    - added sudo chmod ugo+rw
+    - check for icons
+  * menus and icons
+    - fixed icon paths
+    - KISS fix the icon paths, but updating the themes (iconFinder)
+    - added small fast tester function to get better results
+    - test for default icon and category icons
+    - removed xpm echo
+    - added sudo chmod ugo+rw
+    - added lxde and xfce desktop directories check just in case
+    - made places menu more simple again..
+    - fixed missing " in toriOSmenu
+    - fixed theme icon/checker in places menu
+  * Config
+    - added new paths to jsm default file  
+  * jwmIconFinder
+    - added ability to set gtkicon theme as well 
+    - sort to avoid extremely long icon strings 
+  * themes
+    - reduced IconPath portion dramatically  
+  * places/ fixed  
+  * FLUID files
+    - added xclass denoting for window icons 
+  * Desktop
+    - reworked background getter to fully work (for now) except on svgs...
+  * Icons
+    - fixed some issues with my looping   
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 23 May 2015 20:00:56 -0500
+
+jwm-settings-manager (0.99.9ubuntu65) UNRELEASED; urgency=medium
+  * Desktop
+    - properly check for and add background tag if it doesn't exist
+    - more comments in code
+    - added check for running Filemanager to handle desktop
+    - added a gsettings get function (if I decide it is best to use it)
+    - use gsettings get function if the background does not exist, OR the background is different from the running filemanager
+    - use general tester for elements
+  * Panel
+    - check for Tray element existing
+    - create Tray if it is missing
+    - configure manually window now works :)
+      -- change tooltip, icon and even exec line;
+  * Config
+    - added closedir() to getExtention()
+    - use unsigned int for vector size()
+    - fix readdir by study and detailed comments :)
+  * debian
+    - re-add common.install
+  * themes
+    - remake reboot into a gxmessage dialog
+    - full icon theme integration for Numix-Circle in themes
+    - added Numix theme
+    - rebuilt themes with Clock menu
+    - fixed 2nd window color issue 
+    - updated themes
+  * torios-icon-tester name modified
+  * Icons
+    - hopefully fixed readdir() issues once and for all
+    - comment out readdir until issue is found
+  * Shutdown
+    - uncouple shutdown from needing to use UX (ui.cpp) 
+  * temporarily remove readdir from execution until I can find the root 
+  * fix theme changer
+  * Config
+   - make general testers to use in almost everything
+  * Font
+   - use general tester
+  * Window
+   - added Corner option
+  * menus
+   - add better default for full path icons 
+   - added Clock menu 
+  * data/torios-reboot
+   - added reboot dialog script
+  * data/themes
+   - rebuilt using reboot dialog
+  * debian/jwm-settings-manager-common.install
+   - added torios-reboot
+  * tried removing all \r from torios-reboot 
+  * Apps
+   - added menu configuration (manual menus, not included menus)
+
+ -- Israel Dahl <israeldahl@gmail.com>  Tue, 12 May 2015 22:47:11 -0500
+
+jwm-settings-manager (0.99.9ubuntu45) UNRELEASED; urgency=medium
+  * LOTS of comments added :)
+  * Panel
+    -fix the way new panels are added
+  * Desktop
+    - do a bit more checking for filemanagers
+    - make some member variables for the file managers
+  * Apps
+    - member variables for gnome volume
+    - add a check for gnome volume
+  * menus
+    - fixed array as icon, by doing a bit more checking
+  *Icons
+    - begun porting script to C++  still keep default on for now 
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 02 May 2015 10:48:31 -0500
+
+jwm-settings-manager (0.99.9ubuntu44) UNRELEASED; urgency=medium
+   * Panel
+     - bug fix for adding applications to panel
+     - reworked application adding UI
+     - added default svg icon for items with no icon
+   * menus
+     - reworked menus to locate icons better, and use the default if none is found
+  * Desktop
+    - added gradient 'support' for pcmanfm and others... 
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 25 Apr 2015 15:56:56 -0500
+
+jwm-settings-manager (0.99.9ubuntu43) UNRELEASED; urgency=medium
    * data/themes
      - added new keybindings for upcoming JWM 2.3.0
    * Panel
@@ -19,9 +151,20 @@ jwm-settings-manager (0.99.9ubuntu37) UNRELEASED; urgency=medium
   * Mouse/Touchpad
    - add shebang to touchpad settings script 
   * Keyboard
-   - better shortcut making possible now... 
+   - hbetter shortcut making possible now... 
+  * data/themes
+   - automatehd building of themes using CMakeLists to cut down on errors 
+   - fixed buttons for Ambiance theme
+  * Themes
+   - Change themes to be colors ONLY or OVERWRITE
+   - minor fix to make saving changes happen 
+   - moved variables in CMakeLists to prevent empty fields 
+   - handle tasklist in themes now 
+   - handle menus colors in themes now
+   - reworked to make clear commenting
+   - reworked to inline the the small functions
 
- -- Israel Dahl <israeldahl@gmail.com>  Sat, 18 Apr 2015 17:35:36 -0500
+ -- Israel Dahl <israeldahl@gmail.com>  Fri, 24 Apr 2015 08:09:38 -0500
 
 jwm-settings-manager (0.99.9ubuntu29) UNRELEASED; urgency=medium
    * data/toriOSmenu

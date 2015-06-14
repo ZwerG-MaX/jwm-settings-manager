@@ -58,6 +58,11 @@ class flWindow : public Config{
     float getActiveOpacity();
     void activeWindowOpacity(float &opacity);
 
+    ///Corner
+    unsigned int getCorner();
+    void setCorner(unsigned int pixels);
+
+
     ///border
     //Active
     void setActiveBorderColor(const double* rgb);
@@ -92,9 +97,34 @@ class flWindow : public Config{
     void setInactiveColor(const char* element, const double* rgb);
     void setInactiveColor(const char* element, const double* rgb, const double* rgb2);
 
+///Groups
+    //add
+    void addGroup();
+    void addGroupTHING(unsigned int whichGroup, const char* itemName, const char* whichElement);
+    void addGroupItem(unsigned int whichGroup, const char* itemName);
+    void addGroupProgram(unsigned int whichGroup, const char* progName);
+    void addGroupClass(unsigned int whichGroup, const char* className);
+
+    //remove
+    void removeGroup(unsigned int whichGroup);
+    void removeGroupTHING(unsigned int whichGroup, const char* progName, const char* whichElement);
+    void removeGroupClass(unsigned int whichGroup, const char* className);
+    void removeGroupItem(unsigned int whichGroup, const char* itemName);
+    void removeGroupProgram(unsigned int whichGroup, const char* progName);
+
+    //get
+    int getGroups(Fl_Browser *o);
+    int getGroupTHING(Fl_Browser *o, unsigned int whichGroup, const char* whichElement);
+    int getGroupClasses(Fl_Browser *o, unsigned int whichGroup);
+    int getGroupPrograms(Fl_Browser *o, unsigned int whichGroup);
+    int getGroupItems(Fl_Browser *o, unsigned int whichGroup);
+
+    //populate browsers
+    void populateOptions(Fl_Browser *o);
+    void populateDesc(Fl_Browser *b);
 
 
-    //ETCw
+///ETC
     void setThings(const char* thing, const char* mode);
     void setThings(const char* thing, const char* mode, int &distance);
     void setResize(const char *mode);
@@ -110,6 +140,10 @@ class flWindow : public Config{
     virtual ~flWindow();
 
     protected:
+      const char* GROUP;
+      const char*  CLASS;
+      const char*  NAME;
+      const char*  OPTION;
     private:
 };
 

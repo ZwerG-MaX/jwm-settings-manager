@@ -83,58 +83,53 @@ class DesktopUI {open : {public Config}
 } {
   Function {make_window()} {open
   } {
-    code {load();} {}
+    code {load();
+saveChangesTemp();} {}
     Fl_Window desktop_window {
-      label {Desktop Settings} open selected
-      xywh {366 292 395 515} type Double color 31 hide resizable
-      code0 {Config config;config.under_mouse(o);}
+      label {Desktop Settings} open
+      xywh {367 516 395 515} type Double color 31 resizable
+      code0 {Config config;config.under_mouse(o);} xclass {jsm-desktop} visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 395 510} color 31
       } {
         Fl_Box background_displayer_thingie {
-          callback {background(o);}
           xywh {25 85 345 270} box GTK_DOWN_BOX color 37 when 6
           code0 {background(o);}
         }
         Fl_Box color_display1 {
-          xywh {25 85 345 270} box GTK_DOWN_BOX color 37 when 6 hide
+          xywh {25 85 345 270} box GTK_DOWN_BOX color 37 when 6
+          code0 {background1(o);}
         }
         Fl_Box color_display2 {
-          xywh {25 215 345 140} box GTK_DOWN_BOX color 37 when 6 hide
+          xywh {25 215 345 140} box GTK_DOWN_BOX color 37 when 6
+          code0 {background2(o);}
         }
         Fl_Button {} {
           label {Choose Image}
           callback {bg_chooser_cb();}
-          xywh {25 365 110 25} box GTK_UP_BOX
+          xywh {25 370 110 25} box GTK_UP_BOX
         }
         Fl_Button {} {
           label {Choose Color}
           callback {one_color();}
-          xywh {140 365 110 25} box GTK_UP_BOX
+          tooltip {This will take icons off the desktop} xywh {260 375 110 25} box GTK_UP_BOX
         }
         Fl_Button {} {
           label {Choose Gradient}
           callback {two_color();}
-          tooltip {Make the background a Color Gradient} xywh {255 365 125 25} box GTK_UP_BOX
-        }
-        Fl_Button {} {
-          label {Choose Command}
-          callback {flDesktop desktop;}
-          tooltip {Use a command to set the background} xywh {130 395 135 25} box GTK_UP_BOX deactivate
+          tooltip {This will take icons off the desktop} xywh {255 415 125 25} box GTK_UP_BOX
         }
         Fl_Check_Button icons_check {
           label {Icons on Desktop}
           callback {use_icons_on_desktop();}
-          xywh {240 435 150 25} down_box GTK_DOWN_BOX selection_color 59 align 24 when 1
+          xywh {20 405 150 25} down_box GTK_DOWN_BOX selection_color 59 align 24 when 1
           code0 {icons_on_desktop();}
         }
         Fl_Output current_bg {
           label {Current Background}
           xywh {25 30 345 30} box GTK_DOWN_BOX color 50 selection_color 72 labelfont 1 align 33
-          code0 {flDesktop desktop;}
-          code1 {const char * bg = desktop.getBackground();}
-          code2 {o->value(bg);}
+          code0 {bg_name(o);}
         }
         Fl_Check_Button {} {
           label {Multiple Desktops}
@@ -179,12 +174,75 @@ ux.showSettings();}
       }
     }
   }
+  Function {background(Fl_Box*o)} {open
+  } {
+    code {flDesktop desktop;
+std::string bg = desktop.getBackground();
+//if(bg.length()<=4){return;}
+std::string colorTester = bg.substr(0,1);
+if (colorTester.compare("/")==0){
+  desktop.setFlImage(o,bg.c_str());
+}
+else{background_displayer_thingie->hide();}} {}
+  }
+  Function {background1(Fl_Box*o)} {open
+  } {
+    code {flDesktop desktop;
+std::string bg = desktop.getBackground();
+if(bg.length()<=4){return;}
+std::string colorTester = bg.substr(0,1);
+if (colorTester.compare("/")==0){
+  o->hide();
+  return;
+}
+else if (colorTester.compare("\#")==0){
+  colorTester = bg.substr(1,6);
+  //std::cout<<colorTester<<std::endl;
+  unsigned int ColorGradient;
+  unsigned int colorSet = desktop.getBackground(ColorGradient);
+  o->color(colorSet);
+}
+else{return;}} {}
+  }
+  Function {background2(Fl_Box*o)} {open
+  } {
+    code {flDesktop desktop;
+std::string bg = desktop.getBackground();
+if(bg.length()<=4){
+  o->hide();
+  return;
+}
+std::string colorTester = bg.substr(0,1);
+if (colorTester.compare("/")==0){
+  o->hide();
+  return;
+}
+else if (colorTester.compare("\#")==0){
+  unsigned int ColorGradient;
+  unsigned int colorSet = desktop.getBackground(ColorGradient);
+  unsigned int found = bg.find(':');
+  if (bg.length()>7){
+    if ((found >= bg.length())||(found <= bg.length())){
+        o->hide();
+    }
+    std::string color2 = bg.substr(found+1,std::string::npos);
+    o->show();
+    o->color(ColorGradient);
+    o->redraw();
+  }
+  else{o->hide();}
+}
+else{
+  o->hide();
+  return;
+}} {}
+  }
   Function {bg_chooser_cb()} {open
   } {
     code {flDesktop desktop;
 std::string background = getenv("HOME");
 background +="/Pictures/";
-const char * bg = background.c_str();//"/usr/share/backgrounds";
+const char * bg = background.c_str();//this is ~/Pictures
 const char * m="Choose a Background";
 const char *p="*.{jpg,JPG,png,PNG}";
 int r = 0;
@@ -193,6 +251,7 @@ if(result!=NULL){
 	//Is it a png or JPG?
 	std::string extention, resultStr;
 	resultStr = result;
+	if(resultStr.length()<=4){return;}
 	extention = resultStr.substr((strlen(result)-4),4);
 	std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
 	if ((extention.compare(".png")==0) ||
@@ -206,7 +265,67 @@ if(result!=NULL){
 		color_display2->hide();
 		desktop.setFlImage(background_displayer_thingie,result);
 	}
+	else{
+	  return;
+	}
 }} {}
+  }
+  Function {bg_name(Fl_Output *o)} {open
+  } {
+    code {flDesktop desktop;
+std::string bg = desktop.getBackground();
+if(!bg.length()>1){
+  o->value("");
+  return;
+}
+std::string colorTester = bg.substr(0,1);
+if (colorTester.compare("/")==0){
+  o->value(bg.c_str());
+}
+else if (bg.compare("")==0){
+  o->value("");
+  return;
+}
+else if (colorTester.compare("\#")==0){
+  unsigned int ColorGradient;
+  unsigned int colorSet = desktop.getBackground(ColorGradient);
+  if (bg.length()>6){
+    o->value("Color Gradient");
+  }
+  else{o->value("Color");}
+
+}
+else{
+  o->value("");
+  return;
+}} {}
+  }
+  Function {icons_on_desktop()} {open
+  } {
+    code {flDesktop desktop;
+//1 is on 0 is off
+std::string fm = desktop.whichFileManagerRunning();
+if(fm.compare("unkown")!=0 ){icons_check->value(1);}
+else{icons_check->value(0);}} {}
+  }
+  Function {multipleDesktops()} {open return_type bool
+  } {
+    code {int width = getIntAttribute("Desktops","width");
+int height = getIntAttribute("Desktops","height");
+// zero for false and non-zero for true.
+if (height==1 && width ==1){return false;}
+else if (!height || !width){return false;}
+return true;} {selected
+    }
+  }
+  Function {num_desktop_wh_cb(const char* whichone, int value)} {open
+  } {
+    code {setAttribute("Desktops",whichone,value);
+int w = int((num_desktop_w->value()));
+int h = int((num_desktop_h->value()));
+int defaultValue = 1;
+if(w==0){setAttribute("Desktops","width",defaultValue);}
+if(h==0){setAttribute("Desktops","height",defaultValue);}} {}
   }
   Function {one_color()} {open
   } {
@@ -225,15 +344,15 @@ colors[1] = int(g);
 colors[2] = int(b);
 colors[3] = 0;
 if(c!=0){ //If color chooser isn't canceled... do stuff
-	desktop.setBackground(colors);
-	unsigned int unusedColor;
-	unsigned int colorSet = desktop.getBackground(unusedColor);
-	color_display1->color(colorSet);
-	color_display1->show();
-	color_display2->hide();
-	background_displayer_thingie->hide();
-	saveChangesTemp();
-}} {}
+  desktop.setBackground(colors);
+  unsigned int unusedColor;
+  unsigned int colorSet = desktop.getBackground(unusedColor);
+  color_display1->color(colorSet);
+  color_display1->show();
+  color_display2->hide();
+  background_displayer_thingie->hide();
+}
+current_bg->value("Color");} {}
   }
   Function {two_color()} {open
   } {
@@ -272,22 +391,15 @@ if(c!=0){ //If color chooser isn't canceled... do stuff
 		background_displayer_thingie->hide();
 		color_display1->redraw();
 		color_display2->redraw();
-		saveChangesTemp();
 	}
-}} {}
+}
+current_bg->value("Color Gradient");} {}
   }
-  Function {background(Fl_Box*o)} {open
+  Function {use_icons_on_desktop()} {open
   } {
     code {flDesktop desktop;
-const char * bg = desktop.getBackground();
-desktop.setFlImage(o,bg);} {}
-  }
-  Function {multipleDesktops()} {open return_type bool
-  } {
-    code {int width = getIntAttribute("Desktops","width");
-int height = getIntAttribute("Desktops","height");
-if (((height==1) && (width ==0)) || ((height==0) && (width ==1))){return false;}
-return false;} {}
+desktop.setIconsOnDesktop();
+background(background_displayer_thingie);} {}
   }
   Function {useMultipleDesktops()} {open
   } {
@@ -298,46 +410,5 @@ if (width == 1 && height ==1 ){width =2;}
 setAttribute("Desktops","width",width);
 setAttribute("Desktops","height",height);
 }} {}
-  }
-  Function {num_desktop_wh_cb(const char* whichone, int value)} {open
-  } {
-    code {setAttribute("Desktops",whichone,value);
-int w = int((num_desktop_w->value()));
-int h = int((num_desktop_h->value()));
-int defaultValue = 1;
-if(w==0){setAttribute("Desktops","width",defaultValue);}
-if(h==0){setAttribute("Desktops","height",defaultValue);}} {}
-  }
-  Function {use_icons_on_desktop()} {open
-  } {
-    code {flDesktop desktop;
-desktop.setIconsOnDesktop();
-background(background_displayer_thingie);} {}
-  }
-  Function {icons_on_desktop()} {open
-  } {
-    code {flDesktop desktop;
-if(desktop.filemanagerRunning() ){icons_check->value(1);}
-else{icons_check->value(0);}} {}
-  }
-  Function {warning_window()} {open
-  } {
-    Fl_Window {} {open
-      xywh {447 268 370 145} type Double hide
-      code0 {Config config;config.under_mouse(o);}
-    } {
-      Fl_Box {} {
-        label {This option only works without Icons on the desktop, do you want to remove them?}
-        xywh {55 25 255 50} labelfont 1 align 128
-      }
-      Fl_Button {} {
-        label OK
-        xywh {230 90 55 25} box GTK_UP_BOX color 62 labelcolor 7
-      }
-      Fl_Button {} {
-        label Cancel
-        xywh {90 90 65 25} box GTK_UP_BOX color 80 labelcolor 7
-      }
-    }
   }
 } 

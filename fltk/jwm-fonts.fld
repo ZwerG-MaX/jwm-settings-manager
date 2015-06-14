@@ -72,9 +72,9 @@ class FontUI {open : {public Config}
     code {load();
 saveChangesTemp();} {}
     Fl_Window font_window {
-      label {Font Settings}
-      xywh {434 372 380 410} type Double color 31 resizable
-      code0 {Config config;config.under_mouse(o);} visible
+      label {Font Settings} open
+      xywh {434 372 380 410} type Double color 31 hide resizable
+      code0 {Config config;config.under_mouse(o);} xclass {jsm-fonts}
     } {
       Fl_Scroll {} {open
         xywh {0 -5 380 415} color 31
@@ -209,8 +209,8 @@ ux.showSettings();}
   } {
     Fl_Window font_choosing {
       label {Choose a Font} open selected
-      xywh {381 320 340 455} type Double hide
-      code0 {Config config;config.under_mouse(o);}
+      xywh {381 320 340 455} type Double
+      code0 {Config config;config.under_mouse(o);} xclass {jsm-fonts} visible
     } {
       Fl_Button {} {
         label Cancel

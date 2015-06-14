@@ -56,7 +56,7 @@
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Output.H>
 
-class PanelUI {
+class PanelUI : public Config {
 public:
   Fl_Double_Window* make_window();
   Fl_Double_Window *panel_window;
@@ -141,10 +141,8 @@ public:
 private:
   inline void cb_o_slider_v_i(Fl_Value_Input*, void*);
   static void cb_o_slider_v(Fl_Value_Input*, void*);
-  inline void cb_Y_i(Fl_Value_Input*, void*);
-  static void cb_Y(Fl_Value_Input*, void*);
-  inline void cb_X_i(Fl_Value_Input*, void*);
-  static void cb_X(Fl_Value_Input*, void*);
+  inline void cb_Edit_i(Fl_Button*, void*);
+  static void cb_Edit(Fl_Button*, void*);
   static unsigned char menu_Panel_i18n_done;
   static Fl_Menu_Item menu_Panel[];
   inline void cb_top_i(Fl_Menu_*, void*);
@@ -155,41 +153,6 @@ private:
   static void cb_right(Fl_Menu_*, void*);
   inline void cb_left_i(Fl_Menu_*, void*);
   static void cb_left(Fl_Menu_*, void*);
-public:
-  Fl_Slider *w_slider;
-private:
-  inline void cb_w_slider_i(Fl_Slider*, void*);
-  static void cb_w_slider(Fl_Slider*, void*);
-public:
-  Fl_Slider *h_slider;
-private:
-  inline void cb_h_slider_i(Fl_Slider*, void*);
-  static void cb_h_slider(Fl_Slider*, void*);
-public:
-  Fl_Value_Input *height_input;
-private:
-  inline void cb_height_input_i(Fl_Value_Input*, void*);
-  static void cb_height_input(Fl_Value_Input*, void*);
-public:
-  Fl_Slider *border_slider;
-private:
-  inline void cb_border_slider_i(Fl_Slider*, void*);
-  static void cb_border_slider(Fl_Slider*, void*);
-public:
-  Fl_Value_Input *width_input;
-private:
-  inline void cb_width_input_i(Fl_Value_Input*, void*);
-  static void cb_width_input(Fl_Value_Input*, void*);
-public:
-  Fl_Check_Button *autohide_check;
-private:
-  inline void cb_autohide_check_i(Fl_Check_Button*, void*);
-  static void cb_autohide_check(Fl_Check_Button*, void*);
-public:
-  Fl_Value_Input *border_input;
-private:
-  inline void cb_border_input_i(Fl_Value_Input*, void*);
-  static void cb_border_input(Fl_Value_Input*, void*);
 public:
   Fl_Menu_Button *choose_autohide;
   static unsigned char menu_choose_autohide_i18n_done;
@@ -203,6 +166,47 @@ private:
   static void cb_right1(Fl_Menu_*, void*);
   inline void cb_left1_i(Fl_Menu_*, void*);
   static void cb_left1(Fl_Menu_*, void*);
+  inline void cb_none_i(Fl_Menu_*, void*);
+  static void cb_none(Fl_Menu_*, void*);
+public:
+  Fl_Check_Button *autohide_check;
+private:
+  inline void cb_autohide_check_i(Fl_Check_Button*, void*);
+  static void cb_autohide_check(Fl_Check_Button*, void*);
+public:
+  Fl_Slider *w_slider;
+private:
+  inline void cb_w_slider_i(Fl_Slider*, void*);
+  static void cb_w_slider(Fl_Slider*, void*);
+public:
+  Fl_Value_Input *width_input;
+private:
+  inline void cb_width_input_i(Fl_Value_Input*, void*);
+  static void cb_width_input(Fl_Value_Input*, void*);
+public:
+  Fl_Slider *h_slider;
+private:
+  inline void cb_h_slider_i(Fl_Slider*, void*);
+  static void cb_h_slider(Fl_Slider*, void*);
+public:
+  Fl_Value_Input *height_input;
+private:
+  inline void cb_height_input_i(Fl_Value_Input*, void*);
+  static void cb_height_input(Fl_Value_Input*, void*);
+  inline void cb_X_i(Fl_Value_Input*, void*);
+  static void cb_X(Fl_Value_Input*, void*);
+  inline void cb_Y_i(Fl_Value_Input*, void*);
+  static void cb_Y(Fl_Value_Input*, void*);
+public:
+  Fl_Slider *border_slider;
+private:
+  inline void cb_border_slider_i(Fl_Slider*, void*);
+  static void cb_border_slider(Fl_Slider*, void*);
+public:
+  Fl_Value_Input *border_input;
+private:
+  inline void cb_border_input_i(Fl_Value_Input*, void*);
+  static void cb_border_input(Fl_Value_Input*, void*);
   inline void cb_Cancel_i(Fl_Button*, void*);
   static void cb_Cancel(Fl_Button*, void*);
 public:
@@ -297,14 +301,20 @@ private:
   inline void cb_4_i(Fl_Button*, void*);
   static void cb_4(Fl_Button*, void*);
 public:
-  Fl_Double_Window* configure_manually_window();
+  Fl_Double_Window* configure_manually_window(std::string item);
   Fl_Double_Window *conf_manual_window;
+  Fl_Input *manually_in;
 private:
-  inline void cb_5_i(Fl_Input*, void*);
-  static void cb_5(Fl_Input*, void*);
   inline void cb_OK6_i(Fl_Button*, void*);
   static void cb_OK6(Fl_Button*, void*);
 public:
+  Fl_Input *tooltip_label;
+private:
+  inline void cb_Icon_i(Fl_Button*, void*);
+  static void cb_Icon(Fl_Button*, void*);
+public:
+  Fl_Input *icon_file;
+  Fl_Input *hid_in;
   Fl_Double_Window* config_menu_window();
   Fl_Double_Window *conf_menu_window;
 private:
@@ -357,14 +367,14 @@ public:
 private:
   inline void cb_OKa_i(Fl_Button*, void*);
   static void cb_OKa(Fl_Button*, void*);
+  inline void cb_5_i(Fl_Button*, void*);
+  static void cb_5(Fl_Button*, void*);
   inline void cb_6_i(Fl_Button*, void*);
   static void cb_6(Fl_Button*, void*);
   inline void cb_7_i(Fl_Button*, void*);
   static void cb_7(Fl_Button*, void*);
   inline void cb_8_i(Fl_Button*, void*);
   static void cb_8(Fl_Button*, void*);
-  inline void cb_9_i(Fl_Button*, void*);
-  static void cb_9(Fl_Button*, void*);
 public:
   Fl_Value_Input *num_desktop_w;
 private:
@@ -381,8 +391,8 @@ public:
 private:
   inline void cb_Application_i(Fl_Button*, void*);
   static void cb_Application(Fl_Button*, void*);
-  inline void cb_Icon_i(Fl_Button*, void*);
-  static void cb_Icon(Fl_Button*, void*);
+  inline void cb_Icon1_i(Fl_Button*, void*);
+  static void cb_Icon1(Fl_Button*, void*);
 public:
   Fl_Input *app_command;
 private:
@@ -392,8 +402,8 @@ public:
   Fl_Box *app_icon_box;
   Fl_Input *tooltip;
 private:
-  inline void cb_Add1_i(Fl_Button*, void*);
-  static void cb_Add1(Fl_Button*, void*);
+  inline void cb_9_i(Fl_Button*, void*);
+  static void cb_9(Fl_Button*, void*);
 public:
   Fl_Button *ok_button;
 private:
@@ -403,8 +413,8 @@ public:
   Fl_Check_Button *shortcut_border;
   Fl_Browser *shortcut_browser;
 private:
-  inline void cb_Remove1_i(Fl_Button*, void*);
-  static void cb_Remove1(Fl_Button*, void*);
+  inline void cb_a_i(Fl_Button*, void*);
+  static void cb_a(Fl_Button*, void*);
 public:
   Fl_Box *icon_name;
   Fl_Double_Window* new_panel_window();
@@ -414,11 +424,14 @@ private:
   static void cb_OKb(Fl_Button*, void*);
 public:
   Fl_Double_Window* no_config();
+  void add_new_shortcut();
   void add_item();
   void autohide();
   void autohide_position(const char* where);
   void cancel_button();
   void change_menu(int whichStyle);
+  void change_manual_item(std::string input, std::string old_input);
+  void clear_shortcuts();
   void coordinate(const char* xy, Fl_Value_Input *o, int get1_set2);
   void config_Item(std::string whichItem);
   void display(const char* filename);
@@ -438,9 +451,11 @@ public:
   void panel_label(Fl_Menu_Button *o);
   void panel_position(const char* position);
   void remove_app();
+  void refresh_app_browser();
   void remove_indicator();
   void save_user_clock();
   unsigned int switch_panel(Fl_Menu_Item *o);
   void width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension);
+  void input_width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension);
 };
 #endif

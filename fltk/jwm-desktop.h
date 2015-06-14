@@ -56,10 +56,6 @@ public:
   Fl_Double_Window* make_window();
   Fl_Double_Window *desktop_window;
   Fl_Box *background_displayer_thingie;
-private:
-  inline void cb_background_displayer_thingie_i(Fl_Box*, void*);
-  static void cb_background_displayer_thingie(Fl_Box*, void*);
-public:
   Fl_Box *color_display1;
   Fl_Box *color_display2;
 private:
@@ -69,8 +65,6 @@ private:
   static void cb_Choose1(Fl_Button*, void*);
   inline void cb_Choose2_i(Fl_Button*, void*);
   static void cb_Choose2(Fl_Button*, void*);
-  inline void cb_Choose3_i(Fl_Button*, void*);
-  static void cb_Choose3(Fl_Button*, void*);
 public:
   Fl_Check_Button *icons_check;
 private:
@@ -96,15 +90,17 @@ private:
   inline void cb_OK_i(Fl_Button*, void*);
   static void cb_OK(Fl_Button*, void*);
 public:
+  void background(Fl_Box*o);
+  void background1(Fl_Box*o);
+  void background2(Fl_Box*o);
   void bg_chooser_cb();
+  void bg_name(Fl_Output *o);
+  void icons_on_desktop();
+  bool multipleDesktops();
+  void num_desktop_wh_cb(const char* whichone, int value);
   void one_color();
   void two_color();
-  void background(Fl_Box*o);
-  bool multipleDesktops();
-  void useMultipleDesktops();
-  void num_desktop_wh_cb(const char* whichone, int value);
   void use_icons_on_desktop();
-  void icons_on_desktop();
-  Fl_Double_Window* warning_window();
+  void useMultipleDesktops();
 };
 #endif

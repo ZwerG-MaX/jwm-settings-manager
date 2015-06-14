@@ -623,6 +623,7 @@ Fl_Double_Window* KeyboardUI::make_window() {
       Fl_Group::current()->resizable(o);
     } // Fl_Scroll* o
     Config config;config.under_mouse(o);
+    keyboard_window->xclass("jsm-keyboard");
     keyboard_window->end();
   } // Fl_Double_Window* keyboard_window
   return keyboard_window;
@@ -708,6 +709,7 @@ Fl_Double_Window* KeyboardUI::grabber_window() {
     } // Fl_Output* key_output
     Config config;config.under_mouse(o);
     Fl::focus(key);
+    grab_win->xclass("jsm-keyboard");
     grab_win->end();
   } // Fl_Double_Window* grab_win
   return grab_win;

@@ -47,10 +47,19 @@ void IconsUI::cb_save_button(Fl_Button* o, void* v) {
 
 void IconsUI::cb__i(Fl_Button*, void*) {
   std::string icon_choice = choose_icons();
-add_icons(icon_choice);
+std::cout<<"chose: "<<icon_choice<<std::endl;
+if(icon_choice.compare("")==0){add_icons(icon_choice);};
 }
 void IconsUI::cb_(Fl_Button* o, void* v) {
   ((IconsUI*)(o->parent()->parent()->user_data()))->cb__i(o,v);
+}
+
+void IconsUI::cb_iconsBrowser_i(Fl_Browser* o, void*) {
+  flIcons icons;
+icons.useTheme(o);
+}
+void IconsUI::cb_iconsBrowser(Fl_Browser* o, void* v) {
+  ((IconsUI*)(o->parent()->parent()->user_data()))->cb_iconsBrowser_i(o,v);
 }
 
 void IconsUI::cb_1_i(Fl_Button*, void*) {
@@ -94,23 +103,30 @@ Fl_Double_Window* IconsUI::make_window() {
         o->box(FL_GTK_UP_BOX);
         o->selection_color(FL_DARK1);
         o->callback((Fl_Callback*)cb_);
+        o->hide();
+        o->deactivate();
       } // Fl_Button* o
       { iconsBrowser = new Fl_Browser(10, 15, 310, 220);
         iconsBrowser->type(2);
         iconsBrowser->box(FL_GTK_DOWN_BOX);
         iconsBrowser->selection_color((Fl_Color)80);
+        iconsBrowser->callback((Fl_Callback*)cb_iconsBrowser);
         flIcons icons;
-        icons.getIcons(iconsBrowser);
+        //icons.getIcons(iconsBrowser);
+        icons.loadTheme(iconsBrowser);
       } // Fl_Browser* iconsBrowser
       { Fl_Button* o = new Fl_Button(50, 240, 35, 35);
         o->box(FL_GTK_UP_BOX);
         o->image(image_minus);
         o->callback((Fl_Callback*)cb_1);
         o->align(Fl_Align(256));
+        o->hide();
+        o->deactivate();
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
-    Config config;config.under_mouse(o);
+    flIcons icon; icon.under_mouse(o);
+    icons_window->xclass("jsm-icons");
     icons_window->end();
     icons_window->resizable(icons_window);
   } // Fl_Double_Window* icons_window
@@ -121,7 +137,7 @@ void IconsUI::add_icons(std::string icon_dir) {
   flIcons icons;
   if(icon_dir.compare("")!=0){
   	iconsBrowser->clear();
-  	icons.addIcons(icon_dir.c_str());//input);
+  	icons.addIcons(icon_dir);//input);
   	icons.getIcons(iconsBrowser);
   	iconsBrowser->redraw();
   }
@@ -150,10 +166,6 @@ std::string IconsUI::choose_icons() {
   const char * f = "/usr/share/icons/";
   const char * m="Choose a Directory";
   int r = 0;
-  const char *result = fl_dir_chooser(m,f,r);
-  std::string result_string = result;
-  if(result_string.compare("")!=0){
-  	return result_string;
-  }
-  return "";
+  std::string result_string = fl_dir_chooser(m,f,r);
+  return result_string;
 }

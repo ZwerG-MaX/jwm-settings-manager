@@ -13,6 +13,7 @@ void flKeyboard::getKeys(Fl_Browser *o){
     loadTemp();
     const char * output = NULL;
     std::string stringOutput;
+    if(!testElement("Key")){return;}
     for(const tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("Key");node;node=node->NextSiblingElement("Key")){
         std::string action  = node->GetText();
 
@@ -37,6 +38,9 @@ void flKeyboard::getKeys(Fl_Browser *o){
 }
 
 void flKeyboard::addKey(const char * key, const char* shortcut){//setAttribute("Key","key",key,shortcut)
+    if(!testElement("Key")){
+        createElement("Key");
+    }
     tinyxml2::XMLElement* element=doc.FirstChildElement("JWM")->LastChildElement("Key");
     tinyxml2::XMLNode *keyboard = element;
     tinyxml2::XMLNode *node = doc.NewElement("Key");
@@ -53,6 +57,9 @@ void flKeyboard::addKey(const char * key, const char* shortcut){//setAttribute("
 void flKeyboard::addKey(const char * keyMod, const char * key, const char* shortcut){
 //    const char* functionName = "void flKeyboard::addKey(const char * keyMod, const char * key, const char* shortcut)";
     //std::cerr<<functionName<<std::endl;
+    if(!testElement("Key")){
+        createElement("Key");
+    }
     tinyxml2::XMLNode *base=doc.FirstChildElement("JWM");
     tinyxml2::XMLElement* element=doc.FirstChildElement("JWM")->LastChildElement("Key");
     tinyxml2::XMLNode *newNode = doc.NewElement("Key");
@@ -65,7 +72,10 @@ void flKeyboard::addKey(const char * keyMod, const char * key, const char* short
 }
 
 void flKeyboard::deleteKey(const char * keyShortcut){
-for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("Key");node;node=node->NextSiblingElement("Key")){
+    //if there is nothing... get out quick!!
+    if(!testElement("Key")){return;}
+
+    for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("Key");node;node=node->NextSiblingElement("Key")){
         std::string fromDoc = node->GetText();
         std::string fromProgram = keyShortcut;
         unsigned found = fromProgram.find_last_of("\t");

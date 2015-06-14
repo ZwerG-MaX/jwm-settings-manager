@@ -43,19 +43,28 @@ class flDesktop : public Config{
     unsigned int getBackground(unsigned int &color2);  //get color background either single or gradient
     /*the variable the function is assigned to gets the first color, or a single color, and color2 is the second color.
      * if only one color is needed make the variable for color2 and don't use it.  This way both situations are automatically handled
-     * ///TODO: fix this! make an overloaded function so each can be handled separately.
+     *
      */
 
+    void makeSVG(std::string line);
+    void svgGradient(const double* color);
+    void svgGradient(const double* color,const double* color2);
+
     void setFlImage(Fl_Box * o, const char * filename);
+    void FlBGColor(Fl_Box*o,unsigned int color);
     void setBackground(const double* rgb);
     void setBackground(const double* rgb, const double* rgb2);
     void setBackground(const char* type, const char* value);  //set background image, a tiled image or command.  type = image value = filename(or command)
     bool test(tinyxml2::XMLElement *element);
+    void makeBackgroundElement();
+
 
     ///FILE MANAGER
     bool filemanagerRunning();
+    bool filemanagerRunning(std::string filemanagerToCheck);
     void setIconsOnDesktop();
     const char* whichFileManager();
+    std::string whichFileManagerRunning();
     //ROX
     int addRoxFileAttribute(const char* element, const char* attribute, const char* value, const char* text);
     void useRox(bool rox);//Set Rox use to TRUE or FALSE
@@ -71,24 +80,40 @@ class flDesktop : public Config{
     const char * getRoxBackground();
     void saveRox();
     std::string roxPath();
+
     //PCmanFM
     void setPCmanFMbg(const char* filename);
     const char* getPCmanFMbg();
     bool isPCmanFMconfig();
+
     //Gsettings (Nautilus/Thunar)
     void setGsettingsBG(const char* filename);
-    //constructors and destructor
+    std::string getGsettingsBG();
+
+    ///constructors and destructor
     flDesktop();
     virtual ~flDesktop();
 
 private:
-    bool roxPresent;
     const char* bash;
     const char *roxCommand;
-    bool m_useRox;
-    bool m_usePCmanFM;
-    std::string pcmanFMfilename;
     std::string roxFileName;
+
+    const char* pcmanfm;
+    const char* pcmanAutostart;
+    std::string pcmanFMfilename;
+    std::string pcmanFMdesktopfilename;
+    bool m_usePCmanFM;
+
+    const char* nautilus;
+    const char* nautilusStart;
+
+    const char* thunar;
+    const char* thunarStart;
+
+    const char* defaultBGtype;
+    const char* defaultBG;
+
     tinyxml2::XMLDocument roxDoc;
 
 };

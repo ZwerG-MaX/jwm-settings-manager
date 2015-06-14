@@ -51,9 +51,9 @@ class shutdown {open
   Function {make_window()} {open
   } {
     Fl_Window shutdown_window {
-      label Shutdown open
+      label Shutdown open selected
       xywh {351 113 250 230} type Double color 45
-      code0 {window_bg();} noborder visible
+      code0 {window_bg();} noborder xclass {system-shutdown} visible
     } {
       Fl_Button shut {
         label Shutdown
@@ -105,8 +105,7 @@ sus->color(color3);
 sus->labelcolor(color2);
 //can->color(color3);
 //can->labelcolor(color2);
-panel.under_mouse(shutdown_window);} {selected
-    }
+panel.under_mouse(shutdown_window);} {}
   }
   Function {under_mouse(Fl_Window *o)} {open
   } {

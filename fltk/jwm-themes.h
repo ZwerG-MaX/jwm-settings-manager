@@ -81,6 +81,11 @@ private:
   static void cb_usr_theme(Fl_Browser*, void*);
 public:
   Fl_Box *button_icon;
+  Fl_Button *overwritten;
+private:
+  inline void cb_overwritten_i(Fl_Button*, void*);
+  static void cb_overwritten(Fl_Button*, void*);
+public:
   Fl_Box *current_theme;
   Fl_Box *amin;
   Fl_Box *amax;
@@ -88,11 +93,10 @@ public:
   Fl_Box *imin;
   Fl_Box *imax;
   Fl_Box *iclose;
-  void change_theme(const char* whichTheme);
+  void change_theme(const char* whichTheme, bool overwrite);
   void save_theme();
   std::string choose_directory(const char* whichChoice);
   std::string choose_file();
-  void save_system_theme();
   void theme_cb(Fl_Browser* browser,bool systemTheme);
 };
 #endif

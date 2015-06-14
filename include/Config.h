@@ -35,13 +35,15 @@
 class Config
 {
     public:
-
+    //situate windows under the mouse pointer
+    void under_mouse(Fl_Window *o);
     ///get Color as a string and return a FL_Color
     //This handles the situation where there are 2 colors separated by a colon
     unsigned int getColor(std::string color, unsigned int &color2);
     std::string colorToString(const double *rgb);
     //X11 colors
     std::string xColor(const char *colorName);
+    std::string returnXColor(unsigned int color);
 
     /// ICON functions
     std::string getExtention();
@@ -52,7 +54,7 @@ class Config
     2 means xpm
     42 means you'll have to go fish... that is kind of like a joke... sorry
     */
-    std::vector<std::string> iconList(int &listcounter); //list IconPaths, except "/usr/share/pixmaps" || "/usr/share/icons" as those are not Icon THEMES..
+    std::vector<std::string> iconList(); //list IconPaths, except "/usr/share/pixmaps" || "/usr/share/icons" as those are not Icon THEMES..
 
 /// Basic Functions for JWMRC files
     //Error checking/fixing/reporting
@@ -128,15 +130,10 @@ where VARIABLE is a std::string
     std::string getLabelMenu(int menu);
     std::string getImageMenu(int menu);
     void setImageMenu(const char* icon, int menu);
-    ///Variables to be set in the constructor
-    const char* configEnvHOME;/// = "$HOME/.config/";
-    std::string homeConfig;/// = home+"/.config/";
-    std::string torimenu;/// = "torimenu";
-    std::string placesmenu;/// = "placesmenu";
-    std::string gnomemenu;/// = "gnomeapps";
-    std::string sysmenu;/// = "gnomesystem";
 
 ///  MULTIPLE PANELS  /*************************************************
+    //recovery function if no Tray Element exists...
+    void createPanel();
     //How many panels?
     int numPanels();
     bool multipanel();
@@ -155,6 +152,7 @@ where VARIABLE is a std::string
 Basically this loads, recovers, or saves a file that is designed specifically for multipanel use,
 it also will save the default clock program, and other defaults (as they are implemented)
 */
+    void updatePanels(int panel){recoverJSM(panel);}
     int loadJSM();
     int recoverJSM();
     void recoverJSM(int panel);
@@ -164,20 +162,24 @@ it also will save the default clock program, and other defaults (as they are imp
     std::string jsmPath();
 
 ///Multiuse/////////////////////////////////////////////////////////////////////////////////////////
-    bool testElement(tinyxml2::XMLElement* element);
+
     void addElement(const char* whichElement);
     bool isElement(const char* whichElement);
     bool isElement(const char* whichElement, const char* whichSUBElement);
-    bool isElementText(const char* whichElement, std::string text);
+    bool isElementText(const char* whichElement, std::string textTOcompare);
     void setAttribute(const char* whichElement, const char* attribute, const char* value);
     void setAttribute(const char* whichElement, const char* attribute, const char* value, const char* text);
     void setAttribute(const char* whichElement, const char* attribute, int &value);
     void setAttribute(const char* whichElement, const char* attribute, double &value);
 
-    //Create Element ?? How can I use this??  I think this would be really helpful :(
+    bool testElement(tinyxml2::XMLElement* element);
+    //Create Element!
     void createElement(const char* whichElement);
     void createElement(const char* whichMainElement, const char* whichElementToCreate);
     void createElement(const char* whichMainElement, const char* whichSubElement, const char* whichElementToCreate);
+    bool testElement(const char* whichElement);
+    bool testElement(const char* whichElement,const char* whichSubElement);
+    bool testElement(const char* whichElement,const char* whichSubElement, const char* whichSUBsubElement);
 
     const char* getElementAttribute(const char* whichElement, const char* attribute);
     const char* getElementAttribute(const char* whichElement,const char* whichSubElement,const char* attribute);
@@ -185,7 +187,6 @@ it also will save the default clock program, and other defaults (as they are imp
     void deleteElement(const char* whichElement);
     void setFGColor(const char* whichStyle, const char* ActiveORinactive, const double* rgb);
     void setELEMENTColor(const char* whichStyle, const char* ActiveORinactive, const double* rgb, const char* FGorBG);
-    void under_mouse(Fl_Window *o);
     unsigned int getELEMENTColor(const char* whichStyle, const char* ActiveORinactive, unsigned int &color2, const char* FGorBG);
     unsigned int getFGColor(const char* whichStyle, const char* ActiveORinactive, unsigned int &color2);
     std::string desktopExec(std::string filename);
@@ -203,11 +204,18 @@ it also will save the default clock program, and other defaults (as they are imp
     tinyxml2::XMLDocument jsm;
 
     protected:
-    std::string iconExtention;
     std::string jwmrc;
     std::string recoveryText;
     std::string file;
     std::string JSMfile;
+///Variables to be set in the constructor
+    std::string homePathNoFiles;
+    const char* configEnvHOME;/// = "$HOME/.config/";
+    std::string homeConfig;/// = home+"/.config/";
+    std::string torimenu;/// = "torimenu";
+    std::string placesmenu;/// = "placesmenu";
+    std::string gnomemenu;/// = "gnomeapps";
+    std::string sysmenu;/// = "gnomesystem";
 
     char* home;
     char* path;
@@ -215,6 +223,8 @@ it also will save the default clock program, and other defaults (as they are imp
     std::string::size_type pathPosition;
     int numPATHS;
     bool isNewStyle;
+    std::string defaultFilePath;
+    std::string defaultOLDFilePath;
 
     private:
 };

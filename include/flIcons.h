@@ -28,28 +28,40 @@
 
 #include "Config.h"
 #include "../fltk/jwm-icons.h"
+#include <dirent.h>
 
 class flIcons : public Config
 {
     public:
         void getIcons(Fl_Browser *o);
 
-        ///TODO: JWM needs to support SVG (i.e. recompile Debian package)
-        /* or this program needs to convert them to png.
-         * also, it would be good to eventually have a browser of directory names
+        ///TODO:
+        /* implement actual icon themes
          * That the user could choose.. I.e.
          * Box  then this gets ALL the subdirectories and automatically adds them in
          * There would have to be a 'size' selection, so only 32x32 icons (or whatever)
          * would be shown.
          */
+        //XDG_DATA_DIRS
+        const char* thisXDG_PATH(int whichPath);
+        unsigned int numXDG_PATHS();
 
-        void addIcons(const char * path);
+        void loadTheme(Fl_Browser *o);
+        void useTheme(Fl_Browser *o);
+        void makeIcons(std::string fullpath,unsigned int icon_size);
+        const char* themegrep(const char* args, const char* filename,int line);
+
+        void addIcons(std::string path);
         void removeIcons(const char * icons);
 
         flIcons();
         virtual ~flIcons();
     protected:
     private:
+        char* xdg_paths;
+        std::string stringXDG_PATH;
+        std::string::size_type XDG_pathPosition;
+        int num_XDG_PATHS;
 };
 
 #endif // FLICONS_H

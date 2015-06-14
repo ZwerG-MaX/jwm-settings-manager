@@ -5,13 +5,12 @@ Config::Config()
     file = ".jwmrc";
     JSMfile = ".jsm";
     home = getenv ("HOME");
-    std::string homePathNoFiles = homePathNoFile();
+    homePathNoFiles = homePathNoFile();
     whichPanel = 1;
     path = getenv("PATH");
     stringPATH = path;
     pathPosition = stringPATH.find_first_of(':');
     numPATHS = howmanyPATHS();
-    iconExtention = getExtention();
     configEnvHOME = "$HOME/.config/";
     homeConfig = home;
     homeConfig+="/.config/";
@@ -20,6 +19,8 @@ Config::Config()
     gnomemenu = "gnomeapps";
     sysmenu = "gnomesystem";
     isNewStyle = newStyle();
+    defaultFilePath = "/usr/share/jwm-settings-manager/themes/Default/Default";
+    defaultOLDFilePath ="/usr/share/jwm-settings-manager/themes/old/Default/Default";
 }
 
 Config::~Config()
@@ -34,13 +35,13 @@ void Config::setFileName(std::string &fileName){
 file = fileName;
 }
 void Config::under_mouse(Fl_Window *o){
-  int mouse_x,mouse_y;
+  int screenHeight = Fl::h()/2;
+  int screenWidth = Fl::w()/2;
   int window_w = o->decorated_w ();
   int window_h = o->decorated_h();
   window_h = window_h/2;
   window_w = window_w/2;
-  Fl::get_mouse(mouse_x,mouse_y);
-  o->position((mouse_x-window_w),(mouse_y-window_h));
+  o->position((screenWidth-window_w),(screenHeight-window_h));
 }
 //End Member Variables
 
@@ -108,10 +109,17 @@ void Config::setRecoveryText(std::string &ConfigFile){
     recoveryText = ConfigFile;
 }
 int Config::recover(){
-    std::string path = homePathNoFile();
-    std::string recoveryCommand;
-    if (newVersionJWM()){recoveryCommand = "cp -f /usr/share/jwm-settings-manager/themes/Default/Default " + path + ".jwmrc";}
-    else{recoveryCommand = "cp -f /usr/share/jwm-settings-manager/themes/old/Default/Default " + path + ".jwmrc";}
+    //TODO: rework to use ifstream
+    std::string pathToJWMRC = homePath();
+    std::string tempFile= homePathTemp();
+    std::string recoveryCommand = "cp -f ";
+    recoveryCommand+=defaultFilePath;
+    if (!newVersionJWM()){
+        recoveryCommand = "cp -f ";
+        recoveryCommand += defaultOLDFilePath;
+    }
+    recoveryCommand += " ";
+    recoveryCommand += pathToJWMRC;
     if(system(recoveryCommand.c_str())!=0){
         std::cerr<<recoveryCommand<<" did not go well..."<<std::endl;
         std::string errorMSG = "Running: ";
@@ -121,6 +129,7 @@ int Config::recover(){
     }
     else{
         std::cout<<"jwmrc should be recovered now"<<std::endl;
+        load();
         saveChangesTemp();
         if(std::system("jwm -restart")!=0){
             errorJWM("Error restarting JWM");
@@ -133,15 +142,24 @@ int Config::recover(){
 int Config::checkFiles(){
     std::string fileName = homePath();
     std::string fileName2 = homePathTemp();
+    if(!testFile(fileName2.c_str())){
+        if(testFile(fileName.c_str())){
+            load();
+            saveChangesTemp();
+            return 0;
+        }
+        recover();
+        return 12;
+    }
     doc.LoadFile(fileName.c_str() );
     if (doc.ErrorID() !=0){
         errorJWM(file+" was not loaded properly...");
         if (loadTemp()!=0){
             doc.LoadFile(fileName2.c_str() );
             if (doc.ErrorID() !=0){
-            errorJWM(file+" was not loaded properly...");
-            recover();
-            return 42;
+                errorJWM(file+" was not loaded properly...");
+                recover();
+                return 42;
             }
         }
     }
@@ -246,13 +264,23 @@ int Config::recoverJSM(){
 void Config::recoverJSM(int panel){
     std::string path = jsmPath();
     //std::cout<<path<<std::endl;
-    std::string clock = "xclock";
+    std::string clock;
+    if( newStyle()){clock = "root:c";}
+    else{clock = "xclock";}
+    int places = 7;
+    int root = 5;
+    int gsys = 8;
     const char* fname = path.c_str();
     std::string p = convert(panel);
     std::ofstream jsmSTREAM(fname, std::ios::out);
     jsmSTREAM<<"<?xml version=\"1.0\"?>\n\
 <num>"<<p<<"</num>\n\
-<clock>"<<clock<<"</clock>";
+<clock>"<<clock<<"</clock>\n\
+<places root=\""<<places<<"\">"<<configEnvHOME<<placesmenu<<"</places>\n\
+<apps root=\""<<root<<"\">"<<configEnvHOME<<torimenu<<"</apps>\n\
+<gnapps root=\""<<root<<"\">"<<configEnvHOME<<sysmenu<<"</gnapps>\n\
+<gnsys root=\""<<gsys<<"\">"<<configEnvHOME<<gnomemenu<<"</gnsys>\n\
+<ext>"<<"svg"<<"</ext>";
 }
 
 const char* Config::getJSMelement(const char* element){
@@ -286,6 +314,7 @@ std::string Config::jsmPath(){
 /// $HOME ~/~/~/~/
 
 std::string Config::homePathTemp(){
+//this returns $HOME/.jwmrc~
     using std::string;
     if (home!=NULL){
         string fileName = string(home);
@@ -296,6 +325,7 @@ std::string Config::homePathTemp(){
 }
 
 std::string Config::homePath(){
+//this returns $HOME/.jwmrc
     using std::string;
     if (home!=NULL){
         //printf ("The current Home Directory is: %s\n",home); //you can turn this on to debug if you like :)
@@ -307,6 +337,7 @@ std::string Config::homePath(){
 	else{errorJWM("ERROR not valid path"); return "HomePath Error 2\n";}
 }
 std::string Config::homePathNoFile(){
+//this returns $HOME/
     using std::string;
     if (home!=NULL){
         string fileName = string(home);
@@ -404,16 +435,22 @@ void Config::addAutostart(std::string program){
     loadTemp();
     ///Check to see if it is already there...
     if(isAutostart(program)){return;}
-
     bool tester = false;
     //base XML element
     tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" );
+
     //Base startup Node
-    tinyxml2::XMLNode *startNode = doc.FirstChildElement( "JWM" )->LastChildElement("StartupCommand");
-    //Are there some nodes?
-    for(tinyxml2::XMLElement* testNode=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");
-    testNode;testNode=testNode->NextSiblingElement("StartupCommand")){
-        tester=true;
+    //does it even exist???
+    tinyxml2::XMLNode *startNode = doc.FirstChildElement( "JWM" );
+    if(isElement("StartupCommand")){
+        startNode = startNode->LastChildElement("StartupCommand");
+        //Are there some nodes?
+        for(tinyxml2::XMLElement* testNode=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");
+        testNode;
+        testNode=testNode->NextSiblingElement("StartupCommand")){
+
+                tester=true;
+        }
     }
     tinyxml2::XMLNode *node = doc.NewElement("StartupCommand");
     //if startup nodes exist add after them
@@ -449,6 +486,7 @@ bool Config::isAutostart(std::string program){
     loadTemp();
     std::string autostart = program;
     std::string trim = program;
+    if(!isElement("StartupCommand")){return false;}
     for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");node;node=node->NextSiblingElement("StartupCommand")){
         std::string fromDoc = node->GetText();
         const char* value  = fromDoc.c_str();
@@ -459,6 +497,7 @@ bool Config::isAutostart(std::string program){
 
 void Config::removeAutostart(std::string program){
     loadTemp();
+    if(!isElement("StartupCommand")){return;}
     for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");node;node=node->NextSiblingElement("StartupCommand")){
         std::string fromDoc = node->GetText();
         //std::string pkill ="pkill ";
@@ -533,7 +572,35 @@ bool Config::testElement(tinyxml2::XMLElement* element){
     if(element){return true;}
     return false;
 }
+bool Config::testElement(const char* whichElement){
+    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
+    if (!element->FirstChildElement( whichElement )){return false;}
+    else{return true;}
+    return false;
 
+}
+bool Config::testElement(const char* whichElement, const char* whichSubElement){
+    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
+    if (!element->FirstChildElement( whichElement )){return false;}
+    else{
+        if (!element->FirstChildElement( whichElement )->FirstChildElement( whichSubElement )){return false;}
+        else{return true;}
+    }
+    return false;
+}
+bool Config::testElement(const char* whichElement,const char* whichSubElement, const char* whichSUBsubElement){
+    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
+    if (!element->FirstChildElement( whichElement )){return false;}
+    else{
+        if (!element->FirstChildElement( whichElement )->FirstChildElement( whichSubElement )){return false;}
+        else{
+            if (!element->FirstChildElement( whichElement )->FirstChildElement( whichSubElement )->FirstChildElement( whichSUBsubElement ) ){return false;}
+            else{return true;}
+        }
+    }
+    //probably it should never get here.... but return false by default anyhow.
+    return false;
+}
 std::string Config::xColor(const char *colorName){
 /* Paul Sladen, 2014-08-13, Public Domain
  * XLookupColor() -> RGB colour value example, per request on
@@ -564,6 +631,30 @@ Thanks Sladen for the quick help!!!!
     std::string output = tmp;
     return output;
 }
+std::string Config::returnXColor(unsigned int color){
+    #if 0
+    Display *dpy;
+    Colormap map;
+    int scr;
+    XColor rgb, nearest_rgb;
+    int red = (int)rgb.red>>8;
+    int green = (int)rgb.green>>8;
+    int blue = (int)rgb.blue>>8;
+    const char* colorName;
+//    const char *fallback_colours[] = {"red", "white", "blue", "pink", NULL};
+    dpy = XOpenDisplay(NULL);
+    scr = XDefaultScreen(dpy);
+    map = DefaultColormap(dpy, scr);
+    XLookupColor(dpy, map, &colorName, rgb, &nearest_rgb);
+    //printf("%3d %3d %3d %s\n", rgb.red>>8, rgb.green>>8, rgb.blue>>8, colorName);
+    //std::cout<< "r= "<<red<<"  g= "<<green<<"  b= "<<blue<<'\n';
+    char tmp[8];
+    std::snprintf(tmp, sizeof(tmp), "#%02x%02x%02x", red, green, blue);
+    #endif // 0
+    color++;
+    std::string output = "tmp";
+    return output;
+}
 //End Color
 
 
@@ -571,6 +662,12 @@ Thanks Sladen for the quick help!!!!
 ///MENU ///&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 std::string Config::getLabelMenu(int menu){
     loadTemp();
+    //make sure we have a Tray element first
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){
+        createPanel();
+        return "";
+    }
     if (!isMenu(menu)){return "";}
     const char * label = "";
     std::string labelString , labeled;
@@ -607,6 +704,13 @@ std::string Config::getLabelMenu(int menu){
  std::string Config::getImageMenu(int menu){
     loadTemp();
     int i = 1;
+
+    //make sure we have a Tray element first
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){
+        createPanel();
+        return "";
+    }
     if (!isMenu(menu)){return "";}
     std::string root ="root:";
     std::string labeled;
@@ -641,6 +745,10 @@ std::string Config::getLabelMenu(int menu){
  void Config::setImageMenu(const char* icon, int menu){
     loadTemp();
     int i = 1;
+    //make sure we have a Tray element first
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){createPanel();}
+
     std::string root ="root:";
     std::string labeled;
     root +=convert(menu);
@@ -674,6 +782,10 @@ std::string Config::getLabelMenu(int menu){
 void Config::labelMenu(const char * icon, int num,const char* label){
     loadTemp();
     int i = 1;
+    //make sure we have a Tray element first
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){createPanel();}
+
     int panel = currentPanel();
     std::string compNum;
     std::string number = "root:";
@@ -732,6 +844,13 @@ bool Config::isMenu(std::string includeLine){  // called below
 
 bool Config::isMenu(int rootNumber){
     loadTemp();
+    //make sure we have a Tray element first
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){
+        createPanel();
+        return false;
+    }
+
     std::string root = "root:";
     root += convert(rootNumber);
     const char* num = root.c_str();
@@ -774,10 +893,15 @@ void Config::addMenu(int rootnumber, const char* label, const char* icon){
     loadTemp();
     std::string r = "root:";
     std::string stringICON = icon;
-    stringICON += iconExtention;
+    stringICON += getExtention();
     r += convert(rootnumber);
     const char* root = r.c_str();
     int i = 1;
+
+    //make sure we have a Tray element first
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){createPanel();}
+
     int panel = currentPanel();
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
@@ -800,6 +924,14 @@ void Config::addMenu(int rootnumber, const char* label, const char* icon){
 void Config::deleteMenu(int menu){
     std::string menuString = "root:" + convert(menu);
     int i = 1;
+
+    //check to see if the tray exists
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1){
+        createPanel();
+        return;
+    }
+
     int panel = currentPanel();
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
@@ -823,8 +955,50 @@ void Config::deleteMenu(int menu){
 
 
 ///  MULTIPLE PANELS  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Config::createPanel(){
+    //make a node(needed for InsertEndChild) version of our Sibling Tray
+    tinyxml2::XMLNode *tray = doc.FirstChildElement("JWM");
+    //create the new Tray we want to add
+    tinyxml2::XMLNode *newTray = doc.NewElement("Tray");
+    //add the new tray
+    tray->InsertEndChild(newTray);
+
+    //save it so we can modify it more
+    saveChangesTemp();
+    saveChanges();
+
+    //make a spacer so there is at least something there
+    tinyxml2::XMLNode *spacer = doc.NewElement("Spacer");
+    newTray->InsertEndChild(spacer);
+
+    //turn the newTray node back into an element so we can modify the attributes
+    tinyxml2::XMLElement *thisone = newTray->ToElement();
+
+    //basic default panel setup
+    thisone->SetAttribute("layout","horizontal");
+    thisone->SetAttribute("valign","top");
+    thisone->SetAttribute("halign","fixed");
+    thisone->SetAttribute("height","34");
+    thisone->SetAttribute("width","0");
+    thisone->SetAttribute("x","0");
+    thisone->SetAttribute("y","-1");
+
+    //save it fully
+    saveChanges();
+    saveChangesTemp();
+    //update the .jsm file
+    updatePanels(1);
+}
+
+
+
 const char* Config::getAttribute(const char* attribute, unsigned int panel){
     loadTemp();
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1){
+        createPanel();
+        return "";
+    }
     unsigned int i = 1;
     //std::cout<<panel<<std::endl;
     const char* result ="";
@@ -850,6 +1024,11 @@ const char* Config::getAttribute(const char* attribute, unsigned int panel){
 //simply check if there are multiple panels
 bool Config::multipanel(){
     loadTemp();
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1){
+        createPanel();
+        return false;
+    }
     bool test = false;
     load();
     int counter2 = 0;
@@ -861,10 +1040,10 @@ bool Config::multipanel(){
 int Config::numPanels(){
     loadTemp();
     int counter2 = 0;
-    tinyxml2::XMLElement* node;
-    for(node=doc.FirstChildElement("JWM")->FirstChildElement("Tray");node;node=node->NextSiblingElement("Tray")){counter2++;}
+    tinyxml2::XMLElement* node=doc.FirstChildElement("JWM");
+    if(!node->FirstChildElement("Tray")){return -1;}
+    for(node=node->FirstChildElement("Tray");node;node=node->NextSiblingElement("Tray")){counter2++;}
     //std::cout<<"Found "<<counter2<< " panel(s)"<<std::endl;
-    //if the multipanel function fails there should only be 1 panel and return 0 so the numPanels (below) that calls this wont make a new entry for it.
     return counter2;
 }
 void Config::changePanel(int panel){
@@ -872,6 +1051,7 @@ void Config::changePanel(int panel){
     loadJSM();
     tinyxml2::XMLElement* num = jsm.FirstChildElement("num");
     num->SetText(p.c_str());
+    saveJSM();
 
 }
 
@@ -900,6 +1080,11 @@ const char* Config::checkLayout(){
 
 const char* Config::checkLayout(unsigned int panel){
     loadTemp();
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1){
+        createPanel();
+        return "horizontal";
+    }
     tinyxml2::XMLElement* tray=doc.FirstChildElement("JWM")->FirstChildElement("Tray");
     bool test = multipanel();
     unsigned int i=1;
@@ -922,6 +1107,12 @@ const char* Config::getPanelLayout(){
 }
 const char* Config::getPanelLayout(unsigned int panel){
     loadTemp();
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1){
+        createPanel();
+        //not sure what I need to return here...
+        return "top";
+    }
     tinyxml2::XMLElement* tray=doc.FirstChildElement("JWM")->FirstChildElement("Tray");
     bool test = multipanel();
     std::string layout;
@@ -984,7 +1175,7 @@ bool Config::testFile(const char* fileWithFullPATH){
 
 ///########################################### ICONS ###########################################//////////////...............................................
 
-std::vector<std::string> Config::iconList(int &listcounter){
+std::vector<std::string> Config::iconList(){
     std::string value;
     std::vector<std::string> thisList;
     loadTemp();
@@ -992,7 +1183,6 @@ std::vector<std::string> Config::iconList(int &listcounter){
         value  = node->GetText();
         if(value.c_str() !=NULL){
             if (value.compare("/usr/share/pixmaps")!=0 && value.compare("/usr/share/icons")!=0 ){
-                listcounter++;
                 thisList.push_back(value);
             }
         }
@@ -1019,36 +1209,102 @@ int Config::EXTENTION(std::string filename){
     else return 42;//42 means you'll have to go fish
 }
 std::string Config::getExtention(){
-///Return the most used image extention from <IconPath> tags
-    DIR *dir;
-    struct dirent *dirEntry;
-    int svgCounter = 0, pngCounter = 0, xpmCounter = 0, listCounter= 0; //counters for image format
-    std::vector<std::string> IconList = iconList(listCounter); //return a list of the IconPath entries
-    std::string value, filename;
-    const char* tempDir;
+///This function returns the most used image extention from <IconPath> tags
+
+    //counters for image format as well as a gofishcounter for non images...
+    int svgCounter = 0, pngCounter = 0, xpmCounter = 0, gofishcounter = 0;
+
+    //make an unsigned int to store the vector size
+    unsigned int listCounter= 0;
+    //get a list of the IconPath directory entries as a vector
+    std::vector<std::string> IconList = iconList();
+
+    std::string value, filename, tempDir;
+
+    // make our filename extentions to compare with
     const char* SVG = "svg";
     const char* PNG = "png";
     const char* XPM = "xpm";
+
+    //initialize our extention as a dot
+    //we add the extention to it later
     std::string extentionReturn = ".";
+
+    // this is used as a temporary container for the result of EXTENTION function above
     int tracker;
-    for (int i = 0; i < listCounter; i++){
+    /* 0 means svg
+     * 1 means png
+     * 2 means xpm
+     * 42 means you'll have to go fish... it is not what we want
+     */
+
+    // get the size of our list of directories
+    listCounter = IconList.size();
+
+    //if there is nothing use pixmaps because we ignored it
+    if (listCounter<=1){IconList.push_back("/usr/share/pixmaps");}
+
+    //make our pointer to the directory
+    DIR *dirPointer = NULL;
+
+    //make our pointer to our entry in the directory (stuff like files and folders)
+    struct dirent *dirEntryPointer = NULL;
+
+    // loop through the whole list starting at 0 and ending at the vector length
+    for (unsigned int i = 0; i < listCounter; i++){
+
+        // this will be our directory to open
+        // the i-th directory in our list
         tempDir = (IconList[i]).c_str();
-        dir=opendir(tempDir);
-        while ((dirEntry = readdir(dir))){
-            filename = dirEntry->d_name;
-            tracker = EXTENTION(filename);
-            /// see EXTENTION function above this one for the reason the tracker variable
-            // would have an integer value denoting which image format is used...
-            if(tracker == 0){svgCounter++;}
-            else if(tracker == 1){pngCounter++;}
-            else if(tracker == 2){xpmCounter++;}
+
+        //if it is empty... don't do anything.
+        if (tempDir.compare("")!=0){
+
+            // make the directory pointer the tempDir string (i.e. /usr/share/pixmaps)
+            dirPointer=opendir(tempDir.c_str());
+
+            // read it until it returns NULL
+            // (this would be an error, or the end of the directory)
+            while ((dirEntryPointer=readdir(dirPointer)) != NULL){
+
+                // the filename will be whatever the directory entry's name is
+                filename = dirEntryPointer->d_name;
+                // use the EXTENTION function to get the numerical representation of
+                // the file's extention
+                tracker = EXTENTION(filename);
+                /// see EXTENTION function above
+                    /* 0 means svg
+                     * 1 means png
+                     * 2 means xpm
+                     * 42(else) means it is not what we want
+                     */
+                if(tracker == 0){svgCounter++;}
+                else if(tracker == 1){pngCounter++;}
+                else if(tracker == 2){xpmCounter++;}
+                else{gofishcounter++;}
+            }
+            // close the directory
+            closedir(dirPointer);
         }
     }
+    // if png has more than svg and xpm extentionReturn = .png
+    // we want to preferr this, as PNG looks nice and works
+    // on most compiled JWM setups
     if (pngCounter>svgCounter && pngCounter > xpmCounter){extentionReturn += PNG;}
+
+    // this is very lightweight, so it will be our second check
+    // if xpm has more than svg and png extentionReturn = .xpm
     else if (xpmCounter>svgCounter && xpmCounter > pngCounter){extentionReturn += XPM;}
+
+    // if svg has more than png and xpm extentionReturn = .svg
+    // svg looks the best, but some versions of JWM are compiled without support for it..
     else if (svgCounter>pngCounter && svgCounter > xpmCounter){extentionReturn += SVG;}
+    // I like SVG a lot... so just return it
     else{extentionReturn+="svg";}
+    // this can be uncommented to see what you are getting
     //std::cerr<<extentionReturn<<std::endl;
+
+    // return the extention
     return extentionReturn.c_str();
 }
 
@@ -1060,6 +1316,7 @@ const char* Config::grep(const char* args, const char* filename){
 ///Return the FIRST match of the 'args' from a file
 // this is like  line=`grep $args $filename` that only returns one line
     std::string line;
+//    const char* result;
     std::string lengthTEST = args;
     int lengthofARGS = lengthTEST.length();
     std::string subString;
@@ -1071,7 +1328,12 @@ const char* Config::grep(const char* args, const char* filename){
                 //std::cerr<<args<<" "<<sub<<std::endl;
                 return line.c_str();
             }
-
+/* TODO: test this to see if it works better:
+            result=strstr(line.c_str(),args);
+            if(result!=NULL){
+                return line.c_str();
+            }
+*/
         }
     }
     return "";
@@ -1112,10 +1374,8 @@ std::string Config::returnTerminalOutput(std::string terminal_Command_You_Want_O
                 result.append(buffer);
             }
         }
-        //std::cout<<"before pclose"<<std::endl;
         pclose(command_p);
-        //std::cout<<terminal_Command_You_Want_Output_From<<" returns: "<<result<<std::endl;
-        }
+    }
     else{ return "[returnTerminalOutput] Error from command run";}
 	return result;
 }
@@ -1140,19 +1400,33 @@ int Config::run(const char* command){
     </whichElement>
  </JWM>
  *
+ * XML attributes are
+ *
+ <JWM>
+    <whichElement attribute="value">
+    </whichElement>
+ </JWM>
+ *
  */
 
 void Config::setAttribute(const char* whichElement, const char* attribute, const char* value){
     loadTemp();
+    //make sure element exists first
     if (!isElement(whichElement)){createElement(whichElement);}
+    //point to it
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement(whichElement);
+    //set the attribute
     element->SetAttribute(attribute,value);
+    //save :)
     saveChangesTemp();
 }
 void Config::setAttribute(const char* whichElement, const char* attribute, const char* value, const char* text){
     loadTemp();
+    //make sure the element exists
     if (!isElement(whichElement)){createElement(whichElement);}
+    //create a pointer to the base element <JWM>
     tinyxml2::XMLElement* base = doc.FirstChildElement( "JWM" );
+    //
     tinyxml2::XMLNode *node = doc.NewElement(whichElement);
     base->InsertAfterChild(node,node);
     tinyxml2::XMLText *action = doc.NewText(text);
@@ -1163,65 +1437,131 @@ void Config::setAttribute(const char* whichElement, const char* attribute, const
 }
 void Config::setAttribute(const char* whichElement, const char* attribute, double &value){
     loadTemp();
+    // this overloads to take a double.. it simply converts to a const char* to run the base function
     const char* result = convert(value);
     setAttribute(whichElement,attribute,result);
 }
 void Config::setAttribute(const char* whichElement, const char* attribute, int &value){
     loadTemp();
+    // this overloads to take an int.. it simply converts to a const char* to run the base function
     std::string result = convert(value);
     setAttribute(whichElement,attribute,result.c_str());
 }
 void Config::createElement(const char* whichElement){
+    /* simply creates a Child element of <JWM>
+    <JWM>
+       <whichElementToCreate/>
+    </JWM>
+    * since there is no text, it will make the single element rather than the pair
+    */
     loadTemp();
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
     tinyxml2::XMLNode *node = doc.NewElement(whichElement);
     element->InsertEndChild(node);
     saveChangesTemp();
+    saveChanges();
 }
 void Config::createElement(const char* whichMainElement, const char* whichElementToCreate){
     loadTemp();
-    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement(whichMainElement);
+    /*this over-loaded version will make a sub-element of whichMainElement
+    <JWM>
+        <whichMainElement>
+            <whichElementToCreate/>
+        </whichMainElement>
+    </JWM>
+    * since there is no text, it will make the single element rather than the pair
+    */
+
+    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
+    //make sure whichMainElement exists before we go further
+    if (!element->FirstChildElement(whichMainElement)){
+        createElement(whichMainElement);
+    }
+    //make it!
+    element = doc.FirstChildElement( "JWM" )->FirstChildElement(whichMainElement);
     tinyxml2::XMLNode *node = doc.NewElement(whichElementToCreate);
+    //put it at the very end
     element->InsertEndChild(node);
+    //save
     saveChangesTemp();
+    saveChanges();
 }
 void Config::createElement(const char* whichMainElement, const char* whichSubElement, const char* whichElementToCreate){
+  /*this over-loaded version will make a sub-element of the sub element whichSubElement
+    <JWM>
+        <whichMainElement>
+            <whichSubElement>
+                <whichElementToCreate/>
+            </whichSubElement>
+        </whichMainElement>
+    </JWM>
+    * since there is no text, it will make the single element rather than the pair
+    */
     loadTemp();
-    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement(whichMainElement)->FirstChildElement(whichSubElement);
+    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
+    //make sure the first element exists
+    if (!element->FirstChildElement(whichMainElement)){
+        createElement(whichMainElement);
+        //loadTemp();
+    }
+    //point to the first one
+    element = doc.FirstChildElement( "JWM" )->FirstChildElement(whichMainElement);
+//make sure the second exists
+    if (!element->FirstChildElement(whichMainElement)->FirstChildElement(whichSubElement)){
+        createElement(whichMainElement,whichSubElement);
+        //loadTemp();
+    }
+//point to the second
+    element = doc.FirstChildElement( "JWM" )->FirstChildElement(whichMainElement)->FirstChildElement(whichSubElement);
+    //make it!
     tinyxml2::XMLNode *node = doc.NewElement(whichElementToCreate);
     element->InsertEndChild(node);
+    //save it!!
     saveChangesTemp();
+    saveChanges();
 }
 
 bool Config::isElement(const char* whichElement){
     loadTemp();
+    //check if it is an element or not
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
     if ((element)->FirstChildElement(whichElement)){return true;}
     return false;
 }
 bool Config::isElement(const char* whichElement, const char* whichSUBElement){
     loadTemp();
-    if (doc.FirstChildElement( "JWM" )->FirstChildElement(whichElement)->FirstChildElement(whichSUBElement)){return true;}
+    //check sub elements
+    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
+    if (element->FirstChildElement(whichElement)){
+        if(doc.FirstChildElement( "JWM" )->FirstChildElement(whichElement)->FirstChildElement(whichSUBElement)){return true;}
+    }
     return false;
 }
 
-bool Config::isElementText(const char* whichElement, std::string text){
+bool Config::isElementText(const char* whichElement, std::string textTOcompare){
     loadTemp();
+    //this is to compare text in an element with std::string text
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
     std::string testText;
+    //does it exist
     if ((element)->FirstChildElement(whichElement)){
         for (element = element->FirstChildElement(whichElement);element;element = element->NextSiblingElement(whichElement)){
             testText = element->GetText();
             //std::cerr<<testText<<std::endl;
-            if (text.compare(testText.c_str())==0){return true;}
+            if (textTOcompare.compare(testText.c_str())==0){return true;}
         }
     }
+    //if it never gets to return true then we always return false
     return false;
 }
 
 int Config::getIntAttribute(const char* whichElement,const char* attribute){
     loadTemp();
+    //use the function below
     const char* result = getElementAttribute(whichElement, attribute);
+    //convert string to unsigned long int
+    // str   to ul
+    //oh... and use 10... we want a base 10 number not something else
     int value = strtoul(result,0,10);
     return value;
 }
@@ -1235,31 +1575,52 @@ const char* Config::getElementAttribute(const char* whichElement,const char* att
 const char* Config::getElementAttribute(const char* whichElement,const char* whichSubElement,const char* attribute){
     loadTemp();
     if (!isElement(whichElement)){return "0";}
-    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement(whichElement)->FirstChildElement(whichSubElement);
+    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement(whichElement);
+    //make sure sub element exists... if not then return 0
+    if(!element->FirstChildElement(whichSubElement)){return 0;}
+    element=element->FirstChildElement(whichSubElement);
     return element->Attribute(attribute);
 }
 
 unsigned int Config::getELEMENTColor(const char* whichStyle, const char* ActiveORinactive, unsigned int &color2, const char* FGorBG){
     loadTemp();
-    tinyxml2::XMLElement* colorElement;
+    unsigned int bg = 0;
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" );
+    //make sure the base element exists
+    if (!colorElement->FirstChildElement( whichStyle )){
+        createElement(whichStyle);
+    }
+    colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( whichStyle );
     std::string style = whichStyle;
     if(isNewStyle){
         std::string check = ActiveORinactive;
-        if (check.compare("Active")==0)colorElement  = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichStyle )->
-                            FirstChildElement( ActiveORinactive )->
-                            FirstChildElement( FGorBG );
-        else colorElement  = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichStyle )->
-                            FirstChildElement( FGorBG );
+        if (check.compare("Active")==0){
+            //Active so we have 3 deep we need to check for existence more
+            if (!colorElement->FirstChildElement( ActiveORinactive )){createElement(whichStyle,ActiveORinactive);}
+            //make sure the sub element exists first
+            if (!colorElement->FirstChildElement( ActiveORinactive )->FirstChildElement( FGorBG )){createElement(whichStyle,ActiveORinactive,FGorBG);}
+
+            //point to it
+            colorElement  = colorElement->FirstChildElement( ActiveORinactive )->FirstChildElement( FGorBG );
+        }
+        else{
+            //make sure it exists first
+            if (!colorElement->FirstChildElement( FGorBG )){createElement(whichStyle,FGorBG);}
+
+            //point to it
+            colorElement  = colorElement->FirstChildElement( FGorBG );
+        }
     }
     else{
-        colorElement  = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichStyle )->
-                            FirstChildElement( ActiveORinactive );
+        //make sure it exists first
+        if (!colorElement->FirstChildElement( ActiveORinactive )){createElement(whichStyle,ActiveORinactive);}
+
+        //point to it
+        colorElement  = colorElement->FirstChildElement( ActiveORinactive );
     }
+    //get the text
     std::string colour = colorElement->GetText();
-    unsigned int bg = getColor(colour, color2);
+    bg = getColor(colour, color2);
     return bg;
 }
 
@@ -1268,23 +1629,42 @@ unsigned int Config::getFGColor(const char* whichStyle, const char* ActiveORinac
 }
 void Config::setELEMENTColor(const char* whichStyle, const char* ActiveORinactive, const double* rgb, const char* FGorBG){
     loadTemp();
-    tinyxml2::XMLElement* colorElement;
+        tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" );
+    //make sure the base element exists
+    if (!colorElement->FirstChildElement( whichStyle )){
+        createElement(whichStyle);
+    }
+    colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( whichStyle );
+    std::string style = whichStyle;
     if(isNewStyle){
         std::string check = ActiveORinactive;
-        if (check.compare("Active")==0)colorElement  = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichStyle )->
-                            FirstChildElement( ActiveORinactive )->
-                            FirstChildElement( FGorBG );
-        else colorElement  = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichStyle )->
-                            FirstChildElement( FGorBG );
+        if (check.compare("Active")==0){
+            //Active so we have 3 deep we need to check for existence more
+            if (!colorElement->FirstChildElement( ActiveORinactive )){createElement(whichStyle,ActiveORinactive);}
+            //make sure the sub element exists first
+            if (!colorElement->FirstChildElement( ActiveORinactive )->FirstChildElement( FGorBG )){createElement(whichStyle,ActiveORinactive,FGorBG);}
+
+            //point to it
+            colorElement  = colorElement->FirstChildElement( ActiveORinactive )->FirstChildElement( FGorBG );
+        }
+        else{
+            //make sure it exists first
+            if (!colorElement->FirstChildElement( FGorBG )){createElement(whichStyle,FGorBG);}
+
+            //point to it
+            colorElement  = colorElement->FirstChildElement( FGorBG );
+        }
     }
     else{
-        colorElement  = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichStyle )->
-                            FirstChildElement( ActiveORinactive );
+        //make sure it exists first
+        if (!colorElement->FirstChildElement( ActiveORinactive )){createElement(whichStyle,ActiveORinactive);}
+
+        //point to it
+        colorElement  = colorElement->FirstChildElement( ActiveORinactive );
     }
+    //convert the double rgb to a string
     std::string color1 = colorToString(rgb);
+    //set it!
     colorElement->SetText(color1.c_str());
     saveChangesTemp();
 }

@@ -1,10 +1,13 @@
 [Desktop Entry]
 Name=Desktop Settings
+Name[en_US]=Desktop Settings
+Name[en_GB]=Desktop Settings
+Name[en_US]=Desktop Settings
+Name[en]=Desktop Settings
 GenericName=Configuration Tool
-Icon=/usr/share/icons/jsm/desktop.svg
+Icon=jsm-desktop
 Exec=jwm-settings-manager --desktop
 Terminal=false
 Type=Application
 Categories=Settings;System;
 NotShowIn=GNOME;KDE;LXDE;MATE;Razor;TDE;Unity;XFCE;EDE;Cinnamon;
-Name[en_US]=jwm-settings-manager-desktop

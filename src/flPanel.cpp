@@ -32,8 +32,6 @@ flPanel::flPanel(){
     sysmenu = "gnomesystem";
     rootMenu = 5;
     systemMenu = 8;
-    isNewStyle = newStyle();
-
 }
 
 
@@ -50,47 +48,79 @@ bool flPanel::test(tinyxml2::XMLElement *element){
 }
 
 ///************************************  MULTIPLE PANELS  *************************************************
-
             ///ADD PANEL
 
 void flPanel::addPanel(){
-//    const char* functionName = "void addPanel()";
-   //std::cerr<<functionName<<std::endl;
-   // loadTemp();
+    //loadTemp();
+    int numOFpanels = numPanels();
+    if (numOFpanels == 0 ){createPanel();}
+    //make the base element
     tinyxml2::XMLNode *tray = doc.FirstChildElement("JWM");
+    //make the Sibling Tray element to put the new one after
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->LastChildElement( "Tray" );
+    //make a node(needed for InsertAfterChild) version of our Sibling Tray
     tinyxml2::XMLNode *node = panelElement;
+    //create the new Tray we want to add
     tinyxml2::XMLNode *newTray = doc.NewElement("Tray");
+    //add the new tray after the old one within our <JWM></JWM> XML code
     tray->InsertAfterChild(node,newTray);
+
+    //save it temporarily so we can modify it more
     saveChangesTemp();
+
+    //guess the position to put this new panel in
     const char* position = smartPosition();
-    const char* align = smartAlign(position);
-    int vertORhoriz = whichAlign(align);
-    //std::cerr<<"position: "<<position<<" vertORhoriz: "<<vertORhoriz<<" align: "<<align<<std::endl;
+
+    //make a spacer so there is at least something there
     tinyxml2::XMLNode *spacer = doc.NewElement("Spacer");
     newTray->InsertEndChild(spacer);
+
+    //turn the newTray node back into an element so we can modify the attributes
     tinyxml2::XMLElement *thisone = newTray->ToElement();
+
+    //use our guess position above for the layout
     thisone->SetAttribute("layout",position);
-   if(vertORhoriz == 1){
-        thisone->SetAttribute("valign",align);
-        thisone->SetAttribute("halign","fixed");
-        thisone->SetAttribute("width",0);
-        thisone->SetAttribute("height",34);
+
+    //guess the vertical and horizontal alignments based on our guessed position from above
+    std::string valign = smartVertAlign(position);
+    std::string halign = smartHorizAlign(position);
+    //set our guesses as the valign and halign
+    thisone->SetAttribute("valign",valign.c_str());
+    thisone->SetAttribute("halign",halign.c_str());
+
+    //1 means horizontal 2 means vertical and 3 means... something else (center/fixed)
+    int vert = whichAlign(valign.c_str());
+    int horiz = whichAlign(halign.c_str());
+
+    //Now we will start guessing the width and height to use
+    int w,h;
+    int screenHeight = Fl::h();
+    //a nice starter for a vertical panel is screenheight/2.5
+    int guessHeight = screenHeight /2.5;
+    if (vert==1 && horiz==3){
+        //if it is a top or bottom panel
+        //0 means the FULL width
+        w=0;
+        h=34;
     }
-    else if(vertORhoriz == 2){
-        thisone->SetAttribute("valign","fixed");
-        thisone->SetAttribute("halign",align);
-        thisone->SetAttribute("width",55);
-        thisone->SetAttribute("height",200);
+    else if(horiz==2 && vert==3){
+        //if it is a left or right panel
+        //make it 34 wide and screenHeight /2.5 tall
+        w = 34;
+        h= guessHeight;
     }
     else{
-        thisone->SetAttribute("valign","center");
-        thisone->SetAttribute("halign","center");
-        thisone->SetAttribute("width",0);
-        thisone->SetAttribute("height",34);
+        //if it is something else... just make it visible?
+        w =34;
+        h=34;
     }
-    thisone->SetAttribute("border","false");
+    thisone->SetAttribute("width",w);
+    thisone->SetAttribute("height",h);
+    thisone->SetAttribute("border","false");//not sure that JWM still uses this tag
+    //save it fully
     saveChangesTemp();
+    saveChanges();
+    //update the .jsm file
     updatePanels(numPanels());
 }
 
@@ -99,8 +129,15 @@ void flPanel::deletePanel(){
    // loadTemp();
     int i = 1;
     int panel = currentPanel();
-    int num = numPanels();
-    if (num ==1 ){return;}
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){
+        createPanel();
+        saveChangesTemp();
+        saveChanges();
+        updatePanels(numPanels());
+        return;
+    }
+    if (numOFpanels ==1 ){return;}
     tinyxml2::XMLElement* Base = doc.FirstChildElement( "JWM" );
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
@@ -114,109 +151,187 @@ void flPanel::deletePanel(){
     Base->DeleteChild(node);
     saveChangesTemp();
     saveChanges();
+    updatePanels(numPanels());
 }
 
 const char* flPanel::horizontalORvertical(int horizontalValue, int verticalValue){
     const char* horizontal = "horizontal";
     const char* vertical= "vertical";
+    /*
+    if there are:
+
+    0 horiz                     make the next horizontal
+    1 horiz 0 vert              make the next horizontal
+    1 vert 1 horiz              make the next horizontal
+    2 vert 1 horiz              make the next horizontal
+
+    2 horiz 0 vert              make the next vertical
+    1 vert 2 horiz              make the next vertical
+    anything else... just center it
+
+    Basically I want to preferr Horizontal, because people are used to it.
+    */
     if((horizontalValue == 0)){return horizontal;}
-    else if ((horizontalValue ==1)&&(verticalValue == 0)){return horizontal;}
+    else if((horizontalValue ==1)&&(verticalValue == 0)){return horizontal;}
     else if((horizontalValue==2) && (verticalValue == 0)){return vertical;}
-    else if(horizontalValue>verticalValue){return vertical;}
-    else if((verticalValue>=2) && (horizontalValue == 1)){return horizontal;}
-    else if(verticalValue>horizontalValue){return horizontal;}
-    else if (verticalValue == horizontalValue){ return vertical;}
+    else if((verticalValue==1) && (horizontalValue == 1)){return horizontal;}
+    else if((verticalValue==2) && (horizontalValue == 1)){return horizontal;}
+    else if((verticalValue==1) && (horizontalValue == 2)){return vertical;}
     else {return "center";}
 }
 
 
                         /// SMART ALIGNMENT  ########################################################
 const char* flPanel::smartPosition(){
-//TODO: check all panels and find ALL alignments to figure things out.
-//    tinyxml2::XMLElement* tray=doc.FirstChildElement("JWM")->FirstChildElement("Tray");
    // loadTemp();
     const char* smartiePosition ="";
     int horizontl = 1, verticl = 0, errors = 0;
     std::string layout,lay;
     std::list<std::string> layouts;
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){
+        createPanel();
+        return "horizontal";
+    }
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
-    while(panelElement->NextSiblingElement("Tray")){
-        panelElement=panelElement->NextSiblingElement("Tray");
+    //while there are Tray elements to look through
+    do{
+        //get each layout
         if(panelElement->Attribute("layout")){
             lay = panelElement->Attribute("layout");
+            //add the layout attribute to a string list
             layouts.push_back(lay);
         }
-    }
+        panelElement=panelElement->NextSiblingElement("Tray");
+    }while(panelElement->NextSiblingElement("Tray"));
+
+    //now iterate through the string list of layouts from beginning to end
     for (std::list<std::string>::iterator it = layouts.begin(); it != layouts.end(); ++it){
         layout = *it;
+        //if it is horizontal or vertical increment counters
         if(layout.compare("horizontal")==0){++horizontl;}
         else if(layout.compare("vertical")==0){++verticl;}
         else {errors++;}
+        //if not... then increment errors
     }
-    if (errors != 0){std::cerr<<"Something is wrong with smartPosition()"<<std::endl;}
+    if (errors != 0){std::cerr<<"Something is wrong with your ~/.jwmrc file"<<std::endl;}
     //std::cout<<"horizontl: "<<horizontl<<" verticl: "<<verticl<<std::endl;
+
+    //call horizontalORvertical to figure out which one to pick.
     smartiePosition = horizontalORvertical(horizontl,verticl);
+
     return smartiePosition;
 }
-
-const char* flPanel::smartAlign(const char* layout){
-   // loadTemp();
+const char* flPanel::smartHorizAlign(const char* layout){
     std::string layoutSTRING = layout;
-    std::string valign,halign,vLayout,hLayout;
-    std::list<std::string> valignLayouts;
+    std::string halign,hLayout;
     std::list<std::string> halignLayouts;
-    int valignCounter = 0;
     int halignCounter = 0;
-    int top = 0, bottom = 0, left = 0, right = 0, otherH = 0, otherV = 0;
+    int fixed = 0, center = 0, left = 0, right = 0;
     const char* smartieAlign;
-
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){
+        createPanel();
+        return "fixed";
+    }
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
+
+    ///gather all the 'halign' attributes from every tray
+    do{
+        if(panelElement->Attribute("halign")){
+            halign = panelElement->Attribute("halign");
+            halignLayouts.push_back(halign);
+            halignCounter++;
+        }
+        panelElement=panelElement->NextSiblingElement("Tray");
+    }while(panelElement->NextSiblingElement("Tray"));
+
+    ///figure out how many we have of each one
+    for (std::list<std::string>::iterator it = halignLayouts.begin(); it != halignLayouts.end(); ++it){
+        hLayout = *it;
+        if(hLayout.compare("fixed")==0){fixed++;}
+        else if(hLayout.compare("left")==0){left++;}
+        else if(hLayout.compare("right")==0){right++;}
+        else {center++;}
+    }
+    ///pick a good alignment based on our guess work... for horizontal we mostly want fixed
     if(layoutSTRING.compare("horizontal")==0){
-        while(panelElement->NextSiblingElement("Tray")){
-            panelElement=panelElement->NextSiblingElement("Tray");
-            if(panelElement->Attribute("valign")){
-                valign = panelElement->Attribute("valign");
-                valignLayouts.push_back(valign);
-                valignCounter++;
-            }
-        }
-        for (std::list<std::string>::iterator it = valignLayouts.begin(); it != valignLayouts.end(); ++it){
-            vLayout = *it;
-            if(vLayout.compare("top")==0){top++;}
-            else if(vLayout.compare("bottom")==0){bottom++;}
-            else {otherV++;}
-        }
-        if (top==1 && bottom == 0){smartieAlign ="bottom";}
-        else if (top==0 && bottom == 1){smartieAlign ="top";}
-        else if (top==0 && bottom == 0){smartieAlign ="bottom";}
-        else{smartieAlign ="top";}
+        //basically we want a fixed Tray.... we don't need it to be anything else
+        if (((left+right+center)<=1)&&(fixed<=1)){smartieAlign ="fixed";}
+        else if (((left+right)<=1)&&(fixed<1)){smartieAlign ="fixed";}
+        else if (((left+center)<=1)&&(fixed<1)){smartieAlign ="fixed";}
+        else if (((right+center)<=1)&&(fixed<1)){smartieAlign ="fixed";}
+        else{smartieAlign ="center";}
     }
     else{
-        while(panelElement->NextSiblingElement("Tray")){
-            panelElement=panelElement->NextSiblingElement("Tray");
-            if(panelElement->Attribute("halign")){
-                halign = panelElement->Attribute("halign");
-                halignLayouts.push_back(halign);
-                halignCounter++;
-            }
-        }
-        for (std::list<std::string>::iterator it = halignLayouts.begin(); it != halignLayouts.end(); ++it){
-            hLayout = *it;
-            if(hLayout.compare("right")==0){right++;}
-            else if(hLayout.compare("left")==0){left++;}
-            else {otherH++;}
-        }
-        if (left==1 && right == 0){smartieAlign ="right";}
-        else if (left==0 && right == 1){smartieAlign ="left";}
-        else if (left==0 && right == 0){smartieAlign ="right";}
-        else{smartieAlign ="left";}
+    //this is our vertical Tray, since it can only be vertical or horizontal
+        ///basically we want a LEFT tray first.
+        //if not left then Right...
+        //otherwise just make it 'fixed'... but they should only have 4 panels anyway... from this program
+        if (left==0){smartieAlign ="left";}
+        else if ((left==1)&&(fixed+right==0)){smartieAlign ="right";}
+        else{smartieAlign ="fixed";}
+
     }
-    //std::cout<<"smartieAlign: "<<smartieAlign<<std::endl;
     return smartieAlign;
 }
 
+const char* flPanel::smartVertAlign(const char* layout){
+    std::string layoutSTRING = layout;
+    std::string valign,vLayout;
+    std::list<std::string> valignLayouts;
+    int valignCounter = 0;
+    int fixed = 0, center = 0, top = 0, bottom = 0;
+    const char* smartieAlign;
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){
+        createPanel();
+        return "bottom";
+    }
+    //int current = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+
+    ///gather all the 'valign' attributes from every tray
+    do{
+        if(panelElement->Attribute("valign")){
+            valign = panelElement->Attribute("valign");
+            std::cout<<"valign: "<<valign<<std::endl;
+            valignLayouts.push_back(valign);
+            valignCounter++;
+        }
+        panelElement=panelElement->NextSiblingElement("Tray");
+    }while(panelElement->NextSiblingElement("Tray"));
+    ///figure out how many we have of each one
+    for (std::list<std::string>::iterator it = valignLayouts.begin(); it != valignLayouts.end(); ++it){
+        vLayout = *it;
+        if(vLayout.compare("fixed")==0){fixed++;}
+        else if(vLayout.compare("top")==0){top++;}
+        else if(vLayout.compare("bottom")==0){bottom++;}
+        else {center++;}
+    }
+
+    // if there is a top make a bottom!
+    // if there is a bottom make a top!
+    //otherwise... make it fixed. Not the greatest... but better than center
+    if(layoutSTRING.compare("horizontal")==0){
+        if ((top==1)&&((bottom+fixed)==0)){smartieAlign ="bottom";}
+        else if ((top==0)&&((bottom+fixed)==1)){smartieAlign ="top";}
+        else{smartieAlign ="fixed";}
+    }
+    else if(layoutSTRING.compare("vertical")==0){
+    //this is our vertical Tray, since it can only be vertical or horizontal
+        //so we pretty much only want fixed....
+        if (fixed>=3){smartieAlign ="center";}
+        else{smartieAlign ="fixed";}
+    }
+    else {errorJWM("Not vertical or horizontal??? WHAT!!!!!");smartieAlign="fixed";}
+    return smartieAlign;
+}
+//basically figure out if it is horizontal or vertical
+//if it is fixed we should know which one to use, since we are checking halign and valign when we add the panel
 int flPanel::whichAlign(const char* Align){
     std::string align = Align;
     if(align.compare("top")==0 || align.compare("bottom")==0){return 1;}
@@ -229,8 +344,8 @@ int flPanel::whichAlign(const char* Align){
 
 ///  ######################################################## JSM
 void flPanel::setJSM(const char* element,const char* value){
+    //modify our configuration file... the .jsm file, NOT the .jwmrc file
     loadJSM();
-  //  std::cout<<"element: "<<element<<" "<<"value: "<<value<<std::endl;
     tinyxml2::XMLElement* ele = jsm.FirstChildElement(element);
     ele->SetText(value);
     saveJSM();
@@ -240,11 +355,15 @@ void flPanel::setJSM(const char* element,const char* value){
  /*! @} */
 /// ########################################################  Autohide
 void flPanel::panelAutohide(bool &yesOrNo){
+    ///this is the OLD style autohide jwm 2.2.2
    // loadTemp();
     bool autohide;
     const char* autohideValue;
     int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){createPanel();}
     int panel = currentPanel();
+    //get our current panel to work on
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
     if (panel != i){
@@ -253,6 +372,7 @@ void flPanel::panelAutohide(bool &yesOrNo){
             i++;
         }
     }
+    //it is true/false only
     if (yesOrNo){autohideValue ="true";}
     else{autohideValue ="false";}
     panelElement->SetAttribute("autohide",autohideValue);
@@ -260,7 +380,10 @@ void flPanel::panelAutohide(bool &yesOrNo){
     saveChangesTemp();
 }
 void flPanel::panelAutohide(const char* where){
+    ///this is the newer style jwm(2.3.0++) autohide
     int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){createPanel();}
     int panel = currentPanel();
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
@@ -270,18 +393,28 @@ void flPanel::panelAutohide(const char* where){
             i++;
         }
     }
+    //this can be top,bottom,left,right or off.... it hides the panel in any direction, or turns it off
     panelElement->SetAttribute("autohide",where);
     saveChangesTemp();
 }
+std::string flPanel::getAutohide(){
+    std::string autohide =getStringValue("autohide");
+    if(autohide.compare("")==0){return "off";}
+    return autohide;
+}
 ///******************************  PANEL SIZE setters and getters  *************************************
 
+///this is my all purpose integer getter
 int flPanel::getValue(const char* attribute){
-//    const char* functionName = "int getValue(const char * attribute)";
-   //std::cerr<<functionName<<std::endl;
    // loadTemp();
     int value = 0;
     int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){
+        createPanel();
+    }
     int panel = currentPanel();
+    //get the current panel
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
     if (panel != i){
@@ -290,17 +423,23 @@ int flPanel::getValue(const char* attribute){
             i++;
         }
     }
+    //if the attribute we want exists, get it
     if (panelElement->Attribute(attribute)){panelElement->QueryIntAttribute(attribute, &value);}
-    //std::cerr<<"int getValue: "<<value<<std::endl;
+    //return value... either 0 or the value of an existing attribute
     return value;
 }
+
+/// all purpose handy-dandy string value getter
 std::string flPanel::getStringValue(const char* attribute){
-//    const char* functionName = "std::string getStringValue(const char * attribute)";
-   //std::cerr<<functionName<<std::endl;
    // loadTemp();
     std::string value = "";
     int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){
+        createPanel();
+    }
     int panel = currentPanel();
+    //load our current panel to work on
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
     if (panel != i){
@@ -309,35 +448,23 @@ std::string flPanel::getStringValue(const char* attribute){
             i++;
         }
     }
+    //if the attribute exists get the value of it!
     if (panelElement->Attribute(attribute)){value = panelElement->Attribute(attribute);}
-    //std::cerr<<"getStringValue: "<<value<<std::endl;
+    //return the value from the panel or just return ""
     return value;
 }
-
-void flPanel::setValue(const char* attribute, int value){
-   // loadTemp();
-    int i = 1;
-    std::string VALUE = convert(value);
-    int panel = currentPanel();
-    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-    if (panel != i){
-        while(panelElement->NextSiblingElement("Tray") && i!=panel){
-            panelElement=panelElement->NextSiblingElement("Tray");
-            i++;
-        }
-    }
-    panelElement->SetAttribute(attribute,VALUE.c_str());
-    saveChangesTemp();
-}
+///this is the const char* version of the getStringValue
 const char* flPanel::getValue(std::string attribute){
-//    const char* functionName = "const char* getValue(std::string attribute)";
-   //std::cerr<<functionName<<std::endl;
    // loadTemp();
-    std::string result ="";
+    std::string result;
     int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){
+        createPanel();
+    }
     const char* attrib = attribute.c_str();
     int panel = currentPanel();
+    //load our current panel to work on
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
     if (panel != i){
@@ -346,14 +473,25 @@ const char* flPanel::getValue(std::string attribute){
             i++;
         }
     }
+    //if the attribute exists get the value of it!
     if (panelElement->Attribute(attrib)){result = panelElement->Attribute(attrib);}
+    else{
+        std::cout<<"Tray attribute: "<<attribute<<" doesn't exist"<<std::endl;
+        return "";
+    }
+    //return the value from the panel or just return ""
     return result.c_str();
 }
 
-void flPanel::setValue(const char* attribute, const char* value){
+/// all purpose heavy-duty(?) generic value setter for INTEGERS!!!!
+void flPanel::setValue(const char* attribute, int value){
    // loadTemp();
     int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){createPanel();}
+    std::string VALUE = convert(value);
     int panel = currentPanel();
+    //load our current panel to work on
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
     if (panel != i){
@@ -362,38 +500,81 @@ void flPanel::setValue(const char* attribute, const char* value){
             i++;
         }
     }
+    //we don't need to worry about the attribute existing
+    //tinyxml2 creates it if it doesn't
+    panelElement->SetAttribute(attribute,VALUE.c_str());
+    saveChangesTemp();
+}
+
+/// our handy-handy-dandy-dandy const char* value setter
+void flPanel::setValue(const char* attribute, const char* value){
+   // loadTemp();
+    int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){createPanel();}
+    int panel = currentPanel();
+    //load our current panel to work on
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    //we don't need to worry about the attribute existing
+    //tinyxml2 creates it if it doesn't
     panelElement->SetAttribute(attribute,value);
     saveChangesTemp();
 }
 //END PANEL SIZE
 
 int flPanel::getBorder(){
-//    const char* functionName = "int getBorder()";
-   //std::cerr<<functionName<<std::endl;
+    //use our handy getStringValue function
     std::string value = getStringValue("border");
-    if (value.compare("false")==0){return 0;}
+    //if it is false return 0, because this is an integer function :)
+    if ((value.compare("false")==0)||(value.compare("")==0)){return 0;}
+    //if it is not 'false' then it will be an integer
     int result =  getValue("border");
-    //std::cerr<<"result: "<<result<<std::endl;
+    //return the integer
     return result;
 }
 
 ///  ######################################################## MENU  ************************************************
 
-
-//TODO change ALL 5 to som integer in flPanel
+///label the MAIN menu
 void flPanel::menuLabel(const char * label){
    // loadTemp();
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){
+        createPanel();
+    }
     const char* image = getMenuImage().c_str(); // Config::getImageMenu(5)
     labelMenu(image, rootMenu, label); ///Config
 }
+
+///This function switches the menu configuration to use either:
+//the normal app menu
+//the funky gnome menus
+
 void flPanel::switchMenu(int whichStyle, const char* MenuName){
     std::string stringMenuName = MenuName;
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1 ){createPanel();}
     if(stringMenuName.compare("")==0){stringMenuName=gettext("Apps");}
     /// these come from Config;
+    //check to see which menu we are using based on variables we definied in the Constructor UP TOP
+    //they are simply const chars* defining the menu FILE names
     bool tori=isMenu(torimenu);
     bool gnome=isMenu(gnomemenu);
+
+    //test checks for root:5 being existent
     bool test = isMenu(rootMenu);
+    //if not we NEED some sort of menu
     if(!test){addMenu(rootMenu,stringMenuName.c_str(),"/usr/share/pixmaps/distributor-logo");}
+
+    //these integers come from the UI selection
+    //we want the traditional menu to be 1 and gnome to be 2
     if(whichStyle==1){
     //traditional
         if (gnome){switchMenuInclude(gnomemenu,torimenu);}
@@ -407,20 +588,36 @@ void flPanel::switchMenu(int whichStyle, const char* MenuName){
     }
     else errorJWM("switchMenu requires values of 1 for traditional or 2 for Gnome 2 like menus");
 }
+
 void flPanel::switchMenuInclude(std::string changeTHIS, std::string toTHIS){
-//    const char* conf = "$HOME/.config/";
+    //yeah... I called the variable homie, but it sure makes reading code slightly
+    //more humourous, right?  right?.... moving along
     std::string homie = getenv("HOME");
     homie+="/.config/";
+    //we want the directory where we store our menu XML files
+    //these files are <Include> in our main ~/.jwmrc
+    //so we HAVE to HAVE them... otherwise there will be no menu :(
+
     std::string thisError;
+
+    //we will setup a boolean to check which menu we are changing
     bool changeGnome = false;
     bool changeTori=false;
     if(changeTHIS.compare(gnomemenu)==0){changeGnome=true;}
     if(changeTHIS.compare(torimenu)!=0 ){changeTori=true;}
+    //gnomemenu and torimenu are const char* from the Constructor up TOP
+
+    //boolean to check what they want to change to
     bool toGnome = false;
     bool toTori=false;
     if(toTHIS.compare(gnomemenu)==0){toGnome=true;}
     if(toTHIS.compare(torimenu)!=0 ){toTori=true;}
-    //make sure something valid was sent in
+    //gnomemenu and torimenu are const char* from the Constructor up TOP
+
+    //make sure something valid was sent in before we do something
+    //if we start switching $valid for $invalid
+    //they will not have the right menu...
+    // or we might crash...  so instead let's error and run away
     if(!changeGnome && !changeTori){
         thisError ="flPanel: changeTHIS must be '"+gnomemenu+"' or '"+torimenu+"'";
         errorJWM(thisError); return;
@@ -431,6 +628,11 @@ void flPanel::switchMenuInclude(std::string changeTHIS, std::string toTHIS){
     }
 
     ///Switcher ...TODO
+    //yeah this is where the cool stuff will happen
+    //but I have to fix bugs before I add features
+    //believe me this feature is not more important than bug fixing
+    //so why am I writing this comment here????
+    //so maybe someone who is not fixing bugs will implement this feature
     if (changeGnome && toTori){
         std::cerr<<"change Gnome to Tori"<<std::endl;
     }
@@ -441,77 +643,147 @@ void flPanel::switchMenuInclude(std::string changeTHIS, std::string toTHIS){
         thisError ="Must be switching'"+gnomemenu+"' and '"+torimenu+"'";
         errorJWM(thisError); return;
     }
-    //std::string
-
-
 }
 
 
 ///****************************  PANEL BACKGROUND & Opacity ***********************************
 
-    ///Colors
+    ///These next few functions are all pupropse setters/getters
+    //just tell them whichElement
+    //the will set the value or get the value
 
-    //Inactive
+    //Inactive setter of single colors
 void flPanel::setBackground(const double* rgb, const char * whichElement){
    // loadTemp();
-    tinyxml2::XMLElement* colorElement;
-    colorElement  = doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( whichElement )->
-                        FirstChildElement( "Background" );
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" );
+    //check to make sure whichElement exists
+    if(!colorElement->FirstChildElement( whichElement )){
+        createElement(whichElement);
+        colorElement=doc.FirstChildElement( "JWM" );
+    }
+    //check to make sure whichElement->Background exists
+    if(!colorElement->FirstChildElement( whichElement )->FirstChildElement( "Background" )){
+        createElement(whichElement,"Background");
+    }
+    colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Background" );
+
     std::string color1 = colorToString(rgb);
     colorElement->SetText(color1.c_str());
     saveChangesTemp();
 }
 
+//This will get 2 colors... to get one color make an unused variable for color2
+//this will return the first color fine
 unsigned int flPanel::getBackground(unsigned int &color2, const char * whichElement){
-//    const char* functionName = "unsigned int getBackground(unsigned int &color2, const char * whichElement)";
-   //std::cerr<<functionName<<std::endl;
    // loadTemp();
-    tinyxml2::XMLElement* colorElement;
-    colorElement  = doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( whichElement )->
-                        FirstChildElement( "Background" );
+    unsigned int bg=0;
+    //check to make sure whichElement exists
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" );
+    if(!colorElement->FirstChildElement( whichElement )){
+        createElement(whichElement);
+    }
+    colorElement = doc.FirstChildElement( "JWM" );
+    //check to make sure whichElement->Background exists
+    if(!colorElement->FirstChildElement( whichElement )->FirstChildElement( "Background" )){
+        createElement(whichElement,"Background");
+        colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Background" );
+        colorElement->SetText("#000000");
+        saveChanges();
+        saveChangesTemp();
+        return 0;
+    }
+    colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Background" );
     std::string colour = colorElement->GetText();
-    unsigned int bg = getColor(colour, color2);
+    //this is a generic color function in Config
+    bg = getColor(colour, color2);
     return bg;
 }
+
     //Active
+    //these are a bit trickier, since the new config has changed
+    //the new style is more intuitive... but... we need to make sure to do it both ways
 void flPanel::setActiveBackground(const double* rgb, const char * whichElement){
    // loadTemp();
-    tinyxml2::XMLElement* colorElement;
+    tinyxml2::XMLElement* colorElement  = doc.FirstChildElement( "JWM" );
+    if (whichElement==NULL){return;}
+
+    //make sure our element exists first
+    if(!colorElement->FirstChildElement( whichElement )){createElement(whichElement);}
+
+    //use the handy color2string function in Confg
+    //this turns our double value (which comes from the Fl color chooser)
+    std::string color1 = colorToString(rgb);
+
+    //OK!  is it newstyle or old??
+    //either way let's set up colorElement to point to the right place
     if(newStyle()){
-        colorElement  = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichElement )->
-                            FirstChildElement( "Active" )->
-                            FirstChildElement( "Background" );
+        //does the Active element exist?
+        if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )){
+            createElement(whichElement,"Active");
+        }
+        //make sure the Background Element exists as well
+        if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )->FirstChildElement( "Background" )){
+            createElement(whichElement,"Active","Background");
+        }
+        //point to it
+        colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )->FirstChildElement( "Background" );
     }
     else{
-        colorElement  = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichElement )->
-                            FirstChildElement( "ActiveBackground" );
+        //does Active background exist?
+        if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "ActiveBackground" )){
+            createElement(whichElement,"ActiveBackground");
+        }
+        colorElement  = doc.FirstChildElement( "JWM" )->FirstChildElement( "ActiveBackground" );
     }
-    std::string color1 = colorToString(rgb);
+
+
+    //into our .jwmrc value (HTML style color)
+
     colorElement->SetText(color1.c_str());
     saveChangesTemp();
 }
 unsigned int flPanel::getActiveBackground(unsigned int  &color2, const char * whichElement){
-//    const char* functionName = "unsigned int getActiveBackground(unsigned int &color2, const char * whichElement)";
-   //std::cerr<<functionName<<std::endl;
    // loadTemp();
-    tinyxml2::XMLElement* colorElement;
+    unsigned int bg =0;
+    tinyxml2::XMLElement* colorElement  = doc.FirstChildElement( "JWM" );
+    //make sure our element exists first
+    if(!colorElement->FirstChildElement( whichElement )){
+        createElement(whichElement);
+    }
+    //OK!  is it newstyle or old??
+    //either way let's set up colorElement to point to the right place
     if(newStyle()){
-        colorElement  = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichElement )->
-                            FirstChildElement( "Active" )->
-                            FirstChildElement( "Background" );
+        //does the Active element exist?
+        if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )){
+            createElement(whichElement,"Active");
+        }
+        //make sure the Background Element exists as well
+        if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )->FirstChildElement( "Background" )){
+            createElement(whichElement,"Active","Background");
+            colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )->FirstChildElement( "Background" );
+            colorElement->SetText("#000000");
+            saveChanges();
+            saveChangesTemp();
+            return 0;
+        }
+        //point to it
+        colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )->FirstChildElement( "Background" );
     }
     else{
-        colorElement  = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichElement )->
-                            FirstChildElement( "ActiveBackground" );
+        //does Active background exist?
+        if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "ActiveBackground" )){
+            createElement(whichElement,"ActiveBackground");
+            colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "ActiveBackground" );
+            colorElement->SetText("#000000");
+            saveChanges();
+            saveChangesTemp();
+            return 0;
+        }
+        colorElement  = doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "ActiveBackground" );
     }
     std::string colour = colorElement->GetText();
-    unsigned int bg = getColor(colour, color2);
+    //use the handy getColor function from Config
+    bg = getColor(colour, color2);
     return bg;
 }
 
@@ -519,47 +791,69 @@ unsigned int flPanel::getActiveBackground(unsigned int  &color2, const char * wh
 /// FONT color
 void flPanel::setFontColor(const double* rgb, const char * whichElement){
    // loadTemp();
-    tinyxml2::XMLElement* bgElement = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichElement )->
-                            FirstChildElement( "Foreground" );
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" );
+    if (!colorElement->FirstChildElement( whichElement )){
+        createElement(whichElement);
+    }
+    colorElement = doc.FirstChildElement( "JWM" );
+    if (!colorElement->FirstChildElement( whichElement )->FirstChildElement( "Foreground" )){
+        createElement(whichElement,"Foreground");
+    }
+    colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Foreground" );
+
+    //use the handy color2string function in Confg
+    //this turns our double value (which comes from the Fl color chooser)
+    //into our .jwmrc value (HTML style color)
     std::string color1 = colorToString(rgb);
-    bgElement->SetText(color1.c_str());
+    colorElement->SetText(color1.c_str());
     saveChangesTemp();
 }
+
+//to use this for one color make an unused color2 variable when you call this
 unsigned int flPanel::getFontColor(unsigned int &color2, const char * whichElement){
-//    const char* functionName = "unsigned int getFontColor(unsigned int &color2, const char * whichElement)";
-   //std::cerr<<functionName<<std::endl;
    // loadTemp();
-    tinyxml2::XMLElement* bgElement = doc.FirstChildElement( "JWM" )->
-                            FirstChildElement( whichElement )->
-                            FirstChildElement( "Foreground" );
-    //tester
+    unsigned int bg = 0;
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" );
+    if (!colorElement->FirstChildElement( whichElement )){
+        createElement(whichElement);
+    }
+    colorElement = doc.FirstChildElement( "JWM" );
+    if (!colorElement->FirstChildElement( whichElement )->FirstChildElement( "Foreground" )){
+        createElement(whichElement,"Foreground");
+        setFontColor(0,whichElement);
+        saveChanges();
+        saveChangesTemp();
+        return 0;
+    }
+    colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Foreground" );
     std::string background;
-    if (test(bgElement)){
-            background = bgElement->GetText();
-        }
-        else {errorJWM(errorMessage); return 42;}
-    unsigned int bg = getColor(background, color2);
+    //get the string for the color
+    background = colorElement->GetText();
+    //use the Config function to get the colors
+    bg = getColor(background, color2);
     return bg;
 }
 
 void flPanel::setActiveFontColor(const double* rgb, const char * whichElement){
    // loadTemp();
     const char* ActiveOrInactive;
+    //check if it is new or old
     if(newStyle()){ActiveOrInactive="Active";}
     else{ActiveOrInactive="ActiveForeground";}
-    setFGColor(whichElement,ActiveOrInactive,rgb); //from Config
+    // set the color using this function from Config
+    setFGColor(whichElement,ActiveOrInactive,rgb);
     saveChangesTemp();
 }
 
+//color2 is not really used
 unsigned int flPanel::getActiveFontColor(unsigned int &color2, const char * whichElement){
-//    const char* functionName = "unsigned int getActiveFontColor(unsigned int &color2, const char * whichElement)";
-   //std::cerr<<functionName<<std::endl;
    // loadTemp();
     const char* ActiveOrInactive;
+    //check for new or old style
     if(newStyle()){ActiveOrInactive="Active";}
     else{ActiveOrInactive="ActiveForeground";}
-    return getFGColor(whichElement, ActiveOrInactive, color2); //from Config
+    //use this function from config to return 1 color
+    return getFGColor(whichElement, ActiveOrInactive, color2);
 }
 
 /*
@@ -585,27 +879,49 @@ void flPanel::setPanelBackground(const double* rgb,const  double* rgb2){
 /// Opacity
 void flPanel::setOpacity(float &opacity, const char* whichElement){
    // loadTemp();
-    tinyxml2::XMLElement* opacityElement = doc.FirstChildElement("JWM")->FirstChildElement( whichElement )->FirstChildElement( "Opacity" );
+    tinyxml2::XMLElement* opacityElement = doc.FirstChildElement("JWM");
+    if(!opacityElement->FirstChildElement( whichElement )){
+        createElement(whichElement);
+    }
+    opacityElement = doc.FirstChildElement( "JWM" );
+    if(!opacityElement->FirstChildElement( whichElement )->FirstChildElement( "Opacity" )){
+        createElement(whichElement,"Opacity");
+    }
+    opacityElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Opacity" );
     opacityElement->SetText(opacity);
     saveChangesTemp();
 }
-float flPanel::getOpacity(const char* whichElement){
-//    const char* functionName = "float getOpacity(const char* whichElement)";
-    //std::cerr<<functionName<<std::endl;
-   // loadTemp();
-    tinyxml2::XMLElement* opacityElement = doc.FirstChildElement("JWM")->FirstChildElement( whichElement )->FirstChildElement( "Opacity" );
-    std::string opacityString;
-    std::string thisError = "Opacity doesn't exist for ";
-    thisError+=whichElement;
-    if (test(opacityElement)){opacityString = opacityElement->GetText();}
-    else {errorJWM(thisError); return 42;} //TODO create it, and give it a default value
 
+float flPanel::getOpacity(const char* whichElement){
+   // loadTemp();
+   tinyxml2::XMLElement* opacityElement = doc.FirstChildElement("JWM");
+    if(!opacityElement->FirstChildElement( whichElement )){
+        createElement(whichElement);
+    }
+    opacityElement = doc.FirstChildElement( "JWM" );
+    if(!opacityElement->FirstChildElement( whichElement )->FirstChildElement( "Opacity" )){
+        createElement(whichElement,"Opacity");
+        opacityElement=opacityElement->FirstChildElement( whichElement )->FirstChildElement( "Opacity" );
+        opacityElement->SetText(1.0);
+        saveChanges();
+        saveChangesTemp();
+        std::string thisError = "Opacity didin't exist for ";
+        thisError+=whichElement;
+        thisError+= " it is set for 1.0";
+        errorJWM(thisError);
+        return 1.0;
+    }
+    opacityElement=doc.FirstChildElement("JWM")->FirstChildElement( whichElement )->FirstChildElement( "Opacity" );
+    std::string opacityString;
+    opacityString = opacityElement->GetText();
     float opacity = float(strtold(opacityString.c_str(),NULL));
     return opacity;
 }
 // End Panel Color
 
 
+///MOVE panel items around
+// this does not work yet :(
 void flPanel::moveUp(std::string item){
     loadTemp();
     int i = 1;
@@ -668,6 +984,8 @@ void flPanel::moveUp(std::string item){
 
     }
 }
+///MOVE panel items around
+// this does not work yet :(
 void flPanel::moveDown(std::string item){
     loadTemp();
     int i = 1;
@@ -778,10 +1096,22 @@ void flPanel::moveDown(std::string item){
         }
     }
 }
+
+//this is a handy general function to get sub element's text
+//such as:
+//JWM->Tray->TrayButton etc..
 const char* flPanel::getSubElementText(const char* whichElement){
     loadTemp();
     int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == 0 ){
+        errorJWM("You do not have any Tray elements, so getSubElementText() will exit after creating one");
+        createPanel();
+        return "";
+    }
     int panel = currentPanel();
+    //get the current panel to work on
+    const char* result ="";
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
     if (panel != i){
@@ -790,13 +1120,24 @@ const char* flPanel::getSubElementText(const char* whichElement){
             i++;
         }
     }
-    panelElement=panelElement->FirstChildElement(whichElement);
-    const char* result = panelElement->GetText();
+    if(!panelElement->FirstChildElement(whichElement)){
+        createElement("Tray",whichElement);
+
+    }
+    else{
+        panelElement=panelElement->FirstChildElement(whichElement);
+        result = panelElement->GetText();
+    }
     return result;
 }
+
 void flPanel::setSubElementText(const char* whichElement, const char* value){
     loadTemp();
     int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == 0 ){
+        createPanel();
+    }
     int panel = currentPanel();
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
@@ -806,14 +1147,27 @@ void flPanel::setSubElementText(const char* whichElement, const char* value){
             i++;
         }
     }
+    //lets make sure the sub element exists
+    if(!panelElement->FirstChildElement(whichElement)){
+        createElement("Tray",whichElement);
+    }
     panelElement=panelElement->FirstChildElement(whichElement);
+    //set the text
     panelElement->SetText(value);
     saveChangesTemp();
 }
+
 const char* flPanel::getSubElementAttribute(const char* whichElement,const char* attribute){
     loadTemp();
     int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == 0 ){
+        errorJWM("You do not have any Tray elements, so getSubElementAttribute() will exit after creating one");
+        createPanel();
+        return "";
+    }
     int panel = currentPanel();
+    const char* result ="";
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
     if (panel != i){
@@ -822,13 +1176,23 @@ const char* flPanel::getSubElementAttribute(const char* whichElement,const char*
             i++;
         }
     }
+    //lets make sure the sub element exists
+    if(!panelElement->FirstChildElement(whichElement)){
+        createElement("Tray",whichElement);
+    }
     panelElement=panelElement->FirstChildElement(whichElement);
-    const char* result = panelElement->Attribute(attribute);
+    //get the attribute if there is one
+    result = panelElement->Attribute(attribute);
     return result;
 }
 void flPanel::setSubElementAttribute(const char* whichElement,const char* attribute, const char* value){
     loadTemp();
     int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == 0 ){
+        errorJWM("You do not have any Tray elements, so setSubElementAttribute() will create one");
+        createPanel();
+    }
     int panel = currentPanel();
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
@@ -841,7 +1205,65 @@ void flPanel::setSubElementAttribute(const char* whichElement,const char* attrib
             i++;
         }
     }
+    //lets make sure the sub element exists
+    if(!panelElement->FirstChildElement(whichElement)){
+        createElement("Tray",whichElement);
+    }
     panelElement=panelElement->FirstChildElement(whichElement);
+    //set the attribute.  this will make it if it doesn't exist
     panelElement->SetAttribute(attribute,value);
     saveChangesTemp();
+}
+
+void flPanel::switchButton(std::string OLD,std::string NEW,std::string tooltip,std::string icon){
+    //this is used by configure manually window...
+    //we get the OLD exec: line, the NEW exec: line
+    unsigned int found = NEW.find_first_of(":");
+    std::string testing123;
+    if(NEW.length()>found){
+        testing123 = NEW.substr(0,found);
+        if((testing123.compare("exec")==0)||(testing123.compare("root")==0)){std::cout<<"yay"<<std::endl;}
+        else{
+            std::cout<<"Found: "<<testing123<<"\nIn your line: "<<NEW<<"\nMust contain exec: OR root:"<<std::endl;
+            return;
+        }
+    }
+    else{
+        testing123 ="exec:"+NEW;
+        std::cout<<"Missing exec:... fixing..."<<testing123<<std::endl;
+        NEW=testing123;
+    }
+    loadTemp();
+//std::cout<<OLD<<" "<<NEW<<" "<<tooltip<<" "<<icon<<std::endl;
+    int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == 0 ){
+        errorJWM("You do not have any Tray elements, so setSubElementAttribute() will create one");
+        createPanel();
+    }
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    //this should be impossible to happen... but just in case :P
+    if(!panelElement->FirstChildElement("TrayButton")){return;}
+    std::string rootTester;
+    for(panelElement=panelElement->FirstChildElement("TrayButton");
+        panelElement;
+        panelElement=panelElement->NextSiblingElement("TrayButton")){
+        rootTester=panelElement->GetText();
+        if(rootTester.compare(OLD)==0){
+            //std::cout<<rootTester<<std::endl;
+            if(NEW.compare("")!=0){panelElement->SetText(NEW.c_str());}
+            if(tooltip.compare("")!=0){panelElement->SetAttribute("popup",tooltip.c_str());}
+            if(icon.compare("")!=0){panelElement->SetAttribute("icon",icon.c_str());}
+            saveChangesTemp();
+            return;
+        }
+    }
 }

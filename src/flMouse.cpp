@@ -36,27 +36,51 @@ flMouse::~flMouse()
 }
 
 int flMouse::getDoubleClick(){
-    tinyxml2::XMLElement* element;
-    element = doc.FirstChildElement( "JWM" )->FirstChildElement( "DoubleClickSpeed" );
+    if(!testElement("DoubleClickSpeed")){
+        createElement("DoubleClickSpeed");
+        //better set it to the default, since that is how it acts
+        tinyxml2::XMLElement* fixer = doc.FirstChildElement( "JWM" )->FirstChildElement( "DoubleClickSpeed" );
+        fixer->SetText(400);
+        saveChanges();
+        saveChangesTemp();
+        return 400;
+    }
+    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement( "DoubleClickSpeed" );
     std::string text = element->GetText();
     int result = strtol(text.c_str(),0,10);
     return result;
 }
 void flMouse::setDoubleClick(int &speed){
+    //does it exist??
+    if(!testElement("DoubleClickSpeed")){createElement("DoubleClickSpeed");}
+    //point to it
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "DoubleClickSpeed");
     element->SetText(speed);
     saveChangesTemp();
 }
 int flMouse::getDelta(){
-    tinyxml2::XMLElement* element;
-    element = doc.FirstChildElement( "JWM" )->FirstChildElement( "DoubleClickDelta" );
+    //does it exist??
+    if(!testElement("DoubleClickDelta")){
+        createElement("DoubleClickDelta");
+        //better set it to the default, since that is how it acts
+        tinyxml2::XMLElement* fixer = doc.FirstChildElement( "JWM" )->FirstChildElement( "DoubleClickDelta" );
+        fixer->SetText(2);
+        saveChanges();
+        saveChangesTemp();
+        return 2;
+    }
+    //point to it
+    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement( "DoubleClickDelta" );
     std::string text = element->GetText();
     int result = strtol(text.c_str(),0,10);
     return result;
 
 }
 void flMouse::setDelta(int &delta){
+//does it exist??
+    if(!testElement("DoubleClickDelta")){createElement("DoubleClickDelta");}
+    //point to it
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "DoubleClickDelta");
     element->SetText(delta);
@@ -66,6 +90,7 @@ void flMouse::setDelta(int &delta){
 
 bool flMouse::isTap(){
     const char * program = "synclient MaxTapTime=0";
+    if(!testElement("StartupCommand")){return false;}
     for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");
     node;node=node->NextSiblingElement("StartupCommand")){
         std::string fromDoc = node->GetText();

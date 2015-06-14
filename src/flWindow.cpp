@@ -1,45 +1,44 @@
 #include "../include/flWindow.h"
 
-flWindow::flWindow()
-{
+flWindow::flWindow(){
     tinyxml2::XMLDocument doc;
+    GROUP="Group";
+    CLASS="Class";
+    NAME="Name";
+    OPTION="Option";
     //isNewStyle = newStyle();
 }
 
-flWindow::~flWindow()
-{
+flWindow::~flWindow(){
     //dtor
 }
 ///COLOR FUNCTIONS
 //Active
 void flWindow::setActiveColor(const char* element, const double* rgb){
    // loadTemp();
-    tinyxml2::XMLElement* colorElement;
-    if(doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( "Active" )->
-                        FirstChildElement( element ))
-    colorElement  = doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( "Active" )->
-                        FirstChildElement( element );
-    else return;///TODO make FLTK error box show up
+
+   //does this exist??
+   if(!testElement("WindowStyle","Active",element)){
+        createElement("WindowStyle","Active",element);
+    }
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->
+                                            FirstChildElement( "WindowStyle" )->
+                                            FirstChildElement( "Active" )->
+                                            FirstChildElement( element );
     std::string color1 = colorToString(rgb);
     colorElement->SetText(color1.c_str());
     saveChangesTemp();
 }
 void flWindow::setActiveColor(const char* element, const double* rgb, const double* rgb2){
    // loadTemp();
-    tinyxml2::XMLElement* colorElement;
-    if(doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( "Active" )->
-                        FirstChildElement( element ))
-    colorElement  = doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( "Active" )->
-                        FirstChildElement( element );
-    else return;///TODO make FLTK error box show up
+    //does this exist??
+   if(!testElement("WindowStyle","Active",element)){
+        createElement("WindowStyle","Active",element);
+    }
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->
+                                            FirstChildElement( "WindowStyle" )->
+                                            FirstChildElement( "Active" )->
+                                            FirstChildElement( element );
     std::string color1 = colorToString(rgb);
     if(rgb2!=NULL){
         std::string color2 = colorToString(rgb2);
@@ -59,19 +58,23 @@ unsigned int flWindow::getActiveColor(const char* element){
     return getActiveColor(element, u); //the int is arbitrary
 }
 unsigned int flWindow::getActiveColor(const char* element, unsigned int &color2){
-   // loadTemp();
-//    const char* functionName = "unsigned int getActiveColor(const char* element, unsigned int &color2)";
-//    std::cerr << functionName << std::endl;
-    tinyxml2::XMLElement* colorElement;
-    if(doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( "Active" )->
-                        FirstChildElement( element ))
-    colorElement = doc.FirstChildElement("JWM")->
-                            FirstChildElement( "WindowStyle")->
-                            FirstChildElement( "Active")->
-                            FirstChildElement( element );
-    else return 0; //ADD FLTK ERROR
+
+    //does this exist??
+   if(!testElement("WindowStyle","Active",element)){
+        createElement("WindowStyle","Active",element);
+        tinyxml2::XMLElement* fixer = doc.FirstChildElement("JWM")->
+                    FirstChildElement( "WindowStyle")->
+                    FirstChildElement( "Active")->
+                    FirstChildElement( element );
+        fixer->SetText("#000000");
+        saveChanges();
+        saveChangesTemp();
+        return 0;
+    }
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->
+                                            FirstChildElement( "WindowStyle" )->
+                                            FirstChildElement( "Active" )->
+                                            FirstChildElement( element );
     std::string colorXML = colorElement->GetText();
 //    std::cerr<<colorXML<<std::endl;
     unsigned int color;
@@ -81,26 +84,20 @@ unsigned int flWindow::getActiveColor(const char* element, unsigned int &color2)
 //Inactive
 void flWindow::setInactiveColor(const char* element, const double* rgb){
    // loadTemp();
-    tinyxml2::XMLElement* colorElement;
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" );
     if(isNewStyle){
-        if(doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( element ))
-        colorElement  = doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( element );
-        else return; ///create
+        if(!testElement("WindowStyle",element)){
+            createElement("WindowStyle",element);
+        }
+        colorElement  = colorElement->FirstChildElement( element );
     }
     else{
-        if(doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( "Inactive" )->
-                        FirstChildElement( element ))
-        colorElement  = doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
+        if(!testElement("WindowStyle","Inactive",element)){
+            createElement("WindowStyle","Inactive",element);
+        }
+        colorElement  = colorElement->
                         FirstChildElement( "Inactive" )->
                         FirstChildElement( element );
-        else return; ///ERROR
     }
     std::string color1 = colorToString(rgb);
     colorElement->SetText(color1.c_str());
@@ -108,26 +105,20 @@ void flWindow::setInactiveColor(const char* element, const double* rgb){
 }
 void flWindow::setInactiveColor(const char* element, const double* rgb, const double* rgb2){
    // loadTemp();
-    tinyxml2::XMLElement* colorElement;
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" );
     if(isNewStyle){
-        if(doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( element ))
-        colorElement  = doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( element );
-        else return; ///ERROR
+        if(!testElement("WindowStyle",element)){
+            createElement("WindowStyle",element);
+        }
+        colorElement  = colorElement->FirstChildElement( element );
     }
     else{
-        if(doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( "Inactive" )->
-                        FirstChildElement( element ))
-        colorElement  = doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
+        if(!testElement("WindowStyle","Inactive",element)){
+            createElement("WindowStyle","Inactive",element);
+        }
+        colorElement  = colorElement->
                         FirstChildElement( "Inactive" )->
                         FirstChildElement( element );
-        else return; ///ERROR
     }
     std::string color1 = colorToString(rgb);
     if(rgb2!=NULL){
@@ -143,8 +134,6 @@ void flWindow::setInactiveColor(const char* element, const double* rgb, const do
 }
 
 unsigned int flWindow::getInactiveColor(const char* element){
- //   const char* functionName = "unsigned int getInactiveColor(const char* element)";
-    //std::cerr << functionName << std::endl;
     unsigned int u=1;
     return getInactiveColor(element,u); //the int is arbitrary
 }
@@ -152,26 +141,35 @@ unsigned int flWindow::getInactiveColor(const char* element, unsigned int &color
 //    const char* functionName = "unsigned int getInactiveColor(const char* element, unsigned int &color2)";
     //std::cerr << functionName << std::endl;
    // loadTemp();
-    tinyxml2::XMLElement* colorElement;
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" );
     if(isNewStyle){
-        if(doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( element ))
-        colorElement  = doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( element );
-        else return 0; ///ERROR
+        if(!testElement("WindowStyle",element)){
+            createElement("WindowStyle",element);
+            tinyxml2::XMLElement* fixer = doc.FirstChildElement("JWM")->
+                    FirstChildElement( "WindowStyle")->
+                    FirstChildElement( element );
+            fixer->SetText("#000000");
+            saveChanges();
+            saveChangesTemp();
+            return 0;
+        }
+        colorElement  = colorElement->FirstChildElement( element );
     }
     else{
-        if(doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
-                        FirstChildElement( "Inactive" )->
-                        FirstChildElement( element ))
-        colorElement  = doc.FirstChildElement( "JWM" )->
-                        FirstChildElement( "WindowStyle" )->
+        if(!testElement("WindowStyle","Inactive",element)){
+            createElement("WindowStyle","Inactive",element);
+            tinyxml2::XMLElement* fixer = doc.FirstChildElement("JWM")->
+                    FirstChildElement( "WindowStyle")->
+                    FirstChildElement( "Inactive")->
+                    FirstChildElement( element );
+            fixer->SetText("#000000");
+            saveChanges();
+            saveChangesTemp();
+            return 0;
+        }
+        colorElement  = colorElement->
                         FirstChildElement( "Inactive" )->
                         FirstChildElement( element );
-        else return 0; ///ERROR
     }
     std::string colorXML = colorElement->GetText();
     ///this one is important
@@ -237,6 +235,9 @@ unsigned int flWindow::getActiveWindowColor(unsigned int &color2){
 //Active
 void flWindow::activeWindowOpacity(float &opacity){
    // loadTemp();
+    if(!testElement("WindowStyle","Active","Opacity")){
+        createElement("WindowStyle","Active","Opacity");
+    }
     tinyxml2::XMLElement* opacityElement  = doc.FirstChildElement("JWM")->
                             FirstChildElement( "WindowStyle")->
                             FirstChildElement( "Active")->
@@ -246,11 +247,17 @@ void flWindow::activeWindowOpacity(float &opacity){
     saveChangesTemp();
 }
 float flWindow::getActiveOpacity(){
-   // loadTemp();
- //   const char* functionName = "float flWindow::getActiveOpacity()";
-    //std::cerr << functionName << std::endl;
-    tinyxml2::XMLElement* opacityElement;
-    opacityElement = doc.FirstChildElement("JWM")->
+   if(!testElement("WindowStyle","Active","Opacity")){
+        createElement("WindowStyle","Active","Opacity");
+        tinyxml2::XMLElement* fixer = doc.FirstChildElement("JWM")->
+                    FirstChildElement( "WindowStyle")->
+                    FirstChildElement( "Active")->
+                    FirstChildElement( "Opacity" );
+        fixer->SetText(1.0);
+        saveChanges();
+        saveChangesTemp();
+    }
+    tinyxml2::XMLElement* opacityElement = doc.FirstChildElement("JWM")->
                     FirstChildElement( "WindowStyle")->
                     FirstChildElement( "Active")->
                     FirstChildElement( "Opacity" );
@@ -262,38 +269,74 @@ float flWindow::getActiveOpacity(){
 //Inactive
 void flWindow::windowOpacity(float &opacity){
    // loadTemp();
-    tinyxml2::XMLElement* opacityElement;
+   tinyxml2::XMLElement* opacityElement;
     if(isNewStyle){
-        opacityElement = doc.FirstChildElement("JWM")->
-                        FirstChildElement( "WindowStyle")->
-                        FirstChildElement( "Opacity" );
-                        opacityElement->SetText(opacity);
+        if(!testElement("WindowStyle","Opacity")){
+            createElement("WindowStyle","Opacity");
+        }
+        opacityElement  = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" )->FirstChildElement( "Opacity" );
+        opacityElement->SetText(opacity);
     }
     else{
-        opacityElement = doc.FirstChildElement("JWM")->
-            FirstChildElement( "WindowStyle")->
-            FirstChildElement( "Inactive")->
-            FirstChildElement( "Opacity" );
-            opacityElement->SetText(opacity);
+        if(!testElement("WindowStyle","Inactive","Opacity")){
+            createElement("WindowStyle","Inactive","Opacity");
+        }
+        opacityElement  = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" )->
+                        FirstChildElement( "Inactive" )->
+                        FirstChildElement( "Opacity" );
+        opacityElement->SetText(opacity);
     }
- //   std::cerr<<"SET Inactive Opacity: "<<opacity<<std::endl;
     saveChangesTemp();
 }
 float flWindow::getOpacity(){
-   // loadTemp();
- //   const char* functionName = "getOpactiy()";
-//    std::cerr << functionName << std::endl;
+    //create our pointer
     tinyxml2::XMLElement* opacityElement;
+
+    //if it is the new version
     if(isNewStyle){
-        opacityElement = doc.FirstChildElement("JWM")->
-                            FirstChildElement( "WindowStyle")->
-                            FirstChildElement( "Opacity" );
+        //does the element even exist??
+        if(!testElement("WindowStyle","Opacity")){
+            //hmmm.... nope  we should make it
+            createElement("WindowStyle","Opacity");
+            //point to it
+            tinyxml2::XMLElement* fixer = doc.FirstChildElement("JWM")->
+                    FirstChildElement( "WindowStyle")->
+                    FirstChildElement( "Opacity" );
+            //set to default... i.e completely opaque
+            fixer->SetText(1.0);
+            //save it
+            saveChanges();
+            saveChangesTemp();
+            //return this
+            return 1.0f;
+        }
+
+        //if you got here it must exist... lets point to it
+        opacityElement  = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" )->FirstChildElement( "Opacity" );
     }
     else{
-        opacityElement = doc.FirstChildElement("JWM")->
-                            FirstChildElement( "WindowStyle")->
-                            FirstChildElement( "Inactive")->
-                            FirstChildElement( "Opacity" );
+        //not the new style apparently
+
+        //does this element even exist?
+        if(!testElement("WindowStyle","Inactive","Opacity")){
+            //nopers... we better fix that
+            createElement("WindowStyle","Inactive","Opacity");
+        }
+        //point to it
+        opacityElement  = doc.FirstChildElement( "JWM" )->
+                        FirstChildElement( "WindowStyle" )->
+                        FirstChildElement( "Inactive" )->
+                        FirstChildElement( "Opacity" );
+    }
+    //OK... whatever element we are pointing to better have text!
+    if(!opacityElement->GetText()){
+        //how can we not have text here??  that should not happen EVER!!!
+        //lets make it the default
+        opacityElement->SetText(1.0);
+        //save it
+        saveChangesTemp();
+        //return this value
+        return 1.0f;
     }
     std::string opacityString = opacityElement->GetText();
     float opacity = float(strtold(opacityString.c_str(),NULL));
@@ -301,6 +344,58 @@ float flWindow::getOpacity(){
     return opacity;
 }
 //######################################### END Window TitleBar ##############################################
+
+
+//***************************************************************  CORNER ***********************************
+unsigned int flWindow::getCorner(){
+
+    //do we have a corner?
+    if(!testElement("WindowStyle","Corner")){
+        //nope, lets make one!
+        createElement("WindowStyle","Corner");
+
+        //point to it
+        tinyxml2::XMLElement* fixer = doc.FirstChildElement( "JWM" )->
+                            FirstChildElement( "WindowStyle" )->
+                            FirstChildElement( "Corner" );
+        //set the default value
+        fixer->SetText(4);
+        //save
+        saveChanges();
+        saveChangesTemp();
+        //return the default
+        return 4;
+    }
+    //it does exist!
+    tinyxml2::XMLElement* cornerElement = doc.FirstChildElement( "JWM" )->
+                            FirstChildElement( "WindowStyle" )->
+                            FirstChildElement( "Corner" );
+    //get the text version of our number
+    const char* border = cornerElement->GetText();
+    //convert it to a base 10 integer
+    int sizeOfBorder = strtol(border,0,10);
+    //return the integer version
+    return sizeOfBorder;
+}
+void flWindow::setCorner(unsigned int pixels){
+    //if for some odd reason they want to set a value we can't use...
+    //fix it
+    if(pixels>5){pixels = 5;}
+    //does this really exist?
+    if(!testElement("WindowStyle","Corner")){
+        //hmmm.. well we should make it
+        createElement("WindowStyle","Corner");
+    }
+    //point to the corner
+    tinyxml2::XMLElement* cornerElement = doc.FirstChildElement( "JWM" )->
+                            FirstChildElement( "WindowStyle" )->
+                            FirstChildElement( "Corner" );
+    //set the text to our input
+    cornerElement->SetText(pixels);
+    //save
+    saveChangesTemp();
+}
+//######################################### END CORNER ##############################################
 
 
 //****************************  Window Borders (including Title bar height) ***********************************
@@ -315,30 +410,71 @@ void flWindow::setBorderColor(const double* rgb){setInactiveColor("Outline",rgb)
 
 ///SIZE
 int flWindow::getBorderWidth(){
-//    const char* functionName = "int flWindow::getBorderWidth()";
-    //std::cerr << functionName << std::endl;
-   // loadTemp();
+    //does this really exist in the document?
+    if(!testElement("WindowStyle","Width")){
+        //WHAT?  it doesn't... ok no problem,
+        //lets make it
+        createElement("WindowStyle","Width");
+        //point to it
+        tinyxml2::XMLElement* fixer = doc.FirstChildElement( "JWM" )->
+                            FirstChildElement( "WindowStyle" )->
+                            FirstChildElement( "Height" );
+        //set the default value i.e. 4
+        fixer->SetText(4);
+        //save it
+        saveChanges();
+        saveChangesTemp();
+        //return our value
+        return 4;
+    }
+
+    //well this must exist so let's point to it, shall we?
     tinyxml2::XMLElement* borderElement = doc.FirstChildElement( "JWM" )->
                             FirstChildElement( "WindowStyle" )->
                             FirstChildElement( "Width" );
+    //get the text
     const char* border = borderElement->GetText();
+
+    //convert the const char* into a base 10 number
     int sizeOfBorder = strtol(border,0,10);
-    //std::cout<<sizeOfBorder<<" border size"<<std::endl;
+
+    //return the integer version of the text
     return sizeOfBorder;
 }
 
 void flWindow::setBorderWidth(int &border){
+    //does it really exist?
+    if(!testElement("WindowStyle","Width")){
+        //nope... well we should make it
+        createElement("WindowStyle","Width");
+    }
+
+    //point to the element
     tinyxml2::XMLElement* borderElement = doc.FirstChildElement( "JWM" )->
                             FirstChildElement( "WindowStyle" )->
                             FirstChildElement( "Width" );
+    //set the text and save
     borderElement->SetText(border);
     saveChangesTemp();
 }
 
 int flWindow::getBorderHeight(){
-   // loadTemp();
-//    const char* functionName = "int flWindow::getBorderHeight()";
-    //std::cerr << functionName << std::endl;
+   //does this exist?
+   if(!testElement("WindowStyle","Height")){
+        //NO!!!! why?!?!?!?
+        //lets make it
+        createElement("WindowStyle","Height");
+        //point to our new thing
+        tinyxml2::XMLElement* fixer = doc.FirstChildElement( "JWM" )->
+                            FirstChildElement( "WindowStyle" )->
+                            FirstChildElement( "Height" );
+        //set it to the default value JWM provides
+        fixer->SetText(0);
+        //save doubly
+        saveChanges();
+        saveChangesTemp();
+        return 0;
+    }
     tinyxml2::XMLElement* borderElement = doc.FirstChildElement( "JWM" )->
                             FirstChildElement( "WindowStyle" )->
                             FirstChildElement( "Height" );
@@ -348,10 +484,19 @@ int flWindow::getBorderHeight(){
     return sizeOfBorder;
 }
 void flWindow::setBorderHeight(int &border){
+    //does this exist?
+    if(!testElement("WindowStyle","Height")){
+        //lets make it shall we?
+        createElement("WindowStyle","Height");
+    }
+    //point to it
     tinyxml2::XMLElement* borderElement = doc.FirstChildElement( "JWM" )->
                             FirstChildElement( "WindowStyle" )->
                             FirstChildElement( "Height" );
+    //set the text
     borderElement->SetText(border);
+
+    //save it
     saveChangesTemp();
 }
 //######################################### END Window Borders ##############################################
@@ -359,31 +504,49 @@ void flWindow::setBorderHeight(int &border){
 
 //****************************  Font Color  ***********************************
 void flWindow::setActiveFontColor(const double* rgb){
+    // make the correct starting element
     const char* newORold;
+
+    //if it is new use this
     if(isNewStyle){newORold="Foreground";}
-    else{newORold="Text";}
+    else{newORold="Text";}//otherwise use this
+
+    //set the color
     setActiveColor(newORold,rgb);
 }
 void flWindow::setFontColor(const double* rgb){
+    // make the correct starting element
     const char* newORold;
+
+    //if it is new use this
     if(isNewStyle){newORold="Foreground";}
-    else{newORold="Text";}
+    else{newORold="Text";}//otherwise use this
+
+    //set the color
     setInactiveColor(newORold,rgb);
 }
 unsigned int flWindow::getActiveFontColor(){
-//    const char* functionName = "unsigned int flWindow::getActiveFontColor()";
-    //std::cerr << functionName << std::endl;
+
+    // make the correct starting element
     const char* newORold;
+
+    //if it is new use this
     if(isNewStyle){newORold="Foreground";}
-    else{newORold="Text";}
+    else{newORold="Text";}//otherwise use this
+
+    //return the result of our generic function
     return getActiveColor(newORold);
 }
 unsigned int flWindow::getFontColor(){
-//    const char* functionName = "unsigned int flWindow::getFontColor()";
-    //std::cerr << functionName << std::endl;
+
+    // make the correct starting element
     const char* newORold;
+
+    //if it is new use this
     if(isNewStyle){newORold="Foreground";}
-    else{newORold="Text";}
+    else{newORold="Text";}//otherwise use this
+
+    //return the result of our generic function
     return getInactiveColor(newORold);
 }
 
@@ -392,18 +555,44 @@ unsigned int flWindow::getFontColor(){
 
 //ETC
 void flWindow::setThings(const char* thing, const char* mode){
-   // loadTemp();
+
+   //does the thing exist?
+   if(!testElement(thing)){
+        // NO???? lets make it!
+        createElement(thing);
+    }
+
+    //point to the thing
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement(thing);
+
+    //set the text
     element->SetText(mode);
+
+    //save!
     saveChangesTemp();
 }
 void flWindow::setThings(const char* thing, const char* mode, int &distance){
-   // loadTemp();
+
+   //does the thing exist?
+   if(!testElement(thing)){
+        //well... lets make it so we can set it
+        createElement(thing);
+    }
+
+    //point to the thing
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement(thing);
+
+    //set the text
     element->SetText(mode);
+
+    //set the attribute
     element->SetAttribute("distance",distance);
+
+    //save
     saveChangesTemp();
 }
+
+// use the generic function above to set something
 void flWindow::setResize(const char *mode){setThings("ResizeMode",mode);}
 void flWindow::setMoveMode(const char *mode){setThings("MoveMode",mode);}
 void flWindow::setFocusModel(const char *mode){setThings("FocusModel",mode);}
@@ -411,15 +600,28 @@ void flWindow::setSnap(const char *mode, int &distance){setThings("SnapMode",mod
 
 void flWindow::setSnap(int &distance){
    // loadTemp();
+   if(!testElement("SnapMode")){
+        createElement("SnapMode");
+    }
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement("SnapMode");
     element->SetAttribute("distance",distance);
     saveChangesTemp();
 }
 
 int flWindow::getSnap(){
-//    const char* functionName = "int flWindow::getSnap()";
-    //std::cerr << functionName << std::endl;
-   // loadTemp();
+if(!testElement("SnapMode")){
+        createElement("SnapMode");
+
+        //we need to put in the default values here
+        //this is what the user is used to, so use them
+        tinyxml2::XMLElement* fixer = doc.FirstChildElement( "JWM" )->
+                            FirstChildElement( "SnapMode" );
+        fixer->SetText("border");
+        fixer->SetAttribute("distance",5);
+        saveChanges();
+        saveChangesTemp();
+        return 5;
+    }
     int value;
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement("SnapMode");
     element->QueryIntAttribute("distance",&value);
@@ -434,39 +636,337 @@ int flWindow::getSnap(){
 //*****************************************  Button  **********************************************
 
 const char* flWindow::getButton(const char* whichElement){
-//    const char* functionName = "const char* flWindow::getButton(const char* whichElement)";
-//    std::cerr << functionName << std::endl;
    // loadTemp();
     const char* result;
+
+   //does it exist??
+    if(!testElement(whichElement)){
+        return "x";
+    }
+    //point to it
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement(whichElement);
-    if(element){
-        result = element->GetText();
-    }
-    else{
-        result = "x";
-    }
+    result = element->GetText();
     return result;
 }
+
 std::string flWindow::buttonPath(){
+    //this is just a function to get the button path....
     std::string ButtonPath ="/usr/share/jwm-settings-manager/Buttons/";
     return ButtonPath;
 }
 void flWindow::setButton(const char * button, const char* whichElement){
-//    const char* functionName = "void flWindow::setButton(const char * button, const char* whichElement)";
-    //std::cerr << functionName << std::endl;
+
+    //does it exist??
+    if(!testElement(whichElement)){
+        createElement(whichElement);
+    }
+
+    //point to it
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" )->FirstChildElement(whichElement);
-    if(element){
-        element->SetText(button);
-    }
-    else{
-        tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" );
-        tinyxml2::XMLNode *insertNode = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" );
-        tinyxml2::XMLNode *node = doc.NewElement(whichElement);
-        trayNode->InsertAfterChild(insertNode,node);
-        tinyxml2::XMLText *image = doc.NewText(button);
-        node->LinkEndChild(image);
-    }
+    element->SetText(button);
     saveChangesTemp();
 }
 
 //######################################### END Button ##############################################
+
+
+
+
+//********************************************** GROUPS **********************************************
+///add
+void flWindow::addGroup(){
+    //point to the base
+    tinyxml2::XMLElement * groupElement = doc.FirstChildElement("JWM");
+    //make our new item
+    tinyxml2::XMLNode *newItem = doc.NewElement(GROUP);
+    //insert
+    groupElement->InsertEndChild(newItem);
+    //and save
+    saveChangesTemp();
+}
+void flWindow::addGroupTHING( unsigned int whichGroup, const char* itemName, const char* whichElement){
+
+    //if there is no group just return
+    if(!testElement(GROUP)){addGroup();}
+    unsigned int i = 1;
+
+    //point to the first Group element
+    tinyxml2::XMLElement * groupElement = doc.FirstChildElement("JWM")->FirstChildElement(GROUP);
+
+    //look for the group we want
+    if (whichGroup != i){
+        while(groupElement->NextSiblingElement(GROUP) && i!=whichGroup){
+            groupElement=groupElement->NextSiblingElement(GROUP);
+            i++;
+        }
+    }
+
+    //create a new element called whichElement... this is whatever we passed in from the functions below
+    tinyxml2::XMLNode *newItem = doc.NewElement(whichElement);
+
+    //insert it at the end of whichGroup we are in
+    groupElement->InsertEndChild(newItem);
+
+    //save it
+    saveChangesTemp();
+
+    //set the text
+    groupElement->LastChildElement()->SetText(itemName);
+
+    //save it!!
+    saveChangesTemp();
+}
+
+//specific functions  see the declarations in the constructor (very top) to figure out OPTION, CLASS, NAME
+void flWindow::addGroupItem( unsigned int whichGroup,const char* itemName){addGroupTHING(whichGroup,itemName, OPTION);}
+void flWindow::addGroupClass( unsigned int whichGroup, const char* className){addGroupTHING(whichGroup,className, CLASS);}
+void flWindow::addGroupProgram(unsigned int whichGroup,const char* progName){addGroupTHING(whichGroup,progName, NAME);}
+
+///REMOVE
+void flWindow::removeGroup(unsigned int whichGroup){
+    unsigned int i = 1;
+
+    //make a base element
+    tinyxml2::XMLElement * baseElement = doc.FirstChildElement("JWM");
+
+    //make our basic pointer
+    tinyxml2::XMLElement * groupElement = doc.FirstChildElement("JWM")->FirstChildElement(GROUP);
+
+    //find out whichGroup group
+    if (whichGroup != i){
+        while(groupElement->NextSiblingElement(GROUP) && i!=whichGroup){
+            groupElement=groupElement->NextSiblingElement(GROUP);
+            i++;
+        }
+    }
+
+    //point our node to the whichGroup group
+    tinyxml2::XMLNode* node = groupElement;
+
+    //delete
+    baseElement->DeleteChild(node);
+
+    //save
+    saveChangesTemp();
+    saveChanges();
+}
+//specific functions
+void flWindow::removeGroupProgram(unsigned int whichGroup, const char* progName){removeGroupTHING(whichGroup,progName,NAME);}
+void flWindow::removeGroupClass(unsigned int whichGroup, const char* className){removeGroupTHING(whichGroup,className,CLASS);}
+void flWindow::removeGroupItem(unsigned int whichGroup, const char* itemName){removeGroupTHING(whichGroup,itemName,OPTION);}
+
+void flWindow::removeGroupTHING(unsigned int whichGroup, const char* progName, const char* whichElement){
+
+    //if there are no groups return... this shouldn't happen... but might as well check
+    if(!testElement(GROUP)){return;}
+    unsigned int i = 1;
+
+    //create our pointer
+    tinyxml2::XMLElement * groupElement = doc.FirstChildElement("JWM")->FirstChildElement(GROUP);
+
+    //loop to find our whichGroup group
+    if (whichGroup != i){
+        while(groupElement->NextSiblingElement(GROUP) && i!=whichGroup){
+            groupElement=groupElement->NextSiblingElement(GROUP);
+            i++;
+        }
+    }
+    //make a tester for our GetText below
+    std::string tester;
+
+    //loop through whichElements through the end
+    for(tinyxml2::XMLNode* node = groupElement->FirstChildElement(whichElement);node;node = node->ToElement()->NextSiblingElement(whichElement)){
+
+        //if there is text (there should ALWAYS be text here)
+        if(node->ToElement()->GetText()){
+
+            //set our tester to the text at node
+            tester=node->ToElement()->GetText();
+
+            //if our tester text is the same thing we sent in (at our current whichGroup)
+            if(tester.compare(progName)==0){
+
+                //delete it
+                groupElement->DeleteChild(node);
+                std::cout<<"Deleted: "<<whichElement<<" node: "<<progName<<" from: Group "<<whichGroup<<std::endl;
+
+                //save!!
+                saveChanges();
+                saveChangesTemp();
+            }
+        }
+    }
+}
+
+
+///GET
+int flWindow::getGroups(Fl_Browser *o){
+
+    //clear the browser
+    o->clear();
+
+    //this will hold our string to add
+    std::string group;
+
+    //the number for our group
+    //we start at 1, because users are not programmers and don't count from 0... usually
+    int i = 1;
+
+    //if there are no groups... return 1
+    if(!testElement(GROUP)){return 1;}
+
+    //loop through our groups
+    for(tinyxml2::XMLElement * groupElement = doc.FirstChildElement("JWM")->FirstChildElement(GROUP);groupElement;groupElement = groupElement->NextSiblingElement(GROUP)){
+
+        //set  our add string to hold "Group"
+        group = GROUP;
+
+        // add a space for readability
+        group += " ";
+
+        //convert the integer i to a string and add it to group
+        group += convert(i);
+
+        //now we add "Group i" to our browser
+        o->add(group.c_str());
+
+        //increment our numeral to add to our string
+        i++;
+    }
+
+    //we are done, lets issue a redraw to the browser
+    o->redraw();
+
+    return 0;
+}
+
+int flWindow::getGroupTHING(Fl_Browser *o, unsigned int whichGroup, const char* whichElement){
+
+    //clear our browser
+    o->clear();
+
+    //if there are no groups return 1
+    if(!testElement(GROUP)){return 1;}
+
+    //start at 1 because users will appreciate it
+    unsigned int i = 1;
+
+    // point to the first element
+    tinyxml2::XMLElement * groupElement = doc.FirstChildElement("JWM")->FirstChildElement(GROUP);
+
+    //look for whichGroup
+    if (whichGroup != i){
+        while(groupElement->NextSiblingElement(GROUP) && i!=whichGroup){
+            groupElement=groupElement->NextSiblingElement(GROUP);
+            i++;
+        }
+    }
+
+    //loop through our group elements
+    for(groupElement=groupElement->FirstChildElement(whichElement);groupElement;groupElement = groupElement->NextSiblingElement(whichElement)){
+
+        //if they have text (they ALWAYS should)
+        if(groupElement->GetText()){
+
+            //add the text to our browser
+            o->add(groupElement->GetText());
+        }
+    }
+
+    //refresh the browser
+    o->redraw();
+    return 0;
+}
+
+//specific functions
+int flWindow::getGroupClasses(Fl_Browser *o, unsigned int whichGroup){return getGroupTHING(o, whichGroup, CLASS);}
+int flWindow::getGroupPrograms(Fl_Browser *o, unsigned int whichGroup){return getGroupTHING(o, whichGroup, NAME);}
+int flWindow::getGroupItems(Fl_Browser *o, unsigned int whichGroup){return getGroupTHING(o, whichGroup, OPTION);}
+
+///Options
+void flWindow::populateOptions(Fl_Browser *o){
+    /*I generated this using
+    the chart here:
+    http://www.joewing.net/projects/jwm/config.shtml#groups
+
+    programming to write a program :P
+    there is NO way I'd type this all out, Joe already spent the effort :D
+
+    saving it as a file and running:
+
+    sed -i 's/^/o->add("/' filename
+    sed -i 's/$/");/' filename
+    sed -i 's# * #");\nb->add("#' filename
+    sed  -i s'/\t//' filename
+    */
+    //this moves b->add to the end of the file for easy copy and paste
+    //  sed -i '/^b->add/{H;$!d;s/.*//};$G;s/\n*//' filename
+
+    // I DID delete things after : manually
+    //these are all the options
+    o->add("border");
+    o->add("centered");
+    o->add("constrain");
+    o->add("desktop:");
+    o->add("hmax");
+    o->add("icon:");
+    o->add("iignore");
+    o->add("layer:");
+    o->add("maximized");
+    o->add("minimized");
+    o->add("noborder");
+    o->add("nofocus");
+    o->add("nolist");
+    o->add("nopager");
+    o->add("noshade");
+    o->add("nomax");
+    o->add("nomin");
+    o->add("noclose");
+    o->add("nomove");
+    o->add("noresize");
+    o->add("nofullscreen");
+    o->add("notitle");
+    o->add("noturgent");
+    o->add("opacity:");
+    o->add("pignore");
+    o->add("shaded");
+    o->add("sticky");
+    o->add("tiled");
+    o->add("title");
+    o->add("vmax");
+}
+void flWindow::populateDesc(Fl_Browser *b){
+    //see above how I generated this code
+    //these are all the descriptions of the options above
+    b->add("Enables the border on windows in this group.");
+    b->add("Center windows in this group upon initial placement instead of using cascaded placement.");
+    b->add("Prevent clients in this group from moving off-screen.");
+    b->add("The desktop on which windows in this group will be started.");
+    b->add("Make windows in this group maximize horizontally by default.");
+    b->add("The icon to be used for windows in this group.");
+    b->add("Ignore the increment size hint when maximizing windows in this group.");
+    b->add("The layer on which windows in this group will be started. Valid options are below, normal, and above.");
+    b->add("Make windows in this group maximized.");
+    b->add("Make windows in this group minimized.");
+    b->add("Disables the border for windows in this group.");
+    b->add("Prevents windows in this group from grabbing the focus when mapped.");
+    b->add("Causes the tray to ignore windows in this group.");
+    b->add("Causes the pager to ignore windows in this group.");
+    b->add("Disallows shading for windows in this group.");
+    b->add("Disallows maximization for windows in this group.");
+    b->add("Disallows minimization for windows in this group.");
+    b->add("Hides the close button for windows in this group.");
+    b->add("Prevents windows in this group from being moved.");
+    b->add("Prevents windows in this group from being resized.");
+    b->add("Prevents windows in this group from being fullscreen.");
+    b->add("Disables the title bar for windows in this group.");
+    b->add("Ignore the urgent hint for windows in this group. Without this option set, JWM will flash the border of urgent windows.");
+    b->add("Set the opacity for windows in this group. The value is a number between 0.0 and 1.0 inclusive.");
+    b->add("Ignore program-specified initial position.");
+    b->add("Make windows in this group shaded.");
+    b->add("Make windows in this group sticky.");
+    b->add("Attempt to tile windows in this group upon initial placement. If tiled placement fails, windows will fall back to cascaded (the default) or centered if specified.");
+    b->add("Enables the title bar for windows in this group.");
+    b->add("Make windows in this group maximize vertically by default.");
+}
+//######################################### END Groups ##############################################

@@ -553,6 +553,7 @@ Fl_Double_Window* shutdown::make_window() {
     } // Fl_Button* can
     window_bg();
     shutdown_window->clear_border();
+    shutdown_window->xclass("system-shutdown");
     shutdown_window->end();
   } // Fl_Double_Window* shutdown_window
   return shutdown_window;

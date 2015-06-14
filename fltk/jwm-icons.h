@@ -58,6 +58,8 @@ private:
 public:
   Fl_Browser *iconsBrowser;
 private:
+  inline void cb_iconsBrowser_i(Fl_Browser*, void*);
+  static void cb_iconsBrowser(Fl_Browser*, void*);
   inline void cb_1_i(Fl_Button*, void*);
   static void cb_1(Fl_Button*, void*);
 public:

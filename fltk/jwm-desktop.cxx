@@ -27,13 +27,6 @@
 #include <libintl.h>
 #include "jwm-desktop.h"
 
-void DesktopUI::cb_background_displayer_thingie_i(Fl_Box* o, void*) {
-  background(o);
-}
-void DesktopUI::cb_background_displayer_thingie(Fl_Box* o, void* v) {
-  ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_background_displayer_thingie_i(o,v);
-}
-
 void DesktopUI::cb_Choose_i(Fl_Button*, void*) {
   bg_chooser_cb();
 }
@@ -53,13 +46,6 @@ void DesktopUI::cb_Choose2_i(Fl_Button*, void*) {
 }
 void DesktopUI::cb_Choose2(Fl_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_Choose2_i(o,v);
-}
-
-void DesktopUI::cb_Choose3_i(Fl_Button*, void*) {
-  flDesktop desktop;
-}
-void DesktopUI::cb_Choose3(Fl_Button* o, void* v) {
-  ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_Choose3_i(o,v);
 }
 
 void DesktopUI::cb_icons_check_i(Fl_Check_Button*, void*) {
@@ -114,6 +100,7 @@ void DesktopUI::cb_OK(Fl_Button* o, void* v) {
 
 Fl_Double_Window* DesktopUI::make_window() {
   load();
+  saveChangesTemp();
   { Fl_Double_Window* o = desktop_window = new Fl_Double_Window(395, 515, gettext("Desktop Settings"));
     desktop_window->color((Fl_Color)31);
     desktop_window->user_data((void*)(this));
@@ -122,42 +109,36 @@ Fl_Double_Window* DesktopUI::make_window() {
       { Fl_Box* o = background_displayer_thingie = new Fl_Box(25, 85, 345, 270);
         background_displayer_thingie->box(FL_GTK_DOWN_BOX);
         background_displayer_thingie->color((Fl_Color)37);
-        background_displayer_thingie->callback((Fl_Callback*)cb_background_displayer_thingie);
         background_displayer_thingie->when(FL_WHEN_RELEASE_ALWAYS);
         background(o);
       } // Fl_Box* background_displayer_thingie
-      { color_display1 = new Fl_Box(25, 85, 345, 270);
+      { Fl_Box* o = color_display1 = new Fl_Box(25, 85, 345, 270);
         color_display1->box(FL_GTK_DOWN_BOX);
         color_display1->color((Fl_Color)37);
         color_display1->when(FL_WHEN_RELEASE_ALWAYS);
-        color_display1->hide();
+        background1(o);
       } // Fl_Box* color_display1
-      { color_display2 = new Fl_Box(25, 215, 345, 140);
+      { Fl_Box* o = color_display2 = new Fl_Box(25, 215, 345, 140);
         color_display2->box(FL_GTK_DOWN_BOX);
         color_display2->color((Fl_Color)37);
         color_display2->when(FL_WHEN_RELEASE_ALWAYS);
-        color_display2->hide();
+        background2(o);
       } // Fl_Box* color_display2
-      { Fl_Button* o = new Fl_Button(25, 365, 110, 25, gettext("Choose Image"));
+      { Fl_Button* o = new Fl_Button(25, 370, 110, 25, gettext("Choose Image"));
         o->box(FL_GTK_UP_BOX);
         o->callback((Fl_Callback*)cb_Choose);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(140, 365, 110, 25, gettext("Choose Color"));
+      { Fl_Button* o = new Fl_Button(260, 375, 110, 25, gettext("Choose Color"));
+        o->tooltip(gettext("This will take icons off the desktop"));
         o->box(FL_GTK_UP_BOX);
         o->callback((Fl_Callback*)cb_Choose1);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(255, 365, 125, 25, gettext("Choose Gradient"));
-        o->tooltip(gettext("Make the background a Color Gradient"));
+      { Fl_Button* o = new Fl_Button(255, 415, 125, 25, gettext("Choose Gradient"));
+        o->tooltip(gettext("This will take icons off the desktop"));
         o->box(FL_GTK_UP_BOX);
         o->callback((Fl_Callback*)cb_Choose2);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(130, 395, 135, 25, gettext("Choose Command"));
-        o->tooltip(gettext("Use a command to set the background"));
-        o->box(FL_GTK_UP_BOX);
-        o->callback((Fl_Callback*)cb_Choose3);
-        o->deactivate();
-      } // Fl_Button* o
-      { icons_check = new Fl_Check_Button(240, 435, 150, 25, gettext("Icons on Desktop"));
+      { icons_check = new Fl_Check_Button(20, 405, 150, 25, gettext("Icons on Desktop"));
         icons_check->down_box(FL_GTK_DOWN_BOX);
         icons_check->selection_color((Fl_Color)59);
         icons_check->callback((Fl_Callback*)cb_icons_check);
@@ -171,9 +152,7 @@ Fl_Double_Window* DesktopUI::make_window() {
         current_bg->selection_color(FL_DARK_RED);
         current_bg->labelfont(1);
         current_bg->align(Fl_Align(33));
-        flDesktop desktop;
-        const char * bg = desktop.getBackground();
-        o->value(bg);
+        bg_name(o);
       } // Fl_Output* current_bg
       { Fl_Check_Button* o = new Fl_Check_Button(20, 430, 155, 25, gettext("Multiple Desktops"));
         o->tooltip(gettext("This allows you to have multiple screens to work on from one Display"));
@@ -220,17 +199,81 @@ Fl_Double_Window* DesktopUI::make_window() {
       o->end();
     } // Fl_Scroll* o
     Config config;config.under_mouse(o);
+    desktop_window->xclass("jsm-desktop");
     desktop_window->end();
     desktop_window->resizable(desktop_window);
   } // Fl_Double_Window* desktop_window
   return desktop_window;
 }
 
+void DesktopUI::background(Fl_Box*o) {
+  flDesktop desktop;
+  std::string bg = desktop.getBackground();
+  //if(bg.length()<=4){return;}
+  std::string colorTester = bg.substr(0,1);
+  if (colorTester.compare("/")==0){
+    desktop.setFlImage(o,bg.c_str());
+  }
+  else{background_displayer_thingie->hide();}
+}
+
+void DesktopUI::background1(Fl_Box*o) {
+  flDesktop desktop;
+  std::string bg = desktop.getBackground();
+  if(bg.length()<=4){return;}
+  std::string colorTester = bg.substr(0,1);
+  if (colorTester.compare("/")==0){
+    o->hide();
+    return;
+  }
+  else if (colorTester.compare("#")==0){
+    colorTester = bg.substr(1,6);
+    //std::cout<<colorTester<<std::endl;
+    unsigned int ColorGradient;
+    unsigned int colorSet = desktop.getBackground(ColorGradient);
+    o->color(colorSet);
+  }
+  else{return;}
+}
+
+void DesktopUI::background2(Fl_Box*o) {
+  flDesktop desktop;
+  std::string bg = desktop.getBackground();
+  if(bg.length()<=4){
+    o->hide();
+    return;
+  }
+  std::string colorTester = bg.substr(0,1);
+  if (colorTester.compare("/")==0){
+    o->hide();
+    return;
+  }
+  else if (colorTester.compare("#")==0){
+    unsigned int ColorGradient;
+    unsigned int colorSet = desktop.getBackground(ColorGradient);
+    unsigned int found = bg.find(':');
+    if (bg.length()>7){
+      if ((found >= bg.length())||(found <= bg.length())){
+          o->hide();
+      }
+      std::string color2 = bg.substr(found+1,std::string::npos);
+      o->show();
+      o->color(ColorGradient);
+      o->redraw();
+    }
+    else{o->hide();}
+  }
+  else{
+    o->hide();
+    return;
+  }
+}
+
 void DesktopUI::bg_chooser_cb() {
   flDesktop desktop;
   std::string background = getenv("HOME");
   background +="/Pictures/";
-  const char * bg = background.c_str();//"/usr/share/backgrounds";
+  const char * bg = background.c_str();//this is ~/Pictures
   const char * m="Choose a Background";
   const char *p="*.{jpg,JPG,png,PNG}";
   int r = 0;
@@ -239,6 +282,7 @@ void DesktopUI::bg_chooser_cb() {
   	//Is it a png or JPG?
   	std::string extention, resultStr;
   	resultStr = result;
+  	if(resultStr.length()<=4){return;}
   	extention = resultStr.substr((strlen(result)-4),4);
   	std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
   	if ((extention.compare(".png")==0) ||
@@ -252,7 +296,66 @@ void DesktopUI::bg_chooser_cb() {
   		color_display2->hide();
   		desktop.setFlImage(background_displayer_thingie,result);
   	}
+  	else{
+  	  return;
+  	}
   }
+}
+
+void DesktopUI::bg_name(Fl_Output *o) {
+  flDesktop desktop;
+  std::string bg = desktop.getBackground();
+  if(!bg.length()>1){
+    o->value("");
+    return;
+  }
+  std::string colorTester = bg.substr(0,1);
+  if (colorTester.compare("/")==0){
+    o->value(bg.c_str());
+  }
+  else if (bg.compare("")==0){
+    o->value("");
+    return;
+  }
+  else if (colorTester.compare("#")==0){
+    unsigned int ColorGradient;
+    unsigned int colorSet = desktop.getBackground(ColorGradient);
+    if (bg.length()>6){
+      o->value("Color Gradient");
+    }
+    else{o->value("Color");}
+  
+  }
+  else{
+    o->value("");
+    return;
+  }
+}
+
+void DesktopUI::icons_on_desktop() {
+  flDesktop desktop;
+  //1 is on 0 is off
+  std::string fm = desktop.whichFileManagerRunning();
+  if(fm.compare("unkown")!=0 ){icons_check->value(1);}
+  else{icons_check->value(0);}
+}
+
+bool DesktopUI::multipleDesktops() {
+  int width = getIntAttribute("Desktops","width");
+  int height = getIntAttribute("Desktops","height");
+  // zero for false and non-zero for true.
+  if (height==1 && width ==1){return false;}
+  else if (!height || !width){return false;}
+  return true;
+}
+
+void DesktopUI::num_desktop_wh_cb(const char* whichone, int value) {
+  setAttribute("Desktops",whichone,value);
+  int w = int((num_desktop_w->value()));
+  int h = int((num_desktop_h->value()));
+  int defaultValue = 1;
+  if(w==0){setAttribute("Desktops","width",defaultValue);}
+  if(h==0){setAttribute("Desktops","height",defaultValue);}
 }
 
 void DesktopUI::one_color() {
@@ -271,15 +374,15 @@ void DesktopUI::one_color() {
   colors[2] = int(b);
   colors[3] = 0;
   if(c!=0){ //If color chooser isn't canceled... do stuff
-  	desktop.setBackground(colors);
-  	unsigned int unusedColor;
-  	unsigned int colorSet = desktop.getBackground(unusedColor);
-  	color_display1->color(colorSet);
-  	color_display1->show();
-  	color_display2->hide();
-  	background_displayer_thingie->hide();
-  	saveChangesTemp();
+    desktop.setBackground(colors);
+    unsigned int unusedColor;
+    unsigned int colorSet = desktop.getBackground(unusedColor);
+    color_display1->color(colorSet);
+    color_display1->show();
+    color_display2->hide();
+    background_displayer_thingie->hide();
   }
+  current_bg->value("Color");
 }
 
 void DesktopUI::two_color() {
@@ -318,22 +421,15 @@ void DesktopUI::two_color() {
   		background_displayer_thingie->hide();
   		color_display1->redraw();
   		color_display2->redraw();
-  		saveChangesTemp();
   	}
   }
+  current_bg->value("Color Gradient");
 }
 
-void DesktopUI::background(Fl_Box*o) {
+void DesktopUI::use_icons_on_desktop() {
   flDesktop desktop;
-  const char * bg = desktop.getBackground();
-  desktop.setFlImage(o,bg);
-}
-
-bool DesktopUI::multipleDesktops() {
-  int width = getIntAttribute("Desktops","width");
-  int height = getIntAttribute("Desktops","height");
-  if (((height==1) && (width ==0)) || ((height==0) && (width ==1))){return false;}
-  return false;
+  desktop.setIconsOnDesktop();
+  background(background_displayer_thingie);
 }
 
 void DesktopUI::useMultipleDesktops() {
@@ -344,51 +440,4 @@ void DesktopUI::useMultipleDesktops() {
   setAttribute("Desktops","width",width);
   setAttribute("Desktops","height",height);
   }
-}
-
-void DesktopUI::num_desktop_wh_cb(const char* whichone, int value) {
-  setAttribute("Desktops",whichone,value);
-  int w = int((num_desktop_w->value()));
-  int h = int((num_desktop_h->value()));
-  int defaultValue = 1;
-  if(w==0){setAttribute("Desktops","width",defaultValue);}
-  if(h==0){setAttribute("Desktops","height",defaultValue);}
-}
-
-void DesktopUI::use_icons_on_desktop() {
-  flDesktop desktop;
-  desktop.setIconsOnDesktop();
-  background(background_displayer_thingie);
-}
-
-void DesktopUI::icons_on_desktop() {
-  flDesktop desktop;
-  if(desktop.filemanagerRunning() ){icons_check->value(1);}
-  else{icons_check->value(0);}
-}
-
-Fl_Double_Window* DesktopUI::warning_window() {
-  Fl_Double_Window* w;
-  { Fl_Double_Window* o = new Fl_Double_Window(370, 145);
-    w = o;
-    o->user_data((void*)(this));
-    { Fl_Box* o = new Fl_Box(55, 25, 255, 50, gettext("This option only works without Icons on the desktop, do you want to remove th\
-em?"));
-      o->labelfont(1);
-      o->align(Fl_Align(FL_ALIGN_WRAP));
-    } // Fl_Box* o
-    { Fl_Button* o = new Fl_Button(230, 90, 55, 25, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
-      o->color((Fl_Color)62);
-      o->labelcolor(FL_BACKGROUND2_COLOR);
-    } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(90, 90, 65, 25, gettext("Cancel"));
-      o->box(FL_GTK_UP_BOX);
-      o->color((Fl_Color)80);
-      o->labelcolor(FL_BACKGROUND2_COLOR);
-    } // Fl_Button* o
-    Config config;config.under_mouse(o);
-    o->end();
-  } // Fl_Double_Window* o
-  return w;
 }

@@ -1,0 +1,347 @@
+#!/bin/bash
+
+# Public Domain
+# Israel Dahl 2015
+# developed by reading: http://standards.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.html
+
+shopt -s globstar
+SIZE_TO_USE="32"
+FILENAME=false
+EXPORT_FILE="${HOME}/icon_include"
+##CHECK/SET GTKRC FILES
+GTKRC2="${HOME}/.gtkrc-2.0"
+GTKRC3="${HOME}/.config/gtk-3.0/settings.ini"
+GSETTINGS="$(which gsettings)"
+GCONF2="$(which gconftool-2)"
+if [ ! -z "${GCONF2}" ]
+then
+  gtk2="$(${GCONF2} --get /desktop/gnome/interface/icon_theme)"
+  echo "found $gtk2 set as GTK 2 icon theme"
+fi
+
+if [ -f "${GTKRC2}" ]
+then
+  gtkrc2_result=$(grep "gtk-icon-theme-name=" "${GTKRC2}" | sed 's#gtk-icon-theme-name=##' | sed 's|"||g')
+fi
+if [ -f "${GTKRC3}" ]
+then
+  gtkrc3_result=$(grep "gtk-icon-theme-name=" "${GTKRC3}" | sed 's#gtk-icon-theme-name=##' | sed 's|"||g')
+fi
+if [ ! -z "${GSETTINGS}" ]
+then
+  gtkrc3_result=$(gsettings get org.gnome.desktop.interface icon-theme | sed "s#'##g")
+fi
+if [ -z "${gtkrc2_result}" ]
+then
+  if [ -z "${gtkrc3_result}" ]
+  then
+    THEME_TO_USE="hicolor"
+  else
+    THEME_TO_USE="${gtkrc3_result}" 
+  fi
+else
+  THEME_TO_USE="${gtkrc2_result}"
+fi
+
+
+usage(){
+echo "
+${0##*/} [-h] [-s SIZE] [-t THEME] [-j]  [ -f EXPORT_FILENAME ]
+  -h 			display this help
+  -s SIZE 		SIZE of icons to use
+  -t THEME		icon THEME to import
+  -j 			put it into the jwmrc file instead of a separate file
+  -f EXPORT_FILENAME	use EXPORT_FILENAME instead of the default: ($EXPORT_FILE)
+
+
+Example (Default values):
+
+   ${0##*/} -s $SIZE_TO_USE -t $THEME_TO_USE
+"
+exit
+}
+
+OPTIND=1
+## the colon here denotes $OPTARG
+# h AND j do not take args
+# s AND t do
+while getopts hjs:t:f: opt
+do
+  case $opt in
+  h)
+      usage
+      ;;
+  s)
+      SIZE_TO_USE=$OPTARG
+      ;;
+  t)
+      THEME_TO_USE=$OPTARG
+      ;;
+  j)
+      FILENAME=true
+      ;;
+  f)
+      EXPORT_FILE=$OPTARG
+      ;;
+  esac
+done
+shift $((OPTIND - 1))
+if [ -z "${THEME_TO_USE}" ]
+then
+  THEME_TO_USE=Numix-Circle
+fi
+if [ -z "${XDG_DATA_DIRS}" ]
+then
+  XDG_DATA_DIRS=/usr/local/share/:/usr/share/
+fi
+
+THEME_DIR_XDG=(${XDG_DATA_DIRS//:// })
+export THEME_DIR_XDG=($(echo ${THEME_DIR_XDG[*]} |sed 's|$| |' |sed 's|/ |/icons |g' | sed 's://:/:'))
+INHERIT_ICON_WRITE=""
+### FUNCTIONS
+searchthemes(){ #THEME_TO_INHERIT
+for i in "${THEME_DIR_XDG[@]}"
+do ## for i in "${THEME_DIR_XDG[@]}"
+ THEME_DIR="$i"
+  if [ -d "${THEME_DIR}/${THEME_TO_INHERIT}" ]
+  then
+    echo "Searching ${THEME_DIR}"
+    for THEME_FILE in "${THEME_DIR}"/${THEME_TO_INHERIT}/**.theme
+    do ## theme file loops
+      HEADER=""
+      INHERITS=""
+      DIRS=""
+      MIN=""
+      MAX=""
+      SIZE=""
+      TYPE=""
+      THRESH=""
+      CONTEXT=""
+      while read LINE || [ "$LINE" ]
+      do ## read LINE
+        case $LINE in
+          [*)
+            HEADER="${LINE#[}"''
+            HEADER="${HEADER%]}"'';;
+          Inherits=*)
+            INHERITS="${LINE#*=}"'';;
+          Directories=*)
+            DIRS="${LINE#*=}"'';;
+          MinSize=*)
+            MIN="${LINE#*=}"'';;
+          MaxSize=*)
+            MAX="${LINE#*=}"'';;
+          Size=*)
+            SIZE="${LINE#*=}"'';;
+          Type=*)
+            TYPE="${LINE#*=}"'';;
+          Threshold=*)
+            THRESH="${LINE#*=}"'';;
+          Context=*)
+            CONTEXT="${LINE#*=}"'';;
+          *) ;;
+        esac ## $LINE in
+
+        ICON_PATH="${HEADER}"
+        if [ "${CONTEXT}" != "Animations" ] &&  [ "${CONTEXT}" != "Stock" ] && [ "${CONTEXT}" != "Status" ] && [ "${CONTEXT}" != "Emblems" ]&& [ "${CONTEXT}" != "Emotes" ] && [ "${CONTEXT}" != "International" ] 
+        then
+          if [ "${SIZE}" == "${SIZE_TO_USE}" ] || [ $(( THRESH + SIZE )) == $(( SIZE_TO_USE )) ] || [ $(( THRESH - SIZE  )) == $(( SIZE_TO_USE )) ]
+          then
+             ## create some cool include file
+            if [ "${ICON_PATH//$SIZE/}" != "${ICON_PATH}" ]
+            then
+                if [ -d "${THEME_DIR}/${THEME_TO_INHERIT}/$ICON_PATH" ] && [ "$(ls -A "${THEME_DIR}/${THEME_TO_INHERIT}/$ICON_PATH")" ]
+                then
+                  INHERIT_ICON_WRITE="${INHERIT_ICON_WRITE}
+  <IconPath>${THEME_DIR}/${THEME_TO_INHERIT}/$ICON_PATH</IconPath>"
+                fi
+            fi ## i//SIZE/
+          else
+            if [ "${TYPE}" == "Scalable" ]
+            then
+              if [ $(( MAX >= SIZE )) ] && [ $(( MIN <= SIZE )) ]
+              then
+                if [ -d "${THEME_DIR}/${THEME_TO_INHERIT}/$ICON_PATH" ] && [ "$(ls -A "${THEME_DIR}/${THEME_TO_INHERIT}/$ICON_PATH")" ]
+                then
+                  INHERIT_ICON_WRITE="${INHERIT_ICON_WRITE}
+  <IconPath>${THEME_DIR}/${THEME_TO_INHERIT}/$ICON_PATH</IconPath>"
+                fi
+              fi ## MAX > Size
+            fi  ### Scalable
+          fi ## "${SIZE}" == "${SIZE_TO_USE}"
+        fi ## CONTEXT CHECKER
+      done < "$THEME_FILE"   ## read LINE
+    done ## theme file loops
+  fi # If directory exists
+done ## for i in "${THEME_DIR_XDG[@]}"
+} ## searchthemes()
+
+
+mainLOOP(){
+for i in "${THEME_DIR_XDG[@]}"
+do ## for i in "${THEME_DIR_XDG[@]}"
+ THEME_DIR="$i"
+  if [ -d "${THEME_DIR}/${THEME_TO_USE}" ]
+  then
+    echo "Searching ${THEME_DIR}"
+    for THEME_FILE in "${THEME_DIR}"/${THEME_TO_USE}/**.theme
+    do ## theme file loops
+      HEADER=""
+      INHERITS=""
+      DIRS=""
+      MIN=""
+      MAX=""
+      SIZE=""
+      TYPE=""
+      THRESH=""
+      CONTEXT=""
+      while read LINE || [ "$LINE" ]
+      do ## read LINE
+        case $LINE in
+          [*)
+            HEADER="${LINE#[}"''
+            HEADER="${HEADER%]}"'';;
+          Inherits=*)
+            INHERITS="${LINE#*=}"'';;
+          Directories=*)
+            DIRS="${LINE#*=}"'';;
+          MinSize=*)
+            MIN="${LINE#*=}"'';;
+          MaxSize=*)
+            MAX="${LINE#*=}"'';;
+          Size=*)
+            SIZE="${LINE#*=}"'';;
+          Type=*)
+            TYPE="${LINE#*=}"'';;
+          Threshold=*)
+            THRESH="${LINE#*=}"'';;
+          Context=*)
+            CONTEXT="${LINE#*=}"'';;
+          *) ;;
+        esac ## $LINE in
+
+        ICON_PATH="${HEADER}"
+        if [ "${CONTEXT}" != "Animations" ] &&  [ "${CONTEXT}" != "Stock" ] && [ "${CONTEXT}" != "Status" ] && [ "${CONTEXT}" != "Emblems" ] && [ "${CONTEXT}" != "Emotes" ]  && [ "${CONTEXT}" != "International" ] 
+        then
+          if [ "${SIZE}" == "${SIZE_TO_USE}" ] || [ $(( THRESH + SIZE )) == $(( SIZE_TO_USE )) ] || [ $(( THRESH - SIZE  )) == $(( SIZE_TO_USE )) ]
+          then
+            ## create some cool include file
+            if [ "${ICON_PATH//$SIZE/}" != "${ICON_PATH}" ]
+            then
+                if [ -d "${THEME_DIR}/${THEME_TO_USE}/$ICON_PATH" ] && [ "$(ls -A "${THEME_DIR}/${THEME_TO_USE}/$ICON_PATH")" ]
+                then
+                  ICON_WRITE="${ICON_WRITE}
+  <IconPath>${THEME_DIR}/${THEME_TO_USE}/$ICON_PATH</IconPath>"
+                fi
+            fi ## i//SIZE/
+          else
+            if [ "${TYPE}" == "Scalable" ]
+            then
+              if [ $(( MAX >= SIZE )) ] && [ $(( MIN <= SIZE )) ]
+              then
+                if [ -d "${THEME_DIR}/${THEME_TO_USE}/$ICON_PATH" ] && [ "$(ls -A "${THEME_DIR}/${THEME_TO_USE}/$ICON_PATH")" ]
+                then
+                  ICON_WRITE="${ICON_WRITE}
+  <IconPath>${THEME_DIR}/${THEME_TO_USE}/$ICON_PATH</IconPath>"
+                fi
+              fi ## MAX > Size
+            fi  ### Scalable
+          fi ## "${SIZE}" == "${SIZE_TO_USE}"
+        if [ ! -z "${INHERITS}" ]
+        then
+          INHERIT_ARRAY=($(echo "${INHERITS//,/ }" | sort -u))
+          for i in "${INHERIT_ARRAY[@]}"
+          do
+            export THEME_TO_INHERIT="${i}"
+            echo "Inheriting: $THEME_TO_INHERIT"
+            searchthemes
+          done
+        fi
+      fi
+      done < "$THEME_FILE"   ## read LINE
+    done ## theme file loops
+  fi # If directory exists
+done ## for i in "${THEME_DIR_XDG[@]}"
+}
+HOME_THEME_DIR="${HOME}/.icons"
+if [ -d "${HOME_THEME_DIR}" ]
+then
+  echo "user icons directory found"
+  ## AFAIK this *should* work
+  THEME_DIR_XDG="${HOME_THEME_DIR}"
+  mainLOOP
+
+  THEME_DIR_XDG=(${XDG_DATA_DIRS//:// })
+  export THEME_DIR_XDG=($(echo ${THEME_DIR_XDG[*]} |sed 's|$| |' |sed 's|/ |/icons |g' | sed 's://:/:'))
+fi ## ~/.icons
+
+BASE_THEME_DIR=("/usr/share/pixmaps" "/usr/share/icons" "/usr/share/app-install/icons" )
+TEMP_BASE=""
+for i in "${BASE_THEME_DIR[@]}"
+do
+TEMP_BASE="${TEMP_BASE}
+  <IconPath>${i}</IconPath>"
+done
+BASE_THEMES="${TEMP_BASE}"
+mainLOOP
+
+## we want to add pixmaps at the end, so we get theme icons first
+if [ ! -z "${INHERIT_ICON_WRITE}" ]
+then
+  INHERIT_ICON_WRITE="${INHERIT_ICON_WRITE}
+$BASE_THEMES"
+else
+  ICON_WRITE="${ICON_WRITE}
+$BASE_THEMES"
+fi
+TEMP=($(echo "${ICON_WRITE}" | sort -u))
+if [ ! -z "${TEMP[*]}" ]
+then
+  for i in "${TEMP[@]}"
+  do
+    ICON_WRITE="${ICON_WRITE}
+  $i"
+  done
+fi
+TEMP=($(echo "${INHERIT_ICON_WRITE}" | sort -u))
+INHERIT_ICON_WRITE="<!-- Inherited Icons -->"
+if [ ! -z "${TEMP[*]}" ]
+then
+  for i in "${TEMP[@]}"
+  do
+    INHERIT_ICON_WRITE="${INHERIT_ICON_WRITE}
+  $i"
+  done
+fi
+if [ "${FILENAME}" != true ]
+then
+  echo "<JWM>">"${EXPORT_FILE}"
+  echo "<!-- ICONS -->
+${ICON_WRITE}
+${INHERIT_ICON_WRITE}" >> "${EXPORT_FILE}"
+  echo "</JWM>" >>  "${EXPORT_FILE}"
+sed -i '/^$/d' "${EXPORT_FILE}"
+else
+  JWM_FILE="${HOME}"/.jwmrc
+  JWM_FILE_BACKUP="${HOME}"/.jwmrc~
+  sed -i "/<IconPath>/ d" "${JWM_FILE}"
+  sed -i "/<!-- ICONS -->/ d" "${JWM_FILE}"
+  sed -i "/<!-- Inherited Icons -->/ d" "${JWM_FILE}"
+  sed  -i "/<\/JWM>/ d" "${JWM_FILE}"
+  echo "<!-- ICONS -->
+${ICON_WRITE}
+${INHERIT_ICON_WRITE}
+</JWM>" >>"${JWM_FILE}"
+sed -i '/^$/d' "${JWM_FILE}"
+cp "${JWM_FILE}" "${JWM_FILE_BACKUP}"
+fi
+
+if [ ! -z "${GCONF2}" ]
+then
+  "${GCONF2}" --type=string --set /desktop/gnome/interface/icon_theme "${THEME_TO_USE}" && echo "set gconf2 to ${THEME_TO_USE}"
+fi
+if [ ! -z "${GSETTINGS}" ]
+then
+  "${GSETTINGS}" set org.gnome.desktop.interface icon-theme "${THEME_TO_USE}" && echo "set gsettings to ${THEME_TO_USE}"
+fi
+echo "reload/restart jwm to see changes"

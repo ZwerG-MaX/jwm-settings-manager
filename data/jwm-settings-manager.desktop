@@ -1,5 +1,8 @@
 [Desktop Entry]
 Name=JWM Settings Manager
+Name[en_US]=JWM Settings Manager
+Name[fr]=Gestionnaire de paramètres de JWM
+Name[lv]=JWM Iestatījumu pārvaldnieks
 GenericName=Configuration Tool
 GenericName[fr]=Outil de configuration
 GenericName[lv]=Konfigurācijas rīks
@@ -12,6 +15,3 @@ Terminal=false
 Type=Application
 Categories=Settings;System;
 NotShowIn=GNOME;KDE;LXDE;MATE;Razor;TDE;Unity;XFCE;EDE;Cinnamon;
-Name[en_US]=JWM Settings Manager
-Name[fr]=Gestionnaire de paramètres de JWM
-Name[lv]=JWM Iestatījumu pārvaldnieks

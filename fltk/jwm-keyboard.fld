@@ -63,9 +63,9 @@ class KeyboardUI {open : {public Config}
 saveChangesTemp();
 //Fl::add_handler(handle);} {}
     Fl_Window keyboard_window {
-      label {Keyboard Settings} open
+      label {Keyboard Settings} open selected
       xywh {1034 290 490 315} type Double color 31 hide resizable
-      code0 {Config config;config.under_mouse(o);}
+      code0 {Config config;config.under_mouse(o);} xclass {jsm-keyboard}
     } {
       Fl_Scroll {} {open
         xywh {0 0 490 310} color 31 resizable
@@ -121,9 +121,9 @@ grabber_window()->show();}
   } {
     Fl_Window grab_win {
       label {Create Shortcut} open
-      xywh {140 380 475 230} type Double when 6
+      xywh {140 380 475 230} type Double when 6 hide
       code0 {Config config;config.under_mouse(o);}
-      code1 {Fl::focus(key);} visible
+      code1 {Fl::focus(key);} xclass {jsm-keyboard}
     } {
       Fl_Button {} {
         label OK
@@ -551,8 +551,7 @@ if((key_test.compare("")!=0)&&(k<=256)){
   key_output->value(event_text);
   key_output->show();
   key->value(KEY);
-}} {selected
-    }
+}} {}
   }
   Function {menu_cb(const char* action)} {open
   } {

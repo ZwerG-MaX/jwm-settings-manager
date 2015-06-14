@@ -4055,13 +4055,6 @@ static unsigned char idata_jsm8[] =
 static Fl_RGB_Image image_jsm8(idata_jsm8, 48, 48, 4, 0);
 
 Fl_Double_Window* SettingsUI::make_window() {
-  //fl_open_display();
-  /*static Pixmap p;
-  Pixmap mask;
-  XpmCreatePixmapFromData(fl_display, DefaultRootWindow(fl_display), (char **)jsm,&p,&mask,0);
-  settings_window->icon((char *)p);
-  */
-  //settings_window->icon(UI::Get_Fl_Icon(jsm));
   { Fl_Double_Window* o = settings_window = new Fl_Double_Window(395, 375, gettext("Settings Manager"));
     settings_window->color(FL_DARK2);
     settings_window->labelcolor(FL_BACKGROUND2_COLOR);
@@ -4136,6 +4129,7 @@ Fl_Double_Window* SettingsUI::make_window() {
       o->callback((Fl_Callback*)cb_Autostart);
     } // Fl_Button* o
     Config config;config.under_mouse(o);
+    settings_window->xclass("jwm-settings-manager");
     settings_window->end();
   } // Fl_Double_Window* settings_window
   return settings_window;
