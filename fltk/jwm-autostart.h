@@ -36,6 +36,7 @@
 #include "../include/flAutostart.h"
 #include <FL/Fl_Select_Browser.H>
 #include "../include/ui.h"
+#include "../data/icons/jsm-autostart.xpm"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Input.H>
@@ -48,8 +49,6 @@ public:
   Fl_Double_Window *autostart_window;
   Fl_Input *program_name;
 private:
-  inline void cb_Choose_i(Fl_Button*, void*);
-  static void cb_Choose(Fl_Button*, void*);
   inline void cb_Cancel_i(Fl_Button*, void*);
   static void cb_Cancel(Fl_Button*, void*);
 public:
@@ -69,4 +68,5 @@ public:
   void add_program_to_autostart();
   void remove_program_from_autostart();
 };
+void startup(Fl_Window *o);
 #endif

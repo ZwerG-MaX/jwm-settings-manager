@@ -44,6 +44,7 @@
 #include <FL/filename.H>
 #include <FL/fl_draw.H>
 #include <FL/fl_message.H>
+#include "../data/icons/jsm-mouse.xpm"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Button.H>
@@ -279,5 +280,6 @@ public:
   std::string convert(double number);
   void add_to_profile();
   int parseline(char *line, char **argv, int maxarg);
+  void startup(Fl_Window *o);
 };
 #endif

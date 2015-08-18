@@ -92,6 +92,8 @@ void MenuUI::cb_root_menu_i(Fl_Browser* o, void*) {
   int line = o->value();
 const char* menu = o->text(line);
 choose_menu(menu);
+Apps app;
+app.getLabel(labler,menu);
 }
 void MenuUI::cb_root_menu(Fl_Browser* o, void* v) {
   ((MenuUI*)(o->parent()->parent()->user_data()))->cb_root_menu_i(o,v);
@@ -363,7 +365,7 @@ Fl_Double_Window* MenuUI::make_window() {
         o->selection_color(FL_DARK1);
         o->callback((Fl_Callback*)cb_Item);
       } // Fl_Button* o
-      { menuElement = new Fl_Browser(25, 80, 85, 140);
+      { menuElement = new Fl_Browser(10, 80, 85, 140);
         menuElement->type(2);
         menuElement->box(FL_GTK_DOWN_BOX);
         menuElement->selection_color((Fl_Color)80);
@@ -376,7 +378,7 @@ Fl_Double_Window* MenuUI::make_window() {
         o->callback((Fl_Callback*)cb_Item1);
         o->align(Fl_Align(256));
       } // Fl_Button* o
-      { menuElementText = new Fl_Browser(120, 80, 185, 140);
+      { menuElementText = new Fl_Browser(100, 80, 215, 140);
         menuElementText->type(2);
         menuElementText->box(FL_GTK_DOWN_BOX);
         menuElementText->selection_color((Fl_Color)80);
@@ -384,7 +386,7 @@ Fl_Double_Window* MenuUI::make_window() {
         menuElementText->callback((Fl_Callback*)cb_menuElementText);
         menuElementText->align(Fl_Align(FL_ALIGN_TOP));
       } // Fl_Browser* menuElementText
-      { Fl_Browser* o = root_menu = new Fl_Browser(130, 20, 80, 55, gettext("Root Menu "));
+      { Fl_Browser* o = root_menu = new Fl_Browser(95, 20, 80, 55, gettext("Root Menu "));
         root_menu->type(1);
         root_menu->box(FL_GTK_DOWN_BOX);
         root_menu->selection_color((Fl_Color)80);
@@ -406,9 +408,13 @@ Fl_Double_Window* MenuUI::make_window() {
         o->callback((Fl_Callback*)cb_Menu1);
         o->align(Fl_Align(256));
       } // Fl_Button* o
+      { labler = new Fl_Output(180, 30, 125, 30, gettext("Label"));
+        labler->box(FL_GTK_DOWN_BOX);
+        labler->align(Fl_Align(FL_ALIGN_TOP));
+      } // Fl_Output* labler
       o->end();
     } // Fl_Scroll* o
-    Config config;config.under_mouse(o);
+    startup(o);
     menu_window->xclass("jsm-panel");
     menu_window->end();
     menu_window->resizable(menu_window);
@@ -462,7 +468,7 @@ Fl_Double_Window* MenuUI::add_window() {
     { item_display = new Fl_Output(175, 20, 130, 25);
       item_display->box(FL_GTK_DOWN_BOX);
     } // Fl_Output* item_display
-    Config config;config.under_mouse(o);
+    startup(o);
     o->xclass("jsm-panel");
     o->end();
   } // Fl_Double_Window* o
@@ -499,7 +505,7 @@ Fl_Double_Window* MenuUI::conf_window() {
       icon_button->box(FL_GTK_UP_BOX);
       icon_button->callback((Fl_Callback*)cb_icon_button);
     } // Fl_Button* icon_button
-    Config config;config.under_mouse(o);
+    startup(o);
     config_flwin->xclass("jsm-panel");
     config_flwin->end();
   } // Fl_Double_Window* config_flwin
@@ -550,7 +556,7 @@ t will determine the height. The default is 0."));
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK2);
     } // Fl_Button* o
-    Config config;config.under_mouse(o);
+    startup(o);
     o->xclass("jsm-panel");
     o->end();
   } // Fl_Double_Window* o
@@ -712,4 +718,9 @@ int MenuUI::save_cb() {
   const char* result = item_display->value();
   Apps app;
   return app.addMenuItem(menuElement, menuElementText, add_label, add_icon, add_input, add_button, result);
+}
+
+void MenuUI::startup(Fl_Window *o) {
+  Config config; config.under_mouse(o);
+  o->icon(config.Get_Fl_Icon(jsm_panel_xpm));
 }

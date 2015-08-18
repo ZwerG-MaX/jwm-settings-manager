@@ -34,6 +34,7 @@ set(CMAKE_CONFIGURATION_TYPE "RELEASE")
 ## Compiler includes ( FLTK X11 and all my stuff)
 INCLUDE_DIRECTORIES("${FLTK_INCLUDE_DIR}"
 		    "${X11_INCLUDE_DIR}"
+		    "${X11_Xpm_INCLUDE_PATH}"
                     "${CMAKE_SOURCE_DIR}/data/icons"
                     "${CMAKE_SOURCE_DIR}/include"
                     "${CMAKE_SOURCE_DIR}/fltk"
@@ -81,12 +82,13 @@ add_subdirectory(data)
 
 ## make the executable
 add_executable(jwm-settings-manager src/jwm.cpp)
+add_executable(jwm-menu src/menu.cpp)
 ## install the man file
 INSTALL(FILES jwm-settings-manager.1 DESTINATION share/man/man1/ PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)
 
 ## Linker settings
-TARGET_LINK_LIBRARIES(jwm-settings-manager JSM fltk_SHARED fltk_images_SHARED ${X11_LIBRARIES})
-
+TARGET_LINK_LIBRARIES(jwm-settings-manager JSM fltk_SHARED fltk_images_SHARED ${X11_LIBRARIES} ${X11_X11_LIB} ${X11_Xpm_LIB})
+install(TARGETS jwm-menu RUNTIME DESTINATION bin)
 ## Install the binary to bin and the library to lib :)
 install(TARGETS jwm-settings-manager JSM
 	RUNTIME DESTINATION bin

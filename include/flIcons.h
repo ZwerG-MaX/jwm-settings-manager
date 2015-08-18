@@ -34,7 +34,7 @@ class flIcons : public Config
 {
     public:
         void getIcons(Fl_Browser *o);
-
+        std::string currentIconTheme();
         ///TODO:
         /* implement actual icon themes
          * That the user could choose.. I.e.
@@ -42,9 +42,6 @@ class flIcons : public Config
          * There would have to be a 'size' selection, so only 32x32 icons (or whatever)
          * would be shown.
          */
-        //XDG_DATA_DIRS
-        const char* thisXDG_PATH(int whichPath);
-        unsigned int numXDG_PATHS();
 
         void loadTheme(Fl_Browser *o);
         void useTheme(Fl_Browser *o);
@@ -57,11 +54,7 @@ class flIcons : public Config
         flIcons();
         virtual ~flIcons();
     protected:
-    private:
-        char* xdg_paths;
-        std::string stringXDG_PATH;
-        std::string::size_type XDG_pathPosition;
-        int num_XDG_PATHS;
+
 };
 
 #endif // FLICONS_H

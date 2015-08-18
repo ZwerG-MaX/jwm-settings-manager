@@ -595,7 +595,7 @@ void WindowUI::cb_rm_class(Fl_Button* o, void* v) {
 }
 
 Fl_Double_Window* WindowUI::add_option_window() {
-  { add_opt_window = new Fl_Double_Window(435, 435, gettext("Add an Option"));
+  { Fl_Double_Window* o = add_opt_window = new Fl_Double_Window(435, 435, gettext("Add an Option"));
     add_opt_window->user_data((void*)(this));
     { Fl_Scroll* o = new Fl_Scroll(0, 0, 430, 430);
       { Fl_Browser* o = options_available = new Fl_Browser(10, 10, 115, 375);
@@ -676,6 +676,7 @@ Fl_Double_Window* WindowUI::add_option_window() {
       } // Fl_Output* layer_value
       o->end();
     } // Fl_Scroll* o
+    startup(o);
     add_opt_window->xclass("jsm-windows");
     add_opt_window->end();
   } // Fl_Double_Window* add_opt_window
@@ -697,7 +698,7 @@ Fl_Double_Window* WindowUI::add_class_window() {
       o->labelcolor((Fl_Color)55);
       o->callback((Fl_Callback*)cb_OK1);
     } // Fl_Button* o
-    Config config;config.under_mouse(o);
+    startup(o);
     class_win->xclass("jsm-windows");
     class_win->end();
   } // Fl_Double_Window* class_win
@@ -719,7 +720,7 @@ Fl_Double_Window* WindowUI::add_program_window() {
       o->labelcolor((Fl_Color)55);
       o->callback((Fl_Callback*)cb_OK2);
     } // Fl_Button* o
-    Config config;config.under_mouse(o);
+    startup(o);
     prog_win->xclass("jsm-windows");
     prog_win->end();
   } // Fl_Double_Window* prog_win
@@ -754,7 +755,6 @@ Fl_Double_Window* WindowUI::make_window() {
       { Fl_Tabs* o = new Fl_Tabs(0, 25, 680, 330);
         o->box(FL_PLASTIC_THIN_UP_BOX);
         { Fl_Group* o = new Fl_Group(10, 45, 670, 305, gettext("Appearance"));
-          o->hide();
           { Fl_Box* o = new Fl_Box(10, 55, 330, 175);
             o->box(FL_GTK_DOWN_BOX);
             o->color((Fl_Color)51);
@@ -983,6 +983,7 @@ Fl_Double_Window* WindowUI::make_window() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(100, 45, 525, 305, gettext("Settings"));
+          o->hide();
           { Fl_Slider* o = b_slider = new Fl_Slider(325, 95, 125, 25, gettext("Size of the Window Frame"));
             b_slider->tooltip(gettext("This makes the edges of the window larger or smaller to help you grab them mo\
 re easily"));
@@ -1257,7 +1258,7 @@ s many program groups can be created as desired."));
       } // Fl_Tabs* o
       o->end();
     } // Fl_Scroll* o
-    Config config;config.under_mouse(o);
+    startup(o);
     window_window->xclass("jsm-windows");
     window_window->end();
     window_window->resizable(window_window);
@@ -1412,7 +1413,7 @@ void WindowUI::choose_button(const char* whichButton) {
 
 void WindowUI::corner_load(Fl_Slider *o) {
   flWindow win;
-  if(!newStyle()){o->hide();}
+  if(newStyle() == -1){o->hide();}
   else{
     unsigned int corner = win.getCorner();
     o->value(corner);
@@ -1421,7 +1422,7 @@ void WindowUI::corner_load(Fl_Slider *o) {
 
 void WindowUI::corner_change(Fl_Slider *o) {
   flWindow win;
-  if(!newStyle()){o->hide();}
+  if(newStyle() == -1){o->hide();}
   else{
     unsigned int corner =o->value();
     win.setCorner(corner);
@@ -1701,4 +1702,9 @@ void WindowUI::title_bar_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_
     whichone = slider;
   }
   window.setBorderHeight(whichone);
+}
+
+void WindowUI::startup(Fl_Window *o) {
+  Config config; config.under_mouse(o);
+  o->icon(config.Get_Fl_Icon(jsm_windows_xpm));
 }

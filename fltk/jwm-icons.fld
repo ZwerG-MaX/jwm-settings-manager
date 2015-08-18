@@ -58,6 +58,9 @@ decl {\#include <FL/Fl_Select_Browser.H>} {public global
 decl {\#include "../include/ui.h"} {public global
 } 
 
+decl {\#include "../data/icons/jsm-icons.xpm"} {public global
+} 
+
 class IconsUI {open : {public Config}
 } {
   Function {make_window()} {open
@@ -65,9 +68,9 @@ class IconsUI {open : {public Config}
     code {load();
 saveChangesTemp();} {}
     Fl_Window icons_window {
-      label Icons open selected
-      xywh {525 244 330 295} type Double color 31 resizable
-      code0 {flIcons icon; icon.under_mouse(o);} xclass {jsm-icons} visible
+      label Icons open
+      xywh {525 244 330 295} type Double color 31 hide resizable
+      code0 {startup(o);} xclass {jsm-icons}
     } {
       Fl_Scroll {} {open
         xywh {0 0 330 290} color 31
@@ -96,7 +99,7 @@ if(icon_choice.compare("")==0){add_icons(icon_choice);}}
         Fl_Browser iconsBrowser {
           callback {flIcons icons;
 icons.useTheme(o);}
-          xywh {10 15 310 220} type Hold box GTK_DOWN_BOX selection_color 80
+          xywh {10 15 310 220} type Select box GTK_DOWN_BOX selection_color 80 when 8
           code0 {flIcons icons;}
           code1 {//icons.getIcons(iconsBrowser);}
           code2 {icons.loadTheme(iconsBrowser);}
@@ -144,5 +147,11 @@ const char * m="Choose a Directory";
 int r = 0;
 std::string result_string = fl_dir_chooser(m,f,r);
 return result_string;} {}
+  }
+  Function {startup(Fl_Window *o)} {open
+  } {
+    code {Config config; config.under_mouse(o);
+o->icon(config.Get_Fl_Icon(jsm_icons_xpm));} {selected
+    }
   }
 } 

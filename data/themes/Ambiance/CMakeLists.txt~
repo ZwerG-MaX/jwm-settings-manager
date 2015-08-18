@@ -6,6 +6,10 @@ set(THIS_THEME "Ambiance")
 set(TRAY "${DEFAULT_TRAY}")
 set (OLD_TRAY "${OLD_DEFAULT_TRAY}")
 set(MENUS_LIST "${REGULAR_MENUS_LIST}")
+set(BUTTONS "<ButtonClose>/usr/share/jwm-settings-manager/Buttons/Ambiance/close.png</ButtonClose>
+    <ButtonMax>/usr/share/jwm-settings-manager/Buttons/Ambiance/max.png</ButtonMax>
+    <ButtonMaxActive>/usr/share/jwm-settings-manager/Buttons/Ambiance/max_toggled.png</ButtonMaxActive>
+    <ButtonMin>/usr/share/jwm-settings-manager/Buttons/Ambiance/iconify.png</ButtonMin>")
 
 set(TASK_ACTIVE_FOREGROUND "#ffffff" )
 set(TASK_ACTIVE_BACKGROUND "#484741" )
@@ -45,8 +49,9 @@ set(POPUP_FOREGROUND "#ffffff")
 set(POPUP_BACKGROUND "#484741")
 
 ## this stays the same for all files
-configure_file(../all-new-themes.in ${THIS_THEME})
-
+set(THEME_230 "../2.3.0/${THIS_THEME}/${THIS_THEME}")
+configure_file(../all-2.3.2+themes.in ${THEME_230})
+configure_file(../all-new-themes.in ${OLD_THEME})
 ### SETUP OLD THEME NAMES
 set(OLD_THEME "../old/${THIS_THEME}/${THIS_THEME}")
 configure_file(../all-old-themes.in ${OLD_THEME})

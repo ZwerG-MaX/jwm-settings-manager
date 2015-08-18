@@ -1,11 +1,32 @@
-jwm-settings-manager (1.0.1ubuntu3) UNRELEASED; urgency=medium
+jwm-settings-manager (1.0.2ubuntu5) UNRELEASED; urgency=medium
+  * updated translation po file
+  * added script to aide in translation generator
+  * added more gettext items in non-fltk code
+  * support newest github version almost fully with all existing code.
+  * added RootMenu checkeru
+  * added auto rightclick menu to panel apps that are added.
+  * fixed deletion of panel apps with Button nodes
+  * fix xdg path return
+  * add X11 and xpm to control and CMakelists 
+  * added in icons for each individual program
+  * tweaked xdg-path finder to omit final :
+  * added --debug option
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 08 Aug 2015 20:56:31 -0500
+
+jwm-settings-manager (1.0.1ubuntu6) UNRELEASED; urgency=medium
   * moved menus to separate package jwm-menus
   * center all windows as per Ali's request
   * removed reboot dialog (moved to ToriOS core)
-  * updated all themes 
+  * updated all themes
     - use system app menu in /etc/jwm/jwm-menu 
+  * fixed pcmanfm background grabber for desktop program
+  * begun initial support for JWM 2.3.2++ hides things that no longer exist
+  * fixed app icon issue in launcher adder
+  * more fixes for new github version
+  * added macros DEBUG and DEBUG_TRACK to add nice std::cerr output to help with debugging 
 
- -- Israel Dahl <israeldahl@gmail.com>  Tue, 09 Jun 2015 18:18:50 -0500
+ -- Israel Dahl <israeldahl@gmail.com>  Fri, 31 Jul 2015 23:30:59 -0500
 
 jwm-settings-manager (1.0.0ubuntu17) UNRELEASED; urgency=medium
   * Windows

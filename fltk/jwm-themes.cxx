@@ -174,6 +174,7 @@ Fl_Double_Window* ThemesUI::make_window() {
     { iclose = new Fl_Box(545, 160, 30, 30);
     } // Fl_Box* iclose
     Config config;config.under_mouse(o);
+    o->icon(config.Get_Fl_Icon(jsm_theme_xpm));
     themes_window->xclass("jsm-theme");
     themes_window->end();
   } // Fl_Double_Window* themes_window
@@ -195,7 +196,8 @@ void ThemesUI::save_theme() {
   if (save_name.compare("")==0){return;}
   const char* save_file = save_name.c_str();
   int result = theme.saveAs(save_file);
-  if(result!=0){fl_alert("Problem saving: %s",save_file);}
+  if(result!=0){fl_alert("Problem saving: %s",save_file); return;}
+  theme.populateUserThemes(usr_theme);
 }
 
 std::string ThemesUI::choose_directory(const char* whichChoice) {

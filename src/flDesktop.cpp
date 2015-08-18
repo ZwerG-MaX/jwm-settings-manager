@@ -24,6 +24,9 @@
  */
 #include "../include/flDesktop.h"
 flDesktop::flDesktop(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"[flDesktop]->"<<std::endl;
+#endif // DEBUG
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLDocument roxDoc;
     std::string backgrounds = "/usr/share/backgrounds/";
@@ -43,6 +46,9 @@ flDesktop::flDesktop(){
     defaultBGtype = "solid";
 }
 flDesktop::~flDesktop(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"<-[flDesktop]"<<std::endl;
+#endif // DEBUG
 
 }
 //************************************************* Background Functions *******************************************************************
@@ -129,13 +135,13 @@ const char* flDesktop::getBackground(){
 
         //if the filemanager is running.... we need to get the background for testing
         if (fm.compare("unknown")!=0){
-            std::cout<<"filemanager = "<<fm<<std::endl;
+            //std::cout<<"filemanager = "<<fm<<std::endl;
             // this is pretty self explanitory, pcmanfm is pcmanfm and thunar is thunar, nautilus is nautilus
             //we don't need to check for rox again...  I don't support KDE... since... well this is JWM
             if(fm.compare(pcmanfm)==0){testBG=getPCmanFMbg();}
             else if((fm.compare(thunar))==0||(fm.compare(nautilus))==0){testBG=getGsettingsBG();}
             else{testBG="";}
-            std::cout<<"fmBG: "<<testBG<<" jwmBG: "<<background<<std::endl;
+            //std::cout<<"fmBG: "<<testBG<<" jwmBG: "<<background<<std::endl;
             // if the testBG  and background are empty... return black... because that is the default
             // I don't think this should ever happen... but just in case
             if((testBG.compare("")==0)&&(background.compare("")==0)){background = "#000000";}
@@ -220,7 +226,7 @@ void flDesktop::setBackground(const char* type, const char* value){
         else if((fm.compare(thunar))==0||(fm.compare(nautilus))==0){setGsettingsBG(value);}
         else{
             if(testExec("rox-filer")){setRoxBackground(value);}
-            else{std::cout<<"No known filemanager to handle the desktop is running\nOnly settings JWM background"<<std::endl;}
+            else{std::cout<<"No known filemanager to handle the desktop is running\nOnly settings JWM background\nFeel free to contact us with a method to set the background for you Filemanager of choice!"<<std::endl;}
         }
     }
     element->SetAttribute("type",type);
@@ -251,9 +257,9 @@ void flDesktop::makeBackgroundElement(){
 //################################################# END Background ###################################################################
 
 bool flDesktop::isPCmanFMconfig(){
-    std::string pcmanconfig = homePath();
+    std::string pcmanconfig = homePathNoFile();
     pcmanconfig += pcmanFMfilename;
-    std::string defaultConfig= homePath();
+    std::string defaultConfig = homePathNoFile();
     defaultConfig+=pcmanFMdesktopfilename;
     bool pcmanTEST = testFile(pcmanconfig.c_str());
     bool defaultTEST = testFile(defaultConfig.c_str());
@@ -269,7 +275,8 @@ void flDesktop::setPCmanFMbg(const char* filename){
             std::string pcmstart = bash;
             pcmstart +=pcmanAutostart;
             pcmstart+=" &disown'";
-            system(pcmstart.c_str());
+            int thissys = system(pcmstart.c_str());
+            if(thissys !=0){std::cerr<< pcmstart << " command did not return 0"<<std::endl;}
         }
         //code to set the background
         const char* pcmanWP = " --wallpaper-mode=stretch --set-wallpaper=";
@@ -278,7 +285,7 @@ void flDesktop::setPCmanFMbg(const char* filename){
         replaceBG += pcmanWP;
         replaceBG += FNAME;
         replaceBG +="'";
-        std::cout<<replaceBG<<std::endl;
+        //std::cout<<replaceBG<<std::endl;
         int i =system(replaceBG.c_str());
         if (i!=0){errorJWM("setting PCManFM background failed");}
     }
@@ -287,28 +294,22 @@ void flDesktop::setPCmanFMbg(const char* filename){
 
 const char* flDesktop::getPCmanFMbg(){
     if(isPCmanFMconfig()){
-        std::string pcmanconfig = homePath();
-        std::string defaultConfig = pcmanconfig;
+        std::string pcmanconfig = homePathNoFile();
+        std::string defaultConfig = homePathNoFile();
         pcmanconfig += pcmanFMfilename;
         defaultConfig+=pcmanFMdesktopfilename;
         std::string result = grep("wallpaper=",pcmanconfig);
         if (result.compare("")!=0){
             unsigned int found = result.find_first_of("=");
             result=result.erase(0,found+1);
-            if (result.compare("")!=0){
-                std::cout<<"PCManFM conf wallpaper"<<result<<std::endl;
-                return result.c_str();
-            }
+            if (result.compare("")!=0){return result.c_str();}
         }
         else {
             result = grep("wallpaper=",defaultConfig);
             if (result.compare("")!=0){
                 unsigned int found2 = result.find_first_of("=");
                 result=result.erase(0,found2+1);
-                if (result.compare("")!=0){
-                    std::cout<<"PCManFM dekstop items wallpaper"<<result<<std::endl;
-                    return result.c_str();
-                }
+                if (result.compare("")!=0){return result.c_str();}
             }
         }
         result = getBackground();
@@ -341,7 +342,7 @@ std::string flDesktop::getGsettingsBG(){
                 testResult=testResult.substr(0,found);
                 return testResult;
             }
-            std::cout<<testResult<<std::endl;
+            std::cerr<<testResult<<std::endl;
         }
     }
     else{errorJWM("getGsettingsBG() failed, since gsettings is not in your $PATH,\nif you are not using thunar or nautilus this is no big deal");}

@@ -1,7 +1,9 @@
 #include "../include/flFont.h"
 
-flFont::flFont()
-{
+flFont::flFont(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"[flFont]->"<<std::endl;
+#endif // DEBUG
     tinyxml2::XMLDocument doc;
     antialias = "antialias";
     weight = "weight";
@@ -12,40 +14,55 @@ flFont::flFont()
     defaultFontColor = "#ffffff";
 }
 
-flFont::~flFont()
-{
-    //dtor
+flFont::~flFont(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"<-[flFont]"<<std::endl;
+#endif // DEBUG
 }
 //Font NAME
 std::string flFont::fontTest(const char* whichElement){
+#ifdef DEBUG_TRACK
+    std::cerr<<"std::string flFont::fontTest("<<whichElement<<")--->";
+#endif // DEBUG
+    std::string font = defaultFont;
     if(!testElement(whichElement,"Font")){
         createElement(whichElement,"Font");
         missingFont(whichElement);
-        return defaultFont;
     }
-    tinyxml2::XMLElement * currentFont = doc.FirstChildElement("JWM")->FirstChildElement(whichElement)->FirstChildElement("Font");
-    std::string font;
-    const char* fontTester = currentFont->GetText();
-    if(fontTester!=NULL){
-        font=fontTester;
-        return font;
+    else{
+        tinyxml2::XMLElement * currentFont = doc.FirstChildElement("JWM")->FirstChildElement(whichElement)->FirstChildElement("Font");
+        const char* fontTester = currentFont->GetText();
+        if(fontTester!=NULL){
+            font=fontTester;
+        }
+        else {
+            missingFont(whichElement);
+        }
     }
-    else {
-        missingFont(whichElement);
-        return defaultFont;
-    }
-    return NULL;
+    return font;
+#ifdef DEBUG_TRACK
+    std::cerr<<"<----flFont::fontTest returns: "<< font<< " Default font is: "<<defaultFont;
+#endif // DEBUG
 }
 void flFont::missingFont(const char* whichElement){
+#ifdef DEBUG_TRACK
+    std::cerr<<"void flFont::missingFont("<<whichElement<<")--->";
+#endif // DEBUG
     if(!testElement(whichElement,"Font")){createElement(whichElement,"Font");}
     tinyxml2::XMLElement * currentFont = doc.FirstChildElement("JWM")->FirstChildElement(whichElement)->FirstChildElement("Font");
-    std::cerr<<"The current Element doesn't have a font name or is missing a size.\n Recovering by rewriting default values\n";
+    std::cerr<<gettext("The current Element doesn't have a font name or is missing a size.\n Recovering by rewriting default values\n");
     ///TODO member var for default font
     currentFont->SetText(defaultFont);
     saveChanges();
     saveChangesTemp();
+#ifdef DEBUG_TRACK
+    std::cerr<<"<----void flFont::missingFont";
+#endif // DEBUG
 }
 std::string flFont::getFontName(const char* whichElement){
+#ifdef DEBUG_TRACK
+    std::cerr<<"std::string flFont::getFontName("<<whichElement<<")--->";
+#endif // DEBUG
     std::string font =fontTest(whichElement);
     if (font.c_str() != NULL){
         std::string fontName;
@@ -58,14 +75,21 @@ std::string flFont::getFontName(const char* whichElement){
     }
     else{
         std:: string error = "no font";
-        errorJWM("This is an error, there is no font");
+        errorJWM(gettext("This is an error, there is no font"));
         return error;
     }
-    errorJWM("ERROR in getFontName(const char*), this shouldn't happen");
+    ///getFontName(const char*) is a function name... this should remain intact
+    errorJWM(gettext("ERROR in getFontName(const char*), this shouldn't happen"));
     return "?";
+#ifdef DEBUG_TRACK
+    std::cerr<<"<----std::string flFont::getFontName";
+#endif // DEBUG
 }
 
 void flFont::setFontName(const char* name, const char* whichElement){
+#ifdef DEBUG_TRACK
+    std::cerr<<"void flFont::setFontName("<< name <<","<<whichElement<<")";
+#endif // DEBUG
     if(name==NULL){return;}
     if(!testElement(whichElement,"Font")){
         createElement(whichElement,"Font");
@@ -88,13 +112,17 @@ void flFont::setFontName(const char* name, const char* whichElement){
         missingFont(whichElement);
     }
     saveChangesTemp();
+#ifdef DEBUG_TRACK
+    std::cerr<<"<----void flFont::setFontName";
+#endif // DEBUG
 }
 
 
 //Font SIZE
 unsigned int flFont::getFontSize(std::string whichElement){
-//    const char* functionName = "unsigned int flFont::getFontSize(std::string whichElement)";
-    //std::cerr<<functionName<<std::endl;
+#ifdef DEBUG_TRACK
+    std::cerr<<"unsigned int flFont::getFontSize("<<whichElement<<")--->";
+#endif // DEBUG
     std::string font =fontTest(whichElement.c_str());
     if (font.compare("")!=0){
         unsigned int fontSizeInt;
@@ -113,18 +141,29 @@ unsigned int flFont::getFontSize(std::string whichElement){
         return getFontSize(whichElement);
     }
     errorJWM("getFontSize had an Error.... abort... size 42");
-    return 42;
+#ifdef DEBUG_TRACK
+    std::cerr<<" <--flFont::getFontSize";
+#endif // DEBUG
+return 42;
 }
 
 ///Everything below here needs ERROR CHECKING
 void flFont::setSize(unsigned int &fontSize,std::string whichElement){
+#ifdef DEBUG_TRACK
+    std::cerr<<" flFont::setSize("<<fontSize<<","<<whichElement<<")--->";
+#endif // DEBUG
+    std::string font;
     if(!testElement(whichElement.c_str(),"Font")){
         createElement(whichElement.c_str(),"Font");
         missingFont(whichElement.c_str());
     }
     tinyxml2::XMLElement * currentFont = doc.FirstChildElement("JWM")->FirstChildElement(whichElement.c_str())->FirstChildElement("Font");
-    std::string font = currentFont->GetText();
-    //std::cout<<"setSize input: "<<font<<std::endl;//Debug
+    if(currentFont->GetText()){font = currentFont->GetText();}
+    else{
+        missingFont(whichElement.c_str());
+        font=defaultFont;
+    }
+    if(DEBUG_ME){std::cerr<<"setSize input: "<<font<<std::endl;}
     std::stringstream converter;
     converter<<fontSize;
     std::string fontSizeSTR =  converter.str();
@@ -139,23 +178,33 @@ void flFont::setSize(unsigned int &fontSize,std::string whichElement){
 	//add the stuff together, and...
 	result = temp1+fontSizeSTR+temp2;
 	currentFont->SetText(result.c_str());
-	//std::cout<<"setSize result: "<<result<<std::endl;//Debug
     saveChangesTemp();
+#ifdef DEBUG_TRACK
+    std::cerr<<"<-- flFont::setSize result: "<<result<<std::endl;;
+#endif // DEBUG
 }
 
 //****************************  Font Color  ***********************************
 ///@param whichElement is something like TaskListStyle or TrayStyle or MenuStyle, etc..
 void flFont::setFontColor(const double* rgb,const char* whichElement){
-
+#ifdef DEBUG_TRACK
+    std::cerr<<"void flFont::setFontColor("<<rgb<<","<<whichElement<<")--->";
+#endif // DEBUG
     if(!testElement(whichElement,"Foreground")){createElement(whichElement,"Foreground");}
 
     tinyxml2::XMLElement * colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Foreground" );
     std::string color1 = colorToString(rgb);
     colorElement->SetText(color1.c_str());
     saveChangesTemp();
+#ifdef DEBUG_TRACK
+    std::cerr<<"<--void flFont::setFontColor";
+#endif // DEBUG
 }
 
 unsigned int flFont::getFontColor(const char *whichElement){
+#ifdef DEBUG_TRACK
+    std::cerr<<"unsigned int flFont::getFontColor("<<whichElement<<")--->";
+#endif // DEBUG
 if(!testElement(whichElement,"Foreground")){
         createElement(whichElement,"Foreground");
         tinyxml2::XMLElement * testElement = doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Foreground" );

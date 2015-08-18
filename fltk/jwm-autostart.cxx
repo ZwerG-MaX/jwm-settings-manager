@@ -27,13 +27,6 @@
 #include <libintl.h>
 #include "jwm-autostart.h"
 
-void AutostartUI::cb_Choose_i(Fl_Button*, void*) {
-  choose_a_program();
-}
-void AutostartUI::cb_Choose(Fl_Button* o, void* v) {
-  ((AutostartUI*)(o->parent()->parent()->user_data()))->cb_Choose_i(o,v);
-}
-
 void AutostartUI::cb_Cancel_i(Fl_Button*, void*) {
   cancel(autostart_window);
 UI ux;
@@ -53,8 +46,9 @@ void AutostartUI::cb_save_button(Fl_Button* o, void* v) {
 }
 
 void AutostartUI::cb__i(Fl_Button*, void*) {
-  choose_a_program();
-add_program_to_autostart();
+  std::string proggie = program_name->value();
+if(proggie.compare("")==0){choose_a_program();}
+else{add_program_to_autostart();};
 }
 void AutostartUI::cb_(Fl_Button* o, void* v) {
   ((AutostartUI*)(o->parent()->parent()->user_data()))->cb__i(o,v);
@@ -76,31 +70,25 @@ static Fl_Bitmap image_minus(idata_minus, 16, 16);
 Fl_Double_Window* AutostartUI::make_window() {
   load();
   saveChangesTemp();
-  { Fl_Double_Window* o = autostart_window = new Fl_Double_Window(315, 290, gettext("Autostart Programs"));
+  { Fl_Double_Window* o = autostart_window = new Fl_Double_Window(335, 230, gettext("Autostart Programs"));
     autostart_window->color((Fl_Color)31);
     autostart_window->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(0, 0, 315, 285);
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 335, 230);
       o->color((Fl_Color)31);
-      { program_name = new Fl_Input(70, 210, 200, 25);
+      { program_name = new Fl_Input(100, 160, 220, 25);
         program_name->tooltip(gettext("You can add extra arguments here"));
         program_name->box(FL_GTK_DOWN_BOX);
         program_name->align(Fl_Align(FL_ALIGN_TOP));
         program_name->when(FL_WHEN_ENTER_KEY);
       } // Fl_Input* program_name
-      { Fl_Button* o = new Fl_Button(75, 160, 75, 30, gettext("Choose"));
-        o->tooltip(gettext("Choose a program to add"));
-        o->box(FL_GTK_UP_BOX);
-        o->callback((Fl_Callback*)cb_Choose);
-        o->align(Fl_Align(FL_ALIGN_WRAP));
-      } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(190, 250, 57, 25, gettext("Cancel"));
+      { Fl_Button* o = new Fl_Button(195, 195, 57, 25, gettext("Cancel"));
         o->box(FL_GTK_UP_BOX);
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
         o->labelcolor(FL_BACKGROUND2_COLOR);
         o->callback((Fl_Callback*)cb_Cancel);
       } // Fl_Button* o
-      { save_button = new Fl_Button(256, 250, 49, 25, gettext("OK"));
+      { save_button = new Fl_Button(261, 195, 49, 25, gettext("OK"));
         save_button->tooltip(gettext("Write to configuration file"));
         save_button->box(FL_GTK_UP_BOX);
         save_button->color((Fl_Color)61);
@@ -108,27 +96,27 @@ Fl_Double_Window* AutostartUI::make_window() {
         save_button->labelcolor((Fl_Color)55);
         save_button->callback((Fl_Callback*)cb_save_button);
       } // Fl_Button* save_button
-      { Fl_Button* o = new Fl_Button(25, 205, 35, 35, gettext("@+"));
+      { Fl_Button* o = new Fl_Button(15, 155, 35, 35, gettext("@+"));
         o->tooltip(gettext("Add the chosen program"));
         o->box(FL_GTK_UP_BOX);
         o->selection_color(FL_DARK1);
         o->callback((Fl_Callback*)cb_);
       } // Fl_Button* o
-      { autoStartBrowser = new Fl_Browser(15, 10, 280, 140);
+      { autoStartBrowser = new Fl_Browser(15, 10, 305, 140);
         autoStartBrowser->type(2);
         autoStartBrowser->box(FL_GTK_DOWN_BOX);
         autoStartBrowser->selection_color((Fl_Color)80);
         flAutostart a;
         a.getAutostart(autoStartBrowser);
       } // Fl_Browser* autoStartBrowser
-      { Fl_Button* o = new Fl_Button(20, 160, 35, 35);
+      { Fl_Button* o = new Fl_Button(55, 155, 35, 35);
         o->box(FL_GTK_UP_BOX);
         o->image(image_minus);
         o->callback((Fl_Callback*)cb_1);
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
-    Config config;config.under_mouse(o);
+    startup(o);
     autostart_window->xclass("jsm-autostart");
     autostart_window->end();
     autostart_window->resizable(autostart_window);
@@ -190,4 +178,9 @@ void AutostartUI::remove_program_from_autostart() {
   else{
   	fl_message("Please click on an item to remove!");
   }
+}
+
+void startup(Fl_Window *o) {
+  Config config; config.under_mouse(o);
+  o->icon(config.Get_Fl_Icon(jsm_autostart_xpm));
 }

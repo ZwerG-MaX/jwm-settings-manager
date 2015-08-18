@@ -44,7 +44,10 @@ set(POPUP_FOREGROUND "#000000")
 set(POPUP_BACKGROUND "#353535")
 
 ## this stays the same for all files
-configure_file(../all-new-themes.in ${THIS_THEME})
+set(CURRENTTHEME "../${THIS_THEME}/${THIS_THEME}")
+set(THEME_230 "../2.3.0/${THIS_THEME}/${THIS_THEME}")
+configure_file(../all-2.3.2+themes.in ${THEME_230})
+configure_file(../all-new-themes.in ${CURRENTTHEME})
 ### SETUP OLD THEME NAMES
 set(OLD_THEME "../old/${THIS_THEME}/${THIS_THEME}")
 configure_file(../all-old-themes.in ${OLD_THEME})

@@ -79,6 +79,9 @@ decl {//\#include <cairo.h>} {public global
 decl {//\#include <cairo-svg.h>} {public global
 } 
 
+decl {\#include "../data/icons/jsm-desktop.xpm"} {public global
+} 
+
 class DesktopUI {open : {public Config}
 } {
   Function {make_window()} {open
@@ -87,8 +90,8 @@ class DesktopUI {open : {public Config}
 saveChangesTemp();} {}
     Fl_Window desktop_window {
       label {Desktop Settings} open
-      xywh {367 516 395 515} type Double color 31 resizable
-      code0 {Config config;config.under_mouse(o);} xclass {jsm-desktop} visible
+      xywh {248 531 395 515} type Double color 31 hide resizable
+      code0 {startup(o);} xclass {jsm-desktop}
     } {
       Fl_Scroll {} {open
         xywh {0 0 395 510} color 31
@@ -315,8 +318,7 @@ int height = getIntAttribute("Desktops","height");
 // zero for false and non-zero for true.
 if (height==1 && width ==1){return false;}
 else if (!height || !width){return false;}
-return true;} {selected
-    }
+return true;} {}
   }
   Function {num_desktop_wh_cb(const char* whichone, int value)} {open
   } {
@@ -410,5 +412,11 @@ if (width == 1 && height ==1 ){width =2;}
 setAttribute("Desktops","width",width);
 setAttribute("Desktops","height",height);
 }} {}
+  }
+  Function {startup(Fl_Window *o)} {open
+  } {
+    code {Config config; config.under_mouse(o);
+o->icon(config.Get_Fl_Icon(jsm_desktop_xpm));} {selected
+    }
   }
 } 

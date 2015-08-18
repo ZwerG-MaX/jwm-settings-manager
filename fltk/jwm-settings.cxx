@@ -4128,7 +4128,9 @@ Fl_Double_Window* SettingsUI::make_window() {
       o->labelcolor((Fl_Color)55);
       o->callback((Fl_Callback*)cb_Autostart);
     } // Fl_Button* o
-    Config config;config.under_mouse(o);
+    Config config;
+    o->icon(config.Get_Fl_Icon(jwm_settings_manager));
+    config.under_mouse(o);
     settings_window->xclass("jwm-settings-manager");
     settings_window->end();
   } // Fl_Double_Window* settings_window

@@ -58,6 +58,9 @@ decl {\#include <FL/Fl_Select_Browser.H>} {public global
 decl {\#include "../include/ui.h"} {public global
 } 
 
+decl {\#include "../data/icons/jsm-autostart.xpm"} {public global
+} 
+
 class AutostartUI {open : {public Config}
 } {
   Function {make_window()} {open
@@ -65,49 +68,45 @@ class AutostartUI {open : {public Config}
     code {load();
 saveChangesTemp();} {}
     Fl_Window autostart_window {
-      label {Autostart Programs} open selected
-      xywh {610 312 315 290} type Double color 31 resizable
-      code0 {Config config;config.under_mouse(o);} xclass {jsm-autostart} visible
+      label {Autostart Programs} open
+      xywh {1028 242 335 230} type Double color 31 hide resizable
+      code0 {startup(o);} xclass {jsm-autostart}
     } {
       Fl_Scroll {} {open
-        xywh {0 0 315 285} color 31
+        xywh {0 0 335 230} color 31
       } {
         Fl_Input program_name {
-          tooltip {You can add extra arguments here} xywh {70 210 200 25} box GTK_DOWN_BOX align 1 when 8
-        }
-        Fl_Button {} {
-          label Choose
-          callback {choose_a_program();}
-          tooltip {Choose a program to add} xywh {75 160 75 30} box GTK_UP_BOX align 128
+          tooltip {You can add extra arguments here} xywh {100 160 220 25} box GTK_DOWN_BOX align 1 when 8
         }
         Fl_Button {} {
           label Cancel
           callback {cancel(autostart_window);
 UI ux;
 ux.showSettings();}
-          xywh {190 250 57 25} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
+          xywh {195 195 57 25} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button save_button {
           label OK
           callback {saveJWMRC(autostart_window);
 UI ux;
 ux.showSettings();}
-          tooltip {Write to configuration file} xywh {256 250 49 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
+          tooltip {Write to configuration file} xywh {261 195 49 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
         }
         Fl_Button {} {
           label {@+}
-          callback {choose_a_program();
-add_program_to_autostart();}
-          tooltip {Add the chosen program} xywh {25 205 35 35} box GTK_UP_BOX selection_color 47
+          callback {std::string proggie = program_name->value();
+if(proggie.compare("")==0){choose_a_program();}
+else{add_program_to_autostart();}} selected
+          tooltip {Add the chosen program} xywh {15 155 35 35} box GTK_UP_BOX selection_color 47
         }
         Fl_Browser autoStartBrowser {
-          xywh {15 10 280 140} type Hold box GTK_DOWN_BOX selection_color 80
+          xywh {15 10 305 140} type Hold box GTK_DOWN_BOX selection_color 80
           code0 {flAutostart a;}
           code1 {a.getAutostart(autoStartBrowser);}
         }
         Fl_Button {} {
           callback {remove_program_from_autostart();}
-          image {custom_buttons/minus} xywh {20 160 35 35} box GTK_UP_BOX
+          image {custom_buttons/minus} xywh {55 155 35 35} box GTK_UP_BOX
         }
       }
     }
@@ -168,4 +167,10 @@ else{
 	fl_message("Please click on an item to remove!");
 }} {}
   }
+} 
+
+Function {startup(Fl_Window *o)} {open
+} {
+  code {Config config; config.under_mouse(o);
+o->icon(config.Get_Fl_Icon(jsm_autostart_xpm));} {}
 } 

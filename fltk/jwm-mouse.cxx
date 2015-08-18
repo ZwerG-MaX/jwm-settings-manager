@@ -970,7 +970,7 @@ tap"));
       o->end();
     } // Fl_Scroll* o
     readsynclientoutput();
-    Config config;config.under_mouse(o);
+    startup(o);
     mouse_window->xclass("jsm-mouse");
     mouse_window->end();
     mouse_window->resizable(mouse_window);
@@ -980,7 +980,8 @@ tap"));
 
 void MouseUI::CalibrateEdge(int edge) {
   int fds[2];
-  pipe(fds);
+  int thispipe = pipe(fds);
+  if(thispipe !=0){std::cerr<<"pipe() did not return 0"<<std::endl;}
   char tmp[1024];
   m_pid=fork();	
   
@@ -1002,9 +1003,11 @@ void MouseUI::CalibrateEdge(int edge) {
     int xmin=100000;
     int ymax=0;
     int ymin=100000;
-    fgets(tmp,1024,fp);
+    char* thischar = fgets(tmp,1024,fp);
+    if (thischar == NULL){std::cerr<<"fgets returned NULL"<<std::endl;}
     for (int i=0; i<10 ; i++){
-      fgets(tmp,1024,fp);
+      char* thischar2 = fgets(tmp,1024,fp);
+      if (thischar2 == NULL){std::cerr<<"fgets returned NULL"<<std::endl;}
       if (verbose) printf("%s\n",tmp);
       parseline(tmp,argv,3);
       if (atoi(argv[1])>xmax) xmax=atoi(argv[1]);
@@ -1227,4 +1230,9 @@ int MouseUI::parseline(char *line, char **argv, int maxarg) {
   }
   *argv = 0;
   return argc;
+}
+
+void MouseUI::startup(Fl_Window *o) {
+  Config config; config.under_mouse(o);
+  o->icon(config.Get_Fl_Icon(jsm_desktop_xpm));
 }

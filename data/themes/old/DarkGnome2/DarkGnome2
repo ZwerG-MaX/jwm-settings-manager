@@ -9,18 +9,17 @@
     <!--Places Menu-->
     <Include>$HOME/.config/placesmenu</Include>
     <!-- Mouse Menu-->
-    <RootMenu height="16" onroot="23">
+    <RootMenu height="0" onroot="2">
         <Program icon="folder-home.svg" label="Home">xdg-open ~/</Program>
         <Program icon="jwm-settings-manager.svg" label="Settings">jwm-settings-manager</Program>
         <Program icon="preferences-desktop-wallpaper.svg" label="Change Desktop Background">jwm-settings-manager --desktop</Program>
     </RootMenu>
     <!--Shudown Menu-->
     <RootMenu height="0" onroot="9">
-        <Program icon="preferences-system-session.svg" label="Shutdown Menu">jwm-settings-manager --halt</Program>
-        <Program icon="system-restart.svg" label="Restart Computer">bash -c '
-gxmessage -buttons "Yes:3,No:4" "Restart?";case $? in 3)echo "Reboot";dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart;; 4)echo "Not restarting";; esac'</Program>
+        <Program icon="system-shutdown.svg" label="Shutdown Menu">torios-shutdown</Program>
+        <Program icon="system-restart.svg" label="Restart Computer">torios-reboot</Program>
         <Restart label="Reload Desktop" icon="system-restart.svg"/>
-        <Exit label="Logout" confirm="true" icon="system-logout.svg"/>
+        <Program label="Logout" icon="system-logout.svg">torios-exit</Program>
     </RootMenu>
 <!-- END MENUS -->
 <!-- GROUP -->
@@ -46,7 +45,7 @@ gxmessage -buttons "Yes:3,No:4" "Restart?";case $? in 3)echo "Reboot";dbus-send 
         <TrayButton label="Apps" icon="/usr/share/pixmaps/distributor-logo.png" border="false">root:5</TrayButton>
 	<TrayButton label="System" icon="applications-system.svg" border="false">root:8</TrayButton>
         <TrayButton label="Places" icon="folder.svg" border="false">root:7</TrayButton>
-        <TrayButton icon="browser.svg" border="false">exec:x-www-browser /usr/share/doc/ToriOS/startpage.html</TrayButton>
+        <TrayButton icon="browser.svg" border="false">exec:x-www-browser /usr/share/doc/torios/startpage.html</TrayButton>
         <Spacer/>
         <Dock/>
          <Clock format="%a, %e %b %l:%M %p">zenity --calendar --title="Calendar"</Clock>
@@ -256,6 +255,9 @@ gxmessage -buttons "Yes:3,No:4" "Restart?";case $? in 3)echo "Reboot";dbus-send 
    <StartupCommand>pcmanfm --desktop</StartupCommand>
    <StartupCommand>$HOME/.config/jsm-mouse</StartupCommand>
    <StartupCommand>nm-applet</StartupCommand>
+   <StartupCommand>volumeicon</StartupCommand>
+   <StartupCommand>xfce4-power-manager</StartupCommand>
+   <StartupCommand>nice-start</StartupCommand>
    <StartupCommand>/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1</StartupCommand>
 <!--POP UP -->
     <PopupStyle>

@@ -37,6 +37,7 @@
 #include <FL/Fl_Color_Chooser.H>
 #include "../include/Config.h"
 #include "../include/ui.h"
+#include "../data/icons/jsm-fonts.xpm"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Box.H>
@@ -145,5 +146,7 @@ public:
   void font_chooser_cb();
   void set_font_size();
   int get_font_size();
+  bool newOne();
+  void startup(Fl_Window *o);
 };
 #endif

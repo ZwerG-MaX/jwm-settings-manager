@@ -67,7 +67,7 @@ decl {\#include "../include/ui.h"} {public global
 decl {\#include "../include/tinyxml2.h"} {public global
 } 
 
-decl {//\#include "../data/icons/jwm-settings-manager.xpm"} {public global
+decl {\#include "../data/icons/jwm-settings-manager.xpm"} {public global
 } 
 
 decl {//\#include <FL/x.H>} {public global
@@ -82,8 +82,10 @@ class SettingsUI {open
   } {
     Fl_Window settings_window {
       label {Settings Manager} open selected
-      xywh {703 487 395 375} type Double color 45 labelcolor 7 hide
-      code0 {Config config;config.under_mouse(o);} xclass {jwm-settings-manager}
+      xywh {372 462 395 375} type Double color 45 labelcolor 7
+      code0 {Config config;}
+      code1 {o->icon(config.Get_Fl_Icon(jwm_settings_manager));}
+      code2 {config.under_mouse(o);} xclass {jwm-settings-manager} visible
     } {
       Fl_Box {} {
         label {Settings Manager}

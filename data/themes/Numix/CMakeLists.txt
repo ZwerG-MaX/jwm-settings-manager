@@ -1,6 +1,6 @@
 ## Variables in the configure (*.in) files
 #####################################################################################
-set(DEFAULT_THEME "Numix")
+set(THIS_THEME "Numix")
 #####################################################################################
 set(TRAY "${DEFAULT_TRAY}")
 set (OLD_TRAY "${OLD_DEFAULT_TRAY}")
@@ -48,5 +48,11 @@ set(POPUP_OUTLINE "#484848")
 set(POPUP_FOREGROUND "#2d2d2d")
 set(POPUP_BACKGROUND "#2d2d2d")
 
+## this stays the same for all files
+set(CURRENTTHEME "../${THIS_THEME}/${THIS_THEME}")
+set(THEME_230 "../2.3.0/${THIS_THEME}/${THIS_THEME}")
+configure_file(../all-2.3.2+themes.in ${THEME_230})
+configure_file(../all-new-themes.in ${CURRENTTHEME})
 ### SETUP OLD THEME NAMES
-configure_file(../all-new-themes.in ${DEFAULT_THEME})
+set(OLD_THEME "../old/${THIS_THEME}/${THIS_THEME}")
+configure_file(../all-old-themes.in ${OLD_THEME})

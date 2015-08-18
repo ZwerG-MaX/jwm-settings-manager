@@ -24,12 +24,16 @@
  */
 #include "../include/flAutostart.h"
 flAutostart::flAutostart(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"[flAutostart]->"<<std::endl;
+#endif // DEBUG
     tinyxml2::XMLDocument doc;
 }
 
-flAutostart::~flAutostart()
-{
-    //dtor
+flAutostart::~flAutostart(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"<-[flAutostart]"<<std::endl;
+#endif // DEBUG
 }
 
 

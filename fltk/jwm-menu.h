@@ -40,10 +40,10 @@
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Browser.H>
+#include <FL/Fl_Output.H>
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Menu_Button.H>
-#include <FL/Fl_Output.H>
 #include <FL/Fl_Slider.H>
 
 class MenuUI : public Config {
@@ -84,6 +84,7 @@ private:
   inline void cb_Menu1_i(Fl_Button*, void*);
   static void cb_Menu1(Fl_Button*, void*);
 public:
+  Fl_Output *labler;
   Fl_Double_Window* add_window();
   Fl_Input *add_label;
   Fl_Input *add_icon;
@@ -170,5 +171,6 @@ public:
   void remove_an_item();
   void remove_a_menu();
   int save_cb();
+  void startup(Fl_Window *o);
 };
 #endif

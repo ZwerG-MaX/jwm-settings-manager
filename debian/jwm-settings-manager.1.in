@@ -41,9 +41,15 @@ configure JWM easily
 .TP
 \-c  --copyright   show copyright information
 .TP
-.B X ONLY OPTION
+.B SHORTCUTS FOR USE IN THE PANELS AND MENUS
 .TP
-\--halt           show shutdown menu
+\-l -clock        show clock settings
+.TP
+\-s  --shortcuts   show shortcuts window
+.TP
+\-u  --menu        show menu window
+.TP
+\    --halt        show shutdown dialog
 
 .SH AUTHOR
 israeldahl

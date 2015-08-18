@@ -8,6 +8,7 @@ data/themes/Bassem/ usr/share/jwm-settings-manager/themes/
 data/themes/Numix/ usr/share/jwm-settings-manager/themes/
 data/time usr/share/jwm-settings-manager/
 data/jwmIconFinder usr/bin
+data/nice-start usr/bin
 data/icons/jwm-settings-manager.png usr/share/pixmaps/
 data/*.desktop usr/share/applications/
 data/pb_JWM usr/share/jwm-settings-manager/

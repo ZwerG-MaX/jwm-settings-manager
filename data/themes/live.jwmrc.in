@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <JWM>
 <!-- MENUS -->
-    @LIVE_MENUS_LIST@
-<!-- END MENUS -->
+    @MENUS_LIST_NEW@
 <!-- END MENUS -->
 <!-- GROUP -->
     @GROUPS@
 <!-- PANEL -->
-    @TRAY@
+    @DEFAULT_TRAY@
 <!-- Panel Style -->
     <TaskListStyle>
         <Font>@FONT@</Font>

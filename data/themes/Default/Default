@@ -2,23 +2,35 @@
 <JWM>
 <!-- MENUS -->
     <!-- Main Menu -->
-    <!-- NOTE, if you hand edit this root:5 is the app menu and root:7 is the places menu  you have been duly warned :) -->
-    <Include>/etc/jwm/jwm-menu</Include>
+        <Include>$HOME/.config/torimenu</Include>
+    <!--These menus provide a nice exit dialog and no menu on desktop click 1-->
+    <RootMenu height="0" onroot="z">
+        <Exit label="Logout" confirm="false" icon="system-logout.svg"/>
+    </RootMenu>
     <RootMenu onroot="1"/>
+    <!--Traybutton Edit Menu-->
+    <RootMenu onroot="p">
+	<Program icon="jsm-panel.svg" label="Edit Panel">jwm-settings-manager --panel</Program>
+	<Program icon="add.svg" label="Add new items">jwm-settings-manager --shortcuts</Program>
+    </RootMenu>
+    <RootMenu onroot="m">
+	<Program icon="jsm-panel.svg" label="Edit Menu">jwm-settings-manager --menu</Program>
+	<Program icon="reload.svg" label="Update Menus">update-menus</Program>
+    </RootMenu>
     <!--Places Menu-->
     <Include>$HOME/.config/placesmenu</Include>
     <!-- Mouse Menu-->
-    <RootMenu height="0" onroot="23">
+    <RootMenu height="0" onroot="2">
         <Program icon="folder-home.svg" label="Home">xdg-open ~/</Program>
         <Program icon="jwm-settings-manager.svg" label="Settings">jwm-settings-manager</Program>
         <Program icon="preferences-desktop-wallpaper.svg" label="Change Desktop Background">jwm-settings-manager --desktop</Program>
     </RootMenu>
     <!--Shudown Menu-->
     <RootMenu height="0" onroot="9">
-        <Program icon="system-shutdown.svg" label="Shutdown Menu">jwm-settings-manager --halt</Program>
+        <Program icon="system-shutdown.svg" label="Shutdown Menu">torios-shutdown</Program>
         <Program icon="system-restart.svg" label="Restart Computer">torios-reboot</Program>
         <Restart label="Reload Desktop" icon="system-restart.svg"/>
-        <Exit label="Logout" confirm="true" icon="system-logout.svg"/>
+        <Program label="Logout" icon="system-logout.svg">torios-exit</Program>
     </RootMenu>
 <!-- Clock Menu-->
     <RootMenu height="0" onroot="c">
@@ -48,15 +60,23 @@
     </Group>
 <!-- PANEL -->
         <Tray x="0" y="-1" height="34" valign="top" width="0" halign="fixed" layout="horizontal">
-        <TrayButton label="Apps" icon="/usr/share/pixmaps/distributor-logo.png" border="false">root:5</TrayButton>
-        <TrayButton label="Places" icon="folder.svg" border="false">root:7</TrayButton>
-        <TrayButton icon="browser.svg" border="false">exec:x-www-browser /usr/share/doc/ToriOS/startpage.html</TrayButton>
+        <TrayButton label="Apps" icon="/usr/share/pixmaps/distributor-logo.png" border="false">
+            <Button mask="1">root:3</Button>
+            <Button mask="23">root:m</Button>
+        </TrayButton>
+        <TrayButton label="Places" icon="folder.svg" border="false">
+            <Button mask="1">root:7</Button>
+            <Button mask="23">root:m</Button>
+        </TrayButton>
+        <TrayButton icon="browser.svg" border="false">
+            <Button mask="1">exec:x-www-browser /usr/share/doc/torios/startpage.html</Button>
+            <Button mask="23">root:p</Button>>
+        </TrayButton>
         <Pager labeled="true"/>
         <TaskList maxwidth="256"/>
         <Dock/>
         <Swallow name="xload" width="64">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>
         <Clock format="%a, %e %b %l:%M %p">root:c</Clock>
-        <TrayButton label="Shutdown" icon="system-shutdown.svg" border="false">root:9</TrayButton>
     </Tray>
 <!-- Panel Style -->
     <TaskListStyle>
@@ -284,6 +304,9 @@
    <StartupCommand>pcmanfm --desktop</StartupCommand>
    <StartupCommand>$HOME/.config/jsm-mouse</StartupCommand>
    <StartupCommand>nm-applet</StartupCommand>
+   <StartupCommand>volumeicon</StartupCommand>
+   <StartupCommand>xfce4-power-manager</StartupCommand>
+   <StartupCommand>nice-start</StartupCommand>
    <StartupCommand>/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1</StartupCommand>
 <!--POP UP -->
     <PopupStyle>

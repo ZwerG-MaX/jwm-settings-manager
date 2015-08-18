@@ -2,8 +2,10 @@
 
 #include "../include/Apps.h"
 
-Apps::Apps()
-{
+Apps::Apps(){
+#ifdef DEBUG_TRACK
+  std::cerr<<"[Apps]->"<<std::endl;
+#endif // DEBUG
     gnomeVolume ="gnome-sound-applet";
     gnomeVolumeExists =testExec(gnomeVolume);
 
@@ -23,11 +25,16 @@ Apps::Apps()
     wicd="wicd-gtk";
     wicd_tray="wicd-gtk -t";
     wicdExists= testExec(wicd);
+
+    menuROOT="root:p";
+    clockROOT="root:c";
+    clockCHAR='c';
 }
 
-Apps::~Apps()
-{
-    //dtor
+Apps::~Apps(){
+#ifdef DEBUG_TRACK
+  std::cerr<<"<-[Apps]"<<std::endl;
+#endif // DEBUG
 }
 
 //this is a general checker to see if the panel element exists
@@ -174,9 +181,9 @@ void Apps::deleteAppXload(){
 
 ///  clock ----------------------------------------------
 void Apps::populateClocks(Fl_Browser *o){
-    const char* filename = "/usr/share/jwm-settings-manager/time";
+    std::string filename = defaultPath + "time";
     std::string line;
-    std::ifstream ifs (filename, std::ifstream::in);
+    std::ifstream ifs (filename.c_str(), std::ifstream::in);
     if(ifs.is_open()){
         while (getline(ifs,line)){
             o->add(line.c_str());
@@ -186,7 +193,9 @@ void Apps::populateClocks(Fl_Browser *o){
 
 void Apps::changeClock(std::string style){
     loadTemp();
-    //std::cerr<<"style: "<<style<<std::endl;
+    if(DEBUG_ME){
+        std::cerr<<"style Chosen: "<<style<<std::endl;
+    }
     //Check to make sure there is REALLY a clock... just in case
     bool exists = isClock();
     //if it doesn't exist... return from this function without doing anything
@@ -210,22 +219,30 @@ void Apps::changeClock(std::string style){
         }
     }
     if(!panelElement->FirstChildElement("Clock")){
+        if(DEBUG_ME){std::cerr<<"No Clock Element... we need to create it"<<std::endl;}
         createElement("Tray","Clock");
     }
     //panelElement=panelElement->FirstChildElement("Clock");
-    if (style.compare("Day")==0){panelElement->FirstChildElement("Clock")->SetAttribute("format","%a, %e %b %l:%M %p");
-    std::cerr<<"Day"<<std::endl;
+    if (style.compare("Day")==0){
+        panelElement->FirstChildElement("Clock")->SetAttribute("format","%a, %e %b %l:%M %p");
+        if(DEBUG_ME){std::cerr<<"Day"<<std::endl;}
     }
-    else if(style.compare("12")==0){panelElement->FirstChildElement("Clock")->SetAttribute("format","%l:%M %p");
-    std::cerr<<"12"<<std::endl;
+    else if(style.compare("12")==0){
+        panelElement->FirstChildElement("Clock")->SetAttribute("format","%l:%M %p");
+        if(DEBUG_ME){std::cerr<<"12"<<std::endl;}
     }
-    else if(style.compare("24")==0){panelElement->FirstChildElement("Clock")->SetAttribute("format","%H:%M");
-    std::cerr<<"24"<<std::endl;
+    else if(style.compare("24")==0){
+        panelElement->FirstChildElement("Clock")->SetAttribute("format","%H:%M");
+        if(DEBUG_ME){std::cerr<<"24"<<std::endl;}
     }
-    else if(style.compare("Year")==0){panelElement->FirstChildElement("Clock")->SetAttribute("format","%F %H:%M");
-    std::cerr<<"Year"<<std::endl;
+    else if(style.compare("Year")==0){
+        panelElement->FirstChildElement("Clock")->SetAttribute("format","%F %H:%M");
+        if(DEBUG_ME){std::cerr<<"Year"<<std::endl;}
     }
-    else{panelElement->FirstChildElement("Clock")->SetAttribute("format",style.c_str());}
+    else{
+        panelElement->FirstChildElement("Clock")->SetAttribute("format",style.c_str());
+        if(DEBUG_ME){std::cerr<<"using: "<<style<<std::endl;}
+    }
     saveChangesTemp();
 }
 /*
@@ -233,6 +250,9 @@ void Apps::changeClock(std::string style){
 TODO: Add function for choosing which program to use for the clock/calender.
 Also, add a better default option.
 */
+void Apps::setClockProgram(const char* program){
+    std::cout<<"TODO"<<program<<std::endl;
+}
 std::string Apps::getClock(){
     loadTemp();
 
@@ -245,7 +265,14 @@ std::string Apps::getClock(){
 
     bool exists = isClock();
     //if it doesn't exist... return from this function without doing anything
-    if(!exists){return "No Clock Added yet";}
+    if(!exists){
+        if(DEBUG_ME){std::cerr<<"No Clock Added yet, adding default"<<std::endl;}
+        createElement("Tray","Clock");
+        changeClock("Day");
+        saveChangesTemp();
+        saveChanges();
+        return "%a, %e %b %l:%M %p";
+    }
     int i = 1;
     int panel = currentPanel();
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
@@ -259,7 +286,9 @@ std::string Apps::getClock(){
     panelElement = panelElement->FirstChildElement("Clock");
     const char* current = panelElement->Attribute("format");
     std::string result = getClock(current);
-    //std::cout<<"Current Clock: "<<result<<std::endl;
+    if(DEBUG_ME){
+        std::cerr<<"Current Clock: "<<result<<std::endl;
+    }
     return result;
 
 }
@@ -293,17 +322,25 @@ std::string Apps::getClockProgram(){
         //if nothing exists... make it known
         if(result.compare("")==0){return "";}
 
-        if(newStyle()){
+        if(newStyle() != -1){
             unsigned int colon = result.find_first_of(':');
-            result = result.substr(colon+1,std::string::npos);
+            if((colon < result.length())&&(colon!=0)){
+                result = result.substr(colon+1,std::string::npos);
+                if(DEBUG_ME){std::cerr<<"Current Clock (letters are menus): "<<result<<std::endl;}
+            }
         }
-        std::cout<<"Current Clock Program: "<<result<<std::endl;
+        else{
+            if(DEBUG_ME){std::cerr<<"Current Clock Program: "<<result<<std::endl;}
+            return result;
+        }
+        if(DEBUG_ME){std::cerr<<"[OLD style JWM] Current Clock Program: "<<result<<std::endl;}
         return result;
     }
+    if(DEBUG_ME){std::cerr<<"NO Clock"<<std::endl;}
     return "";
 }
 void Apps::addClock(){
-  if(newStyle()){addAPP("Clock","format","%a, %e %b %l:%M %p","exec:xclock");}
+  if(newStyle()!=-1){addAPP("Clock","format","%a, %e %b %l:%M %p","exec:xclock");}
   else{addAPP("Clock","format","%a, %e %b %l:%M %p","xclock");}
 }
 std::string Apps::getClock(const char* timeString){
@@ -316,6 +353,57 @@ std::string Apps::getClock(const char* timeString){
     std::string stringBuffer = buffer;
 
     return stringBuffer;
+}
+void Apps::createClockMenu(std::string thisClockMenu){
+/*
+<!-- Clock Menu-->
+    <RootMenu height="0" onroot="c">
+        <Program icon="time.svg" label="Clock Settings">jwm-settings-manager --clock-settings</Program>
+        <Separator/>
+        <Program icon="calendar.svg" label="Calendar">zenity --calendar --title="Calendar"</Program>
+        <Program icon="time.svg" label="Timezone Settings">xterm -e 'sudo dpkg-reconfigure tzdata'</Program>
+    </RootMenu>
+*/
+    //create the menu
+    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
+    tinyxml2::XMLNode *node = doc.NewElement("RootMenu");
+    element->InsertEndChild(node);
+    tinyxml2::XMLElement* clockElement = node->ToElement();
+    clockElement->SetAttribute("onroot",thisClockMenu.c_str());
+    //tinyxml2::XMLNode* newProgram;
+
+    //set our base to add things to
+    //newProgram = clockElement;
+    ///<Program icon="time.svg" label="Clock Settings">jwm-settings-manager --clock-settings</Program>
+    tinyxml2::XMLNode* progNode = doc.NewElement("Program");
+    tinyxml2::XMLElement* progNodeEle;
+    clockElement->InsertEndChild(progNode);
+    progNodeEle = progNode->ToElement();
+    progNodeEle->SetAttribute("icon","time");
+    progNodeEle->SetAttribute("label",gettext("Clock Settings"));
+    progNodeEle->SetText("jwm-settings-manager --clock-settings");
+    ///separator
+    tinyxml2::XMLNode* SeparatorNode = doc.NewElement("Separator");
+//    tinyxml2::XMLElement* SeparatorNodeEle;
+    clockElement->InsertEndChild(SeparatorNode);
+    ///<Program icon="calendar.svg" label="Calendar">zenity --calendar --title="Calendar"</Program>
+    tinyxml2::XMLNode* progNode2 = doc.NewElement("Program");
+    tinyxml2::XMLElement* progNode2Ele;
+    clockElement->InsertEndChild(progNode2);
+    progNode2Ele = progNode2->ToElement();
+    progNode2Ele->SetAttribute("icon","calendar");
+    progNode2Ele->SetAttribute("label",gettext("Calendar"));
+    progNode2Ele->SetText(getJSMelement("clock"));
+    ///<Program icon="time.svg" label="Timezone Settings">xterm -e 'sudo dpkg-reconfigure tzdata'</Program>
+    tinyxml2::XMLNode* progNode3 = doc.NewElement("Program");
+    tinyxml2::XMLElement* progNode3Ele;
+    clockElement->InsertEndChild(progNode3);
+    progNode3Ele = progNode3->ToElement();
+    progNode3Ele->SetAttribute("icon","time");
+    progNode3Ele->SetAttribute("label",gettext("Timezone Settings"));
+    progNode3Ele->SetText(getJSMelement("clocktz"));
+    saveChangesTemp();
+    saveChanges();
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++ END Clock +++++++++++++++++++++++++++++++++++++++++++++
@@ -421,7 +509,6 @@ void Apps::addAPP(const char* app){
 void Apps::addAPP(const char* app, const char* attribute, const char* value, const char* newText){
     loadTemp();
     int i = 1;
-
     //make sure Tray exists
     int numOFpanels = numPanels();
     if (numOFpanels == -1){createPanel();}
@@ -437,13 +524,26 @@ void Apps::addAPP(const char* app, const char* attribute, const char* value, con
     }
     tinyxml2::XMLNode *node = doc.NewElement(app);
     panelElement->InsertEndChild(node);
-    tinyxml2::XMLText *textNode = doc.NewText(newText);
-    node->LinkEndChild(textNode);
     panelElement=panelElement->FirstChildElement(app);
     panelElement->SetAttribute(attribute,value);
     saveChangesTemp();
+    if(newStyle()>=1){
+        std::string APP = app;
+        if (APP.compare("Clock")==0){
+            if(DEBUG_ME){std::cerr<<"New Style Clock using: "<<clockROOT<<std::endl;}
+            tinyxml2::XMLText *textNode = doc.NewText(clockROOT);
+            node->LinkEndChild(textNode);
+            saveChangesTemp();
+            if(!isRootMenu("c")){
+                createClockMenu("c");
+            }
+            return;
+        }
+    }
+    tinyxml2::XMLText *textNode = doc.NewText(newText);
+    node->LinkEndChild(textNode);
+    saveChangesTemp();
 }
-
 
 //---------------------------------------------  Shutdown Menu ----------------------------------------------
 
@@ -529,10 +629,11 @@ void Apps::deletePlaces(){
 ///-----------------------------------------------  Shortcuts -------------------------------------------------
 
 std::string Apps::desktopIcon(std::string filename){
-    if (filename.compare("")==0){return "";}
+    if (filename.compare("")==0){std::cerr<<"No file specified to look for Icon"<<std::endl;return "";}
     const char* IconLine = grep("Icon=",filename.c_str());
     std::string ICON = IconLine;
-    if((IconLine == NULL)||(ICON.compare("")==0)){return " ";}
+    if((IconLine == NULL)||(ICON.compare("")==0)){std::cerr<<"No icon found in "<<filename<<std::endl;return " ";}
+    //std::cout<<"Icon:::"<<ICON<<std::endl;
     bool useExt = false;
     unsigned int equals = 0, ext = 0;
     equals = ICON.find("=");
@@ -541,12 +642,16 @@ std::string Apps::desktopIcon(std::string filename){
     if (equals < ICON.length()){ICON= ICON.erase(0,equals+1);}
 
     if (useExt){
+        if(newStyle() < 1){
         std::string extention = getExtention();
         ICON+=extention;
+        }
+        useExt=false;
     }
-    std::cerr<<ICON<<std::endl;
+    if(DEBUG_ME){std::cerr<<"Desktop Icon found: "<<ICON<<std::endl;}
     return ICON;
 }
+
 std::string Apps::desktopName(std::string filename){
     if (filename.compare("")==0){return "";}
     const char* myLANG = getenv("LANG");
@@ -567,7 +672,7 @@ std::string Apps::desktopName(std::string filename){
     unsigned int equals = 0;
     equals = ICON.find("=");
     if (equals < ICON.length())ICON= ICON.erase(0,equals+1);
-    //std::cerr<<ICON<<std::endl;
+    if(DEBUG_ME){std::cerr<<"Desktop Name found: "<<ICON<<std::endl;}
     return ICON;
 }
 
@@ -595,10 +700,16 @@ void Apps::populate(Fl_Browser *o){
         std::string item =panelElement->Name();
         std::string add_text;
         if(item.compare("TrayButton")==0){
-            add_text=panelElement->GetText();
+            if(panelElement->FirstChildElement("Button")){
+
+                if(panelElement->FirstChildElement("Button")->GetText()){add_text=panelElement->FirstChildElement("Button")->GetText();}
+            }
+            else{
+                if(panelElement->GetText()){add_text=panelElement->GetText();}
+            }
             unsigned found = add_text.find_first_of(":");
             if(!isExec(add_text.c_str())){
-                add_text = add_text.erase(0,found+1);
+                if(found<add_text.length() && found > 0){add_text = add_text.erase(0,found+1);}
                 int number = convert(add_text.c_str());
                 switch(number){
                     case 5:
@@ -641,6 +752,7 @@ void Apps::populate(Fl_Browser *o){
         else{
             add_text=item;
         }
+        if(DEBUG_ME){std::cerr<<"populating Panel Apps with: "<<add_text<<std::endl;}
         o->add(add_text.c_str());
     }
     o->redraw();
@@ -655,11 +767,11 @@ void Apps::deletePanelItem(std::string whichItem){
     else if(whichItem.compare("Clock")==0){deleteClock();}
     else if(whichItem.compare("")==0){return;}
     else{
-        std::cout<<"deletePanelItem: "<<whichItem<<std::endl;
+        if(DEBUG_ME){std::cerr<<"deletePanelItem: "<<whichItem<<std::endl;}
         unsigned found = whichItem.find_first_of(":");
         if(found<=whichItem.length()){
             std::string thisItem = whichItem.substr(0,found);
-            std::cout<<thisItem<<std::endl;
+                if(DEBUG_ME){std::cerr<<thisItem<<std::endl;}
             if(thisItem.compare("Swallowed App")==0){
                 deleteAPP("Swallow");
             }
@@ -668,7 +780,7 @@ void Apps::deletePanelItem(std::string whichItem){
                 deleteShortcut(whichItem);
             }
             else{
-                    std::cout<<"Found: "<<thisItem<<"\nIn your line: "<<whichItem<<"\nMust contain exec: OR root: OR Swallowed App:"<<std::endl;
+                    if(DEBUG_ME){std::cerr<<"Found: "<<thisItem<<"\nIn your line: "<<whichItem<<"\nMust contain exec: OR root: OR Swallowed App:"<<std::endl;}
                     return;
             }
         }
@@ -700,25 +812,19 @@ void Apps::getShortcuts(Fl_Browser *o){
     if (panelElement->FirstChildElement("TrayButton")){
         for(panelElement = panelElement->FirstChildElement("TrayButton");panelElement;panelElement = panelElement->NextSiblingElement("TrayButton")){
             //Get the documents text
-            programs = panelElement->GetText();
+            if(panelElement->FirstChildElement("Button")){programs = panelElement->FirstChildElement("Button")->GetText();}
+            else{programs = panelElement->GetText();}
             if(isExec(programs.c_str())){
                 //check for the colon
                 unsigned found = programs.find_first_of(":");
                 //delete everything before and including the colon (i.e. 'exec:')
                 programs = programs.erase(0,found+1);
                 //add it to the Fl_Browser
+                if(DEBUG_ME){std::cerr<<"adding: "<<programs<<" to the browser"<<std::endl;}
                 o->add(programs.c_str());
             }
         }
     }
-}
-bool Apps::compared(const char* something, const char* text){
-    std::string stringText = text;
-    unsigned found = stringText.find_first_of(":");
-    stringText=stringText.erase(found+1,std::string::npos);
-    std::string stringSomething = something;
-    if(stringText.compare(stringSomething)==0){return true;}
-    return false;
 }
 
 bool Apps::isShortcuts(){
@@ -743,9 +849,15 @@ bool Apps::isShortcuts(){
     }
     if(!panelElement->FirstChildElement( "TrayButton" )){return false;}
     for(panelElement=panelElement->FirstChildElement( "TrayButton" );panelElement;panelElement = panelElement->NextSiblingElement("TrayButton")){
+        if(panelElement->FirstChildElement("Button")){
+            if(panelElement->FirstChildElement("Button")->GetText()){
+                programs = panelElement->FirstChildElement("Button")->GetText();
+                checkingEXEC = comparedColon("exec:",programs.c_str());
+            }
+        }
         if(panelElement->GetText()){
             programs = panelElement->GetText();
-            checkingEXEC =compared("exec:",programs.c_str());
+            checkingEXEC = comparedColon("exec:",programs.c_str());
         }
         if(checkingEXEC){return checkingEXEC;}
     }
@@ -779,15 +891,23 @@ void Apps::deleteShortcut(std::string shortcut){
             i++;
         }
     }
+
     //do we have any buttons??
     if(!panelElement->FirstChildElement( "TrayButton" )){return;}
-
+    tinyxml2::XMLElement* button;
     //loop through the buttons
     for(panelElement=panelElement->FirstChildElement( "TrayButton" );panelElement;panelElement = panelElement->NextSiblingElement("TrayButton")){
 
         //make sure there is text
         if(panelElement->GetText()){programs = panelElement->GetText();}
-
+        if(panelElement->FirstChildElement("Button")){
+            if(panelElement->FirstChildElement("Button")->GetText()){
+                button = panelElement;
+                programs = button->FirstChildElement("Button")->GetText();
+                button = button->FirstChildElement("Button");
+            }
+        }
+        if(DEBUG_ME){std::cerr<<"Input: "<<input<<" Current: "<<programs<<std::endl;}
         //make sure the text is not blank
         if(programs.compare("")!=0){found_colon = programs.find_first_of(':');}
 
@@ -801,6 +921,7 @@ void Apps::deleteShortcut(std::string shortcut){
                 if(programs.compare(input)==0){
                     rootNode->DeleteChild(panelElement);
                     saveChangesTemp();
+                    return;
                 }//if input is program in file (delete the program)
 
                 else{
@@ -863,6 +984,60 @@ void Apps::addShortcut(const char* icon, const char * program, const char* popup
     else {node->SetAttribute("border",border);}
     saveChangesTemp();
 }
+void Apps::addButton(const char* icon, const char * program, const char* popup, int border){
+    loadTemp();
+    int i = 1;
+    //make sure Tray exists
+    int numOFpanels = numPanels();
+    if (numOFpanels == -1){
+        createPanel();
+    }
+    int panel = currentPanel();
+    std::string programs, Exec, Root;
+    // bool isExec, isRoot; //TODO: check for other buttons and add after them
+    std::string exec = "exec:";
+    std::string root= "root:";
+    std::string shortcut = exec;
+    shortcut += program;
+    tinyxml2::XMLNode *newNode = doc.NewElement("TrayButton");
+    tinyxml2::XMLNode *trayNode;
+    tinyxml2::XMLNode *trayNode2;
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "Tray" );
+    trayNode=panelElement;
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            trayNode=panelElement;
+            i++;
+        }
+    }
+    if (icon==NULL){
+        std::string testIcon="application-default-icon";
+        testIcon+=getExtention();
+        icon = testIcon.c_str();
+    }
+    trayNode->InsertEndChild(newNode);
+    trayNode2 = newNode;
+    tinyxml2::XMLElement *node = newNode->ToElement();
+    node->SetAttribute("icon",icon);
+    node->SetAttribute("popup",popup);
+    if (border == 0) {node->SetAttribute("border","false");}
+    else {node->SetAttribute("border",border);}
+
+    tinyxml2::XMLNode *buttonNode= doc.NewElement("Button");
+    tinyxml2::XMLNode *buttonNode2= doc.NewElement("Button");
+    trayNode2->InsertEndChild(buttonNode);
+    trayNode2->InsertEndChild(buttonNode2);
+    tinyxml2::XMLElement *BUTTON = buttonNode->ToElement();
+    tinyxml2::XMLElement *BUTTON2 = buttonNode2->ToElement();
+    BUTTON->SetAttribute("mask",1);
+    BUTTON->SetText(program);
+    BUTTON2->SetAttribute("mask",23);
+    if(DEBUG_ME){std::cerr<<"mask=1 launches:"<<program<<"\nadding "<<menuROOT<<std::endl;}
+    BUTTON2->SetText(menuROOT);
+    saveChangesTemp();
+    return;
+}
 
 void Apps::deleteALLshortcuts(){
     loadTemp();
@@ -876,22 +1051,40 @@ void Apps::deleteALLshortcuts(){
     std::string exec = "exec:";
     int i = 1;
     int panel = currentPanel();
+    tinyxml2::XMLNode* node;
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "Tray" );
     if (panel != i){
         while(panelElement->NextSiblingElement("Tray") && i!=panel){
             panelElement=panelElement->NextSiblingElement("Tray");
+            node=panelElement;
             i++;
         }
     }
-    //panelElement
-    ///TODO multipanel checking here too...
-    tinyxml2::XMLNode* node = doc.FirstChildElement( "JWM" )->
-                                    FirstChildElement( "Tray" );
+    tinyxml2::XMLElement* button;
     for(panelElement= panelElement->FirstChildElement("TrayButton");panelElement;panelElement = panelElement->NextSiblingElement("TrayButton")){
-        if(panelElement->GetText()){programs = panelElement->GetText();
+        if(panelElement->GetText()){
+            programs = panelElement->GetText();
             unsigned found = programs.find_first_of(":");
             programs = programs.erase(found+1,std::string::npos);
-            if(programs.compare(exec)==0){node->DeleteChild(panelElement);}
+            if(programs.compare(exec)==0){
+                node->DeleteChild(panelElement);
+                return;
+            }
+        }
+        if(panelElement->FirstChildElement("Button")){
+            for(button = panelElement->FirstChildElement("Button");button;button->NextSiblingElement("Button")){
+                if(button->GetText()){
+                    programs = button->GetText();
+                    unsigned found = programs.find_first_of(":");
+                    programs = programs.erase(found+1,std::string::npos);
+                    if(programs.compare(exec)==0){
+                        node->DeleteChild(button);
+                        return;
+                    }
+
+                }
+            }
+
         }
     }
     saveChangesTemp();
@@ -1029,10 +1222,10 @@ void Apps::removeMenuItem(Fl_Browser *elementName, Fl_Browser *elementText){
     int LINEposition = elementName->value();
     std::string NAME = elementName->text(LINEposition);
     std::string TEXT = elementText->text(LINEposition);
-    tinyxml2::XMLElement * menuElement;
+//    tinyxml2::XMLElement * menuElement;
     for(tinyxml2::XMLElement * menu = doc.FirstChildElement("JWM")->FirstChildElement(root);menu;menu = menu->NextSiblingElement()){
         if(NAME.compare(TEXT)==0){
-            std::cout<<NAME<<" has no text"<<std::endl;
+            std::cerr<<NAME<<" has no text"<<std::endl;
         }
     }
 
@@ -1096,7 +1289,7 @@ void Apps::ConfigMenuItem(Fl_Browser *elementName,
                             //is it the one we want??
                             if(TEXT.compare(docText)==0){
                                 //Program (label,icon) [program]
-                                std::cout<<NAME<<" name"<<std::endl;
+                                if(DEBUG_ME){std::cerr<<NAME<<" name"<<std::endl;}
                                 int a = setMenuAttribute(NAME.c_str(),labelAttrib,label,rootmenu);
                                 int b = setMenuAttribute(NAME.c_str(),iconAttrib,icon,rootmenu);
 
@@ -1119,7 +1312,7 @@ void Apps::ConfigMenuItem(Fl_Browser *elementName,
                         */
                         else{
                             if(NAME.compare("Separator")==0){
-                                std::cout<<"Can not configure: "<<NAME<<"... there is nothing to configure"<<std::endl;
+                                std::cerr<<"Can not configure: "<<NAME<<"... there is nothing to configure"<<std::endl;
                             }
                             else if(NAME.compare("Exit")==0){
                                 //we need (label,icon,confirm)
@@ -1417,7 +1610,7 @@ void Apps::getMenuItems(Fl_Browser *elementName, const char* rootmenu, Fl_Browse
     const char* root ="RootMenu";
     std::string attributeValue;
     if(!testElement(root)){
-        std::cout<<"No menus found.. this is odd"<<std::endl;
+        std::cerr<<"No menus found.. this is odd"<<std::endl;
     }
     else{
     tinyxml2::XMLElement * menuElement;
@@ -1475,7 +1668,7 @@ int Apps::setMenuAttribute(const char* whichElement, const char* attribute, std:
     std::string nameTester, attributeValue, textTester;
     //make sure element exists first
     //if (!isElement(root,whichElement)){return 1;}
-    std::cout<<"is Element"<<std::endl;
+    if(DEBUG_ME){std::cerr<<"is Element"<<std::endl;}
     //point to it
     tinyxml2::XMLElement * menuElement;
     for(tinyxml2::XMLElement * menu = doc.FirstChildElement("JWM")->FirstChildElement(root);menu;menu = menu->NextSiblingElement(root)){
@@ -1509,7 +1702,7 @@ int Apps::setMenuAttribute(const char* whichElement, const char* attribute, std:
 int Apps::setMenuText(const char* whichElement, const char* text, const char* rootmenu, const char* oldtext){
     loadTemp();
     const char* root ="RootMenu";
-    std::cout<<whichElement<<" "<<text<<" "<<rootmenu<<" "<<oldtext<<std::endl;
+    if(DEBUG_ME){std::cerr<<"Set Menu Text:\nElement: "<<whichElement<<" text to set: "<<text<<" root menu: "<<rootmenu<<" look for: "<<oldtext<<std::endl;}
     tinyxml2::XMLElement * menuElement;
     std::string nameTester, textTester;
     //this will hold the attribute value to compare with onroot
@@ -1529,7 +1722,7 @@ int Apps::setMenuText(const char* whichElement, const char* text, const char* ro
             // see if it is the root menu we are looking for
             if (attributeValue.compare(rootmenu)==0){
                 //Yes it does
-                std::cout<<attributeValue<<" menu"<<std::endl;
+                if(DEBUG_ME){std::cerr<<attributeValue<<" menu"<<std::endl;}
 
                 //loop through sub elements of RootMenu
                 for(menuElement = menu->FirstChildElement();menuElement;menuElement = menuElement->NextSiblingElement()){
@@ -1537,12 +1730,12 @@ int Apps::setMenuText(const char* whichElement, const char* text, const char* ro
 
                     //does this element match the one we want to change???
                     if(nameTester.compare(whichElement)==0){
-                        std::cout<<nameTester<<" "<<whichElement<<std::endl;
+                        if(DEBUG_ME){std::cerr<<nameTester<<" "<<whichElement<<std::endl;}
 
                         //does it have text?
                         if(NULL !=  menuElement->GetText()){
                             textTester=menuElement->GetText();
-                            std::cout<<textTester<<" "<<oldtext<<std::endl;
+                            if(DEBUG_ME){std::cerr<<textTester<<" "<<oldtext<<std::endl;}
                             if(NULL != oldtext){
                                 //is it the one we want to change??
                                 if(textTester.compare(oldtext)==0){
@@ -1555,7 +1748,7 @@ int Apps::setMenuText(const char* whichElement, const char* text, const char* ro
                             }
                         }//get text
                     }//test compare nameTester & whichElement
-                    else{std::cout<<std::cout<<nameTester<<" "<<whichElement<<std::endl;}
+                    else{std::cerr<<nameTester<<" "<<whichElement<<std::endl;}
 
                 }//loop through sub elements of RootMenu
 
@@ -1587,7 +1780,7 @@ void Apps::listMenus(Fl_Browser *list_browser){
     list_browser->clear();
     const char* root ="RootMenu";
     std::string tempString,convertString,tempString2,convertString2,attributeValue,test1,test2;
-    if(!newStyle()){
+    if(newStyle() == -1){
         for (int i = 0; i<=9;i++){
             convertString = convert(i);
             for(tinyxml2::XMLElement * menu = doc.FirstChildElement("JWM")->FirstChildElement(root);menu;menu = menu->NextSiblingElement(root)){
@@ -1603,7 +1796,7 @@ void Apps::listMenus(Fl_Browser *list_browser){
             }
         }
     }
-    if(newStyle()){
+    if(newStyle() >=0){
        char a = 'a';
         for(tinyxml2::XMLElement * menu = doc.FirstChildElement("JWM")->FirstChildElement(root);menu;menu = menu->NextSiblingElement(root)){
             for (int i = 0; i<=9;i++){
@@ -1624,7 +1817,7 @@ void Apps::listMenus(Fl_Browser *list_browser){
                     }
                     else{
                         if(tempString.compare(convertString)!=0){
-                            std::cout<<"THIS:"<<convertString<<std::endl;
+                            if(DEBUG_ME){std::cerr<<"THIS:"<<convertString<<std::endl;}
                             list_browser->add(convertString.c_str());
                         }
                     }
@@ -1648,6 +1841,70 @@ void Apps::listMenus(Fl_Browser *list_browser){
 		}
     }
     list_browser->redraw();
+}
+void Apps::getLabel(Fl_Output* menulabel,const char* menu){
+loadTemp();
+    std::string thisRoot;
+    std::string mylabel =gettext("None");
+    std::string thisMenu = "root:";
+    thisMenu += menu;
+    loadTemp();
+    int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == 0 ){
+        errorJWM("You do not have any Tray elements, so getLabel() will exit after creating one");
+        createPanel();
+        return;
+    }
+    int panel = currentPanel();
+    //get the current panel to work on
+    const char* result =mylabel.c_str();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    tinyxml2::XMLElement* ButtonElement;
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    for(panelElement=panelElement->FirstChildElement("TrayButton");
+        panelElement;
+        panelElement=panelElement->NextSiblingElement("TrayButton")){
+        if(panelElement->Attribute("label")){mylabel = panelElement->Attribute("label");}
+
+        if(panelElement->FirstChildElement("Button")){
+            ButtonElement=panelElement;
+            for(ButtonElement=ButtonElement->FirstChildElement("Button");
+            ButtonElement;
+            ButtonElement=ButtonElement->NextSiblingElement("Button")){
+                if(ButtonElement->GetText()){
+                    thisRoot=ButtonElement->GetText();
+                    if(DEBUG_ME){std::cerr<<"[Button Style] This root: "<<thisRoot<<" the one we want: "<<thisMenu<<std::endl;}
+                    if(thisMenu.compare(thisRoot)==0){
+                    if(DEBUG_ME){std::cerr<<"Found: "<<thisRoot<<std::endl;}
+                    menulabel->value(mylabel.c_str());
+                    return;
+                    }
+                }
+            }
+        }
+        else{
+            if(panelElement->GetText()){
+                thisRoot=panelElement->GetText();
+                if(DEBUG_ME){std::cerr<<"[OLD STYLE] This root: "<<thisRoot<<" the one we want: "<<thisMenu<<std::endl;}
+                    if(thisMenu.compare(thisRoot)==0){
+                        if(DEBUG_ME){std::cerr<<"Found: "<<thisRoot<<std::endl;}
+                        menulabel->value(mylabel.c_str());
+                        return;
+                    }
+            }
+        }
+    }
+    if(DEBUG_ME){std::cerr<<"Didn't find the menu..."<<std::endl;}
+    menulabel->value(result);
+    return;
+
 }
 //++++++++++++++++++++++++++++++++++++++++++++++ END Menu +++++++++++++++++++++++++++++++++++++++++++++++
 

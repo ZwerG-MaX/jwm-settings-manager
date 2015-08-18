@@ -1,6 +1,9 @@
 #include "../include/flWindow.h"
 
 flWindow::flWindow(){
+#ifdef DEBUG_TRACK
+  std::cerr<<"[flWindow]->"<<std::endl;
+#endif // DEBUG
     tinyxml2::XMLDocument doc;
     GROUP="Group";
     CLASS="Class";
@@ -10,7 +13,9 @@ flWindow::flWindow(){
 }
 
 flWindow::~flWindow(){
-    //dtor
+#ifdef DEBUG_TRACK
+  std::cerr<<"<-[flWindow]"<<std::endl;
+#endif // DEBUG
 }
 ///COLOR FUNCTIONS
 //Active
@@ -52,8 +57,11 @@ void flWindow::setActiveColor(const char* element, const double* rgb, const doub
     }
 }
 unsigned int flWindow::getActiveColor(const char* element){
- //   const char* functionName = "unsigned int getActiveColor(const char* element)";
-//    std::cerr << functionName << std::endl;
+    if(DEBUG_ME){
+    const char* functionName = "unsigned int getActiveColor(const char* element)";
+    std::cerr << functionName << std::endl;
+    }
+
     unsigned int u=1;
     return getActiveColor(element, u); //the int is arbitrary
 }
@@ -76,7 +84,7 @@ unsigned int flWindow::getActiveColor(const char* element, unsigned int &color2)
                                             FirstChildElement( "Active" )->
                                             FirstChildElement( element );
     std::string colorXML = colorElement->GetText();
-//    std::cerr<<colorXML<<std::endl;
+    if(DEBUG_ME){std::cerr<<colorXML<<std::endl;}
     unsigned int color;
     color = getColor(colorXML, color2);
     return color;
@@ -85,7 +93,7 @@ unsigned int flWindow::getActiveColor(const char* element, unsigned int &color2)
 void flWindow::setInactiveColor(const char* element, const double* rgb){
    // loadTemp();
     tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" );
-    if(isNewStyle){
+    if(isNewStyle !=-1){
         if(!testElement("WindowStyle",element)){
             createElement("WindowStyle",element);
         }
@@ -106,7 +114,7 @@ void flWindow::setInactiveColor(const char* element, const double* rgb){
 void flWindow::setInactiveColor(const char* element, const double* rgb, const double* rgb2){
    // loadTemp();
     tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" );
-    if(isNewStyle){
+    if(isNewStyle !=-1){
         if(!testElement("WindowStyle",element)){
             createElement("WindowStyle",element);
         }
@@ -138,11 +146,13 @@ unsigned int flWindow::getInactiveColor(const char* element){
     return getInactiveColor(element,u); //the int is arbitrary
 }
 unsigned int flWindow::getInactiveColor(const char* element, unsigned int &color2){
-//    const char* functionName = "unsigned int getInactiveColor(const char* element, unsigned int &color2)";
-    //std::cerr << functionName << std::endl;
+    #ifdef DEBUG_TRACK
+        const char* functionName = "unsigned int getInactiveColor(const char* element, unsigned int &color2)";
+        std::cerr << functionName << std::endl;
+    #endif // DEBUG
    // loadTemp();
     tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" );
-    if(isNewStyle){
+    if(isNewStyle !=-1){
         if(!testElement("WindowStyle",element)){
             createElement("WindowStyle",element);
             tinyxml2::XMLElement* fixer = doc.FirstChildElement("JWM")->
@@ -185,26 +195,26 @@ unsigned int flWindow::getInactiveColor(const char* element, unsigned int &color
 //Active
 void flWindow::setActiveWindowColor(const double* rgb, const double* rgb2){
     const char* NewOrOldBG;
-    if(isNewStyle){NewOrOldBG="Background";}
+    if(isNewStyle !=-1){NewOrOldBG="Background";}
     else{NewOrOldBG="Title";}
     setActiveColor(NewOrOldBG,rgb,rgb2);
 }
 void flWindow::setActiveWindowColor(const double* rgb){
     const char* NewOrOldBG;
-    if(isNewStyle){NewOrOldBG="Background";}
+    if(isNewStyle !=-1){NewOrOldBG="Background";}
     else{NewOrOldBG="Title";}
     setActiveColor(NewOrOldBG,rgb);
 }
 //Inactive
 void flWindow::setWindowColor(const double* rgb){
     const char* newORold;
-    if(isNewStyle){newORold="Background";}
+    if(isNewStyle !=-1){newORold="Background";}
     else{newORold="Title";}
     setInactiveColor(newORold,rgb);
 }
 void flWindow::setWindowColor(const double* rgb, const double* rgb2){
     const char* newORold;
-    if(isNewStyle){newORold="Background";}
+    if(isNewStyle !=-1){newORold="Background";}
     else{newORold="Title";}
     setInactiveColor(newORold,rgb,rgb2);
 }
@@ -215,7 +225,7 @@ unsigned int flWindow::getWindowColor(unsigned int &color2){
 //    const char* functionName = "unsigned int getWindowColor(unsigned int &color2)";
     //std::cerr << functionName << std::endl;
     const char* newOrOld;
-    if(isNewStyle){newOrOld="Background";}
+    if(isNewStyle !=-1){newOrOld="Background";}
     else{newOrOld="Title";}
     return getInactiveColor(newOrOld, color2);
 }
@@ -225,9 +235,9 @@ unsigned int flWindow::getActiveWindowColor(unsigned int &color2){
 //    const char* functionName = "unsigned int flWindow::getActiveWindowColor(unsigned int &color2)";
     //std::cerr << functionName << std::endl;
     const char* newOrOld;
-    if(isNewStyle){newOrOld="Background";}
+    if(isNewStyle !=-1){newOrOld="Background";}
     else{newOrOld="Title";}
-    //std::cerr<<newOrOld<<std::endl;
+    if(DEBUG_ME){std::cerr<<newOrOld<<std::endl;}
     return getActiveColor(newOrOld, color2);
 }
 
@@ -242,7 +252,7 @@ void flWindow::activeWindowOpacity(float &opacity){
                             FirstChildElement( "WindowStyle")->
                             FirstChildElement( "Active")->
                             FirstChildElement( "Opacity" );
-    std::cerr<<"SET Active Opacity: "<<opacity<<std::endl;
+    if(DEBUG_ME){std::cerr<<"SET Active Opacity: "<<opacity<<std::endl;}
     opacityElement->SetText(opacity);
     saveChangesTemp();
 }
@@ -263,14 +273,14 @@ float flWindow::getActiveOpacity(){
                     FirstChildElement( "Opacity" );
     std::string opacityString = opacityElement->GetText();
     float opacity = float(strtold(opacityString.c_str(),NULL));
-    //std::cerr<<"Active Opacity: "<<opacity<<std::endl;
+    if(DEBUG_ME){std::cerr<<"Active Opacity: "<<opacity<<std::endl;}
     return opacity;
 }
 //Inactive
 void flWindow::windowOpacity(float &opacity){
    // loadTemp();
    tinyxml2::XMLElement* opacityElement;
-    if(isNewStyle){
+    if(isNewStyle !=-1){
         if(!testElement("WindowStyle","Opacity")){
             createElement("WindowStyle","Opacity");
         }
@@ -293,7 +303,7 @@ float flWindow::getOpacity(){
     tinyxml2::XMLElement* opacityElement;
 
     //if it is the new version
-    if(isNewStyle){
+    if(isNewStyle !=-1){
         //does the element even exist??
         if(!testElement("WindowStyle","Opacity")){
             //hmmm.... nope  we should make it
@@ -340,7 +350,7 @@ float flWindow::getOpacity(){
     }
     std::string opacityString = opacityElement->GetText();
     float opacity = float(strtold(opacityString.c_str(),NULL));
-//    std::cerr<<"Inactive Opacity: "<<opacity<<std::endl;
+    if(DEBUG_ME){std::cerr<<"Inactive Opacity: "<<opacity<<std::endl;}
     return opacity;
 }
 //######################################### END Window TitleBar ##############################################
@@ -508,7 +518,7 @@ void flWindow::setActiveFontColor(const double* rgb){
     const char* newORold;
 
     //if it is new use this
-    if(isNewStyle){newORold="Foreground";}
+    if(isNewStyle !=-1){newORold="Foreground";}
     else{newORold="Text";}//otherwise use this
 
     //set the color
@@ -519,7 +529,7 @@ void flWindow::setFontColor(const double* rgb){
     const char* newORold;
 
     //if it is new use this
-    if(isNewStyle){newORold="Foreground";}
+    if(isNewStyle !=-1){newORold="Foreground";}
     else{newORold="Text";}//otherwise use this
 
     //set the color
@@ -531,7 +541,7 @@ unsigned int flWindow::getActiveFontColor(){
     const char* newORold;
 
     //if it is new use this
-    if(isNewStyle){newORold="Foreground";}
+    if(isNewStyle !=-1){newORold="Foreground";}
     else{newORold="Text";}//otherwise use this
 
     //return the result of our generic function
@@ -543,7 +553,7 @@ unsigned int flWindow::getFontColor(){
     const char* newORold;
 
     //if it is new use this
-    if(isNewStyle){newORold="Foreground";}
+    if(isNewStyle !=-1){newORold="Foreground";}
     else{newORold="Text";}//otherwise use this
 
     //return the result of our generic function
@@ -651,7 +661,7 @@ const char* flWindow::getButton(const char* whichElement){
 
 std::string flWindow::buttonPath(){
     //this is just a function to get the button path....
-    std::string ButtonPath ="/usr/share/jwm-settings-manager/Buttons/";
+    std::string ButtonPath = defaultPath + "Buttons/";
     return ButtonPath;
 }
 void flWindow::setButton(const char * button, const char* whichElement){
@@ -788,8 +798,7 @@ void flWindow::removeGroupTHING(unsigned int whichGroup, const char* progName, c
 
                 //delete it
                 groupElement->DeleteChild(node);
-                std::cout<<"Deleted: "<<whichElement<<" node: "<<progName<<" from: Group "<<whichGroup<<std::endl;
-
+                if(DEBUG_ME){std::cerr<<"Deleted: "<<whichElement<<" node: "<<progName<<" from: Group "<<whichGroup<<std::endl;}
                 //save!!
                 saveChanges();
                 saveChangesTemp();
@@ -938,35 +947,35 @@ void flWindow::populateOptions(Fl_Browser *o){
 void flWindow::populateDesc(Fl_Browser *b){
     //see above how I generated this code
     //these are all the descriptions of the options above
-    b->add("Enables the border on windows in this group.");
-    b->add("Center windows in this group upon initial placement instead of using cascaded placement.");
-    b->add("Prevent clients in this group from moving off-screen.");
-    b->add("The desktop on which windows in this group will be started.");
-    b->add("Make windows in this group maximize horizontally by default.");
-    b->add("The icon to be used for windows in this group.");
-    b->add("Ignore the increment size hint when maximizing windows in this group.");
-    b->add("The layer on which windows in this group will be started. Valid options are below, normal, and above.");
-    b->add("Make windows in this group maximized.");
-    b->add("Make windows in this group minimized.");
-    b->add("Disables the border for windows in this group.");
-    b->add("Prevents windows in this group from grabbing the focus when mapped.");
-    b->add("Causes the tray to ignore windows in this group.");
-    b->add("Causes the pager to ignore windows in this group.");
-    b->add("Disallows shading for windows in this group.");
-    b->add("Disallows maximization for windows in this group.");
-    b->add("Disallows minimization for windows in this group.");
-    b->add("Hides the close button for windows in this group.");
-    b->add("Prevents windows in this group from being moved.");
-    b->add("Prevents windows in this group from being resized.");
-    b->add("Prevents windows in this group from being fullscreen.");
-    b->add("Disables the title bar for windows in this group.");
-    b->add("Ignore the urgent hint for windows in this group. Without this option set, JWM will flash the border of urgent windows.");
-    b->add("Set the opacity for windows in this group. The value is a number between 0.0 and 1.0 inclusive.");
-    b->add("Ignore program-specified initial position.");
-    b->add("Make windows in this group shaded.");
-    b->add("Make windows in this group sticky.");
-    b->add("Attempt to tile windows in this group upon initial placement. If tiled placement fails, windows will fall back to cascaded (the default) or centered if specified.");
-    b->add("Enables the title bar for windows in this group.");
-    b->add("Make windows in this group maximize vertically by default.");
+    b->add(gettext("Enables the border on windows in this group."));
+    b->add(gettext("Center windows in this group upon initial placement instead of using cascaded placement."));
+    b->add(gettext("Prevent clients in this group from moving off-screen."));
+    b->add(gettext("The desktop on which windows in this group will be started."));
+    b->add(gettext("Make windows in this group maximize horizontally by default."));
+    b->add(gettext("The icon to be used for windows in this group."));
+    b->add(gettext("Ignore the increment size hint when maximizing windows in this group."));
+    b->add(gettext("The layer on which windows in this group will be started. Valid options are below, normal, and above."));
+    b->add(gettext("Make windows in this group maximized."));
+    b->add(gettext("Make windows in this group minimized."));
+    b->add(gettext("Disables the border for windows in this group."));
+    b->add(gettext("Prevents windows in this group from grabbing the focus when mapped."));
+    b->add(gettext("Causes the tray to ignore windows in this group."));
+    b->add(gettext("Causes the pager to ignore windows in this group."));
+    b->add(gettext("Disallows shading for windows in this group."));
+    b->add(gettext("Disallows maximization for windows in this group."));
+    b->add(gettext("Disallows minimization for windows in this group."));
+    b->add(gettext("Hides the close button for windows in this group."));
+    b->add(gettext("Prevents windows in this group from being moved."));
+    b->add(gettext("Prevents windows in this group from being resized."));
+    b->add(gettext("Prevents windows in this group from being fullscreen."));
+    b->add(gettext("Disables the title bar for windows in this group."));
+    b->add(gettext("Ignore the urgent hint for windows in this group. Without this option set, JWM will flash the border of urgent windows."));
+    b->add(gettext("Set the opacity for windows in this group. The value is a number between 0.0 and 1.0 inclusive."));
+    b->add(gettext("Ignore program-specified initial position."));
+    b->add(gettext("Make windows in this group shaded."));
+    b->add(gettext("Make windows in this group sticky."));
+    b->add(gettext("Attempt to tile windows in this group upon initial placement. If tiled placement fails, windows will fall back to cascaded (the default) or centered if specified."));
+    b->add(gettext("Enables the title bar for windows in this group."));
+    b->add(gettext("Make windows in this group maximize vertically by default."));
 }
 //######################################### END Groups ##############################################

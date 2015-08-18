@@ -39,7 +39,7 @@
 #include "../include/flIcons.h"
 #include "../include/ui.h"
 #include "../include/tinyxml2.h"
-//#include "../data/icons/jwm-settings-manager.xpm"
+#include "../data/icons/jwm-settings-manager.xpm"
 //#include <FL/x.H>
 //#include <X11/xpm.h>
 #include <FL/Fl_Double_Window.H>

@@ -44,7 +44,9 @@
 
 #include "../fltk/jwm-shutdown.h"
 
+void resetDebug();
 void showHelp();
+void debug();
 int shutdownWindow();
 const char* copyright="                 Joe's Window Manager Configuration\n\
 \n\
@@ -77,6 +79,9 @@ unsigned int versionMajor = 9;
 unsigned int versionMinor = 9;
 unsigned int revNo = 9;
 int main(int argc, char *argv[]){
+
+    try{
+
     //make the UI
     UI ux;
     //integers for searching the argv
@@ -85,6 +90,11 @@ int main(int argc, char *argv[]){
         for(int i=1;i<argc;++i){
             command=argv[i];
             for(int i=0;i<argc;i++){
+
+                #ifdef DEBUG
+                    std::cerr<<"command argument: "<<command<<std::endl;
+                #endif // DEBUG
+
                 if((command.compare("--help")==0)||(command.compare("-h")==0)){
                     showHelp();
                     return 0;
@@ -125,8 +135,16 @@ int main(int argc, char *argv[]){
                     ux.showThemes();
                     return 0;
                 }
-                else if((command.compare("--clock-settings")==0)||(command.compare("-clock")==0)){
+                else if((command.compare("--clock-settings")==0)||(command.compare("-clock")==0)||(command.compare("-l")==0)){
                     ux.showClock();
+                    return 0;
+                }
+                else if((command.compare("--shortcuts")==0)||(command.compare("-s")==0)){
+                    ux.showShortcuts();
+                    return 0;
+                }
+                else if((command.compare("--menu")==0)||(command.compare("-u")==0)){
+                    ux.showMenu();
                     return 0;
                 }
                 else if((command.compare("--recover")==0)||(command.compare("-r")==0)){
@@ -145,6 +163,10 @@ int main(int argc, char *argv[]){
                 else if(command == "--halt"){
                     return shutdownWindow();
                 }
+                else if(command == "--debug"){
+                    debug();
+                    return 0;
+                }
                 else {
                     std::cout<< "Invalid command"<<std::endl;
                     showHelp();
@@ -154,7 +176,22 @@ int main(int argc, char *argv[]){
         }
     }
     ux.showSettings();
+    resetDebug();
     return 0;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Unhandled exception:\n" << e.what() << std::endl;
+        // or other methods of displaying an error
+
+        return EXIT_FAILURE;
+    }
+    catch (...)
+    {
+        std::cerr << "Unknown exception!" << std::endl;
+
+        return EXIT_FAILURE;
+    }
 }
 
 
@@ -175,15 +212,37 @@ void showHelp(){
         <<" -r --recover     recover settings file\n"
         <<" -v --version     show current version\n"
         <<" -c --copyright   show copyright information\n"
-        <<" GUI ONLY OPTION\n"
-        <<"  --halt           show shutdown menu\n\n"
+        <<"\n SHORTCUTS FOR USE IN THE PANELS AND MENUS\n"
+        <<" -s --shortcuts   show shortcut editor\n"
+        <<" -u --menu        show menu editor\n"
+        <<" -l -clock        show clock settings\n"
+        <<"   --halt         show shutdown menu\n\n"
         <<" Version: "<<versionMajor<<"."<<versionMinor<<"."<<revNo
         << std::endl;
 
 }
 int shutdownWindow(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Shutdown UI activated"<<std::endl;
+#endif // DEBUG
     shutdown shut;
     shut.make_window()->xclass("JSM");
     shut.make_window()->show();
     return Fl::run();
+}
+void resetDebug(){
+Config config;
+if(config.isDebug()){
+    std::cerr<<"Debugging Session Ended\n\
+-------------------------------------------------------------------"<<std::endl;
+    config.setDebugOff();
+}
+}
+void debug(){
+UI ux;
+std::cerr<<"Debugging Session Begun\n\
+-------------------------------------------------------------------"<<std::endl;
+Config config;
+config.setDebug();
+ux.showSettings();
 }

@@ -42,12 +42,13 @@
 #include "../include/ui.h"
 #include <FL/Fl_XPM_Image.H>
 #include <FL/Fl_Browser.H>
+#include "../data/icons/jsm-panel.xpm"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Menu_Button.H>
-#include <FL/Fl_Box.H>
 #include <FL/Fl_Tabs.H>
 #include <FL/Fl_Group.H>
+#include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Slider.H>
@@ -252,6 +253,12 @@ private:
   static void cb_2(Fl_Browser*, void*);
 public:
   Fl_Output *clock_display;
+private:
+  inline void cb_Notes_i(Fl_Button*, void*);
+  static void cb_Notes(Fl_Button*, void*);
+  inline void cb_Modifier_i(Fl_Button*, void*);
+  static void cb_Modifier(Fl_Button*, void*);
+public:
   Fl_Double_Window* config_applist_window();
   Fl_Double_Window *conf_applist_window;
 private:
@@ -457,5 +464,15 @@ public:
   unsigned int switch_panel(Fl_Menu_Item *o);
   void width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension);
   void input_width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension);
+  Fl_Double_Window* clock_notes_window();
+  Fl_Double_Window *clock_info;
+  Fl_Double_Window* clock_info_window();
+  Fl_Double_Window *clock_modifier_notes;
+private:
+  inline void cb_See_i(Fl_Button*, void*);
+  static void cb_See(Fl_Button*, void*);
+public:
+  bool style_gone();
+  void startup(Fl_Window *o);
 };
 #endif

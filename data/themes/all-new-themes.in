@@ -3,21 +3,21 @@
 <!-- MENUS -->
     <!-- Main Menu -->
     @MENUS_LIST@
+    <!--These menus provide a nice exit dialog and no menu on desktop click 1-->
+    <RootMenu height="0" onroot="z">
+        <Exit label="Logout" confirm="false" icon="@LOGOUT_ICON@"/>
+    </RootMenu>
     <RootMenu onroot="1"/>
+    <!--Traybutton Edit Menu-->
+@EDIT_PANEL@
+@EDIT_MENU@
     <!--Places Menu-->
     <Include>$HOME/.config/placesmenu</Include>
     <!-- Mouse Menu-->
-    <RootMenu height="0" onroot="23">
-        <Program icon="folder-home.svg" label="Home">xdg-open ~/</Program>
-        <Program icon="jwm-settings-manager.svg" label="Settings">jwm-settings-manager</Program>
-        <Program icon="preferences-desktop-wallpaper.svg" label="Change Desktop Background">jwm-settings-manager --desktop</Program>
-    </RootMenu>
+    @MOUSE_MENU@
     <!--Shudown Menu-->
     <RootMenu height="0" onroot="9">
-        <Program icon="@SHUTDOWN_ICON@" label="Shutdown Menu">@SHUTDOWN_PROGRAM@</Program>
-        <Program icon="@RESTART_ICON@" label="Restart Computer">@RESTART_PROGRAM@</Program>
-        <Restart label="Reload Desktop" icon="@RESTART_ICON@"/>
-        <Exit label="Logout" confirm="true" icon="@LOGOUT_ICON@"/>
+        @SHUTERDOWN@
     </RootMenu>
 @CLOCK_MENU@
 <!-- END MENUS -->

@@ -1,13 +1,16 @@
 #include "../include/flKeyboard.h"
 
-flKeyboard::flKeyboard()
-{
+flKeyboard::flKeyboard(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"[flKeyboard]->"<<std::endl;
+#endif // DEBUG
     tinyxml2::XMLDocument doc;
 }
 
-flKeyboard::~flKeyboard()
-{
-    //dtor
+flKeyboard::~flKeyboard(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"<-[flKeyboard]"<<std::endl;
+#endif // DEBUG
 }
 void flKeyboard::getKeys(Fl_Browser *o){
     loadTemp();
@@ -112,7 +115,8 @@ std::string flKeyboard::grabbedKey(){
 
         if( res > 0 ){
             std::cout<<"Input available"<<std::endl;
-            read( fileno( stdin ), &c, 1 );
+            int thisread = read( fileno( stdin ), &c, 1 );
+            if(thisread !=0){std::cerr<< "read input command did not return 0"<<std::endl;}
         }
         else if( res < 0 )
         {

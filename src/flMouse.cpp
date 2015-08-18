@@ -25,14 +25,17 @@
 
 #include "../include/flMouse.h"
 
-flMouse::flMouse()
-{
+flMouse::flMouse(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"[flMouse]->"<<std::endl;
+#endif // DEBUG
     tinyxml2::XMLDocument doc;
 }
 
-flMouse::~flMouse()
-{
-    //dtor
+flMouse::~flMouse(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"<-[flMouse]"<<std::endl;
+#endif // DEBUG
 }
 
 int flMouse::getDoubleClick(){

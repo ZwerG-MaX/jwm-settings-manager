@@ -198,7 +198,7 @@ Fl_Double_Window* DesktopUI::make_window() {
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
-    Config config;config.under_mouse(o);
+    startup(o);
     desktop_window->xclass("jsm-desktop");
     desktop_window->end();
     desktop_window->resizable(desktop_window);
@@ -440,4 +440,9 @@ void DesktopUI::useMultipleDesktops() {
   setAttribute("Desktops","width",width);
   setAttribute("Desktops","height",height);
   }
+}
+
+void DesktopUI::startup(Fl_Window *o) {
+  Config config; config.under_mouse(o);
+  o->icon(config.Get_Fl_Icon(jsm_desktop_xpm));
 }

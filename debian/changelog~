@@ -1,3 +1,17 @@
+jwm-settings-manager (1.0.1ubuntu6) UNRELEASED; urgency=medium
+  * moved menus to separate package jwm-menus
+  * center all windows as per Ali's request
+  * removed reboot dialog (moved to ToriOS core)
+  * updated all themes
+    - use system app menu in /etc/jwm/jwm-menu 
+  * fixed pcmanfm background grabber for desktop program
+  * begun initial support for JWM 2.3.2++ hides things that no longer exist
+  * fixed app icon issue in launcher adder
+  * more fixes for new github version
+  * added macros DEBUG and DEBUG_TRACK to add nice std::cerr output to help with debugging 
+
+ -- Israel Dahl <israeldahl@gmail.com>  Fri, 31 Jul 2015 23:30:59 -0500
+
 jwm-settings-manager (1.0.0ubuntu17) UNRELEASED; urgency=medium
   * Windows
     - added group browsers

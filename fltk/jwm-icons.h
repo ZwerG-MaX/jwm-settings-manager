@@ -36,6 +36,7 @@
 #include "../include/flIcons.h"
 #include <FL/Fl_Select_Browser.H>
 #include "../include/ui.h"
+#include "../data/icons/jsm-icons.xpm"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Button.H>
@@ -66,5 +67,6 @@ public:
   void add_icons(std::string icon_dir);
   void remove_icons();
   std::string choose_icons();
+  void startup(Fl_Window *o);
 };
 #endif

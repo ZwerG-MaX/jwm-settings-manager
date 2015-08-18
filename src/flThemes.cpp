@@ -25,31 +25,53 @@
 #include "../include/flThemes.h"
 
 flThemes::flThemes(){
-    themePATH = "/usr/share/jwm-settings-manager/themes/";
-    OLDthemePATH = "/usr/share/jwm-settings-manager/themes/old/";
+#ifdef DEBUG_TRACK
+  std::cerr<<"[flThemes]->"<<std::endl;
+#endif // DEBUG
+//TODO: XDG_DATA_DIRS to get initial /usr/share (or whatever)
+    mydefaultPath= getDefaultFilepath();
+    themePATH = mydefaultPath + "themes/";
+    themePATH230 = mydefaultPath + "themes/2.3.0/";
+    OLDthemePATH = mydefaultPath + "themes/old/";
     path = homePathNoFile(); ///Config function
     userThemePATH =path+".jwm/themes/";
     userThemeName = "/bin/bash -c 'cp -f " + path + ".usertheme " + path + ".jwmrc'";
     bash = "/bin/bash -c '";
     error =" failed please report this bug \n";
-    isOLDjwmrc = !newVersionJWM();///Config function
+    isOLDjwmrc = newStyle();///Config function
     isNewTheme = false;
 }
 
-flThemes::~flThemes()
-{
-    //dtor
+flThemes::~flThemes(){
+#ifdef DEBUG_TRACK
+  std::cerr<<"<-[flThemes]"<<std::endl;
+#endif // DEBUG
+}
+bool flThemes::isSVG(std::string filename){
+    std::string extention;
+    extention = filename.substr((strlen(filename.c_str())-4),4);
+    std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
+    std::string svg =".svg";
+    if(extention.compare(svg) ==0){
+        if(DEBUG_ME){std::cerr<<"SVG image"<<std::endl;}
+        return true;
+    }
+    if(DEBUG_ME){std::cerr<<filename << " is not SVG"<<std::endl;}
+    return false;
 }
 std::string flThemes::sysThemeDir(){
-    if (isOLDjwmrc){return OLDthemePATH;}
+    if (isOLDjwmrc == -1){return OLDthemePATH;}
+    else if (isOLDjwmrc == 0){return themePATH230;}
     return themePATH;
 }
 int flThemes::populateUserThemes(Fl_Browser *o){
+
     DIR *dir = NULL;
     std::string itemName;
     std::string checkHERE;
     struct dirent *ent= NULL;
     if ((dir = opendir (userThemePATH.c_str())) != NULL) {
+        o->clear();
         while ((ent = readdir (dir)) != NULL) {
             itemName=ent->d_name;
             if ((itemName.compare(".")==0)||(itemName.compare("..")==0)){/*DO NOTHING*/}
@@ -61,15 +83,15 @@ int flThemes::populateUserThemes(Fl_Browser *o){
         perror ("");
         return EXIT_FAILURE;
     }
+    o->redraw();
     return 0;
 }
 int flThemes::populateThemes(Fl_Browser *o){
     DIR *dir=NULL;
     std::string itemName;
     std::string checkHERE;
-    if(isOLDjwmrc){
-        checkHERE = OLDthemePATH;
-    }
+    if (isOLDjwmrc == -1){checkHERE = OLDthemePATH;}
+    else if (isOLDjwmrc == 0){ checkHERE = themePATH230;}
     else{
         checkHERE=themePATH;
     }
@@ -81,7 +103,10 @@ int flThemes::populateThemes(Fl_Browser *o){
             if ((itemName.compare(".")==0)||(itemName.compare("..")==0)||(itemName.compare("old")==0)){
                 //DO NOTHING
             }
-            else{o->add(itemName.c_str());}
+            else{
+                if(DEBUG_ME){std::cerr<<itemName<<" added"<<std::endl;}
+                o->add(itemName.c_str());
+            }
         }
         closedir (dir);
     }
@@ -93,7 +118,7 @@ int flThemes::populateThemes(Fl_Browser *o){
 }
 std::string flThemes::getPanelLabel(){
     tinyxml2::XMLElement* panelElement = themeDoc.FirstChildElement( "JWM" )->FirstChildElement("Tray");
-    std::string Label = "Apps";
+    std::string Label = gettext("Apps");
     //std::string root = "root";
     //unsigned int found;
     std::string txt ="";
@@ -101,13 +126,23 @@ std::string flThemes::getPanelLabel(){
     for(panelElement = panelElement->FirstChildElement( "TrayButton" );
         panelElement;
         panelElement = panelElement->NextSiblingElement("TrayButton" )){
-            txt = panelElement->GetText();
+            if(panelElement->FirstChildElement("Button")){
+                if(panelElement->FirstChildElement("Button")->GetText()){txt = panelElement->FirstChildElement("Button")->GetText();}
+            }
+            else{
+                if(panelElement->GetText()){txt = panelElement->GetText();}
+            }
+
+
             //found = txt.find_first_of(":");
             //text=txt.substr(0,found);
-            //std::cout<<txt<<std::endl;
+            if(DEBUG_ME){std::cerr<<"found text: "<<txt<<std::endl;}
             if(txt.compare("root:5")==0){
-                if(panelElement->Attribute("label")){Label=panelElement->Attribute("label");}
-                else{Label="";}
+                if(panelElement->Attribute("label")){
+                    Label=panelElement->Attribute("label");
+                    if(DEBUG_ME){std::cerr<<txt<<" matches!!!"<<std::endl;}
+                    return Label;
+                }
             }
     }
     return Label;
@@ -122,10 +157,12 @@ std::string flThemes::getPanelButtonIcon(){
     for(panelElement = panelElement->FirstChildElement( "TrayButton" );
         panelElement;
         panelElement = panelElement->NextSiblingElement("TrayButton" )){
-            txt = panelElement->GetText();
-            //found = txt.find_first_of(":");
-            //text=txt.substr(0,found);
-            //std::cout<<text<<std::endl;
+            if(panelElement->FirstChildElement("Button")){
+                if(panelElement->FirstChildElement("Button")->GetText()){txt = panelElement->FirstChildElement("Button")->GetText();}
+            }
+            else{
+                if(panelElement->GetText()){txt = panelElement->GetText();}
+            }
             if(txt.compare("root:5")==0){
                 if(panelElement->Attribute("label")){Icon=panelElement->Attribute("icon");}
                 else{Icon="/usr/share/pixmaps/distributor-logo.png";}
@@ -137,7 +174,8 @@ std::string flThemes::getPanelButtonIcon(){
 int flThemes::loadTheme(std::string themePath){
     themeDoc.LoadFile( themePath.c_str() );
     if (themeDoc.ErrorID() !=0){std::cerr<<"An error occured loading "<<themePath<<std::endl; return 42;}
-    else{//std::cout<<"loaded: "<<themePath<<std::endl;
+    else{
+        if(DEBUG_ME){std::cerr<<"Theme loaded: "<<themePath<<std::endl;}
     }
     return 0;
 }
@@ -152,7 +190,48 @@ void flThemes::checkThemeVersion(){
     if(text || title || inactive){ isNewTheme=false;}
     else{isNewTheme=true;}
 }
-
+int flThemes::themeNewStyle(){
+#ifdef DEBUG_TRACK
+std::cerr << "themeNewStyle()-->"<<std::endl;
+#endif // DEBUG_TRACK
+    const char* button = "TrayButtonStyle";
+    const char* tray = "TrayStyle";
+    const char* task = "TaskListStyle";
+    const char* pager = "PagerStyle";
+//    const char* win = "WindowStyle";
+//    const char* menu = "MenuStyle";
+    const char* afore ="ActiveForeground";
+    const char* aback = "ActiveBackground";
+    int not23 = -1; //OLD
+    int two30 = 0; // version before removing traybutton/tasklist styles
+    int two3later = 1; //2.3.2 ++
+    if(DEBUG_ME){std::cerr<<"loading theme"<<std::endl;}
+    tinyxml2::XMLElement* element = themeDoc.FirstChildElement( "JWM" );
+    if(DEBUG_ME){std::cerr<<"testing theme"<<std::endl;}
+    if( !(element->FirstChildElement("TrayButtonStyle")) &&
+        !(element->FirstChildElement("TaskListStyle")) &&
+        !(element->FirstChildElement("ClockStyle")) ){
+        if(DEBUG_ME){std::cerr<<"this is an NEW (2.3.2++) theme, returning:"<<two3later<<"\n<--themeNewStyle()"<<std::endl;}
+        return two3later;
+    }
+    //OLD STYLE
+    if (    (element->FirstChildElement(tray)->FirstChildElement(aback)) ||
+            (element->FirstChildElement(task)->FirstChildElement(aback)) ||
+            (element->FirstChildElement(pager)->FirstChildElement(aback)) ||
+            (element->FirstChildElement(button)->FirstChildElement(aback)) ||
+            (element->FirstChildElement(tray)->FirstChildElement(afore)) ||
+            (element->FirstChildElement(task)->FirstChildElement(afore)) ||
+            (element->FirstChildElement(pager)->FirstChildElement(afore)) ||
+            (element->FirstChildElement(button)->FirstChildElement(afore))
+       ){
+       if(DEBUG_ME){
+       std::cerr<<"this is an OLD theme, returning:"<<not23<<"\n<--themeNewStyle()"<<std::endl;
+       }
+       return not23;
+    }
+    if(DEBUG_ME){std::cerr<<"this is an NEW (2.3.0 || 2.3.1) theme, returning:"<<two30<<"\n<--themeNewStyle()"<<std::endl;}
+    return two30;
+}
 ///This function modified the current .jwmrc to use the colors (etc) from the theme file
 void flThemes::modCurrentTheme( Fl_Box * button,
                                 Fl_Box * button_icon,
@@ -177,10 +256,10 @@ void flThemes::modCurrentTheme( Fl_Box * button,
     std::string maxActiveButton = getMaxActiveButton();
 
     //set the jwmrc to have the theme's values
-    if (minButton.compare("")!=0){win.setButton(minButton.c_str(),"ButtonMin");}
-    if (maxButton.compare("")!=0){win.setButton(maxButton.c_str(),"ButtonMax");}
-    if (maxActiveButton.compare("")!=0){win.setButton(maxActiveButton.c_str(),"ButtonMaxActive");}
-    if (closeButton.compare("")!=0){win.setButton(closeButton.c_str(),"ButtonClose");}
+    if ( (minButton.compare("")!=0) ){win.setButton(minButton.c_str(),"ButtonMin");}
+    if ( (maxButton.compare("")!=0) ){win.setButton(maxButton.c_str(),"ButtonMax");}
+    if ( (maxActiveButton.compare("")!=0) ){win.setButton(maxActiveButton.c_str(),"ButtonMaxActive");}
+    if ( (closeButton.compare("")!=0) ){win.setButton(closeButton.c_str(),"ButtonClose");}
 
 ///windows    modCurrentTheme
     //get the theme's values
@@ -192,10 +271,12 @@ void flThemes::modCurrentTheme( Fl_Box * button,
     const double* windowColorText = getItemColor(inactiveW_text);
 
     //set the jwmrc to have the theme's values
-    std::cout<<"ACTIVE window color= "<<colorToString(activeWindowColor)<<":"<<colorToString(active_color2)
+    if(DEBUG_ME){
+    std::cerr<<"ACTIVE window color= "<<colorToString(activeWindowColor)<<":"<<colorToString(active_color2)
     <<"\nACTIVE font color= "<<colorToString(activeWindowColorText)
     <<"\ninactive window color= "<<colorToString(windowColor)<<":"<<colorToString(inactive_color2)
     <<"\ninactive font color= "<<colorToString(windowColorText)<<std::endl;
+    }
     win.setActiveWindowColor(activeWindowColor,active_color2);
     win.setActiveFontColor(activeWindowColorText);
     win.setWindowColor(windowColor,inactive_color2);
@@ -214,6 +295,8 @@ void flThemes::modCurrentTheme( Fl_Box * button,
     panel.setBackground(panelColor,"TrayStyle");
     panel.setFontColor(panelColorText,"TrayStyle");
 
+/// /////Don't do this if we are using the newest version.. because it doesn't exist
+if(themeNewStyle()<1){
 ///panel Button     modCurrentTheme
     //get the theme's values
     const double* panelButtonColor = getItemColor(button);
@@ -238,6 +321,9 @@ void flThemes::modCurrentTheme( Fl_Box * button,
     panel.setActiveBackground(convertINTcolor2Double(task_active_bg),"TaskListStyle");
     panel.setActiveFontColor(convertINTcolor2Double(task_active_fg),"TaskListStyle");
     panel.setFontColor(convertINTcolor2Double(task_fg),"TaskListStyle");
+}/// /////END Don't do this
+
+
 
 ///menus    modCurrentTheme
     //get the theme's valuesq
@@ -279,7 +365,7 @@ void flThemes::updateTheme( Fl_Box * button,
 
     int testLoad = loadTheme(filename);
     if (testLoad !=0){return;}
-    checkThemeVersion();
+    //checkThemeVersion();
 
 //menu buttons
     std::string maxButton = getMaxButton();
@@ -288,7 +374,7 @@ void flThemes::updateTheme( Fl_Box * button,
 
     //These should never be empty
     // but let's check anyhow.
-    if (minButton.compare("")!=0){
+    if( (minButton.compare("")!=0) && (!isSVG(minButton)) ){
         ///make image and copy
         Fl_Image * MIN;
         MIN = new Fl_PNG_Image(minButton.c_str());
@@ -302,7 +388,7 @@ void flThemes::updateTheme( Fl_Box * button,
         active_min_button->redraw();
         inactive_min_button->redraw();
     }
-    if (maxButton.compare("")!=0){
+    if( (maxButton.compare("")!=0) && (!isSVG(maxButton)) ){
         Fl_Image * MAX;
         MAX = new Fl_PNG_Image(maxButton.c_str());
         Fl_Image * MAX2 = MAX->copy(25,25);
@@ -311,7 +397,7 @@ void flThemes::updateTheme( Fl_Box * button,
         active_max_button->redraw();
         inactive_max_button->redraw();
     }
-    if (closeButton.compare("")!=0){
+    if( (closeButton.compare("")!=0) && (!isSVG(closeButton)) ){
         Fl_Image * CLOSE;
         CLOSE = new Fl_PNG_Image(closeButton.c_str());
         Fl_Image * CLOSE2 = CLOSE->copy(25,25);
@@ -348,33 +434,45 @@ void flThemes::updateTheme( Fl_Box * button,
 
 //Panel
     std::string label = getPanelLabel();
-    //std::cout<<label<<std::endl;
+    if(DEBUG_ME){std::cerr<<"LABEL: "<<label<<std::endl;}
     unsigned int panelColor = getPanel();
+    if(DEBUG_ME){std::cerr<<"panelColor: "<<panelColor<<std::endl;}
     unsigned int panelColorText = getPanelText();
-
+    if(DEBUG_ME){std::cerr<<"panelColorText: "<<panelColorText<<std::endl;}
     //modify the UI
     tray->color(panelColor);//labelcolor
     tray->labelcolor(panelColorText);
     tray->redraw();
 
-  //panel Button
-    unsigned int panelButtonColor = getPanelButton();
-    unsigned int panelButtonColorText = getPanelButtonText();
-
-    //modify the UI
+    //panel Button
+    unsigned int panelButtonColorText;
+    unsigned int panelButtonColor;
+    //New version
+    if(themeNewStyle()<1){
+        panelButtonColor = getPanelButton();
+        panelButtonColorText = getPanelButtonText();
+    }//END Dont do this IF new version
+    else{
+        panelButtonColor=panelColor;
+        panelButtonColorText = panelColorText;
+    }
+    //if(Config::DEBUG_ME){std::cerr<<"panelButtonColor: "<<panelButtonColor<<"\npanelButtonColorText: "<<panelButtonColorText<<std::endl;}DEBUG
+//modify the UI
     button->copy_label(label.c_str());
     button->color(panelButtonColor);
     button->labelcolor(panelButtonColorText);
+    button_icon->color(panelButtonColor);
     button->redraw();
 
     std::string icon_file = getPanelButtonIcon();
-    Fl_Image * icon;
-    icon = new Fl_PNG_Image(icon_file.c_str());
-	Fl_Image * icon2 = icon->copy(30,30);
-
-	//modify the UI
-	button_icon->image(icon2);
-    button_icon->color(panelButtonColor);
+    //if(Config::DEBUG_ME){std::cerr<<"icon_file: "<<icon_file<<std::endl;}
+    if(!isSVG(icon_file)){
+        Fl_Image * icon;
+        icon = new Fl_PNG_Image(icon_file.c_str());
+        Fl_Image * icon2 = icon->copy(30,30);
+        //modify the UI
+        button_icon->image(icon2);
+    }
     button_icon->redraw();
 }
 
@@ -466,7 +564,7 @@ unsigned int flThemes::getTheme2ItemInt(const char * whichElement, const char * 
     if(colorElement->FirstChildElement( whichElement )){
         if(colorElement->FirstChildElement( whichElement )->FirstChildElement( whichElement2 )){
             if(!colorElement->FirstChildElement( whichElement )->FirstChildElement( whichElement2 )->FirstChildElement( whatToGet )){
-                std::cout<<"<"<<whichElement<<">\n\t<"<<whichElement2<<">\n\t<\\"<<whichElement2<<">\n<\\"<<whichElement<<">\ndoesn't exist"<<std::endl;
+                if(DEBUG_ME){std::cerr<<"getTheme2ItemInt()\n\n<"<<whichElement<<">\n\t<"<<whichElement2<<">\n\t<\\"<<whichElement2<<">\n<\\"<<whichElement<<">\ndoesn't exist"<<std::endl;}
                 return 0;
             }
         }
@@ -493,13 +591,13 @@ unsigned int flThemes::getTheme2ItemInt_secondColor(const char * whichElement, c
     if(colorElement->FirstChildElement( whichElement )){
         if(colorElement->FirstChildElement( whichElement )->FirstChildElement( whichElement2 )){
             if(!colorElement->FirstChildElement( whichElement )->FirstChildElement( whichElement2 )->FirstChildElement( whatToGet )){
-                std::cout<<"<"<<whichElement<<">\n\t<"<<whichElement2<<">\n\t<\\"<<whichElement2<<">\n<\\"<<whichElement<<">\ndoesn't exist"<<std::endl;
-                return 0;
+                if(DEBUG_ME){std::cerr<<"getTheme2ItemInt_secondColor()\n\n<"<<whichElement<<">\n\t<"<<whichElement2<<">\n\t<\\"<<whichElement2<<">\n<\\"<<whichElement<<">\ndoesn't exist"<<std::endl;}
+                return bg;
             }
         }
-        else {return 0;}
+        else {return bg;}
     }
-    else {return 0;}
+    else {return bg;}
 
     colorElement  = themeDoc.FirstChildElement( "JWM" )->
                         FirstChildElement( whichElement )->
@@ -517,40 +615,46 @@ unsigned int flThemes::getTheme2ItemInt_secondColor(const char * whichElement, c
 ///Window getters
 unsigned int flThemes::getWindow(unsigned int &color2){
     unsigned int result = 0;
-    if(isNewTheme){result = getThemeItemInt("WindowStyle","Background", color2);}
+    if(themeNewStyle()!=-1){result = getThemeItemInt("WindowStyle","Background", color2);}
     else{result = getTheme2ItemInt("WindowStyle","Inactive","Title");}
     return result;
 }
 unsigned int flThemes::getWindow_secondColor(){
     unsigned int result = 0,color2=0;
-    if(isNewTheme){result = getThemeItemInt("WindowStyle","Background", color2);}
+    if(themeNewStyle()!=-1){result = getThemeItemInt("WindowStyle","Background", color2);}
     else{result = getTheme2ItemInt_secondColor("WindowStyle","Inactive","Title");}
     return result;
 }
 
 unsigned int flThemes::getActiveWindow(){
     unsigned int result= 0;
-    if(isNewTheme){result = getTheme2ItemInt("WindowStyle","Active","Background");}
+    if(themeNewStyle()!=-1){result = getTheme2ItemInt("WindowStyle","Active","Background");}
     else{result = getTheme2ItemInt("WindowStyle","Active","Title");}
     return result;
 }
 unsigned int flThemes::getActiveWindow2(){
+#ifdef DEBUG_TRACK
+std::cerr<<"getActiveWindow2()-->"<<std::endl;
+#endif // DEBUG
     unsigned int result= 0;
-    if(isNewTheme){result = getTheme2ItemInt_secondColor("WindowStyle","Active","Background");}
+    if(themeNewStyle()!=-1){result = getTheme2ItemInt_secondColor("WindowStyle","Active","Background");}
     else{result = getTheme2ItemInt_secondColor("WindowStyle","Active","Title");}
+#ifdef DEBUG_TRACK
+std::cerr<<"<--getActiveWindow2() returns: "<<result<<std::endl;
+#endif // DEBUG
     return result;
 }
 unsigned int flThemes::getWindowText(){
     unsigned int color=0;
     unsigned int result = 0;
-    if(isNewTheme){result = getThemeItemInt("WindowStyle","Foreground",color);}
+    if(themeNewStyle()!=-1){result = getThemeItemInt("WindowStyle","Foreground",color);}
     else{result = getTheme2ItemInt("WindowStyle","Inactive","Text");}
     return result;
 }
 
 unsigned int flThemes::getActiveWindowText(){
     unsigned int result= 0;
-    if(isNewTheme){result = getTheme2ItemInt("WindowStyle","Active","Foreground");}
+    if(themeNewStyle()!=-1){result = getTheme2ItemInt("WindowStyle","Active","Foreground");}
     else{result = getTheme2ItemInt("WindowStyle","Active","Text");}
     return result;
 }
@@ -627,10 +731,15 @@ void flThemes::change(const char* themeName){
     std::string themeTest;
     std::string theme;
     bool existant = false;
-    if(isOLDjwmrc){
+    if(isOLDjwmrc == -1){
         existant = oldThemesExist();
         theme = OLDthemePATH + stringTheme + "/" + stringTheme;
         themeTest = OLDthemePATH + stringTheme + "/";
+    }
+    else if (isOLDjwmrc == 0){
+        existant = oldThemesExist();
+        theme = themePATH230 + stringTheme + "/" + stringTheme;
+        themeTest = themePATH230 + stringTheme + "/";
     }
     else{
         existant = themesExist();
@@ -659,10 +768,15 @@ const char* flThemes::getTheme(const char* whichTheme){
     std::string themeTest;
     std::string theme;
     bool existant = false;
-    if(isOLDjwmrc){
+    if(isOLDjwmrc == -1){
         existant = oldThemesExist();
         theme = OLDthemePATH + stringTheme + "/" + stringTheme;
         themeTest = OLDthemePATH + stringTheme + "/";
+    }
+    else if (isOLDjwmrc == 0){
+        existant = oldThemesExist();
+        theme = themePATH230 + stringTheme + "/" + stringTheme;
+        themeTest = themePATH230 + stringTheme + "/";
     }
     else{
         existant = themesExist();

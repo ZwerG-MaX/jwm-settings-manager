@@ -38,11 +38,14 @@ class Apps : public Config {
     public:
         //shortcuts
         void addShortcut(const char* icon,  const char * program, const char* popup, int border);
+        void addButton(const char* icon,  const char * program, const char* popup, int border);
         std::string desktopName(std::string filename);
         std::string desktopIcon(std::string filename);
-        bool isExec(const char* text){return compared("exec:",text);}
-        bool isRoot(const char* text){return compared("root:",text);}
-        bool compared(const char* something, const char* text);
+        //desktopExec is in Config
+        //comparedColon is also in Config
+        bool isExec(const char* text){return comparedColon("exec:",text);}
+        bool isRoot(const char* text){return comparedColon("root:",text);}
+
         bool isShortcuts();
         void getShortcuts(Fl_Browser *o);
         void deleteShortcut(std::string shortcut);
@@ -55,6 +58,10 @@ class Apps : public Config {
         void addAppXload();
 
 //----------------------------------------- Clock --------------------------------
+        //clock menu
+        void createClockMenu(std::string thisClockMenu);
+        const char* clockROOT;
+        char clockCHAR;
         ///Clock browser
         void populateClocks(Fl_Browser *o);
         ///Default clock
@@ -65,6 +72,7 @@ class Apps : public Config {
         ///Change clock to a predefined style or user input
         void changeClock(std::string style);
         void changeClock(std::string style, std::string program);
+        void setClockProgram(const char* program);
         std::string getClock(const char* timeString);
         std::string getClock();
         std::string getClockProgram();
@@ -98,6 +106,15 @@ class Apps : public Config {
         bool isAppMenu(){return isMenu(5);}
         void addAppMenu();
         void deleteAppMenu();
+        /* Menu functions IN Config
+        labelMenu
+        isMenu
+        addMenu
+        deleteMenu
+        getLabelMenu
+        getImageMenu
+        setImageMenu
+        */
 
     //NetworkMonitor
         bool isNetworkMonitor();
@@ -115,6 +132,7 @@ class Apps : public Config {
         void deleteBattery();
 
     //Menu
+        const char* menuROOT;
         void removeMenuItem(Fl_Browser *elementName, Fl_Browser *elementText);
         int getMenus(Fl_Browser *menuBrowser);
         void ConfigMenuItem(Fl_Browser *elementName,
@@ -140,6 +158,7 @@ class Apps : public Config {
         int setMenuAttribute(const char* whichElement, const char* attribute, std::string value, const char* rootmenu);
         int setMenuText(const char* whichElement, const char* text, const char* rootmenu, const char* oldtext);
         void listMenus(Fl_Browser *list_browser);
+        void getLabel(Fl_Output* menulabel,const char* menu);
 
     //General
         bool isTrayElement(const char* element, std::string text);

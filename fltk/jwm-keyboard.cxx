@@ -256,8 +256,7 @@ void KeyboardUI::cb_showtray(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxtop_i(Fl_Menu_* o, void*) {
-  flPanel panel;
-if(panel.newStyle()){
+  if(newpanel()){
   const char * action = "maxtop";
   menu_cb(action);
 }
@@ -270,8 +269,7 @@ void KeyboardUI::cb_maxtop(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxbottom_i(Fl_Menu_* o, void*) {
-  flPanel panel;
-if(panel.newStyle()){
+  if(newpanel()){
   const char * action = "maxbottom";
   menu_cb(action);
 }
@@ -284,8 +282,7 @@ void KeyboardUI::cb_maxbottom(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxleft_i(Fl_Menu_* o, void*) {
-  flPanel panel;
-if(panel.newStyle()){
+  if(newpanel()){
   const char * action = "maxleft";
   menu_cb(action);
 }
@@ -298,8 +295,7 @@ void KeyboardUI::cb_maxleft(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxright_i(Fl_Menu_* o, void*) {
-  flPanel panel;
-if(panel.newStyle()){
+  if(newpanel()){
   const char * action = "maxright";
   menu_cb(action);
 }
@@ -312,8 +308,7 @@ void KeyboardUI::cb_maxright(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxv_i(Fl_Menu_* o, void*) {
-  flPanel panel;
-if(panel.newStyle()){
+  if(newpanel()){
   const char * action = "maxv";
   menu_cb(action);
 }
@@ -326,8 +321,7 @@ void KeyboardUI::cb_maxv(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxh_i(Fl_Menu_* o, void*) {
-  flPanel panel;
-if(panel.newStyle()){
+  if(newpanel()){
   const char * action = "maxh";
   menu_cb(action);
 }
@@ -340,8 +334,7 @@ void KeyboardUI::cb_maxh(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_sendu_i(Fl_Menu_* o, void*) {
-  flPanel panel;
-if(panel.newStyle()){
+  if(newpanel()){
   const char * action = "sendu";
   menu_cb(action);
 }
@@ -354,8 +347,7 @@ void KeyboardUI::cb_sendu(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_sendd_i(Fl_Menu_* o, void*) {
-  flPanel panel;
-if(panel.newStyle()){
+  if(newpanel()){
   const char * action = "sendd";
   menu_cb(action);
 }
@@ -368,8 +360,7 @@ void KeyboardUI::cb_sendd(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_sendr_i(Fl_Menu_* o, void*) {
-  flPanel panel;
-if(panel.newStyle()){
+  if(newpanel()){
   const char * action = "sendr";
   menu_cb(action);
 }
@@ -382,8 +373,7 @@ void KeyboardUI::cb_sendr(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_sendl_i(Fl_Menu_* o, void*) {
-  flPanel panel;
-if(panel.newStyle()){
+  if(newpanel()){
   const char * action = "sendl";
   menu_cb(action);
 }
@@ -622,7 +612,7 @@ Fl_Double_Window* KeyboardUI::make_window() {
       o->end();
       Fl_Group::current()->resizable(o);
     } // Fl_Scroll* o
-    Config config;config.under_mouse(o);
+    startup(o);
     keyboard_window->xclass("jsm-keyboard");
     keyboard_window->end();
   } // Fl_Double_Window* keyboard_window
@@ -707,7 +697,7 @@ Fl_Double_Window* KeyboardUI::grabber_window() {
       key_output->box(FL_GTK_DOWN_BOX);
       key_output->hide();
     } // Fl_Output* key_output
-    Config config;config.under_mouse(o);
+    startup(o);
     Fl::focus(key);
     grab_win->xclass("jsm-keyboard");
     grab_win->end();
@@ -810,4 +800,15 @@ void KeyboardUI::mod2_cb(const char* mod) {
 
 int KeyboardUI::handle(int e) {
   return (e == FL_SHORTCUT);
+}
+
+bool KeyboardUI::newpanel() {
+  flPanel panel;
+  if(panel.newStyle() == -1){return false;}
+  return true;
+}
+
+void KeyboardUI::startup(Fl_Window *o) {
+  Config config; config.under_mouse(o);
+  o->icon(config.Get_Fl_Icon(jsm_keyboard_xpm));
 }

@@ -52,6 +52,7 @@ class flThemes : public Config
         unsigned int getTheme2ItemInt_secondColor(const char * whichElement, const char * whichElement2, const char* whatToGet);
         const double* convertINTcolor2Double(unsigned int colorToConvert);
         const double* getItemColor(Fl_Box*o);
+        bool isSVG(std::string filename);
 
         //button getters from theme file
         std::string getMaxButton(){return getThemeItemText("ButtonMax");}
@@ -93,6 +94,7 @@ class flThemes : public Config
 
         bool themesExist();
         bool oldThemesExist();
+        int themeNewStyle();
 
         //mostly used in the FLTK file
         std::string userThemeDir(){return userThemePATH;};
@@ -112,14 +114,16 @@ class flThemes : public Config
         flThemes();
         virtual ~flThemes();
     protected:
-        bool isOLDjwmrc;
+        int isOLDjwmrc;
         bool isNewTheme;
         std::string path;
         std::string userThemeName;
         std::string error;
         std::string themePATH;
+        std::string mydefaultPath;
         std::string userThemePATH;
         std::string OLDthemePATH;
+        std::string themePATH230;
         std::string bash;
     private:
 };

@@ -24,6 +24,9 @@
  */
 #include "../include/flPanel.h"
 flPanel::flPanel(){
+#ifdef DEBUG_TRACK
+  std::cerr<<"[flPanel]->"<<std::endl;
+#endif // DEBUG
     tinyxml2::XMLDocument doc;
     whichPanel = 1;
     errorMessage="Error... Don't hack around in the files so much ok? :D";
@@ -35,7 +38,12 @@ flPanel::flPanel(){
 }
 
 
-flPanel::~flPanel(){}
+flPanel::~flPanel(){
+#ifdef DEBUG_TRACK
+  std::cerr<<"<-[flPanel]"<<std::endl;
+#endif // DEBUG
+
+}
 
 ///             TESTER
 bool flPanel::test(tinyxml2::XMLElement *element){
@@ -476,7 +484,7 @@ const char* flPanel::getValue(std::string attribute){
     //if the attribute exists get the value of it!
     if (panelElement->Attribute(attrib)){result = panelElement->Attribute(attrib);}
     else{
-        std::cout<<"Tray attribute: "<<attribute<<" doesn't exist"<<std::endl;
+        std::cerr<<"Tray attribute: "<<attribute<<" doesn't exist"<<std::endl;
         return "";
     }
     //return the value from the panel or just return ""
@@ -716,7 +724,7 @@ void flPanel::setActiveBackground(const double* rgb, const char * whichElement){
 
     //OK!  is it newstyle or old??
     //either way let's set up colorElement to point to the right place
-    if(newStyle()){
+    if(newStyle() != -1){
         //does the Active element exist?
         if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )){
             createElement(whichElement,"Active");
@@ -752,7 +760,7 @@ unsigned int flPanel::getActiveBackground(unsigned int  &color2, const char * wh
     }
     //OK!  is it newstyle or old??
     //either way let's set up colorElement to point to the right place
-    if(newStyle()){
+    if(newStyle() != -1){
         //does the Active element exist?
         if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )){
             createElement(whichElement,"Active");
@@ -776,7 +784,7 @@ unsigned int flPanel::getActiveBackground(unsigned int  &color2, const char * wh
             colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "ActiveBackground" );
             colorElement->SetText("#000000");
             saveChanges();
-            saveChangesTemp();
+            if(DEBUG_ME){std::cerr<<"Created ActiveBackground, since it didn't exist"<<std::endl;}
             return 0;
         }
         colorElement  = doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "ActiveBackground" );
@@ -838,7 +846,7 @@ void flPanel::setActiveFontColor(const double* rgb, const char * whichElement){
    // loadTemp();
     const char* ActiveOrInactive;
     //check if it is new or old
-    if(newStyle()){ActiveOrInactive="Active";}
+    if(newStyle()!=-1){ActiveOrInactive="Active";}
     else{ActiveOrInactive="ActiveForeground";}
     // set the color using this function from Config
     setFGColor(whichElement,ActiveOrInactive,rgb);
@@ -850,7 +858,7 @@ unsigned int flPanel::getActiveFontColor(unsigned int &color2, const char * whic
    // loadTemp();
     const char* ActiveOrInactive;
     //check for new or old style
-    if(newStyle()){ActiveOrInactive="Active";}
+    if(newStyle()!=-1){ActiveOrInactive="Active";}
     else{ActiveOrInactive="ActiveForeground";}
     //use this function from config to return 1 color
     return getFGColor(whichElement, ActiveOrInactive, color2);
@@ -921,15 +929,17 @@ float flPanel::getOpacity(const char* whichElement){
 
 
 ///MOVE panel items around
-// this does not work yet :(
-void flPanel::moveUp(std::string item){
-    loadTemp();
+int flPanel::deleteOldElement(std::string nameofElement){
+    std::cerr<<"flPanel::deleteOldElement("<<nameofElement<<")"<<std::endl;
     int i = 1;
     int panel = currentPanel();
+    std::string text;
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
     tinyxml2::XMLElement * baseElement= doc.FirstChildElement( "JWM" )->
                                         FirstChildElement( "Tray" );
+    tinyxml2::XMLNode* deleteNode;
+    tinyxml2::XMLElement* button;
     if (panel != i){
         while(panelElement->NextSiblingElement("Tray") && i!=panel){
             panelElement=panelElement->NextSiblingElement("Tray");
@@ -937,25 +947,147 @@ void flPanel::moveUp(std::string item){
             i++;
         }
     }
-    tinyxml2::XMLNode * previous;
-    if(item.compare("App Menu")==0){
-        for(panelElement=panelElement->FirstChildElement("TrayButton");panelElement;panelElement->NextSiblingElement("TrayButton")){
-            std::string text = panelElement->GetText();
-            if(text.compare("root:5")==0){
-                tinyxml2::XMLNode *panelEle= panelElement->ShallowClone(NULL);
-                previous = panelElement->ShallowClone(NULL);
-                previous = previous->PreviousSibling();
-                panelElement->InsertAfterChild(previous,panelEle);
-                baseElement->DeleteChild(panelElement);
+    for(panelElement=panelElement->FirstChildElement("TrayButton");panelElement;panelElement=panelElement->NextSiblingElement("TrayButton")){
+        if (panelElement->GetText()){
+            text=panelElement->GetText();
+            if(text.compare(nameofElement)==0){
+                deleteNode=panelElement;
+                baseElement->DeleteChild(deleteNode);
+                saveChangesTemp();
+                saveChanges();
+                return 0;
+            }
+        }
+        else{
+            if(panelElement->FirstChildElement("Button")){
+                std::cerr<<"Contains Button Element"<<std::endl;
+                for(button=panelElement->FirstChildElement("Button"); button;button=button->NextSiblingElement("Button")){
+                    std::cerr<<"parsing Buttons"<<std::endl;
+                    if(button->GetText()){
+                        text=button->GetText();
+                        std::cerr<<text<<std::endl;
+                        if(text.compare(nameofElement)==0){
+                            deleteNode=panelElement;
+                            baseElement->DeleteChild(deleteNode);
+                            saveChangesTemp();
+                            saveChanges();
+                            return 0;
+                        }
+                    }
+                }
+            }
 
+        }
+    }
+    if(DEBUG_ME){ std::cerr<<"[deleteOldElement("<<nameofElement<<")] This was not found... there must be an error..."<<std::endl;}
+    return 1;
+}
+
+
+///This is too complicated... make this work and make it simple
+int flPanel::moveMenuDown(std::string menu){
+    std::cerr<<"flPanel::moveMenuDown("<<menu<<")"<<std::endl;
+    loadTemp();
+    std::string namesaver,text;
+    int i = 1;
+    int panel = currentPanel();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    tinyxml2::XMLElement * baseElement= doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    tinyxml2::XMLNode* previous;
+    tinyxml2::XMLElement* button;
+    tinyxml2::XMLNode *panelEle;
+
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            baseElement=baseElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    for(panelElement=panelElement->FirstChildElement("TrayButton");panelElement;panelElement=panelElement->NextSiblingElement("TrayButton")){
+        if(!panelElement->GetText()){
+            if(panelElement->FirstChildElement("Button")){
+                std::cerr<<"moveMenuDown::Contains Button Element"<<std::endl;
+                for(button=panelElement->FirstChildElement("Button"); button;button=button->NextSiblingElement("Button")){
+                    std::cerr<<"moveMenuDown::parsing Buttons"<<std::endl;
+                    if(button->GetText()){
+                        text=button->GetText();
+                        std::cerr<<text<<std::endl;
+                        if(text.compare(menu)==0){
+                            std::cerr<<"moveMenuDown::  "<<menu<< " compares to: "<<text<<std::endl;
+                            panelEle= panelElement->ShallowClone(NULL);
+                            previous = panelElement->PreviousSiblingElement();
+                            if(previous->ToElement()->FirstChildElement()->GetText()){
+                                std::cerr<<"previous->ToElement()->FirstChildElement()->GetText()"<<std::endl;
+                                namesaver=previous->ToElement()->FirstChildElement()->GetText();
+                                panelElement->InsertAfterChild(previous,panelEle);
+                                saveChangesTemp();
+                                deleteOldElement(namesaver);
+                                return 0;
+                            }
+                            else{
+                            std::cerr<<"NO::::::previous->ToElement()->FirstChildElement()->GetText()"<<std::endl;
+                                if(namesaver.compare("")!=0){
+                                panelEle= panelElement->ShallowClone(NULL);
+                                previous = panelElement->PreviousSibling();
+                                    if(previous->ToElement()->GetText()){
+                                        namesaver=previous->ToElement()->GetText();
+                                        panelElement->InsertAfterChild(previous,panelEle);
+                                        saveChangesTemp();
+                                        deleteOldElement(namesaver);
+                                        return 0;
+                                    }
+                                }
+                                else{errorJWM("moveMenuDown::previous Element does not contain text");return 1;}
+                            }
+                            return 1;
+                        }
+                        namesaver=text;
+                    }
+                }
+            }
+
+        }
+        else{
+            text=panelElement->GetText();
+            std::cerr<<"moveMenuDown::   found:" << text<<"in panel element"<<std::endl;
+                if(text.compare(menu)==0){
+                std::cerr<<"moveMenuDown::   "<<menu<< " compares to: "<<text<<std::endl;
+                panelEle= panelElement->ShallowClone(NULL);
+                previous = panelElement->PreviousSibling();
+                if(previous->ToElement()->GetText()){
+                    namesaver=previous->ToElement()->GetText();
+                    panelElement->InsertAfterChild(previous,panelEle);
+                    saveChangesTemp();
+                    deleteOldElement(namesaver);
+                    return 0;
+                }
+                else{errorJWM("moveMenuDown::previous Element does not contain text");return 1;}
             }
         }
     }
+    if(DEBUG_ME){ std::cerr<<"[moveMenuDown("<<menu<<")] You reached an impossible situation, please report this."<<std::endl;}
+    return 1;
+}
+// this does not work yet :(
+void flPanel::moveUp(std::string item){
+    loadTemp();
+    std::string namesaver;
+    std::string text=item.erase(item.length()-1,std::string::npos);
+    if(text.compare("root:")==0){
+        moveMenuDown(item);
+        return;
+    }
+    if(item.compare("App Menu")==0){
+        moveMenuDown("root:5");
+    }
     else if(item.compare("Places Menu")==0){
-
+        moveMenuDown("root:7");
     }
     else if(item.compare("Shutdown Menu")==0){
-
+        moveMenuDown("root:9");
     }
     else if(item.compare("Desktop Switcher")==0){
 
@@ -987,113 +1119,47 @@ void flPanel::moveUp(std::string item){
 ///MOVE panel items around
 // this does not work yet :(
 void flPanel::moveDown(std::string item){
+    if(DEBUG_ME){std::cerr<<"flPanel::moveDown("<<item<<")"<<std::endl;}
     loadTemp();
-    int i = 1;
-    int panel = currentPanel();
-    std::string compareText ="";
-    std::string compareName ="";
-    if(item.compare("")==0){return;}
-    else if(item.compare("App Menu")==0){
-        compareText="root:5";
-        compareName="TrayButton";
+    std::string namesaver;
+    if(item.compare("App Menu")==0){
+        moveMenuDown("root:5");
     }
     else if(item.compare("Places Menu")==0){
-        compareText="root:7";
-        compareName="TrayButton";
+        moveMenuDown("root:7");
     }
     else if(item.compare("Shutdown Menu")==0){
-        compareText="root:9";
-        compareName="TrayButton";
-    }
-    else if(item.compare("Running App List")==0){
-        compareName="TaskList";
-        compareText="NO";
+        moveMenuDown("root:9");
     }
     else if(item.compare("Desktop Switcher")==0){
-        compareName="Pager";
-        compareText="NO";
+
+    }
+    else if(item.compare("Running App List")==0){
+
     }
     else if(item.compare("Indicators")==0){
-        compareName="Dock";
-        compareText="NO";
+
     }
     else if(item.compare("Clock")==0){
-        compareName="Clock";
-        compareText="NO";
+
     }
+    else if(item.compare("")==0){return;}
     else{
         unsigned found = item.find_first_of(":");
         if(found<=item.length()){
-            std::string thisItem = item.erase(0,found+1);
+            std::string thisItem = item.erase(found+1,std::string::npos);
             if(thisItem.compare("Swallowed App")){
-                compareName="Swallow";
-                compareText="NO";
-            }
-            else{
-                compareName="TrayButton";
-                compareText="NO";
-            }
-        }
-    }
-    std::cout<<"compareName: "<<compareName<<std::endl;
-    std::cout<<"compareText: "<<compareText<<std::endl;
-    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-    tinyxml2::XMLElement * baseElement= doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-    tinyxml2::XMLElement * nextElement= doc.FirstChildElement( "JWM" )->
-                                        FirstChildElement( "Tray" );
-    if (panel != i){
-        while(panelElement->NextSiblingElement("Tray") && i!=panel){
-            panelElement=panelElement->NextSiblingElement("Tray");
-            baseElement=baseElement->NextSiblingElement("Tray");
-            nextElement=nextElement->NextSiblingElement("Tray");
-            i++;
-        }
-    }
-    tinyxml2::XMLNode * next;
-    tinyxml2::XMLElement * testeroo;
-    nextElement = nextElement->FirstChildElement();
-    for(panelElement=panelElement->FirstChildElement();panelElement;panelElement=panelElement->NextSiblingElement()){
-        //text to check and Element name to check
-        std::string text = panelElement->GetText();
-        std::string name = panelElement->Name();
-        std::cout<<"name: "<<name<<std::endl;
-        std::cout<<"text: "<<text<<std::endl;
 
-        if ((text.compare(compareText)!=0)&&(compareText.compare("NO")==0)){
-            ///Check for next element...  if it exists set it, otherwise move the other one back
-            if(nextElement->NextSiblingElement()){nextElement = nextElement->NextSiblingElement();std::cout<<"nextElement exists"<<std::endl;}
-            std::cout<<"NO compared!!!"<<std::endl;
-            std::cout<<"name: "<<name<<std::endl;
-            std::cout<<"compareName: "<<compareName<<std::endl;
-            if((name.compare(compareName)==0)){
-                std::cout<<"name: "<<name<<std::endl;
-                std::cout<<"Next element: "<<nextElement->GetText()<<std::endl;
-                tinyxml2::XMLNode *newElement= panelElement->ShallowClone(NULL);
-                testeroo = newElement->ToElement();
-                next = nextElement;//->NextSiblingElement();
-                baseElement->InsertAfterChild(next,newElement);
-                std::cout<<"New element: "<<testeroo->GetText()<<std::endl;
-                doc.DeleteNode(panelElement);
-                saveChangesTemp();
+            }
+            else if(thisItem.compare("root")==0){
+                moveMenuDown(item);
                 return;
             }
         }
-        else if((text.compare(compareText)==0)&&(name.compare(compareName)==0)){
-            ///Check for next element...  if it exists set it, otherwise move the other one back
-            if(nextElement->NextSiblingElement()){nextElement = nextElement->NextSiblingElement();std::cout<<"nextElement exists"<<std::endl;}
-            std::cout<<"text: "<<text<<std::endl;
-            std::cout<<"Next element text: "<<nextElement->GetText()<<std::endl;
-            tinyxml2::XMLNode *newElement= panelElement->ShallowClone(NULL);
-            next = nextElement;//->NextSiblingElement();
-            baseElement->InsertAfterChild(next,newElement);
-            testeroo = newElement->ToElement();
-            std::cout<<"New element: "<<testeroo->GetText()<<std::endl;
-            doc.DeleteNode(panelElement);
-            saveChangesTemp();
-            return;
+        else{
+
         }
+
     }
 }
 
@@ -1224,17 +1290,17 @@ void flPanel::switchButton(std::string OLD,std::string NEW,std::string tooltip,s
         testing123 = NEW.substr(0,found);
         if((testing123.compare("exec")==0)||(testing123.compare("root")==0)){std::cout<<"yay"<<std::endl;}
         else{
-            std::cout<<"Found: "<<testing123<<"\nIn your line: "<<NEW<<"\nMust contain exec: OR root:"<<std::endl;
+            std::cerr<<"Found: "<<testing123<<"\nIn your line: "<<NEW<<"\nMust contain exec: OR root:"<<std::endl;
             return;
         }
     }
     else{
         testing123 ="exec:"+NEW;
-        std::cout<<"Missing exec:... fixing..."<<testing123<<std::endl;
+        std::cerr<<"Missing exec:... fixing..."<<testing123<<std::endl;
         NEW=testing123;
     }
     loadTemp();
-//std::cout<<OLD<<" "<<NEW<<" "<<tooltip<<" "<<icon<<std::endl;
+    if(DEBUG_ME){std::cerr<<"OLD: "<<OLD<<" NEW: "<<NEW<<" tooltip: "<<tooltip<<" icon: "<<icon<<std::endl;}
     int i = 1;
     int numOFpanels = numPanels();
     if (numOFpanels == 0 ){
@@ -1258,7 +1324,7 @@ void flPanel::switchButton(std::string OLD,std::string NEW,std::string tooltip,s
         panelElement=panelElement->NextSiblingElement("TrayButton")){
         rootTester=panelElement->GetText();
         if(rootTester.compare(OLD)==0){
-            //std::cout<<rootTester<<std::endl;
+            if(DEBUG_ME){std::cerr<<rootTester<<std::endl;}
             if(NEW.compare("")!=0){panelElement->SetText(NEW.c_str());}
             if(tooltip.compare("")!=0){panelElement->SetAttribute("popup",tooltip.c_str());}
             if(icon.compare("")!=0){panelElement->SetAttribute("icon",icon.c_str());}

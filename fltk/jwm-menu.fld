@@ -66,8 +66,8 @@ class MenuUI {open : {public Config}
 saveChangesTemp();} {}
     Fl_Window menu_window {
       label {Menu proerties} open
-      xywh {958 440 320 315} type Double color 31 hide resizable
-      code0 {Config config;config.under_mouse(o);} xclass jsm-panel
+      xywh {1217 508 320 315} type Double color 31 hide resizable
+      code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Scroll {} {open
         xywh {0 0 320 315} color 31
@@ -99,7 +99,7 @@ ux.showSettings();}
         Fl_Browser menuElement {
           callback {int linenum = o->value();
 menuElementText->select(linenum);}
-          xywh {25 80 85 140} type Hold box GTK_DOWN_BOX selection_color 80
+          xywh {10 80 85 140} type Hold box GTK_DOWN_BOX selection_color 80
         }
         Fl_Button {} {
           label { Item}
@@ -108,15 +108,17 @@ menuElementText->select(linenum);}
         }
         Fl_Browser menuElementText {
           callback {int linenum = o->value();
-menuElement->select(linenum);} selected
-          xywh {120 80 185 140} type Hold box GTK_DOWN_BOX selection_color 80 labeltype NO_LABEL align 1
+menuElement->select(linenum);}
+          xywh {100 80 215 140} type Hold box GTK_DOWN_BOX selection_color 80 labeltype NO_LABEL align 1
         }
         Fl_Browser root_menu {
           label {Root Menu }
           callback {int line = o->value();
 const char* menu = o->text(line);
-choose_menu(menu);}
-          xywh {130 20 80 55} type Select box GTK_DOWN_BOX selection_color 80 align 4
+choose_menu(menu);
+Apps app;
+app.getLabel(labler,menu);}
+          xywh {95 20 80 55} type Select box GTK_DOWN_BOX selection_color 80 align 4
           code0 {Apps app;}
           code1 {app.getMenus(o);}
         }
@@ -130,6 +132,10 @@ choose_menu(menu);}
           callback {remove_a_menu();}
           tooltip {remove a menu item} image {custom_buttons/minus} xywh {80 275 70 35} box GTK_UP_BOX align 256
         }
+        Fl_Output labler {
+          label Label
+          xywh {180 30 125 30} box GTK_DOWN_BOX align 1
+        }
       }
     }
   }
@@ -137,8 +143,8 @@ choose_menu(menu);}
   } {
     Fl_Window {} {
       label {Add an Item} open
-      xywh {1117 307 350 220} type Double
-      code0 {Config config;config.under_mouse(o);} xclass jsm-panel visible
+      xywh {1117 307 350 220} type Double hide
+      code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Input add_label {
         label Label
@@ -282,7 +288,7 @@ if(result!=NULL){
     Fl_Window config_flwin {
       label {Configure the Item} open
       xywh {343 518 350 145} type Double hide
-      code0 {Config config;config.under_mouse(o);} xclass jsm-panel
+      code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Input prog_label {
         label Label
@@ -340,8 +346,8 @@ if(result!=NULL){
   } {
     Fl_Window {} {
       label {Add a Menu} open
-      xywh {911 362 300 160} type Double
-      code0 {Config config;config.under_mouse(o);} xclass jsm-panel visible
+      xywh {911 362 300 160} type Double hide
+      code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Browser list_browser {
         label {Choose a menu value}
@@ -524,5 +530,10 @@ menuElementText->clear();} {}
 const char* result = item_display->value();
 Apps app;
 return app.addMenuItem(menuElement, menuElementText, add_label, add_icon, add_input, add_button, result);} {}
+  }
+  Function {startup(Fl_Window *o)} {open
+  } {
+    code {Config config; config.under_mouse(o);
+o->icon(config.Get_Fl_Icon(jsm_panel_xpm));} {}
   }
 } 

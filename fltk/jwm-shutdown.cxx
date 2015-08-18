@@ -28,7 +28,7 @@
 #include "jwm-shutdown.h"
 
 void shutdown::cb_shut_i(Fl_Button*, void*) {
-  int warn =system("dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop");
+  int warn =system("dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop || systemctl poweroff");
 if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;};
 }
 void shutdown::cb_shut(Fl_Button* o, void* v) {
@@ -146,7 +146,7 @@ static unsigned char idata_preferences[] =
 static Fl_RGB_Image image_preferences(idata_preferences, 24, 24, 4, 0);
 
 void shutdown::cb_restart_i(Fl_Button*, void*) {
-  int warn =system("dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart");
+  int warn =system("dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart|| systemctl reboot");
 if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;};
 }
 void shutdown::cb_restart(Fl_Button* o, void* v) {
@@ -384,7 +384,7 @@ static unsigned char idata_system1[] =
 static Fl_RGB_Image image_system1(idata_system1, 24, 24, 4, 0);
 
 void shutdown::cb_sus_i(Fl_Button*, void*) {
-  int warn = system("dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend");
+  int warn = system("dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend || systemctl suspend");
 if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}
 shutdown_window->hide();
 }

@@ -43,6 +43,7 @@
 //#include <cairo-xlib.h>
 //#include <cairo.h>
 //#include <cairo-svg.h>
+#include "../data/icons/jsm-desktop.xpm"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Box.H>
@@ -102,5 +103,6 @@ public:
   void two_color();
   void use_icons_on_desktop();
   void useMultipleDesktops();
+  void startup(Fl_Window *o);
 };
 #endif

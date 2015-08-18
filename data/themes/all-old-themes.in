@@ -7,18 +7,10 @@
     <!--Places Menu-->
     <Include>$HOME/.config/placesmenu</Include>
     <!-- Mouse Menu-->
-    <RootMenu height="16" onroot="23">
-        <Program icon="folder-home.svg" label="Home">xdg-open ~/</Program>
-        <Program icon="jwm-settings-manager.svg" label="Settings">jwm-settings-manager</Program>
-        <Program icon="preferences-desktop-wallpaper.svg" label="Change Desktop Background">jwm-settings-manager --desktop</Program>
-    </RootMenu>
+    @MOUSE_MENU@
     <!--Shudown Menu-->
     <RootMenu height="0" onroot="9">
-        <Program icon="preferences-system-session.svg" label="Shutdown Menu">jwm-settings-manager --halt</Program>
-        <Program icon="system-restart.svg" label="Restart Computer">bash -c '
-gxmessage -buttons "Yes:3,No:4" "Restart?";case $? in 3)echo "Reboot";dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart;; 4)echo "Not restarting";; esac'</Program>
-        <Restart label="Reload Desktop" icon="system-restart.svg"/>
-        <Exit label="Logout" confirm="true" icon="system-logout.svg"/>
+        @SHUTERDOWN@
     </RootMenu>
 <!-- END MENUS -->
 <!-- GROUP -->

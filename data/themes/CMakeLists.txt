@@ -1,25 +1,14 @@
 ## Variables in the configure (*.in) files
 #####################################################################################
-## CLOCK configuration
-set(CLOCK_FORMAT "%a, %e %b %l:%M %p")
-set(OLD_CLOCK "zenity --calendar --title=\"Calendar\"")
-set(OLD_CLOCK_TAG "<Clock format=\"${CLOCK_FORMAT}\">${OLD_CLOCK}</Clock>")
+
+
 set(EXTENTION "svg")
-set(CLOCK "root:c")
-set(CLOCK_TAG "<Clock format=\"${CLOCK_FORMAT}\">${CLOCK}</Clock>")
-set(TZ_PROG "xterm -e 'sudo dpkg-reconfigure tzdata'")
-set(CLOCK_MENU "<!-- Clock Menu-->
-    <RootMenu height=\"0\" onroot=\"c\">
-        <Program icon=\"time.@EXTENTION@\" label=\"Clock Settings\">jwm-settings-manager --clock-settings</Program>
-         <Separator/>
-        <Program icon=\"calendar.@EXTENTION@\" label=\"Calendar\">@OLD_CLOCK@</Program>
-        <Program icon=\"time.@EXTENTION@\" label=\"Timezone Settings\">@TZ_PROG@</Program>
-    </RootMenu>")
+set(JSM "jwm-settings-manager")
 ## DEFAULT PROGRAMS
 set (WEB_PROG "exec:x-www-browser")
-set (MANUAL "${WEB_PROG} /usr/share/doc/ToriOS/html/index.html")
-set (STARTPAGE "${WEB_PROG} /usr/share/doc/ToriOS/startpage.html")
-set (STARTPAGE_ICON "browser.@EXTENTION@")
+set (MANUAL "${WEB_PROG} /usr/share/doc/torios/html/index.html")
+set (STARTPAGE "${WEB_PROG} /usr/share/doc/torios/startpage.html")
+set (STARTPAGE_ICON "browser.${EXTENTION}")
 set (SYS_MONITOR "exec:xterm htop")
 set (SCREEN_SHOT "exec:screenie")
 set (RUN_DIALOG "exec:zrun")
@@ -29,29 +18,107 @@ set (VOL_UP "exec:amixer-up")
 set (VOL_DOWN "exec:amixer-down")
 set (VOL_MUTE "exec:amixer-toggle")
 set (HELP_PROG "exec:xman")
+set(LOGOUT_PROGRAM "torios-exit")
+set(TZ_PROG "xterm -e 'sudo dpkg-reconfigure tzdata'")
 
 ################### MENUS ###############################
+
+###MENUS
+# 1 nothing
+# 23 mouse menu
+# 5 apps
+# 7 places
+# 8 gnome system
+# 9 shutdown
+# c clock
+# p panel edit
+# m menu edit
+
+## CLOCK
+set(CLOCK_FORMAT "%a, %e %b %l:%M %p")
+set(CLOCK "root:c")
+set(OLD_CLOCK "zenity --calendar --title=\"Calendar\"")
+set(OLD_CLOCK_TAG "<Clock format=\"${CLOCK_FORMAT}\">${OLD_CLOCK}</Clock>")
+set(CLOCK_TAG "<Clock format=\"${CLOCK_FORMAT}\">${CLOCK}</Clock>")
+set(CLOCK_MENU "<!-- Clock Menu-->
+    <RootMenu height=\"0\" onroot=\"c\">
+        <Program icon=\"time.${EXTENTION}\" label=\"Clock Settings\">${JSM} --clock-settings</Program>
+         <Separator/>
+        <Program icon=\"calendar.${EXTENTION}\" label=\"Calendar\">@OLD_CLOCK@</Program>
+        <Program icon=\"time.${EXTENTION}\" label=\"Timezone Settings\">@TZ_PROG@</Program>
+    </RootMenu>")
+
+## Panel Edit
+set(EDIT_PANEL_ROOT "root:p")
+set(EDIT_PANEL "    <RootMenu onroot=\"p\">
+	<Program icon=\"jsm-panel.${EXTENTION}\" label=\"Edit Panel\">${JSM} --panel</Program>
+	<Program icon=\"add.${EXTENTION}\" label=\"Add new items\">${JSM} --shortcuts</Program>
+    </RootMenu>")
+
+## Menu Edit
+set(EDIT_MENU_ROOT "root:m")
+set(EDIT_MENU "    <RootMenu onroot=\"m\">
+	<Program icon=\"jsm-panel.${EXTENTION}\" label=\"Edit Menu\">${JSM} --menu</Program>
+	<Program icon=\"reload.${EXTENTION}\" label=\"Update Menus\">update-menus</Program>
+    </RootMenu>")
+## SHUTDOWN MENU
+set(SHUTDOWN_ROOT "root:9")
+set(SHUTDOWN_NAME "Shutdown")
+set(SHUTDOWN_ICON "system-shutdown.${EXTENTION}")
+set(SHUTDOWN_PROGRAM "torios-shutdown")
+set(LOGOUT_ICON "system-logout.${EXTENTION}")
+set(RESTART_ICON "system-restart.${EXTENTION}")
+set(RESTART_PROGRAM "torios-reboot")
+set(SHUTERDOWN "<Program icon=\"${SHUTDOWN_ICON}\" label=\"Shutdown Computer\">${SHUTDOWN_PROGRAM}</Program>
+        <Program icon=\"${RESTART_ICON}\" label=\"Restart Computer\">${RESTART_PROGRAM}</Program>
+        <Restart label=\"Reload Desktop\" icon=\"${RESTART_ICON}\"/>
+        <Program label=\"Logout\" icon=\"${LOGOUT_ICON}\">torios-exit</Program>")
+
 ## MAIN MENU
-set(TORI_ROOT "root:5")
-set(APPMENU_FILE "/etc/jwm/jwm-menu")
-set(REGULAR_MENUS_LIST "<!-- NOTE, if you hand edit this root:5 is the app menu and root:7 is the places menu  you have been duly warned :) -->
-    <Include>${APPMENU_FILE}</Include>")
-set(MENU_NAME "Apps")
+set(FACEB "https://www.facebook.com/ToriOS.Linux")
+set(GPLUS "https://plus.google.com/u/0/b/105245967039953698237/105245967039953698237/posts")
+set(TWITTER "https://twitter.com/Tori_OS")
+set(LP "https://launchpad.net/torios")
+set(APPMENU_FILE "$HOME/.config/torimenu")
+set(JWM_MENU "/usr/bin/jwm-menu")
+set(JWM_ROOT "root:3")
+set(ABOUT_PROG "${WEB_PROG} http://torios.org/community.html")
 set(MENU_ICON "/usr/share/pixmaps/distributor-logo.png")
+#MAIN MENU GENERATOR
+
+set(JWM_ROOT_MENU "<RootMenu onroot=\"3\">
+        <Include>${JWM_MENU}</Include>
+        <Menu label=\"About ToriOS\" icon=\"help-about.${EXTENTION}\" height=\"0\">
+           <Program label=\"Help\" icon=\"help.${EXTENTION}\">${MANUAL}</Program>
+           <Program label=\"Launchpad\" icon=\"launchpad.${EXTENTION}\">${WEB_PROG} ${LP}</Program>
+           <Program label=\"G+\" icon=\"googleplus.${EXTENTION}\">${WEB_PROG} ${GPLUS}</Program>
+           <Program label=\"Facebook\" icon=\"facebook.${EXTENTION}\">${WEB_PROG} ${FACEB}</Program>
+           <Program label=\"Twitter\" icon=\"twitter.${EXTENTION}\">${WEB_PROG} ${TWITTER}</Program>
+           <Program label=\"About Us\" icon=\"${MENU_ICON}\">${ABOUT_PROG}</Program>
+        </Menu>
+        ${SHUTERDOWN}
+    </RootMenu>")
+
+set(MENUS_LIST_NEW "${JWM_ROOT_MENU}")
+
+set(REGULAR_MENUS_LIST "    <Include>${APPMENU_FILE}</Include>")
+#set(REGULAR_MENUS_LIST "${JWM_ROOT_MENU}")
+set(TORI_ROOT "root:5")
+#set(TORI_ROOT "${JWM_ROOT}")
+set(MENU_NAME "Apps")
+
 
 ## PLACES MENU
 set(PLACES_ROOT "root:7")
 set(PLACES_NAME "Places")
 set(PLACES_ICON "folder.@EXTENTION@")
 
-## SHUTDOWN MENU
-set(SHUTDOWN_ROOT "root:9")
-set(SHUTDOWN_NAME "Shutdown")
-set(SHUTDOWN_ICON "system-shutdown.@EXTENTION@")
-set (SHUTDOWN_PROGRAM "jwm-settings-manager --halt")
-set(LOGOUT_ICON "system-logout.@EXTENTION@")
-set(RESTART_ICON "system-restart.@EXTENTION@")
-set(RESTART_PROGRAM "torios-reboot")
+## Mouse MENU
+set(MOUSE_MENU "<RootMenu height=\"0\" onroot=\"2\">
+        <Program icon=\"folder-home.${EXTENTION}\" label=\"Home\">xdg-open ~/</Program>
+        <Program icon=\"${JSM}.${EXTENTION}\" label=\"Settings\">${JSM}</Program>
+        <Program icon=\"preferences-desktop-wallpaper.${EXTENTION}\" label=\"Change Desktop Background\">${JSM} --desktop</Program>
+    </RootMenu>")
 
 ## window corners override in individual files
 set(CORNER "4")
@@ -59,15 +126,23 @@ set(W_HEIGHT "20")
 ## PANEL CONFIGURATIONS
 ## THE NORMAL CONFIG used in Default, Ambiance and Live
 set (DEFAULT_TRAY "    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign=\"fixed\" layout=\"horizontal\">
-        <TrayButton label=\"${MENU_NAME}\" icon=\"${MENU_ICON}\" border=\"false\">${TORI_ROOT}</TrayButton>
-        <TrayButton label=\"${PLACES_NAME}\" icon=\"${PLACES_ICON}\" border=\"false\">${PLACES_ROOT}</TrayButton>
-        <TrayButton icon=\"${STARTPAGE_ICON}\" border=\"false\">${STARTPAGE}</TrayButton>
+        <TrayButton label=\"${MENU_NAME}\" icon=\"${MENU_ICON}\" border=\"false\">
+            <Button mask=\"1\">${JWM_ROOT}</Button>
+            <Button mask=\"23\">${EDIT_MENU_ROOT}</Button>
+        </TrayButton>
+        <TrayButton label=\"${PLACES_NAME}\" icon=\"${PLACES_ICON}\" border=\"false\">
+            <Button mask=\"1\">${PLACES_ROOT}</Button>
+            <Button mask=\"23\">${EDIT_MENU_ROOT}</Button>
+        </TrayButton>
+        <TrayButton icon=\"${STARTPAGE_ICON}\" border=\"false\">
+            <Button mask=\"1\">${STARTPAGE}</Button>
+            <Button mask=\"23\">${EDIT_PANEL_ROOT}</Button>>
+        </TrayButton>
         <Pager labeled=\"true\"/>
         <TaskList maxwidth=\"256\"/>
         <Dock/>
         <Swallow name=\"xload\" width=\"64\">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>
         ${CLOCK_TAG}
-        <TrayButton label=\"${SHUTDOWN_NAME}\" icon=\"${SHUTDOWN_ICON}\" border=\"false\">${SHUTDOWN_ROOT}</TrayButton>
     </Tray>")
 ### OLD STYLE 2.2.2 configs
 set (OLD_DEFAULT_TRAY "    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign=\"fixed\" layout=\"horizontal\">
@@ -124,6 +199,9 @@ set (OLD_GNOME_TRAY "    <Tray height=\"34\" autohide=\"false\" valign=\"top\" w
     </Tray>")
 
 set(LIVE_MENUS_LIST "<!-- NOTE, if you hand edit this root:5 is the app menu and root:7 is the places menu  you have been duly warned :) -->
+${EDIT_MENU}
+${EDIT_PANEL}
+${JWM_ROOT_MENU}
     <RootMenu onroot=\"1\"/>
     <!-- Main Menu -->
     <Include>${APPMENU_FILE}</Include>
@@ -136,7 +214,7 @@ set(LIVE_MENUS_LIST "<!-- NOTE, if you hand edit this root:5 is the app menu and
         <!--Places Menu-->
     <Include>$HOME/.config/placesmenu</Include>
     <!-- Mouse Menu-->
-    <RootMenu height=\"16\" onroot=\"23\">
+    <RootMenu height=\"16\" onroot=\"2\">
         <Program icon=\"folder-home.${EXTENTION}\" label=\"Home\">xdg-open ~/</Program>
         <Program icon=\"jwm-settings-manager.${EXTENTION}\" label=\"Settings\">jwm-settings-manager</Program>
         <Program icon=\"preferences-desktop-wallpaper.${EXTENTION}\" label=\"Change Desktop Background\">jwm-settings-manager --desktop</Program>
@@ -302,6 +380,9 @@ set(MOUSE "<DoubleClickSpeed>400</DoubleClickSpeed>
 set (STARTUP "<StartupCommand>pcmanfm --desktop</StartupCommand>
    <StartupCommand>$HOME/.config/jsm-mouse</StartupCommand>
    <StartupCommand>nm-applet</StartupCommand>
+   <StartupCommand>volumeicon</StartupCommand>
+   <StartupCommand>xfce4-power-manager</StartupCommand>
+   <StartupCommand>nice-start</StartupCommand>
    <StartupCommand>/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1</StartupCommand>")
 set (GROUPS "<Group>
         <Option>noshade</Option>

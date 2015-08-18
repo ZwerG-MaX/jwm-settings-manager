@@ -61,6 +61,9 @@ decl {\#include <FL/Fl_PNG_Image.H>} {public global
 decl {\#include <FL/Fl_Native_File_Chooser.H>} {public global
 } 
 
+decl {\#include "../data/icons/jsm-theme.xpm"} {selected public global
+} 
+
 class ThemesUI {open
 } {
   Function {make_window()} {open
@@ -68,7 +71,8 @@ class ThemesUI {open
     Fl_Window themes_window {
       label Themes open
       xywh {200 462 610 345} type Double color 31 labelcolor 7
-      code0 {Config config;config.under_mouse(o);} xclass jsm-theme visible
+      code0 {Config config;config.under_mouse(o);}
+      code1 {o->icon(config.Get_Fl_Icon(jsm_theme_xpm));} xclass {jsm-theme} visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 845 660} color 31
@@ -109,7 +113,7 @@ if(result!=NULL){
         Fl_Box iwin {
           xywh {160 155 425 40} box FLAT_BOX
         }
-        Fl_Box iwin2 {selected
+        Fl_Box iwin2 {
           xywh {160 165 425 30} box FLAT_BOX
         }
         Fl_Box iwin_text {
@@ -184,7 +188,8 @@ std::string save_name = choose_directory(gettext("Save File"));
 if (save_name.compare("")==0){return;}
 const char* save_file = save_name.c_str();
 int result = theme.saveAs(save_file);
-if(result!=0){fl_alert("Problem saving: %s",save_file);}} {}
+if(result!=0){fl_alert("Problem saving: %s",save_file); return;}
+theme.populateUserThemes(usr_theme);} {}
   }
   Function {choose_directory(const char* whichChoice)} {open return_type {std::string}
   } {

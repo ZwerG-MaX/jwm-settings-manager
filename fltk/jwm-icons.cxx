@@ -107,10 +107,11 @@ Fl_Double_Window* IconsUI::make_window() {
         o->deactivate();
       } // Fl_Button* o
       { iconsBrowser = new Fl_Browser(10, 15, 310, 220);
-        iconsBrowser->type(2);
+        iconsBrowser->type(1);
         iconsBrowser->box(FL_GTK_DOWN_BOX);
         iconsBrowser->selection_color((Fl_Color)80);
         iconsBrowser->callback((Fl_Callback*)cb_iconsBrowser);
+        iconsBrowser->when(FL_WHEN_ENTER_KEY);
         flIcons icons;
         //icons.getIcons(iconsBrowser);
         icons.loadTheme(iconsBrowser);
@@ -125,7 +126,7 @@ Fl_Double_Window* IconsUI::make_window() {
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
-    flIcons icon; icon.under_mouse(o);
+    startup(o);
     icons_window->xclass("jsm-icons");
     icons_window->end();
     icons_window->resizable(icons_window);
@@ -168,4 +169,9 @@ std::string IconsUI::choose_icons() {
   int r = 0;
   std::string result_string = fl_dir_chooser(m,f,r);
   return result_string;
+}
+
+void IconsUI::startup(Fl_Window *o) {
+  Config config; config.under_mouse(o);
+  o->icon(config.Get_Fl_Icon(jsm_icons_xpm));
 }

@@ -82,6 +82,9 @@ decl {\#include <FL/fl_draw.H>} {public global
 decl {\#include <FL/fl_message.H>} {public global
 } 
 
+decl {\#include "../data/icons/jsm-mouse.xpm"} {selected public global
+} 
+
 class MouseUI {open : {public Config}
 } {
   decl {bool verbose;int m_pid;} {public local
@@ -91,10 +94,10 @@ class MouseUI {open : {public Config}
     code {load();
 saveChangesTemp();} {}
     Fl_Window mouse_window {
-      label {Mouse Settings} open selected
-      xywh {1165 257 440 535} type Double color 31 resizable
+      label {Mouse Settings} open
+      xywh {1165 257 440 535} type Double color 31 hide resizable
       code0 {readsynclientoutput();}
-      code1 {Config config;config.under_mouse(o);} xclass {jsm-mouse} visible
+      code1 {startup(o);} xclass {jsm-mouse}
     } {
       Fl_Scroll {} {open
         xywh {0 10 440 525} color 31
@@ -684,7 +687,8 @@ saveChangesTemp();}
   Function {CalibrateEdge(int edge)} {open
   } {
     code {int fds[2];
-pipe(fds);
+int thispipe = pipe(fds);
+if(thispipe !=0){std::cerr<<"pipe() did not return 0"<<std::endl;}
 char tmp[1024];
 m_pid=fork();	
 
@@ -706,9 +710,11 @@ m_pid=fork();
   int xmin=100000;
   int ymax=0;
   int ymin=100000;
-  fgets(tmp,1024,fp);
+  char* thischar = fgets(tmp,1024,fp);
+  if (thischar == NULL){std::cerr<<"fgets returned NULL"<<std::endl;}
   for (int i=0; i<10 ; i++){
-    fgets(tmp,1024,fp);
+    char* thischar2 = fgets(tmp,1024,fp);
+    if (thischar2 == NULL){std::cerr<<"fgets returned NULL"<<std::endl;}
     if (verbose) printf("%s\\n",tmp);
     parseline(tmp,argv,3);
     if (atoi(argv[1])>xmax) xmax=atoi(argv[1]);
@@ -931,5 +937,10 @@ while (*line!=0 && argc<maxarg) {
 }
 *argv = 0;
 return argc;} {}
+  }
+  Function {startup(Fl_Window *o)} {open
+  } {
+    code {Config config; config.under_mouse(o);
+o->icon(config.Get_Fl_Icon(jsm_desktop_xpm));} {}
   }
 } 

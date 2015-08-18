@@ -1,6 +1,6 @@
 ## Variables in the configure (*.in) files
 #####################################################################################
-set(DEFAULT_THEME "Default")
+set(THIS_THEME "Default")
 #####################################################################################
 set(TRAY "${DEFAULT_TRAY}")
 set (OLD_TRAY "${OLD_DEFAULT_TRAY}")
@@ -42,9 +42,13 @@ set(POPUP_OUTLINE "#000000")
 set(POPUP_FOREGROUND "#ffffff")
 set(POPUP_BACKGROUND "#383838")
 
-configure_file(../all-new-themes.in ${DEFAULT_THEME})
 configure_file(../live.jwmrc.in ../../live.jwmrc)
 
+## this stays the same for all files
+set(CURRENTTHEME "../${THIS_THEME}/${THIS_THEME}")
+set(THEME_230 "../2.3.0/${THIS_THEME}/${THIS_THEME}")
+configure_file(../all-2.3.2+themes.in ${THEME_230})
+configure_file(../all-new-themes.in ${CURRENTTHEME})
 ### SETUP OLD THEME NAMES
-set(OLD_DEFAULT_THEME "../old/Default/Default")
-configure_file(../all-old-themes.in ${OLD_DEFAULT_THEME})
+set(OLD_THEME "../old/${THIS_THEME}/${THIS_THEME}")
+configure_file(../all-old-themes.in ${OLD_THEME})

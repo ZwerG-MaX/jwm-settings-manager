@@ -37,6 +37,7 @@
 #include <FL/fl_ask.H>
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Native_File_Chooser.H>
+#include "../data/icons/jsm-theme.xpm"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Button.H>

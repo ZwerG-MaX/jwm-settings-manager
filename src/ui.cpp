@@ -1,6 +1,5 @@
 
 #include "../include/ui.h"
-//#include "../data/icons/jwm-settings-manager.xpm"
 //These functions simply call the UI
 UI::UI(){
 }
@@ -9,16 +8,10 @@ UI::~UI(){
 }
 //main window
 int UI::showSettings(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Settings UI activated"<<std::endl;
+#endif // DEBUG
     SettingsUI uiSettings;
-   /* static Pixmap p;
-    Pixmap mask;
-    XpmCreatePixmapFromData(fl_display, DefaultRootWindow(fl_display), (char **)jsm,&p,&mask,0);
-    uiSettings.settings_window->icon((char *)p);
-    */
-    //uiSettings.make_window()->icon(Get_Fl_Icon(jsm));
-    //fl_open_display();
-    //Pixmap p = XCreateBitmapFromData(fl_display, DefaultRootWindow(fl_display), (char *)jsm,48,48);
-    //uiSettings.settings_window->icon((char *)p);
     uiSettings.make_window()->xclass("jwm-settings-manager");
     uiSettings.make_window()->show();
 return Fl::run();
@@ -26,6 +19,9 @@ return Fl::run();
 
 //panel
 int UI::showPanel(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Panel UI activated"<<std::endl;
+#endif // DEBUG
     PanelUI uiPanel;
     uiPanel.make_window()->xclass("jsm-panel");
     uiPanel.make_window()->show();
@@ -33,6 +29,9 @@ return Fl::run();
 }
 //clock
 int UI::showClock(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Clock UI activated"<<std::endl;
+#endif // DEBUG
     PanelUI uiPanel;
     uiPanel.make_window()->xclass("jsm-panel");
     uiPanel.make_window()->show();
@@ -41,6 +40,9 @@ return Fl::run();
 }
 //desktop
 int UI::showDesktop(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Desktop UI activated"<<std::endl;
+#endif // DEBUG
     DesktopUI uiDesktop;
     uiDesktop.make_window()->xclass("jsm-desktop");
     uiDesktop.make_window()->show();
@@ -49,6 +51,9 @@ return Fl::run();
 
 //windows
 int UI::showWindow(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Window UI activated"<<std::endl;
+#endif // DEBUG
     WindowUI uiWindow;
     uiWindow.make_window()->xclass("jsm-windows");
     uiWindow.make_window()->show();
@@ -57,6 +62,9 @@ int UI::showWindow(){
 
 //Autostart
 int UI::showAutostart(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Autostart UI activated"<<std::endl;
+#endif // DEBUG
     AutostartUI uiAutostart;
     uiAutostart.make_window()->xclass("jsm-autostart");
     uiAutostart.make_window()->show();
@@ -65,6 +73,9 @@ return Fl::run();
 
 //fonts
 int UI::showFonts(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Font UI activated"<<std::endl;
+#endif // DEBUG
     FontUI uiFonts;
     uiFonts.make_window()->xclass("jsm-fonts");
     uiFonts.make_window()->show();
@@ -73,6 +84,9 @@ return Fl::run();
 
 //keyboard
 int UI::showKeyboard(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Keyboard UI activated"<<std::endl;
+#endif // DEBUG
     KeyboardUI uiKeyboard;
     uiKeyboard.make_window()->xclass("jsm-keyboard");
     uiKeyboard.make_window()->show();
@@ -81,6 +95,9 @@ return Fl::run();
 
 //Themes
 int UI::showThemes(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Themes UI activated"<<std::endl;
+#endif // DEBUG
     ThemesUI uiThemes;
     uiThemes.make_window()->xclass("jsm-theme");
     uiThemes.make_window()->show();
@@ -89,6 +106,9 @@ return Fl::run();
 
 //icons
 int UI::showIcons(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Icons UI activated"<<std::endl;
+#endif // DEBUG
     IconsUI uiIcons;
     uiIcons.make_window()->xclass("jsm-icons");
     uiIcons.make_window()->show();
@@ -97,30 +117,34 @@ return Fl::run();
 
 //mouse
 int UI::showMouse(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Mouse UI activated"<<std::endl;
+#endif // DEBUG
     MouseUI uiMouse;
     uiMouse.make_window()->xclass("jsm-mouse");
     uiMouse.make_window()->show();
 return Fl::run();
 }
-//mouse
+//menu
 int UI::showMenu(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Menu UI activated"<<std::endl;
+#endif // DEBUG
     MenuUI Menu;
     Menu.make_window()->xclass("jsm-panel");
     Menu.make_window()->show();
 return Fl::run();
 }
-#if 0
-char* UI::Get_Fl_Icon(const char** pIcon){
-    /* Set icon for Linux:
-     * This function must be initialised once by assigning an icon with parameter pIcon.
-     * For sequential setting of icon to subwindows, this function can be called several
-     * times without assigning an icon every time.
-     *
-     * Code from Vincent on FLTK forums 2015 Feb 10
-     */
-     std::cout<< "in the icon code"<<std::endl;
-
-    Pixmap p=XCreateBitmapFromData(fl_display, DefaultRootWindow(fl_display),(char*) pIcon, 48, 48);
-    return (char*) p;
+//Shortcuts
+int UI::showShortcuts(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"Shortcuts UI activated"<<std::endl;
+#endif // DEBUG
+    PanelUI uiPanel;
+    uiPanel.make_window()->xclass("jsm-panel");
+    uiPanel.make_window()->show();
+    uiPanel.config_clock_window()->show();
+return Fl::run();
 }
-#endif
+
+

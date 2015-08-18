@@ -35,6 +35,7 @@
 #include "../include/Config.h"
 #include "../include/flKeyboard.h"
 #include "../include/ui.h"
+#include "../data/icons/jsm-keyboard.xpm"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Browser.H>
@@ -281,5 +282,7 @@ public:
   void mod_cb(const char* mod);
   void mod2_cb(const char* mod);
   int handle(int e);
+  bool newpanel();
+  void startup(Fl_Window *o);
 };
 #endif

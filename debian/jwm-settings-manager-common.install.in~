@@ -1,8 +1,10 @@
 data/Buttons/ usr/share/@EXEC@/
 @COMMON_INSTALL@
 data/time usr/share/@EXEC@/
-data/torios-reboot usr/bin
 data/jwmIconFinder usr/bin
+data/nice-start usr/bin
+data/jwm-placesmenu etc/menu-methods
+data/jwm-desktopmenu etc/menu-methods
 data/icons/@EXEC@.png usr/share/pixmaps/
 data/*.desktop usr/share/applications/
 data/pb_JWM usr/share/@EXEC@/

@@ -61,6 +61,9 @@ decl {\#include "../include/Config.h"} {public global
 decl {\#include "../include/ui.h"} {public global
 } 
 
+decl {\#include "../data/icons/jsm-fonts.xpm"} {public global
+} 
+
 class FontUI {open : {public Config}
 } {
   decl {std::string currentElement} {private local
@@ -73,8 +76,8 @@ class FontUI {open : {public Config}
 saveChangesTemp();} {}
     Fl_Window font_window {
       label {Font Settings} open
-      xywh {434 372 380 410} type Double color 31 hide resizable
-      code0 {Config config;config.under_mouse(o);} xclass {jsm-fonts}
+      xywh {1205 530 380 410} type Double color 31 resizable
+      code0 {startup(o);} xclass {jsm-fonts} visible
     } {
       Fl_Scroll {} {open
         xywh {0 -5 380 415} color 31
@@ -135,7 +138,8 @@ font_chooser_window()->show();}
         Fl_Output panel_button_font {
           label {Panel Button Font Name}
           xywh {40 210 160 25} box GTK_DOWN_BOX color 53 selection_color 72 align 1
-          code0 {get_font("TrayButtonStyle",o);}
+          code0 {if(!newOne()){get_font("TrayButtonStyle",o);}}
+          code1 {else{o->hide();}}
         }
         Fl_Button {} {
           label Choose
@@ -143,11 +147,13 @@ font_chooser_window()->show();}
 Widget=panel_button_font;
 font_chooser_window()->show();}
           tooltip {Open the font list Window} xywh {210 205 75 30} box GTK_UP_BOX color 40 labelcolor 7
+          code0 {if(newOne()){o->hide();}}
         }
         Fl_Button traybutton_font_color_button {
           callback {font_color(o, "TrayButtonStyle");}
           xywh {295 210 60 25} box GTK_UP_BOX when 6
-          code0 {get_font_color(o,"TrayButtonStyle");}
+          code0 {if(!newOne()){get_font_color(o,"TrayButtonStyle");}}
+          code1 {else{o->hide();}}
         }
         Fl_Box panel_box {
           xywh {10 255 355 115} box GTK_DOWN_BOX color 50
@@ -172,12 +178,13 @@ font_chooser_window()->show();}
         Fl_Button task_font_color_button {
           callback {font_color(o, "TaskListStyle");}
           xywh {295 335 60 25} box GTK_UP_BOX when 6
-          code0 {get_font_color(o,"TaskListStyle");}
+          code0 {if(newOne()){o->hide();}else{get_font_color(o,"TaskListStyle");}}
         }
         Fl_Output task_font {
           label {Running App List Font Name}
           xywh {45 335 160 25} box GTK_DOWN_BOX color 53 selection_color 72 align 1
-          code1 {get_font( "TaskListStyle", o);}
+          code0 {if(!newOne()){get_font( "TaskListStyle", o);}}
+          code1 {else{o->hide();}}
         }
         Fl_Button {} {
           label Choose
@@ -185,6 +192,7 @@ font_chooser_window()->show();}
 Widget=task_font;
 font_chooser_window()->show();}
           tooltip {Open the font list Window} xywh {210 335 75 30} box GTK_UP_BOX color 40 labelcolor 7
+          code0 {if(newOne()){o->hide();}}
         }
         Fl_Button {} {
           label Cancel
@@ -209,8 +217,8 @@ ux.showSettings();}
   } {
     Fl_Window font_choosing {
       label {Choose a Font} open selected
-      xywh {381 320 340 455} type Double
-      code0 {Config config;config.under_mouse(o);} xclass {jsm-fonts} visible
+      xywh {381 320 340 455} type Double hide
+      code0 {startup(o);} xclass {jsm-fonts}
     } {
       Fl_Button {} {
         label Cancel
@@ -380,5 +388,27 @@ Why does this crash everything??
 chooser_size->value(font_size);
 chooser_size->redraw();
 */} {}
+  }
+  Function {newOne()} {open return_type bool
+  } {
+    code {switch (newStyle()){
+case -1:
+  return false;
+  break;
+ case 0:
+   return false;
+   break;
+ case 1:
+   return true;
+   break;
+ default:
+   return true;
+   break;
+}} {}
+  }
+  Function {startup(Fl_Window *o)} {open
+  } {
+    code {Config config; config.under_mouse(o);
+o->icon(config.Get_Fl_Icon(jsm_fonts_xpm));} {}
   }
 } 

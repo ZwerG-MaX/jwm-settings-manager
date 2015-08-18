@@ -64,6 +64,8 @@ public:
     int whichAlign(const char* Align); //1 is valign 2 is halign 3 is unknown
     void setPanelText(const char* element);
     std::string getPanelText(const char* element);
+
+    //delete a PANEL
     void deletePanel();
 
     //testers
@@ -71,7 +73,8 @@ public:
     //move
     void moveUp(std::string item);
     void moveDown(std::string item);
-
+    int moveMenuDown(std::string menu);
+    int deleteOldElement(std::string namesaver);
     ///colors  used by all the Panel stuff...
     //Inactive
     void setBackground(const double* rgb, const char * whichElement);
@@ -88,7 +91,7 @@ public:
     void setOpacity(float &opacity, const char* whichElement);
     void setPosition(const char* attribute, const char* value);
 
-    //Generic Panel configurations
+    ///Generic Panel configurations
     void setValue(const char* attribute, int value);
     int getValue(const char* attribute);
     std::string getStringValue(const char* attribute);
@@ -101,18 +104,38 @@ public:
     const char* getSubElementAttribute(const char* whichElement,const char* attribute);
     void setSubElementAttribute(const char* whichElement,const char* attribute, const char* value);
 
-    //Width (setter is in jwm-panel, but uses setValue)
-    int getWidth(){return getValue("width");}
-    //Height (setter is in jwm-panel, but uses setValue)
-    int getHeight(){return getValue("height");}
-    //xy
-    int getCoordinate(const char * xy){return getValue(xy);}
-    void setCoordinate(const char * xy, int value){setValue(xy,value);}
-    //Border
+    ///Border
     int getBorder();
     const char* horizontalORvertical(int horizontalValue, int verticalValue);
 
-    //Menu
+    ///Menu
+    //Menu functions IN Config
+    /*
+        labelMenu
+        isMenu
+        addMenu
+        deleteMenu
+        getLabelMenu
+        getImageMenu
+        setImageMenu
+    */
+    //Menu functions IN Apps
+    /*
+        ///APPS
+        isAppMenu
+        addAppMenu
+        deleteAppMenu
+        ///PLACES
+        isPlaces
+        addPlaces
+        deletePlaces
+        ///SHUTDOWN
+        isShutdown
+        addShutdown
+        deleteShutdown
+        setShutdownImage
+    */
+    //menu functions here
     void menuLabel(const char * label);
     std::string getMenuLabel(){return getLabelMenu(rootMenu);}
     std::string getMenuImage(){return getImageMenu(rootMenu);}
@@ -122,12 +145,12 @@ public:
     void switchMenu(int whichStyle, const char* MenuName);
     void switchMenuInclude(std::string changeTHIS, std::string toTHIS);
     void switchButton(std::string OLD,std::string NEW,std::string tooltip,std::string icon);
-    ///VARIABLES for menu
+    //VARIABLES for menu
     std::string torimenu;
     std::string gnomemenu;
     std::string sysmenu;// = "gnomesystem";
 
-    //Layout and Positioning (including Autohide)
+    ///Layout and Positioning (including Autohide)
     void panelLayout(const char* layout){setValue("layout",layout);}
     void panelLayer(const char* layer){setValue("layer",layer);}
     void panelPositionVert(const char* position){setValue("valign",position);}
@@ -136,6 +159,14 @@ public:
     void panelAutohide(bool &yesOrNo);
     void panelAutohide(const char* hideWhere);
     std::string getAutohide();
+        //Width (setter is in jwm-panel, but uses setValue)
+    int getWidth(){return getValue("width");}
+    //Height (setter is in jwm-panel, but uses setValue)
+    int getHeight(){return getValue("height");}
+    //xy
+    int getCoordinate(const char * xy){return getValue(xy);}
+    void setCoordinate(const char * xy, int value){setValue(xy,value);}
+
     ///JSM
     void setJSM(const char* element, const char* value);
 
@@ -143,7 +174,7 @@ public:
     flPanel();
     virtual ~flPanel();
 
-    //Global variables
+    ///Global variables
     int rootMenu;
     int systemMenu;
     std::string errorMessage;

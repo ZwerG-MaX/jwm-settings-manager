@@ -1,9 +1,12 @@
 #include "../include/Config.h"
 
-Config::Config()
-{
+Config::Config(){
+#ifdef DEBUG_TRACK
+  std::cerr<<"[Config]->"<<std::endl;
+#endif // DEBUG
     file = ".jwmrc";
     JSMfile = ".jsm";
+    DEBUG_ME=isDebug();
     home = getenv ("HOME");
     homePathNoFiles = homePathNoFile();
     whichPanel = 1;
@@ -19,29 +22,146 @@ Config::Config()
     gnomemenu = "gnomeapps";
     sysmenu = "gnomesystem";
     isNewStyle = newStyle();
-    defaultFilePath = "/usr/share/jwm-settings-manager/themes/Default/Default";
-    defaultOLDFilePath ="/usr/share/jwm-settings-manager/themes/old/Default/Default";
+    xdg_paths = set_xdg_paths();
+    stringXDG_PATH = xdg_paths;
+    XDG_pathPosition = stringXDG_PATH.find_first_of(':');
+    num_XDG_PATHS = numXDG_PATHS();
+    defaultPath =getDefaultFilepath();
+    defaultFilePath = defaultPath + "themes/Default/Default";
+    defaultOLDFilePath = defaultPath + "themes/old/Default/Default";
+    defaultFilePath230 = defaultPath + "themes/2.3.0/Default/Default";
+    theMenuROOT = "root:m";
+
 }
 
-Config::~Config()
-{
-    //dtor
+Config::~Config(){
+#ifdef DEBUG_TRACK
+  std::cerr<<"[Config]->"<<std::endl;
+#endif // DEBUG
 }
 
 //End construction/destruction
 
 ///****************************   ***********************************
+std::string Config::set_xdg_paths(){
+// for more info see:
+// http://freedesktop.org/wiki/Specifications/basedir-spec/
+
+    const char* datadirs=getenv("XDG_DATA_DIRS");
+    std::string thisXDG =datadirs;
+    if ((datadirs == NULL) || (thisXDG.compare("")==0)){
+        thisXDG="/usr/local/share/:/usr/share/";
+    }
+    const char* datahome = getenv("XDG_DATA_HOME");
+    if (datahome == NULL){
+        thisXDG += ":";
+        datahome = getenv("HOME");
+        thisXDG += datahome;
+        thisXDG += "/.local/share";
+
+    }
+    else{thisXDG += datahome;}
+    if(DEBUG_ME){
+        std::cerr<<"full xdg data path list: "<<thisXDG<<std::endl;
+    }
+    return thisXDG;
+}
+std::string Config::getDefaultFilepath(){
+    std::string testPATH,dirToOpen,fullpath;
+    unsigned int found = 0;
+    //initialize directory reading variables to NULL
+    DIR *dir = NULL;
+    struct dirent *entryPointer = NULL;
+
+    // if we can't find the xdg paths... return without trying to read them
+    if(num_XDG_PATHS==0){return "/usr/share/jwm-settings-manager/";}
+
+    //lets loop through the xdg paths
+    for (int i = 1; i <= num_XDG_PATHS; i++){
+
+        //get the string equvalent for the integer representation if of the xdg path
+        // something like
+        /*
+        1=/usr/share/
+        2=/usr/local/share
+        etc...
+        */
+        testPATH = thisXDG_PATH(i);
+
+        //make sure this isn't blank
+        if(testPATH.compare("")!=0){
+
+            //look to see if we have a / at the end... remove it if we do...
+            found = testPATH.find_last_of('/');
+            if (found == testPATH.length()-1){testPATH=testPATH.substr(0,testPATH.length()-1);}
+
+            //see if there is an icon directory
+            dirToOpen = testPATH + "/jwm-settings-manager/";
+            dir = opendir(dirToOpen.c_str());
+            if (dir!=NULL){
+                //std::cout << "Process directory: " << dirToOpen.c_str() << std::endl;
+                while ((entryPointer=readdir(dir)) != NULL){
+                    if ((entryPointer->d_type == DT_DIR)&&(entryPointer->d_name[0] != '.')){
+                        if(DEBUG_ME){
+                            std::cerr<<"Found XDG_DATA_DIR: "<<dirToOpen<<std::endl;
+                        }
+                        return dirToOpen;
+                    }
+                }
+            }
+            closedir(dir);
+        }
+
+    }
+    return "/usr/share/jwm-settings-manager/";
+}
+unsigned int Config::numXDG_PATHS(){
+    // use member variables in Constructor to count the paths listed in the xdg data dirs environment variable
+    // in other words:
+    //   howmany=($(echo "${XDG_DATA_DIRS//:/ }"));echo ${#howmany[@]}
+    stringXDG_PATH=xdg_paths;
+    XDG_pathPosition = stringXDG_PATH.find_first_of(':');
+    if(XDG_pathPosition>stringXDG_PATH.length()){return 1;}
+    unsigned int howmany;
+    for(howmany=1;(XDG_pathPosition!=std::string::npos);howmany++){
+        XDG_pathPosition=stringXDG_PATH.find(':', XDG_pathPosition+1);
+    }
+    return howmany;
+}
+
+const char* Config::thisXDG_PATH(int whichPath){
+// use this to get the string of the path to test.
+// basically in bash speak...
+// whichpath=1;howmany=($(echo "${XDG_DATA_DIRS//:/ }"));echo ${howmany[$whichpath]}
+    stringXDG_PATH=xdg_paths;
+
+//I used and modified the Config paths code to do this... TODO: refactor to use 1 function
+    unsigned int lastPath = 0;
+    std::string result;
+    if (whichPath >=1){lastPath = whichPath - 1;}
+    else {lastPath = 0;}
+
+    std::string::size_type firstPosition = stringXDG_PATH.find_first_of(':');
+    std::string::size_type position = stringXDG_PATH.find(':');
+    for (int i=1;i<=whichPath;i++){position = stringXDG_PATH.find(':',position+1);}
+    for (unsigned int j=1;j<=lastPath;j++){firstPosition = stringXDG_PATH.find(':',firstPosition+1);}
+    result = stringXDG_PATH.substr (firstPosition+1,((position-firstPosition)-1));
+    if(DEBUG_ME){
+        std::cerr<<"XDG data path: "<<result<<std::endl;
+    }
+    return result.c_str();
+}
 void Config::setFileName(std::string &fileName){
 file = fileName;
 }
 void Config::under_mouse(Fl_Window *o){
-  int screenHeight = Fl::h()/2;
-  int screenWidth = Fl::w()/2;
-  int window_w = o->decorated_w ();
-  int window_h = o->decorated_h();
-  window_h = window_h/2;
-  window_w = window_w/2;
-  o->position((screenWidth-window_w),(screenHeight-window_h));
+    int screenHeight = Fl::h()/2;
+    int screenWidth = Fl::w()/2;
+    int window_w = o->decorated_w();
+    int window_h = o->decorated_h();
+    window_h = window_h/2;
+    window_w = window_w/2;
+    o->position((screenWidth-window_w),(screenHeight-window_h));
 }
 //End Member Variables
 
@@ -61,27 +181,41 @@ bool Config::newVersionJWM(){
     if ((majorVersion == newTagVersionMajor)&&(minorVersion >= newTagVersionMinor)){return true;}
     return false;
 }
-bool Config::newStyle(){
+
+int Config::newStyle(){
+
     const char* tray = "TrayButtonStyle";
     const char* task = "TaskListStyle";
     const char* pager = "PagerStyle";
     const char* win = "WindowStyle";
     const char* menu = "MenuStyle";
     std::vector<std::string> styles;
-    styles.push_back(menu);//0
-    styles.push_back(win);//1
-    styles.push_back(pager);//2
-    styles.push_back(task);//3
-    styles.push_back(tray);//4
-    int lengthofStyle = 4;//# of entries above
-    int i =0;
+    styles.push_back(task);//0
+    styles.push_back(tray);//1
+    styles.push_back(menu);//2
+    styles.push_back(win);//3
+    styles.push_back(pager);//4
+    int lengthofStyle = 4;//# of entries above from 0
+    int i =0; //o is the starting point
     loadTemp();
     //check current if JWM version is >=2.3.0
     bool newVersion = newVersionJWM();
+    int not23 = -1; //OLD
+    int two30 = 0; // version before removing traybutton/tasklist styles
+    int two3later = 1; //2.3.2 ++
+    bool testActive = false;
+    int totaltester =0;
+    for (testActive =isElement(styles[0].c_str()); i<=2;i++){
+       testActive =isElement(styles[i].c_str()); //if these exist it is 0 or -1
+       if(!testActive){
+         totaltester = 1;
+       }
+    }
+    if (totaltester == 1){return two3later;}
 
     bool active = false;
     bool inActive =false;
-    for (bool testActive =isElement(styles[0].c_str(),"Active"); i<=lengthofStyle;i++){
+    for (testActive =isElement(styles[0].c_str(),"Active"); i<=lengthofStyle;i++){
         testActive=isElement(styles[i].c_str(),"Active");
         if(testActive){active=true;}
         //std::cerr<<"Active"<<styles[i]<<" is "<<testActive<<std::endl;
@@ -98,10 +232,10 @@ bool Config::newStyle(){
             recover();
         }
         //std::cerr<<"New Version Support"<<std::endl;
-        return true;
+        return two30;
     }
     //std::cerr<<"OLD Version Support"<<std::endl;
-    return false;
+    return not23;
 }
 ///++++++++++++++++++++++++++++++++++++++++++++++++++++++ Recovery ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -109,14 +243,25 @@ void Config::setRecoveryText(std::string &ConfigFile){
     recoveryText = ConfigFile;
 }
 int Config::recover(){
+    //defaultFilePath = "/usr/share/jwm-settings-manager/themes/2.3.0/Default/Default";
+    //defaultOLDFilePath ="/usr/share/jwm-settings-manager/themes/old/Default/Default";
+    //const char* defaultFilePath232 = "/usr/share/jwm-settings-manager/themes/Default/Default";
     //TODO: rework to use ifstream
     std::string pathToJWMRC = homePath();
     std::string tempFile= homePathTemp();
     std::string recoveryCommand = "cp -f ";
-    recoveryCommand+=defaultFilePath;
-    if (!newVersionJWM()){
-        recoveryCommand = "cp -f ";
+    if (newStyle() == -1){
         recoveryCommand += defaultOLDFilePath;
+    }
+    else if (newStyle() == 0){
+        recoveryCommand+=defaultFilePath230;
+    }
+    else if(newStyle() == 1){
+        recoveryCommand+=defaultFilePath;
+    }
+    else{
+        errorJWM("Your version of JWM is incompatible");
+        return 1;
     }
     recoveryCommand += " ";
     recoveryCommand += pathToJWMRC;
@@ -178,26 +323,29 @@ void Config::saveJWMRC(Fl_Double_Window *o){
 }
 
 void Config::saveJWMRC(){
-    doc.LoadFile((homePathTemp()).c_str() );
+    doc.LoadFile( homePathTemp().c_str() );
     if (doc.ErrorID() !=0){
         std::cerr<<"The file"<< (homePathTemp().c_str())<<"was not found.  Trying to fix it now"<<std::endl;
-        recover();
+        if (recover() == 0){return;}
+        else{
+            errorJWM("Recovery function failed...");
+        }
     }
-    doc.SaveFile(homePath().c_str());
-    doc.SaveFile((homePathTemp()).c_str());
+    doc.SaveFile( homePath().c_str() );
+    doc.SaveFile( homePathTemp().c_str() );
     if(std::system("jwm -restart")!=0){
         std::cerr<<"Error checking JWM... please fix errors in ~/.jwmrc"<<std::endl;;
     }
 }
 void Config::saveChanges(){
     std::cout<<"File saved\n";
-    doc.SaveFile(homePath().c_str());
+    doc.SaveFile( homePath().c_str() );
     if(std::system("jwm -restart")!=0){
         std::cerr<<"couldn't restart JWM"<<std::endl;
     }
 }
 void Config::saveChangesTemp(){
-    doc.SaveFile((homePathTemp()).c_str());
+    doc.SaveFile( homePathTemp().c_str() );
     //std::cout<<"Temporary File saved\n";
     if(std::system("jwm -p")!=0){
         std::cerr<<"Error checking JWM... please run jwm -p again"<<std::endl;
@@ -209,7 +357,8 @@ int Config::loadTemp(){
     doc.LoadFile( fileName.c_str() );
     if (doc.ErrorID() !=0){
         std::cerr<<"The file: "<< (fileName.c_str())<<" was not found.  Trying to fix it now"<<std::endl;
-        recover();load();saveChangesTemp();
+        errorJWM("[Function] Config::loadTemp()");
+        load();saveChangesTemp();
         return doc.ErrorID();
     }
     return 0;
@@ -220,6 +369,7 @@ int Config::load(){
     doc.LoadFile( fileName.c_str() );
     if (doc.ErrorID() !=0){
         std::cerr<<"The file: "<< (fileName.c_str())<<" was not found.  Trying to fix it now"<<std::endl;
+        errorJWM("[Function] Config::load()");
         if(recover()==0)
         {load();saveChanges();}
         else{std::cerr<<"An error occured loading "<<file<<std::endl;}
@@ -264,9 +414,9 @@ int Config::recoverJSM(){
 void Config::recoverJSM(int panel){
     std::string path = jsmPath();
     //std::cout<<path<<std::endl;
-    std::string clock;
-    if( newStyle()){clock = "root:c";}
-    else{clock = "xclock";}
+    std::string clock = "xclock";
+    ///TODO: make this pick a good default for other systems..
+    std::string clocktz = "xterm -e 'sudo dpkg-reconfigure tzdata'";
     int places = 7;
     int root = 5;
     int gsys = 8;
@@ -276,27 +426,42 @@ void Config::recoverJSM(int panel){
     jsmSTREAM<<"<?xml version=\"1.0\"?>\n\
 <num>"<<p<<"</num>\n\
 <clock>"<<clock<<"</clock>\n\
+<clocktz>"<<clocktz<<"</clocktz>\n\
 <places root=\""<<places<<"\">"<<configEnvHOME<<placesmenu<<"</places>\n\
 <apps root=\""<<root<<"\">"<<configEnvHOME<<torimenu<<"</apps>\n\
 <gnapps root=\""<<root<<"\">"<<configEnvHOME<<sysmenu<<"</gnapps>\n\
 <gnsys root=\""<<gsys<<"\">"<<configEnvHOME<<gnomemenu<<"</gnsys>\n\
+<debug>false</debug>\n\
 <ext>"<<"svg"<<"</ext>";
 }
 
 const char* Config::getJSMelement(const char* element){
     loadJSM();
-    tinyxml2::XMLElement* node = jsm.FirstChildElement(element);
+    if(!jsm.FirstChildElement(element)){recoverJSM(1);}
+    loadJSM();
+    tinyxml2::XMLElement* node;
+    node = jsm.FirstChildElement(element);
     const char* result = node->GetText();
     return result;
 }
+void Config::setJSMelement(const char* element, const char* value){
+    loadJSM();
+    if(!jsm.FirstChildElement(element)){
+        std::cerr<<element<<" does not exist in the config file... creating it"<<std::endl;
+        jsm.NewElement(element);
+        saveJSM();
+    }
+    tinyxml2::XMLElement* node;
+    node=jsm.FirstChildElement(element);
+    node->SetText(value);
+    saveJSM();
+}
 std::string Config::jsmPath(){
-    using std::string;
-    if (home!=NULL){
+    if (getenv ("HOME") !=NULL){
         //printf ("The current Home Directory is: %s\n",home); //you can turn this on to debug if you like :)
-        string fileName = string(home);
+        std::string fileName = getenv ("HOME");
         fileName += "/";
         fileName+=JSMfile;
-        //std::cout<<"Here is the Path: "<<fileName<<std::endl;//DEBUG
         return fileName;
 	}
 	else{errorJWM("ERROR not valid path"); return "HomePath Error 2\n";}
@@ -315,9 +480,8 @@ std::string Config::jsmPath(){
 
 std::string Config::homePathTemp(){
 //this returns $HOME/.jwmrc~
-    using std::string;
-    if (home!=NULL){
-        string fileName = string(home);
+    if (getenv ("HOME")!=NULL){
+        std::string fileName = getenv ("HOME");
         fileName += ("/"+file+"~");
         return fileName;
 	}
@@ -326,10 +490,9 @@ std::string Config::homePathTemp(){
 
 std::string Config::homePath(){
 //this returns $HOME/.jwmrc
-    using std::string;
-    if (home!=NULL){
+    if (getenv ("HOME")!=NULL){
         //printf ("The current Home Directory is: %s\n",home); //you can turn this on to debug if you like :)
-        string fileName = string(home);
+        std::string fileName = getenv ("HOME");
         fileName += ("/"+file);
         //std::cout<<"Here is the Path: "<<fileName<<std::endl;//DEBUG
         return fileName;
@@ -338,9 +501,8 @@ std::string Config::homePath(){
 }
 std::string Config::homePathNoFile(){
 //this returns $HOME/
-    using std::string;
-    if (home!=NULL){
-        string fileName = string(home);
+    if (getenv ("HOME")!=NULL){
+        std::string fileName = getenv ("HOME");
         fileName += "/";
         return fileName;
 	}
@@ -386,8 +548,9 @@ void Config::errorJWM(std::string message){
 }
 void Config::errorJWM(const char* message){
     ///TODO: make this an flmessage that shows up also...
+    //And logs to a file
     //fl_message(message);
- std::cerr<< message << "\n Please Report this bug"<<std::endl;
+   std::cerr<< message << "\n "<<gettext("Please Report this bug")<<std::endl;
 }
 std::string Config::convert(int num){
     std::string number;
@@ -470,16 +633,20 @@ void Config::addAutostart(std::string program){
     std::cout<<PID<<std::endl;
     std::string pidOF = returnTerminalOutput(PID,"r");
         if(pidOF.compare("")==0){
-            std::cout<<program<<" is not running"<<std::endl;
+            if(DEBUG_ME){
+            std::cerr<<program<<" is not running"<<std::endl;
+            }
             sys= run(program.c_str());
             if (sys !=0){
-                std::string errorMSG = "system call for ";
+                std::string errorMSG = gettext("system call for ");
                 errorMSG +=program;
-                errorMSG +=" did not return 0";
+                errorMSG +=gettext(" did not return 0");
                 errorJWM(errorMSG);
             }
         }
-        std::cout<<"added autostart"<<std::endl;
+        if(DEBUG_ME){
+        std::cerr<<"added autostart"<<std::endl;
+        }
     saveChangesTemp();
 }
 bool Config::isAutostart(std::string program){
@@ -666,15 +833,23 @@ std::string Config::getLabelMenu(int menu){
     int numOFpanels = numPanels();
     if (numOFpanels == -1 ){
         createPanel();
+        errorJWM("No panels existed... created one for you");
         return "";
     }
-    if (!isMenu(menu)){return "";}
+    if (!isMenu(menu)){
+        errorJWM("The menu specified does not exist as a menu");
+        return "";
+    }
     const char * label = "";
     std::string labelString , labeled;
     labelString = "";
     std::string root ="root:";
     root +=convert(menu);
-   // std::cout<<root<<std::endl;
+
+    if(DEBUG_ME){
+      std::cerr<<"Root menu string created: "<<root<<std::endl;
+    }
+
     int i = 1;
     int panel = currentPanel();
     tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
@@ -685,20 +860,26 @@ std::string Config::getLabelMenu(int menu){
             i++;
         }
     }
-    if(panelElement->FirstChildElement( "TrayButton" )){
-        panelElement=panelElement->FirstChildElement( "TrayButton" );
-        labeled = panelElement->GetText();
-        if (labeled.compare(root)!=0){
-            while(panelElement->NextSiblingElement( "TrayButton" ) && labeled.compare(root)!=0){
-                if(panelElement->GetText()){
-                    labeled = panelElement->GetText();
+    //does this have a traybutton??
+     if(panelElement->FirstChildElement( "TrayButton" )){
+        //lopp through them
+        for(panelElement = panelElement->FirstChildElement( "TrayButton" );
+            panelElement;
+            panelElement = panelElement->NextSiblingElement("TrayButton" )){
+                //check if it is new school style Button thingie
+                if(panelElement->FirstChildElement("Button")->GetText()){labeled = panelElement->FirstChildElement("Button")->GetText();}
+                //Is there even text here at all???
+                if(panelElement->GetText()){labeled = panelElement->GetText();}
+                if (labeled.compare(root)==0){
+                    label = panelElement->Attribute("label");
+                    labelString = label;
                 }
-            }
         }
-        label = panelElement->Attribute("label");
-        labelString = label;
+
     }
-    //std::cout<<labelString<<"\n";
+    if(DEBUG_ME){
+      std::cerr<<"Returning this Label for the menu: "<<labelString<<std::endl;
+    }
     return labelString;
 }
  std::string Config::getImageMenu(int menu){
@@ -724,24 +905,38 @@ std::string Config::getLabelMenu(int menu){
             i++;
         }
     }
-    if(panelElement->FirstChildElement( "TrayButton" )){
-        panelElement=panelElement->FirstChildElement( "TrayButton" );
-        labeled = panelElement->GetText();
-        if (labeled.compare(root)!=0){
-            while(panelElement->NextSiblingElement( "TrayButton" ) && labeled.compare(root)!=0){
-                if(panelElement->GetText()){
-                    labeled = panelElement->GetText();
+    //does this have a traybutton??
+     if(panelElement->FirstChildElement( "TrayButton" )){
+        //lopp through them
+        for(panelElement = panelElement->FirstChildElement( "TrayButton" );
+            panelElement;
+            panelElement = panelElement->NextSiblingElement("TrayButton" )){
+                //check if it is new school style Button thingie
+                if(panelElement->FirstChildElement("Button")->GetText()){labeled = panelElement->FirstChildElement("Button")->GetText();}
+                //Is there even text here at all???
+                if(panelElement->GetText()){labeled = panelElement->GetText();}
+                //does the GetText() from the Traybutton match??
+                if (labeled.compare(root)==0){
+                    //is there an icon??
+                    if (panelElement->Attribute("icon")){
+                        std::string icon = panelElement->Attribute("icon");
+                        //well ok then, let's return it!!
+                        return icon;
+                    }
                 }
-            }
-        }
-        if (panelElement->Attribute("icon")){
-            std::string icon = panelElement->Attribute("icon");
-            return icon;
         }
     }
     return "";
  }
 
+bool Config::comparedColon(const char* something, const char* text){
+    std::string stringText = text;
+    unsigned found = stringText.find_first_of(":");
+    stringText=stringText.erase(found+1,std::string::npos);
+    std::string stringSomething = something;
+    if(stringText.compare(stringSomething)==0){return true;}
+    return false;
+}
  void Config::setImageMenu(const char* icon, int menu){
     loadTemp();
     int i = 1;
@@ -762,21 +957,28 @@ std::string Config::getLabelMenu(int menu){
         }
     }
     if(panelElement->FirstChildElement( "TrayButton" )){
-        panelElement=panelElement->FirstChildElement( "TrayButton" );
-        labeled = panelElement->GetText();
-        if (labeled.compare(root)!=0){
-            while(panelElement->NextSiblingElement( "TrayButton" ) && labeled.compare(root)!=0){
-                if(panelElement->GetText()){
-                    labeled = panelElement->GetText();
-                }
+        for(panelElement = panelElement->FirstChildElement( "TrayButton" );
+            panelElement;
+            panelElement = panelElement->NextSiblingElement("TrayButton" )){
+            //Is this the Newer style that can have a  Button in it??
+            if(panelElement->FirstChildElement("Button")->GetText()){
+                labeled = panelElement->FirstChildElement("Button")->GetText();
+            }
+            //Is there even text here??
+            if(panelElement->GetText()){labeled = panelElement->GetText();}
+            //set it!!!!!!!!!!!!!!!!!
+
+            if(DEBUG_ME){
+            std::cerr<<"labeled:"<< labeled <<" root: "<< root<<std::endl;
+            }
+
+            if (labeled.compare(root)==0){
+                panelElement->SetAttribute("icon",icon);
+                saveChangesTemp();
+                return;
             }
         }
-        if (panelElement->Attribute("icon")){
-            panelElement->SetAttribute("icon",icon);
-        }
-        else errorJWM("no Menu image set");
     }
-    saveChangesTemp();
 }
 
 void Config::labelMenu(const char * icon, int num,const char* label){
@@ -802,7 +1004,8 @@ void Config::labelMenu(const char * icon, int num,const char* label){
         for(panelElement = panelElement->FirstChildElement( "TrayButton" );
             panelElement;
             panelElement = panelElement->NextSiblingElement("TrayButton" )){
-            compNum = panelElement->GetText();
+            if(panelElement->FirstChildElement("Button")->GetText()){compNum = panelElement->FirstChildElement("Button")->GetText();}
+            if(panelElement->GetText()){compNum = panelElement->GetText();}
             if(compNum.compare(number)==0){
                 panelElement->SetAttribute("label",label);
                 saveChangesTemp();
@@ -841,7 +1044,29 @@ bool Config::isMenu(const char* whichStyle){  ///   <----------------------  isM
 bool Config::isMenu(std::string includeLine){  // called below
     return isElementText("Include",includeLine);
 }
-
+bool Config::isRootMenu(std::string rootmenu){
+    loadTemp();
+    std::string thisRoot;
+    tinyxml2::XMLElement* menuElement = doc.FirstChildElement( "JWM" );
+    for(menuElement=menuElement->FirstChildElement("RootMenu");
+        menuElement;
+        menuElement=menuElement->NextSiblingElement("RootMenu")){
+        thisRoot=menuElement->Attribute("onroot");
+        if(DEBUG_ME){
+        std::cerr<<"This root: "<<thisRoot<<" the one we want: "<<rootmenu<<std::endl;
+        }
+        if(thisRoot.compare(rootmenu)==0){
+            if(DEBUG_ME){
+            std::cerr<<"Found: "<<thisRoot<<std::endl;
+            }
+            return true;
+        }
+    }
+    if(DEBUG_ME){
+    std::cerr<<"Didn't find the menu..."<<std::endl;
+    }
+    return false;
+}
 bool Config::isMenu(int rootNumber){
     loadTemp();
     //make sure we have a Tray element first
@@ -883,7 +1108,27 @@ bool Config::isMenu(int rootNumber){
         for(panelElement = panelElement->FirstChildElement( "TrayButton" );
             panelElement;
             panelElement = panelElement->NextSiblingElement("TrayButton" )){
-            compNum = panelElement->GetText();
+
+                if(panelElement->FirstChildElement("Button")){
+                    tinyxml2::XMLElement* button;
+                    for(button = panelElement->FirstChildElement("Button");
+                        button;
+                        button = button->NextSiblingElement("Button" )){
+                            if(button->GetText()){
+                                compNum = button->GetText();
+                                if(DEBUG_ME){
+                                if(compNum.compare("")==0){std::cerr<<"can't compare... there is nothing found yet.";}
+                                else{std::cerr<<"comparing: "<<compNum<<" to: "<<num<<std::endl;}
+                                }
+                                if(compNum.compare(num)==0){return true;}
+                            }
+                    }
+                }
+            if(panelElement->GetText()){compNum = panelElement->GetText();}
+            if(DEBUG_ME){
+                if(compNum.compare("")==0){std::cerr<<"can't compare... there is nothing found yet.";}
+                else{std::cerr<<"comparing: "<<compNum<<" to: "<<num<<std::endl;}
+            }
             if(compNum.compare(num)==0){return true;}
         }
     }
@@ -913,12 +1158,24 @@ void Config::addMenu(int rootnumber, const char* label, const char* icon){
     }
     tinyxml2::XMLNode *node = doc.NewElement("TrayButton");
     panelElement->InsertEndChild(node);
-    tinyxml2::XMLText *places = doc.NewText(root);
-    node->LinkEndChild(places);
+    tinyxml2::XMLElement *newNode = node->ToElement();
     panelElement = panelElement->LastChildElement( "TrayButton" );
     panelElement->SetAttribute("label",label);
     panelElement->SetAttribute("border","false");
     panelElement->SetAttribute("icon",stringICON.c_str());
+    if(newStyle()<1){
+        newNode->SetText(root);
+    }
+    else{
+        tinyxml2::XMLNode* trayNode = panelElement;
+        tinyxml2::XMLNode *buttonNode= doc.NewElement("Button");
+        trayNode->InsertEndChild(buttonNode);
+        tinyxml2::XMLElement *BUTTON = buttonNode->ToElement();
+        BUTTON->SetAttribute("mask",1);
+        BUTTON->SetText(root);
+        BUTTON->SetAttribute("mask",23);
+        BUTTON->SetText(theMenuROOT);
+    }
     saveChangesTemp();
 }
 void Config::deleteMenu(int menu){
@@ -942,12 +1199,14 @@ void Config::deleteMenu(int menu){
         }
     }
     tinyxml2::XMLElement* node = panelElement;
+    std::string root;
     for(node=node->FirstChildElement( "TrayButton" );node;node=node->NextSiblingElement("TrayButton")){
-        std::string root = node->GetText();
+        if((newStyle()>=1)&&(panelElement->FirstChildElement("Button"))){root = node->FirstChildElement("Button")->GetText();}
+        else{root = node->GetText();}
         if(root.compare(menuString)==0){
-            panelElement->DeleteChild(node);
-            saveChangesTemp();
-        }
+                panelElement->DeleteChild(node);
+                saveChangesTemp();
+            }
     }
 }
 //End Menus
@@ -1325,7 +1584,9 @@ const char* Config::grep(const char* args, const char* filename){
         while (getline(inputFileStrem,line)){
             subString=line.substr(0,lengthofARGS);
             if(subString == args){
-                //std::cerr<<args<<" "<<sub<<std::endl;
+                 if(DEBUG_ME){
+                std::cerr<<"grepped "<<args<<" from: "<<filename<<" returning: "<<line<<std::endl;
+                }
                 return line.c_str();
             }
 /* TODO: test this to see if it works better:
@@ -1446,6 +1707,16 @@ void Config::setAttribute(const char* whichElement, const char* attribute, int &
     // this overloads to take an int.. it simply converts to a const char* to run the base function
     std::string result = convert(value);
     setAttribute(whichElement,attribute,result.c_str());
+}
+void Config::newMenu(const char* menu){
+    loadTemp();
+    tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
+    tinyxml2::XMLNode *node = doc.NewElement("RootMenu");
+    element->InsertEndChild(node);
+    tinyxml2::XMLElement* rootmenu = node->ToElement();
+    rootmenu->SetAttribute("onroot",menu);
+    saveChangesTemp();
+    saveChanges();
 }
 void Config::createElement(const char* whichElement){
     /* simply creates a Child element of <JWM>
@@ -1592,7 +1863,7 @@ unsigned int Config::getELEMENTColor(const char* whichStyle, const char* ActiveO
     }
     colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( whichStyle );
     std::string style = whichStyle;
-    if(isNewStyle){
+    if(isNewStyle !=-1){
         std::string check = ActiveORinactive;
         if (check.compare("Active")==0){
             //Active so we have 3 deep we need to check for existence more
@@ -1636,7 +1907,7 @@ void Config::setELEMENTColor(const char* whichStyle, const char* ActiveORinactiv
     }
     colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( whichStyle );
     std::string style = whichStyle;
-    if(isNewStyle){
+    if(isNewStyle !=-1){
         std::string check = ActiveORinactive;
         if (check.compare("Active")==0){
             //Active so we have 3 deep we need to check for existence more
@@ -1700,13 +1971,56 @@ std::string Config::desktopFILE(){
     return returnable;
 }
 std::string Config::desktopExec(std::string filename){
-    const char* ExecLine = grep("Exec=",filename.c_str());
+    if (filename.compare("")==0){std::cerr<<"No filename specified"<<std::endl;return "";}
+    const char* ExecLine = grep("TryExec=",filename.c_str());
     std::string EXEC = ExecLine;
+    if((ExecLine == NULL)||(EXEC.compare("")==0)){
+        ExecLine = grep("Exec=",filename.c_str());
+        EXEC = ExecLine;
+    }
+    if((ExecLine == NULL)||(EXEC.compare("")==0)){std::cerr<<"There is no TryExec/Exec line in: "<<filename<<std::endl;return " ";}
     unsigned int args = 0, equals = 0;
     args = EXEC.find("%");
     equals = EXEC.find("=");
     if (args < EXEC.length())EXEC = EXEC.erase(args,std::string::npos);
     if (equals < EXEC.length())EXEC= EXEC.erase(0,equals+1);
-   // std::cerr<<EXEC<<std::endl;
+    std::cerr<<EXEC<<std::endl;
     return EXEC;
+}
+char* Config::Get_Fl_Icon(const char** pIcon){
+    /* Set icon for Linux:
+     * This function must be initialised once by assigning an icon with parameter pIcon.
+     * For sequential setting of icon to subwindows, this function can be called several
+     * times without assigning an icon every time.
+     *
+     * Code from Vincent on FLTK forums 2015 Feb 10
+     */
+     //std::cout<< "sent in: "<<pIcon<<" to Get_Fl_Icon"<<std::endl;
+   // Set icon for Linux:
+    // This function must be initialised once by assigning an icon with parameter pIcon.
+    // For sequential setting of icon to subwindows, this function can be called several
+    // times without assigning an icon every time.
+        static Pixmap p= 0;                // static store of assigned icon
+        static Pixmap mask;
+    if (!p && pIcon){
+        // assign icon once
+        fl_open_display();
+        XpmCreatePixmapFromData(fl_display, DefaultRootWindow(fl_display),
+(char**) pIcon, &p, &mask, 0);
+    }
+    return (char*) p;
+}
+void Config::setDebug(){
+    std::string filename =homePathNoFile();
+    filename+=".jwm-settings-manager.log";
+    freopen( filename.c_str(), "w", stderr );
+    setJSMelement("debug","true");
+}
+void Config::setDebugOff(){
+    setJSMelement("debug","false");
+}
+bool Config::isDebug(){
+    std::string debugger= getJSMelement("debug");
+    if(debugger.compare("true")==0){return true;}
+    return false;
 }

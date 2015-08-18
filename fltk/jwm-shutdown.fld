@@ -51,19 +51,19 @@ class shutdown {open
   Function {make_window()} {open
   } {
     Fl_Window shutdown_window {
-      label Shutdown open selected
+      label Shutdown open
       xywh {351 113 250 230} type Double color 45
       code0 {window_bg();} noborder xclass {system-shutdown} visible
     } {
       Fl_Button shut {
         label Shutdown
-        callback {int warn =system("dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop");
-if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}}
+        callback {int warn =system("dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop || systemctl poweroff");
+if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}} selected
         image {../data/img/preferences-system-session.png} xywh {10 20 105 65} box GTK_UP_BOX color 41 labelcolor 55
       }
       Fl_Button restart {
         label Restart
-        callback {int warn =system("dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart");
+        callback {int warn =system("dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart|| systemctl reboot");
 if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}}
         image {../data/img/system-restart.png} xywh {130 20 105 65} box GTK_UP_BOX color 41 labelcolor 55
       }
@@ -75,7 +75,7 @@ if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}}
       }
       Fl_Button sus {
         label Suspend
-        callback {int warn = system("dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend");
+        callback {int warn = system("dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend || systemctl suspend");
 if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}
 shutdown_window->hide();}
         tooltip {NOTE: this does not work with all computers} image {../data/img/system-suspend.png} xywh {10 95 105 65} box GTK_UP_BOX color 41 labelcolor 55

@@ -14,7 +14,9 @@ Build-Depends:
  libfltk1.3-compat-headers,
  libgcc1,
  libstdc++6,
-Standards-Version: 3.9.5
+ libx11-dev,
+ libxpm-dev,
+Standards-Version: 3.9.6
 Homepage: http://www.torios.net/
 
 Package: jwm-settings-manager

@@ -4,6 +4,9 @@
 //#include "../fltk/jwm-settings.h"
 //Color
 #include <X11/Xlib.h>
+//icon includes
+#include <X11/xpm.h>
+#include <FL/x.H>
 //FLTK includes
 #include <FL/fl_ask.H> //errorJWM
 #include <Fl/Fl_Menu_Button.h>
@@ -12,6 +15,7 @@
 #include <FL/Fl_File_Chooser.H>
 //Ubuntu 14.04 is missing SetText() so I have to include this
 #include "tinyxml2.h"
+
 //Used for getting the user's Home directory
 #include <stdlib.h>
 //strtoul  for background string to unsigned int
@@ -32,6 +36,8 @@
 #include <vector>
 //getExtention for icons
 #include <dirent.h>
+//gettext
+#include <libintl.h>
 class Config
 {
     public:
@@ -55,7 +61,6 @@ class Config
     42 means you'll have to go fish... that is kind of like a joke... sorry
     */
     std::vector<std::string> iconList(); //list IconPaths, except "/usr/share/pixmaps" || "/usr/share/icons" as those are not Icon THEMES..
-
 /// Basic Functions for JWMRC files
     //Error checking/fixing/reporting
     int checkFiles();
@@ -63,7 +68,12 @@ class Config
     int recover();
 
     //Check for newer JWM style tags
-    bool newStyle();
+    int newStyle();
+    /*
+    -1 is OLD
+    0 is 2.3.0
+    1 is 2.3.2++
+    */
     bool newVersionJWM();
 
     //Display an Error message to cerr
@@ -118,11 +128,14 @@ where VARIABLE is a std::string
     bool isAutostart(std::string program);
 
 /// MENU Functions /????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+    bool comparedColon(const char* something, const char* text);
+    bool isRootMenu(std::string rootmenu);
     bool isMenu(int rootnumber);
     bool isMenu(std::string includeLine);
     ///This is used externally to check if a cetain menu exists, and ADD or DELETE it  flPanel::switchMenu
     bool isMenu(const char* whichStyle);
     void addMenu(int rootnumber, const char* label, const char* icon, const char* whichStyle);
+    void newMenu(const char* menu);
     void deleteMenu(int menu, const char* whichStyle);
     void addMenu(int rootnumber, const char* label, const char* icon);
     void labelMenu(const char * icon, int num,const char* label);
@@ -158,6 +171,7 @@ it also will save the default clock program, and other defaults (as they are imp
     void recoverJSM(int panel);
     void saveJSM();
     const char* getJSMelement(const char* element);
+    void setJSMelement(const char* element, const char* value);
     //void updateJSM();
     std::string jsmPath();
 
@@ -191,6 +205,10 @@ it also will save the default clock program, and other defaults (as they are imp
     unsigned int getFGColor(const char* whichStyle, const char* ActiveORinactive, unsigned int &color2);
     std::string desktopExec(std::string filename);
     std::string desktopFILE();
+    void setDebug();
+    void setDebugOff();
+    bool isDebug();
+    char* Get_Fl_Icon(char const** pIcon);
     //constructor and destructor
     Config();
     virtual ~Config();
@@ -223,10 +241,22 @@ it also will save the default clock program, and other defaults (as they are imp
     std::string::size_type pathPosition;
     int numPATHS;
     bool isNewStyle;
+    std::string defaultPath;
     std::string defaultFilePath;
+    std::string defaultFilePath230;
     std::string defaultOLDFilePath;
-
-    private:
+    const char* theMenuROOT;
+    //default file path
+    std::string  getDefaultFilepath();
+    //XDG_DATA_DIRS
+    const char* thisXDG_PATH(int whichPath);
+    unsigned int numXDG_PATHS();
+    bool DEBUG_ME;
+    std::string xdg_paths;
+    std::string set_xdg_paths();
+    std::string stringXDG_PATH;
+    std::string::size_type XDG_pathPosition;
+    int num_XDG_PATHS;
 };
 
 #endif // CONFIG_H

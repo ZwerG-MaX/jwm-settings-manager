@@ -39,6 +39,7 @@
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Native_File_Chooser.H>
 #include "../include/flWindow.h"
+#include "../data/icons/jsm-windows.xpm"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Browser.H>
@@ -370,5 +371,6 @@ public:
   void set_two_title_colors(Fl_Widget *o, Fl_Widget *o2, int Active1_Inactive2);
   void title_bar_modifier(Fl_Slider *o1, Fl_Value_Output *o2);
   void title_bar_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2);
+  void startup(Fl_Window *o);
 };
 #endif

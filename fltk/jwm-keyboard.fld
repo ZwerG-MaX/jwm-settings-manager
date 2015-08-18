@@ -55,6 +55,9 @@ decl {\#include "../include/flKeyboard.h"} {public global
 decl {\#include "../include/ui.h"} {public global
 } 
 
+decl {\#include "../data/icons/jsm-keyboard.xpm"} {public global
+} 
+
 class KeyboardUI {open : {public Config}
 } {
   Function {make_window()} {open
@@ -63,9 +66,9 @@ class KeyboardUI {open : {public Config}
 saveChangesTemp();
 //Fl::add_handler(handle);} {}
     Fl_Window keyboard_window {
-      label {Keyboard Settings} open selected
-      xywh {1034 290 490 315} type Double color 31 hide resizable
-      code0 {Config config;config.under_mouse(o);} xclass {jsm-keyboard}
+      label {Keyboard Settings} open
+      xywh {1034 290 490 315} type Double color 31 resizable
+      code0 {startup(o);} xclass {jsm-keyboard} visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 490 310} color 31 resizable
@@ -120,9 +123,9 @@ grabber_window()->show();}
   Function {grabber_window()} {open
   } {
     Fl_Window grab_win {
-      label {Create Shortcut} open
+      label {Create Shortcut} open selected
       xywh {140 380 475 230} type Double when 6 hide
-      code0 {Config config;config.under_mouse(o);}
+      code0 {startup(o);}
       code1 {Fl::focus(key);} xclass {jsm-keyboard}
     } {
       Fl_Button {} {
@@ -131,7 +134,7 @@ grabber_window()->show();}
         xywh {395 180 65 30} box GTK_UP_BOX color 61 selection_color 58 labelcolor 7
       }
       Fl_Menu_Button {} {
-        label Action
+        label Action open
         xywh {200 125 125 30} box GTK_UP_BOX selection_color 80
       } {
         MenuItem next {
@@ -268,8 +271,7 @@ menu_cb(action);}
         }
         MenuItem maxtop {
           label {Maximize to the Top of the screen}
-          callback {flPanel panel;
-if(panel.newStyle()){
+          callback {if(newpanel()){
   const char * action = "maxtop";
   menu_cb(action);
 }
@@ -280,8 +282,7 @@ else{
         }
         MenuItem maxbottom {
           label {Maximize to the Bottom of the screen}
-          callback {flPanel panel;
-if(panel.newStyle()){
+          callback {if(newpanel()){
   const char * action = "maxbottom";
   menu_cb(action);
 }
@@ -292,8 +293,7 @@ else{
         }
         MenuItem maxleft {
           label {Maximize to the Left of the screen}
-          callback {flPanel panel;
-if(panel.newStyle()){
+          callback {if(newpanel()){
   const char * action = "maxleft";
   menu_cb(action);
 }
@@ -304,8 +304,7 @@ else{
         }
         MenuItem maxright {
           label {Maximize to the Right of the screen}
-          callback {flPanel panel;
-if(panel.newStyle()){
+          callback {if(newpanel()){
   const char * action = "maxright";
   menu_cb(action);
 }
@@ -316,8 +315,7 @@ else{
         }
         MenuItem maxv {
           label {Maximize Vertical}
-          callback {flPanel panel;
-if(panel.newStyle()){
+          callback {if(newpanel()){
   const char * action = "maxv";
   menu_cb(action);
 }
@@ -328,8 +326,7 @@ else{
         }
         MenuItem maxh {
           label {Maximize Horizontal}
-          callback {flPanel panel;
-if(panel.newStyle()){
+          callback {if(newpanel()){
   const char * action = "maxh";
   menu_cb(action);
 }
@@ -340,8 +337,7 @@ else{
         }
         MenuItem sendu {
           label {Send Window Up a Desktop}
-          callback {flPanel panel;
-if(panel.newStyle()){
+          callback {if(newpanel()){
   const char * action = "sendu";
   menu_cb(action);
 }
@@ -352,8 +348,7 @@ else{
         }
         MenuItem sendd {
           label {Send Window Down a Desktop}
-          callback {flPanel panel;
-if(panel.newStyle()){
+          callback {if(newpanel()){
   const char * action = "sendd";
   menu_cb(action);
 }
@@ -364,8 +359,7 @@ else{
         }
         MenuItem sendr {
           label {Send Window Right a Desktop}
-          callback {flPanel panel;
-if(panel.newStyle()){
+          callback {if(newpanel()){
   const char * action = "sendr";
   menu_cb(action);
 }
@@ -376,8 +370,7 @@ else{
         }
         MenuItem sendl {
           label {Send Window Left a Desktop}
-          callback {flPanel panel;
-if(panel.newStyle()){
+          callback {if(newpanel()){
   const char * action = "sendl";
   menu_cb(action);
 }
@@ -575,5 +568,16 @@ if(test !=NULL){
   Function {handle(int e)} {open return_type int
   } {
     code {return (e == FL_SHORTCUT);} {}
+  }
+  Function {newpanel()} {open return_type bool
+  } {
+    code {flPanel panel;
+if(panel.newStyle() == -1){return false;}
+return true;} {}
+  }
+  Function {startup(Fl_Window *o)} {open
+  } {
+    code {Config config; config.under_mouse(o);
+o->icon(config.Get_Fl_Icon(jsm_keyboard_xpm));} {}
   }
 } 

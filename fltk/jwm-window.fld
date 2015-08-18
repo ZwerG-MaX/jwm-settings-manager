@@ -67,13 +67,17 @@ decl {\#include <FL/Fl_Native_File_Chooser.H>} {public global
 decl {\#include "../include/flWindow.h"} {public global
 } 
 
+decl {\#include "../data/icons/jsm-windows.xpm"} {public global
+} 
+
 class WindowUI {open : {public Config}
 } {
   Function {add_option_window()} {open
   } {
     Fl_Window add_opt_window {
-      label {Add an Option} open
-      xywh {881 244 435 435} type Double hide xclass {jsm-windows}
+      label {Add an Option} open selected
+      xywh {881 244 435 435} type Double hide
+      code0 {startup(o);} xclass {jsm-windows}
     } {
       Fl_Scroll {} {open
         xywh {0 0 430 430}
@@ -154,7 +158,7 @@ populate_groups();}
     Fl_Window class_win {
       label {Add Class} open
       xywh {218 580 375 50} type Double hide
-      code0 {Config config;config.under_mouse(o);} xclass {jsm-windows}
+      code0 {startup(o);} xclass {jsm-windows}
     } {
       Fl_Input input_to_add_class {
         label {Class to Add}
@@ -174,7 +178,7 @@ class_win->hide();}
     Fl_Window prog_win {
       label {Program to add} open
       xywh {208 542 425 50} type Double hide
-      code0 {Config config;config.under_mouse(o);} xclass {jsm-windows}
+      code0 {startup(o);} xclass {jsm-windows}
     } {
       Fl_Input input_to_add_prog {
         label {Program to Add}
@@ -194,9 +198,9 @@ prog_win->hide();}
     code {load();
 saveChangesTemp();} {}
     Fl_Window window_window {
-      label {Window Settings} open selected
-      xywh {90 410 680 390} type Double color 31 resizable
-      code0 {Config config;config.under_mouse(o);} xclass {jsm-windows} visible
+      label {Window Settings} open
+      xywh {90 410 680 390} type Double color 31 hide resizable
+      code0 {startup(o);} xclass {jsm-windows}
     } {
       Fl_Scroll {} {open
         xywh {0 0 680 390} color 31
@@ -221,7 +225,7 @@ ui.showSettings();}
         } {
           Fl_Group {} {
             label Appearance
-            xywh {10 45 670 305} hide
+            xywh {10 45 670 305}
           } {
             Fl_Box {} {
               xywh {10 55 330 175} box GTK_DOWN_BOX color 51
@@ -410,7 +414,7 @@ ui.showSettings();}
           }
           Fl_Group {} {
             label Settings open
-            xywh {100 45 525 305}
+            xywh {100 45 525 305} hide
           } {
             Fl_Slider b_slider {
               label {Size of the Window Frame}
@@ -852,7 +856,7 @@ switch ( fnfc.show() ){
   Function {corner_load(Fl_Slider *o)} {open
   } {
     code {flWindow win;
-if(!newStyle()){o->hide();}
+if(newStyle() == -1){o->hide();}
 else{
   unsigned int corner = win.getCorner();
   o->value(corner);
@@ -861,7 +865,7 @@ else{
   Function {corner_change(Fl_Slider *o)} {open
   } {
     code {flWindow win;
-if(!newStyle()){o->hide();}
+if(newStyle() == -1){o->hide();}
 else{
   unsigned int corner =o->value();
   win.setCorner(corner);
@@ -1128,5 +1132,10 @@ else{
   whichone = slider;
 }
 window.setBorderHeight(whichone);} {}
+  }
+  Function {startup(Fl_Window *o)} {open
+  } {
+    code {Config config; config.under_mouse(o);
+o->icon(config.Get_Fl_Icon(jsm_windows_xpm));} {}
   }
 } 

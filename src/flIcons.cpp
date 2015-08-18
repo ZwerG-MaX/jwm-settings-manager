@@ -24,18 +24,20 @@
  */
 #include "../include/flIcons.h"
 
-flIcons::flIcons()
-{
+flIcons::flIcons(){
+
+#ifdef DEBUG_TRACK
+  std::cerr<<"[flIcons]->"<<std::endl;
+#endif // DEBUG
+
     tinyxml2::XMLDocument doc;
-    xdg_paths = getenv("XDG_DATA_DIRS");
-    stringXDG_PATH = xdg_paths;
-    XDG_pathPosition = stringXDG_PATH.find_first_of(':');
-    num_XDG_PATHS = numXDG_PATHS();
 }
 
-flIcons::~flIcons()
-{
-    //dtor
+flIcons::~flIcons(){
+    #ifdef DEBUG_TRACK
+  std::cerr<<"<-[flIcons]"<<std::endl;
+#endif // DEBUG
+
 }
 
 void flIcons::addIcons(std::string path){
@@ -77,31 +79,32 @@ void flIcons::removeIcons(const char * icons){
     for(node = node->FirstChildElement("IconPath");node;node=node->NextSiblingElement("IconPath")){
         std::string fromDoc = node->GetText();
         const char* value  = fromDoc.c_str();
-        //std::cout<<"Value: "<<value<<" Icons: "<<fromProgram<<std::endl;
+        if(DEBUG_ME){std::cerr<<"Value: "<<value<<" Icons: "<<fromProgram<<std::endl;}
         if(fromProgram.compare(value) ==0){
             node->DeleteChild(node);
-            //std::cout<<"deleted "<<fromProgram<<std::endl;
+            if(DEBUG_ME){std::cerr<<"deleted "<<fromProgram<<std::endl;}
         }
 
     }
     saveChangesTemp();
 }
 /// Icon theme FILES
+std::string flIcons::currentIconTheme(){
+    std::string gsett = "gsettings get org.gnome.desktop.interface icon-theme | sed \"s#'##g\" ";
+    std::string result = returnTerminalOutput(gsett,"r");
+    if(DEBUG_ME){std::cerr<<"current Icon Theme is: "<<result<<std::endl;}
+    if(result.compare("")!=0){return result.erase((result.length()-1),std::string::npos);}
+    return "";
+}
 
 void flIcons::loadTheme(Fl_Browser *o){
-
-    //do we have an environment variable that will work?
-    if (xdg_paths==NULL){
-
-        //well... let's set a sane default, ok?
-        xdg_paths="/usr/local/share/:/usr/share/";
-    }
     o->clear();
     std::list<std::string> themeList;
     std::string testPATH,stringTHEME,dirToOpen,NEWpath,result;
     std::string testIndex, fullpath;
-    unsigned int found;
-
+    std::string currentTheme = currentIconTheme();
+    unsigned int found = 0;
+    int sizer = 0;
     //initialize directory reading variables to NULL
     DIR *dir = NULL;
     struct dirent *entryPointer = NULL;
@@ -151,61 +154,20 @@ void flIcons::loadTheme(Fl_Browser *o){
     std::list<std::string>::iterator it = std::unique (themeList.begin(), themeList.end());
     themeList.resize(std::distance(themeList.begin(),it));
     for(it = themeList.begin(); it != themeList.end(); ++it){
-        //std::cout << *it << std::endl;
+        if(DEBUG_ME){std::cerr << "item: " << *it << "\nCurrent theme: "<<currentTheme<<std::endl;}
         stringTHEME = *it;
-        //std::cout << "--------------------" << std::endl;
         o->add(stringTHEME.c_str());
+        if((currentTheme.compare(stringTHEME)==0)&&(currentTheme.compare("")!=0)){
+            sizer = o->size();
+            if(DEBUG_ME){std::cerr << "Line Number" << sizer << "\nContents: "<<o->text(sizer)<<std::endl;}
+        }
     }
+
     /*TODO:
       find current theme via gtkrc 2.0, gtk 3.0 or gsettings
     */
     o->redraw();
-}
-
-unsigned int flIcons::numXDG_PATHS(){
-    // use member variables in Constructor to count the paths listed in the xdg data dirs environment variable
-    // in other words:
-    //   howmany=($(echo "${XDG_DATA_DIRS//:/ }"));echo ${#howmany[@]}
-
-    //do we have an environment variable that will work?
-    if (xdg_paths==NULL){
-        //well... let's set a sane default, ok?
-        xdg_paths="/usr/local/share/:/usr/share/";
-    }
-    stringXDG_PATH=xdg_paths;
-    XDG_pathPosition = stringXDG_PATH.find_first_of(':');
-    if(XDG_pathPosition>stringXDG_PATH.length()){return 1;}
-    unsigned int howmany;
-    for(howmany=1;(XDG_pathPosition!=std::string::npos);howmany++){
-        XDG_pathPosition=stringXDG_PATH.find(':', XDG_pathPosition+1);
-    }
-    return howmany;
-}
-
-const char* flIcons::thisXDG_PATH(int whichPath){
-// use this to get the string of the path to test.
-// basically in bash speak...
-// whichpath=1;howmany=($(echo "${XDG_DATA_DIRS//:/ }"));echo ${howmany[$whichpath]}
-
-    //make sure we have the environment variable
-    if (xdg_paths==NULL){
-        //well... let's set a sane default, ok?
-        xdg_paths="/usr/local/share/:/usr/share/";
-    }
-    stringXDG_PATH=xdg_paths;
-
-//I used and modified the Config paths code to do this... TODO: refactor to use 1 function
-    unsigned int lastPath = 0;
-    std::string result;
-    if (whichPath >=1){lastPath = whichPath - 1;}
-    else {lastPath = 0;}
-
-    std::string::size_type firstPosition = stringXDG_PATH.find_first_of(':');
-    std::string::size_type position = stringXDG_PATH.find(':');
-    for (int i=1;i<=whichPath;i++){position = stringXDG_PATH.find(':',position+1);}
-    for (unsigned int j=1;j<=lastPath;j++){firstPosition = stringXDG_PATH.find(':',firstPosition+1);}
-    result = stringXDG_PATH.substr (firstPosition+1,((position-firstPosition)-1));
-    return result.c_str();
+    o->select(sizer);
 }
 
 void flIcons::useTheme(Fl_Browser *o){
@@ -217,7 +179,8 @@ void flIcons::useTheme(Fl_Browser *o){
     if(testExec(command.c_str())){
         command += " -s 48 -j -t ";
         command +=item;
-        system(command.c_str());
+        int thissys = system(command.c_str());
+        if(thissys !=0){std::cerr<< command << " command did not return 0"<<std::endl;}
     }
     else{std::cerr<<command<<" is not installed... please reinstall this program"<<std::endl;}
 #if 0

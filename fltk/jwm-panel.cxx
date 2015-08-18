@@ -197,7 +197,7 @@ void PanelUI::cb_b_color(Fl_Button* o, void* v) {
 }
 
 void PanelUI::cb_button_color_i(Fl_Button* o, void*) {
-  one_color(o,"TrayButtonStyle");
+  if(!style_gone()){one_color(o,"TrayButtonStyle");};
 }
 void PanelUI::cb_button_color(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_button_color_i(o,v);
@@ -468,6 +468,20 @@ clock_style->insert(item.c_str());
 }
 void PanelUI::cb_2(Fl_Browser* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_2_i(o,v);
+}
+
+void PanelUI::cb_Notes_i(Fl_Button*, void*) {
+  clock_notes_window()->show();
+}
+void PanelUI::cb_Notes(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_Notes_i(o,v);
+}
+
+void PanelUI::cb_Modifier_i(Fl_Button*, void*) {
+  clock_info_window()->show();
+}
+void PanelUI::cb_Modifier(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_Modifier_i(o,v);
 }
 
 void PanelUI::cb_OK3_i(Fl_Button*, void*) {
@@ -850,6 +864,14 @@ void PanelUI::cb_OKb(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_OKb_i(o,v);
 }
 
+void PanelUI::cb_See_i(Fl_Button*, void*) {
+  int thissys = system("bash -c 'xterm -geometry 90x24 -fa default -fs 10 -T \"ctime Manual\" -e \"man ctime\" & '");
+if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;};
+}
+void PanelUI::cb_See(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_See_i(o,v);
+}
+
 Fl_Double_Window* PanelUI::make_window() {
   load();
   saveChangesTemp();
@@ -887,11 +909,6 @@ Fl_Double_Window* PanelUI::make_window() {
         std::string LABEL = "Panel ";LABEL +=panelLabel;
         o->copy_label(LABEL.c_str());
       } // Fl_Menu_Button* panel_chooser
-      { Fl_Box* o = new Fl_Box(130, 80, 190, 25);
-        o->box(FL_GTK_DOWN_BOX);
-        o->color((Fl_Color)42);
-        o->hide();
-      } // Fl_Box* o
       { Fl_Tabs* o = new Fl_Tabs(5, 60, 350, 415);
         o->box(FL_PLASTIC_THIN_UP_BOX);
         { Fl_Group* o = new Fl_Group(10, 90, 345, 385, gettext("Apps"));
@@ -985,7 +1002,8 @@ Fl_Double_Window* PanelUI::make_window() {
           } // Fl_Value_Input* o_menu_slider_v
           { new Fl_Box(31, 175, 112, 25, gettext("Menu Selection"));
           } // Fl_Box* o
-          { new Fl_Box(32, 350, 135, 15, gettext("Panel Button Color "));
+          { Fl_Box* o = new Fl_Box(32, 350, 135, 15, gettext("Panel Button Color "));
+            if(style_gone()){o->hide();}
           } // Fl_Box* o
           { Fl_Button* o = b_color = new Fl_Button(182, 304, 60, 25);
             b_color->box(FL_GTK_UP_BOX);
@@ -998,8 +1016,8 @@ Fl_Double_Window* PanelUI::make_window() {
             button_color->box(FL_GTK_UP_BOX);
             button_color->callback((Fl_Callback*)cb_button_color);
             flPanel panel;unsigned int c;
-            unsigned int color = panel.getBackground(c,"TrayButtonStyle");
-            o->color(color);
+            if(style_gone()){o->hide();}
+            else{unsigned int color = panel.getBackground(c,"TrayButtonStyle");o->color(color);}
           } // Fl_Button* button_color
           { Fl_Slider* o = o_slider = new Fl_Slider(157, 390, 90, 25, gettext("Opacity of Panel  "));
             o_slider->tooltip(gettext("A compositor (like xcompmgr) must be installed"));
@@ -1181,8 +1199,7 @@ Fl_Double_Window* PanelUI::make_window() {
       } // Fl_Button* save_button
       o->end();
     } // Fl_Scroll* o
-    //o->icon("/usr/share/icons/jsm-panel.png");
-    Config config; config.under_mouse(o);
+    startup(o);
     panel_window->xclass("jsm-panel");
     panel_window->end();
     panel_window->resizable(panel_window);
@@ -1212,7 +1229,7 @@ Fl_Double_Window* PanelUI::add_indicator() {
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK);
     } // Fl_Button* o
-    Config config; config.under_mouse(o);
+    startup(o);
     indicator_win->end();
   } // Fl_Double_Window* indicator_win
   return indicator_win;
@@ -1238,7 +1255,7 @@ Fl_Double_Window* PanelUI::add_to_panel() {
       o->box(FL_GTK_UP_BOX);
       o->callback((Fl_Callback*)cb_1);
     } // Fl_Button* o
-    Config config; config.under_mouse(o);
+    startup(o);
     add_2_panel->xclass("jsm-panel");
     add_2_panel->end();
   } // Fl_Double_Window* add_2_panel
@@ -1261,7 +1278,7 @@ Fl_Double_Window* PanelUI::clock_window() {
       clock_style->callback((Fl_Callback*)cb_clock_style);
       clock_style->when(3);
     } // Fl_Input* clock_style
-    { Fl_Browser* o = new Fl_Browser(15, 5, 455, 450);
+    { Fl_Browser* o = new Fl_Browser(15, 5, 450, 405);
       o->type(2);
       o->box(FL_GTK_DOWN_BOX);
       o->selection_color(FL_DARK_RED);
@@ -1274,7 +1291,15 @@ Fl_Double_Window* PanelUI::clock_window() {
       clock_display->labelsize(18);
       clock_display->align(Fl_Align(FL_ALIGN_TOP));
     } // Fl_Output* clock_display
-    Config config; config.under_mouse(o);
+    { Fl_Button* o = new Fl_Button(20, 415, 75, 30, gettext("Notes"));
+      o->box(FL_GTK_UP_BOX);
+      o->callback((Fl_Callback*)cb_Notes);
+    } // Fl_Button* o
+    { Fl_Button* o = new Fl_Button(105, 415, 110, 30, gettext("Modifier Notes"));
+      o->box(FL_GTK_UP_BOX);
+      o->callback((Fl_Callback*)cb_Modifier);
+    } // Fl_Button* o
+    startup(o);
     clock_config_window->xclass("jsm-panel");
     clock_config_window->end();
   } // Fl_Double_Window* clock_config_window
@@ -1309,7 +1334,7 @@ Fl_Double_Window* PanelUI::config_applist_window() {
     } // Fl_Box* o
     { new Fl_Box(30, 20, 95, 25, gettext("Current App"));
     } // Fl_Box* o
-    Config config; config.under_mouse(o);
+    startup(o);
     conf_applist_window->xclass("jsm-panel");
     conf_applist_window->end();
   } // Fl_Double_Window* conf_applist_window
@@ -1352,7 +1377,7 @@ Fl_Double_Window* PanelUI::config_clock_window() {
       o->deactivate();
       o->value("xclock");
     } // Fl_Input* o
-    Config config; config.under_mouse(o);
+    startup(o);
     conf_clock_window->xclass("jsm-panel");
     conf_clock_window->end();
   } // Fl_Double_Window* conf_clock_window
@@ -1386,7 +1411,7 @@ Fl_Double_Window* PanelUI::config_indicator_window() {
       o->box(FL_GTK_UP_BOX);
       o->callback((Fl_Callback*)cb_4);
     } // Fl_Button* o
-    Config config; config.under_mouse(o);
+    startup(o);
     conf_indicator_window->xclass("jsm-panel");
     conf_indicator_window->end();
   } // Fl_Double_Window* conf_indicator_window
@@ -1423,7 +1448,7 @@ Fl_Double_Window* PanelUI::configure_manually_window(std::string item) {
       hid_in->hide();
       o->value(item.c_str());
     } // Fl_Input* hid_in
-    Config config; config.under_mouse(o);
+    startup(o);
     conf_manual_window->xclass("jsm-panel");
     conf_manual_window->end();
   } // Fl_Double_Window* conf_manual_window
@@ -1452,7 +1477,7 @@ Fl_Double_Window* PanelUI::config_menu_window() {
     { icon_view = new Fl_Button(135, 45, 50, 50);
       icon_view->box(FL_GTK_DOWN_BOX);
       icon_view->callback((Fl_Callback*)cb_icon_view);
-      icon_view->align(Fl_Align(FL_ALIGN_WRAP));
+      icon_view->align(Fl_Align(130));
       flPanel panel;
       std::string icon =panel.getImageMenu(5);
       display(icon.c_str());
@@ -1472,7 +1497,7 @@ Fl_Double_Window* PanelUI::config_menu_window() {
     } // Fl_Menu_Button* o
     { new Fl_Box(45, 60, 70, 25, gettext("Icon"));
     } // Fl_Box* o
-    Config config; config.under_mouse(o);
+    startup(o);
     conf_menu_window->xclass("jsm-panel");
     conf_menu_window->end();
   } // Fl_Double_Window* conf_menu_window
@@ -1492,7 +1517,7 @@ Fl_Double_Window* PanelUI::config_shutdown_window() {
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK8);
     } // Fl_Button* o
-    Config config; config.under_mouse(o);
+    startup(o);
     conf_shut_window->xclass("jsm-panel");
     conf_shut_window->end();
   } // Fl_Double_Window* conf_shut_window
@@ -1529,7 +1554,7 @@ Fl_Double_Window* PanelUI::config_swallow_window() {
       std::string name = panel.getSubElementText("Swallow");
       o->value(name.c_str());
     } // Fl_Input* swallow_config
-    Config config; config.under_mouse(o);
+    startup(o);
     conf_swallow_window->xclass("jsm-panel");
     conf_swallow_window->end();
   } // Fl_Double_Window* conf_swallow_window
@@ -1546,42 +1571,46 @@ Fl_Double_Window* PanelUI::config_switcher_window() {
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OKa);
     } // Fl_Button* o
-    { new Fl_Box(15, 10, 140, 30, gettext("Active Foreground"));
+    { Fl_Box* o = new Fl_Box(15, 10, 140, 30, gettext("Active Foreground"));
+      if(style_gone()){o->hide();}
     } // Fl_Box* o
-    { new Fl_Box(15, 45, 140, 30, gettext("Active Background"));
+    { Fl_Box* o = new Fl_Box(15, 45, 140, 30, gettext("Active Background"));
+      if(style_gone()){o->hide();}
     } // Fl_Box* o
-    { new Fl_Box(35, 80, 90, 30, gettext("Foreground"));
+    { Fl_Box* o = new Fl_Box(35, 80, 90, 30, gettext("Foreground"));
+      if(style_gone()){o->hide();}
     } // Fl_Box* o
-    { new Fl_Box(35, 115, 90, 30, gettext("Background"));
+    { Fl_Box* o = new Fl_Box(35, 115, 90, 30, gettext("Background"));
+      if(style_gone()){o->hide();}
     } // Fl_Box* o
     { Fl_Button* o = new Fl_Button(160, 5, 75, 30);
       o->box(FL_GTK_UP_BOX);
       o->callback((Fl_Callback*)cb_5);
       o->deactivate();
       flPanel panel;unsigned int c;
-      unsigned int color = panel.getFontColor(c,"PagerStyle");
-      o->color(color);
+      if(style_gone()){o->hide();}
+      else{unsigned int color = panel.getFontColor(c,"PagerStyle");o->color(color);}
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(160, 43, 75, 30);
       o->box(FL_GTK_UP_BOX);
       o->callback((Fl_Callback*)cb_6);
       flPanel panel;unsigned int c;
-      unsigned int color = panel.getActiveBackground(c,"PagerStyle");
-      o->color(color);
+      if(style_gone()){o->hide();}
+      else{unsigned int color = panel.getActiveBackground(c,"PagerStyle");o->color(color);}
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(160, 80, 75, 30);
       o->box(FL_GTK_UP_BOX);
       o->callback((Fl_Callback*)cb_7);
       flPanel panel;unsigned int c;
-      unsigned int color = panel.getFontColor(c,"PagerStyle");
-      o->color(color);
+      if(style_gone()){o->hide();}
+      else{unsigned int color = panel.getFontColor(c,"PagerStyle");o->color(color);}
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(160, 115, 75, 30);
       o->box(FL_GTK_UP_BOX);
       o->callback((Fl_Callback*)cb_8);
       flPanel panel;unsigned int c;
-      unsigned int color = panel.getBackground(c,"PagerStyle");
-      o->color(color);
+      if(style_gone()){o->hide();}
+      else{unsigned int color = panel.getBackground(c,"PagerStyle");o->color(color);}
     } // Fl_Button* o
     { Fl_Value_Input* o = num_desktop_w = new Fl_Value_Input(20, 150, 20, 25, gettext("Number of Desktops Wide"));
       num_desktop_w->box(FL_GTK_DOWN_BOX);
@@ -1601,7 +1630,7 @@ Fl_Double_Window* PanelUI::config_switcher_window() {
       int height = config.getIntAttribute("Desktops","height");
       o->value(height);
     } // Fl_Value_Input* num_desktop_h
-    Config config; config.under_mouse(o);
+    startup(o);
     conf_switcher->xclass("jsm-panel");
     conf_switcher->end();
   } // Fl_Double_Window* conf_switcher
@@ -1673,7 +1702,7 @@ Fl_Double_Window* PanelUI::make_shortcut_window() {
       icon_name->box(FL_GTK_DOWN_BOX);
       icon_name->hide();
     } // Fl_Box* icon_name
-    Config config; config.under_mouse(o);
+    startup(o);
     shortcut_window->xclass("jsm-panel");
     shortcut_window->end();
     shortcut_window->resizable(shortcut_window);
@@ -1691,7 +1720,7 @@ Fl_Double_Window* PanelUI::new_panel_window() {
       o->box(FL_GTK_UP_BOX);
       o->callback((Fl_Callback*)cb_OKb);
     } // Fl_Button* o
-    Config config; config.under_mouse(o);
+    startup(o);
     new_panel->xclass("jsm-panel");
     new_panel->end();
   } // Fl_Double_Window* new_panel
@@ -1705,7 +1734,7 @@ Fl_Double_Window* PanelUI::no_config() {
     o->user_data((void*)(this));
     { new Fl_Box(25, 25, 175, 25, gettext("Nothing to Configure"));
     } // Fl_Box* o
-    Config config; config.under_mouse(o);
+    startup(o);
     o->xclass("jsm-panel");
     o->end();
   } // Fl_Double_Window* o
@@ -1721,7 +1750,8 @@ void PanelUI::add_new_shortcut() {
     const char* program = execLine.c_str();
     const char* popup = tooltip->value();
     int border = shortcut_border->value();
-    apps.addShortcut(icon.c_str(),program,popup, border);
+    if(newStyle()==-1){apps.addShortcut(icon.c_str(),program,popup, border);}
+    else{apps.addButton(icon.c_str(),program,popup, border);}
     shortcut_browser->clear();
     //shortcut_browser->add(program);
     apps.getShortcuts(shortcut_browser);
@@ -1853,7 +1883,8 @@ void PanelUI::config_Item(std::string whichItem) {
     config_switcher_window()->show();
   }
   else if(whichItem.compare("Running App List")==0){
-    config_applist_window()->show();
+    if(!style_gone()){config_applist_window()->show();}
+    else{no_config()->show();}
   }
   else if(whichItem.compare("Indicators")==0){
     config_indicator_window()->show();
@@ -1883,9 +1914,8 @@ void PanelUI::config_Item(std::string whichItem) {
 void PanelUI::display(const char* filename) {
   std::string extention, filenameStr;
   filenameStr = filename;
-  if (filenameStr.length() == 0)return;
+  if(filenameStr.compare("")==0){return;}
   extention = filenameStr.substr((strlen(filename)-4),4);
-  //std::cout<<extention<<"\n";
   std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
   Fl_Image* image;
   std::string png =".png";
@@ -1903,11 +1933,27 @@ void PanelUI::display(const char* filename) {
   	icon_view->image(image2);
   	icon_view->redraw();
   }
+  
+  /*
   else if(extention.compare(svg) ==0){
-  return;
-  }
-  else {
-  	icon_view->label("FLTK cannot display");
+  
+  	image = iconsvg.makeSVG(filename);
+  	Fl_Image * image2 = image->copy(48,48);
+  	app_icon_box->image(image2);
+  	app_icon_box->redraw();
+  	icon_name->hide();
+  }*/
+  
+  else{
+  	std::string file_name=filename;
+  	unsigned int finder = file_name.find_last_of('/');
+  	file_name=file_name.erase(0,finder+1);
+  	#ifdef DEBUG
+  	  std::cerr<<"before filename erase: "<<filename<<std::endl;
+  	  std::cerr<<"after filename erase: "<<file_name<<std::endl;
+  	#endif
+  	icon_view->copy_label(file_name.c_str());
+  	std::cout<<"Other image formats are not supported for preview"<<std::endl;
   }
 }
 
@@ -1919,6 +1965,7 @@ void PanelUI::displayAPPicon(const char* filename) {
   Fl_Image* image;
   std::string png =".png";
   std::string xpm =".xpm";
+  std::string svg =".svg";
   if (extention.compare(png) ==0){
   	image = new Fl_PNG_Image(filename);
   	Fl_Image * image2 = image->copy(48,48);
@@ -1933,6 +1980,17 @@ void PanelUI::displayAPPicon(const char* filename) {
   	app_icon_box->redraw();
   	icon_name->hide();
   }
+  
+  /*
+  else if(extention.compare(svg) ==0){
+  
+  	image = iconsvg.makeSVG(filename);
+  	Fl_Image * image2 = image->copy(48,48);
+  	app_icon_box->image(image2);
+  	app_icon_box->redraw();
+  	icon_name->hide();
+  }*/
+  
   else{
   	icon_name->copy_label(filename);
   	app_icon_box->hide();
@@ -1966,7 +2024,6 @@ void PanelUI::icon_for_desktop() {
     bool isDESKTOP = false;
     if(period<icon.length()){
       std::string testDesktop = icon.substr(period+1,std::string::npos);
-      //std::cerr<<testDesktop<<std::endl;
       if(testDesktop.compare("desktop")==0){isDESKTOP = true;}
     }
     unsigned found = icon.find_last_of("//");
@@ -1975,12 +2032,23 @@ void PanelUI::icon_for_desktop() {
     if(found2<icon.length()){icon=icon.erase(found2,std::string::npos);}
     result = icon.c_str();	
     if(isDESKTOP){
+      
       std::string desktop = apps.desktopExec(executable);
+      #ifdef DEBUG
+        std::cerr<<"exec="<<desktop<<std::endl;
+      #endif
+      
       std::string name = apps.desktopName(iconName);
+      #ifdef DEBUG
+        std::cerr<<"name="<<name<<std::endl;
+      #endif
       app_command->value(desktop.c_str());
       
       //get the icon name from the desktop file
       std::string deskIcon = apps.desktopIcon(icon2);
+      #ifdef DEBUG
+      std::cout<<"icon="<<deskIcon<<std::endl;
+      #endif
       //icon_name is the name we will save into the panel
       icon_name->copy_label(deskIcon.c_str());
       displayAPPicon(deskIcon.c_str());
@@ -2256,4 +2324,76 @@ void PanelUI::input_width_height_border(Fl_Slider *slider_o, Fl_Value_Input *inp
     }
   }
   fl_panel.setValue(dimension,panelSize);
+}
+
+Fl_Double_Window* PanelUI::clock_notes_window() {
+  { Fl_Double_Window* o = clock_info = new Fl_Double_Window(360, 420, gettext("Notes"));
+    clock_info->user_data((void*)(this));
+    { Fl_Scroll* o = new Fl_Scroll(15, 15, 335, 390);
+      { Fl_Box* o = new Fl_Box(15, 15, 335, 390, gettext("ISO 8601 week dates %G,  %g,  and  %V yield values calculated from the week-b\
+ased year defined by the ISO 8601 standard.  In this system, weeks start  on a\
+  Monday,  and are numbered from 01, for the first week, up to 52 or 53, for t\
+he last week.  Week 1 is the first week where four  or more  days fall within \
+the new year (or, synonymously, week 01 is: the first week of the year that co\
+ntains a Thursday; or, the  week that  has 4 January in it).  When three of fe\
+wer days of the first calendar week of the new year fall within that year, the\
+n the  ISO 8601 week-based system counts those days as part of week 53 of the \
+preceding year.  For example, 1 January 2010 is a Friday,  meaning that  just \
+ three  days of that calendar week fall in 2010.  Thus, the ISO 8601 week-base\
+d system considers these days to be part  of week  53 (%V) of the year 2009 (%\
+G); week 01 of ISO 8601 year 2010 starts on Monday, 4 January 2010."));
+        o->box(FL_GTK_DOWN_BOX);
+        o->color(FL_LIGHT3);
+        o->align(Fl_Align(FL_ALIGN_WRAP));
+      } // Fl_Box* o
+      o->end();
+    } // Fl_Scroll* o
+    Config config; config.under_mouse(o);
+    clock_info->xclass("jsm-panel");
+    clock_info->end();
+    clock_info->resizable(clock_info);
+  } // Fl_Double_Window* clock_info
+  return clock_info;
+}
+
+Fl_Double_Window* PanelUI::clock_info_window() {
+  { Fl_Double_Window* o = clock_modifier_notes = new Fl_Double_Window(360, 405, gettext("Modifier Notes"));
+    clock_modifier_notes->user_data((void*)(this));
+    { Fl_Scroll* o = new Fl_Scroll(15, 10, 340, 350);
+      { Fl_Box* o = new Fl_Box(15, 10, 340, 350, gettext("Some conversion specifications can be modified  by  preceding  the conversion\
+  specifier character by the E or O modifier to indicate that an alternative f\
+ormat should be  used.   If  the  alternative format or specification does not\
+ exist for the current locale, the behavior will be as if  the  unmodified  co\
+nversion  specification were  used.  (SU) The Single UNIX Specification mentio\
+ns %Ec, %EC, %Ex, %EX, %Ey, %EY, %Od, %Oe, %OH, %OI, %Om, %OM, %OS,  %Ou,  %OU\
+, %OV,  %Ow,  %OW, %Oy, where the effect of the O modifier is to use alternati\
+ve numeric symbols (say, roman numerals), and that of the E  modifier  is  to \
+use a locale-dependent alternative representation.\nThe broken-down time struc\
+ture tm is  defined  in  <time.h>."));
+        o->box(FL_GTK_DOWN_BOX);
+        o->color(FL_LIGHT3);
+        o->align(Fl_Align(FL_ALIGN_WRAP));
+      } // Fl_Box* o
+      o->end();
+    } // Fl_Scroll* o
+    { Fl_Button* o = new Fl_Button(20, 370, 115, 30, gettext("See also ctime"));
+      o->box(FL_GTK_UP_BOX);
+      o->callback((Fl_Callback*)cb_See);
+    } // Fl_Button* o
+    Config config; config.under_mouse(o);
+    clock_modifier_notes->xclass("jsm-panel");
+    clock_modifier_notes->end();
+    clock_modifier_notes->resizable(clock_modifier_notes);
+  } // Fl_Double_Window* clock_modifier_notes
+  return clock_modifier_notes;
+}
+
+bool PanelUI::style_gone() {
+  if(newStyle() ==1){return true;}
+  return false;
+}
+
+void PanelUI::startup(Fl_Window *o) {
+  Config config; config.under_mouse(o);
+  o->icon(config.Get_Fl_Icon(jsm_panel_xpm));
 }
