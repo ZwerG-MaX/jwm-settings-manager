@@ -1,0 +1,15 @@
+data/Buttons/ usr/share/jwm-settings-manager/
+
+data/time usr/share/jwm-settings-manager/
+data/toriOSmenu etc/menu-methods
+data/tori-icon-tester usr/bin
+data/places etc/menu-methods
+data/icons/jwm-settings-manager.png usr/share/pixmaps/
+data/*.desktop usr/share/applications/
+data/desktop-directories/ usr/share/
+data/pb_JWM usr/share/jwm-settings-manager/
+data/icons/*.svg usr/share/icons/hicolor/scalable/apps
+data/icons/*.png usr/share/icons/hicolor/48x48/apps
+data/icons/*.xpm usr/share/pixmaps/
+
+jwm-settings-manager.1 usr/share/man/man1/

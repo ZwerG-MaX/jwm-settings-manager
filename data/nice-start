@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+PROGNAME="${0/.*\/}"
+## our startup log file
+LOG="$HOME/.nicestart.log" 
+## THESE exist for the scripts in Xsession.d
+date +%F_%I:%M%P > "$LOG"
+echo "$PROGNAME" >> "$LOG"
+echo "$USER" >> "$LOG"
+
+export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
+[[ -z "$XDG_CONFIG_HOME" ]] && export XDG_CONFIG_HOME="$HOME/.config" && echo "exported XDG_CONFIG_HOME=$XDG_CONFIG_HOME" >> "$LOG"
+# AUTOSTART $XDG_CONFIG_HOME/autostart/
+autostart(){
+if [ -d "$XDG_CONFIG_HOME/autostart" ]
+then
+  for i in "${XDG_CONFIG_HOME}"/autostart/*.desktop
+  do
+    grep -q -E "^Hidden=true" "$i" && continue
+    if grep -q -E "^OnlyShowIn=" "$i"
+    then
+      # need to test twice, as lack of the line entirely means we still run it
+      grep -E "^OnlyShowIn=" "$i" | grep -q 'ToriOS;' || continue
+    fi
+    grep -E "^NotShowIn=" "$i" | grep -q 'ToriOS;' && continue
+    # check for TryExec
+    trycmd=$(grep -E "^TryExec=" "$i" | sed 's/*.=//')
+    cmd=$(grep -E "^Exec=" "$i" | sed 's/*.=//')
+    echo "Autostarting: $cmd" >> "$LOG"
+    if [ ! -z "$trycmd" ]
+    then
+      $trycmd &
+    else
+      [[ ! -z "$cmd" ]] && "$cmd" &
+    fi
+  done
+else
+  echo "$XDG_CONFIG_HOME/autostart doesn't exist creating it now" >> "${LOG}"
+  mkdir -p "$XDG_CONFIG_HOME/autostart" && echo "made $XDG_CONFIG_HOME/autostart" >> "${LOG}"
+fi
+}
+##TODO test this to make it work
+autostart
+GSETTINGS="$(which gsettings)"
+GCONF2="$(which gconftool-2)"
+#ICONIZER="$(which jwmIconFinder)"
+GTKRC2="${HOME}/.gtkrc-2.0"
+
+if [ -f "${GTKRC2}" ]
+then
+  THEME_TO_USE=$(grep "gtk-theme-name=" "${GTKRC2}" | sed 's#gtk-theme-name=##' | sed 's|"||g')
+  ICON_THEME_TO_USE=$(grep "gtk-icon-theme-name=" "${GTKRC2}" | sed 's#gtk-theme-name=##' | sed 's|"||g')
+else
+  THEME_TO_USE=Numix
+  ICON_THEME_TO_USE=Numix-Circle
+fi
+
+echo "[USING]
+gtk theme: $THEME_TO_USE
+icon theme: $ICON_THEME_TO_USE
+as themes
+" >> "$LOG"
+if [ -x "${GCONF2}" ]
+then
+  "${GCONF2}" --type=string --set /desktop/gnome/interface/gtk_theme "${THEME_TO_USE}" && echo "using ${GCONF2} to set ${THEME_TO_USE} as gtk_theme" >> "$LOG"
+  "${GCONF2}" --type=string --set /desktop/gnome/interface/icon_theme  "${ICON_THEME_TO_USE}" && echo "using ${GCONF2} to set ${ICON_THEME_TO_USE} as icon_theme" >> "$LOG"
+else
+  echo "[WARNING] gconftool-2: ${GCONF2}
+does not exist or is not executable" >> "$LOG"
+fi
+if [ -x "${GSETTINGS}" ]
+then
+  "${GSETTINGS}" set org.gnome.desktop.interface gtk-theme "${THEME_TO_USE}"&& echo "using ${GSETTINGS} to set ${THEME_TO_USE} as gtk-theme" >> "$LOG"
+  "${GSETTINGS}" set org.gnome.desktop.interface icon-theme "${ICON_THEME_TO_USE}"&& echo "using ${GSETTINGS} to set ${ICON_THEME_TO_USE} as icon-theme" >> "$LOG"
+else
+  echo "[WARNING] gsettings: ${GSETTINGS}
+does not exist or is not executable" >> "$LOG"
+fi
+if [ ! -z "$(which xset)" ]
+then
+  xset s off &
+  echo "ran: xset s off" >> "${LOG}"
+  xset dpms 0 0 0 &
+  echo "ran: xset dpms 0 0 0" >> "${LOG}"
+else
+  echo "[WARNING] couldn't find xset" >>"${LOG}"
+fi
+

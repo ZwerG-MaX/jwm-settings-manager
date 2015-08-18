@@ -1,0 +1,262 @@
+<?xml version="1.0"?>
+<JWM>
+<!-- MENUS -->
+    <!-- Main Menu -->
+    <!-- NOTE, if you hand edit this root:5 is the app menu and root:7 is the places menu  you have been duly warned :) -->
+    <Include>$HOME/.config/torimenu</Include>
+    <RootMenu onroot="1"/>
+    <!--Places Menu-->
+    <Include>$HOME/.config/placesmenu</Include>
+    <!-- Mouse Menu-->
+    <RootMenu height="16" onroot="23">
+        <Program icon="folder-home.svg" label="Home">xdg-open ~/</Program>
+        <Program icon="jwm-settings-manager.svg" label="Settings">jwm-settings-manager</Program>
+        <Program icon="preferences-desktop-wallpaper.svg" label="Change Desktop Background">jwm-settings-manager --desktop</Program>
+    </RootMenu>
+    <!--Shudown Menu-->
+    <RootMenu height="0" onroot="9">
+        <Program icon="preferences-system-session.svg" label="Shutdown Menu">jwm-settings-manager --halt</Program>
+        <Program icon="system-restart.svg" label="Restart Computer">bash -c '
+gxmessage -buttons "Yes:3,No:4" "Restart?";case $? in 3)echo "Reboot";dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart;; 4)echo "Not restarting";; esac'</Program>
+        <Restart label="Reload Desktop" icon="system-restart.svg"/>
+        <Exit label="Logout" confirm="true" icon="system-logout.svg"/>
+    </RootMenu>
+<!-- END MENUS -->
+<!-- GROUP -->
+    <Group>
+        <Option>noshade</Option>
+    </Group>
+    <Group>
+        <Class>Pidgin</Class>
+        <Option>sticky</Option>
+    </Group>
+    <Group>
+        <Name>gkrellm</Name>
+        <Option>nolist</Option>
+        <Option>sticky</Option>
+    </Group>
+    <Group>
+        <Name>conky</Name>
+        <Option>nolist</Option>
+        <Option>sticky</Option>
+    </Group>
+<!-- PANEL -->
+        <Tray x="0" y="-1" height="34" valign="top" width="0" halign="fixed" layout="horizontal">
+        <TrayButton label="Apps" icon="/usr/share/pixmaps/distributor-logo.png" border="false">root:5</TrayButton>
+        <TrayButton label="Places" icon="folder.svg" border="false">root:7</TrayButton>
+        <TrayButton icon="browser.svg" border="false">exec:x-www-browser /usr/share/doc/ToriOS/startpage.html</TrayButton>
+        <Pager labeled="true"/>
+        <TaskList maxwidth="256"/>
+        <Dock/>
+        <Swallow name="xload" width="64">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>
+        <Clock format="%a, %e %b %l:%M %p">zenity --calendar --title="Calendar"</Clock>
+        <TrayButton label="Shutdown" icon="system-shutdown.svg" border="false">root:9</TrayButton>
+    </Tray>
+<!-- Panel Style -->
+    <TaskListStyle>
+        <ActiveForeground>#f9f9f9</ActiveForeground>
+        <ActiveBackground>#d64937</ActiveBackground>
+        <Background>#2d2d2d</Background>
+        <Foreground>#dcdcdc</Foreground>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
+    </TaskListStyle>
+    <TrayStyle>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
+        <Foreground>#dcdcdc</Foreground>
+        <Background>#2d2d2d</Background>
+        <Opacity>1.0</Opacity>
+    </TrayStyle>
+    <TrayButtonStyle>
+	<Font>ubuntu-12:antialias=true:encoding=utf8</Font>
+        <Foreground>#dcdcdc</Foreground>
+        <Background>#2d2d2d</Background>
+    </TrayButtonStyle>
+    <PagerStyle>
+        <Outline>#000000</Outline>
+        <Foreground>#2d2d2d</Foreground>
+        <Background>#888888</Background>
+        <ActiveForeground>#f9f9f9</ActiveForeground>
+        <ActiveBackground>#d64937</ActiveBackground>
+    </PagerStyle>
+    <MenuStyle>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
+        <Foreground>#dcdcdc</Foreground>
+        <Background>#2d2d2d</Background>
+        <ActiveBackground>#d64937</ActiveBackground>
+        <Opacity>1.0</Opacity>
+    </MenuStyle>
+<!-- WINDOW -->
+    <WindowStyle>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
+        <Width>4</Width>
+        <Height>20</Height>
+        <Active>
+            <Text>#dcdcdc</Text>
+            <Title>#2d2d2d</Title>
+            <Outline>#484848</Outline>
+            <Opacity>1.0</Opacity>
+        </Active>
+	<Text>#888888</Text>
+	<Title>#2d2d2d</Title>
+	<Outline>#393939</Outline>
+	<Opacity>1.0</Opacity>
+    </WindowStyle>
+    <FocusModel>click</FocusModel>
+    <SnapMode distance="10">border</SnapMode>
+    <MoveMode>opaque</MoveMode>
+    <ResizeMode>opaque</ResizeMode>
+<!-- KEYSHORTCUTS -->
+    <Key key="Up">up</Key>
+    <Key key="Down">down</Key>
+    <Key key="Right">right</Key>
+    <Key key="Left">left</Key>
+    <Key key="a">left</Key>
+    <Key key="s">down</Key>
+    <Key key="w">up</Key>
+    <Key key="d">right</Key>
+    <Key key="Return">select</Key>
+    <Key key="Escape">escape</Key>
+    <Key key="XF86AudioMute">exec:amixer-toggle</Key>
+    <Key key="XF86AudioRaiseVolume">exec:amixer-up</Key>
+    <Key key="XF86AudioLowerVolume">exec:amixer-down</Key>
+    <Key key="XF86WWW">exec:x-www-browser</Key>
+    <Key key="XF86Calculator">exec:xcalc</Key>
+    <Key key="XF86MonBrightnessUp">exec:xcalc</Key>
+    <Key key="XF86MonBrightnessDown">exec:xcalc</Key>
+    <Key key="Print">exec:screenie</Key>
+    <Key mask="CA" key="p">exec:screenie</Key>
+    <Key mask="S4" key="3">exec:screenie</Key>
+    <Key mask="CA" key="t">exec:x-terminal-emulator</Key>
+    <Key mask="CS" key="Escape">exec:xterm htop</Key>
+    <Key mask="A4" key="Escape">exec:xterm htop</Key>
+    <Key mask="CA" key="Delete">exec:xterm htop</Key>
+    <Key mask="C" key="Escape">exec:xterm htop</Key>
+    <Key mask="A" key="Tab">next</Key>
+    <Key mask="4" key="Tab">next</Key>
+    <Key mask="AS" key="Tab">nextstacked</Key>
+    <Key mask="S4" key="Tab">nextstacked</Key>
+    <Key mask="SA" key="Tab">nextstacked</Key>
+    <Key mask="CA" key="Tab">nextstacked</Key>
+    <Key mask="C" key="#">desktop#</Key>
+    <Key mask="A" key="F1">exec:xman</Key>
+    <Key mask="C" key="Escape">root:5</Key>
+    <Key mask="A" key="F2">exec:zrun</Key>
+    <Key mask="4" key="F2">exec:zrun</Key>
+    <Key mask="4" key="space">exec:zrun</Key>
+    <Key mask="CA" key="Right">rdesktop</Key>
+    <Key mask="CA" key="Left">ldesktop</Key>
+    <Key mask="CA" key="Up">udesktop</Key>
+    <Key mask="CA" key="Down">ddesktop</Key>
+    <Key mask="A" key="space">window</Key>
+    <Key mask="A" key="F3">window</Key>
+    <Key key="F11">fullscreen</Key>
+    <Key mask="C" key="F11">fullscreen</Key>
+    <Key mask="CS" key="f">fullscreen</Key>
+    <Key mask="4C" key="f">fullscreen</Key>
+    <Key mask="A" key="F12">shade</Key>
+    <Key mask="SC4" key="Up">maximize</Key>
+    <Key mask="4" key="L">maximize</Key>
+    <Key mask="A" key="F10">maximize</Key>
+    <Key mask="4" key="Down">minimize</Key>
+    <Key mask="4" key="m">minimize</Key>
+    <Key mask="A" key="F9">minimize</Key>
+    <Key mask="4" key="w">close</Key>
+    <Key mask="A" key="F4">close</Key>
+<!-- MOUSE -->
+    <DoubleClickSpeed>400</DoubleClickSpeed>
+    <DoubleClickDelta>2</DoubleClickDelta>
+<!-- ICONS -->
+      <IconPath>/usr/share/icons/Numix-Circle/16x16/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix-Circle/scalable/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix-Circle/16x16/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix-Circle/scalable/apps</IconPath>
+<!-- Inherited Icons -->
+  <IconPath>/usr/share/app-install/icons</IconPath>
+  <IconPath>/usr/share/icons/Numix/256x256/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/256x256/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/256x256/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/256x256/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/256x256/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/256x256/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/256x256/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/256x256/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/32x32/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/32x32/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/32x32/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/32x32/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/32x32/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/32x32/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/32x32/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/32x32/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/32x32/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/status</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/actions</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/apps</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/categories</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/devices</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/emblems</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/places</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/status</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/actions</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/animations</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/apps</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/categories</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/devices</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/emblems</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/places</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/status</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/actions</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/apps</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/categories</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/devices</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/emblems</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/places</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/status</IconPath>
+  <IconPath>/usr/share/icons/hicolor/256x256/apps</IconPath>
+  <IconPath>/usr/share/icons/hicolor/256x256/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/actions</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/apps</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/categories</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/devices</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/emblems</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/status</IconPath>
+  <IconPath>/usr/share/icons/hicolor/512x512/apps</IconPath>
+  <IconPath>/usr/share/icons/hicolor/512x512/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/actions</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/apps</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/categories</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/devices</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/emblems</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/places</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/status</IconPath>
+  <IconPath>/usr/share/icons</IconPath>
+  <IconPath>/usr/share/pixmaps</IconPath>
+<!-- DESKTOP -->
+    <Desktops width="2" height="1">
+        <Background type="image">/usr/share/backgrounds/default.jpg</Background>
+    </Desktops>
+<!-- AUTOSTART -->
+   <StartupCommand>pcmanfm --desktop</StartupCommand>
+   <StartupCommand>$HOME/.config/jsm-mouse</StartupCommand>
+   <StartupCommand>nm-applet</StartupCommand>
+   <StartupCommand>/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1</StartupCommand>
+<!--POP UP -->
+    <PopupStyle>
+        <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
+        <Outline>#484848</Outline>
+        <Foreground>#2d2d2d</Foreground>
+        <Background>#2d2d2d</Background>
+    </PopupStyle>
+</JWM>

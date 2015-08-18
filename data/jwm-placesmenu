@@ -1,0 +1,330 @@
+#!/bin/bash
+###############################################
+#                                             #
+#       ToriOS OS Places Menu (JWM)           #
+# copyright Israel <israel@torios.org> 2014   #
+#               GPL3 License                  #
+#                                             #
+#      Prov 24:13 My son, eat thou honey,     #
+#     because it is good; and the honeycomb,  #
+#       which is sweet to thy taste:          #
+# 14 So shall the knowledge of wisdom         #
+# be unto thy soul: when thou hast found it,  #
+#       then there shall be a reward,         #
+#   and thy expectation shall not be cut off. #
+#                                             #
+#      Prose from KJV Bible public Domain     #
+#                                             #
+###############################################
+JWMRC="$HOME/.jwmrc"
+## this is our own config file
+JSM="$HOME/.jsm"
+ENDMENU='</JWM>'
+## initialize these
+PLACES_ROOT=""
+PLACES=""
+GTKRC2="${HOME}/.gtkrc-2.0"
+GTKRC3="${HOME}/.config/gtk-3.0/settings.ini"
+GSETTINGS="$(which gsettings)"
+GCONF2="$(which gconftool-2)"
+if [ -f "${GTKRC2}" ]
+then
+  gtkrc2_result=$(grep "gtk-icon-theme-name=" "${GTKRC2}" | sed 's#gtk-icon-theme-name=##' | sed 's|"||g')
+else
+  if [ ! -z "${GCONF2}" ]
+  then
+    gtkrc2_result="$(${GCONF2} --get /desktop/gnome/interface/icon_theme)"
+  fi
+fi
+if [ -f "${GTKRC3}" ]
+then
+  gtkrc3_result=$(grep "gtk-icon-theme-name=" "${GTKRC3}" | sed 's#gtk-icon-theme-name=##' | sed 's|"||g')
+fi
+if [ ! -z "${GSETTINGS}" ]
+then
+  gtkrc3_result=$(gsettings get org.gnome.desktop.interface icon-theme | sed "s#'##g")
+fi
+if [ -z "${gtkrc2_result}" ]
+then
+  if [ -z "${gtkrc3_result}" ]
+  then
+    THEME_TO_USE="hicolor"
+  else
+    THEME_TO_USE="${gtkrc3_result}" 
+  fi
+else
+  THEME_TO_USE="${gtkrc2_result}"
+fi
+echo "Found: $THEME_TO_USE  as the icon theme to check"
+if [ -f "$HOME"/.config/gtk-3.0/bookmarks ]
+then
+  GTK_BOOKMARKS=($(sed 's# .*##' "$HOME"/.config/gtk-3.0/bookmarks  | sed 's#file://##'))
+fi
+
+{	#localization block
+[ "$myLANG" ] || myLANG="${LANGUAGE%% *}"
+[ "$myLANG" ] || myLANG="${LANG%_*}"
+
+[ -f "/usr/share/locale/$myLANG/LC_MESSAGES/jwm" ] && . "/usr/share/locale/$myLANG/LC_MESSAGES/jwm"
+}
+
+
+PLACES="\$HOME/.jwm/menus/placesmenu"
+PLACES_FILE="${PLACES/\$HOME/$HOME}"
+## make sure the directories exist
+if [ ! -d "${HOME}/.jwm/menus/" ]
+then
+  mkdir -p "${HOME}/.jwm/menus/"
+fi
+
+  ## Lets make sure they have the file first
+if [ ! -f "$HOME/.config/user-dirs.dirs" ]
+then
+  ## if not see if we can make it
+  if [ ! -x /usr/bin/xdg-user-dirs-update ]
+  then
+    echo "/usr/bin/xdg-user-dirs-update doesn't exist!!
+Please install xdg-user-dirs"
+    exit 1
+  else
+    xdg-user-dirs-update
+  fi
+fi
+
+if [ ! -x /usr/bin/xdg-user-dir ]
+then
+  echo "/usr/bin/xdg-user-dir doesn't exist!!
+Please install xdg-user-dirs"
+  exit 1
+fi
+ICONDIRS=( $(grep "<IconPath" "${JWMRC}" | sed 's|<IconPath>||' | sed 's|</IconPath>||'| sed 's|/usr/share/pixmaps/ ||'| sed 's|/usr/share/icons/ ||') )
+if [ -z "${EXT}" ]
+then
+  png=0
+  svg=0
+
+for i in "${ICONDIRS[@]}"
+do
+DIR2="$i"
+  PNG=$(ls ${DIR2}*.png 2>/dev/null)
+  if [ ! -z "${PNG}" ]
+  then
+    png=$((png+1))
+  fi
+  SVG=$(ls ${DIR2}*.svg 2>/dev/null)
+  if [ ! -z "${SVG}" ]
+  then
+    svg=$((svg+1))
+  fi
+done
+  if [ $((svg>png)) ]
+  then
+     EXT=".svg"
+     OTHER_EXT=".png"
+  else
+     EXT=".png"
+     OTHER_EXT=".svg"
+  fi
+
+fi ## -z $EXT
+
+icon_tester(){
+if [ ! -z "${ICON}" ]
+then
+THIS_ICON="${ICON}"
+THIS_THEME_TO_USE="${THEME_TO_USE}"
+  for i in "${ICONDIRS[@]}"
+  do
+  if [[ "${THIS_ICON/.png}" != "${THIS_ICON}" || "${THIS_ICON/.svg}" != "${THIS_ICON}" || "${THIS_ICON/.xpm}" != "${THIS_ICON}" ]]
+  then 
+    if [ -f "${i}/${THIS_ICON}" ]
+    then
+      export ICON="${THIS_ICON}"
+      break
+    fi
+  else
+    if [ -f "${i}/${THIS_ICON}${EXT}" ]
+    then
+      export ICON="${THIS_ICON}${EXT}"
+      if [ "${i/$THEME_TO_USE}" != "${i}" ]
+      then
+        break
+      fi
+      break
+    elif  [ -f "${i}/${THIS_ICON}${OTHER_EXT}" ]
+    then
+      export ICON="${THIS_ICON}${OTHER_EXT}"
+      if [ "${i/$THEME_TO_USE}" != "${i}" ]
+      then
+        break
+      fi
+    elif  [ -f "${i}/${THIS_ICON}.xpm" ]
+    then
+      export ICON="${THIS_ICON}.xpm"
+      echo $ICON
+      break
+    else
+      ICON="folder${EXT}"
+    fi
+  fi
+  done
+fi
+}
+
+## these are all the XDG variables we want
+XDG_COMM=$(which xdg-user-dir)
+#DESKTOP=$( "${XDG_COMM}" DESKTOP)
+DOCUMENTS=$( "${XDG_COMM}" DOCUMENTS)
+DOWNLOADS=$( "${XDG_COMM}" DOWNLOAD)
+MUSIC=$( "${XDG_COMM}" MUSIC)
+PICTURES=$( "${XDG_COMM}" PICTURES)
+#PUBLICSHARE=$( "${XDG_COMM}" PUBLICSHARE)
+#TEMPLATES=$( "${XDG_COMM}" TEMPLATES)
+VIDEOS=$( "${XDG_COMM}" VIDEOS)
+VIDEOS_DIR=${VIDEOS##$HOME/}
+#DESKTOP_DIR=${DESKTOP##$HOME/}
+DOCUMENTS_DIR=${DOCUMENTS##$HOME/}
+DOWNLOADS_DIR=${DOWNLOADS##$HOME/}
+MUSIC_DIR=${MUSIC##$HOME/}
+PICTURES_DIR=${PICTURES##$HOME/}
+#PUBLICSHARE_DIR=${PUBLICSHARE##$HOME/}
+#TEMPLATES_DIR=${TEMPLATES##$HOME/}
+VIDEOS_DIR=${VIDEOS##$HOME/}
+HOME_DIR="Home"
+XDG_ARRAY=("$DOCUMENTS_DIR" "$DOWNLOADS_DIR" "$MUSIC_DIR" "$PICTURES_DIR" "$VIDEOS_DIR" "$HOME")
+
+## Icon names
+HOME_ICON="folder-home"
+ICON="${HOME_ICON}"
+icon_tester
+HOME_ICON="${ICON}"
+
+DOC_ICON="folder-documents"
+ICON="${DOC_ICON}"
+icon_tester
+DOC_ICON="${ICON}"
+
+DL_ICON="folder-downloads"
+ICON="${DL_ICON}"
+icon_tester
+DL_ICON="${ICON}"
+
+MUSIC_ICON="folder-music"
+ICON="${MUSIC_ICON}"
+icon_tester
+MUSIC_ICON="${ICON}"
+
+PIC_ICON="folder-pictures"
+ICON="${PIC_ICON}"
+icon_tester
+PIC_ICON="${ICON}"
+
+VID_ICON="folder-video"
+ICON="${VID_ICON}"
+icon_tester
+VID_ICON="${ICON}"
+
+RUBBISH="user-trash"
+ICON="${RUBBISH}"
+icon_tester
+RUBBISH="${ICON}"
+
+MEDIA_ICON="file-manager"
+ICON="${MEDIA_ICON}"
+icon_tester
+MEDIA_ICON="${ICON}"
+
+FOLDER_ICON="folder"
+ICON="${FOLDER_ICON}"
+icon_tester
+FOLDER_ICON="${ICON}"
+
+## This is for the Applications item
+DD=/usr/share/desktop-directories
+
+##make sure the directory exists before we assume it does
+if [ ! -f "${DD}/jwm-home.directory" ]
+then
+  echo "${DD}/jwm-home.directory does not exist..."
+  exit 2
+fi
+
+
+## make sure the file exists
+if [ ! -f "${PLACES_FILE}" ]
+then
+  touch "${PLACES_FILE}"
+fi
+
+TRASH_PLACE="$HOME/.local/share/Trash/files"
+if [ ! -d "$TRASH_PLACE" ]
+then
+  [[ -d "$HOME/.local/share/Trash/files" ]] || mkdir -p -m a=rwx "$HOME/.local/share/Trash/files"
+fi
+
+XDGMIME="$(which xdg-mime)"
+if [ ! -z "$XDGMIME" ]
+then
+  TRASH="$($XDGMIME query default inode/directory)"
+fi
+
+if [ -z "$TRASH" ]
+then
+  TRASH_PLACE="xdg-open $TRASH_PLACE"
+  echo ""
+else
+  TRASH_PLACE="${TRASH/.desktop} trash:///"
+fi
+
+
+MENU='<?xml version="1.0"?>
+<JWM>
+<!-- generated by '$0' -->
+	<Program icon="'$HOME_ICON'" label="'$HOME_DIR'">xdg-open '$HOME'</Program>
+	<Program icon="'$DOC_ICON'" label="'$DOCUMENTS_DIR'">xdg-open '$DOCUMENTS'</Program>
+	<Program icon="'$DL_ICON'" label="'$DOWNLOADS_DIR'">xdg-open '$DOWNLOADS'</Program>
+	<Program icon="'$MUSIC_ICON'" label="'$MUSIC_DIR'">xdg-open -n '$MUSIC'</Program>
+	<Program icon="'$PIC_ICON'" label="'$PICTURES_DIR'">xdg-open '$PICTURES'</Program>
+	<Program icon="'$VID_ICON'" label="'$VIDEOS_DIR'">xdg-open '$VIDEOS'</Program>
+	<Program icon="'$RUBBISH'" label="Trash">'$TRASH_PLACE'</Program>
+	<Program icon="'$MEDIA_ICON'" label="Connected Devices">xdg-open /media</Program>'
+
+## GTK BOOKMARKS
+if [ -f "$HOME/.config/gtk-3.0/bookmarks" ]
+then
+  for i in "${GTK_BOOKMARKS[@]}"
+  do
+   echo $i
+    if [ "${i/\//}" != "${i}" ]
+    then
+      case ${i} in
+      "${HOME}") ;;
+      "${DOCUMENTS}") ;;
+      "${DOWNLOADS}") ;;
+      "${MUSIC}");;
+      "${PICTURES}");;
+      "${VIDEOS}");;
+      *)
+      GTK_BOOKMARKS_MENU=''${GTK_BOOKMARKS_MENU}'
+	<Program icon="'$FOLDER_ICON'" label="'${i/*\/}'">xdg-open '$i'</Program>'
+      ;;
+      #echo $i
+      #echo ${i/*\/}
+      esac
+    fi
+  done
+fi
+
+
+## END MENU tag
+MENU=''${MENU}'
+'${GTK_BOOKMARKS_MENU}'
+'${ENDMENU}''
+#echo "$MENU"
+echo "$MENU" > "${PLACES_FILE}"
+## just in case there are ampersands here, lets change them so everything wont break
+sed -i 's/&/&amp;/g' "${PLACES_FILE}"
+sed -i '/^$/d' "${PLACES_FILE}"
+echo "Updated Places menu:"
+## reload so we can see the changes
+jwm -reload

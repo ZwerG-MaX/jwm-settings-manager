@@ -1,0 +1,13 @@
+#!/bin/bash
+directory="/etc/menu-methods"
+bin_list=(jwm-placesmenu jwm-desktopmenu)
+## make our menu-methods executables
+for app in "${bin_list[@]}"
+do
+  [[ -f "${directory}${app}" ]] && [[ ! -x "${directory}${app}" ]] && chmod +x "${directory}${app}"
+done
+#make our nice startup program executable
+nicestart="/usr/bin/nice-start"
+[[ -f "${nicestart}" ]] && [[ ! -x "${nicestart}" ]] && chmod +x "${nicestart}"
+#DEBHELPER#
+exit 0

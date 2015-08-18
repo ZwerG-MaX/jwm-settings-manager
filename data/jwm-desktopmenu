@@ -1,0 +1,624 @@
+#!/bin/bash
+###############################################
+#                                             #
+#       ToriOS OS Menu Generator (JWM)        #
+# copyright Israel <israel@torios.org> 2014   #
+#               MIT License                   #
+#                                             #
+#      Prov 24:13 My son, eat thou honey,     #
+#     because it is good; and the honeycomb,  #
+#       which is sweet to thy taste:          #
+# 14 So shall the knowledge of wisdom         #
+# be unto thy soul: when thou hast found it,  #
+#       then there shall be a reward,         #
+#   and thy expectation shall not be cut off. #
+#                                             #
+#      Prose from KJV Bible public Domain     #
+#                                             #
+###############################################
+# MANY thanks to Puppy and technosaurus!!
+
+shopt -s nullglob
+## GTK ##
+{
+# We are going to check for the current ICON theme...
+#this is used to speed up the icon tester by breaking out if the icon is found from this theme
+GTKRC2="${HOME}/.gtkrc-2.0"
+GTKRC3="${HOME}/.config/gtk-3.0/settings.ini"
+GSETTINGS="$(which gsettings)"
+
+if [ -f "${GTKRC2}" ]
+then
+  gtkrc2_result=$(grep "gtk-icon-theme-name=" "${GTKRC2}" | sed 's#gtk-icon-theme-name=##' | sed 's|"||g')
+fi
+
+if [ -f "${GTKRC3}" ]
+then
+  gtkrc3_result=$(grep "gtk-icon-theme-name=" "${GTKRC3}" | sed 's#gtk-icon-theme-name=##' | sed 's|"||g')
+fi
+
+if [ ! -z "${GSETTINGS}" ]
+then
+  gtkrc3_result=$(gsettings get org.gnome.desktop.interface icon-theme | sed "s#'##g")
+fi
+
+if [ -z "${gtkrc2_result}" ]
+then
+  if [ -z "${gtkrc3_result}" ]
+  then
+    THEME_TO_USE="hicolor"
+  else
+    THEME_TO_USE="${gtkrc3_result}" 
+  fi
+else
+  THEME_TO_USE="${gtkrc2_result}"
+fi
+## END GTK ##
+}
+
+# JWMRC file
+JWMRC="$HOME/.jwmrc"
+if [ ! -f "${JWMRC}" ]
+then
+  JWMRC="/etc/jwm/system.jwmrc"
+fi
+MENUFILE="/etc/jwm/jwm-menu"
+
+{
+## this is where our category translations exist, and the icons
+DD="/usr/share/desktop-directories"
+## Make sure our Desktop Directories folder is intact
+if [ ! -d "${DD}" ]
+then
+  echo "[WARNING] You are missing the Desktop Directories.. in $DD you must install this program again or modify this script $0"
+  exit 1
+fi
+}
+
+## create sane default extention for icons based on what we can find
+ICONDIRS=( $(grep "<IconPath" "${JWMRC}" | sed 's|<IconPath>||' | sed 's|</IconPath>||'| sed 's|/usr/share/pixmaps/ ||'| sed 's|/usr/share/icons/ ||') )
+png=0
+svg=0
+## do some detective work to see which is the most common icon extention
+for i in "${ICONDIRS[@]}"
+do
+DIR2="$i"
+  PNG=$(ls ${DIR2}*.png 2>/dev/null)
+  if [ ! -z "${PNG}" ]
+  then
+    png=$((png+1))
+  fi
+  SVG=$(ls ${DIR2}*.svg 2>/dev/null)
+  if [ ! -z "${SVG}" ]
+  then
+    svg=$((svg+1))
+  fi
+done
+## these variables are used in icon_tester
+if [ $((svg>png)) ]
+then
+   EXT=".svg"
+   OTHER_EXT=".png"
+else
+   EXT=".png"
+   OTHER_EXT=".svg"
+fi
+
+## test the icon filename for existence and return a sane extention
+icon_tester(){
+if [ ! -z "${ICON}" ]
+then
+THIS_ICON="${ICON}"
+THIS_THEME_TO_USE="${THEME_TO_USE}"
+  for i in "${ICONDIRS[@]}"
+  do
+  if [[ "${THIS_ICON/.png}" != "${THIS_ICON}" || "${THIS_ICON/.svg}" != "${THIS_ICON}" || "${THIS_ICON/.xpm}" != "${THIS_ICON}" ]]
+  then 
+    if [ -f "${i}/${THIS_ICON}" ]
+    then
+      export ICON="${THIS_ICON}"
+      break
+    fi
+  else
+    if [ -f "${i}/${THIS_ICON}${EXT}" ]
+    then
+      export ICON="${THIS_ICON}${EXT}"
+      if [ "${i/$THIS_THEME_TO_USE}" != "${i}" ]
+      then
+        break
+      fi
+      break
+    elif  [ -f "${i}/${THIS_ICON}${OTHER_EXT}" ]
+    then
+      export ICON="${THIS_ICON}${OTHER_EXT}"
+      if [ "${i/$THIS_THEME_TO_USE}" != "${i}" ]
+      then
+        break
+      fi
+    elif  [ -f "${i}/${THIS_ICON}.xpm" ]
+    then
+      export ICON="${THIS_ICON}.xpm"
+      #echo $ICON
+      break
+    else
+      ICON=""
+    fi
+  fi
+  done
+fi
+}
+## set the default icon here
+DEFAULT_ICON="application-default-icon"
+ICON="${DEFAULT_ICON}"
+icon_tester
+DEFAULT_ICON="${ICON}"
+
+{	#localization block
+[ "$myLANG" ] || myLANG="${LANGUAGE%% *}"
+[ "$myLANG" ] || myLANG="${LANG%_*}"
+
+[ -f "/usr/share/locale/$myLANG/LC_MESSAGES/jwm" ] && . "/usr/share/locale/$myLANG/LC_MESSAGES/jwm"
+}
+
+{	#parse .desktop files and sort generated menu entries into subcategories
+for DESKTOP_FILE in /usr/share/applications/*.desktop
+do
+  NAME="" ICON="" CATS="" EXEC="" LINE="" TERMIE="" #prevent carryover from previous file
+  while read LINE || [ "$LINE" ]
+  do
+  case $LINE in
+      NoDisplay=true)
+        NAME=""
+        ICON=""
+        CATS=""
+        EXEC=""
+        TERMIE=""
+        break;;
+      Name?${myLANG%_*}?=*|Name=*) NAME="${LINE#*=}"'' ;; # sc0ttman... should use "Name[$myLANG]=" if found
+      '[Desktop Entry'*) continue ;;
+      TryExec=*|Exec=*) EXEC="${LINE#*=}"'' ;;
+      Categories=*) CATS="${LINE#*=}"'' ;;
+      Icon=*) ICON="${LINE#*=}"''  ;;
+      Terminal=*) TERMIE="${LINE#*=}"'';;
+      "["*) break ;; ##any other groups thanks to technosaurus
+      OnlyShowIn=*)
+        NAME=""
+        ICON=""
+        CATS=""
+        EXEC=""
+        TERMIE=""
+        break;;
+      # Comment=*|Comment?${LANG%_*}?=*) COMMENT="${LINE#*=}"''  ;; #jwm doesn't support tooltips on menu items yet ... uncomment this if it ever does
+  esac
+  done < "$DESKTOP_FILE"
+  
+  if [ "${TERMIE}" == "true" ]
+  then
+
+    if [ "$(which xterm)" ]
+    then
+      EXEC="xterm -e ${EXEC}"
+    fi
+
+    if [ "$(which x-terminal-emulator)" ]
+    then
+     EXEC="x-terminal-emulator -e ${EXEC}"
+    fi
+
+    [ "$EXEC" ] || echo "no xterm or x-terminal-emulator found"
+  fi
+
+
+  ## test the icon
+  icon_tester
+
+  if [ -z "${ICON}" ]
+  then
+    ICON="${DEFAULT_ICON}"
+  fi
+
+  MenuEntry='
+	<Program label="'${NAME}'" icon="'${ICON}'">'${EXEC%\ \%?}'</Program>'
+
+  #CATS="${CATS%;*}" # sc0ttman, keep just the first (or only) category.. everything before the semi-colon ;...no we may want multiple entries?
+  MY_CAT=(${CATS//;/ })
+  for CAT in "${MY_CAT[@]}"
+  do
+  case "$CAT" in
+     AudioVideo)
+       AV=${AV}${MenuEntry}
+       break;;
+     Development)
+       DEV=${DEV}${MenuEntry}
+       break;;
+     Education)
+       ED=${ED}${MenuEntry}
+       break;;
+     Game)
+       GAME=${GAME}${MenuEntry}
+       break;;
+     Graphics)
+       ART=${ART}${MenuEntry}
+       break;;
+     Network)
+       NET=${NET}${MenuEntry}
+       break;;
+     Office)
+       OFF=${OFF}${MenuEntry}
+       break;;
+     Science)
+       SCI=${SCI}${MenuEntry}
+       break;;
+     Settings)
+       SET=${SET}${MenuEntry}
+       break;;
+     System)
+       SYS=${SYS}${MenuEntry}
+       break;;
+     Utility)
+       ACC=${ACC}${MenuEntry}
+       break;;
+  esac
+  done
+
+done
+}
+
+DIR_EXT=".directory"
+## this variable is used because lxde menus are different from xfce/jwm
+UTILITY=false
+INTRO="jwm"
+this_type=$(ls /usr/share/desktop-directories/jwm*)
+if [ -z "${this_type}" ]
+then
+  echo "couldn't find JWM desktop directories...
+trying lxde"
+  this_type=$(ls /usr/share/desktop-directories/lxde*)
+  UTILITY=true
+  INTRO="lxde"
+  if [ -z "${this_type}" ]
+  then
+    echo "couldn't find JWM desktop directories OR LXDE...
+trying xfce"
+    this_type=$(ls /usr/share/desktop-directories/xfce*)
+    UTILITY=false
+    INTRO="xfce"
+    if [ -z "${this_type}" ]
+    then
+      echo "No suitable desktop direcories found... there will be no category names or icons"
+    fi
+  fi
+else
+  echo "Using JWM desktop directories for localization"
+fi
+## use our file or something
+if [ "${UTILITY}" == "true" ]
+then
+  accessories_FILE="${DD}/${INTRO}-utility${DIR_EXT}"
+else
+  accessories_FILE="${DD}/${INTRO}-accessories${DIR_EXT}"
+fi
+
+development_FILE="${DD}/${INTRO}-development${DIR_EXT}"
+education_FILE="${DD}/${INTRO}-education${DIR_EXT}"
+
+if [ "${UTILITY}" == "true" ]
+then
+  games_FILE="${DD}/${INTRO}-game${DIR_EXT}"
+else
+  games_FILE="${DD}/${INTRO}-games${DIR_EXT}"
+fi
+graphics_FILE="${DD}/${INTRO}-graphics${DIR_EXT}"
+
+if [ "${UTILITY}" == "true" ]
+then
+  multimedia_FILE="${DD}/${INTRO}-audio-video${DIR_EXT}"
+else
+  multimedia_FILE="${DD}/${INTRO}-multimedia${DIR_EXT}"
+fi
+
+network_FILE="${DD}/${INTRO}-network${DIR_EXT}"
+office_FILE="${DD}/${INTRO}-office${DIR_EXT}"
+other_FILE="${DD}/${INTRO}-other${DIR_EXT}"
+system_FILE="${DD}/${INTRO}-system${DIR_EXT}"
+settings_FILE="${DD}/${INTRO}-settings${DIR_EXT}"
+
+## CATEGORIES localization and icons
+{
+##ACCESSORIES-----------------------------------------------------
+for MENU_A in ${accessories_FILE}
+do
+  A_NAME="" A_ICON="" A_LINE="" #prevent carryover from previous file
+  while read A_LINE || [ "$A_LINE" ]
+        do
+    case $A_LINE in
+       Name?${myLANG%_*}?=*|Name=*) A_NAME="${A_LINE#*=}"'';;
+       Icon=*) A_ICON="${A_LINE#*=}"''  ;;
+    esac
+  done < "$MENU_A"
+done
+ICON="${A_ICON}"
+icon_tester
+A_ICON="${ICON}"
+
+##DEVELOPMENT-----------------------------------------------------
+for MENU_D in ${development_FILE}
+do
+	D_NAME="" D_ICON="" D_LINE="" #prevent carryover from previous file
+	while read D_LINE || [ "$D_LINE" ]
+        do
+		case $D_LINE in
+			Name?${myLANG%_*}?=*|Name=*) D_NAME="${D_LINE#*=}"'';;
+			Icon=*) D_ICON="${D_LINE#*=}"''  ;;
+		esac
+	done < "$MENU_D"
+done
+ICON="${D_ICON}"
+icon_tester
+D_ICON="${ICON}"
+
+##EDUCATION-----------------------------------------------------
+for MENU_E in ${education_FILE}
+do
+	while read E_LINE || [ "$E_LINE" ]
+        do
+		case $E_LINE in
+			Name?${myLANG%_*}?=*|Name=*) E_NAME="${E_LINE#*=}"'';;
+			Icon=*) E_ICON="${E_LINE#*=}"''  ;;
+		esac
+	done < "$MENU_E"
+done
+ICON="${E_ICON}"
+icon_tester
+E_ICON="${ICON}"
+
+##GRAPHICS-----------------------------------------------------
+for MENU_G in ${graphics_FILE}
+do
+	while read G_LINE || [ "$G_LINE" ]
+        do
+		case $G_LINE in
+			Name?${myLANG%_*}?=*|Name=*) G_NAME="${G_LINE#*=}"'';;
+			Icon=*) G_ICON="${G_LINE#*=}"''  ;;
+		esac
+	done < "$MENU_G"
+done
+ICON="${G_ICON}"
+icon_tester
+G_ICON="${ICON}"
+
+##NETWORK-----------------------------------------------------
+for MENU_I in ${network_FILE}
+do
+	while read I_LINE || [ "$I_LINE" ]
+        do
+		case $I_LINE in
+			Name?${myLANG%_*}?=*|Name=*) I_NAME="${I_LINE#*=}"'';;
+			Icon=*) I_ICON="${I_LINE#*=}"''  ;;
+		esac
+	done < "$MENU_I"
+done
+ICON="${I_ICON}"
+icon_tester
+I_ICON="${ICON}"
+
+##SYSTEM-----------------------------------------------------
+for MENU_SYS in ${system_FILE}
+do
+	while read SYS_LINE || [ "$SYS_LINE" ]
+        do
+		case $SYS_LINE in
+			Name?${myLANG%_*}?=*|Name=*) SYS_NAME="${SYS_LINE#*=}"'';;
+			Icon=*) SYS_ICON="${SYS_LINE#*=}"''  ;;
+		esac
+	done < "$MENU_SYS"
+done
+ICON="${SYS_ICON}"
+icon_tester
+SYS_ICON="${ICON}"
+
+##SETTINGS-----------------------------------------------------
+for MENU_SETT in ${settings_FILE}
+do
+	while read SETT_LINE || [ "$SETT_LINE" ]
+        do
+		case $SETT_LINE in
+			Name?${myLANG%_*}?=*|Name=*) SETT_NAME="${SETT_LINE#*=}"'';;
+			Icon=*) SETT_ICON="${SETT_LINE#*=}"''  ;;
+		esac
+	done < "$MENU_SETT"
+done
+ICON="${SETT_ICON}"
+icon_tester
+SETT_ICON="${ICON}"
+
+##GAMES-----------------------------------------------------
+for MENU_GAME in ${games_FILE}
+do
+	while read GAME_LINE || [ "$GAME_LINE" ]
+        do
+		case $GAME_LINE in
+			Name?${myLANG%_*}?=*|Name=*) GAME_NAME="${GAME_LINE#*=}"'';;
+			Icon=*) GAME_ICON="${GAME_LINE#*=}"''  ;;
+		esac
+	done < "$MENU_GAME"
+done
+ICON="${GAME_ICON}"
+icon_tester
+GAME_ICON="${ICON}"
+
+##OFFICE-----------------------------------------------------
+for MENU_O in ${office_FILE}
+do
+	while read O_LINE || [ "$O_LINE" ]
+        do
+		case $O_LINE in
+			Name?${myLANG%_*}?=*|Name=*) O_NAME="${O_LINE#*=}"'';;
+			Icon=*) O_ICON="${O_LINE#*=}"''  ;;
+		esac
+	done < "$MENU_O"
+done
+ICON="${O_ICON}"
+icon_tester
+O_ICON="${ICON}"
+
+##OFFICE-----------------------------------------------------
+for MENU_OTHER in ${other_FILE}
+do
+	while read OTHER_LINE || [ "$OTHER_LINE" ]
+        do
+		case $OTHER_LINE in
+			Name?${myLANG%_*}?=*|Name=*) OTHER_NAME="${OTHER_LINE#*=}"'';;
+			Icon=*) OTHER_ICON="${OTHER_LINE#*=}"''  ;;
+		esac
+	done < "$MENU_OTHER"
+done
+ICON="${OTHER_ICON}"
+icon_tester
+OTHER_ICON="${ICON}"
+
+##MULTIMEDIA-----------------------------------------------------
+for MENU_M in ${multimedia_FILE}
+do
+	while read M_LINE || [ "$M_LINE" ]
+        do
+		case $M_LINE in
+			Name?${myLANG%_*}?=*|Name=*) M_NAME="${M_LINE#*=}"'';;
+			Icon=*) M_ICON="${M_LINE#*=}"''  ;;
+		esac
+	done < "$MENU_M"
+done
+ICON="${M_ICON}"
+icon_tester
+M_ICON="${ICON}"
+}
+
+{	#Now generate the full menu with some formatting
+
+if [ ! -z "${ACC}" ]
+then
+#Utility)ACC=${ACC}${MenuEntry};;
+MENU='<Menu label="'${A_NAME}'" icon="'${A_ICON}'" height="0">
+	'${ACC}'
+</Menu>'
+fi
+if [ ! -z "${ED}" ]
+then
+#Education)ED=${ED}${MenuEntry};;
+MENU=''${MENU}'
+<Menu label="'${E_NAME}'" icon="'${E_ICON}'" height="0">
+	'${ED}'
+</Menu>'
+fi
+if [ ! -z "${NET}" ]
+then
+#Network)NET=${NET}${MenuEntry};;
+MENU=''${MENU}'
+<Menu label="'${I_NAME}'" icon="'${I_ICON}'" height="0">
+	'${NET}'
+</Menu>'
+fi
+if [ ! -z "${OFF}" ]
+then
+#Office)OFF=${OFF}${MenuEntry};;
+MENU=''${MENU}'
+<Menu label="'${O_NAME}'" icon="'${O_ICON}'" height="0">
+	'${OFF}'
+</Menu>'
+fi
+if [ ! -z "${GAME}" ]
+then
+#Game)GAME=${GAME}${MenuEntry};;
+MENU=''${MENU}'
+<Menu label="'${GAME_NAME}'" icon="'${GAME_ICON}'" height="0">
+	'${GAME}'
+</Menu>'
+fi
+if [ ! -z "${ART}" ]
+then
+#Graphics)ART=${ART}${MenuEntry};;
+MENU=''${MENU}'
+<Menu label="'${G_NAME}'" icon="'${G_ICON}'" height="0">
+  '${ART}'
+</Menu>'
+fi
+if [ ! -z "${AV}" ]
+then
+#AudioVideo)AV=${AV}${MenuEntry};;
+MENU=''${MENU}'
+<Menu label="'${M_NAME}'" icon="'${M_ICON}'" height="0">
+  '${AV}'
+</Menu>'
+fi
+
+if [ ! -z "${DEV}" ]
+then
+#Development)DEV=${DEV}${MenuEntry};;
+MENU=''${MENU}'
+<Menu label="'${D_NAME}'" icon="'${D_ICON}'" height="0">
+  '${DEV}'
+</Menu>'
+fi
+if [ ! -z "${SCI}" ] && [ ! -z "${MISC}" ]
+then
+#Science)SCI=${SCI}${MenuEntry};;
+#*)Misc=${MISC}${MenuEntry};; #add Miscellaneous category?
+MENU=''${MENU}'
+<Menu label="'${OTHER_NAME}'" icon="'${OTHER_ICON}'" height="0">
+  '${SCI}'
+  '${MISC}'
+</Menu>'
+elif [ -z "${SCI}" ] && [ ! -z "${MISC}" ]
+then
+#*)Misc=${MISC}${MenuEntry};; #add Miscellaneous category?
+MENU=''${MENU}'
+<Menu label="'${OTHER_NAME}'" icon="'${OTHER_ICON}'" height="0">
+  '${MISC}'
+</Menu>'
+elif [ ! -z "${SCI}" ] && [ -z "${MISC}" ]
+then
+#*)Misc=${MISC}${MenuEntry};; #add Miscellaneous category?
+MENU=''${MENU}'
+<Menu label="'${OTHER_NAME}'" icon="'${OTHER_ICON}'" height="0">
+  '${SCI}'
+</Menu>'
+fi
+
+if [ ! -z "${SET}" ]
+then
+#Settings)SET=${SET}${MenuEntry};;
+MENU=''${MENU}'
+<Menu label="'${SETT_NAME}'" icon="'${SETT_ICON}'" height="0">
+  '${SET}'
+</Menu>'
+fi
+if [ ! -z "${SYS}" ]
+then
+#System)SYS=${SYS}${MenuEntry};;
+MENU=''${MENU}'
+<Menu label="'${SYS_NAME}'" icon="'${SYS_ICON}'" height="0">
+  '${SYS}'
+</Menu>'
+fi
+}
+MENU='<?xml version="1.0"?>
+<JWM>
+<!-- generated by '$PWD'/'$0' -->
+  '"$MENU"'
+</JWM>'
+
+## Make sure our menu files exist
+if [ ! -f "${MENUFILE}" ]
+then
+  touch "${MENUFILE}"
+  sudo chmod ugo+rw "${MENUFILE}" || chmod ugo+rw "${MENUFILE}" 
+fi
+echo "$MENU" > "${MENUFILE}"
+sed -i 's/&/&amp;/g' "${MENUFILE}"
+sed -i '/^$/d' "${MENUFILE}"
+
+## this echo after the entire script is finished
+echo "Done!"
+
+## reload so we can see the changes
+jwm -reload
