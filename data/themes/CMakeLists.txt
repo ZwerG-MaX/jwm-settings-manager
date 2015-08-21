@@ -80,7 +80,7 @@ set(GPLUS "https://plus.google.com/u/0/b/105245967039953698237/10524596703995369
 set(TWITTER "https://twitter.com/Tori_OS")
 set(LP "https://launchpad.net/torios")
 set(APPMENU_FILE "$HOME/.config/torimenu")
-set(JWM_MENU "/usr/bin/jwm-menu")
+set(JWM_MENU "exec:/usr/bin/jwm-menu")
 set(JWM_ROOT "root:3")
 set(ABOUT_PROG "${WEB_PROG} http://torios.org/community.html")
 set(MENU_ICON "/usr/share/pixmaps/distributor-logo.png")
@@ -421,6 +421,7 @@ add_subdirectory(Numix)
 # data/themes/YOUR_THEME_NAME/ usr/share/${EXEC}/themes/
 
 set(COMMON_INSTALL "data/themes/old/ usr/share/${EXEC}/themes/
+data/themes/2.3.0/ usr/share/${EXEC}/themes/
 data/themes/Default/ usr/share/${EXEC}/themes/
 data/themes/Ambiance/ usr/share/${EXEC}/themes/
 data/themes/DarkGnome2/ usr/share/${EXEC}/themes/

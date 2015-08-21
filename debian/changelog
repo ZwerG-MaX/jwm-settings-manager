@@ -1,4 +1,4 @@
-jwm-settings-manager (1.0.2ubuntu5) UNRELEASED; urgency=medium
+jwm-settings-manager (1.0.2ubuntu8) UNRELEASED; urgency=medium
   * updated translation po file
   * added script to aide in translation generator
   * added more gettext items in non-fltk code
@@ -11,8 +11,14 @@ jwm-settings-manager (1.0.2ubuntu5) UNRELEASED; urgency=medium
   * added in icons for each individual program
   * tweaked xdg-path finder to omit final :
   * added --debug option
+  * added menu program
+  * nice-start
+    - fixed autostart issue
+  * binary jwm menu
+    - some fixes added
+    - fixed duplicates, and notshowin/onlyshowin/tryexec 
 
- -- Israel Dahl <israeldahl@gmail.com>  Sat, 08 Aug 2015 20:56:31 -0500
+ -- Israel Dahl <israeldahl@gmail.com>  Thu, 20 Aug 2015 21:15:11 -0500
 
 jwm-settings-manager (1.0.1ubuntu6) UNRELEASED; urgency=medium
   * moved menus to separate package jwm-menus

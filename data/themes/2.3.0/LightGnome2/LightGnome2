@@ -3,7 +3,7 @@
 <!-- MENUS -->
     <!-- Main Menu -->
     <RootMenu onroot="3">
-        <Include>/usr/bin/jwm-menu</Include>
+        <Include>exec:/usr/bin/jwm-menu</Include>
         <Menu label="About ToriOS" icon="help-about.svg" height="0">
            <Program label="Help" icon="help.svg">exec:x-www-browser /usr/share/doc/torios/html/index.html</Program>
            <Program label="Launchpad" icon="launchpad.svg">exec:x-www-browser https://launchpad.net/torios</Program>
@@ -12,7 +12,7 @@
            <Program label="Twitter" icon="twitter.svg">exec:x-www-browser https://twitter.com/Tori_OS</Program>
            <Program label="About Us" icon="/usr/share/pixmaps/distributor-logo.png">exec:x-www-browser http://torios.org/community.html</Program>
         </Menu>
-        <Program icon="system-shutdown.svg" label="Shutdown Menu">torios-shutdown</Program>
+        <Program icon="system-shutdown.svg" label="Shutdown Computer">torios-shutdown</Program>
         <Program icon="system-restart.svg" label="Restart Computer">torios-reboot</Program>
         <Restart label="Reload Desktop" icon="system-restart.svg"/>
         <Program label="Logout" icon="system-logout.svg">torios-exit</Program>
@@ -41,7 +41,7 @@
     </RootMenu>
     <!--Shudown Menu-->
     <RootMenu height="0" onroot="9">
-        <Program icon="system-shutdown.svg" label="Shutdown Menu">torios-shutdown</Program>
+        <Program icon="system-shutdown.svg" label="Shutdown Computer">torios-shutdown</Program>
         <Program icon="system-restart.svg" label="Restart Computer">torios-reboot</Program>
         <Restart label="Reload Desktop" icon="system-restart.svg"/>
         <Program label="Logout" icon="system-logout.svg">torios-exit</Program>

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 PROGNAME="${0/.*\/}"
 ## our startup log file
 LOG="$HOME/.nicestart.log" 
@@ -23,14 +23,20 @@ then
     fi
     grep -E "^NotShowIn=" "$i" | grep -q 'ToriOS;' && continue
     # check for TryExec
-    trycmd=$(grep -E "^TryExec=" "$i" | sed 's/*.=//')
-    cmd=$(grep -E "^Exec=" "$i" | sed 's/*.=//')
-    echo "Autostarting: $cmd" >> "$LOG"
+    trycmd=$(grep -E "^TryExec=" "$i" | sed 's/.*=//')
+    cmd=$(grep -E "^Exec=" "$i" | sed 's/.*=//')
     if [ ! -z "$trycmd" ]
     then
-      $trycmd &
+      echo "Autostarting: $trycmd" >> "$LOG"
+      trycmd &
+      echo "PID of $trycmd $(pidof ${trycmd%% *})" >> "${LOG}"
     else
-      [[ ! -z "$cmd" ]] && "$cmd" &
+      if [ ! -z "$cmd" ]
+      then
+        echo "Autostarting: $cmd" >> "$LOG"
+        $cmd &
+        echo "PID of $cmd $(pidof ${cmd%% *})" >> "${LOG}"
+      fi
     fi
   done
 else

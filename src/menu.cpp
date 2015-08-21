@@ -28,7 +28,7 @@ std::string xdg_paths;
 std::string stringXDG_PATH;
 std::string::size_type XDG_pathPosition;
 int num_XDG_PATHS;
-
+std::vector<std::string> desktop_paths();
 std::string loop_desktopfiles(std::string categoryToGet,std::string dirToOpen);
 std::string grep(std::string args, std::string filename);
 std::string get_line(std::string filename, std::string line);
@@ -47,7 +47,7 @@ std::string set_xdg_paths();
 unsigned int numXDG_PATHS();
 const char* thisXDG_PATH(int whichPath);
 std::string getDefaultFilepath(std::string pathToGet);
-
+void outXML(std::string message);
 int main() {
     std::cout<<"<?xml version=\"1.0\"?>\n<JWM>"<<std::endl;
     xdg_paths = set_xdg_paths();
@@ -58,7 +58,9 @@ int main() {
     std::cout<<result<<"\n</JWM>"<<std::endl;
 	return 0;
 }
-
+void outXML(std::string message){
+	std::cout<<"<!--"<<message<<"-->"<<std::endl;
+	}
 std::string grep(std::string args, std::string filename) {
   ///Return the FIRST match of the 'args' from a file
   // this is like  line=`grep $args $filename` that only returns one line
@@ -130,8 +132,6 @@ std::string loop_desktopfiles(std::string categoryToGet,std::string dirToOpen){
 	std::string amp="&amp;";
 	std::string ampPRE,ampPOST,tempAMP;
 	//int
-	unsigned int found;
-	int width_of_items = 0;
 	if (dir!=NULL){
 		while ((entryPointer=readdir(dir)) != NULL){
 			if ((entryPointer->d_type == DT_REG)&&(entryPointer->d_name[0] != '.')){
@@ -147,8 +147,8 @@ std::string loop_desktopfiles(std::string categoryToGet,std::string dirToOpen){
 					}
 				//make a line if it is a desktop
 				if(isDESKTOP){
-					if( (no_display(result)) || (!only_show(result)) || (not_showin(result)) ){
-                        std::cout<<"<!-- wont show "<<result<<"-->"<<std::endl;
+					if( (no_display(result)) || !(only_show(result)) || (not_showin(result)) ){
+                        //outXML(result);
 					}
 					else{
 
@@ -161,11 +161,13 @@ std::string loop_desktopfiles(std::string categoryToGet,std::string dirToOpen){
 						ampPOST = NAME.erase(0,xmlfix+1);
 						NAME = ampPRE + amp + ampPOST;
 					}
-
 					ICON=icon_line(result);
 					EXEC=exec_line(result);
 					MenuEntry="\t\t<Program label=\""+NAME+"\" icon=\""+ICON+"\">"+EXEC+"</Program>\n";
 					category=cat_line(result);
+					//outXML(category);
+					//outXML(result);
+
 					if( category.compare(categoryToGet)==0){returnCAT+=MenuEntry;}
 				}//nodisplay/notshow//onlyshow
 			} //isDesktop
@@ -174,10 +176,23 @@ std::string loop_desktopfiles(std::string categoryToGet,std::string dirToOpen){
      }//dirent !NULL
   }//directory !NULL
   closedir(dir);
+ // outXML(returnCAT);
   return returnCAT;
 }
 std::string make_menu(){
 	std::string MenuEntry,NAME,ICON,EXEC,CATS,TERMIE,AV,DEV,ED,GAME,ART,NET,OFF,SCI,SET,SYS,ACC,category,testPATH;
+	std::string AV1,DEV1,ED1,GAME1,ART1,NET1,OFF1,SCI1,SET1,SYS1,ACC1;
+	AV1="0";
+ DEV1="0";
+ ED1="0";
+ GAME1="0";
+ ART1="0";
+ NET1="0";
+ OFF1="0";
+ SCI1="0";
+ SET1="0";
+ SYS1="0";
+ ACC1="0";
 	//TODO: XDG paths
 	std::string dirToOpen = "/usr/share/applications/";
 	std::string pathToGet = "/applications/";
@@ -189,7 +204,7 @@ std::string make_menu(){
 	std::string iconEQ = "Icon=";
 	std::string MENU;
 	std::string DD = "/usr/share/desktop-directories"; //getDefaultFilepath("/desktop-directories");
-	std::cout<<"<!-- "<<DD<<"-->"<<std::endl;
+	//outXML(DD);
     if (DD.compare("")==0){return "\t<Program label=\"Could not find Desktop Directories\" icon=\"error\">xterm -e 'locate desktop-directories'</Program>\n";}
 	//Accessories
 	std::string accessories_FILE = DD + "/" + INTRO + "-accessories" + DIR_EXT;
@@ -235,15 +250,17 @@ std::string make_menu(){
 	std::string education_FILE = DD + "/" + INTRO + "-education" + DIR_EXT;
 	std::string E_NAME = get_name(education_FILE);
 	std::string E_ICON = get_line(education_FILE,iconEQ);
-	
+	std::vector<std::string> uniqueDirs = desktop_paths();
 	unsigned int found = 0;
     //initialize directory reading variables to NULL
     DIR *dir = NULL;
     struct dirent *entryPointer = NULL;
 
 		//lets loop through the xdg paths
-		for (int i = 1; i <= num_XDG_PATHS; i++){
-
+		//for (int i = 1; i <= num_XDG_PATHS; i++){
+		for( std::vector<std::string>::iterator it = uniqueDirs.begin();
+			it!=uniqueDirs.end();
+			++it){
         //get the string equvalent for the integer representation if of the xdg path
         // something like
         /*
@@ -251,31 +268,44 @@ std::string make_menu(){
         2=/usr/local/share
         etc...
         */
-			testPATH = thisXDG_PATH(i);
+			testPATH = *it;
+			//outXML(testPATH);
 			//make sure this isn't blank
 			if(testPATH.compare("")!=0){
 				//look to see if we have a / at the end... remove it if we do...
 				found = testPATH.find_last_of('/');
 				if (found == testPATH.length()-1){testPATH=testPATH.substr(0,testPATH.length()-1);}
-				//see if there is an icon directory
+				//see if there is a pathToGet directory
 				dirToOpen = testPATH + pathToGet;
-				std::cout<< "<!--"<<dirToOpen<<"-->"<<std::endl;
+				//outXML(dirToOpen);
 				dir = opendir(dirToOpen.c_str());
 				if (dir!=NULL){
-					std::cout<<"<!--"<<dirToOpen<<"-----------found"<<"-->"<<std::endl;
 					while ((entryPointer=readdir(dir)) != NULL){
-						if ((entryPointer->d_type == DT_DIR)&&(entryPointer->d_name[0] != '.')){
-	AV+=loop_desktopfiles("AudioVideo",dirToOpen);
-	DEV+=loop_desktopfiles("Development",dirToOpen);
-	ED+=loop_desktopfiles("Education",dirToOpen);
-	GAME+=loop_desktopfiles("Game",dirToOpen);
-	ART+=loop_desktopfiles("Graphics",dirToOpen);
-	NET+=loop_desktopfiles("Network",dirToOpen);
-	OFF+=loop_desktopfiles("Office",dirToOpen);
-	SCI+=loop_desktopfiles("Science",dirToOpen);
-	SET+=loop_desktopfiles("Settings",dirToOpen);
-	SYS+=loop_desktopfiles("System",dirToOpen);
-	ACC+=loop_desktopfiles("Utility",dirToOpen);
+						if ((entryPointer->d_type == DT_DIR)){ //&&(entryPointer->d_name[0] != '.')
+							//outXML(dirToOpen);
+	if(AV.compare(AV1)!=0){AV+=loop_desktopfiles("AudioVideo",dirToOpen);}
+	if(DEV.compare(DEV1)!=0){DEV+=loop_desktopfiles("Development",dirToOpen);}
+	if(ED.compare(ED1)!=0){ED+=loop_desktopfiles("Education",dirToOpen);}
+	if(GAME.compare(GAME1)!=0){GAME+=loop_desktopfiles("Game",dirToOpen);}
+	if(ART.compare(ART1)!=0){ART+=loop_desktopfiles("Graphics",dirToOpen);}
+	if(NET.compare(NET1)!=0){NET+=loop_desktopfiles("Network",dirToOpen);}
+	if(OFF.compare(OFF1)!=0){OFF+=loop_desktopfiles("Office",dirToOpen);}
+	if(SCI.compare(SCI1)!=0){SCI+=loop_desktopfiles("Science",dirToOpen);}
+	if(SET.compare(SET1)!=0){SET+=loop_desktopfiles("Settings",dirToOpen);}
+	if(SYS.compare(SYS1)!=0){SYS+=loop_desktopfiles("System",dirToOpen);}
+	if(ACC.compare(ACC1)!=0){ACC+=loop_desktopfiles("Utility",dirToOpen);}
+	if(AV.compare("")!=0){AV1 = AV;}
+	if(DEV.compare("")!=0){DEV1 = DEV;}
+	if(ED.compare("")!=0){ED1 = ED;}
+	if(GAME.compare("")!=0){GAME1 = GAME;}
+	if(ART.compare("")!=0){ART1 = ART;}
+	if(NET.compare("")!=0){NET1 = NET;}
+	if(OFF.compare("")!=0){OFF1 = OFF;}
+	if(SCI.compare("")!=0){SCI1 = SCI;}
+	if(SET.compare("")!=0){SET1 = SET;}
+	if(SYS.compare("")!=0){SYS1 = SYS;}
+	if(ACC.compare("")!=0){ACC1 = ACC;}
+	//outXML(AV1 + ":" + DEV1 + ":" + ED1 + ":" + GAME1 + ":" + ART1 + ":" + NET1 + ":" + OFF1 + ":" + SCI1 + ":" + SET1 + ":" + SYS1 + ":" + ACC1 + ":" + AV + ":" + DEV + ":" + ED + ":" + GAME + ":" + ART + ":" + NET + ":" + OFF + ":" + SCI + ":" + SET + ":" + SYS + ":" + ACC);
 						}
 					}
 				}
@@ -319,7 +349,7 @@ bool test_file(const char* fileWithFullPATH) {
 }
 
 bool no_display(std::string filename) {
-  std::string result = get_line("NoDisplay=",filename);
+  std::string result = get_line(filename,"NoDisplay=");
   if(result.compare("")==0){
     return false;
   }
@@ -333,7 +363,7 @@ bool no_display(std::string filename) {
 bool only_show(std::string filename) {
   char* desktop = getenv("XDG_CURRENT_DESKTOP");
   char* desktop_session = getenv("DESKTOP_SESSION");
-  std::string result = get_line("OnlyShowIn=",filename);
+  std::string result = get_line(filename,"OnlyShowIn=");
   unsigned int found = 0;
   if(result.compare("")==0){
   //Only show in line doesn't exist
@@ -345,7 +375,7 @@ bool only_show(std::string filename) {
   std::string temp1,temp2;
   temp2=result;
 
-  for(int i = 0; i<result.length();i++){
+  for(unsigned int i = 0; i<result.length();i++){
     found = temp2.find_first_of(';');
     if(found < temp2.length()){
       temp2=temp2.erase(found,temp2.length());
@@ -377,7 +407,7 @@ bool not_showin(std::string filename) {
   std::transform(result.begin(),result.end(),result.begin(),::tolower);
   std::string temp1,temp2;
   temp2=result;
-  for(int i = 0; i<result.length();i++){
+  for(unsigned int i = 0; i<result.length();i++){
     found = temp2.find_first_of(';');
     if(found < temp2.length()){
       temp2=temp2.erase(found,temp2.length());
@@ -398,7 +428,7 @@ bool not_showin(std::string filename) {
   return false;
 }
 std::string exec_line(std::string filename) {
-  std::string execline= get_line("TryExec=",filename);
+  std::string execline= get_line(filename,"TryExec=");
   if(execline.compare("")==0){execline= get_line(filename,"Exec=");}
   if(execline.compare("")!=0){return execline;}
   return "";
@@ -406,6 +436,7 @@ std::string exec_line(std::string filename) {
 
 std::string icon_line(std::string filename) {
   std::string icon = get_line(filename,"Icon=");
+  //outXML("icon:"+icon+"::");
   if ( icon.compare("")==0){return "application-default-icon";}
   return icon;
 }
@@ -463,10 +494,10 @@ std::string cat_line(std::string filename){
 	SYS = "System";
 	ACC = "Utility";
 	std::string temp1,temp2;
-	unsigned int found, found2;
+	unsigned int found;
 	std::string catline = get_line(filename,"Categories=");
 	temp2=catline;
-	for(int i = 0; i<catline.length();i++){
+	for(unsigned int i = 0; i<catline.length();i++){
 		found = temp2.find_first_of(';');
 		if(found < temp2.length()){
 			temp2=temp2.erase(found,temp2.length());
@@ -580,4 +611,38 @@ const char* thisXDG_PATH(int whichPath){
     for (unsigned int j=1;j<=lastPath;j++){firstPosition = stringXDG_PATH.find(':',firstPosition+1);}
     result = stringXDG_PATH.substr (firstPosition+1,((position-firstPosition)-1));
     return result.c_str();
+}
+std::vector<std::string> desktop_paths(){
+	std::vector<std::string> thisPath;
+	std::vector<std::string>::iterator it;
+	const char* datadirs=getenv("XDG_DATA_DIRS");
+    std::string thisXDG =datadirs;
+    if ((datadirs == NULL) || (thisXDG.compare("")==0)){
+        thisXDG="/usr/local/share/:/usr/share/";
+    }
+    const char* datahome = getenv("XDG_DATA_HOME");
+    if (datahome == NULL){
+        thisXDG += ":";
+        datahome = getenv("HOME");
+        thisXDG += datahome;
+        thisXDG += "/.local/share/";
+
+    }
+    else{thisXDG = thisXDG + ":" + datahome;}
+    unsigned int lastPath = 0;
+    std::string result;
+    for (int whichPath=1;whichPath<=num_XDG_PATHS;whichPath++){
+		if (whichPath >=1){lastPath = whichPath - 1;}
+		else {lastPath = 0;}
+		std::string::size_type firstPosition = thisXDG.find_first_of(':');
+		std::string::size_type position = thisXDG.find(':');
+		for (int i=1;i<=whichPath;i++){position = thisXDG.find(':',position+1);}
+		for (unsigned int j=1;j<=lastPath;j++){firstPosition = thisXDG.find(':',firstPosition+1);}
+		result = thisXDG.substr (firstPosition+1,((position-firstPosition)-1));
+		thisPath.push_back(result);    
+	}
+	std::sort (thisPath.begin(), thisPath.end());
+	it = std::unique (thisPath.begin(), thisPath.end());
+	thisPath.resize( std::distance(thisPath.begin(),it) );
+	return thisPath;
 }

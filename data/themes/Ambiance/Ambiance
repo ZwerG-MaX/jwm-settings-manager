@@ -27,7 +27,7 @@
     </RootMenu>
     <!--Shudown Menu-->
     <RootMenu height="0" onroot="9">
-        <Program icon="system-shutdown.svg" label="Shutdown Menu">torios-shutdown</Program>
+        <Program icon="system-shutdown.svg" label="Shutdown Computer">torios-shutdown</Program>
         <Program icon="system-restart.svg" label="Restart Computer">torios-reboot</Program>
         <Restart label="Reload Desktop" icon="system-restart.svg"/>
         <Program label="Logout" icon="system-logout.svg">torios-exit</Program>
