@@ -32,9 +32,21 @@
 #include <FL/Fl_Browser.H>
 #include "Config.h"
 #include "flAutostart.h"
-
+/** \class Apps
+ \brief The Apps class contains all the code for interacting with Trays specific to applications
+ */
 class Apps : public Config {
 
+        /** \note
+         Menu functions IN #Config
+        Config::labelMenu
+        Config::isMenu
+        Config::addMenu
+        Config::deleteMenu
+        Config::getLabelMenu
+        Config::getImageMenu
+        Config::setImageMenu
+        */
     public:
         //shortcuts
         void addShortcut(const char* icon,  const char * program, const char* popup, int border);
@@ -91,31 +103,6 @@ class Apps : public Config {
     void deleteDock(){deleteAPP("Dock");}
     void getIndicators(Fl_Browser *o);
 
-    //Shutdown
-        bool isShutdown(){return isMenu(9);}
-        void addShutdown();
-        void deleteShutdown();
-        void setShutdownImage(const char * icon);
-
-    //Places
-        bool isPlaces(){return isMenu(7);}
-        void addPlaces();
-        void deletePlaces();
-
-    //App Menu
-        bool isAppMenu(){return isMenu(5);}
-        void addAppMenu();
-        void deleteAppMenu();
-        /* Menu functions IN Config
-        labelMenu
-        isMenu
-        addMenu
-        deleteMenu
-        getLabelMenu
-        getImageMenu
-        setImageMenu
-        */
-
     //NetworkMonitor
         bool isNetworkMonitor();
         void addNetworkMonitor();
@@ -159,6 +146,13 @@ class Apps : public Config {
         int setMenuText(const char* whichElement, const char* text, const char* rootmenu, const char* oldtext);
         void listMenus(Fl_Browser *list_browser);
         void getLabel(Fl_Output* menulabel,const char* menu);
+        std::string getItemLabel(const char* program, const char* menu){return getItemAttribute(program,menu,"label");}
+        std::string getItemIcon(const char* program, const char* menu){return getItemAttribute(program,menu,"icon");}
+        std::string getItemAttribute(const char* program, const char* menu, const char* attribute);
+        std::string getItemAttribute(std::string menuElement, const char* menu, std::string attribute);
+        std::string getLabel(std::string menu);
+        void changeMenuInclude(std::string newInclude, std::string oldInclude, std::string menu);
+        void getSubmenuItems(std::string menu, Fl_Browser *o);
 
     //General
         bool isTrayElement(const char* element, std::string text);

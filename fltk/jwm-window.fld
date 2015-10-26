@@ -75,8 +75,8 @@ class WindowUI {open : {public Config}
   Function {add_option_window()} {open
   } {
     Fl_Window add_opt_window {
-      label {Add an Option} open selected
-      xywh {881 244 435 435} type Double hide
+      label {Add an Option}
+      xywh {168 164 435 435} type Double hide
       code0 {startup(o);} xclass {jsm-windows}
     } {
       Fl_Scroll {} {open
@@ -87,22 +87,22 @@ class WindowUI {open : {public Config}
 options_desc->select(line);
 const char* value = options_available->text(line);
 check_opts(value);}
-          xywh {10 10 115 375} type Hold box GTK_DOWN_BOX selection_color 80
+          xywh {10 10 115 375} type Hold box FLAT_BOX selection_color 80
           code0 {flWindow win;win.populateOptions(o);}
           code1 {;}
         }
         Fl_Button {} {
           label {@+  Add}
           callback {add_option_to_group();}
-          xywh {25 400 80 25} box GTK_UP_BOX color 95
+          xywh {25 400 80 25} box FLAT_BOX color 95
         }
         Fl_Browser options_desc {
-          xywh {135 10 285 220} type Hold box GTK_DOWN_BOX selection_color 80 labeltype NO_LABEL align 1
+          xywh {135 10 285 220} type Hold box FLAT_BOX selection_color 80 labeltype NO_LABEL align 1
           code0 {flWindow win;win.populateDesc(o);}
         }
         Fl_Input icon_value {
           label Icon
-          xywh {195 255 100 25} box GTK_DOWN_BOX deactivate
+          xywh {195 255 100 25} box FLAT_BOX deactivate
         }
         Fl_Slider opacity_value {
           label Opacity
@@ -110,22 +110,22 @@ check_opts(value);}
         }
         Fl_Value_Input desktop_num {
           label Desktop
-          xywh {195 395 35 25} box GTK_DOWN_BOX maximum 10000 deactivate
+          xywh {195 395 35 25} box FLAT_BOX maximum 10000 deactivate
         }
         Fl_Browser add_tracker {
           label Adding
-          xywh {310 255 110 125} box GTK_DOWN_BOX align 1
+          xywh {310 255 110 125} box FLAT_BOX align 1
         }
         Fl_Button {} {
           label Cancel
           callback {add_opt_window->hide();}
-          xywh {300 400 55 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+          xywh {300 400 55 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button {} {
           label OK
           callback {saveJWMRC(add_opt_window);
 populate_groups();}
-          tooltip {Write to configuration file} xywh {375 400 45 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+          tooltip {Write to configuration file} xywh {375 400 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
         }
         Fl_Menu_Button layer_chooser {
           label Layer open
@@ -148,13 +148,12 @@ populate_groups();}
           }
         }
         Fl_Output layer_value {
-          xywh {195 325 100 25} box GTK_DOWN_BOX deactivate
+          xywh {195 325 100 25} box FLAT_BOX deactivate
         }
       }
     }
   }
-  Function {add_class_window()} {open
-  } {
+  Function {add_class_window()} {} {
     Fl_Window class_win {
       label {Add Class} open
       xywh {218 580 375 50} type Double hide
@@ -162,34 +161,33 @@ populate_groups();}
     } {
       Fl_Input input_to_add_class {
         label {Class to Add}
-        xywh {105 10 195 25} box GTK_DOWN_BOX
+        xywh {105 10 195 25} box FLAT_BOX
       }
       Fl_Button {} {
         label OK
         callback {add_class();
 populate_groups();
 class_win->hide();}
-        tooltip {Write to configuration file} xywh {315 10 45 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+        tooltip {Write to configuration file} xywh {315 10 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
       }
     }
   }
-  Function {add_program_window()} {open
-  } {
+  Function {add_program_window()} {} {
     Fl_Window prog_win {
       label {Program to add} open
-      xywh {208 542 425 50} type Double hide
-      code0 {startup(o);} xclass {jsm-windows}
+      xywh {208 542 425 50} type Double
+      code0 {startup(o);} xclass {jsm-windows} visible
     } {
       Fl_Input input_to_add_prog {
         label {Program to Add}
-        xywh {135 10 195 25} box GTK_DOWN_BOX
+        xywh {135 10 195 25} box FLAT_BOX
       }
       Fl_Button {} {
         label OK
         callback {add_prog();
 populate_groups();
 prog_win->hide();}
-        tooltip {Write to configuration file} xywh {350 10 45 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+        tooltip {Write to configuration file} xywh {350 10 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
       }
     }
   }
@@ -199,8 +197,8 @@ prog_win->hide();}
 saveChangesTemp();} {}
     Fl_Window window_window {
       label {Window Settings} open
-      xywh {90 410 680 390} type Double color 31 hide resizable
-      code0 {startup(o);} xclass {jsm-windows}
+      xywh {24 376 680 390} type Double color 31 resizable
+      code0 {startup(o);} xclass {jsm-windows} visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 680 390} color 31
@@ -211,24 +209,24 @@ saveChangesTemp();} {}
 cancel();
 UI ui;
 ui.showSettings();}
-          xywh {510 360 55 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+          xywh {510 360 55 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button {} {
           label OK
           callback {saveJWMRC(window_window);
 UI ui;
 ui.showSettings();}
-          tooltip {Write to configuration file} xywh {595 360 45 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+          tooltip {Write to configuration file} xywh {595 360 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
         }
         Fl_Tabs {} {open
-          xywh {0 25 680 330} box PLASTIC_THIN_UP_BOX
+          xywh {0 25 680 330} box FLAT_BOX selection_color 51
         } {
           Fl_Group {} {
-            label Appearance
+            label Appearance selected
             xywh {10 45 670 305}
           } {
             Fl_Box {} {
-              xywh {10 55 330 175} box GTK_DOWN_BOX color 51
+              xywh {10 55 330 175} box FLAT_BOX color 51
             }
             Fl_Box {} {
               label {Active Window}
@@ -244,7 +242,7 @@ ui.showSettings();}
             }
             Fl_Button a_title_color1 {
               callback {set_one_title_color(a_title_color1,a_title_color2,1);}
-              xywh {180 100 60 25} box GTK_UP_BOX
+              xywh {180 100 60 25} box FLAT_BOX color 23
               code0 {active_color_loader(o,1);}
             }
             Fl_Box {} {
@@ -253,7 +251,7 @@ ui.showSettings();}
             }
             Fl_Button a_title_color2 {
               callback {set_two_title_colors(a_title_color1, a_title_color2,1);}
-              xywh {245 100 60 25} box GTK_UP_BOX
+              xywh {245 100 60 25} box FLAT_BOX color 23
               code0 {active_color_loader(o,2);}
             }
             Fl_Box {} {
@@ -262,7 +260,7 @@ ui.showSettings();}
             }
             Fl_Button a_font_color {
               callback {set_font_color(a_font_color, 1);}
-              xywh {180 130 60 25} box GTK_UP_BOX when 6
+              xywh {180 130 60 25} box FLAT_BOX color 23 when 6
               code0 {font_color_loader(o,1);}
             }
             Fl_Box {} {
@@ -271,7 +269,7 @@ ui.showSettings();}
             }
             Fl_Button a_border_color {
               callback {set_border_color(a_border_color, 1);}
-              xywh {180 160 60 25} box GTK_UP_BOX when 6
+              xywh {180 160 60 25} box FLAT_BOX color 23 when 6
               code0 {border_color_loader(o,1);}
             }
             Fl_Slider active_o_slider {
@@ -283,12 +281,12 @@ ui.showSettings();}
             Fl_Value_Input active_o_slider_v {
               label {%}
               callback {set_opacity(active_o_slider,active_o_slider_v,1);}
-              xywh {280 190 35 25} box GTK_DOWN_BOX selection_color 80 labelsize 10 align 8 when 3 value 1
+              xywh {280 190 35 25} box FLAT_BOX selection_color 80 labelsize 10 align 8 when 3 value 1
               code0 {float v = active_o_slider->value();}
               code1 {o->value(v*100);}
             }
             Fl_Box {} {
-              xywh {350 55 320 175} box GTK_DOWN_BOX color 45
+              xywh {350 55 320 175} box FLAT_BOX color 45
             }
             Fl_Box {} {
               label {Background  Window}
@@ -304,7 +302,7 @@ ui.showSettings();}
             }
             Fl_Button inactive_color {
               callback {set_one_title_color(inactive_color, inactive_color2, 2);}
-              xywh {515 100 60 25} box GTK_UP_BOX when 6
+              xywh {515 100 60 25} box FLAT_BOX color 23 when 6
               code0 {inactive_color_loader(o,1);}
             }
             Fl_Box {} {
@@ -313,7 +311,7 @@ ui.showSettings();}
             }
             Fl_Button inactive_color2 {
               callback {set_two_title_colors(inactive_color, inactive_color2, 2);}
-              xywh {580 100 60 25} box GTK_UP_BOX when 6
+              xywh {580 100 60 25} box FLAT_BOX color 23 when 6
               code0 {inactive_color_loader(o,1);}
             }
             Fl_Box {} {
@@ -322,7 +320,7 @@ ui.showSettings();}
             }
             Fl_Button inactive_font_color {
               callback {set_font_color(inactive_font_color, 2);}
-              xywh {515 130 60 25} box GTK_UP_BOX when 6
+              xywh {515 130 60 25} box FLAT_BOX color 23 when 6
               code0 {font_color_loader(o,2);}
             }
             Fl_Box {} {
@@ -331,7 +329,7 @@ ui.showSettings();}
             }
             Fl_Button inactive_border_color {
               callback {set_border_color(inactive_border_color, 2);}
-              xywh {515 160 60 25} box GTK_UP_BOX when 6
+              xywh {515 160 60 25} box FLAT_BOX color 23 when 6
               code0 {border_color_loader(o,2);}
             }
             Fl_Slider inactive_o_slider {
@@ -343,7 +341,7 @@ ui.showSettings();}
             Fl_Value_Input inactive_o_slider_v {
               label {%}
               callback {set_opacity(inactive_o_slider,inactive_o_slider_v,2);}
-              xywh {614 190 35 25} box GTK_DOWN_BOX selection_color 80 labelsize 10 align 8 when 3
+              xywh {614 190 35 25} box FLAT_BOX selection_color 80 labelsize 10 align 8 when 3
               code0 {float v = inactive_o_slider->value();}
               code1 {o->value(v*100);}
             }
@@ -354,61 +352,61 @@ ui.showSettings();}
             Fl_Button {} {
               label { Maximize Button (Activated)}
               callback {choose_button("ButtonMaxActive");}
-              tooltip {Choose an image (XBM) for the Maximized button} xywh {30 260 225 25} box GTK_UP_BOX align 256
+              tooltip {Choose an image (XBM) for the Maximized button} xywh {30 260 225 25} box FLAT_BOX color 23 align 256
             }
             Fl_Box max_a_image {
               callback {get_button(o,"ButtonMaxActive");}
-              xywh {265 260 30 30} box GTK_DOWN_BOX color 43 when 6
+              xywh {265 260 30 30} box FLAT_BOX color 43 when 6
               code0 {get_button(o,"ButtonMaxActive");}
             }
             Fl_Box i_max_a_image {
               callback {get_button_inactive(o,"ButtonMaxActive");}
-              xywh {300 260 30 30} box GTK_DOWN_BOX color 43 when 6
+              xywh {300 260 30 30} box FLAT_BOX color 43 when 6
               code0 {get_button_inactive(o,"ButtonMaxActive");}
             }
             Fl_Button {} {
               label {Close Button}
               callback {choose_button("ButtonClose");}
-              tooltip {Choose a XBM for the close button} xywh {140 305 115 25} box GTK_UP_BOX align 256
+              tooltip {Choose a XBM for the close button} xywh {140 305 115 25} box FLAT_BOX color 23 align 256
             }
             Fl_Box close_image {
               callback {get_button(o,"ButtonClose");}
-              xywh {265 300 30 30} box GTK_DOWN_BOX color 43 when 6
+              xywh {265 300 30 30} box FLAT_BOX color 43 when 6
               code0 {get_button(o,"ButtonClose");}
             }
             Fl_Box i_close_image {
               callback {get_button_inactive(o,"ButtonClose");}
-              xywh {300 300 30 30} box GTK_DOWN_BOX color 43 when 6
+              xywh {300 300 30 30} box FLAT_BOX color 43 when 6
               code0 {get_button_inactive(o,"ButtonClose");}
             }
             Fl_Button {} {
               label {Maximize Button}
               callback {choose_button("ButtonMax");}
-              tooltip {Choose an image (XBM) for the Maximize button} xywh {395 260 145 25} box GTK_UP_BOX align 256
+              tooltip {Choose an image (XBM) for the Maximize button} xywh {395 260 145 25} box FLAT_BOX color 23 align 256
             }
             Fl_Box max_image {
               callback {get_button(o,"ButtonMax");}
-              xywh {550 260 30 30} box GTK_DOWN_BOX color 43 when 6
+              xywh {550 260 30 30} box FLAT_BOX color 43 when 6
               code0 {get_button(o,"ButtonMax");}
             }
             Fl_Box i_max_image {
               callback {get_button_inactive(o,"ButtonMax");}
-              xywh {585 260 30 30} box GTK_DOWN_BOX color 43 when 6
+              xywh {585 260 30 30} box FLAT_BOX color 43 when 6
               code0 {get_button_inactive(o,"ButtonMax");}
             }
             Fl_Button {} {
               label {Minimize Button}
               callback {choose_button("ButtonMin");}
-              tooltip {Choose an image (XBM) for the Minimize button} xywh {395 305 145 25} box GTK_UP_BOX align 256
+              tooltip {Choose an image (XBM) for the Minimize button} xywh {395 305 145 25} box FLAT_BOX color 23 align 256
             }
             Fl_Box min_image {
               callback {get_button(o,"ButtonMin");}
-              xywh {550 300 30 30} box GTK_DOWN_BOX color 43 when 6
+              xywh {550 300 30 30} box FLAT_BOX color 43 when 6
               code0 {get_button(o,"ButtonMin");}
             }
             Fl_Box i_min_image {
               callback {get_button_inactive(o,"ButtonMin");}
-              xywh {585 300 30 30} box GTK_DOWN_BOX color 43 when 6
+              xywh {585 300 30 30} box FLAT_BOX color 43 when 6
               code0 {get_button_inactive(o,"ButtonMin");}
             }
           }
@@ -427,7 +425,7 @@ ui.showSettings();}
             Fl_Value_Input b_slider_v {
               label pixels
               callback {border_modifier(b_slider,o,1);}
-              xywh {460 95 31 25} box GTK_DOWN_BOX labelsize 10 align 8 when 3
+              xywh {460 95 31 25} box FLAT_BOX labelsize 10 align 8 when 3
               code0 {int v = b_slider->value();}
               code1 {o->value(v);}
             }
@@ -442,7 +440,7 @@ ui.showSettings();}
             Fl_Value_Input t_slider_v {
               label pixels
               callback {title_bar_modifier(t_slider,t_slider_v,1);}
-              xywh {460 65 31 25} box GTK_DOWN_BOX labelsize 10 align 8 when 3
+              xywh {460 65 31 25} box FLAT_BOX labelsize 10 align 8 when 3
               code0 {int v = t_slider->value();}
               code1 {o->value(v);}
             }
@@ -518,7 +516,7 @@ w.setSnap(mode,i);}
               callback {flWindow w;
 int d = o->value();
 w.setSnap(d);}
-              xywh {185 225 30 25} box GTK_DOWN_BOX labelsize 10 align 8 when 3 minimum 1 maximum 32 step 1 value 5
+              xywh {185 225 30 25} box FLAT_BOX labelsize 10 align 8 when 3 minimum 1 maximum 32 step 1 value 5
               code0 {flWindow w;}
               code1 {int value = w.getSnap();}
               code2 {o->value(value);}
@@ -568,7 +566,7 @@ border_modifier(o,a_b_slider_v);
             }
             Fl_Value_Output a_b_slider_v {
               label pixels
-              xywh {400 155 35 25} box GTK_DOWN_BOX labelsize 10 align 8 when 3
+              xywh {400 155 35 25} box FLAT_BOX color 54 labelsize 10 align 8 when 3
               code0 {int v = a_b_slider->value();}
               code1 {o->value(v);}
             }
@@ -582,7 +580,7 @@ border_modifier(o,a_b_slider_v);
             }
             Fl_Value_Output a_t_slider_v {
               label pixels
-              xywh {400 195 35 25} box GTK_DOWN_BOX labelsize 10 align 8 when 3
+              xywh {400 195 35 25} box FLAT_BOX color 54 labelsize 10 align 8 when 3
               code0 {int v = a_t_slider->value();}
               code1 {o->value(v);}
             }
@@ -602,7 +600,7 @@ border_modifier(o,a_b_slider_v);
             Fl_Browser groups_browser {
               label {Current Groups}
               callback {populate_groups();}
-              tooltip {Program groups allow one to specify options which apply to a group of programs by their name and/or class. A program group is created with the Group tag. As many program groups can be created as desired.} xywh {80 95 85 155} type Hold box GTK_DOWN_BOX align 1
+              tooltip {Program groups allow one to specify options which apply to a group of programs by their name and/or class. A program group is created with the Group tag. As many program groups can be created as desired.} xywh {80 95 85 155} type Hold box FLAT_BOX align 1
               code0 {flWindow win;}
               code1 {win.getGroups(o);}
             }
@@ -612,7 +610,7 @@ border_modifier(o,a_b_slider_v);
 win.addGroup();
 
 win.getGroups(groups_browser);}
-              xywh {80 260 35 30} box GTK_UP_BOX
+              xywh {80 260 35 30} box FLAT_BOX color 23
             }
             Fl_Button rm_group {
               callback {int hidethis = groups_browser->value();
@@ -622,11 +620,11 @@ else{
   win.removeGroup(hidethis);
   win.getGroups(groups_browser);
 }}
-              image {custom_buttons/minus} xywh {120 260 35 30} box GTK_UP_BOX
+              image {custom_buttons/minus} xywh {120 260 35 30} box FLAT_BOX color 23
             }
             Fl_Browser opt_browser {
               label {Current Options}
-              xywh {203 95 120 155} type Hold box GTK_DOWN_BOX align 1
+              xywh {203 95 120 155} type Hold box FLAT_BOX align 1
             }
             Fl_Button opt_add {
               label {@+}
@@ -637,7 +635,7 @@ const char* value = groups_browser->text(hidethis);
 add_option_window()->show();
 options_desc->copy_label(value);
 }}
-              xywh {203 260 35 30} box GTK_UP_BOX
+              xywh {203 260 35 30} box FLAT_BOX color 23
             }
             Fl_Button rm_opt {
               callback {int hidethis = groups_browser->value();
@@ -654,18 +652,18 @@ else{
  }
 }
 populate_groups();}
-              image {custom_buttons/minus} xywh {245 260 35 30} box GTK_UP_BOX deactivate
+              image {custom_buttons/minus} xywh {245 260 35 30} box FLAT_BOX color 23 deactivate
             }
             Fl_Browser name_browser {
               label {Program Name}
-              xywh {346 95 115 155} type Hold box GTK_DOWN_BOX align 1
+              xywh {346 95 115 155} type Hold box FLAT_BOX align 1
             }
             Fl_Button prog_add {
               label {@+}
               callback {int hidethis = groups_browser->value();
 if ((hidethis == 0) || (hidethis > groups_browser->size())){return;}
 else{add_program_window()->show();}}
-              xywh {346 260 35 30} box GTK_UP_BOX
+              xywh {346 260 35 30} box FLAT_BOX color 23
             }
             Fl_Button rm_prog {
               callback {int hidethis = groups_browser->value();
@@ -681,18 +679,18 @@ else{
  }
 }
 populate_groups();}
-              image {custom_buttons/minus} xywh {390 260 35 30} box GTK_UP_BOX deactivate
+              image {custom_buttons/minus} xywh {390 260 35 30} box FLAT_BOX color 23 deactivate
             }
             Fl_Browser class_browser {
               label {Window Class}
-              xywh {485 95 115 155} type Hold box GTK_DOWN_BOX align 1
+              xywh {485 95 115 155} type Hold box FLAT_BOX align 1
             }
             Fl_Button class_add {
               label {@+}
               callback {int hidethis = groups_browser->value();
 if ((hidethis == 0) || (hidethis > groups_browser->size())){return;}
 else{add_class_window()->show();}}
-              xywh {485 260 35 30} box GTK_UP_BOX
+              xywh {485 260 35 30} box FLAT_BOX color 23
             }
             Fl_Button rm_class {
               callback {int hidethis = groups_browser->value();
@@ -708,7 +706,7 @@ else{
  }
 }
 populate_groups();}
-              image {custom_buttons/minus} xywh {525 260 35 30} box GTK_UP_BOX deactivate
+              image {custom_buttons/minus} xywh {525 260 35 30} box FLAT_BOX color 23 deactivate
             }
           }
         }

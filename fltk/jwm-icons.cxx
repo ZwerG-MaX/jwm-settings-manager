@@ -29,6 +29,7 @@
 
 void IconsUI::cb_Cancel_i(Fl_Button*, void*) {
   cancel(icons_window);
+//icons_window->hide();
 UI ux;
 ux.showSettings();
 }
@@ -37,7 +38,10 @@ void IconsUI::cb_Cancel(Fl_Button* o, void* v) {
 }
 
 void IconsUI::cb_save_button_i(Fl_Button*, void*) {
-  saveJWMRC(icons_window);
+  flIcons icons;
+bool saver = icons.useTheme(iconsBrowser);
+if(saver){saveJWMRC(icons_window);}
+else{icons_window->hide();}
 UI ux;
 ux.showSettings();
 }
@@ -45,46 +49,16 @@ void IconsUI::cb_save_button(Fl_Button* o, void* v) {
   ((IconsUI*)(o->parent()->parent()->user_data()))->cb_save_button_i(o,v);
 }
 
-void IconsUI::cb__i(Fl_Button*, void*) {
-  std::string icon_choice = choose_icons();
-std::cout<<"chose: "<<icon_choice<<std::endl;
-if(icon_choice.compare("")==0){add_icons(icon_choice);};
-}
-void IconsUI::cb_(Fl_Button* o, void* v) {
-  ((IconsUI*)(o->parent()->parent()->user_data()))->cb__i(o,v);
-}
-
-void IconsUI::cb_iconsBrowser_i(Fl_Browser* o, void*) {
-  flIcons icons;
-icons.useTheme(o);
-}
-void IconsUI::cb_iconsBrowser(Fl_Browser* o, void* v) {
-  ((IconsUI*)(o->parent()->parent()->user_data()))->cb_iconsBrowser_i(o,v);
-}
-
-void IconsUI::cb_1_i(Fl_Button*, void*) {
-  remove_icons();
-}
-void IconsUI::cb_1(Fl_Button* o, void* v) {
-  ((IconsUI*)(o->parent()->parent()->user_data()))->cb_1_i(o,v);
-}
-
-#include <FL/Fl_Bitmap.H>
-static unsigned char idata_minus[] =
-{0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,255,255,255,255,255,0,0,0,0,0,0,0,0,0,
-0,0,0};
-static Fl_Bitmap image_minus(idata_minus, 16, 16);
-
 Fl_Double_Window* IconsUI::make_window() {
   load();
   saveChangesTemp();
-  { Fl_Double_Window* o = icons_window = new Fl_Double_Window(330, 295, gettext("Icons"));
+  { Fl_Double_Window* o = icons_window = new Fl_Double_Window(330, 280, gettext("Icons"));
     icons_window->color((Fl_Color)31);
     icons_window->user_data((void*)(this));
     { Fl_Scroll* o = new Fl_Scroll(0, 0, 330, 290);
       o->color((Fl_Color)31);
       { Fl_Button* o = new Fl_Button(205, 245, 57, 25, gettext("Cancel"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
         o->labelcolor(FL_BACKGROUND2_COLOR);
@@ -92,38 +66,20 @@ Fl_Double_Window* IconsUI::make_window() {
       } // Fl_Button* o
       { save_button = new Fl_Button(271, 245, 45, 25, gettext("OK"));
         save_button->tooltip(gettext("Write to configuration file"));
-        save_button->box(FL_GTK_UP_BOX);
+        save_button->box(FL_FLAT_BOX);
         save_button->color((Fl_Color)61);
         save_button->selection_color((Fl_Color)59);
         save_button->labelcolor((Fl_Color)55);
         save_button->callback((Fl_Callback*)cb_save_button);
       } // Fl_Button* save_button
-      { Fl_Button* o = new Fl_Button(10, 240, 35, 35, gettext("@+"));
-        o->tooltip(gettext("Add the chosen icon path"));
-        o->box(FL_GTK_UP_BOX);
-        o->selection_color(FL_DARK1);
-        o->callback((Fl_Callback*)cb_);
-        o->hide();
-        o->deactivate();
-      } // Fl_Button* o
-      { iconsBrowser = new Fl_Browser(10, 15, 310, 220);
+      { Fl_Browser* o = iconsBrowser = new Fl_Browser(10, 15, 310, 220);
         iconsBrowser->type(1);
-        iconsBrowser->box(FL_GTK_DOWN_BOX);
+        iconsBrowser->box(FL_FLAT_BOX);
         iconsBrowser->selection_color((Fl_Color)80);
-        iconsBrowser->callback((Fl_Callback*)cb_iconsBrowser);
         iconsBrowser->when(FL_WHEN_ENTER_KEY);
         flIcons icons;
-        //icons.getIcons(iconsBrowser);
-        icons.loadTheme(iconsBrowser);
+        icons.loadTheme(o);
       } // Fl_Browser* iconsBrowser
-      { Fl_Button* o = new Fl_Button(50, 240, 35, 35);
-        o->box(FL_GTK_UP_BOX);
-        o->image(image_minus);
-        o->callback((Fl_Callback*)cb_1);
-        o->align(Fl_Align(256));
-        o->hide();
-        o->deactivate();
-      } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
     startup(o);
@@ -132,43 +88,6 @@ Fl_Double_Window* IconsUI::make_window() {
     icons_window->resizable(icons_window);
   } // Fl_Double_Window* icons_window
   return icons_window;
-}
-
-void IconsUI::add_icons(std::string icon_dir) {
-  flIcons icons;
-  if(icon_dir.compare("")!=0){
-  	iconsBrowser->clear();
-  	icons.addIcons(icon_dir);//input);
-  	icons.getIcons(iconsBrowser);
-  	iconsBrowser->redraw();
-  }
-  else{
-  	fl_message("You have to select a directory to add, or type one in!");
-  }
-}
-
-void IconsUI::remove_icons() {
-  flIcons icons;
-  int item_list_number = iconsBrowser->value();
-  const char * item = iconsBrowser->text(item_list_number);
-  std::string test_item = item;
-  if (test_item.compare("") !=0){
-  	iconsBrowser->clear();
-  	icons.removeIcons(item);
-  	icons.getIcons(iconsBrowser);
-  	iconsBrowser->redraw();
-  }
-  else{
-  	fl_message("Please click on an item to remove!");
-  }
-}
-
-std::string IconsUI::choose_icons() {
-  const char * f = "/usr/share/icons/";
-  const char * m="Choose a Directory";
-  int r = 0;
-  std::string result_string = fl_dir_chooser(m,f,r);
-  return result_string;
 }
 
 void IconsUI::startup(Fl_Window *o) {

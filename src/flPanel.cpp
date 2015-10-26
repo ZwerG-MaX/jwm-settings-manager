@@ -30,11 +30,8 @@ flPanel::flPanel(){
     tinyxml2::XMLDocument doc;
     whichPanel = 1;
     errorMessage="Error... Don't hack around in the files so much ok? :D";
-    torimenu = "torimenu";
-    gnomemenu = "gnomeapps";
-    sysmenu = "gnomesystem";
-    rootMenu = 5;
-    systemMenu = 8;
+    rootMenu = "5";
+    systemMenu = "8";
 }
 
 
@@ -546,111 +543,6 @@ int flPanel::getBorder(){
     int result =  getValue("border");
     //return the integer
     return result;
-}
-
-///  ######################################################## MENU  ************************************************
-
-///label the MAIN menu
-void flPanel::menuLabel(const char * label){
-   // loadTemp();
-    int numOFpanels = numPanels();
-    if (numOFpanels == -1 ){
-        createPanel();
-    }
-    const char* image = getMenuImage().c_str(); // Config::getImageMenu(5)
-    labelMenu(image, rootMenu, label); ///Config
-}
-
-///This function switches the menu configuration to use either:
-//the normal app menu
-//the funky gnome menus
-
-void flPanel::switchMenu(int whichStyle, const char* MenuName){
-    std::string stringMenuName = MenuName;
-    int numOFpanels = numPanels();
-    if (numOFpanels == -1 ){createPanel();}
-    if(stringMenuName.compare("")==0){stringMenuName=gettext("Apps");}
-    /// these come from Config;
-    //check to see which menu we are using based on variables we definied in the Constructor UP TOP
-    //they are simply const chars* defining the menu FILE names
-    bool tori=isMenu(torimenu);
-    bool gnome=isMenu(gnomemenu);
-
-    //test checks for root:5 being existent
-    bool test = isMenu(rootMenu);
-    //if not we NEED some sort of menu
-    if(!test){addMenu(rootMenu,stringMenuName.c_str(),"/usr/share/pixmaps/distributor-logo");}
-
-    //these integers come from the UI selection
-    //we want the traditional menu to be 1 and gnome to be 2
-    if(whichStyle==1){
-    //traditional
-        if (gnome){switchMenuInclude(gnomemenu,torimenu);}
-    }
-    else if(whichStyle==2){
-    //Gnome 2 style
-        if(tori){
-            if(!isMenu(systemMenu)){addMenu(systemMenu,"System","applications-system");}
-            switchMenuInclude(torimenu,gnomemenu);
-        }
-    }
-    else errorJWM("switchMenu requires values of 1 for traditional or 2 for Gnome 2 like menus");
-}
-
-void flPanel::switchMenuInclude(std::string changeTHIS, std::string toTHIS){
-    //yeah... I called the variable homie, but it sure makes reading code slightly
-    //more humourous, right?  right?.... moving along
-    std::string homie = getenv("HOME");
-    homie+="/.config/";
-    //we want the directory where we store our menu XML files
-    //these files are <Include> in our main ~/.jwmrc
-    //so we HAVE to HAVE them... otherwise there will be no menu :(
-
-    std::string thisError;
-
-    //we will setup a boolean to check which menu we are changing
-    bool changeGnome = false;
-    bool changeTori=false;
-    if(changeTHIS.compare(gnomemenu)==0){changeGnome=true;}
-    if(changeTHIS.compare(torimenu)!=0 ){changeTori=true;}
-    //gnomemenu and torimenu are const char* from the Constructor up TOP
-
-    //boolean to check what they want to change to
-    bool toGnome = false;
-    bool toTori=false;
-    if(toTHIS.compare(gnomemenu)==0){toGnome=true;}
-    if(toTHIS.compare(torimenu)!=0 ){toTori=true;}
-    //gnomemenu and torimenu are const char* from the Constructor up TOP
-
-    //make sure something valid was sent in before we do something
-    //if we start switching $valid for $invalid
-    //they will not have the right menu...
-    // or we might crash...  so instead let's error and run away
-    if(!changeGnome && !changeTori){
-        thisError ="flPanel: changeTHIS must be '"+gnomemenu+"' or '"+torimenu+"'";
-        errorJWM(thisError); return;
-    }
-    if(!toTori && !toGnome){
-        thisError ="flPanel: toTHIS must be '"+gnomemenu+"' or '"+torimenu+"'";
-        errorJWM(thisError); return;
-    }
-
-    ///Switcher ...TODO
-    //yeah this is where the cool stuff will happen
-    //but I have to fix bugs before I add features
-    //believe me this feature is not more important than bug fixing
-    //so why am I writing this comment here????
-    //so maybe someone who is not fixing bugs will implement this feature
-    if (changeGnome && toTori){
-        std::cerr<<"change Gnome to Tori"<<std::endl;
-    }
-    else if (changeTori && toGnome){
-        std::cerr<<"change Tori to Gnome"<<std::endl;
-    }
-    else{
-        thisError ="Must be switching'"+gnomemenu+"' and '"+torimenu+"'";
-        errorJWM(thisError); return;
-    }
 }
 
 

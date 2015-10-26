@@ -59,7 +59,7 @@
 
 class MouseUI : public Config {
 public:
-  bool verbose;int m_pid; 
+  bool verbose;int m_pid;bool deltaChanged;bool doubleChanged; 
   Fl_Double_Window* make_window();
   Fl_Double_Window *mouse_window;
 private:
@@ -271,15 +271,15 @@ private:
   inline void cb_double_v_i(Fl_Value_Input*, void*);
   static void cb_double_v(Fl_Value_Input*, void*);
 public:
+  void add_to_profile();
   void CalibrateEdge(int edge);
+  double convert(std::string number);
+  std::string convert(double number);
+  int parseline(char *line, char **argv, int maxarg);
   void parsesynclientoutput(std::string filename);
   void readsynclientoutput();
   void SaveSettings();
   void synclient(const char* field, double value);
-  double convert(std::string number);
-  std::string convert(double number);
-  void add_to_profile();
-  int parseline(char *line, char **argv, int maxarg);
   void startup(Fl_Window *o);
 };
 #endif

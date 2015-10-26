@@ -285,15 +285,6 @@ done
 BASE_THEMES="${TEMP_BASE}"
 mainLOOP
 
-## we want to add pixmaps at the end, so we get theme icons first
-if [ ! -z "${INHERIT_ICON_WRITE}" ]
-then
-  INHERIT_ICON_WRITE="${INHERIT_ICON_WRITE}
-$BASE_THEMES"
-else
-  ICON_WRITE="${ICON_WRITE}
-$BASE_THEMES"
-fi
 TEMP=($(echo "${ICON_WRITE}" | sort -u))
 if [ ! -z "${TEMP[*]}" ]
 then
@@ -312,6 +303,15 @@ then
     INHERIT_ICON_WRITE="${INHERIT_ICON_WRITE}
   $i"
   done
+fi
+## we want to add pixmaps at the end, so we get theme icons first
+if [ ! -z "${INHERIT_ICON_WRITE}" ]
+then
+  INHERIT_ICON_WRITE="${INHERIT_ICON_WRITE}
+$BASE_THEMES"
+else
+  ICON_WRITE="${ICON_WRITE}
+$BASE_THEMES"
 fi
 if [ "${FILENAME}" != true ]
 then

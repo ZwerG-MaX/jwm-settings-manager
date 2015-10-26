@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<JWM>
+<!-- MENUS -->
+    <!-- Main Menu -->
+    @MENUS_LIST@
+    <RootMenu onroot="1"/>
+    <!--Places Menu-->
+    <Include>$HOME/.config/placesmenu</Include>
+    <!-- Mouse Menu-->
+    @MOUSE_MENU@
+    <!--Shudown Menu-->
+    <RootMenu height="0" onroot="9">
+        @SHUTERDOWN@
+    </RootMenu>
+<!-- END MENUS -->
+<!-- GROUP -->
+    @GROUPS@
+<!-- PANEL -->
+    @OLD_TRAY@
+<!-- Panel Style -->
+    <TaskListStyle>
+        <ActiveForeground>@TASK_ACTIVE_FOREGROUND@</ActiveForeground>
+        <ActiveBackground>@TASK_ACTIVE_BACKGROUND@</ActiveBackground>
+        <Background>@TASK_BACKGROUND@</Background>
+        <Foreground>@TASK_FOREGROUND@</Foreground>
+        <Font>@FONT@</Font>
+    </TaskListStyle>
+    <TrayStyle>
+        <Font>@FONT@</Font>
+        <Foreground>@TRAY_FOREGROUND@</Foreground>
+        <Background>@TRAY_BACKGROUND@</Background>
+        <Opacity>@TRAY_OPACITY@</Opacity>
+    </TrayStyle>
+    <TrayButtonStyle>
+	<Font>@FONT@</Font>
+        <Foreground>@TRAY_BUTTON_FOREGROUND@</Foreground>
+        <Background>@TRAY_BUTTON_BACKGROUND@</Background>
+    </TrayButtonStyle>
+    <PagerStyle>
+        <Outline>@PAGER_OUTLINE@</Outline>
+        <Foreground>@PAGER_FOREGROUND@</Foreground>
+        <Background>@PAGER_BACKGROUND@</Background>
+        <Text>@PAGER_ACTIVE_FOREGROUND@</Text>
+        <ActiveForeground>@PAGER_ACTIVE_FOREGROUND@</ActiveForeground>
+        <ActiveBackground>@PAGER_ACTIVE_BACKGROUND@</ActiveBackground>
+    </PagerStyle>
+    <MenuStyle>
+        <Font>@FONT@</Font>
+        <Foreground>@MENU_FOREGROUND@</Foreground>
+        <Background>@MENU_BACKGROUND@</Background>
+        <ActiveBackground>@MENU_ACTIVE_BACKGROUND@</ActiveBackground>
+        <Opacity>@MENU_OPACITY@</Opacity>
+    </MenuStyle>
+<!-- WINDOW -->
+    <WindowStyle>
+        <Font>@FONT@</Font>
+        <Width>4</Width>
+        <Height>20</Height>
+        <Active>
+            <Text>@WINDOW_ACTIVE_FOREGROUND@</Text>
+            <Title>@WINDOW_ACTIVE_BACKGROUND@</Title>
+            <Outline>@WINDOW_ACTIVE_OUTLINE@</Outline>
+            <Opacity>@WINDOW_ACTIVE_OPACITY@</Opacity>
+        </Active>
+	<Text>@WINDOW_FOREGROUND@</Text>
+	<Title>@WINDOW_BACKGROUND@</Title>
+	<Outline>@WINDOW_OUTLINE@</Outline>
+	<Opacity>@WINDOW_OPACITY@</Opacity>
+    </WindowStyle>
+    <FocusModel>click</FocusModel>
+    <SnapMode distance="10">border</SnapMode>
+    <MoveMode>opaque</MoveMode>
+    <ResizeMode>opaque</ResizeMode>
+<!-- KEYSHORTCUTS -->
+    @KEYSHORTCUTS@
+<!-- MOUSE -->
+    @MOUSE@
+<!-- ICONS -->
+    @ICONS_LIST@
+<!-- DESKTOP -->
+    <Desktops width="2" height="1">
+        <Background type="image">@BG@</Background>
+    </Desktops>
+<!-- AUTOSTART -->
+   @STARTUP@
+<!--POP UP -->
+    <PopupStyle>
+        <Font>@FONT@</Font>
+        <Outline>@POPUP_OUTLINE@</Outline>
+        <Foreground>@POPUP_FOREGROUND@</Foreground>
+        <Background>@POPUP_BACKGROUND@</Background>
+    </PopupStyle>
+</JWM>

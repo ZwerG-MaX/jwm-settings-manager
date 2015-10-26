@@ -43,7 +43,6 @@
 //#include <FL/x.H>
 //#include <X11/xpm.h>
 #include <FL/Fl_Double_Window.H>
-#include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
 
 class SettingsUI {
@@ -55,19 +54,24 @@ private:
   static void cb_Panel(Fl_Button*, void*);
   inline void cb_Keyboard_i(Fl_Button*, void*);
   static void cb_Keyboard(Fl_Button*, void*);
+  inline void cb_Icons_i(Fl_Button*, void*);
+  static void cb_Icons(Fl_Button*, void*);
   inline void cb_Desktop_i(Fl_Button*, void*);
   static void cb_Desktop(Fl_Button*, void*);
   inline void cb_Mouse_i(Fl_Button*, void*);
   static void cb_Mouse(Fl_Button*, void*);
+  inline void cb_Fonts_i(Fl_Button*, void*);
+  static void cb_Fonts(Fl_Button*, void*);
   inline void cb_Windows_i(Fl_Button*, void*);
   static void cb_Windows(Fl_Button*, void*);
   inline void cb_Themes_i(Fl_Button*, void*);
   static void cb_Themes(Fl_Button*, void*);
-  inline void cb_Icons_i(Fl_Button*, void*);
-  static void cb_Icons(Fl_Button*, void*);
-  inline void cb_Fonts_i(Fl_Button*, void*);
-  static void cb_Fonts(Fl_Button*, void*);
   inline void cb_Autostart_i(Fl_Button*, void*);
   static void cb_Autostart(Fl_Button*, void*);
+  inline void cb_Users_i(Fl_Button*, void*);
+  static void cb_Users(Fl_Button*, void*);
+public:
+  void isAdduser(Fl_Button *o);
+  void adduser();
 };
 #endif

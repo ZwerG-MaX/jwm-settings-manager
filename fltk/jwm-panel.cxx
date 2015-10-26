@@ -28,8 +28,8 @@
 #include "jwm-panel.h"
 
 void PanelUI::cb_panel_chooser_i(Fl_Menu_Button* o, void*) {
-  flPanel panel;
-std::string panelLabel = panel.convert(panel.currentPanel());
+  flPanel FLPANEL;
+std::string panelLabel = FLPANEL.convert(FLPANEL.currentPanel());
 std::string LABEL = "Panel ";
 LABEL +=panelLabel;
 o->copy_label(LABEL.c_str());
@@ -484,6 +484,14 @@ void PanelUI::cb_Modifier(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_Modifier_i(o,v);
 }
 
+void PanelUI::cb_See_i(Fl_Button*, void*) {
+  int thissys = system("bash -c 'xterm -geometry 90x24 -fa default -fs 10 -T \"ctime Manual\" -e \"man ctime\" & '");
+if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;};
+}
+void PanelUI::cb_See(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_See_i(o,v);
+}
+
 void PanelUI::cb_OK3_i(Fl_Button*, void*) {
   conf_applist_window->hide();
 }
@@ -626,19 +634,20 @@ void PanelUI::cb_Icon(Fl_Button* o, void* v) {
 }
 
 void PanelUI::cb_OK7_i(Fl_Button*, void*) {
-  conf_menu_window->hide();
+  flPanel config;
+const char* testNum = tester->value();
+if(testNum ==NULL){return;}
+const char* icon = hidden_icon_name->value();
+if(icon ==NULL){icon="application-default";}
+const char* newLabel = app_menu->value();
+if(newLabel==NULL){newLabel=gettext("Menu");}
+config.labelMenu(testNum,newLabel);
+config.setImageMenu(testNum,icon);
+saveChangesTemp();
+conf_menu_window->hide();
 }
 void PanelUI::cb_OK7(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_OK7_i(o,v);
-}
-
-void PanelUI::cb_app_menu_i(Fl_Input* o, void*) {
-  flPanel panel;
-const char * label=o->value();
-panel.menuLabel(label);
-}
-void PanelUI::cb_app_menu(Fl_Input* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_app_menu_i(o,v);
 }
 
 void PanelUI::cb_icon_view_i(Fl_Button*, void*) {
@@ -647,64 +656,23 @@ const char * m="Choose an Icon";
 flPanel panel;
 const char *p="*.{xpm,XPM,png,PNG}";
 int r = 0;
+Fl_File_Icon::load_system_icons();
 char *result = fl_file_chooser(m,p,f,r);
 if(result!=NULL){
-	panel.setImageMenu(result,5);
+	//panel.setImageMenu(result,menuNumber);
 	display(result);
+	hidden_icon_name->value(result);
 };
 }
 void PanelUI::cb_icon_view(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_icon_view_i(o,v);
 }
 
-void PanelUI::cb_Traditional_i(Fl_Menu_*, void*) {
-  change_menu(1);
-}
-void PanelUI::cb_Traditional(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Traditional_i(o,v);
-}
-
-void PanelUI::cb_Gnome_i(Fl_Menu_*, void*) {
-  change_menu(2);
-}
-void PanelUI::cb_Gnome(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Gnome_i(o,v);
-}
-
-unsigned char PanelUI::menu_Menu_i18n_done = 0;
-Fl_Menu_Item PanelUI::menu_Menu[] = {
- {"Traditional", 0,  (Fl_Callback*)PanelUI::cb_Traditional, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Gnome 2", 0,  (Fl_Callback*)PanelUI::cb_Gnome, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {0,0,0,0,0,0,0,0,0}
-};
-
-void PanelUI::cb_shutdown_icon_i(Fl_Button*, void*) {
-  Apps apps;
-const char * f = "/usr/share/pixmaps";
-const char * m="Choose an Icon";
-const char *p="*.{svg,SVG,xpm,XPM,png,PNG}";
-int r = 0;
-char *result = fl_file_chooser(m,p,f,r);
-if(result!=NULL){
-	apps.setShutdownImage(result);
-};
-}
-void PanelUI::cb_shutdown_icon(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_shutdown_icon_i(o,v);
-}
-
 void PanelUI::cb_OK8_i(Fl_Button*, void*) {
-  conf_shut_window->hide();
+  conf_swallow_window->hide();
 }
 void PanelUI::cb_OK8(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_OK8_i(o,v);
-}
-
-void PanelUI::cb_OK9_i(Fl_Button*, void*) {
-  conf_swallow_window->hide();
-}
-void PanelUI::cb_OK9(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_OK9_i(o,v);
 }
 
 void PanelUI::cb_swallow_name_i(Fl_Input* o, void*) {
@@ -725,11 +693,11 @@ void PanelUI::cb_swallow_config(Fl_Input* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_swallow_config_i(o,v);
 }
 
-void PanelUI::cb_OKa_i(Fl_Button*, void*) {
+void PanelUI::cb_OK9_i(Fl_Button*, void*) {
   conf_switcher->hide();
 }
-void PanelUI::cb_OKa(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_OKa_i(o,v);
+void PanelUI::cb_OK9(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_OK9_i(o,v);
 }
 
 void PanelUI::cb_5_i(Fl_Button* o, void*) {
@@ -857,24 +825,15 @@ void PanelUI::cb_a(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_a_i(o,v);
 }
 
-void PanelUI::cb_OKb_i(Fl_Button*, void*) {
+void PanelUI::cb_OKa_i(Fl_Button*, void*) {
   new_panel->hide();
 }
-void PanelUI::cb_OKb(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_OKb_i(o,v);
-}
-
-void PanelUI::cb_See_i(Fl_Button*, void*) {
-  int thissys = system("bash -c 'xterm -geometry 90x24 -fa default -fs 10 -T \"ctime Manual\" -e \"man ctime\" & '");
-if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;};
-}
-void PanelUI::cb_See(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_See_i(o,v);
+void PanelUI::cb_OKa(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_OKa_i(o,v);
 }
 
 Fl_Double_Window* PanelUI::make_window() {
-  load();
-  saveChangesTemp();
+  loadTemp();
   { Fl_Double_Window* o = panel_window = new Fl_Double_Window(335, 525, gettext("Panel Settings"));
     panel_window->color((Fl_Color)31);
     panel_window->selection_color((Fl_Color)22);
@@ -882,9 +841,11 @@ Fl_Double_Window* PanelUI::make_window() {
     panel_window->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
     { Fl_Scroll* o = new Fl_Scroll(0, 0, 355, 665);
       o->color((Fl_Color)31);
-      { Fl_Menu_Button* o = panel_chooser = new Fl_Menu_Button(25, 20, 115, 25);
+      { Fl_Menu_Button* o = panel_chooser = new Fl_Menu_Button(25, 20, 110, 25);
         panel_chooser->box(FL_GTK_UP_BOX);
-        panel_chooser->selection_color((Fl_Color)80);
+        panel_chooser->down_box(FL_FLAT_BOX);
+        panel_chooser->color((Fl_Color)23);
+        panel_chooser->selection_color((Fl_Color)51);
         panel_chooser->callback((Fl_Callback*)cb_panel_chooser);
         panel_chooser->when(3);
         { Fl_Menu_Item* o = &menu_panel_chooser[2];
@@ -904,38 +865,39 @@ Fl_Double_Window* PanelUI::make_window() {
           menu_panel_chooser_i18n_done = 1;
         }
         panel_chooser->menu(menu_panel_chooser);
-        flPanel panel;int n = panel.currentPanel();
-        std::string panelLabel = panel.convert(n);
+        flPanel FLPANEL;int n = FLPANEL.currentPanel();//flPanel FLPANEL;
+        std::string panelLabel = FLPANEL.convert(n);
         std::string LABEL = "Panel ";LABEL +=panelLabel;
         o->copy_label(LABEL.c_str());
       } // Fl_Menu_Button* panel_chooser
       { Fl_Tabs* o = new Fl_Tabs(5, 60, 350, 415);
-        o->box(FL_PLASTIC_THIN_UP_BOX);
+        o->box(FL_FLAT_BOX);
+        o->selection_color((Fl_Color)51);
         { Fl_Group* o = new Fl_Group(10, 90, 345, 385, gettext("Apps"));
-          { Fl_Box* o = new Fl_Box(90, 90, 150, 45, gettext("Panel Apps"));
-            o->labelfont(1);
-            o->labelsize(18);
-          } // Fl_Box* o
+          o->hide();
           { Fl_Button* o = new Fl_Button(80, 425, 35, 25, gettext("-"));
-            o->box(FL_GTK_UP_BOX);
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
             o->labelfont(1);
             o->labelsize(34);
             o->callback((Fl_Callback*)cb_);
           } // Fl_Button* o
-          { Fl_Browser* o = app_browser = new Fl_Browser(30, 130, 290, 275);
+          { Fl_Browser* o = app_browser = new Fl_Browser(20, 100, 300, 305);
             app_browser->type(2);
-            app_browser->box(FL_GTK_DOWN_BOX);
+            app_browser->box(FL_FLAT_BOX);
             app_browser->selection_color(FL_DARK_RED);
             app_browser->callback((Fl_Callback*)cb_app_browser);
             Apps app;
             app.populate(o);
           } // Fl_Browser* app_browser
           { Fl_Button* o = new Fl_Button(125, 425, 85, 25, gettext("Configure"));
-            o->box(FL_GTK_UP_BOX);
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
             o->callback((Fl_Callback*)cb_Configure);
           } // Fl_Button* o
           { choose_apps = new Fl_Button(35, 425, 35, 25, gettext("@+"));
-            choose_apps->box(FL_GTK_UP_BOX);
+            choose_apps->box(FL_FLAT_BOX);
+            choose_apps->color((Fl_Color)23);
             choose_apps->callback((Fl_Callback*)cb_choose_apps);
           } // Fl_Button* choose_apps
           { Fl_Button* o = new Fl_Button(230, 425, 40, 30, gettext("@+98>"));
@@ -957,21 +919,24 @@ Fl_Double_Window* PanelUI::make_window() {
           { new Fl_Box(32, 135, 129, 25, gettext("Menu Background"));
           } // Fl_Box* o
           { Fl_Button* o = menu_bg_color = new Fl_Button(182, 134, 60, 25);
-            menu_bg_color->box(FL_GTK_UP_BOX);
+            menu_bg_color->box(FL_FLAT_BOX);
+            menu_bg_color->color((Fl_Color)23);
             menu_bg_color->callback((Fl_Callback*)cb_menu_bg_color);
             flPanel fl_panel;unsigned int c;
             unsigned int color = fl_panel.getBackground(c,"MenuStyle");
             o->color(color);
           } // Fl_Button* menu_bg_color
           { Fl_Button* o = menu_fg_color = new Fl_Button(182, 176, 60, 25);
-            menu_fg_color->box(FL_GTK_UP_BOX);
+            menu_fg_color->box(FL_FLAT_BOX);
+            menu_fg_color->color((Fl_Color)23);
             menu_fg_color->callback((Fl_Callback*)cb_menu_fg_color);
             flPanel panel;unsigned int c;
             unsigned int color = panel.getActiveBackground(c,"MenuStyle");
             o->color(color);
           } // Fl_Button* menu_fg_color
           { Fl_Button* o = menu_font_color = new Fl_Button(182, 219, 60, 25);
-            menu_font_color->box(FL_GTK_UP_BOX);
+            menu_font_color->box(FL_FLAT_BOX);
+            menu_font_color->color((Fl_Color)23);
             menu_font_color->callback((Fl_Callback*)cb_menu_font_color);
             flPanel panel;unsigned int c;
             unsigned int color = panel.getFontColor(c,"MenuStyle");
@@ -993,7 +958,8 @@ Fl_Double_Window* PanelUI::make_window() {
             o->value(h);
           } // Fl_Slider* o_menu_slider
           { Fl_Value_Input* o = o_menu_slider_v = new Fl_Value_Input(257, 262, 40, 25, gettext("%"));
-            o_menu_slider_v->box(FL_GTK_DOWN_BOX);
+            o_menu_slider_v->box(FL_FLAT_BOX);
+            o_menu_slider_v->color((Fl_Color)23);
             o_menu_slider_v->labelsize(10);
             o_menu_slider_v->callback((Fl_Callback*)cb_o_menu_slider_v);
             o_menu_slider_v->align(Fl_Align(FL_ALIGN_RIGHT));
@@ -1006,14 +972,16 @@ Fl_Double_Window* PanelUI::make_window() {
             if(style_gone()){o->hide();}
           } // Fl_Box* o
           { Fl_Button* o = b_color = new Fl_Button(182, 304, 60, 25);
-            b_color->box(FL_GTK_UP_BOX);
+            b_color->box(FL_FLAT_BOX);
+            b_color->color((Fl_Color)23);
             b_color->callback((Fl_Callback*)cb_b_color);
             flPanel fl_panel;unsigned int c;
             unsigned int color = fl_panel.getBackground(c, "TrayStyle");
             o->color(color);
           } // Fl_Button* b_color
           { Fl_Button* o = button_color = new Fl_Button(182, 347, 60, 25);
-            button_color->box(FL_GTK_UP_BOX);
+            button_color->box(FL_FLAT_BOX);
+            button_color->color((Fl_Color)23);
             button_color->callback((Fl_Callback*)cb_button_color);
             flPanel panel;unsigned int c;
             if(style_gone()){o->hide();}
@@ -1035,7 +1003,8 @@ Fl_Double_Window* PanelUI::make_window() {
             o->value(h);
           } // Fl_Slider* o_slider
           { Fl_Value_Input* o = o_slider_v = new Fl_Value_Input(257, 390, 40, 25, gettext("%"));
-            o_slider_v->box(FL_GTK_DOWN_BOX);
+            o_slider_v->box(FL_FLAT_BOX);
+            o_slider_v->color((Fl_Color)23);
             o_slider_v->labelsize(10);
             o_slider_v->callback((Fl_Callback*)cb_o_slider_v);
             o_slider_v->align(Fl_Align(FL_ALIGN_RIGHT));
@@ -1047,16 +1016,17 @@ Fl_Double_Window* PanelUI::make_window() {
           { new Fl_Box(30, 220, 120, 25, gettext("Menu Font Color"));
           } // Fl_Box* o
           { Fl_Button* o = new Fl_Button(65, 105, 105, 25, gettext("Edit Menus"));
-            o->box(FL_GTK_UP_BOX);
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
             o->callback((Fl_Callback*)cb_Edit);
           } // Fl_Button* o
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(10, 85, 330, 380, gettext("Size And Position"));
-          o->hide();
           { Fl_Menu_Button* o = new Fl_Menu_Button(20, 110, 125, 25, gettext("Panel Position"));
             o->box(FL_GTK_UP_BOX);
-            o->selection_color((Fl_Color)80);
+            o->color((Fl_Color)23);
+            o->selection_color((Fl_Color)51);
             if (!menu_Panel_i18n_done) {
               int i=0;
               for ( ; i<4; i++)
@@ -1068,7 +1038,8 @@ Fl_Double_Window* PanelUI::make_window() {
           } // Fl_Menu_Button* o
           { choose_autohide = new Fl_Menu_Button(170, 110, 150, 25, gettext("Autohide Position"));
             choose_autohide->box(FL_GTK_UP_BOX);
-            choose_autohide->selection_color((Fl_Color)80);
+            choose_autohide->color((Fl_Color)23);
+            choose_autohide->selection_color((Fl_Color)23);
             if (!menu_choose_autohide_i18n_done) {
               int i=0;
               for ( ; i<5; i++)
@@ -1104,7 +1075,8 @@ Fl_Double_Window* PanelUI::make_window() {
             o->value(h);
           } // Fl_Slider* w_slider
           { Fl_Value_Input* o = width_input = new Fl_Value_Input(230, 190, 55, 25, gettext("pixels"));
-            width_input->box(FL_GTK_DOWN_BOX);
+            width_input->box(FL_FLAT_BOX);
+            width_input->color((Fl_Color)23);
             width_input->labelsize(10);
             width_input->maximum(3000);
             width_input->callback((Fl_Callback*)cb_width_input);
@@ -1129,7 +1101,8 @@ Fl_Double_Window* PanelUI::make_window() {
             o->value(h);
           } // Fl_Slider* h_slider
           { Fl_Value_Input* o = height_input = new Fl_Value_Input(230, 260, 55, 25, gettext("pixels"));
-            height_input->box(FL_GTK_DOWN_BOX);
+            height_input->box(FL_FLAT_BOX);
+            height_input->color((Fl_Color)23);
             height_input->labelsize(10);
             height_input->maximum(3000);
             height_input->callback((Fl_Callback*)cb_height_input);
@@ -1142,14 +1115,16 @@ Fl_Double_Window* PanelUI::make_window() {
             o->labelsize(18);
           } // Fl_Box* o
           { Fl_Value_Input* o = new Fl_Value_Input(230, 330, 25, 25, gettext("X position of panel"));
-            o->box(FL_GTK_DOWN_BOX);
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
             o->minimum(-100);
             o->maximum(2000);
             o->callback((Fl_Callback*)cb_X);
             coordinate("x",o,1);
           } // Fl_Value_Input* o
           { Fl_Value_Input* o = new Fl_Value_Input(230, 375, 25, 25, gettext("Y position of panel"));
-            o->box(FL_GTK_DOWN_BOX);
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
             o->minimum(-100);
             o->maximum(2000);
             o->callback((Fl_Callback*)cb_Y);
@@ -1170,7 +1145,8 @@ Fl_Double_Window* PanelUI::make_window() {
             o->value(border);
           } // Fl_Slider* border_slider
           { Fl_Value_Input* o = border_input = new Fl_Value_Input(230, 435, 40, 25, gettext("pixels"));
-            border_input->box(FL_GTK_DOWN_BOX);
+            border_input->box(FL_FLAT_BOX);
+            border_input->color((Fl_Color)23);
             border_input->labelsize(10);
             border_input->maximum(3000);
             border_input->callback((Fl_Callback*)cb_border_input);
@@ -1183,7 +1159,7 @@ Fl_Double_Window* PanelUI::make_window() {
         o->end();
       } // Fl_Tabs* o
       { Fl_Button* o = new Fl_Button(209, 490, 57, 25, gettext("Cancel"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
         o->labelcolor(FL_BACKGROUND2_COLOR);
@@ -1191,7 +1167,7 @@ Fl_Double_Window* PanelUI::make_window() {
       } // Fl_Button* o
       { save_button = new Fl_Button(275, 490, 45, 25, gettext("OK"));
         save_button->tooltip(gettext("Write to configuration file"));
-        save_button->box(FL_GTK_UP_BOX);
+        save_button->box(FL_FLAT_BOX);
         save_button->color((Fl_Color)61);
         save_button->selection_color((Fl_Color)59);
         save_button->labelcolor((Fl_Color)55);
@@ -1208,22 +1184,25 @@ Fl_Double_Window* PanelUI::make_window() {
 }
 
 Fl_Double_Window* PanelUI::add_indicator() {
-  { Fl_Double_Window* o = indicator_win = new Fl_Double_Window(230, 185, gettext("Add Indicator"));
+  { Fl_Double_Window* o = indicator_win = new Fl_Double_Window(200, 150, gettext("Add Indicator"));
     indicator_win->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(65, 15, 90, 30, gettext("Battery"));
-      o->box(FL_GTK_UP_BOX);
+    { Fl_Button* o = new Fl_Button(20, 10, 90, 30, gettext("Battery"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_Battery);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(65, 55, 90, 30, gettext("Volume"));
-      o->box(FL_GTK_UP_BOX);
+    { Fl_Button* o = new Fl_Button(20, 50, 90, 30, gettext("Volume"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_Volume);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(65, 95, 90, 30, gettext("Network"));
-      o->box(FL_GTK_UP_BOX);
+    { Fl_Button* o = new Fl_Button(20, 90, 90, 30, gettext("Network"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_Network);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(165, 145, 60, 30, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
+    { Fl_Button* o = new Fl_Button(125, 90, 60, 30, gettext("OK"));
+      o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->selection_color((Fl_Color)59);
       o->labelcolor(FL_BACKGROUND2_COLOR);
@@ -1239,7 +1218,7 @@ Fl_Double_Window* PanelUI::add_to_panel() {
   { Fl_Double_Window* o = add_2_panel = new Fl_Double_Window(190, 290, gettext("Add to Panel"));
     add_2_panel->user_data((void*)(this));
     { Fl_Button* o = new Fl_Button(130, 250, 45, 30, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
       o->color((Fl_Color)62);
       o->selection_color(FL_DARK_GREEN);
       o->labelcolor(FL_BACKGROUND2_COLOR);
@@ -1247,12 +1226,13 @@ Fl_Double_Window* PanelUI::add_to_panel() {
     } // Fl_Button* o
     { Fl_Browser* o = panel_items_browser = new Fl_Browser(20, 25, 160, 215);
       panel_items_browser->type(2);
-      panel_items_browser->box(FL_GTK_DOWN_BOX);
+      panel_items_browser->box(FL_FLAT_BOX);
       panel_items_browser->selection_color(FL_DARK_RED);
       new_panel_items(o);
     } // Fl_Browser* panel_items_browser
     { Fl_Button* o = new Fl_Button(20, 250, 35, 25, gettext("@+"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_1);
     } // Fl_Button* o
     startup(o);
@@ -1266,37 +1246,39 @@ Fl_Double_Window* PanelUI::clock_window() {
   { Fl_Double_Window* o = clock_config_window = new Fl_Double_Window(480, 580, gettext("Configure Clock"));
     clock_config_window->user_data((void*)(this));
     { Fl_Button* o = new Fl_Button(375, 535, 75, 30, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK2);
       Fl_Group::current()->resizable(o);
     } // Fl_Button* o
     { clock_style = new Fl_Input(70, 535, 290, 30, gettext("style"));
-      clock_style->box(FL_GTK_DOWN_BOX);
+      clock_style->box(FL_FLAT_BOX);
       clock_style->selection_color(FL_DARK_RED);
       clock_style->callback((Fl_Callback*)cb_clock_style);
       clock_style->when(3);
     } // Fl_Input* clock_style
     { Fl_Browser* o = new Fl_Browser(15, 5, 450, 405);
       o->type(2);
-      o->box(FL_GTK_DOWN_BOX);
+      o->box(FL_FLAT_BOX);
       o->selection_color(FL_DARK_RED);
       o->callback((Fl_Callback*)cb_2);
       Apps apps;apps.populateClocks(o);
     } // Fl_Browser* o
     { clock_display = new Fl_Output(35, 500, 385, 25);
-      clock_display->box(FL_NO_BOX);
+      clock_display->box(FL_FLAT_BOX);
       clock_display->labelfont(1);
       clock_display->labelsize(18);
       clock_display->align(Fl_Align(FL_ALIGN_TOP));
     } // Fl_Output* clock_display
     { Fl_Button* o = new Fl_Button(20, 415, 75, 30, gettext("Notes"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_Notes);
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(105, 415, 110, 30, gettext("Modifier Notes"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_Modifier);
     } // Fl_Button* o
     startup(o);
@@ -1306,25 +1288,91 @@ Fl_Double_Window* PanelUI::clock_window() {
   return clock_config_window;
 }
 
+Fl_Double_Window* PanelUI::clock_notes_window() {
+  { Fl_Double_Window* o = clock_info = new Fl_Double_Window(360, 420, gettext("Notes"));
+    clock_info->user_data((void*)(this));
+    { Fl_Scroll* o = new Fl_Scroll(15, 15, 335, 390);
+      { Fl_Box* o = new Fl_Box(15, 15, 335, 390, gettext("ISO 8601 week dates %G,  %g,  and  %V yield values calculated from the week-b\
+ased year defined by the ISO 8601 standard.  In this system, weeks start  on a\
+  Monday,  and are numbered from 01, for the first week, up to 52 or 53, for t\
+he last week.  Week 1 is the first week where four  or more  days fall within \
+the new year (or, synonymously, week 01 is: the first week of the year that co\
+ntains a Thursday; or, the  week that  has 4 January in it).  When three of fe\
+wer days of the first calendar week of the new year fall within that year, the\
+n the  ISO 8601 week-based system counts those days as part of week 53 of the \
+preceding year.  For example, 1 January 2010 is a Friday,  meaning that  just \
+ three  days of that calendar week fall in 2010.  Thus, the ISO 8601 week-base\
+d system considers these days to be part  of week  53 (%V) of the year 2009 (%\
+G); week 01 of ISO 8601 year 2010 starts on Monday, 4 January 2010."));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)55);
+        o->align(Fl_Align(FL_ALIGN_WRAP));
+      } // Fl_Box* o
+      o->end();
+    } // Fl_Scroll* o
+    Config config; config.under_mouse(o);
+    clock_info->xclass("jsm-panel");
+    clock_info->end();
+    clock_info->resizable(clock_info);
+  } // Fl_Double_Window* clock_info
+  return clock_info;
+}
+
+Fl_Double_Window* PanelUI::clock_info_window() {
+  { Fl_Double_Window* o = clock_modifier_notes = new Fl_Double_Window(360, 405, gettext("Modifier Notes"));
+    clock_modifier_notes->user_data((void*)(this));
+    { Fl_Scroll* o = new Fl_Scroll(15, 10, 340, 350);
+      { Fl_Box* o = new Fl_Box(15, 10, 340, 350, gettext("Some conversion specifications can be modified  by  preceding  the conversion\
+  specifier character by the E or O modifier to indicate that an alternative f\
+ormat should be  used.   If  the  alternative format or specification does not\
+ exist for the current locale, the behavior will be as if  the  unmodified  co\
+nversion  specification were  used.  (SU) The Single UNIX Specification mentio\
+ns %Ec, %EC, %Ex, %EX, %Ey, %EY, %Od, %Oe, %OH, %OI, %Om, %OM, %OS,  %Ou,  %OU\
+, %OV,  %Ow,  %OW, %Oy, where the effect of the O modifier is to use alternati\
+ve numeric symbols (say, roman numerals), and that of the E  modifier  is  to \
+use a locale-dependent alternative representation.\nThe broken-down time struc\
+ture tm is  defined  in  <time.h>."));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)55);
+        o->align(Fl_Align(FL_ALIGN_WRAP));
+      } // Fl_Box* o
+      o->end();
+    } // Fl_Scroll* o
+    { Fl_Button* o = new Fl_Button(115, 370, 130, 30, gettext("See also ctime"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->labelfont(1);
+      o->callback((Fl_Callback*)cb_See);
+    } // Fl_Button* o
+    Config config; config.under_mouse(o);
+    clock_modifier_notes->xclass("jsm-panel");
+    clock_modifier_notes->end();
+    clock_modifier_notes->resizable(clock_modifier_notes);
+  } // Fl_Double_Window* clock_modifier_notes
+  return clock_modifier_notes;
+}
+
 Fl_Double_Window* PanelUI::config_applist_window() {
   { Fl_Double_Window* o = conf_applist_window = new Fl_Double_Window(340, 105, gettext("Configure Running App List"));
     conf_applist_window->user_data((void*)(this));
     { Fl_Button* o = new Fl_Button(235, 35, 60, 30, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->selection_color((Fl_Color)59);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK3);
     } // Fl_Button* o
     { Fl_Button* o = task_bg_color = new Fl_Button(140, 55, 60, 25);
-      task_bg_color->box(FL_GTK_UP_BOX);
+      task_bg_color->box(FL_FLAT_BOX);
+      task_bg_color->color((Fl_Color)23);
       task_bg_color->callback((Fl_Callback*)cb_task_bg_color);
       flPanel panel;unsigned int c;
       unsigned int color = panel.getBackground(c,"TaskListStyle");
       o->color(color);
     } // Fl_Button* task_bg_color
     { Fl_Button* o = task_fg_color = new Fl_Button(140, 20, 60, 25);
-      task_fg_color->box(FL_GTK_UP_BOX);
+      task_fg_color->box(FL_FLAT_BOX);
+      task_fg_color->color((Fl_Color)23);
       task_fg_color->callback((Fl_Callback*)cb_task_fg_color);
       flPanel panel;unsigned int c;
       unsigned int color = panel.getActiveBackground(c,"TaskListStyle");
@@ -1346,7 +1394,8 @@ Fl_Double_Window* PanelUI::config_clock_window() {
     conf_clock_window->user_data((void*)(this));
     { clock_menu = new Fl_Menu_Button(15, 20, 130, 25, gettext("Clock Format"));
       clock_menu->box(FL_GTK_UP_BOX);
-      clock_menu->selection_color(FL_DARK_RED);
+      clock_menu->color((Fl_Color)23);
+      clock_menu->selection_color((Fl_Color)23);
       if (!menu_clock_menu_i18n_done) {
         int i=0;
         for ( ; i<5; i++)
@@ -1357,7 +1406,7 @@ Fl_Double_Window* PanelUI::config_clock_window() {
       clock_menu->menu(menu_clock_menu);
     } // Fl_Menu_Button* clock_menu
     { Fl_Button* o = new Fl_Button(285, 90, 60, 30, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK4);
@@ -1372,7 +1421,8 @@ Fl_Double_Window* PanelUI::config_clock_window() {
     } // Fl_Output* clock_displayer
     { Fl_Input* o = new Fl_Input(155, 60, 185, 25, gettext("Program to Launch"));
       o->tooltip(gettext("Usually used for a calendar or analog clock"));
-      o->box(FL_GTK_DOWN_BOX);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->selection_color(FL_DARK_RED);
       o->deactivate();
       o->value("xclock");
@@ -1385,10 +1435,10 @@ Fl_Double_Window* PanelUI::config_clock_window() {
 }
 
 Fl_Double_Window* PanelUI::config_indicator_window() {
-  { Fl_Double_Window* o = conf_indicator_window = new Fl_Double_Window(285, 260, gettext("Configure Indicators"));
+  { Fl_Double_Window* o = conf_indicator_window = new Fl_Double_Window(285, 235, gettext("Configure Indicators"));
     conf_indicator_window->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(210, 215, 60, 30, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
+    { Fl_Button* o = new Fl_Button(160, 190, 60, 30, gettext("OK"));
+      o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->selection_color((Fl_Color)59);
       o->labelcolor(FL_BACKGROUND2_COLOR);
@@ -1396,19 +1446,21 @@ Fl_Double_Window* PanelUI::config_indicator_window() {
     } // Fl_Button* o
     { Fl_Browser* o = indicator_browser = new Fl_Browser(20, 10, 250, 170);
       indicator_browser->type(2);
-      indicator_browser->box(FL_GTK_DOWN_BOX);
+      indicator_browser->box(FL_FLAT_BOX);
       indicator_browser->selection_color((Fl_Color)80);
       Apps app;
       app.getIndicators(o);
     } // Fl_Browser* indicator_browser
     { Fl_Button* o = new Fl_Button(90, 195, 35, 25, gettext("-"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->labelfont(1);
       o->labelsize(34);
       o->callback((Fl_Callback*)cb_3);
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(45, 195, 35, 25, gettext("@+"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_4);
     } // Fl_Button* o
     startup(o);
@@ -1418,35 +1470,35 @@ Fl_Double_Window* PanelUI::config_indicator_window() {
   return conf_indicator_window;
 }
 
-Fl_Double_Window* PanelUI::configure_manually_window(std::string item) {
+Fl_Double_Window* PanelUI::configure_manually_window() {
   { Fl_Double_Window* o = conf_manual_window = new Fl_Double_Window(360, 165, gettext("Manual Editing"));
     conf_manual_window->user_data((void*)(this));
     { Fl_Input* o = manually_in = new Fl_Input(10, 10, 340, 30);
-      manually_in->box(FL_GTK_DOWN_BOX);
-      o->value(item.c_str());
+      manually_in->box(FL_FLAT_BOX);
+      o->value();
     } // Fl_Input* manually_in
     { Fl_Button* o = new Fl_Button(300, 135, 50, 25, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK6);
     } // Fl_Button* o
     { tooltip_label = new Fl_Input(105, 50, 245, 30, gettext("Tooltip Label"));
-      tooltip_label->box(FL_GTK_DOWN_BOX);
+      tooltip_label->box(FL_FLAT_BOX);
       tooltip_label->selection_color((Fl_Color)80);
     } // Fl_Input* tooltip_label
     { Fl_Button* o = new Fl_Button(10, 100, 65, 25, gettext("Icon"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_Icon);
     } // Fl_Button* o
     { icon_file = new Fl_Input(95, 95, 255, 30);
-      icon_file->box(FL_GTK_DOWN_BOX);
+      icon_file->box(FL_FLAT_BOX);
       icon_file->selection_color((Fl_Color)80);
     } // Fl_Input* icon_file
-    { Fl_Input* o = hid_in = new Fl_Input(10, 10, 340, 30);
-      hid_in->box(FL_GTK_DOWN_BOX);
+    { hid_in = new Fl_Input(10, 10, 340, 30);
+      hid_in->box(FL_FLAT_BOX);
       hid_in->hide();
-      o->value(item.c_str());
     } // Fl_Input* hid_in
     startup(o);
     conf_manual_window->xclass("jsm-panel");
@@ -1456,47 +1508,40 @@ Fl_Double_Window* PanelUI::configure_manually_window(std::string item) {
 }
 
 Fl_Double_Window* PanelUI::config_menu_window() {
-  { Fl_Double_Window* o = conf_menu_window = new Fl_Double_Window(285, 180, gettext("Configure Menu"));
+  { Fl_Double_Window* o = conf_menu_window = new Fl_Double_Window(245, 130, gettext("Configure Menu"));
+    conf_menu_window->labelfont(14);
     conf_menu_window->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(205, 140, 60, 30, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
-      o->color((Fl_Color)61);
+    { Fl_Button* o = new Fl_Button(175, 95, 60, 30, gettext("OK"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)69);
+      o->labelfont(1);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK7);
     } // Fl_Button* o
-    { Fl_Input* o = app_menu = new Fl_Input(110, 15, 130, 25, gettext("Menu Label"));
-      app_menu->box(FL_GTK_DOWN_BOX);
-      app_menu->color((Fl_Color)53);
+    { app_menu = new Fl_Input(100, 15, 130, 25, gettext("Menu Label"));
+      app_menu->box(FL_FLAT_BOX);
+      app_menu->color((Fl_Color)55);
       app_menu->selection_color(FL_DARK_RED);
-      app_menu->callback((Fl_Callback*)cb_app_menu);
       app_menu->when(FL_WHEN_CHANGED);
-      flPanel panel;
-      std::string l= panel.getLabelMenu(5);
-      o->value(l.c_str());
     } // Fl_Input* app_menu
-    { icon_view = new Fl_Button(135, 45, 50, 50);
-      icon_view->box(FL_GTK_DOWN_BOX);
+    { icon_view = new Fl_Button(100, 45, 50, 50);
+      icon_view->box(FL_FLAT_BOX);
+      icon_view->color((Fl_Color)23);
       icon_view->callback((Fl_Callback*)cb_icon_view);
-      icon_view->align(Fl_Align(130));
-      flPanel panel;
-      std::string icon =panel.getImageMenu(5);
-      display(icon.c_str());
+      icon_view->align(Fl_Align(642));
+      //display(icon.c_str());
     } // Fl_Button* icon_view
-    { Fl_Menu_Button* o = new Fl_Menu_Button(40, 125, 105, 30, gettext("Menu Type"));
-      o->box(FL_GTK_UP_BOX);
-      o->selection_color((Fl_Color)80);
-      o->deactivate();
-      if (!menu_Menu_i18n_done) {
-        int i=0;
-        for ( ; i<2; i++)
-          if (menu_Menu[i].label())
-            menu_Menu[i].label(gettext(menu_Menu[i].label()));
-        menu_Menu_i18n_done = 1;
-      }
-      o->menu(menu_Menu);
-    } // Fl_Menu_Button* o
-    { new Fl_Box(45, 60, 70, 25, gettext("Icon"));
+    { new Fl_Box(15, 50, 50, 30, gettext("Icon"));
     } // Fl_Box* o
+    { hidden_icon_name = new Fl_Input(10, 95, 230, 25);
+      hidden_icon_name->box(FL_FLAT_BOX);
+      hidden_icon_name->color((Fl_Color)23);
+      hidden_icon_name->hide();
+    } // Fl_Input* hidden_icon_name
+    { tester = new Fl_Output(205, 45, 25, 25, gettext("Menu"));
+      tester->box(FL_FLAT_BOX);
+      tester->color((Fl_Color)55);
+    } // Fl_Output* tester
     startup(o);
     conf_menu_window->xclass("jsm-panel");
     conf_menu_window->end();
@@ -1504,38 +1549,18 @@ Fl_Double_Window* PanelUI::config_menu_window() {
   return conf_menu_window;
 }
 
-Fl_Double_Window* PanelUI::config_shutdown_window() {
-  { Fl_Double_Window* o = conf_shut_window = new Fl_Double_Window(285, 120, gettext("Configure Shutdown"));
-    conf_shut_window->user_data((void*)(this));
-    { shutdown_icon = new Fl_Button(15, 25, 125, 30, gettext("Shutdown Icon"));
-      shutdown_icon->box(FL_GTK_UP_BOX);
-      shutdown_icon->callback((Fl_Callback*)cb_shutdown_icon);
-    } // Fl_Button* shutdown_icon
-    { Fl_Button* o = new Fl_Button(210, 75, 60, 30, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
-      o->color((Fl_Color)61);
-      o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_OK8);
-    } // Fl_Button* o
-    startup(o);
-    conf_shut_window->xclass("jsm-panel");
-    conf_shut_window->end();
-  } // Fl_Double_Window* conf_shut_window
-  return conf_shut_window;
-}
-
 Fl_Double_Window* PanelUI::config_swallow_window() {
   { Fl_Double_Window* o = conf_swallow_window = new Fl_Double_Window(465, 80, gettext("Configure Swallowed Application"));
     conf_swallow_window->user_data((void*)(this));
     { Fl_Button* o = new Fl_Button(370, 40, 60, 30, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_OK9);
+      o->callback((Fl_Callback*)cb_OK8);
     } // Fl_Button* o
     { Fl_Input* o = swallow_name = new Fl_Input(85, 40, 260, 25, gettext("App Name"));
       swallow_name->tooltip(gettext("This MUST be the same as the executable\'s name"));
-      swallow_name->box(FL_GTK_DOWN_BOX);
+      swallow_name->box(FL_FLAT_BOX);
       swallow_name->color((Fl_Color)53);
       swallow_name->selection_color(FL_DARK_RED);
       swallow_name->callback((Fl_Callback*)cb_swallow_name);
@@ -1545,7 +1570,7 @@ Fl_Double_Window* PanelUI::config_swallow_window() {
       o->value(name);
     } // Fl_Input* swallow_name
     { Fl_Input* o = swallow_config = new Fl_Input(85, 10, 370, 25, gettext("Configure"));
-      swallow_config->box(FL_GTK_DOWN_BOX);
+      swallow_config->box(FL_FLAT_BOX);
       swallow_config->color((Fl_Color)53);
       swallow_config->selection_color(FL_DARK_RED);
       swallow_config->callback((Fl_Callback*)cb_swallow_config);
@@ -1562,58 +1587,66 @@ Fl_Double_Window* PanelUI::config_swallow_window() {
 }
 
 Fl_Double_Window* PanelUI::config_switcher_window() {
-  { Fl_Double_Window* o = conf_switcher = new Fl_Double_Window(265, 250, gettext("Configure Switcher"));
+  { Fl_Double_Window* o = conf_switcher = new Fl_Double_Window(320, 180, gettext("Configure Switcher"));
     conf_switcher->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(190, 205, 60, 30, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
+    { Fl_Button* o = new Fl_Button(240, 105, 60, 30, gettext("OK"));
+      o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->selection_color((Fl_Color)59);
       o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_OKa);
+      o->callback((Fl_Callback*)cb_OK9);
     } // Fl_Button* o
-    { Fl_Box* o = new Fl_Box(15, 10, 140, 30, gettext("Active Foreground"));
+    { Fl_Box* o = new Fl_Box(15, 80, 60, 30, gettext("Active"));
+      o->box(FL_FLAT_BOX);
       if(style_gone()){o->hide();}
     } // Fl_Box* o
-    { Fl_Box* o = new Fl_Box(15, 45, 140, 30, gettext("Active Background"));
+    { Fl_Box* o = new Fl_Box(15, 140, 50, 30, gettext("Active"));
+      o->box(FL_FLAT_BOX);
       if(style_gone()){o->hide();}
     } // Fl_Box* o
-    { Fl_Box* o = new Fl_Box(35, 80, 90, 30, gettext("Foreground"));
+    { Fl_Box* o = new Fl_Box(95, 60, 90, 30, gettext("Foreground"));
+      o->box(FL_FLAT_BOX);
       if(style_gone()){o->hide();}
     } // Fl_Box* o
-    { Fl_Box* o = new Fl_Box(35, 115, 90, 30, gettext("Background"));
+    { Fl_Box* o = new Fl_Box(90, 115, 90, 30, gettext("Background"));
+      o->box(FL_FLAT_BOX);
       if(style_gone()){o->hide();}
     } // Fl_Box* o
-    { Fl_Button* o = new Fl_Button(160, 5, 75, 30);
-      o->box(FL_GTK_UP_BOX);
+    { Fl_Button* o = new Fl_Button(70, 85, 75, 30);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_5);
       o->deactivate();
       flPanel panel;unsigned int c;
       if(style_gone()){o->hide();}
       else{unsigned int color = panel.getFontColor(c,"PagerStyle");o->color(color);}
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(160, 43, 75, 30);
-      o->box(FL_GTK_UP_BOX);
+    { Fl_Button* o = new Fl_Button(70, 140, 75, 30);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_6);
       flPanel panel;unsigned int c;
       if(style_gone()){o->hide();}
       else{unsigned int color = panel.getActiveBackground(c,"PagerStyle");o->color(color);}
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(160, 80, 75, 30);
-      o->box(FL_GTK_UP_BOX);
+    { Fl_Button* o = new Fl_Button(150, 85, 75, 30);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_7);
       flPanel panel;unsigned int c;
       if(style_gone()){o->hide();}
       else{unsigned int color = panel.getFontColor(c,"PagerStyle");o->color(color);}
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(160, 115, 75, 30);
-      o->box(FL_GTK_UP_BOX);
+    { Fl_Button* o = new Fl_Button(150, 140, 75, 30);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_8);
       flPanel panel;unsigned int c;
       if(style_gone()){o->hide();}
       else{unsigned int color = panel.getBackground(c,"PagerStyle");o->color(color);}
     } // Fl_Button* o
-    { Fl_Value_Input* o = num_desktop_w = new Fl_Value_Input(20, 150, 20, 25, gettext("Number of Desktops Wide"));
-      num_desktop_w->box(FL_GTK_DOWN_BOX);
+    { Fl_Value_Input* o = num_desktop_w = new Fl_Value_Input(15, 10, 20, 25, gettext("Number of Desktops Wide"));
+      num_desktop_w->box(FL_FLAT_BOX);
       num_desktop_w->color((Fl_Color)53);
       num_desktop_w->callback((Fl_Callback*)cb_num_desktop_w);
       num_desktop_w->align(Fl_Align(FL_ALIGN_RIGHT));
@@ -1621,8 +1654,8 @@ Fl_Double_Window* PanelUI::config_switcher_window() {
       int width = config.getIntAttribute("Desktops","width");
       o->value(width);
     } // Fl_Value_Input* num_desktop_w
-    { Fl_Value_Input* o = num_desktop_h = new Fl_Value_Input(20, 175, 20, 25, gettext("Number of Desktops High "));
-      num_desktop_h->box(FL_GTK_DOWN_BOX);
+    { Fl_Value_Input* o = num_desktop_h = new Fl_Value_Input(15, 40, 20, 25, gettext("Number of Desktops High "));
+      num_desktop_h->box(FL_FLAT_BOX);
       num_desktop_h->color((Fl_Color)53);
       num_desktop_h->callback((Fl_Callback*)cb_num_desktop_h);
       num_desktop_h->align(Fl_Align(FL_ALIGN_RIGHT));
@@ -1641,37 +1674,43 @@ Fl_Double_Window* PanelUI::make_shortcut_window() {
   { Fl_Double_Window* o = shortcut_window = new Fl_Double_Window(335, 365, gettext("Choose an application to add"));
     shortcut_window->user_data((void*)(this));
     { Fl_Button* o = new Fl_Button(10, 20, 105, 25, gettext("Application"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->selection_color((Fl_Color)40);
       o->callback((Fl_Callback*)cb_Application);
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(10, 100, 65, 25, gettext("Icon"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->selection_color((Fl_Color)40);
       o->callback((Fl_Callback*)cb_Icon1);
     } // Fl_Button* o
     { app_command = new Fl_Input(120, 20, 185, 25);
       app_command->tooltip(gettext("You can add arguments here"));
-      app_command->box(FL_GTK_DOWN_BOX);
+      app_command->box(FL_FLAT_BOX);
       app_command->selection_color((Fl_Color)80);
       app_command->callback((Fl_Callback*)cb_app_command);
       app_command->align(Fl_Align(FL_ALIGN_RIGHT));
       app_command->when(FL_WHEN_ENTER_KEY);
     } // Fl_Input* app_command
     { app_icon_box = new Fl_Box(160, 87, 48, 48);
-      app_icon_box->box(FL_GTK_DOWN_BOX);
+      app_icon_box->box(FL_FLAT_BOX);
       app_icon_box->color((Fl_Color)42);
       app_icon_box->align(Fl_Align(288));
     } // Fl_Box* app_icon_box
     { tooltip = new Fl_Input(120, 60, 185, 25, gettext("Tooltip Label"));
-      tooltip->box(FL_GTK_DOWN_BOX);
+      tooltip->box(FL_FLAT_BOX);
       tooltip->selection_color((Fl_Color)80);
     } // Fl_Input* tooltip
     { Fl_Button* o = new Fl_Button(20, 320, 30, 30, gettext("@+"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->selection_color((Fl_Color)40);
       o->callback((Fl_Callback*)cb_9);
     } // Fl_Button* o
     { ok_button = new Fl_Button(250, 320, 50, 30, gettext("SAVE"));
       ok_button->tooltip(gettext("Write to configuration file"));
-      ok_button->box(FL_GTK_UP_BOX);
+      ok_button->box(FL_FLAT_BOX);
       ok_button->color((Fl_Color)61);
       ok_button->selection_color((Fl_Color)59);
       ok_button->labelcolor((Fl_Color)55);
@@ -1679,6 +1718,7 @@ Fl_Double_Window* PanelUI::make_shortcut_window() {
     } // Fl_Button* ok_button
     { shortcut_border = new Fl_Check_Button(10, 355, 265, 25, gettext("Show a Border around the Button?"));
       shortcut_border->tooltip(gettext("The button you are adding can be borderless, if you like"));
+      shortcut_border->box(FL_FLAT_BOX);
       shortcut_border->down_box(FL_GTK_DOWN_BOX);
       shortcut_border->selection_color(FL_DARK_GREEN);
       shortcut_border->hide();
@@ -1686,20 +1726,22 @@ Fl_Double_Window* PanelUI::make_shortcut_window() {
     } // Fl_Check_Button* shortcut_border
     { Fl_Browser* o = shortcut_browser = new Fl_Browser(10, 140, 295, 175);
       shortcut_browser->type(2);
-      shortcut_browser->box(FL_GTK_DOWN_BOX);
+      shortcut_browser->box(FL_FLAT_BOX);
       shortcut_browser->when(FL_WHEN_NEVER);
       Apps apps;apps.loadTemp();
       apps.getShortcuts(o);o->redraw();
     } // Fl_Browser* shortcut_browser
     { Fl_Button* o = new Fl_Button(55, 320, 30, 30, gettext("-"));
       o->tooltip(gettext("Remove application launcher"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->selection_color((Fl_Color)40);
       o->labelfont(1);
       o->labelsize(45);
       o->callback((Fl_Callback*)cb_a);
     } // Fl_Button* o
     { icon_name = new Fl_Box(85, 100, 220, 25, gettext("Icon File Name"));
-      icon_name->box(FL_GTK_DOWN_BOX);
+      icon_name->box(FL_FLAT_BOX);
       icon_name->hide();
     } // Fl_Box* icon_name
     startup(o);
@@ -1713,12 +1755,15 @@ Fl_Double_Window* PanelUI::make_shortcut_window() {
 Fl_Double_Window* PanelUI::new_panel_window() {
   { Fl_Double_Window* o = new_panel = new Fl_Double_Window(290, 115, gettext("Add a Panel"));
     new_panel->user_data((void*)(this));
-    { Fl_Box* o = new Fl_Box(25, 25, 240, 50, gettext("Only Four Panels are supported Currently"));
+    { Fl_Box* o = new Fl_Box(25, 10, 240, 50, gettext("Only Four Panels are supported"));
       o->align(Fl_Align(FL_ALIGN_WRAP));
     } // Fl_Box* o
-    { Fl_Button* o = new Fl_Button(85, 80, 105, 30, gettext("OK"));
-      o->box(FL_GTK_UP_BOX);
-      o->callback((Fl_Callback*)cb_OKb);
+    { Fl_Button* o = new Fl_Button(120, 75, 55, 30, gettext("OK"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)62);
+      o->selection_color((Fl_Color)58);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_OKa);
     } // Fl_Button* o
     startup(o);
     new_panel->xclass("jsm-panel");
@@ -1764,48 +1809,44 @@ void PanelUI::add_item() {
   Apps app;
   switch (line){
     case 1:
-      //Application Menu
-      app.addAppMenu();
+      //Menu
+      add_new_menu();
       break;
     case 2:
-      //Places Menu
-      app.addPlaces();
-      break;
-    case 3:
-      //Shutdown Menu
-      app.addShutdown();
-      break;
-    case 4:
       //Clock
       app.addClock();
       config_clock_window()->show();
       break;
-    case 5:
+    case 3:
       //Desktop Switcher
       app.addPager();
       config_switcher_window()->show();
       break;
-    case 6:
+    case 4:
       //Indicators
       config_indicator_window()->show();
       add_indicator()->show();
       break;
-    case 7:
+    case 5:
       //Running App List
       app.addTaskList();
       config_applist_window()->show();
       break;
-    case 8:
+    case 6:
       //Launcher
       make_shortcut_window()->show();
       break;
-    case 9:
+    case 7:
       //Swallow
       //app.
       std::cout<<"swallow"<<std::endl;
       break;
   }
   app.populate(app_browser);
+}
+
+void PanelUI::add_new_menu() {
+  printf("Hello, World!\n");
 }
 
 void PanelUI::autohide() {
@@ -1829,11 +1870,6 @@ void PanelUI::cancel_button() {
   panel.cancel();
   panel_window->hide();
   UI ux;ux.showSettings();
-}
-
-void PanelUI::change_menu(int whichStyle) {
-  const char* menuName = app_menu->value();
-  flPanel panel; panel.switchMenu(whichStyle, menuName);
 }
 
 void PanelUI::change_manual_item(std::string input, std::string old_input) {
@@ -1870,42 +1906,40 @@ void PanelUI::coordinate(const char* xy, Fl_Value_Input *o, int get1_set2) {
 }
 
 void PanelUI::config_Item(std::string whichItem) {
-  if(whichItem.compare("App Menu")==0){
+  std::string rootMenu = "Menu: ";
+  unsigned found = whichItem.find(rootMenu);
+  if(found<whichItem.length()){
     config_menu_window()->show();
-  }
-  else if(whichItem.compare("Places Menu")==0){
-        no_config()->show();
-  }
-  else if(whichItem.compare("Shutdown Menu")==0){
-    config_shutdown_window()->show();
-  }
-  else if(whichItem.compare("Desktop Switcher")==0){
-    config_switcher_window()->show();
-  }
-  else if(whichItem.compare("Running App List")==0){
-    if(!style_gone()){config_applist_window()->show();}
-    else{no_config()->show();}
-  }
-  else if(whichItem.compare("Indicators")==0){
-    config_indicator_window()->show();
-  }
-  else if(whichItem.compare("Clock")==0){
-      config_clock_window()->show();
-  }
-  else if(whichItem.compare("")==0){
-    no_config()->show();
+    flPanel panel;
+    std::string tempMenu = whichItem;
+    tempMenu = tempMenu.erase(0,rootMenu.length());
+    const char* resulter = tempMenu.c_str();
+    tester->value(resulter);
+    std::string l= panel.getLabelMenu(resulter);
+    std::string icon =panel.getImageMenu(resulter);
+    display(icon.c_str());
+    hidden_icon_name->value(icon.c_str());
+    app_menu->value(l.c_str());
   }
   else{
-    unsigned found = whichItem.find_first_of(":");
-    std::string passinto = whichItem;
-    if(found<=whichItem.length()){
-      std::string thisItem = whichItem.erase(0,found+1);
-      if(thisItem.compare("Swallowed App")==0){
-          config_swallow_window()->show();
+    if(whichItem.compare("Desktop Switcher")==0){config_switcher_window()->show();}
+    else if(whichItem.compare("Running App List")==0){
+      if(!style_gone()){config_applist_window()->show();}
+      else{no_config()->show();}
+    }
+    else if(whichItem.compare("Indicators")==0){config_indicator_window()->show();}
+    else if(whichItem.compare("Clock")==0){config_clock_window()->show();}
+    else if(whichItem.compare("")==0){no_config()->show();}
+    else{
+    std::string swaller =gettext("Swallowed App");
+      unsigned found = whichItem.find(swaller.c_str());
+      std::string passinto = whichItem;
+      if(found<whichItem.length()){
+        config_swallow_window()->show();
       }
       else{
-        
-        configure_manually_window(passinto)->show();
+        configure_manually_window()->show();
+        manually_in->value(passinto.c_str());
       }
     }
   }
@@ -2112,9 +2146,7 @@ void PanelUI::move_down() {
 }
 
 void PanelUI::new_panel_items(Fl_Browser *o) {
-  o->add("Application Menu");
-  o->add("Places Menu");
-  o->add("Shutdown Menu");
+  o->add("Menu");
   o->add("Clock");
   o->add("Desktop Switcher");
   o->add("Indicators");
@@ -2324,68 +2356,6 @@ void PanelUI::input_width_height_border(Fl_Slider *slider_o, Fl_Value_Input *inp
     }
   }
   fl_panel.setValue(dimension,panelSize);
-}
-
-Fl_Double_Window* PanelUI::clock_notes_window() {
-  { Fl_Double_Window* o = clock_info = new Fl_Double_Window(360, 420, gettext("Notes"));
-    clock_info->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(15, 15, 335, 390);
-      { Fl_Box* o = new Fl_Box(15, 15, 335, 390, gettext("ISO 8601 week dates %G,  %g,  and  %V yield values calculated from the week-b\
-ased year defined by the ISO 8601 standard.  In this system, weeks start  on a\
-  Monday,  and are numbered from 01, for the first week, up to 52 or 53, for t\
-he last week.  Week 1 is the first week where four  or more  days fall within \
-the new year (or, synonymously, week 01 is: the first week of the year that co\
-ntains a Thursday; or, the  week that  has 4 January in it).  When three of fe\
-wer days of the first calendar week of the new year fall within that year, the\
-n the  ISO 8601 week-based system counts those days as part of week 53 of the \
-preceding year.  For example, 1 January 2010 is a Friday,  meaning that  just \
- three  days of that calendar week fall in 2010.  Thus, the ISO 8601 week-base\
-d system considers these days to be part  of week  53 (%V) of the year 2009 (%\
-G); week 01 of ISO 8601 year 2010 starts on Monday, 4 January 2010."));
-        o->box(FL_GTK_DOWN_BOX);
-        o->color(FL_LIGHT3);
-        o->align(Fl_Align(FL_ALIGN_WRAP));
-      } // Fl_Box* o
-      o->end();
-    } // Fl_Scroll* o
-    Config config; config.under_mouse(o);
-    clock_info->xclass("jsm-panel");
-    clock_info->end();
-    clock_info->resizable(clock_info);
-  } // Fl_Double_Window* clock_info
-  return clock_info;
-}
-
-Fl_Double_Window* PanelUI::clock_info_window() {
-  { Fl_Double_Window* o = clock_modifier_notes = new Fl_Double_Window(360, 405, gettext("Modifier Notes"));
-    clock_modifier_notes->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(15, 10, 340, 350);
-      { Fl_Box* o = new Fl_Box(15, 10, 340, 350, gettext("Some conversion specifications can be modified  by  preceding  the conversion\
-  specifier character by the E or O modifier to indicate that an alternative f\
-ormat should be  used.   If  the  alternative format or specification does not\
- exist for the current locale, the behavior will be as if  the  unmodified  co\
-nversion  specification were  used.  (SU) The Single UNIX Specification mentio\
-ns %Ec, %EC, %Ex, %EX, %Ey, %EY, %Od, %Oe, %OH, %OI, %Om, %OM, %OS,  %Ou,  %OU\
-, %OV,  %Ow,  %OW, %Oy, where the effect of the O modifier is to use alternati\
-ve numeric symbols (say, roman numerals), and that of the E  modifier  is  to \
-use a locale-dependent alternative representation.\nThe broken-down time struc\
-ture tm is  defined  in  <time.h>."));
-        o->box(FL_GTK_DOWN_BOX);
-        o->color(FL_LIGHT3);
-        o->align(Fl_Align(FL_ALIGN_WRAP));
-      } // Fl_Box* o
-      o->end();
-    } // Fl_Scroll* o
-    { Fl_Button* o = new Fl_Button(20, 370, 115, 30, gettext("See also ctime"));
-      o->box(FL_GTK_UP_BOX);
-      o->callback((Fl_Callback*)cb_See);
-    } // Fl_Button* o
-    Config config; config.under_mouse(o);
-    clock_modifier_notes->xclass("jsm-panel");
-    clock_modifier_notes->end();
-    clock_modifier_notes->resizable(clock_modifier_notes);
-  } // Fl_Double_Window* clock_modifier_notes
-  return clock_modifier_notes;
 }
 
 bool PanelUI::style_gone() {

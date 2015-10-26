@@ -89,55 +89,55 @@ class DesktopUI {open : {public Config}
     code {load();
 saveChangesTemp();} {}
     Fl_Window desktop_window {
-      label {Desktop Settings} open
-      xywh {248 531 395 515} type Double color 31 hide resizable
-      code0 {startup(o);} xclass {jsm-desktop}
+      label {Desktop Settings} open selected
+      xywh {248 281 395 490} type Double color 31 resizable
+      code0 {startup(o);} xclass {jsm-desktop} visible
     } {
       Fl_Scroll {} {open
-        xywh {0 0 395 510} color 31
+        xywh {0 0 395 490} color 31
       } {
         Fl_Box background_displayer_thingie {
-          xywh {25 85 345 270} box GTK_DOWN_BOX color 37 when 6
+          xywh {25 65 345 270} box FLAT_BOX color 37 when 6
           code0 {background(o);}
         }
         Fl_Box color_display1 {
-          xywh {25 85 345 270} box GTK_DOWN_BOX color 37 when 6
+          xywh {25 65 345 270} box FLAT_BOX color 37 when 6
           code0 {background1(o);}
         }
         Fl_Box color_display2 {
-          xywh {25 215 345 140} box GTK_DOWN_BOX color 37 when 6
+          xywh {25 195 345 140} box FLAT_BOX color 37 when 6
           code0 {background2(o);}
         }
         Fl_Button {} {
           label {Choose Image}
           callback {bg_chooser_cb();}
-          xywh {25 370 110 25} box GTK_UP_BOX
+          xywh {20 345 110 25} box FLAT_BOX color 23
         }
         Fl_Button {} {
           label {Choose Color}
           callback {one_color();}
-          tooltip {This will take icons off the desktop} xywh {260 375 110 25} box GTK_UP_BOX
+          tooltip {This will take icons off the desktop} xywh {140 345 110 25} box FLAT_BOX color 23
         }
         Fl_Button {} {
           label {Choose Gradient}
           callback {two_color();}
-          tooltip {This will take icons off the desktop} xywh {255 415 125 25} box GTK_UP_BOX
+          tooltip {This will take icons off the desktop} xywh {260 345 125 25} box FLAT_BOX color 23
         }
         Fl_Check_Button icons_check {
           label {Icons on Desktop}
           callback {use_icons_on_desktop();}
-          xywh {20 405 150 25} down_box GTK_DOWN_BOX selection_color 59 align 24 when 1
+          xywh {15 380 150 25} box FLAT_BOX down_box GTK_DOWN_BOX color 31 selection_color 59 align 24 when 1
           code0 {icons_on_desktop();}
         }
         Fl_Output current_bg {
           label {Current Background}
-          xywh {25 30 345 30} box GTK_DOWN_BOX color 50 selection_color 72 labelfont 1 align 33
+          xywh {25 30 345 30} box FLAT_BOX color 50 selection_color 72 labelfont 1 align 33
           code0 {bg_name(o);}
         }
         Fl_Check_Button {} {
           label {Multiple Desktops}
           callback {useMultipleDesktops();}
-          tooltip {This allows you to have multiple screens to work on from one Display} xywh {20 430 155 25} down_box GTK_DOWN_BOX selection_color 59 align 24 when 1
+          tooltip {This allows you to have multiple screens to work on from one Display} xywh {15 405 155 25} box FLAT_BOX down_box GTK_DOWN_BOX color 31 selection_color 59 align 24 when 1
           code1 {bool m = multipleDesktops();}
           code2 {if(m){o->value(1);}}
           code3 {else{o->value(0);}}
@@ -146,7 +146,7 @@ saveChangesTemp();} {}
           label {Number of Desktops Wide}
           callback {int width = int((o->value()));
 num_desktop_wh_cb("width",width);}
-          xywh {20 455 20 25} box GTK_DOWN_BOX color 53 align 8
+          xywh {175 380 20 25} box FLAT_BOX color 53 align 8
           code0 {int width = getIntAttribute("Desktops","width");}
           code1 {o->value(width);}
         }
@@ -154,7 +154,7 @@ num_desktop_wh_cb("width",width);}
           label {Number of Desktops High }
           callback {int height = int((o->value()));
 num_desktop_wh_cb("height",height);}
-          xywh {20 480 20 25} box GTK_DOWN_BOX color 53 align 8
+          xywh {175 410 20 25} box FLAT_BOX color 53 align 8
           code0 {int height = getIntAttribute("Desktops","height");}
           code1 {o->value(height);}
         }
@@ -164,7 +164,7 @@ num_desktop_wh_cb("height",height);}
 desktop_window->hide();
 UI ux;
 ux.showSettings();}
-          xywh {260 480 65 25} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
+          xywh {140 450 65 25} box FLAT_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button {} {
           label OK
@@ -172,7 +172,7 @@ ux.showSettings();}
 desktop_window->hide();
 UI ux;
 ux.showSettings();}
-          tooltip {Write to configuration file} xywh {335 480 45 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
+          tooltip {Write to configuration file} xywh {215 450 45 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
         }
       }
     }
@@ -416,7 +416,6 @@ setAttribute("Desktops","height",height);
   Function {startup(Fl_Window *o)} {open
   } {
     code {Config config; config.under_mouse(o);
-o->icon(config.Get_Fl_Icon(jsm_desktop_xpm));} {selected
-    }
+o->icon(config.Get_Fl_Icon(jsm_desktop_xpm));} {}
   }
 } 

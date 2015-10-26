@@ -77,7 +77,7 @@ int flThemes::populateUserThemes(Fl_Browser *o){
             if ((itemName.compare(".")==0)||(itemName.compare("..")==0)){/*DO NOTHING*/}
             else{o->add(itemName.c_str());}
         }
-        closedir (dir);
+        if(dir!=NULL){closedir (dir);}
     }
     else {
         perror ("");
@@ -108,7 +108,7 @@ int flThemes::populateThemes(Fl_Browser *o){
                 o->add(itemName.c_str());
             }
         }
-        closedir (dir);
+        if(dir!=NULL){closedir (dir);}
     }
     else {
         perror ("");

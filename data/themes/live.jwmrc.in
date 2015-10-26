@@ -1,38 +1,42 @@
 <?xml version="1.0"?>
 <JWM>
 <!-- MENUS -->
+    <!-- Main Menu -->
     @MENUS_LIST_NEW@
+    <!--These menus provide a nice exit dialog and no menu on desktop click 1-->
+    <RootMenu height="0" onroot="z">
+        <Exit label="Logout" confirm="false" icon="@LOGOUT_ICON@"/>
+    </RootMenu>
+    <RootMenu onroot="1"/>
+    <!--Traybutton Edit Menu-->
+@EDIT_PANEL@
+@EDIT_MENU@
+    <!-- Mouse Menu-->
+    @MOUSE_MENU@
+    <!--Shudown Menu-->
+    <RootMenu height="0" onroot="9">
+        @SHUTERDOWN@
+    </RootMenu>
+@CLOCK_MENU@
 <!-- END MENUS -->
 <!-- GROUP -->
     @GROUPS@
+    @LIVE_GROUPS@
 <!-- PANEL -->
     @DEFAULT_TRAY@
 <!-- Panel Style -->
-    <TaskListStyle>
-        <Font>@FONT@</Font>
-        <Active>
-		<Foreground>@TASK_ACTIVE_FOREGROUND@</Foreground>
-		<Background>@TASK_ACTIVE_BACKGROUND@</Background>
-        </Active>
-        <Foreground>@TASK_FOREGROUND@</Foreground>
-        <Background>@TASK_BACKGROUND@</Background>
-    </TaskListStyle>
     <TrayStyle>
         <Font>@FONT@</Font>
         <Foreground>@TRAY_FOREGROUND@</Foreground>
         <Background>@TRAY_BACKGROUND@</Background>
         <Opacity>@TRAY_OPACITY@</Opacity>
     </TrayStyle>
-    <TrayButtonStyle>
-	<Font>@FONT@</Font>
-        <Foreground>@TRAY_BUTTON_FOREGROUND@</Foreground>
-        <Background>@TRAY_BUTTON_BACKGROUND@</Background>
-    </TrayButtonStyle>
     <PagerStyle>
         <Active>
 		<Foreground>@PAGER_ACTIVE_FOREGROUND@</Foreground>
 		<Background>@PAGER_ACTIVE_BACKGROUND@</Background>
         </Active>
+        <Text>@PAGER_ACTIVE_FOREGROUND@</Text>
         <Outline>@PAGER_OUTLINE@</Outline>
         <Foreground>@PAGER_FOREGROUND@</Foreground>
         <Background>@PAGER_BACKGROUND@</Background>

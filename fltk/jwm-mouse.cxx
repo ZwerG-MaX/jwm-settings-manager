@@ -39,7 +39,10 @@ void MouseUI::cb_Cancel(Fl_Button* o, void* v) {
 }
 
 void MouseUI::cb_OK_i(Fl_Button*, void*) {
+  if(deltaChanged || doubleChanged){
   saveChanges();
+}
+SaveSettings();
 add_to_profile();
 mouse_window->hide();
 UI ux;
@@ -209,14 +212,14 @@ void MouseUI::cb_LBCornerButton(Fl_Choice* o, void* v) {
 
 unsigned char MouseUI::menu_LBCornerButton_i18n_done = 0;
 Fl_Menu_Item MouseUI::menu_LBCornerButton[] = {
- {"disable", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"left button", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"center button", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"right button", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"up wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"down wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"left wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"right wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
+ {"disable", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"left button", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"center button", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"right button", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"up wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"down wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"left wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"right wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
 
@@ -229,14 +232,14 @@ void MouseUI::cb_RBCornerButton(Fl_Choice* o, void* v) {
 
 unsigned char MouseUI::menu_RBCornerButton_i18n_done = 0;
 Fl_Menu_Item MouseUI::menu_RBCornerButton[] = {
- {"disable", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"left button", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"center button", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"right button", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"up wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"down wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"left wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
- {"right wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 12, 0},
+ {"disable", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"left button", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"center button", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"right button", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"up wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"down wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"left wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"right wheel", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
 
@@ -401,6 +404,7 @@ int speed=o->value();
 mouse.setDoubleClick(speed);
 double_v->value(speed);
 saveChangesTemp();
+doubleChanged = true;
 }
 void MouseUI::cb_double_click_slider(Fl_Slider* o, void* v) {
   ((MouseUI*)(o->parent()->parent()->user_data()))->cb_double_click_slider_i(o,v);
@@ -412,6 +416,7 @@ int delta=o->value();
 mouse.setDelta(delta);
 delta_v->value(delta);
 saveChangesTemp();
+deltaChanged = true;
 }
 void MouseUI::cb_delta_slider(Fl_Slider* o, void* v) {
   ((MouseUI*)(o->parent()->parent()->user_data()))->cb_delta_slider_i(o,v);
@@ -423,6 +428,7 @@ int delta=o->value();
 mouse.setDelta(delta);
 delta_slider->value(delta);
 saveChangesTemp();
+deltaChanged = true;
 }
 void MouseUI::cb_delta_v(Fl_Value_Input* o, void* v) {
   ((MouseUI*)(o->parent()->parent()->user_data()))->cb_delta_v_i(o,v);
@@ -434,6 +440,7 @@ int speed=o->value();
 mouse.setDoubleClick(speed);
 double_click_slider->value(speed);
 saveChangesTemp();
+doubleChanged = true;
 }
 void MouseUI::cb_double_v(Fl_Value_Input* o, void* v) {
   ((MouseUI*)(o->parent()->parent()->user_data()))->cb_double_v_i(o,v);
@@ -442,13 +449,15 @@ void MouseUI::cb_double_v(Fl_Value_Input* o, void* v) {
 Fl_Double_Window* MouseUI::make_window() {
   load();
   saveChangesTemp();
+  deltaChanged = false;
+  doubleChanged = false;
   { Fl_Double_Window* o = mouse_window = new Fl_Double_Window(440, 535, gettext("Mouse Settings"));
     mouse_window->color((Fl_Color)31);
     mouse_window->user_data((void*)(this));
     { Fl_Scroll* o = new Fl_Scroll(0, 10, 440, 525);
       o->color((Fl_Color)31);
       { Fl_Button* o = new Fl_Button(300, 505, 65, 25, gettext("Cancel"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
         o->labelcolor(FL_BACKGROUND2_COLOR);
@@ -456,15 +465,17 @@ Fl_Double_Window* MouseUI::make_window() {
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(380, 505, 45, 25, gettext("OK"));
         o->tooltip(gettext("Write to configuration file"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->color((Fl_Color)61);
         o->selection_color((Fl_Color)59);
         o->labelcolor((Fl_Color)55);
         o->callback((Fl_Callback*)cb_OK);
       } // Fl_Button* o
       { Fl_Tabs* o = new Fl_Tabs(45, 85, 345, 415);
-        o->box(FL_GTK_THIN_UP_BOX);
+        o->box(FL_FLAT_BOX);
+        o->selection_color((Fl_Color)51);
         { Fl_Group* o = new Fl_Group(55, 115, 320, 365, gettext("TouchPad"));
+          o->hide();
           { TouchpadOff = new Fl_Choice(230, 150, 65, 20, gettext("Touchpad Mode"));
             TouchpadOff->tooltip(gettext("Toggle the pad ON/OFF or only move (no scroll, tap, ecc.)"));
             TouchpadOff->box(FL_GTK_DOWN_BOX);
@@ -539,7 +550,6 @@ Fl_Double_Window* MouseUI::make_window() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(45, 130, 340, 365, gettext("Tapping"));
-          o->hide();
           { TapButton1 = new Fl_Choice(215, 140, 110, 20, gettext("One Finger"));
             TapButton1->tooltip(gettext("Which mouse button is reported on a non-corner one-finger tap"));
             TapButton1->box(FL_NO_BOX);
@@ -948,7 +958,7 @@ tap"));
         o->value(h);
       } // Fl_Slider* delta_slider
       { Fl_Value_Input* o = delta_v = new Fl_Value_Input(270, 55, 40, 25, gettext("Pixels"));
-        delta_v->box(FL_GTK_DOWN_BOX);
+        delta_v->box(FL_FLAT_BOX);
         delta_v->labelsize(12);
         delta_v->minimum(1);
         delta_v->maximum(32);
@@ -958,7 +968,7 @@ tap"));
         o->value(delta_slider->value());
       } // Fl_Value_Input* delta_v
       { Fl_Value_Input* o = double_v = new Fl_Value_Input(270, 20, 60, 25, gettext("Miliseconds"));
-        double_v->box(FL_GTK_DOWN_BOX);
+        double_v->box(FL_FLAT_BOX);
         double_v->labelsize(12);
         double_v->minimum(1);
         double_v->maximum(2000);
@@ -978,6 +988,31 @@ tap"));
   return mouse_window;
 }
 
+void MouseUI::add_to_profile() {
+  std::string string_command = "sed -i 's/Parameter settings:/synclient/' ";
+  string_command += getenv("HOME");
+  string_command += "/.jsm-mouse";
+  const char* command = string_command.c_str();
+  int working_sed = system(command);
+  string_command = "awk '{$1=$1}{gsub(/[ ]/,\"\"); print}' ORS=' ' ";
+  string_command += getenv("HOME");
+  string_command += "/.jsm-mouse >";
+  string_command += getenv("HOME");
+  string_command += "/.config/jsm-mouse";
+  working_sed = system(string_command.c_str());
+  string_command = "chmod +x ";
+  string_command += getenv("HOME");
+  string_command += "/.config/jsm-mouse";
+  working_sed = system(string_command.c_str());
+  string_command = "sed -i '1i#!/bin/bash' ";
+  string_command += getenv("HOME");
+  string_command += "/.config/jsm-mouse";
+  working_sed = system(string_command.c_str());
+  if(working_sed!=0){
+    std::cerr<< string_command<<" did not return 0"<<std::endl;
+  }
+}
+
 void MouseUI::CalibrateEdge(int edge) {
   int fds[2];
   int thispipe = pipe(fds);
@@ -991,7 +1026,7 @@ void MouseUI::CalibrateEdge(int edge) {
       close(fds[1]);
       snprintf(tmp,1024,"(%s) 1>&2","synclient -m 100");
       if (verbose) printf("Executing: %s\n",tmp);
-      execlp("/bin/sh", "sh", "-c", tmp, 0);
+      execlp("/bin/sh", "sh", "-c", tmp, (char *)0);
     }	
     fl_cursor(FL_CURSOR_WAIT);
     Fl::check();
@@ -1026,6 +1061,34 @@ void MouseUI::CalibrateEdge(int edge) {
   	
   fl_cursor(FL_CURSOR_DEFAULT);
   Fl::check();
+}
+
+double MouseUI::convert(std::string number) {
+  std::stringstream out;
+  out << number;
+  double integer;
+  out >> integer;
+  return integer;
+}
+
+std::string MouseUI::convert(double number) {
+  std::string num;
+  std::stringstream out;
+  out << number;
+  num = out.str();
+  return num;
+}
+
+int MouseUI::parseline(char *line, char **argv, int maxarg) {
+  int argc=0;
+  while (*line!=0 && argc<maxarg) {      
+    while (*line==' ' || *line=='\t' || *line =='\n') *line++=0;     
+    *argv++ = line;
+    argc++;
+    while (*line!=0 && *line!=' ' && *line!='\t' && *line!='\n') line++;             
+  }
+  *argv = 0;
+  return argc;
 }
 
 void MouseUI::parsesynclientoutput(std::string filename) {
@@ -1176,60 +1239,9 @@ void MouseUI::synclient(const char* field, double value) {
   tmp +="=";
   tmp += convert(value);
   int check =system(tmp.c_str());
-  //std::cout<<tmp<<" returns: "<<check<<std::endl;
-}
-
-double MouseUI::convert(std::string number) {
-  std::stringstream out;
-  out << number;
-  double integer;
-  out >> integer;
-  return integer;
-}
-
-std::string MouseUI::convert(double number) {
-  std::string num;
-  std::stringstream out;
-  out << number;
-  num = out.str();
-  return num;
-}
-
-void MouseUI::add_to_profile() {
-  std::string string_command = "sed -i 's/Parameter settings:/synclient/' ";
-  string_command += getenv("HOME");
-  string_command += "/.jsm-mouse";
-  const char* command = string_command.c_str();
-  int working_sed = system(command);
-  string_command = "awk '{$1=$1}{gsub(/[ ]/,\"\"); print}' ORS=' ' ";
-  string_command += getenv("HOME");
-  string_command += "/.jsm-mouse >";
-  string_command += getenv("HOME");
-  string_command += "/.config/jsm-mouse";
-  working_sed = system(string_command.c_str());
-  string_command = "chmod +x ";
-  string_command += getenv("HOME");
-  string_command += "/.config/jsm-mouse";
-  working_sed = system(string_command.c_str());
-  string_command = "sed -i '1i#!/bin/bash' ";
-  string_command += getenv("HOME");
-  string_command += "/.config/jsm-mouse";
-  working_sed = system(string_command.c_str());
-  if(working_sed!=0){
-    //std::cout<< string_command<<" did not return 0"<<std::endl;
+  if(check!=0){
+    std::cerr<<tmp<<" returns: "<<check<<std::endl;
   }
-}
-
-int MouseUI::parseline(char *line, char **argv, int maxarg) {
-  int argc=0;
-  while (*line!=0 && argc<maxarg) {      
-    while (*line==' ' || *line=='\t' || *line =='\n') *line++=0;     
-    *argv++ = line;
-    argc++;
-    while (*line!=0 && *line!=' ' && *line!='\t' && *line!='\n') line++;             
-  }
-  *argv = 0;
-  return argc;
 }
 
 void MouseUI::startup(Fl_Window *o) {

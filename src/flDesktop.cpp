@@ -301,15 +301,19 @@ const char* flDesktop::getPCmanFMbg(){
         std::string result = grep("wallpaper=",pcmanconfig);
         if (result.compare("")!=0){
             unsigned int found = result.find_first_of("=");
-            result=result.erase(0,found+1);
-            if (result.compare("")!=0){return result.c_str();}
+            if((found+1) < result.length()){
+                result=result.erase(0,found+1);
+                if (result.compare("")!=0){return result.c_str();}
+            }
         }
         else {
             result = grep("wallpaper=",defaultConfig);
             if (result.compare("")!=0){
                 unsigned int found2 = result.find_first_of("=");
-                result=result.erase(0,found2+1);
-                if (result.compare("")!=0){return result.c_str();}
+                if((found2+1)< result.length()){
+                    result=result.erase(0,found2+1);
+                    if (result.compare("")!=0){return result.c_str();}
+                }
             }
         }
         result = getBackground();
@@ -474,11 +478,9 @@ bool flDesktop::filemanagerRunning(std::string filemanagerToCheck){
             std::string fromDoc = node->GetText();
             //make sure there are no arguments passed to the startup command (like --desktop)
             //so look for the first space
-            int position = fromDoc.find(' ');
-            //make an end marker
-            int this_npos = static_cast<int> (std::string::npos);
+            unsigned int position = fromDoc.find(' ');
             //is position the end???
-            if (position != this_npos){
+            if (position < fromDoc.length()){
                 //delete the arguments after the space
                 fromDoc = fromDoc.erase(position, std::string::npos);
                 //turn it into a char for comparing

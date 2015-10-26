@@ -42,7 +42,14 @@ class flKeyboard : public Config
         void getKeys(Fl_Browser *o);
         void addKey(const char * key, const char * shortcut);
         void addKey(const char * keyMod, const char * key, const char * shortcut);
-        void deleteKey(const char * keyShortcut);
+        void deleteKey(std::string keyShortcut);
+        void configureKey(std::string keyShortcut, std::string newmod1, std::string newmod2, std::string newmod3, std::string newkey, std::string newaction);
+        std::string getMod(std::string keyShortcut);
+        std::string getMod1(std::string keyShortcut);
+        std::string getMod2(std::string keyShortcut);
+        std::string getMod3(std::string keyShortcut);
+        std::string getKey(std::string keyShortcut);
+        std::string getAction(std::string keyShortcut);
         std::string grabbedKey();
         flKeyboard();
         virtual ~flKeyboard();

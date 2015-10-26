@@ -45,7 +45,7 @@
 
 //FLTK stuff
 #include "../fltk/jwm-panel.h"
-#include <Fl/Fl_Widget.h>
+#include <Fl/Fl_Widget.H>
 //All the common functions
 #include "Config.h"
 
@@ -109,46 +109,18 @@ public:
     const char* horizontalORvertical(int horizontalValue, int verticalValue);
 
     ///Menu
-    //Menu functions IN Config
-    /*
-        labelMenu
-        isMenu
-        addMenu
-        deleteMenu
-        getLabelMenu
-        getImageMenu
-        setImageMenu
+    /** Menu functions IN #Config
+        Config::labelMenu
+        Config::isMenu
+        Config::addMenu
+        Config::deleteMenu
+        Config::getLabelMenu
+        Config::getImageMenu
+        Config::setImageMenu
     */
-    //Menu functions IN Apps
-    /*
-        ///APPS
-        isAppMenu
-        addAppMenu
-        deleteAppMenu
-        ///PLACES
-        isPlaces
-        addPlaces
-        deletePlaces
-        ///SHUTDOWN
-        isShutdown
-        addShutdown
-        deleteShutdown
-        setShutdownImage
-    */
-    //menu functions here
-    void menuLabel(const char * label);
-    std::string getMenuLabel(){return getLabelMenu(rootMenu);}
-    std::string getMenuImage(){return getImageMenu(rootMenu);}
-    void setMenuImage(const char* icon){setImageMenu(icon, rootMenu);}
 
-    //switchers
-    void switchMenu(int whichStyle, const char* MenuName);
-    void switchMenuInclude(std::string changeTHIS, std::string toTHIS);
+    //switcher
     void switchButton(std::string OLD,std::string NEW,std::string tooltip,std::string icon);
-    //VARIABLES for menu
-    std::string torimenu;
-    std::string gnomemenu;
-    std::string sysmenu;// = "gnomesystem";
 
     ///Layout and Positioning (including Autohide)
     void panelLayout(const char* layout){setValue("layout",layout);}
@@ -175,8 +147,8 @@ public:
     virtual ~flPanel();
 
     ///Global variables
-    int rootMenu;
-    int systemMenu;
+    const char* rootMenu;
+    const char* systemMenu;
     std::string errorMessage;
     std::string align;
     const char* iconExt;

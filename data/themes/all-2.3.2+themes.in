@@ -11,8 +11,6 @@
     <!--Traybutton Edit Menu-->
 @EDIT_PANEL@
 @EDIT_MENU@
-    <!--Places Menu-->
-    <Include>$HOME/.config/placesmenu</Include>
     <!-- Mouse Menu-->
     @MOUSE_MENU@
     <!--Shudown Menu-->

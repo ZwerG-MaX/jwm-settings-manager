@@ -76,18 +76,18 @@ class FontUI {open : {public Config}
 saveChangesTemp();} {}
     Fl_Window font_window {
       label {Font Settings} open
-      xywh {1205 530 380 410} type Double color 31 resizable
+      xywh {143 239 380 410} type Double color 31 resizable
       code0 {startup(o);} xclass {jsm-fonts} visible
     } {
-      Fl_Scroll {} {open
+      Fl_Scroll {} {selected
         xywh {0 -5 380 415} color 31
       } {
         Fl_Box window_box {
-          xywh {10 8 355 113} box GTK_DOWN_BOX color 50
+          xywh {10 8 355 113} box FLAT_BOX color 44
         }
         Fl_Output window_font {
           label {Window Title Font Name}
-          xywh {40 55 160 25} box GTK_DOWN_BOX color 53 selection_color 72 align 1 when 1
+          xywh {40 55 160 25} box FLAT_BOX color 53 selection_color 72 align 1 when 1
           code0 {get_font("WindowStyle",o);}
         }
         Fl_Box {} {
@@ -96,7 +96,7 @@ saveChangesTemp();} {}
         }
         Fl_Button active_window_font_color_button {
           callback {window_font_color(o, 1);}
-          xywh {295 40 60 25} box GTK_UP_BOX when 6
+          xywh {295 40 60 25} box FLAT_BOX color 23 when 6
           code0 {get_window_font_color(o,1);}
         }
         Fl_Button {} {
@@ -104,7 +104,7 @@ saveChangesTemp();} {}
           callback {currentElement = "WindowStyle";
 Widget=window_font;
 font_chooser_window()->show();}
-          tooltip {Open the font list Window} xywh {210 50 75 30} box GTK_UP_BOX color 40 labelcolor 7
+          tooltip {Open the font list Window} xywh {210 50 75 30} box FLAT_BOX color 23
         }
         Fl_Box {} {
           label Inactive
@@ -112,15 +112,15 @@ font_chooser_window()->show();}
         }
         Fl_Button window_font_color_button {
           callback {window_font_color(o, 2);}
-          xywh {295 90 60 25} box GTK_UP_BOX when 6
+          xywh {295 90 60 25} box FLAT_BOX color 23 when 6
           code0 {get_window_font_color(o,2);}
         }
         Fl_Box menu_box {
-          xywh {10 130 355 115} box GTK_DOWN_BOX color 50
+          xywh {10 130 355 115} box FLAT_BOX color 44
         }
         Fl_Output menu_font {
           label {Menu Font Name}
-          xywh {40 160 160 25} box GTK_DOWN_BOX color 53 selection_color 72 align 1
+          xywh {40 160 160 25} box FLAT_BOX color 53 selection_color 72 align 1
           code0 {get_font("MenuStyle",o);}
         }
         Fl_Button {} {
@@ -128,16 +128,16 @@ font_chooser_window()->show();}
           callback {currentElement = "MenuStyle";
 Widget=menu_font;
 font_chooser_window()->show();}
-          tooltip {Open the font list Window} xywh {210 155 75 30} box GTK_UP_BOX color 40 labelcolor 7
+          tooltip {Open the font list Window} xywh {210 155 75 30} box FLAT_BOX color 23
         }
         Fl_Button menu_font_color_button {
           callback {font_color(o, "MenuStyle");}
-          xywh {295 160 60 25} box GTK_UP_BOX when 6
+          xywh {295 160 60 25} box FLAT_BOX color 23 when 6
           code0 {get_font_color(o,"MenuStyle");}
         }
         Fl_Output panel_button_font {
           label {Panel Button Font Name}
-          xywh {40 210 160 25} box GTK_DOWN_BOX color 53 selection_color 72 align 1
+          xywh {40 210 160 25} box FLAT_BOX color 53 selection_color 72 align 1
           code0 {if(!newOne()){get_font("TrayButtonStyle",o);}}
           code1 {else{o->hide();}}
         }
@@ -146,21 +146,21 @@ font_chooser_window()->show();}
           callback {currentElement = "TrayButtonStyle";
 Widget=panel_button_font;
 font_chooser_window()->show();}
-          tooltip {Open the font list Window} xywh {210 205 75 30} box GTK_UP_BOX color 40 labelcolor 7
+          tooltip {Open the font list Window} xywh {210 205 75 30} box FLAT_BOX color 23
           code0 {if(newOne()){o->hide();}}
         }
         Fl_Button traybutton_font_color_button {
           callback {font_color(o, "TrayButtonStyle");}
-          xywh {295 210 60 25} box GTK_UP_BOX when 6
+          xywh {295 210 60 25} box FLAT_BOX color 23 when 6
           code0 {if(!newOne()){get_font_color(o,"TrayButtonStyle");}}
           code1 {else{o->hide();}}
         }
         Fl_Box panel_box {
-          xywh {10 255 355 115} box GTK_DOWN_BOX color 50
+          xywh {10 255 355 115} box FLAT_BOX color 44
         }
         Fl_Output panel_font {
           label {Panel Font Name}
-          xywh {45 275 160 25} box GTK_DOWN_BOX color 53 selection_color 72 align 1
+          xywh {45 275 160 25} box FLAT_BOX color 53 selection_color 72 align 1
           code0 {get_font("TrayStyle",o);}
         }
         Fl_Button {} {
@@ -168,21 +168,21 @@ font_chooser_window()->show();}
           callback {currentElement = "TrayStyle";
 Widget=panel_font;
 font_chooser_window()->show();}
-          tooltip {Open the font list Window} xywh {210 275 75 30} box GTK_UP_BOX color 40 labelcolor 7
+          tooltip {Open the font list Window} xywh {210 275 75 30} box FLAT_BOX color 23
         }
         Fl_Button panel_font_color_button {
           callback {font_color(o, "TrayStyle");}
-          xywh {295 280 60 25} box GTK_UP_BOX when 6
+          xywh {295 280 60 25} box FLAT_BOX color 23 when 6
           code0 {get_font_color(o,"TrayStyle");}
         }
         Fl_Button task_font_color_button {
           callback {font_color(o, "TaskListStyle");}
-          xywh {295 335 60 25} box GTK_UP_BOX when 6
+          xywh {295 335 60 25} box FLAT_BOX color 23 when 6
           code0 {if(newOne()){o->hide();}else{get_font_color(o,"TaskListStyle");}}
         }
         Fl_Output task_font {
           label {Running App List Font Name}
-          xywh {45 335 160 25} box GTK_DOWN_BOX color 53 selection_color 72 align 1
+          xywh {45 335 160 25} box FLAT_BOX color 53 selection_color 72 align 1
           code0 {if(!newOne()){get_font( "TaskListStyle", o);}}
           code1 {else{o->hide();}}
         }
@@ -191,7 +191,7 @@ font_chooser_window()->show();}
           callback {currentElement = "TaskListStyle";
 Widget=task_font;
 font_chooser_window()->show();}
-          tooltip {Open the font list Window} xywh {210 335 75 30} box GTK_UP_BOX color 40 labelcolor 7
+          tooltip {Open the font list Window} xywh {210 335 75 30} box FLAT_BOX color 23
           code0 {if(newOne()){o->hide();}}
         }
         Fl_Button {} {
@@ -200,15 +200,14 @@ font_chooser_window()->show();}
 font_window->hide();
 UI ux;
 ux.showSettings();}
-          tooltip {No changes will be saved} xywh {245 375 60 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+          tooltip {No changes will be saved} xywh {245 375 60 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button {} {
           label OK
-          callback {saveJWMRC();
-font_window->hide();
+          callback {saveJWMRC(font_window);
 UI ux;
 ux.showSettings();}
-          tooltip {Write to configuration file} xywh {315 375 45 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+          tooltip {Write to configuration file} xywh {315 375 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
         }
       }
     }
@@ -216,19 +215,19 @@ ux.showSettings();}
   Function {font_chooser_window()} {open
   } {
     Fl_Window font_choosing {
-      label {Choose a Font} open selected
-      xywh {381 320 340 455} type Double hide
-      code0 {startup(o);} xclass {jsm-fonts}
+      label {Choose a Font} open
+      xywh {159 300 340 455} type Double
+      code0 {startup(o);} xclass {jsm-fonts} visible
     } {
       Fl_Button {} {
         label Cancel
         callback {font_choosing->hide();}
-        tooltip {No changes will be saved} xywh {205 420 60 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+        tooltip {No changes will be saved} xywh {205 420 60 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
       }
       Fl_Button {} {
         label OK
         callback {font_chooser_cb()}
-        tooltip {Write to configuration file} xywh {275 420 45 25} box GTK_UP_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+        tooltip {Write to configuration file} xywh {275 420 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
       }
       Fl_Browser font_browser {
         callback {const char * item = o->text(o->value());
@@ -240,18 +239,17 @@ Fl_Fontsize fs = size_of_font;
 font_name->textsize(fs);
 font_name->textfont(b);
 font_name->redraw();}
-        xywh {20 15 305 285} type Hold color 54 selection_color 72 labelfont 8 when 4
+        xywh {20 15 305 285} type Hold box FLAT_BOX color 55 selection_color 72 labelfont 8 when 4
         code0 {font_populate(o);}
         code1 {//const char* v;}
       }
       Fl_Output font_name {
-        callback {/*const char * item = font_browser->text(font_browser->value());
-unsigned int size_of_font = font_size_slider->value();
+        callback {//const char * item = font_browser->text(font_browser->value());
+unsigned int size_of_font = get_font_size();
 Fl_Fontsize fs = size_of_font;
 o->textsize(fs);
-o->redraw();
-*/}
-        xywh {10 360 315 50} box GTK_DOWN_BOX color 52 selection_color 80 labelsize 20 when 6
+o->redraw();}
+        xywh {10 360 315 50} box FLAT_BOX color 55 selection_color 80 labelsize 20 when 6
         code0 {get_font(currentElement.c_str(),o);}
       }
       Fl_Slider font_size_slider {
@@ -266,7 +264,7 @@ font_name->redraw();}
         code1 {o->value(fs);}
       }
       Fl_Value_Output chooser_size {
-        xywh {275 320 45 25} box GTK_DOWN_BOX color 52 minimum 8 maximum 200 step 1 value 12
+        xywh {275 320 45 25} box FLAT_BOX color 23 minimum 8 maximum 200 step 1 value 12
         code0 {int fs = get_font_size();}
         code1 {o->value(fs);}
       }

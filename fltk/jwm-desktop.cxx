@@ -101,45 +101,50 @@ void DesktopUI::cb_OK(Fl_Button* o, void* v) {
 Fl_Double_Window* DesktopUI::make_window() {
   load();
   saveChangesTemp();
-  { Fl_Double_Window* o = desktop_window = new Fl_Double_Window(395, 515, gettext("Desktop Settings"));
+  { Fl_Double_Window* o = desktop_window = new Fl_Double_Window(395, 490, gettext("Desktop Settings"));
     desktop_window->color((Fl_Color)31);
     desktop_window->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(0, 0, 395, 510);
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 395, 490);
       o->color((Fl_Color)31);
-      { Fl_Box* o = background_displayer_thingie = new Fl_Box(25, 85, 345, 270);
-        background_displayer_thingie->box(FL_GTK_DOWN_BOX);
+      { Fl_Box* o = background_displayer_thingie = new Fl_Box(25, 65, 345, 270);
+        background_displayer_thingie->box(FL_FLAT_BOX);
         background_displayer_thingie->color((Fl_Color)37);
         background_displayer_thingie->when(FL_WHEN_RELEASE_ALWAYS);
         background(o);
       } // Fl_Box* background_displayer_thingie
-      { Fl_Box* o = color_display1 = new Fl_Box(25, 85, 345, 270);
-        color_display1->box(FL_GTK_DOWN_BOX);
+      { Fl_Box* o = color_display1 = new Fl_Box(25, 65, 345, 270);
+        color_display1->box(FL_FLAT_BOX);
         color_display1->color((Fl_Color)37);
         color_display1->when(FL_WHEN_RELEASE_ALWAYS);
         background1(o);
       } // Fl_Box* color_display1
-      { Fl_Box* o = color_display2 = new Fl_Box(25, 215, 345, 140);
-        color_display2->box(FL_GTK_DOWN_BOX);
+      { Fl_Box* o = color_display2 = new Fl_Box(25, 195, 345, 140);
+        color_display2->box(FL_FLAT_BOX);
         color_display2->color((Fl_Color)37);
         color_display2->when(FL_WHEN_RELEASE_ALWAYS);
         background2(o);
       } // Fl_Box* color_display2
-      { Fl_Button* o = new Fl_Button(25, 370, 110, 25, gettext("Choose Image"));
-        o->box(FL_GTK_UP_BOX);
+      { Fl_Button* o = new Fl_Button(20, 345, 110, 25, gettext("Choose Image"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Choose);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(260, 375, 110, 25, gettext("Choose Color"));
+      { Fl_Button* o = new Fl_Button(140, 345, 110, 25, gettext("Choose Color"));
         o->tooltip(gettext("This will take icons off the desktop"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Choose1);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(255, 415, 125, 25, gettext("Choose Gradient"));
+      { Fl_Button* o = new Fl_Button(260, 345, 125, 25, gettext("Choose Gradient"));
         o->tooltip(gettext("This will take icons off the desktop"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Choose2);
       } // Fl_Button* o
-      { icons_check = new Fl_Check_Button(20, 405, 150, 25, gettext("Icons on Desktop"));
+      { icons_check = new Fl_Check_Button(15, 380, 150, 25, gettext("Icons on Desktop"));
+        icons_check->box(FL_FLAT_BOX);
         icons_check->down_box(FL_GTK_DOWN_BOX);
+        icons_check->color((Fl_Color)31);
         icons_check->selection_color((Fl_Color)59);
         icons_check->callback((Fl_Callback*)cb_icons_check);
         icons_check->align(Fl_Align(FL_ALIGN_RIGHT|FL_ALIGN_INSIDE));
@@ -147,16 +152,18 @@ Fl_Double_Window* DesktopUI::make_window() {
         icons_on_desktop();
       } // Fl_Check_Button* icons_check
       { Fl_Output* o = current_bg = new Fl_Output(25, 30, 345, 30, gettext("Current Background"));
-        current_bg->box(FL_GTK_DOWN_BOX);
+        current_bg->box(FL_FLAT_BOX);
         current_bg->color(FL_LIGHT1);
         current_bg->selection_color(FL_DARK_RED);
         current_bg->labelfont(1);
         current_bg->align(Fl_Align(33));
         bg_name(o);
       } // Fl_Output* current_bg
-      { Fl_Check_Button* o = new Fl_Check_Button(20, 430, 155, 25, gettext("Multiple Desktops"));
+      { Fl_Check_Button* o = new Fl_Check_Button(15, 405, 155, 25, gettext("Multiple Desktops"));
         o->tooltip(gettext("This allows you to have multiple screens to work on from one Display"));
+        o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
+        o->color((Fl_Color)31);
         o->selection_color((Fl_Color)59);
         o->callback((Fl_Callback*)cb_Multiple);
         o->align(Fl_Align(FL_ALIGN_RIGHT|FL_ALIGN_INSIDE));
@@ -165,32 +172,32 @@ Fl_Double_Window* DesktopUI::make_window() {
         if(m){o->value(1);}
         else{o->value(0);}
       } // Fl_Check_Button* o
-      { Fl_Value_Input* o = num_desktop_w = new Fl_Value_Input(20, 455, 20, 25, gettext("Number of Desktops Wide"));
-        num_desktop_w->box(FL_GTK_DOWN_BOX);
+      { Fl_Value_Input* o = num_desktop_w = new Fl_Value_Input(175, 380, 20, 25, gettext("Number of Desktops Wide"));
+        num_desktop_w->box(FL_FLAT_BOX);
         num_desktop_w->color((Fl_Color)53);
         num_desktop_w->callback((Fl_Callback*)cb_num_desktop_w);
         num_desktop_w->align(Fl_Align(FL_ALIGN_RIGHT));
         int width = getIntAttribute("Desktops","width");
         o->value(width);
       } // Fl_Value_Input* num_desktop_w
-      { Fl_Value_Input* o = num_desktop_h = new Fl_Value_Input(20, 480, 20, 25, gettext("Number of Desktops High "));
-        num_desktop_h->box(FL_GTK_DOWN_BOX);
+      { Fl_Value_Input* o = num_desktop_h = new Fl_Value_Input(175, 410, 20, 25, gettext("Number of Desktops High "));
+        num_desktop_h->box(FL_FLAT_BOX);
         num_desktop_h->color((Fl_Color)53);
         num_desktop_h->callback((Fl_Callback*)cb_num_desktop_h);
         num_desktop_h->align(Fl_Align(FL_ALIGN_RIGHT));
         int height = getIntAttribute("Desktops","height");
         o->value(height);
       } // Fl_Value_Input* num_desktop_h
-      { Fl_Button* o = new Fl_Button(260, 480, 65, 25, gettext("Cancel"));
-        o->box(FL_GTK_UP_BOX);
+      { Fl_Button* o = new Fl_Button(140, 450, 65, 25, gettext("Cancel"));
+        o->box(FL_FLAT_BOX);
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
         o->labelcolor(FL_BACKGROUND2_COLOR);
         o->callback((Fl_Callback*)cb_Cancel);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(335, 480, 45, 25, gettext("OK"));
+      { Fl_Button* o = new Fl_Button(215, 450, 45, 25, gettext("OK"));
         o->tooltip(gettext("Write to configuration file"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->color((Fl_Color)61);
         o->selection_color((Fl_Color)59);
         o->labelcolor((Fl_Color)55);

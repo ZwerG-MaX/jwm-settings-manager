@@ -27,6 +27,7 @@ set(PAGER_FOREGROUND "#2d2d2d" )
 set(PAGER_BACKGROUND "#888888" )
 set(PAGER_ACTIVE_FOREGROUND "#f9f9f9")
 set(PAGER_ACTIVE_BACKGROUND "#d64937")
+set(PAGER_TEXT "#f9f9f9")
 
 set(MENU_FOREGROUND "#dcdcdc")
 set(MENU_BACKGROUND "#2d2d2d" )
@@ -49,9 +50,10 @@ set(POPUP_FOREGROUND "#2d2d2d")
 set(POPUP_BACKGROUND "#2d2d2d")
 
 ## this stays the same for all files
+set(CURRENTTHEME "../${THIS_THEME}/${THIS_THEME}")
 set(THEME_230 "../2.3.0/${THIS_THEME}/${THIS_THEME}")
 configure_file(../all-2.3.2+themes.in ${THEME_230})
-configure_file(../all-new-themes.in ${OLD_THEME})
+configure_file(../all-new-themes.in ${CURRENTTHEME})
 ### SETUP OLD THEME NAMES
 set(OLD_THEME "../old/${THIS_THEME}/${THIS_THEME}")
 configure_file(../all-old-themes.in ${OLD_THEME})

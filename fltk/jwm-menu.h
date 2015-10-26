@@ -37,55 +37,28 @@
 #include <FL/Fl_Select_Browser.H>
 #include "../include/ui.h"
 #include <FL/Fl_Double_Window.H>
-#include <FL/Fl_Scroll.H>
-#include <FL/Fl_Button.H>
 #include <FL/Fl_Browser.H>
-#include <FL/Fl_Output.H>
 #include <FL/Fl_Input.H>
-#include <FL/Fl_Check_Button.H>
-#include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Slider.H>
+#include <FL/Fl_Check_Button.H>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Menu_Button.H>
+#include <FL/Fl_Output.H>
+#include <FL/Fl_Scroll.H>
 
 class MenuUI : public Config {
 public:
-  Fl_Double_Window* make_window();
-  Fl_Double_Window *menu_window;
+  Fl_Double_Window* add_a_menu();
+  Fl_Browser *list_browser;
+  Fl_Input *new_menu_label;
+  Fl_Slider *menu_height;
+  Fl_Check_Button *islabeled_button;
 private:
-  inline void cb_Configure_i(Fl_Button*, void*);
-  static void cb_Configure(Fl_Button*, void*);
-  inline void cb_Cancel_i(Fl_Button*, void*);
-  static void cb_Cancel(Fl_Button*, void*);
+  inline void cb_OK_i(Fl_Button*, void*);
+  static void cb_OK(Fl_Button*, void*);
 public:
-  Fl_Button *save_button;
-private:
-  inline void cb_save_button_i(Fl_Button*, void*);
-  static void cb_save_button(Fl_Button*, void*);
-  inline void cb_Item_i(Fl_Button*, void*);
-  static void cb_Item(Fl_Button*, void*);
-public:
-  Fl_Browser *menuElement;
-private:
-  inline void cb_menuElement_i(Fl_Browser*, void*);
-  static void cb_menuElement(Fl_Browser*, void*);
-  inline void cb_Item1_i(Fl_Button*, void*);
-  static void cb_Item1(Fl_Button*, void*);
-public:
-  Fl_Browser *menuElementText;
-private:
-  inline void cb_menuElementText_i(Fl_Browser*, void*);
-  static void cb_menuElementText(Fl_Browser*, void*);
-public:
-  Fl_Browser *root_menu;
-private:
-  inline void cb_root_menu_i(Fl_Browser*, void*);
-  static void cb_root_menu(Fl_Browser*, void*);
-  inline void cb_Menu_i(Fl_Button*, void*);
-  static void cb_Menu(Fl_Button*, void*);
-  inline void cb_Menu1_i(Fl_Button*, void*);
-  static void cb_Menu1(Fl_Button*, void*);
-public:
-  Fl_Output *labler;
   Fl_Double_Window* add_window();
+  Fl_Double_Window *adding_win;
   Fl_Input *add_label;
   Fl_Input *add_icon;
   Fl_Input *add_input;
@@ -94,8 +67,8 @@ public:
 private:
   inline void cb_add_prog_button_i(Fl_Button*, void*);
   static void cb_add_prog_button(Fl_Button*, void*);
-  inline void cb_OK_i(Fl_Button*, void*);
-  static void cb_OK(Fl_Button*, void*);
+  inline void cb_OK1_i(Fl_Button*, void*);
+  static void cb_OK1(Fl_Button*, void*);
 public:
   Fl_Button *add_icon_button;
 private:
@@ -133,8 +106,8 @@ private:
   static void cb_Kill(Fl_Menu_*, void*);
   inline void cb_Close_i(Fl_Menu_*, void*);
   static void cb_Close(Fl_Menu_*, void*);
-  inline void cb_Menu2_i(Fl_Menu_*, void*);
-  static void cb_Menu2(Fl_Menu_*, void*);
+  inline void cb_Menu_i(Fl_Menu_*, void*);
+  static void cb_Menu(Fl_Menu_*, void*);
 public:
   Fl_Output *item_display;
   Fl_Double_Window* conf_window();
@@ -147,30 +120,97 @@ public:
 private:
   inline void cb_prog_button_i(Fl_Button*, void*);
   static void cb_prog_button(Fl_Button*, void*);
-  inline void cb_OK1_i(Fl_Button*, void*);
-  static void cb_OK1(Fl_Button*, void*);
+  inline void cb_OK2_i(Fl_Button*, void*);
+  static void cb_OK2(Fl_Button*, void*);
 public:
   Fl_Button *icon_button;
 private:
   inline void cb_icon_button_i(Fl_Button*, void*);
   static void cb_icon_button(Fl_Button*, void*);
 public:
-  Fl_Double_Window* add_a_menu();
-  Fl_Browser *list_browser;
+  Fl_Double_Window* conf_item_window();
+  Fl_Double_Window *config_item_win;
+  Fl_Input *item_prog_label;
+  Fl_Input *item_prog_icon;
+  Fl_Input *item_prog_input;
+  Fl_Check_Button *item_conf_button;
+  Fl_Button *item_prog_button;
 private:
-  inline void cb_OK2_i(Fl_Button*, void*);
-  static void cb_OK2(Fl_Button*, void*);
+  inline void cb_item_prog_button_i(Fl_Button*, void*);
+  static void cb_item_prog_button(Fl_Button*, void*);
+  inline void cb_OK3_i(Fl_Button*, void*);
+  static void cb_OK3(Fl_Button*, void*);
+public:
+  Fl_Button *item_icon_button;
+private:
+  inline void cb_item_icon_button_i(Fl_Button*, void*);
+  static void cb_item_icon_button(Fl_Button*, void*);
+public:
+  Fl_Double_Window* configure_include();
+  Fl_Double_Window *include_win;
+  Fl_Input *include_input;
+private:
+  inline void cb_OK4_i(Fl_Button*, void*);
+  static void cb_OK4(Fl_Button*, void*);
+public:
+  Fl_Input *old_include_input;
+  Fl_Input *include_input_menu;
+  Fl_Double_Window* make_window();
+  Fl_Double_Window *menu_window;
+private:
+  inline void cb_Configure_i(Fl_Button*, void*);
+  static void cb_Configure(Fl_Button*, void*);
+  inline void cb_Cancel_i(Fl_Button*, void*);
+  static void cb_Cancel(Fl_Button*, void*);
+public:
+  Fl_Button *save_button;
+private:
+  inline void cb_save_button_i(Fl_Button*, void*);
+  static void cb_save_button(Fl_Button*, void*);
+  inline void cb_Item_i(Fl_Button*, void*);
+  static void cb_Item(Fl_Button*, void*);
+public:
+  Fl_Browser *menuElement;
+private:
+  inline void cb_menuElement_i(Fl_Browser*, void*);
+  static void cb_menuElement(Fl_Browser*, void*);
+  inline void cb_Item1_i(Fl_Button*, void*);
+  static void cb_Item1(Fl_Button*, void*);
+public:
+  Fl_Browser *menuElementText;
+private:
+  inline void cb_menuElementText_i(Fl_Browser*, void*);
+  static void cb_menuElementText(Fl_Browser*, void*);
+public:
+  Fl_Browser *root_menu;
+private:
+  inline void cb_root_menu_i(Fl_Browser*, void*);
+  static void cb_root_menu(Fl_Browser*, void*);
+  inline void cb_Menu1_i(Fl_Button*, void*);
+  static void cb_Menu1(Fl_Button*, void*);
+  inline void cb_Menu2_i(Fl_Button*, void*);
+  static void cb_Menu2(Fl_Button*, void*);
+public:
+  Fl_Output *labler;
+private:
+  inline void cb_Configure1_i(Fl_Button*, void*);
+  static void cb_Configure1(Fl_Button*, void*);
 public:
   void add_an_item();
   void add_cb(int whichOne);
-  void choose_menu(const char* menu);
+  void change_include();
+  void choose_menu(std::string menu);
   void configure_item();
   void confirm_check();
+  void edit_a_menu();
   void edit_an_item();
   void program_check();
   void remove_an_item();
   void remove_a_menu();
   int save_cb();
   void startup(Fl_Window *o);
+  Fl_Double_Window* submenu_window();
+  Fl_Browser *submenu_items_browser;
+  Fl_Output *submenu_menu;
 };
 #endif

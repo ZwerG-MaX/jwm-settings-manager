@@ -11,8 +11,6 @@
     <!--Traybutton Edit Menu-->
 @EDIT_PANEL@
 @EDIT_MENU@
-    <!--Places Menu-->
-    <Include>$HOME/.config/placesmenu</Include>
     <!-- Mouse Menu-->
     @MOUSE_MENU@
     <!--Shudown Menu-->
@@ -51,6 +49,7 @@
 		<Foreground>@PAGER_ACTIVE_FOREGROUND@</Foreground>
 		<Background>@PAGER_ACTIVE_BACKGROUND@</Background>
         </Active>
+        <Text>@PAGER_ACTIVE_FOREGROUND@</Text>
         <Outline>@PAGER_OUTLINE@</Outline>
         <Foreground>@PAGER_FOREGROUND@</Foreground>
         <Background>@PAGER_BACKGROUND@</Background>

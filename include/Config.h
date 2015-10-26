@@ -9,9 +9,9 @@
 #include <FL/x.H>
 //FLTK includes
 #include <FL/fl_ask.H> //errorJWM
-#include <Fl/Fl_Menu_Button.h>
+#include <Fl/Fl_Menu_Button.H>
 #include <Fl/Fl_Output.H>
-#include <Fl/Fl_Double_Window.h>
+#include <Fl/Fl_Double_Window.H>
 #include <FL/Fl_File_Chooser.H>
 //Ubuntu 14.04 is missing SetText() so I have to include this
 #include "tinyxml2.h"
@@ -41,40 +41,39 @@
 class Config
 {
     public:
-    //situate windows under the mouse pointer
-    void under_mouse(Fl_Window *o);
-    ///get Color as a string and return a FL_Color
-    //This handles the situation where there are 2 colors separated by a colon
-    unsigned int getColor(std::string color, unsigned int &color2);
-    std::string colorToString(const double *rgb);
-    //X11 colors
-    std::string xColor(const char *colorName);
+    void under_mouse(Fl_Window *o);/**< situate Fl_Window *o in the center of the screen*/
+    unsigned int getColor(std::string color, unsigned int &color2);/**< get Color as a string and return a FL_Color*/
+    std::string colorToString(const double *rgb);/**< This handles the situation where there are 2 colors separated by a colon*/
+    std::string xColor(const char *colorName);/**< find the X11 color */
     std::string returnXColor(unsigned int color);
 
     /// ICON functions
     std::string getExtention();
-    int EXTENTION(std::string filename); //only used by getExtention
-    /*this returns an integer
+    int EXTENTION(std::string filename); /**< this returns an integer
     0 means svg
     1 means png
     2 means xpm
     42 means you'll have to go fish... that is kind of like a joke... sorry
     */
-    std::vector<std::string> iconList(); //list IconPaths, except "/usr/share/pixmaps" || "/usr/share/icons" as those are not Icon THEMES..
+    std::vector<std::string> iconList(); /**< list IconPaths, except "/usr/share/pixmaps" || "/usr/share/icons" as those are not Icon THEMES..*/
 /// Basic Functions for JWMRC files
     //Error checking/fixing/reporting
     int checkFiles();
     void setRecoveryText(std::string &ConfigFile);
     int recover();
-
-    //Check for newer JWM style tags
-    int newStyle();
-    /*
+    int newStyle();/**< Check for newer JWM style tags
     -1 is OLD
     0 is 2.3.0
     1 is 2.3.2++
     */
-    bool newVersionJWM();
+    int jwmVersion();/**< Check for newer JWM
+    -1 is OLD
+    0 is 2.3.0
+    1 is 2.3.1
+    2 is 2.3.2
+    3 is 2.3.3
+    */
+    bool newVersionJWM();/**< check if the installed binary of jwm is the newest version*/
 
     //Display an Error message to cerr
     void errorJWM(std::string message);
@@ -130,19 +129,23 @@ where VARIABLE is a std::string
 /// MENU Functions /????????????????????????????????????????????????????????????????????????????????????????????????????????????????
     bool comparedColon(const char* something, const char* text);
     bool isRootMenu(std::string rootmenu);
-    bool isMenu(int rootnumber);
+    void setRootMenuHeight(const char* menu, int height);
+    void setRootMenuAttribute(const char* menu, const char* attribute, const char* attributeValue);
+    void addRoot(std::string rootmenu);
+    bool isMenu(const char* rootnumber);
     bool isMenu(std::string includeLine);
     ///This is used externally to check if a cetain menu exists, and ADD or DELETE it  flPanel::switchMenu
-    bool isMenu(const char* whichStyle);
-    void addMenu(int rootnumber, const char* label, const char* icon, const char* whichStyle);
+    void addMenu(const char* rootnumber, const char* label, const char* icon, const char* whichStyle);
     void newMenu(const char* menu);
-    void deleteMenu(int menu, const char* whichStyle);
-    void addMenu(int rootnumber, const char* label, const char* icon);
-    void labelMenu(const char * icon, int num,const char* label);
-    void deleteMenu(int menu);
-    std::string getLabelMenu(int menu);
-    std::string getImageMenu(int menu);
-    void setImageMenu(const char* icon, int menu);
+    void deleteMenu(const char* menu, const char* whichStyle);
+    void addMenu(const char* rootnumber, const char* label, const char* icon);
+    void labelMenu(const char * icon, const char* num,const char* label);
+    void labelMenu(const char* menu,const char* label);
+    void deleteMenu(const char* menu);
+    std::string getLabelMenu(const char* menu);
+    std::string getImageMenu(const char* menu);
+    void setImageMenu(const char* menu, const char* icon);
+    void trayButtonAttribute(const char* text,const char* attribute,const char* attributeValue);
 
 ///  MULTIPLE PANELS  /*************************************************
     //recovery function if no Tray Element exists...
@@ -188,6 +191,8 @@ it also will save the default clock program, and other defaults (as they are imp
 
     bool testElement(tinyxml2::XMLElement* element);
     //Create Element!
+    //base element with value (ROOT MENU)
+    void createElement(const char* whichElement,std::string attribute, std::string attributeValue);
     void createElement(const char* whichElement);
     void createElement(const char* whichMainElement, const char* whichElementToCreate);
     void createElement(const char* whichMainElement, const char* whichSubElement, const char* whichElementToCreate);

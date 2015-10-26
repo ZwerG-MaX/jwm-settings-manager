@@ -80,10 +80,10 @@ std::string flFont::getFontName(const char* whichElement){
     }
     ///getFontName(const char*) is a function name... this should remain intact
     errorJWM(gettext("ERROR in getFontName(const char*), this shouldn't happen"));
-    return "?";
 #ifdef DEBUG_TRACK
     std::cerr<<"<----std::string flFont::getFontName";
 #endif // DEBUG
+    return "?";
 }
 
 void flFont::setFontName(const char* name, const char* whichElement){

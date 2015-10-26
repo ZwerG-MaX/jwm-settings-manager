@@ -4,8 +4,6 @@
     <!-- Main Menu -->
     @MENUS_LIST@
     <RootMenu onroot="1"/>
-    <!--Places Menu-->
-    <Include>$HOME/.config/placesmenu</Include>
     <!-- Mouse Menu-->
     @MOUSE_MENU@
     <!--Shudown Menu-->
@@ -40,6 +38,7 @@
         <Outline>@PAGER_OUTLINE@</Outline>
         <Foreground>@PAGER_FOREGROUND@</Foreground>
         <Background>@PAGER_BACKGROUND@</Background>
+        <Text>@PAGER_ACTIVE_FOREGROUND@</Text>
         <ActiveForeground>@PAGER_ACTIVE_FOREGROUND@</ActiveForeground>
         <ActiveBackground>@PAGER_ACTIVE_BACKGROUND@</ActiveBackground>
     </PagerStyle>

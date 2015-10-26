@@ -92,8 +92,10 @@ void flIcons::removeIcons(const char * icons){
 std::string flIcons::currentIconTheme(){
     std::string gsett = "gsettings get org.gnome.desktop.interface icon-theme | sed \"s#'##g\" ";
     std::string result = returnTerminalOutput(gsett,"r");
+    unsigned int found = result.find('=');
+    if(found<result.length()){result=result.erase(0,found+1);}
     if(DEBUG_ME){std::cerr<<"current Icon Theme is: "<<result<<std::endl;}
-    if(result.compare("")!=0){return result.erase((result.length()-1),std::string::npos);}
+    if(result.length()>2){return result.erase((result.length()-1),std::string::npos);}
     return "";
 }
 
@@ -123,7 +125,7 @@ void flIcons::loadTheme(Fl_Browser *o){
         etc...
         */
         testPATH = thisXDG_PATH(i);
-
+        std::cerr<<testPATH<<std::endl;
         //make sure this isn't blank
         if(testPATH.compare("")!=0){
 
@@ -144,8 +146,8 @@ void flIcons::loadTheme(Fl_Browser *o){
                         if(testFile(testIndex.c_str())){themeList.push_back(result.c_str());}
                     }
                 }
+                closedir(dir);
             }
-            closedir(dir);
         }
 
     }
@@ -170,17 +172,22 @@ void flIcons::loadTheme(Fl_Browser *o){
     o->select(sizer);
 }
 
-void flIcons::useTheme(Fl_Browser *o){
+bool flIcons::useTheme(Fl_Browser *o){
     //get the user's choice number
     int themeNumber = o->value();
     //get the text using the number
     const char * item = o->text(themeNumber);
+    if(item ==NULL){return false;}
+    std::string currentOne= currentIconTheme();
+    if(currentOne.compare(item)==0){return false;}
     std::string command = "jwmIconFinder";
     if(testExec(command.c_str())){
         command += " -s 48 -j -t ";
         command +=item;
         int thissys = system(command.c_str());
         if(thissys !=0){std::cerr<< command << " command did not return 0"<<std::endl;}
+        else{std::cout<<"Ran: "<<command<<std::endl;}
+        return true;
     }
     else{std::cerr<<command<<" is not installed... please reinstall this program"<<std::endl;}
 #if 0
@@ -240,8 +247,12 @@ void flIcons::useTheme(Fl_Browser *o){
         }
     }
     #endif // 0
+    return false;
 }
+
+
 void flIcons::makeIcons(std::string fullpath, unsigned int icon_size){
+std::cout<<fullpath<<icon_size<<std::endl;
 #if 0
     std::string testIndex=fullpath+"/index.theme";
     std::string  HEADER = "";
@@ -346,14 +357,16 @@ void flIcons::makeIcons(std::string fullpath, unsigned int icon_size){
         }
     }
 #endif // 0
+
 }
 const char* flIcons::themegrep(const char* args, const char* filename,int line){
 ///Return the FIRST match of the 'args' from a file
 // this is like  line=`grep $args $filename` that only returns one line
     std::string line2;
     const char* result;
+    if(line<0){return "";}
     std::string lengthTEST = args;
-    int lengthofARGS = lengthTEST.length();
+    //int lengthofARGS = lengthTEST.length();
     std::ifstream inputFileStrem (filename, std::ifstream::in);
     if(inputFileStrem.is_open()){
         while (getline(inputFileStrem,line2)){

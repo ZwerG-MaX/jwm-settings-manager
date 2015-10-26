@@ -82,22 +82,24 @@ decl {\#include <FL/fl_draw.H>} {public global
 decl {\#include <FL/fl_message.H>} {public global
 } 
 
-decl {\#include "../data/icons/jsm-mouse.xpm"} {selected public global
+decl {\#include "../data/icons/jsm-mouse.xpm"} {public global
 } 
 
 class MouseUI {open : {public Config}
 } {
-  decl {bool verbose;int m_pid;} {public local
+  decl {bool verbose;int m_pid;bool deltaChanged;bool doubleChanged;} {public local
   }
   Function {make_window()} {open
   } {
     code {load();
-saveChangesTemp();} {}
+saveChangesTemp();
+deltaChanged = false;
+doubleChanged = false;} {}
     Fl_Window mouse_window {
       label {Mouse Settings} open
-      xywh {1165 257 440 535} type Double color 31 hide resizable
+      xywh {113 189 440 535} type Double color 31 resizable
       code0 {readsynclientoutput();}
-      code1 {startup(o);} xclass {jsm-mouse}
+      code1 {startup(o);} xclass {jsm-mouse} visible
     } {
       Fl_Scroll {} {open
         xywh {0 10 440 525} color 31
@@ -108,23 +110,26 @@ saveChangesTemp();} {}
 mouse_window->hide();
 UI ux;
 ux.showSettings();}
-          xywh {300 505 65 25} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
+          xywh {300 505 65 25} box FLAT_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button {} {
           label OK
-          callback {saveChanges();
+          callback {if(deltaChanged || doubleChanged){
+  saveChanges();
+}
+SaveSettings();
 add_to_profile();
 mouse_window->hide();
 UI ux;
-ux.showSettings();}
-          tooltip {Write to configuration file} xywh {380 505 45 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
+ux.showSettings();} selected
+          tooltip {Write to configuration file} xywh {380 505 45 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
         }
         Fl_Tabs {} {open
-          xywh {45 85 345 415} box GTK_THIN_UP_BOX
+          xywh {45 85 345 415} box FLAT_BOX selection_color 51
         } {
           Fl_Group {} {
             label TouchPad open
-            xywh {55 115 320 365}
+            xywh {55 115 320 365} hide
           } {
             Fl_Choice TouchpadOff {
               label {Touchpad Mode}
@@ -179,7 +184,7 @@ synclient("FingerHigh",o->value());}
           }
           Fl_Group {} {
             label Tapping
-            xywh {45 130 340 365} hide
+            xywh {45 130 340 365}
           } {
             Fl_Choice TapButton1 {
               label {One Finger}
@@ -378,35 +383,35 @@ synclient("FingerHigh",o->value());}
             } {
               MenuItem {} {
                 label disable
-                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {left button}
-                xywh {55 55 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {55 55 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {center button}
-                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {right button}
-                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {up wheel}
-                xywh {85 85 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {85 85 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {down wheel}
-                xywh {95 95 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {95 95 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {left wheel}
-                xywh {105 105 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {105 105 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {right wheel}
-                xywh {115 115 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {115 115 100 20} box NO_BOX color 50 selection_color 50
               }
             }
             Fl_Choice RBCornerButton {
@@ -416,35 +421,35 @@ synclient("FingerHigh",o->value());}
             } {
               MenuItem {} {
                 label disable
-                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {left button}
-                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {65 65 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {center button}
-                xywh {85 85 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {85 85 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {right button}
-                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {75 75 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {up wheel}
-                xywh {95 95 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {95 95 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {down wheel}
-                xywh {105 105 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {105 105 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {left wheel}
-                xywh {115 115 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {115 115 100 20} box NO_BOX color 50 selection_color 50
               }
               MenuItem {} {
                 label {right wheel}
-                xywh {125 125 100 20} box NO_BOX color 50 selection_color 50 labelsize 12
+                xywh {125 125 100 20} box NO_BOX color 50 selection_color 50
               }
             }
             Fl_Value_Slider MaxTapTime {
@@ -575,7 +580,7 @@ synclient("EdgeMotionMaxZ",o->value()*2);}
             }
           }
           Fl_Group {} {
-            label Movement
+            label Movement open
             xywh {50 135 340 365} hide
           } {
             Fl_Value_Output TopEdge {
@@ -643,7 +648,8 @@ synclient("EdgeMotionMaxZ",o->value()*2);}
 int speed=o->value();
 mouse.setDoubleClick(speed);
 double_v->value(speed);
-saveChangesTemp();}
+saveChangesTemp();
+doubleChanged = true;}
           tooltip {This sets how fast you must click to Double Click} xywh {165 20 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 minimum 1 maximum 2000 step 1 value 400
           code0 {flMouse mouse;}
           code1 {int h = mouse.getDoubleClick();}
@@ -655,7 +661,8 @@ saveChangesTemp();}
 int delta=o->value();
 mouse.setDelta(delta);
 delta_v->value(delta);
-saveChangesTemp();}
+saveChangesTemp();
+deltaChanged = true;}
           tooltip {This sets how fast you must click to Double Click} xywh {165 55 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 minimum 1 maximum 32 step 1 value 2
           code0 {flMouse mouse;}
           code1 {int h = mouse.getDelta();}
@@ -667,8 +674,9 @@ saveChangesTemp();}
 int delta=o->value();
 mouse.setDelta(delta);
 delta_slider->value(delta);
-saveChangesTemp()}
-          xywh {270 55 40 25} box GTK_DOWN_BOX labelsize 12 align 8 minimum 1 maximum 32 value 2
+saveChangesTemp();
+deltaChanged = true;}
+          xywh {270 55 40 25} box FLAT_BOX labelsize 12 align 8 minimum 1 maximum 32 value 2
           code0 {o->value(delta_slider->value());}
         }
         Fl_Value_Input double_v {
@@ -677,12 +685,38 @@ saveChangesTemp()}
 int speed=o->value();
 mouse.setDoubleClick(speed);
 double_click_slider->value(speed);
-saveChangesTemp();}
-          xywh {270 20 60 25} box GTK_DOWN_BOX labelsize 12 align 8 minimum 1 maximum 2000 value 400
+saveChangesTemp();
+doubleChanged = true;}
+          xywh {270 20 60 25} box FLAT_BOX labelsize 12 align 8 minimum 1 maximum 2000 value 400
           code0 {o->value(double_click_slider->value());}
         }
       }
     }
+  }
+  Function {add_to_profile()} {open
+  } {
+    code {std::string string_command = "sed -i 's/Parameter settings:/synclient/' ";
+string_command += getenv("HOME");
+string_command += "/.jsm-mouse";
+const char* command = string_command.c_str();
+int working_sed = system(command);
+string_command = "awk '{$1=$1}{gsub(/[ ]/,\\"\\"); print}' ORS=' ' ";
+string_command += getenv("HOME");
+string_command += "/.jsm-mouse >";
+string_command += getenv("HOME");
+string_command += "/.config/jsm-mouse";
+working_sed = system(string_command.c_str());
+string_command = "chmod +x ";
+string_command += getenv("HOME");
+string_command += "/.config/jsm-mouse";
+working_sed = system(string_command.c_str());
+string_command = "sed -i '1i\#!/bin/bash' ";
+string_command += getenv("HOME");
+string_command += "/.config/jsm-mouse";
+working_sed = system(string_command.c_str());
+if(working_sed!=0){
+  std::cerr<< string_command<<" did not return 0"<<std::endl;
+}} {}
   }
   Function {CalibrateEdge(int edge)} {open
   } {
@@ -698,7 +732,7 @@ m_pid=fork();
     close(fds[1]);
     snprintf(tmp,1024,"(%s) 1>&2","synclient -m 100");
     if (verbose) printf("Executing: %s\\n",tmp);
-    execlp("/bin/sh", "sh", "-c", tmp, 0);
+    execlp("/bin/sh", "sh", "-c", tmp, (char *)0);
   }	
   fl_cursor(FL_CURSOR_WAIT);
   Fl::check();
@@ -734,8 +768,35 @@ m_pid=fork();
 fl_cursor(FL_CURSOR_DEFAULT);
 Fl::check();} {}
   }
-  Function {parsesynclientoutput(std::string filename)} {open
+  Function {convert(std::string number)} {return_type double
   } {
+    code {std::stringstream out;
+out << number;
+double integer;
+out >> integer;
+return integer;} {}
+  }
+  Function {convert(double number)} {return_type {std::string}
+  } {
+    code {std::string num;
+std::stringstream out;
+out << number;
+num = out.str();
+return num;} {}
+  }
+  Function {parseline(char *line, char **argv, int maxarg)} {return_type int
+  } {
+    code {int argc=0;
+while (*line!=0 && argc<maxarg) {      
+  while (*line==' ' || *line=='\\t' || *line =='\\n') *line++=0;     
+  *argv++ = line;
+  argc++;
+  while (*line!=0 && *line!=' ' && *line!='\\t' && *line!='\\n') line++;             
+}
+*argv = 0;
+return argc;} {}
+  }
+  Function {parsesynclientoutput(std::string filename)} {} {
     code {std::string full_line = "";
 std::string line = "";
 std::string line_substring ="";
@@ -861,8 +922,7 @@ if (line.compare("synclient")!=0){
   }//while
 }//if ifstream} {}
   }
-  Function {readsynclientoutput()} {open
-  } {
+  Function {readsynclientoutput()} {} {
     code {std::string filename = getenv("HOME");
 filename += "/.jsm-mouse";
 std::string command = "synclient -l >";
@@ -883,63 +943,11 @@ tmp +=field;
 tmp +="=";
 tmp += convert(value);
 int check =system(tmp.c_str());
-//std::cout<<tmp<<" returns: "<<check<<std::endl;} {}
-  }
-  Function {convert(std::string number)} {open return_type double
-  } {
-    code {std::stringstream out;
-out << number;
-double integer;
-out >> integer;
-return integer;} {}
-  }
-  Function {convert(double number)} {open return_type {std::string}
-  } {
-    code {std::string num;
-std::stringstream out;
-out << number;
-num = out.str();
-return num;} {}
-  }
-  Function {add_to_profile()} {open
-  } {
-    code {std::string string_command = "sed -i 's/Parameter settings:/synclient/' ";
-string_command += getenv("HOME");
-string_command += "/.jsm-mouse";
-const char* command = string_command.c_str();
-int working_sed = system(command);
-string_command = "awk '{$1=$1}{gsub(/[ ]/,\\"\\"); print}' ORS=' ' ";
-string_command += getenv("HOME");
-string_command += "/.jsm-mouse >";
-string_command += getenv("HOME");
-string_command += "/.config/jsm-mouse";
-working_sed = system(string_command.c_str());
-string_command = "chmod +x ";
-string_command += getenv("HOME");
-string_command += "/.config/jsm-mouse";
-working_sed = system(string_command.c_str());
-string_command = "sed -i '1i\#!/bin/bash' ";
-string_command += getenv("HOME");
-string_command += "/.config/jsm-mouse";
-working_sed = system(string_command.c_str());
-if(working_sed!=0){
-  //std::cout<< string_command<<" did not return 0"<<std::endl;
+if(check!=0){
+  std::cerr<<tmp<<" returns: "<<check<<std::endl;
 }} {}
   }
-  Function {parseline(char *line, char **argv, int maxarg)} {open return_type int
-  } {
-    code {int argc=0;
-while (*line!=0 && argc<maxarg) {      
-  while (*line==' ' || *line=='\\t' || *line =='\\n') *line++=0;     
-  *argv++ = line;
-  argc++;
-  while (*line!=0 && *line!=' ' && *line!='\\t' && *line!='\\n') line++;             
-}
-*argv = 0;
-return argc;} {}
-  }
-  Function {startup(Fl_Window *o)} {open
-  } {
+  Function {startup(Fl_Window *o)} {} {
     code {Config config; config.under_mouse(o);
 o->icon(config.Get_Fl_Icon(jsm_desktop_xpm));} {}
   }

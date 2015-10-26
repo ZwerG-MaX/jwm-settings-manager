@@ -55,6 +55,9 @@ decl {\#include "../include/Config.h"} {public global
 decl {\#include <FL/Fl_File_Chooser.H>} {public global
 } 
 
+decl {\#include <FL/Fl_Native_File_Chooser.H>} {public global
+} 
+
 decl {\#include "../include/flPanel.h"} {public global
 } 
 
@@ -79,29 +82,31 @@ decl {\#include <FL/Fl_Browser.H>} {public global
 decl {\#include "../data/icons/jsm-panel.xpm"} {public global
 } 
 
+decl {\#include "../fltk/jwm-menu.h"} {public global
+} 
+
 class PanelUI {open : {public Config}
 } {
   Function {make_window()} {open
   } {
-    code {load();
-saveChangesTemp();} {}
+    code {loadTemp();} {}
     Fl_Window panel_window {
       label {Panel Settings} open
-      xywh {189 463 335 525} type Double color 31 selection_color 22 align 80 hide resizable
+      xywh {203 144 335 525} type Double color 31 selection_color 22 align 80 hide resizable
       code1 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Scroll {} {open
         xywh {0 0 355 665} color 31
       } {
         Fl_Menu_Button panel_chooser {
-          callback {flPanel panel;
-std::string panelLabel = panel.convert(panel.currentPanel());
+          callback {flPanel FLPANEL;
+std::string panelLabel = FLPANEL.convert(FLPANEL.currentPanel());
 std::string LABEL = "Panel ";
 LABEL +=panelLabel;
-o->copy_label(LABEL.c_str());}
-          xywh {25 20 115 25} box GTK_UP_BOX selection_color 80 when 3
-          code0 {flPanel panel;int n = panel.currentPanel();}
-          code1 {std::string panelLabel = panel.convert(n);}
+o->copy_label(LABEL.c_str());} selected
+          xywh {25 20 110 25} box GTK_UP_BOX down_box FLAT_BOX color 23 selection_color 51 when 3
+          code0 {flPanel FLPANEL;int n = FLPANEL.currentPanel();//flPanel FLPANEL;}
+          code1 {std::string panelLabel = FLPANEL.convert(n);}
           code2 {std::string LABEL = "Panel ";LABEL +=panelLabel;}
           code3 {o->copy_label(LABEL.c_str());}
         } {
@@ -150,20 +155,16 @@ Menu_CB(a);}
           }
         }
         Fl_Tabs {} {open
-          xywh {5 60 350 415} box PLASTIC_THIN_UP_BOX
+          xywh {5 60 350 415} box FLAT_BOX selection_color 51
         } {
           Fl_Group {} {
             label Apps open
-            xywh {10 90 345 385}
+            xywh {10 90 345 385} hide
           } {
-            Fl_Box {} {
-              label {Panel Apps}
-              xywh {90 90 150 45} labelfont 1 labelsize 18
-            }
             Fl_Button {} {
               label {-}
               callback {remove_app();}
-              xywh {80 425 35 25} box GTK_UP_BOX labelfont 1 labelsize 34
+              xywh {80 425 35 25} box FLAT_BOX color 23 labelfont 1 labelsize 34
             }
             Fl_Browser app_browser {
               callback {unsigned int appLine=app_browser->value();
@@ -173,7 +174,7 @@ if(appLine <= size && appLine !=0){
   //Do I really want to have clicking open the config?
  // config_Item(result);
 }}
-              xywh {30 130 290 275} type Hold box GTK_DOWN_BOX selection_color 72
+              xywh {20 100 300 305} type Hold box FLAT_BOX selection_color 72
               code0 {Apps app;}
               code1 {app.populate(o);}
             }
@@ -185,12 +186,12 @@ if(appLine <= size && appLine !=0){
   std::string result=app_browser->text(app_browser->value());
   config_Item(result);
 }}
-              xywh {125 425 85 25} box GTK_UP_BOX
+              xywh {125 425 85 25} box FLAT_BOX color 23
             }
             Fl_Button choose_apps {
               label {@+}
               callback {add_to_panel()->show();}
-              xywh {35 425 35 25} box GTK_UP_BOX
+              xywh {35 425 35 25} box FLAT_BOX color 23
             }
             Fl_Button {} {
               label {@+98>}
@@ -199,7 +200,7 @@ if(appLine <= size && appLine !=0){
             }
             Fl_Button {} {
               label {@+92>}
-              callback {move_down()} selected
+              callback {move_down()}
               xywh {275 425 40 30} box GTK_UP_BOX hide deactivate
             }
           }
@@ -213,21 +214,21 @@ if(appLine <= size && appLine !=0){
             }
             Fl_Button menu_bg_color {
               callback {one_color(o,"MenuStyle");}
-              xywh {182 134 60 25} box GTK_UP_BOX
+              xywh {182 134 60 25} box FLAT_BOX color 23
               code0 {flPanel fl_panel;unsigned int c;}
               code1 {unsigned int color = fl_panel.getBackground(c,"MenuStyle");}
               code2 {o->color(color);}
             }
             Fl_Button menu_fg_color {
               callback {one_color_active(o,"MenuStyle");}
-              xywh {182 176 60 25} box GTK_UP_BOX
+              xywh {182 176 60 25} box FLAT_BOX color 23
               code0 {flPanel panel;unsigned int c;}
               code1 {unsigned int color = panel.getActiveBackground(c,"MenuStyle");}
               code2 {o->color(color);}
             }
             Fl_Button menu_font_color {
               callback {one_color_Font(o,"MenuStyle");}
-              xywh {182 219 60 25} box GTK_UP_BOX
+              xywh {182 219 60 25} box FLAT_BOX color 23
               code0 {flPanel panel;unsigned int c;}
               code1 {unsigned int color = panel.getFontColor(c,"MenuStyle");}
               code2 {o->color(color);}
@@ -243,7 +244,7 @@ if(appLine <= size && appLine !=0){
             Fl_Value_Input o_menu_slider_v {
               label {%}
               callback {opacity(o,o_menu_slider,"MenuStyle");}
-              xywh {257 262 40 25} box GTK_DOWN_BOX labelsize 10 align 8
+              xywh {257 262 40 25} box FLAT_BOX color 23 labelsize 10 align 8
               code0 {float v = o_menu_slider->value();}
               code1 {o->value(v*100.0f);}
             }
@@ -258,14 +259,14 @@ if(appLine <= size && appLine !=0){
             }
             Fl_Button b_color {
               callback {one_color(o, "TrayStyle");}
-              xywh {182 304 60 25} box GTK_UP_BOX
+              xywh {182 304 60 25} box FLAT_BOX color 23
               code0 {flPanel fl_panel;unsigned int c;}
               code1 {unsigned int color = fl_panel.getBackground(c, "TrayStyle");}
               code2 {o->color(color);}
             }
             Fl_Button button_color {
               callback {if(!style_gone()){one_color(o,"TrayButtonStyle");}}
-              xywh {182 347 60 25} box GTK_UP_BOX
+              xywh {182 347 60 25} box FLAT_BOX color 23
               code0 {flPanel panel;unsigned int c;}
               code1 {if(style_gone()){o->hide();}}
               code2 {else{unsigned int color = panel.getBackground(c,"TrayButtonStyle");o->color(color);}}
@@ -281,7 +282,7 @@ if(appLine <= size && appLine !=0){
             Fl_Value_Input o_slider_v {
               label {%}
               callback {opacity(o_slider_v,o_slider,"TrayStyle");}
-              xywh {257 390 40 25} box GTK_DOWN_BOX labelsize 10 align 8
+              xywh {257 390 40 25} box FLAT_BOX color 23 labelsize 10 align 8
               code0 {float v = o_slider->value();}
               code1 {o->value(v*100.0f);}
             }
@@ -297,16 +298,16 @@ if(appLine <= size && appLine !=0){
               label {Edit Menus}
               callback {UI ux;
 ux.showMenu();}
-              xywh {65 105 105 25} box GTK_UP_BOX
+              xywh {65 105 105 25} box FLAT_BOX color 23
             }
           }
           Fl_Group {} {
-            label {Size And Position}
-            xywh {10 85 330 380} hide
+            label {Size And Position} open
+            xywh {10 85 330 380}
           } {
             Fl_Menu_Button {} {
-              label {Panel Position} open
-              xywh {20 110 125 25} box GTK_UP_BOX selection_color 80
+              label {Panel Position}
+              xywh {20 110 125 25} box GTK_UP_BOX color 23 selection_color 51
             } {
               MenuItem {} {
                 label top
@@ -331,7 +332,7 @@ ux.showMenu();}
             }
             Fl_Menu_Button choose_autohide {
               label {Autohide Position}
-              xywh {170 110 150 25} box GTK_UP_BOX selection_color 80
+              xywh {170 110 150 25} box GTK_UP_BOX color 23 selection_color 23
               code0 {autohide();}
             } {
               MenuItem {} {
@@ -379,7 +380,7 @@ fl_panel.panelAutohide(autohideValue);}
             Fl_Value_Input width_input {
               label pixels
               callback {input_width_height_border(w_slider,o,"width");}
-              xywh {230 190 55 25} box GTK_DOWN_BOX labelsize 10 align 8 maximum 3000
+              xywh {230 190 55 25} box FLAT_BOX color 23 labelsize 10 align 8 maximum 3000
               code0 {int v = w_slider->value();}
               code1 {o->value(v);}
             }
@@ -394,7 +395,7 @@ fl_panel.panelAutohide(autohideValue);}
             Fl_Value_Input height_input {
               label pixels
               callback {input_width_height_border(h_slider,o,"height");}
-              xywh {230 260 55 25} box GTK_DOWN_BOX labelsize 10 align 8 maximum 3000
+              xywh {230 260 55 25} box FLAT_BOX color 23 labelsize 10 align 8 maximum 3000
               code0 {int v = h_slider->value();}
               code1 {o->value(v);}
             }
@@ -405,13 +406,13 @@ fl_panel.panelAutohide(autohideValue);}
             Fl_Value_Input {} {
               label {X position of panel}
               callback {coordinate("x",o,2);}
-              xywh {230 330 25 25} box GTK_DOWN_BOX minimum -100 maximum 2000
+              xywh {230 330 25 25} box FLAT_BOX color 23 minimum -100 maximum 2000
               code0 {coordinate("x",o,1);}
             }
             Fl_Value_Input {} {
               label {Y position of panel}
               callback {coordinate("y",o,2);}
-              xywh {230 375 25 25} box GTK_DOWN_BOX minimum -100 maximum 2000
+              xywh {230 375 25 25} box FLAT_BOX color 23 minimum -100 maximum 2000
               code0 {coordinate("y",o,1);}
             }
             Fl_Slider border_slider {
@@ -425,7 +426,7 @@ fl_panel.panelAutohide(autohideValue);}
             Fl_Value_Input border_input {
               label pixels
               callback {input_width_height_border(border_slider,o,"border");}
-              xywh {230 435 40 25} box GTK_DOWN_BOX labelsize 10 align 8 maximum 3000
+              xywh {230 435 40 25} box FLAT_BOX color 23 labelsize 10 align 8 maximum 3000
               code0 {int v = border_slider->value();}
               code1 {o->value(v);}
             }
@@ -434,12 +435,12 @@ fl_panel.panelAutohide(autohideValue);}
         Fl_Button {} {
           label Cancel
           callback {cancel_button();}
-          xywh {209 490 57 25} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
+          xywh {209 490 57 25} box FLAT_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button save_button {
           label OK
           callback {ok();}
-          tooltip {Write to configuration file} xywh {275 490 45 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
+          tooltip {Write to configuration file} xywh {275 490 45 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
         }
       }
     }
@@ -447,7 +448,7 @@ fl_panel.panelAutohide(autohideValue);}
   Function {add_indicator()} {} {
     Fl_Window indicator_win {
       label {Add Indicator} open
-      xywh {552 213 230 185} type Double hide
+      xywh {552 213 200 150} type Double hide
       code0 {startup(o);}
     } {
       Fl_Button {} {
@@ -455,33 +456,34 @@ fl_panel.panelAutohide(autohideValue);}
         callback {Apps app;
 app.addBattery();
 app.getIndicators(indicator_browser);}
-        xywh {65 15 90 30} box GTK_UP_BOX
+        xywh {20 10 90 30} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Volume
         callback {Apps app;
 app.addVolume();
 app.getIndicators(indicator_browser);}
-        xywh {65 55 90 30} box GTK_UP_BOX
+        xywh {20 50 90 30} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Network
         callback {Apps app;
 app.addNetworkMonitor();
 app.getIndicators(indicator_browser);}
-        xywh {65 95 90 30} box GTK_UP_BOX
+        xywh {20 90 90 30} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label OK
         callback {indicator_win->hide();}
-        xywh {165 145 60 30} box GTK_UP_BOX color 61 selection_color 59 labelcolor 7
+        xywh {125 90 60 30} box FLAT_BOX color 61 selection_color 59 labelcolor 7
       }
     }
   }
-  Function {add_to_panel()} {} {
+  Function {add_to_panel()} {open
+  } {
     Fl_Window add_2_panel {
       label {Add to Panel} open
-      xywh {685 499 190 290} type Double hide
+      xywh {281 231 190 290} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Button {} {
@@ -490,29 +492,29 @@ app.getIndicators(indicator_browser);}
 panel.saveChanges();
 add_2_panel->hide();
 refresh_app_browser();}
-        xywh {130 250 45 30} box GTK_UP_BOX color 62 selection_color 60 labelcolor 7
+        xywh {130 250 45 30} box FLAT_BOX color 62 selection_color 60 labelcolor 7
       }
       Fl_Browser panel_items_browser {
-        xywh {20 25 160 215} type Hold box GTK_DOWN_BOX selection_color 72
+        xywh {20 25 160 215} type Hold box FLAT_BOX selection_color 72
         code0 {new_panel_items(o);}
       }
       Fl_Button {} {
         label {@+}
         callback {add_item()}
-        xywh {20 250 35 25} box GTK_UP_BOX
+        xywh {20 250 35 25} box FLAT_BOX color 23
       }
     }
   }
   Function {clock_window()} {} {
     Fl_Window clock_config_window {
       label {Configure Clock} open
-      xywh {204 218 480 580} type Double hide resizable
+      xywh {204 216 480 580} type Double hide resizable
       code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Button {} {
         label OK
         callback {save_user_clock();}
-        xywh {375 535 75 30} box GTK_UP_BOX color 61 labelcolor 7 resizable
+        xywh {375 535 75 30} box FLAT_BOX color 61 labelcolor 7 resizable
       }
       Fl_Input clock_style {
         label style
@@ -525,52 +527,91 @@ clock_display->redraw();
 clock_displayer->redraw_label();
 clock_displayer->copy_label(result.c_str());
 clock_displayer->redraw();}
-        xywh {70 535 290 30} box GTK_DOWN_BOX selection_color 72 when 3
+        xywh {70 535 290 30} box FLAT_BOX selection_color 72 when 3
       }
       Fl_Browser {} {
         callback {std::string item=o->text(o->value());
 item= item.substr(0,2);
 clock_style->insert(item.c_str());
 //std::cerr<<"Click Clock: "<<item<<std::endl;}
-        xywh {15 5 450 405} type Hold box GTK_DOWN_BOX selection_color 72
+        xywh {15 5 450 405} type Hold box FLAT_BOX selection_color 72
         code1 {Apps apps;apps.populateClocks(o);}
       }
       Fl_Output clock_display {
-        xywh {35 500 385 25} box NO_BOX labelfont 1 labelsize 18 align 1
+        xywh {35 500 385 25} box FLAT_BOX labelfont 1 labelsize 18 align 1
       }
       Fl_Button {} {
         label Notes
         callback {clock_notes_window()->show();}
-        xywh {20 415 75 30} box GTK_UP_BOX
+        xywh {20 415 75 30} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label {Modifier Notes}
         callback {clock_info_window()->show();}
-        xywh {105 415 110 30} box GTK_UP_BOX
+        xywh {105 415 110 30} box FLAT_BOX color 23
+      }
+    }
+  }
+  Function {clock_notes_window()} {} {
+    Fl_Window clock_info {
+      label Notes open
+      xywh {82 131 360 420} type Double hide resizable
+      code1 {Config config; config.under_mouse(o);} xclass {jsm-panel}
+    } {
+      Fl_Scroll {} {open
+        xywh {15 15 335 390}
+      } {
+        Fl_Box {} {
+          label {ISO 8601 week dates %G,  %g,  and  %V yield values calculated from the week-based year defined by the ISO 8601 standard.  In this system, weeks start  on a  Monday,  and are numbered from 01, for the first week, up to 52 or 53, for the last week.  Week 1 is the first week where four  or more  days fall within the new year (or, synonymously, week 01 is: the first week of the year that contains a Thursday; or, the  week that  has 4 January in it).  When three of fewer days of the first calendar week of the new year fall within that year, then the  ISO 8601 week-based system counts those days as part of week 53 of the preceding year.  For example, 1 January 2010 is a Friday,  meaning that  just  three  days of that calendar week fall in 2010.  Thus, the ISO 8601 week-based system considers these days to be part  of week  53 (%V) of the year 2009 (%G); week 01 of ISO 8601 year 2010 starts on Monday, 4 January 2010.}
+          xywh {15 15 335 390} box FLAT_BOX color 55 align 128
+        }
+      }
+    }
+  }
+  Function {clock_info_window()} {} {
+    Fl_Window clock_modifier_notes {
+      label {Modifier Notes} open
+      xywh {81 107 360 405} type Double hide resizable
+      code1 {Config config; config.under_mouse(o);} xclass {jsm-panel}
+    } {
+      Fl_Scroll {} {open
+        xywh {15 10 340 350}
+      } {
+        Fl_Box {} {
+          label {Some conversion specifications can be modified  by  preceding  the conversion  specifier character by the E or O modifier to indicate that an alternative format should be  used.   If  the  alternative format or specification does not exist for the current locale, the behavior will be as if  the  unmodified  conversion  specification were  used.  (SU) The Single UNIX Specification mentions %Ec, %EC, %Ex, %EX, %Ey, %EY, %Od, %Oe, %OH, %OI, %Om, %OM, %OS,  %Ou,  %OU, %OV,  %Ow,  %OW, %Oy, where the effect of the O modifier is to use alternative numeric symbols (say, roman numerals), and that of the E  modifier  is  to use a locale-dependent alternative representation.
+The broken-down time structure tm is  defined  in  <time.h>.}
+          xywh {15 10 340 350} box FLAT_BOX color 55 align 128
+        }
+      }
+      Fl_Button {} {
+        label {See also ctime}
+        callback {int thissys = system("bash -c 'xterm -geometry 90x24 -fa default -fs 10 -T \\"ctime Manual\\" -e \\"man ctime\\" & '");
+if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;}}
+        xywh {115 370 130 30} box FLAT_BOX color 23 labelfont 1
       }
     }
   }
   Function {config_applist_window()} {} {
     Fl_Window conf_applist_window {
       label {Configure Running App List}
-      xywh {703 588 340 105} type Double hide
+      xywh {190 334 340 105} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Button {} {
         label OK
         callback {conf_applist_window->hide();}
-        xywh {235 35 60 30} box GTK_UP_BOX color 61 selection_color 59 labelcolor 7
+        xywh {235 35 60 30} box FLAT_BOX color 61 selection_color 59 labelcolor 7
       }
       Fl_Button task_bg_color {
         callback {one_color(o,"TaskListStyle");}
-        xywh {140 55 60 25} box GTK_UP_BOX
+        xywh {140 55 60 25} box FLAT_BOX color 23
         code0 {flPanel panel;unsigned int c;}
         code1 {unsigned int color = panel.getBackground(c,"TaskListStyle");}
         code2 {o->color(color);}
       }
       Fl_Button task_fg_color {
         callback {one_color_active(o,"TaskListStyle");}
-        xywh {140 20 60 25} box GTK_UP_BOX
+        xywh {140 20 60 25} box FLAT_BOX color 23
         code0 {flPanel panel;unsigned int c;}
         code1 {unsigned int color = panel.getActiveBackground(c,"TaskListStyle");}
         code2 {o->color(color);}
@@ -593,7 +634,7 @@ clock_style->insert(item.c_str());
     } {
       Fl_Menu_Button clock_menu {
         label {Clock Format} open
-        xywh {15 20 130 25} box GTK_UP_BOX selection_color 72
+        xywh {15 20 130 25} box GTK_UP_BOX color 23 selection_color 23
       } {
         MenuItem {} {
           label {Day name Month Day 12 Hour}
@@ -644,7 +685,7 @@ clock_displayer->redraw();}
       Fl_Button {} {
         label OK
         callback {conf_clock_window->hide();}
-        xywh {285 90 60 30} box GTK_UP_BOX color 61 labelcolor 7
+        xywh {285 90 60 30} box FLAT_BOX color 61 labelcolor 7
       }
       Fl_Output clock_displayer {
         xywh {150 38 160 30} box NO_BOX align 1
@@ -655,48 +696,48 @@ clock_displayer->redraw();}
       }
       Fl_Input {} {
         label {Program to Launch}
-        tooltip {Usually used for a calendar or analog clock} xywh {155 60 185 25} box GTK_DOWN_BOX selection_color 72 deactivate
+        tooltip {Usually used for a calendar or analog clock} xywh {155 60 185 25} box FLAT_BOX color 23 selection_color 72 deactivate
         code0 {o->value("xclock");}
       }
     }
   }
   Function {config_indicator_window()} {} {
     Fl_Window conf_indicator_window {
-      label {Configure Indicators}
-      xywh {708 549 285 260} type Double hide
+      label {Configure Indicators} open
+      xywh {149 276 285 235} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Button {} {
         label OK
         callback {conf_indicator_window->hide();}
-        xywh {210 215 60 30} box GTK_UP_BOX color 61 selection_color 59 labelcolor 7
+        xywh {160 190 60 30} box FLAT_BOX color 61 selection_color 59 labelcolor 7
       }
       Fl_Browser indicator_browser {
-        xywh {20 10 250 170} type Hold box GTK_DOWN_BOX selection_color 80
+        xywh {20 10 250 170} type Hold box FLAT_BOX selection_color 80
         code0 {Apps app;}
         code1 {app.getIndicators(o);}
       }
       Fl_Button {} {
         label {-}
         callback {remove_indicator();}
-        xywh {90 195 35 25} box GTK_UP_BOX labelfont 1 labelsize 34
+        xywh {90 195 35 25} box FLAT_BOX color 23 labelfont 1 labelsize 34
       }
       Fl_Button {} {
         label {@+}
         callback {add_indicator()->show();}
-        xywh {45 195 35 25} box GTK_UP_BOX
+        xywh {45 195 35 25} box FLAT_BOX color 23
       }
     }
   }
-  Function {configure_manually_window(std::string item)} {} {
+  Function {configure_manually_window()} {} {
     Fl_Window conf_manual_window {
       label {Manual Editing} open
       xywh {221 251 360 165} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Input manually_in {
-        xywh {10 10 340 30} box GTK_DOWN_BOX
-        code0 {o->value(item.c_str());}
+        xywh {10 10 340 30} box FLAT_BOX
+        code0 {o->value();}
       }
       Fl_Button {} {
         label OK
@@ -704,11 +745,11 @@ clock_displayer->redraw();}
 std::string item = hid_in->value();
 change_manual_item(input, item);
 conf_manual_window->hide();}
-        xywh {300 135 50 25} box GTK_UP_BOX color 61 labelcolor 7
+        xywh {300 135 50 25} box FLAT_BOX color 61 labelcolor 7
       }
       Fl_Input tooltip_label {
         label {Tooltip Label}
-        xywh {105 50 245 30} box GTK_DOWN_BOX selection_color 80
+        xywh {105 50 245 30} box FLAT_BOX selection_color 80
       }
       Fl_Button {} {
         label Icon
@@ -723,37 +764,41 @@ std::string icon = result;
 if(result!=NULL && program !=NULL){
 	icon_file->value(result);
 }}
-        xywh {10 100 65 25} box GTK_UP_BOX
+        xywh {10 100 65 25} box FLAT_BOX color 23
       }
       Fl_Input icon_file {
-        xywh {95 95 255 30} box GTK_DOWN_BOX selection_color 80
+        xywh {95 95 255 30} box FLAT_BOX selection_color 80
       }
       Fl_Input hid_in {
-        xywh {10 10 340 30} box GTK_DOWN_BOX hide
-        code0 {o->value(item.c_str());}
+        xywh {10 10 340 30} box FLAT_BOX hide
       }
     }
   }
-  Function {config_menu_window()} {} {
+  Function {config_menu_window()} {open
+  } {
     Fl_Window conf_menu_window {
       label {Configure Menu} open
-      xywh {705 626 285 180} type Double hide
-      code0 {startup(o);} xclass {jsm-panel}
+      xywh {203 201 245 130} type Double labelfont 14
+      code0 {startup(o);} xclass {jsm-panel} visible
     } {
       Fl_Button {} {
         label OK
-        callback {conf_menu_window->hide();}
-        xywh {205 140 60 30} box GTK_UP_BOX color 61 labelcolor 7
+        callback {flPanel config;
+const char* testNum = tester->value();
+if(testNum ==NULL){return;}
+const char* icon = hidden_icon_name->value();
+if(icon ==NULL){icon="application-default";}
+const char* newLabel = app_menu->value();
+if(newLabel==NULL){newLabel=gettext("Menu");}
+config.labelMenu(testNum,newLabel);
+config.setImageMenu(testNum,icon);
+saveChangesTemp();
+conf_menu_window->hide();}
+        xywh {175 95 60 30} box FLAT_BOX color 69 labelfont 1 labelcolor 7
       }
       Fl_Input app_menu {
         label {Menu Label}
-        callback {flPanel panel;
-const char * label=o->value();
-panel.menuLabel(label);}
-        xywh {110 15 130 25} box GTK_DOWN_BOX color 53 selection_color 72 when 1
-        code0 {flPanel panel;}
-        code1 {std::string l= panel.getLabelMenu(5);}
-        code2 {o->value(l.c_str());}
+        xywh {100 15 130 25} box FLAT_BOX color 55 selection_color 72 when 1
       }
       Fl_Button icon_view {
         callback {const char * f = "/usr/share/pixmaps";
@@ -761,80 +806,47 @@ const char * m="Choose an Icon";
 flPanel panel;
 const char *p="*.{xpm,XPM,png,PNG}";
 int r = 0;
+Fl_File_Icon::load_system_icons();
 char *result = fl_file_chooser(m,p,f,r);
 if(result!=NULL){
-	panel.setImageMenu(result,5);
+	//panel.setImageMenu(result,menuNumber);
 	display(result);
+	hidden_icon_name->value(result);
 }}
-        xywh {135 45 50 50} box GTK_DOWN_BOX align 130
-        code0 {flPanel panel;}
-        code1 {std::string icon =panel.getImageMenu(5);}
-        code2 {display(icon.c_str());}
-      }
-      Fl_Menu_Button {} {
-        label {Menu Type} open
-        xywh {40 125 105 30} box GTK_UP_BOX selection_color 80 deactivate
-      } {
-        MenuItem {} {
-          label Traditional
-          callback {change_menu(1);}
-          xywh {5 5 100 20}
-        }
-        MenuItem {} {
-          label {Gnome 2}
-          callback {change_menu(2);}
-          xywh {5 5 100 20}
-        }
+        xywh {100 45 50 50} box FLAT_BOX color 23 align 642
+        code2 {//display(icon.c_str());}
       }
       Fl_Box {} {
         label Icon
-        xywh {45 60 70 25}
+        xywh {15 50 50 30}
+      }
+      Fl_Input hidden_icon_name {
+        xywh {10 95 230 25} box FLAT_BOX color 23 hide
+      }
+      Fl_Output tester {
+        label Menu
+        xywh {205 45 25 25} box FLAT_BOX color 55
       }
     }
   }
-  Function {config_shutdown_window()} {} {
-    Fl_Window conf_shut_window {
-      label {Configure Shutdown}
-      xywh {766 613 285 120} type Double hide
-      code0 {startup(o);} xclass {jsm-panel}
-    } {
-      Fl_Button shutdown_icon {
-        label {Shutdown Icon}
-        callback {Apps apps;
-const char * f = "/usr/share/pixmaps";
-const char * m="Choose an Icon";
-const char *p="*.{svg,SVG,xpm,XPM,png,PNG}";
-int r = 0;
-char *result = fl_file_chooser(m,p,f,r);
-if(result!=NULL){
-	apps.setShutdownImage(result);
-}}
-        xywh {15 25 125 30} box GTK_UP_BOX
-      }
-      Fl_Button {} {
-        label OK
-        callback {conf_shut_window->hide();}
-        xywh {210 75 60 30} box GTK_UP_BOX color 61 labelcolor 7
-      }
-    }
-  }
-  Function {config_swallow_window()} {} {
+  Function {config_swallow_window()} {open
+  } {
     Fl_Window conf_swallow_window {
       label {Configure Swallowed Application} open
-      xywh {696 545 465 80} type Double hide
+      xywh {68 244 465 80} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Button {} {
         label OK
         callback {conf_swallow_window->hide();}
-        xywh {370 40 60 30} box GTK_UP_BOX color 61 labelcolor 7
+        xywh {370 40 60 30} box FLAT_BOX color 61 labelcolor 7
       }
       Fl_Input swallow_name {
         label {App Name}
         callback {flPanel panel;
 const char* name = o->value();
 panel.setSubElementAttribute("Swallow","name",name);}
-        tooltip {This MUST be the same as the executable's name} xywh {85 40 260 25} box GTK_DOWN_BOX color 53 selection_color 72 when 1
+        tooltip {This MUST be the same as the executable's name} xywh {85 40 260 25} box FLAT_BOX color 53 selection_color 72 when 1
         code0 {flPanel panel;}
         code1 {const char* name = panel.getSubElementAttribute("Swallow","name");}
         code2 {o->value(name);}
@@ -844,7 +856,7 @@ panel.setSubElementAttribute("Swallow","name",name);}
         callback {flPanel panel;
 const char* name = o->value();
 panel.setSubElementText("Swallow",name);}
-        xywh {85 10 370 25} box GTK_DOWN_BOX color 53 selection_color 72 when 1
+        xywh {85 10 370 25} box FLAT_BOX color 53 selection_color 72 when 1
         code0 {flPanel panel;}
         code1 {std::string name = panel.getSubElementText("Swallow");}
         code2 {o->value(name.c_str());}
@@ -854,58 +866,58 @@ panel.setSubElementText("Swallow",name);}
   Function {config_switcher_window()} {} {
     Fl_Window conf_switcher {
       label {Configure Switcher} open
-      xywh {482 463 265 250} type Double hide
+      xywh {203 152 320 180} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Button {} {
         label OK
         callback {conf_switcher->hide();}
-        xywh {190 205 60 30} box GTK_UP_BOX color 61 selection_color 59 labelcolor 7
+        xywh {240 105 60 30} box FLAT_BOX color 61 selection_color 59 labelcolor 7
       }
       Fl_Box {} {
-        label {Active Foreground}
-        xywh {15 10 140 30}
+        label Active
+        xywh {15 80 60 30} box FLAT_BOX
         code0 {if(style_gone()){o->hide();}}
       }
       Fl_Box {} {
-        label {Active Background}
-        xywh {15 45 140 30}
+        label Active
+        xywh {15 140 50 30} box FLAT_BOX
         code0 {if(style_gone()){o->hide();}}
       }
       Fl_Box {} {
         label Foreground
-        xywh {35 80 90 30}
+        xywh {95 60 90 30} box FLAT_BOX
         code0 {if(style_gone()){o->hide();}}
       }
       Fl_Box {} {
         label Background
-        xywh {35 115 90 30}
+        xywh {90 115 90 30} box FLAT_BOX
         code0 {if(style_gone()){o->hide();}}
       }
       Fl_Button {} {
         callback {one_color_Font(o,"PagerStyle");}
-        xywh {160 5 75 30} box GTK_UP_BOX deactivate
+        xywh {70 85 75 30} box FLAT_BOX color 23 deactivate
         code0 {flPanel panel;unsigned int c;}
         code1 {if(style_gone()){o->hide();}}
         code2 {else{unsigned int color = panel.getFontColor(c,"PagerStyle");o->color(color);}}
       }
       Fl_Button {} {
         callback {one_color_active(o,"PagerStyle");}
-        xywh {160 43 75 30} box GTK_UP_BOX
+        xywh {70 140 75 30} box FLAT_BOX color 23
         code0 {flPanel panel;unsigned int c;}
         code1 {if(style_gone()){o->hide();}}
         code2 {else{unsigned int color = panel.getActiveBackground(c,"PagerStyle");o->color(color);}}
       }
       Fl_Button {} {
         callback {one_color_Font(o,"PagerStyle");}
-        xywh {160 80 75 30} box GTK_UP_BOX
+        xywh {150 85 75 30} box FLAT_BOX color 23
         code0 {flPanel panel;unsigned int c;}
         code1 {if(style_gone()){o->hide();}}
         code2 {else{unsigned int color = panel.getFontColor(c,"PagerStyle");o->color(color);}}
       }
       Fl_Button {} {
         callback {one_color(o,"PagerStyle");}
-        xywh {160 115 75 30} box GTK_UP_BOX
+        xywh {150 140 75 30} box FLAT_BOX color 23
         code0 {flPanel panel;unsigned int c;}
         code1 {if(style_gone()){o->hide();}}
         code2 {else{unsigned int color = panel.getBackground(c,"PagerStyle");o->color(color);}}
@@ -914,7 +926,7 @@ panel.setSubElementText("Swallow",name);}
         label {Number of Desktops Wide}
         callback {int width = int((o->value()));
 num_desktop_wh_cb("width",width);}
-        xywh {20 150 20 25} box GTK_DOWN_BOX color 53 align 8
+        xywh {15 10 20 25} box FLAT_BOX color 53 align 8
         code0 {Config config;}
         code1 {int width = config.getIntAttribute("Desktops","width");}
         code2 {o->value(width);}
@@ -923,24 +935,23 @@ num_desktop_wh_cb("width",width);}
         label {Number of Desktops High }
         callback {int height = int((o->value()));
 num_desktop_wh_cb("height",height);}
-        xywh {20 175 20 25} box GTK_DOWN_BOX color 53 align 8
+        xywh {15 40 20 25} box FLAT_BOX color 53 align 8
         code0 {Config config;}
         code1 {int height = config.getIntAttribute("Desktops","height");}
         code2 {o->value(height);}
       }
     }
   }
-  Function {make_shortcut_window()} {open
-  } {
+  Function {make_shortcut_window()} {} {
     Fl_Window shortcut_window {
       label {Choose an application to add} open
-      xywh {568 274 335 365} type Double hide resizable
+      xywh {246 71 335 365} type Double hide resizable
       code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Button {} {
         label Application
         callback {icon_for_desktop();}
-        xywh {10 20 105 25} box GTK_UP_BOX
+        xywh {10 20 105 25} box FLAT_BOX color 23 selection_color 40
       }
       Fl_Button {} {
         label Icon
@@ -956,7 +967,7 @@ if(result!=NULL && program !=NULL){
 	icon_name->copy_label(result);
 	displayAPPicon(result);
 }}
-        xywh {10 100 65 25} box GTK_UP_BOX
+        xywh {10 100 65 25} box FLAT_BOX color 23 selection_color 40
       }
       Fl_Input app_command {
         callback {const char* result = o->value();
@@ -973,19 +984,19 @@ if(result!=NULL){
 	app_icon_box->redraw();
 	icon_name->copy_label(icon.c_str());
 }}
-        tooltip {You can add arguments here} xywh {120 20 185 25} box GTK_DOWN_BOX selection_color 80 align 8 when 8
+        tooltip {You can add arguments here} xywh {120 20 185 25} box FLAT_BOX selection_color 80 align 8 when 8
       }
       Fl_Box app_icon_box {
-        xywh {160 87 48 48} box GTK_DOWN_BOX color 42 align 288
+        xywh {160 87 48 48} box FLAT_BOX color 42 align 288
       }
       Fl_Input tooltip {
         label {Tooltip Label}
-        xywh {120 60 185 25} box GTK_DOWN_BOX selection_color 80
+        xywh {120 60 185 25} box FLAT_BOX selection_color 80
       }
       Fl_Button {} {
         label {@+}
         callback {clear_shortcuts();}
-        xywh {20 320 30 30} box GTK_UP_BOX
+        xywh {20 320 30 30} box FLAT_BOX color 23 selection_color 40
       }
       Fl_Button ok_button {
         label SAVE
@@ -993,14 +1004,14 @@ if(result!=NULL){
 panel.saveJWMRC();
 shortcut_window->hide();
 refresh_app_browser();}
-        tooltip {Write to configuration file} xywh {250 320 50 30} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
+        tooltip {Write to configuration file} xywh {250 320 50 30} box FLAT_BOX color 61 selection_color 59 labelcolor 55
       }
       Fl_Check_Button shortcut_border {
         label {Show a Border around the Button?}
-        tooltip {The button you are adding can be borderless, if you like} xywh {10 355 265 25} down_box GTK_DOWN_BOX selection_color 60 hide deactivate
+        tooltip {The button you are adding can be borderless, if you like} xywh {10 355 265 25} box FLAT_BOX down_box GTK_DOWN_BOX selection_color 60 hide deactivate
       }
       Fl_Browser shortcut_browser {
-        xywh {10 140 295 175} type Hold box GTK_DOWN_BOX when 2
+        xywh {10 140 295 175} type Hold box FLAT_BOX when 2
         code0 {Apps apps;apps.loadTemp();}
         code1 {apps.getShortcuts(o);o->redraw();}
       }
@@ -1019,36 +1030,35 @@ if (prog.compare("exec:")!=0){
 	apps.getShortcuts(shortcut_browser);
 	shortcut_browser->redraw();
 }}
-        tooltip {Remove application launcher} xywh {55 320 30 30} box GTK_UP_BOX labelfont 1 labelsize 45
+        tooltip {Remove application launcher} xywh {55 320 30 30} box FLAT_BOX color 23 selection_color 40 labelfont 1 labelsize 45
       }
       Fl_Box icon_name {
         label {Icon File Name}
-        xywh {85 100 220 25} box GTK_DOWN_BOX hide
+        xywh {85 100 220 25} box FLAT_BOX hide
       }
     }
   }
-  Function {new_panel_window()} {open
-  } {
+  Function {new_panel_window()} {} {
     Fl_Window new_panel {
-      label {Add a Panel}
+      label {Add a Panel} open
       xywh {738 525 290 115} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Box {} {
-        label {Only Four Panels are supported Currently}
-        xywh {25 25 240 50} align 128
+        label {Only Four Panels are supported}
+        xywh {25 10 240 50} align 128
       }
       Fl_Button {} {
         label OK
         callback {new_panel->hide();}
-        xywh {85 80 105 30} box GTK_UP_BOX
+        xywh {120 75 55 30} box FLAT_BOX color 62 selection_color 58 labelcolor 7
       }
     }
   }
   Function {no_config()} {open
   } {
     Fl_Window {} {
-      label {Nothing to Configure}
+      label {Nothing to Configure} open
       xywh {872 569 265 65} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
@@ -1081,42 +1091,34 @@ if ((icon.compare("")!=0)&&(execLine.compare("exec:")!=0)){
 Apps app;
 switch (line){
   case 1:
-    //Application Menu
-    app.addAppMenu();
+    //Menu
+    add_new_menu();
     break;
   case 2:
-    //Places Menu
-    app.addPlaces();
-    break;
-  case 3:
-    //Shutdown Menu
-    app.addShutdown();
-    break;
-  case 4:
     //Clock
     app.addClock();
     config_clock_window()->show();
     break;
-  case 5:
+  case 3:
     //Desktop Switcher
     app.addPager();
     config_switcher_window()->show();
     break;
-  case 6:
+  case 4:
     //Indicators
     config_indicator_window()->show();
     add_indicator()->show();
     break;
-  case 7:
+  case 5:
     //Running App List
     app.addTaskList();
     config_applist_window()->show();
     break;
-  case 8:
+  case 6:
     //Launcher
     make_shortcut_window()->show();
     break;
-  case 9:
+  case 7:
     //Swallow
     //app.
     std::cout<<"swallow"<<std::endl;
@@ -1124,8 +1126,11 @@ switch (line){
 }
 app.populate(app_browser);} {}
   }
-  Function {autohide()} {open
+  Function {add_new_menu()} {open
   } {
+    code {printf("Hello, World!\\n");} {}
+  }
+  Function {autohide()} {} {
     code {flPanel panel;
 std::string a = panel.getAutohide();
 if(!panel.newStyle()){
@@ -1144,10 +1149,6 @@ panel.panelAutohide(where);} {}
 panel.cancel();
 panel_window->hide();
 UI ux;ux.showSettings();} {}
-  }
-  Function {change_menu(int whichStyle)} {} {
-    code {const char* menuName = app_menu->value();
-flPanel panel; panel.switchMenu(whichStyle, menuName);} {}
   }
   Function {change_manual_item(std::string input, std::string old_input)} {open
   } {
@@ -1181,43 +1182,42 @@ else{
 std::cerr<<"coordinate() function called incorrectly"<<std::endl;
 }} {}
   }
-  Function {config_Item(std::string whichItem)} {} {
-    code {if(whichItem.compare("App Menu")==0){
+  Function {config_Item(std::string whichItem)} {open
+  } {
+    code {std::string rootMenu = "Menu: ";
+unsigned found = whichItem.find(rootMenu);
+if(found<whichItem.length()){
   config_menu_window()->show();
-}
-else if(whichItem.compare("Places Menu")==0){
-      no_config()->show();
-}
-else if(whichItem.compare("Shutdown Menu")==0){
-  config_shutdown_window()->show();
-}
-else if(whichItem.compare("Desktop Switcher")==0){
-  config_switcher_window()->show();
-}
-else if(whichItem.compare("Running App List")==0){
-  if(!style_gone()){config_applist_window()->show();}
-  else{no_config()->show();}
-}
-else if(whichItem.compare("Indicators")==0){
-  config_indicator_window()->show();
-}
-else if(whichItem.compare("Clock")==0){
-    config_clock_window()->show();
-}
-else if(whichItem.compare("")==0){
-  no_config()->show();
+  flPanel panel;
+  std::string tempMenu = whichItem;
+  tempMenu = tempMenu.erase(0,rootMenu.length());
+  const char* resulter = tempMenu.c_str();
+  tester->value(resulter);
+  std::string l= panel.getLabelMenu(resulter);
+  std::string icon =panel.getImageMenu(resulter);
+  display(icon.c_str());
+  hidden_icon_name->value(icon.c_str());
+  app_menu->value(l.c_str());
 }
 else{
-  unsigned found = whichItem.find_first_of(":");
-  std::string passinto = whichItem;
-  if(found<=whichItem.length()){
-    std::string thisItem = whichItem.erase(0,found+1);
-    if(thisItem.compare("Swallowed App")==0){
-        config_swallow_window()->show();
+  if(whichItem.compare("Desktop Switcher")==0){config_switcher_window()->show();}
+  else if(whichItem.compare("Running App List")==0){
+    if(!style_gone()){config_applist_window()->show();}
+    else{no_config()->show();}
+  }
+  else if(whichItem.compare("Indicators")==0){config_indicator_window()->show();}
+  else if(whichItem.compare("Clock")==0){config_clock_window()->show();}
+  else if(whichItem.compare("")==0){no_config()->show();}
+  else{
+  std::string swaller =gettext("Swallowed App");
+    unsigned found = whichItem.find(swaller.c_str());
+    std::string passinto = whichItem;
+    if(found<whichItem.length()){
+      config_swallow_window()->show();
     }
     else{
-      
-      configure_manually_window(passinto)->show();
+      configure_manually_window()->show();
+      manually_in->value(passinto.c_str());
     }
   }
 }} {}
@@ -1418,10 +1418,9 @@ if(appLine <= size && appLine !=0){
   }
 }} {}
   }
-  Function {new_panel_items(Fl_Browser *o)} {} {
-    code {o->add("Application Menu");
-o->add("Places Menu");
-o->add("Shutdown Menu");
+  Function {new_panel_items(Fl_Browser *o)} {open
+  } {
+    code {o->add("Menu");
 o->add("Clock");
 o->add("Desktop Switcher");
 o->add("Indicators");
@@ -1617,46 +1616,6 @@ if(border.compare("border")==0){
   }
 }
 fl_panel.setValue(dimension,panelSize);} {}
-  }
-  Function {clock_notes_window()} {} {
-    Fl_Window clock_info {
-      label Notes open
-      xywh {82 131 360 420} type Double hide resizable
-      code1 {Config config; config.under_mouse(o);} xclass {jsm-panel}
-    } {
-      Fl_Scroll {} {open
-        xywh {15 15 335 390}
-      } {
-        Fl_Box {} {
-          label {ISO 8601 week dates %G,  %g,  and  %V yield values calculated from the week-based year defined by the ISO 8601 standard.  In this system, weeks start  on a  Monday,  and are numbered from 01, for the first week, up to 52 or 53, for the last week.  Week 1 is the first week where four  or more  days fall within the new year (or, synonymously, week 01 is: the first week of the year that contains a Thursday; or, the  week that  has 4 January in it).  When three of fewer days of the first calendar week of the new year fall within that year, then the  ISO 8601 week-based system counts those days as part of week 53 of the preceding year.  For example, 1 January 2010 is a Friday,  meaning that  just  three  days of that calendar week fall in 2010.  Thus, the ISO 8601 week-based system considers these days to be part  of week  53 (%V) of the year 2009 (%G); week 01 of ISO 8601 year 2010 starts on Monday, 4 January 2010.}
-          xywh {15 15 335 390} box GTK_DOWN_BOX color 54 align 128
-        }
-      }
-    }
-  }
-  Function {clock_info_window()} {open
-  } {
-    Fl_Window clock_modifier_notes {
-      label {Modifier Notes} open
-      xywh {81 107 360 405} type Double hide resizable
-      code1 {Config config; config.under_mouse(o);} xclass {jsm-panel}
-    } {
-      Fl_Scroll {} {open
-        xywh {15 10 340 350}
-      } {
-        Fl_Box {} {
-          label {Some conversion specifications can be modified  by  preceding  the conversion  specifier character by the E or O modifier to indicate that an alternative format should be  used.   If  the  alternative format or specification does not exist for the current locale, the behavior will be as if  the  unmodified  conversion  specification were  used.  (SU) The Single UNIX Specification mentions %Ec, %EC, %Ex, %EX, %Ey, %EY, %Od, %Oe, %OH, %OI, %Om, %OM, %OS,  %Ou,  %OU, %OV,  %Ow,  %OW, %Oy, where the effect of the O modifier is to use alternative numeric symbols (say, roman numerals), and that of the E  modifier  is  to use a locale-dependent alternative representation.
-The broken-down time structure tm is  defined  in  <time.h>.}
-          xywh {15 10 340 350} box GTK_DOWN_BOX color 54 align 128
-        }
-      }
-      Fl_Button {} {
-        label {See also ctime}
-        callback {int thissys = system("bash -c 'xterm -geometry 90x24 -fa default -fs 10 -T \\"ctime Manual\\" -e \\"man ctime\\" & '");
-if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;}}
-        xywh {20 370 115 30} box GTK_UP_BOX
-      }
-    }
   }
   Function {style_gone()} {return_type bool
   } {

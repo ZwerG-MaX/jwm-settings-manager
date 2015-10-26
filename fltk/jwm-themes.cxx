@@ -84,7 +84,7 @@ Fl_Double_Window* ThemesUI::make_window() {
       o->color((Fl_Color)31);
       { ok = new Fl_Button(400, 210, 185, 30, gettext("Change Colors ONLY"));
         ok->tooltip(gettext("This will copy your current theme somewhere else"));
-        ok->box(FL_GTK_UP_BOX);
+        ok->box(FL_FLAT_BOX);
         ok->color((Fl_Color)61);
         ok->selection_color((Fl_Color)58);
         ok->labelcolor(FL_BACKGROUND2_COLOR);
@@ -92,7 +92,7 @@ Fl_Double_Window* ThemesUI::make_window() {
       } // Fl_Button* ok
       { Fl_Browser* o = sys_theme = new Fl_Browser(10, 30, 130, 105, gettext("Themes"));
         sys_theme->type(2);
-        sys_theme->box(FL_GTK_DOWN_BOX);
+        sys_theme->box(FL_FLAT_BOX);
         sys_theme->selection_color(FL_DARK_RED);
         sys_theme->callback((Fl_Callback*)cb_sys_theme);
         sys_theme->align(Fl_Align(FL_ALIGN_TOP));
@@ -123,13 +123,13 @@ Fl_Double_Window* ThemesUI::make_window() {
       } // Fl_Box* iwin_text
       { save_button = new Fl_Button(170, 210, 160, 30, gettext("Save Custom Theme"));
         save_button->tooltip(gettext("This will copy your current theme somewhere else"));
-        save_button->box(FL_GTK_UP_BOX);
+        save_button->box(FL_FLAT_BOX);
         save_button->color((Fl_Color)94);
         save_button->callback((Fl_Callback*)cb_save_button);
       } // Fl_Button* save_button
       { cancel = new Fl_Button(215, 255, 65, 30, gettext("Cancel"));
         cancel->tooltip(gettext("This will copy your current theme somewhere else"));
-        cancel->box(FL_GTK_UP_BOX);
+        cancel->box(FL_FLAT_BOX);
         cancel->color((Fl_Color)80);
         cancel->selection_color((Fl_Color)64);
         cancel->labelcolor(FL_BACKGROUND2_COLOR);
@@ -137,7 +137,7 @@ Fl_Double_Window* ThemesUI::make_window() {
       } // Fl_Button* cancel
       { Fl_Browser* o = usr_theme = new Fl_Browser(10, 155, 130, 140, gettext("User Themes"));
         usr_theme->type(2);
-        usr_theme->box(FL_GTK_DOWN_BOX);
+        usr_theme->box(FL_FLAT_BOX);
         usr_theme->selection_color(FL_DARK_RED);
         usr_theme->callback((Fl_Callback*)cb_usr_theme);
         usr_theme->align(Fl_Align(FL_ALIGN_TOP));
@@ -149,7 +149,7 @@ Fl_Double_Window* ThemesUI::make_window() {
       } // Fl_Box* button_icon
       { overwritten = new Fl_Button(400, 250, 190, 35, gettext("Overwrite Current Theme"));
         overwritten->tooltip(gettext("This will copy your current theme somewhere else"));
-        overwritten->box(FL_GTK_UP_BOX);
+        overwritten->box(FL_FLAT_BOX);
         overwritten->color((Fl_Color)61);
         overwritten->selection_color((Fl_Color)58);
         overwritten->labelcolor(FL_BACKGROUND2_COLOR);
@@ -158,7 +158,7 @@ Fl_Double_Window* ThemesUI::make_window() {
       o->end();
     } // Fl_Scroll* o
     { current_theme = new Fl_Box(25, 305, 570, 30);
-      current_theme->box(FL_GTK_DOWN_BOX);
+      current_theme->box(FL_FLAT_BOX);
       current_theme->color((Fl_Color)55);
     } // Fl_Box* current_theme
     { amin = new Fl_Box(490, 105, 30, 30);

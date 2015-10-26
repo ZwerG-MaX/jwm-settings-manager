@@ -5,8 +5,11 @@
 set(EXTENTION "svg")
 set(JSM "jwm-settings-manager")
 ## DEFAULT PROGRAMS
+set (brightUP "exec:torios-gamma up")
+set (brightDown "exec:torios-gamma down")
 set (WEB_PROG "exec:x-www-browser")
-set (MANUAL "${WEB_PROG} /usr/share/doc/torios/html/index.html")
+set (MENU_WEB_PROG "x-www-browser")
+set (MANUAL "${MENU_WEB_PROG} /usr/share/doc/torios/html/index.html")
 set (STARTPAGE "${WEB_PROG} /usr/share/doc/torios/startpage.html")
 set (STARTPAGE_ICON "browser.${EXTENTION}")
 set (SYS_MONITOR "exec:xterm htop")
@@ -58,63 +61,69 @@ set(EDIT_PANEL "    <RootMenu onroot=\"p\">
 ## Menu Edit
 set(EDIT_MENU_ROOT "root:m")
 set(EDIT_MENU "    <RootMenu onroot=\"m\">
-	<Program icon=\"jsm-panel.${EXTENTION}\" label=\"Edit Menu\">${JSM} --menu</Program>
 	<Program icon=\"reload.${EXTENTION}\" label=\"Update Menus\">update-menus</Program>
+	<Program icon=\"jsm-panel.${EXTENTION}\" label=\"Edit Menu\">${JSM} --menu</Program>
+	<Program icon=\"jsm-panel.${EXTENTION}\" label=\"Edit Panel\">${JSM} --panel</Program>
     </RootMenu>")
 ## SHUTDOWN MENU
 set(SHUTDOWN_ROOT "root:9")
 set(SHUTDOWN_NAME "Shutdown")
 set(SHUTDOWN_ICON "system-shutdown.${EXTENTION}")
-set(SHUTDOWN_PROGRAM "torios-shutdown")
+set(SHUTDOWN_PROGRAM "${JSM} --halt")
 set(LOGOUT_ICON "system-logout.${EXTENTION}")
 set(RESTART_ICON "system-restart.${EXTENTION}")
 set(RESTART_PROGRAM "torios-reboot")
-set(SHUTERDOWN "<Program icon=\"${SHUTDOWN_ICON}\" label=\"Shutdown Computer\">${SHUTDOWN_PROGRAM}</Program>
-        <Program icon=\"${RESTART_ICON}\" label=\"Restart Computer\">${RESTART_PROGRAM}</Program>
-        <Restart label=\"Reload Desktop\" icon=\"${RESTART_ICON}\"/>
-        <Program label=\"Logout\" icon=\"${LOGOUT_ICON}\">torios-exit</Program>")
+set(SHUTERDOWN "<Separator/>
+	<Restart label=\"Reload Desktop\" icon=\"${RESTART_ICON}\"/>
+	<Program icon=\"${SHUTDOWN_ICON}\" label=\"Shutdown Computer\">${SHUTDOWN_PROGRAM}</Program>")
 
 ## MAIN MENU
 set(FACEB "https://www.facebook.com/ToriOS.Linux")
 set(GPLUS "https://plus.google.com/u/0/b/105245967039953698237/105245967039953698237/posts")
 set(TWITTER "https://twitter.com/Tori_OS")
-set(LP "https://launchpad.net/torios")
+set(LP "https://launchpad.net/~torios")
 set(APPMENU_FILE "$HOME/.config/torimenu")
 set(JWM_MENU "exec:/usr/bin/jwm-menu")
-set(JWM_ROOT "root:3")
-set(ABOUT_PROG "${WEB_PROG} http://torios.org/community.html")
+set(JWM_ROOT_NUM "2")
+set(JWM_ROOT "root:${JWM_ROOT_NUM}")
+set(ABOUT_PROG "torios-about || ${MENU_WEB_PROG} http://torios.net")
 set(MENU_ICON "/usr/share/pixmaps/distributor-logo.png")
 #MAIN MENU GENERATOR
 
-set(JWM_ROOT_MENU "<RootMenu onroot=\"3\">
+set(JWM_ROOT_MENU "<RootMenu onroot=\"${JWM_ROOT_NUM}\">
         <Include>${JWM_MENU}</Include>
         <Menu label=\"About ToriOS\" icon=\"help-about.${EXTENTION}\" height=\"0\">
            <Program label=\"Help\" icon=\"help.${EXTENTION}\">${MANUAL}</Program>
-           <Program label=\"Launchpad\" icon=\"launchpad.${EXTENTION}\">${WEB_PROG} ${LP}</Program>
-           <Program label=\"G+\" icon=\"googleplus.${EXTENTION}\">${WEB_PROG} ${GPLUS}</Program>
-           <Program label=\"Facebook\" icon=\"facebook.${EXTENTION}\">${WEB_PROG} ${FACEB}</Program>
-           <Program label=\"Twitter\" icon=\"twitter.${EXTENTION}\">${WEB_PROG} ${TWITTER}</Program>
+           <Program label=\"Launchpad\" icon=\"launchpad.${EXTENTION}\">${MENU_WEB_PROG} ${LP}</Program>
+           <Program label=\"G+\" icon=\"googleplus.${EXTENTION}\">${MENU_WEB_PROG} ${GPLUS}</Program>
+           <Program label=\"Facebook\" icon=\"facebook.${EXTENTION}\">${MENU_WEB_PROG} ${FACEB}</Program>
+           <Program label=\"Twitter\" icon=\"twitter.${EXTENTION}\">${MENU_WEB_PROG} ${TWITTER}</Program>
            <Program label=\"About Us\" icon=\"${MENU_ICON}\">${ABOUT_PROG}</Program>
         </Menu>
         ${SHUTERDOWN}
     </RootMenu>")
-
-set(MENUS_LIST_NEW "${JWM_ROOT_MENU}")
-
-set(REGULAR_MENUS_LIST "    <Include>${APPMENU_FILE}</Include>")
-#set(REGULAR_MENUS_LIST "${JWM_ROOT_MENU}")
-set(TORI_ROOT "root:5")
-#set(TORI_ROOT "${JWM_ROOT}")
+set(TORI_ROOT "${JWM_ROOT}")
 set(MENU_NAME "Apps")
 
 
 ## PLACES MENU
-set(PLACES_ROOT "root:7")
+set(PLACES_NUM "7")
+set(PLACES_ROOT "root:${PLACES_NUM}")
 set(PLACES_NAME "Places")
-set(PLACES_ICON "folder.@EXTENTION@")
-
+set(PLACES_MENU_FILE "$HOME/.config/placesmenu")
+set(PLACES_INCLUDE "exec:/usr/bin/jwm-places")
+set(PLACES_ICON "folder.${EXTENTION}")
+set(PLACES_MENU "    <RootMenu onroot=\"${PLACES_NUM}\">
+        <Include>${PLACES_INCLUDE}</Include>
+    </RootMenu>")
+set(REGULAR_MENUS_LIST "    <Include>${APPMENU_FILE}</Include>
+<!--Places Menu-->
+    <Include>${PLACES_MENU_FILE}</Include>")
+set(MENUS_LIST_NEW "${JWM_ROOT_MENU}
+${PLACES_MENU}")
+set (ROOT_MENU "root:${JWM_ROOT_NUM}")
 ## Mouse MENU
-set(MOUSE_MENU "<RootMenu height=\"0\" onroot=\"2\">
+set(MOUSE_MENU "<RootMenu height=\"0\" onroot=\"3\">
         <Program icon=\"folder-home.${EXTENTION}\" label=\"Home\">xdg-open ~/</Program>
         <Program icon=\"${JSM}.${EXTENTION}\" label=\"Settings\">${JSM}</Program>
         <Program icon=\"preferences-desktop-wallpaper.${EXTENTION}\" label=\"Change Desktop Background\">${JSM} --desktop</Program>
@@ -239,8 +248,8 @@ set(KEYSHORTCUTS "<Key key=\"Up\">up</Key>
     <Key key=\"XF86AudioLowerVolume\">${VOL_DOWN}</Key>
     <Key key=\"XF86WWW\">${WEB_PROG}</Key>
     <Key key=\"XF86Calculator\">${CALC_PROG}</Key>
-    <Key key=\"XF86MonBrightnessUp\">${CALC_PROG}</Key>
-    <Key key=\"XF86MonBrightnessDown\">${CALC_PROG}</Key>
+    <Key key=\"XF86MonBrightnessUp\">${brightUP}</Key>
+    <Key key=\"XF86MonBrightnessDown\">${brightDown}</Key>
     <Key key=\"Print\">${SCREEN_SHOT}</Key>
     <Key mask=\"CA\" key=\"p\">${SCREEN_SHOT}</Key>
     <Key mask=\"S4\" key=\"3\">${SCREEN_SHOT}</Key>
@@ -257,7 +266,7 @@ set(KEYSHORTCUTS "<Key key=\"Up\">up</Key>
     <Key mask=\"CA\" key=\"Tab\">nextstacked</Key>
     <Key mask=\"C\" key=\"#\">desktop#</Key>
     <Key mask=\"A\" key=\"F1\">${HELP_PROG}</Key>
-    <Key mask=\"C\" key=\"Escape\">${TORI_ROOT}</Key>
+    <Key mask=\"C\" key=\"Escape\">${ROOT_MENU}</Key>
     <Key mask=\"A\" key=\"F2\">${RUN_DIALOG}</Key>
     <Key mask=\"4\" key=\"F2\">${RUN_DIALOG}</Key>
     <Key mask=\"4\" key=\"space\">${RUN_DIALOG}</Key>
@@ -297,37 +306,10 @@ set(NEW_KEYSHORTCUTS "${KEYSHORTCUTS}
     <Key mask=\"SCA\" key=\"Up\">sendu</Key>
     <Key mask=\"SCA\" key=\"Down\">sendd</Key>")
 
-set(ICONS_LIST "  <IconPath>/usr/share/icons/Numix-Circle/16x16/apps</IconPath>
+set(ICONS_LIST "  <IconPath>/usr/share/icons/Numix-Circle/scalable/apps</IconPath>
   <IconPath>/usr/share/icons/Numix-Circle/scalable/apps</IconPath>
-  <IconPath>/usr/share/icons/Numix-Circle/16x16/apps</IconPath>
   <IconPath>/usr/share/icons/Numix-Circle/scalable/apps</IconPath>
 <!-- Inherited Icons -->
-  <IconPath>/usr/share/app-install/icons</IconPath>
-  <IconPath>/usr/share/icons/Numix/256x256/actions</IconPath>
-  <IconPath>/usr/share/icons/Numix/256x256/animations</IconPath>
-  <IconPath>/usr/share/icons/Numix/256x256/categories</IconPath>
-  <IconPath>/usr/share/icons/Numix/256x256/devices</IconPath>
-  <IconPath>/usr/share/icons/Numix/256x256/emblems</IconPath>
-  <IconPath>/usr/share/icons/Numix/256x256/mimetypes</IconPath>
-  <IconPath>/usr/share/icons/Numix/256x256/places</IconPath>
-  <IconPath>/usr/share/icons/Numix/256x256/status</IconPath>
-  <IconPath>/usr/share/icons/Numix/32x32/actions</IconPath>
-  <IconPath>/usr/share/icons/Numix/32x32/animations</IconPath>
-  <IconPath>/usr/share/icons/Numix/32x32/apps</IconPath>
-  <IconPath>/usr/share/icons/Numix/32x32/categories</IconPath>
-  <IconPath>/usr/share/icons/Numix/32x32/devices</IconPath>
-  <IconPath>/usr/share/icons/Numix/32x32/emblems</IconPath>
-  <IconPath>/usr/share/icons/Numix/32x32/mimetypes</IconPath>
-  <IconPath>/usr/share/icons/Numix/32x32/places</IconPath>
-  <IconPath>/usr/share/icons/Numix/32x32/status</IconPath>
-  <IconPath>/usr/share/icons/Numix/scalable/actions</IconPath>
-  <IconPath>/usr/share/icons/Numix/scalable/apps</IconPath>
-  <IconPath>/usr/share/icons/Numix/scalable/categories</IconPath>
-  <IconPath>/usr/share/icons/Numix/scalable/devices</IconPath>
-  <IconPath>/usr/share/icons/Numix/scalable/emblems</IconPath>
-  <IconPath>/usr/share/icons/Numix/scalable/mimetypes</IconPath>
-  <IconPath>/usr/share/icons/Numix/scalable/places</IconPath>
-  <IconPath>/usr/share/icons/Numix/scalable/status</IconPath>
   <IconPath>/usr/share/icons/gnome/256x256/actions</IconPath>
   <IconPath>/usr/share/icons/gnome/256x256/apps</IconPath>
   <IconPath>/usr/share/icons/gnome/256x256/categories</IconPath>
@@ -361,6 +343,7 @@ set(ICONS_LIST "  <IconPath>/usr/share/icons/Numix-Circle/16x16/apps</IconPath>
   <IconPath>/usr/share/icons/hicolor/32x32/devices</IconPath>
   <IconPath>/usr/share/icons/hicolor/32x32/emblems</IconPath>
   <IconPath>/usr/share/icons/hicolor/32x32/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/places</IconPath>
   <IconPath>/usr/share/icons/hicolor/32x32/status</IconPath>
   <IconPath>/usr/share/icons/hicolor/512x512/apps</IconPath>
   <IconPath>/usr/share/icons/hicolor/512x512/mimetypes</IconPath>
@@ -372,8 +355,145 @@ set(ICONS_LIST "  <IconPath>/usr/share/icons/Numix-Circle/16x16/apps</IconPath>
   <IconPath>/usr/share/icons/hicolor/scalable/mimetypes</IconPath>
   <IconPath>/usr/share/icons/hicolor/scalable/places</IconPath>
   <IconPath>/usr/share/icons/hicolor/scalable/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/128@2x/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/128@2x/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/128/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/128/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/16@2x/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/16@2x/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/16@2x/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/16@2x/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/16@2x/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/16@2x/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/16@2x/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/16@2x/panel</IconPath>
+  <IconPath>/usr/share/icons/Numix/16@2x/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/16@2x/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/16/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/16/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/16/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/16/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/16/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/16/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/16/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/16/panel</IconPath>
+  <IconPath>/usr/share/icons/Numix/16/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/16/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/22@2x/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/22@2x/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/22@2x/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/22@2x/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/22@2x/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/22@2x/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/22@2x/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/22@2x/panel</IconPath>
+  <IconPath>/usr/share/icons/Numix/22@2x/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/22@2x/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/22/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/22/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/22/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/22/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/22/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/22/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/22/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/22/panel</IconPath>
+  <IconPath>/usr/share/icons/Numix/22/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/22/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/24@2x/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/24@2x/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/24@2x/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/24@2x/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/24@2x/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/24@2x/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/24@2x/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/24@2x/panel</IconPath>
+  <IconPath>/usr/share/icons/Numix/24@2x/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/24@2x/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/24/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/24/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/24/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/24/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/24/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/24/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/24/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/24/panel</IconPath>
+  <IconPath>/usr/share/icons/Numix/24/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/24/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/256@2x/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/256@2x/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/256/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/256/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/32@2x/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/32@2x/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/32@2x/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/32@2x/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/32@2x/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/32@2x/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/32@2x/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/32@2x/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/32@2x/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/32/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/32/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/32/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/32/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/32/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/32/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/32/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/32/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/32/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/48@2x/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/48@2x/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/48@2x/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/48@2x/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/48@2x/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/48@2x/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/48@2x/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/48@2x/notifications</IconPath>
+  <IconPath>/usr/share/icons/Numix/48@2x/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/48@2x/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/48/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/48/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/48/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/48/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/48/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/48/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/48/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/48/notifications</IconPath>
+  <IconPath>/usr/share/icons/Numix/48/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/48/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/64@2x/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/64@2x/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/64@2x/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/64@2x/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/64@2x/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/64@2x/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/64@2x/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/64@2x/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/64@2x/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/64/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/64/animations</IconPath>
+  <IconPath>/usr/share/icons/Numix/64/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/64/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/64/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/64/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/64/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/64/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/64/status</IconPath>
+  <IconPath>/usr/share/icons/Numix/96@2x/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/96@2x/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/96/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/96/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/actions</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/apps</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/categories</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/devices</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/emblems</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/places</IconPath>
+  <IconPath>/usr/share/icons/Numix/scalable/status</IconPath>
+  <IconPath>/usr/share/pixmaps</IconPath>
   <IconPath>/usr/share/icons</IconPath>
-  <IconPath>/usr/share/pixmaps</IconPath>")
+  <IconPath>/usr/share/app-install/icons</IconPath>")
 
 set(MOUSE "<DoubleClickSpeed>400</DoubleClickSpeed>
     <DoubleClickDelta>2</DoubleClickDelta>")
@@ -400,6 +520,11 @@ set (GROUPS "<Group>
         <Name>conky</Name>
         <Option>nolist</Option>
         <Option>sticky</Option>
+    </Group>")
+set(LIVE_GROUPS "<Group>
+        <Name>zenity</Name>
+        <Option>noclose</Option>
+        <Option>constrain</Option>
     </Group>")
 set(BUTTONS "<ButtonClose>/usr/share/jwm-settings-manager/Buttons/Default/close.png</ButtonClose>
     <ButtonMax>/usr/share/jwm-settings-manager/Buttons/Default/max.png</ButtonMax>

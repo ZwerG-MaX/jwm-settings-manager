@@ -54,19 +54,8 @@ public:
 private:
   inline void cb_save_button_i(Fl_Button*, void*);
   static void cb_save_button(Fl_Button*, void*);
-  inline void cb__i(Fl_Button*, void*);
-  static void cb_(Fl_Button*, void*);
 public:
   Fl_Browser *iconsBrowser;
-private:
-  inline void cb_iconsBrowser_i(Fl_Browser*, void*);
-  static void cb_iconsBrowser(Fl_Browser*, void*);
-  inline void cb_1_i(Fl_Button*, void*);
-  static void cb_1(Fl_Button*, void*);
-public:
-  void add_icons(std::string icon_dir);
-  void remove_icons();
-  std::string choose_icons();
   void startup(Fl_Window *o);
 };
 #endif

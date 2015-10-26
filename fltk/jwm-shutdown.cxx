@@ -28,7 +28,7 @@
 #include "jwm-shutdown.h"
 
 void shutdown::cb_shut_i(Fl_Button*, void*) {
-  int warn =system("dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop || systemctl poweroff");
+  int warn =system("torios-shutdown || dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop || systemctl poweroff");
 if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;};
 }
 void shutdown::cb_shut(Fl_Button* o, void* v) {
@@ -146,7 +146,7 @@ static unsigned char idata_preferences[] =
 static Fl_RGB_Image image_preferences(idata_preferences, 24, 24, 4, 0);
 
 void shutdown::cb_restart_i(Fl_Button*, void*) {
-  int warn =system("dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart|| systemctl reboot");
+  int warn =system("torios-reboot || dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart|| systemctl reboot");
 if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;};
 }
 void shutdown::cb_restart(Fl_Button* o, void* v) {
@@ -262,8 +262,8 @@ static unsigned char idata_system[] =
 static Fl_RGB_Image image_system(idata_system, 24, 24, 4, 0);
 
 void shutdown::cb_log_i(Fl_Button*, void*) {
-  int warn =system("jwm -exit");
-if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;};
+  int warn =system("torios-exit || jwm -exit");
+if(warn!=0){std::cerr<<"Could not run the exit command normally"<<std::endl;};
 }
 void shutdown::cb_log(Fl_Button* o, void* v) {
   ((shutdown*)(o->parent()->user_data()))->cb_log_i(o,v);
@@ -514,21 +514,21 @@ Fl_Double_Window* shutdown::make_window() {
     shutdown_window->color(FL_DARK2);
     shutdown_window->user_data((void*)(this));
     { shut = new Fl_Button(10, 20, 105, 65, gettext("Shutdown"));
-      shut->box(FL_GTK_UP_BOX);
+      shut->box(FL_FLAT_BOX);
       shut->color((Fl_Color)41);
       shut->image(image_preferences);
       shut->labelcolor((Fl_Color)55);
       shut->callback((Fl_Callback*)cb_shut);
     } // Fl_Button* shut
     { restart = new Fl_Button(130, 20, 105, 65, gettext("Restart"));
-      restart->box(FL_GTK_UP_BOX);
+      restart->box(FL_FLAT_BOX);
       restart->color((Fl_Color)41);
       restart->image(image_system);
       restart->labelcolor((Fl_Color)55);
       restart->callback((Fl_Callback*)cb_restart);
     } // Fl_Button* restart
     { log = new Fl_Button(130, 95, 105, 65, gettext("Logout"));
-      log->box(FL_GTK_UP_BOX);
+      log->box(FL_FLAT_BOX);
       log->color((Fl_Color)41);
       log->image(image_system1);
       log->labelcolor((Fl_Color)55);
@@ -536,14 +536,14 @@ Fl_Double_Window* shutdown::make_window() {
     } // Fl_Button* log
     { sus = new Fl_Button(10, 95, 105, 65, gettext("Suspend"));
       sus->tooltip(gettext("NOTE: this does not work with all computers"));
-      sus->box(FL_GTK_UP_BOX);
+      sus->box(FL_FLAT_BOX);
       sus->color((Fl_Color)41);
       sus->image(image_system2);
       sus->labelcolor((Fl_Color)55);
       sus->callback((Fl_Callback*)cb_sus);
     } // Fl_Button* sus
     { can = new Fl_Button(70, 175, 105, 45, gettext("Cancel"));
-      can->box(FL_GTK_UP_BOX);
+      can->box(FL_FLAT_BOX);
       can->color((Fl_Color)80);
       can->selection_color(FL_DARK_RED);
       can->labelfont(1);

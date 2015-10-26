@@ -68,9 +68,9 @@ class IconsUI {open : {public Config}
     code {load();
 saveChangesTemp();} {}
     Fl_Window icons_window {
-      label Icons open
-      xywh {525 244 330 295} type Double color 31 hide resizable
-      code0 {startup(o);} xclass {jsm-icons}
+      label Icons open selected
+      xywh {192 267 330 280} type Double color 31 resizable
+      code0 {startup(o);} xclass {jsm-icons} visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 330 290} color 31
@@ -78,80 +78,32 @@ saveChangesTemp();} {}
         Fl_Button {} {
           label Cancel
           callback {cancel(icons_window);
+//icons_window->hide();
 UI ux;
 ux.showSettings();}
-          xywh {205 245 57 25} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
+          xywh {205 245 57 25} box FLAT_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button save_button {
           label OK
-          callback {saveJWMRC(icons_window);
+          callback {flIcons icons;
+bool saver = icons.useTheme(iconsBrowser);
+if(saver){saveJWMRC(icons_window);}
+else{icons_window->hide();}
 UI ux;
 ux.showSettings();}
-          tooltip {Write to configuration file} xywh {271 245 45 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
-        }
-        Fl_Button {} {
-          label {@+}
-          callback {std::string icon_choice = choose_icons();
-std::cout<<"chose: "<<icon_choice<<std::endl;
-if(icon_choice.compare("")==0){add_icons(icon_choice);}}
-          tooltip {Add the chosen icon path} xywh {10 240 35 35} box GTK_UP_BOX selection_color 47 hide deactivate
+          tooltip {Write to configuration file} xywh {271 245 45 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
         }
         Fl_Browser iconsBrowser {
-          callback {flIcons icons;
-icons.useTheme(o);}
-          xywh {10 15 310 220} type Select box GTK_DOWN_BOX selection_color 80 when 8
+          xywh {10 15 310 220} type Select box FLAT_BOX selection_color 80 when 8
           code0 {flIcons icons;}
-          code1 {//icons.getIcons(iconsBrowser);}
-          code2 {icons.loadTheme(iconsBrowser);}
-        }
-        Fl_Button {} {
-          callback {remove_icons();}
-          image {custom_buttons/minus} xywh {50 240 35 35} box GTK_UP_BOX align 256 hide deactivate
+          code2 {icons.loadTheme(o);}
         }
       }
     }
   }
-  Function {add_icons(std::string icon_dir)} {open
-  } {
-    code {flIcons icons;
-if(icon_dir.compare("")!=0){
-	iconsBrowser->clear();
-	icons.addIcons(icon_dir);//input);
-	icons.getIcons(iconsBrowser);
-	iconsBrowser->redraw();
-}
-else{
-	fl_message("You have to select a directory to add, or type one in!");
-}} {}
-  }
-  Function {remove_icons()} {open
-  } {
-    code {flIcons icons;
-int item_list_number = iconsBrowser->value();
-const char * item = iconsBrowser->text(item_list_number);
-std::string test_item = item;
-if (test_item.compare("") !=0){
-	iconsBrowser->clear();
-	icons.removeIcons(item);
-	icons.getIcons(iconsBrowser);
-	iconsBrowser->redraw();
-}
-else{
-	fl_message("Please click on an item to remove!");
-}} {}
-  }
-  Function {choose_icons()} {open return_type {std::string}
-  } {
-    code {const char * f = "/usr/share/icons/";
-const char * m="Choose a Directory";
-int r = 0;
-std::string result_string = fl_dir_chooser(m,f,r);
-return result_string;} {}
-  }
   Function {startup(Fl_Window *o)} {open
   } {
     code {Config config; config.under_mouse(o);
-o->icon(config.Get_Fl_Icon(jsm_icons_xpm));} {selected
-    }
+o->icon(config.Get_Fl_Icon(jsm_icons_xpm));} {}
   }
 } 

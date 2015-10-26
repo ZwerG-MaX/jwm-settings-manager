@@ -60,107 +60,74 @@ decl {\#include "../include/ui.h"} {public global
 
 class MenuUI {open : {public Config}
 } {
-  Function {make_window()} {open
+  Function {add_a_menu()} {open
   } {
-    code {load();
-saveChangesTemp();} {}
-    Fl_Window menu_window {
-      label {Menu proerties} open
-      xywh {1217 508 320 315} type Double color 31 hide resizable
+    Fl_Window {} {
+      label {Add a Menu} open
+      xywh {911 362 300 160} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
-      Fl_Scroll {} {open
-        xywh {0 0 320 315} color 31
-      } {
-        Fl_Button {} {
-          label Configure
-          callback {edit_an_item();}
-          tooltip {Choose a program to add} xywh {205 235 80 30} box GTK_UP_BOX align 128
-        }
-        Fl_Button {} {
-          label Cancel
-          callback {cancel(menu_window);
-UI ux;
-ux.showSettings();}
-          xywh {190 285 57 25} box GTK_UP_BOX color 80 selection_color 81 labelcolor 7
-        }
-        Fl_Button save_button {
-          label OK
-          callback {saveJWMRC(menu_window);
-UI ux;
-ux.showSettings();}
-          tooltip {Write to configuration file} xywh {256 285 49 25} box GTK_UP_BOX color 61 selection_color 59 labelcolor 55
-        }
-        Fl_Button {} {
-          label {@+  Item}
-          callback {add_an_item();}
-          tooltip {Add a menu item} xywh {10 235 65 35} box GTK_UP_BOX selection_color 47
-        }
-        Fl_Browser menuElement {
-          callback {int linenum = o->value();
-menuElementText->select(linenum);}
-          xywh {10 80 85 140} type Hold box GTK_DOWN_BOX selection_color 80
-        }
-        Fl_Button {} {
-          label { Item}
-          callback {remove_an_item();}
-          tooltip {remove a menu item} image {custom_buttons/minus} xywh {80 235 70 35} box GTK_UP_BOX align 256
-        }
-        Fl_Browser menuElementText {
-          callback {int linenum = o->value();
-menuElement->select(linenum);}
-          xywh {100 80 215 140} type Hold box GTK_DOWN_BOX selection_color 80 labeltype NO_LABEL align 1
-        }
-        Fl_Browser root_menu {
-          label {Root Menu }
-          callback {int line = o->value();
-const char* menu = o->text(line);
-choose_menu(menu);
-Apps app;
-app.getLabel(labler,menu);}
-          xywh {95 20 80 55} type Select box GTK_DOWN_BOX selection_color 80 align 4
-          code0 {Apps app;}
-          code1 {app.getMenus(o);}
-        }
-        Fl_Button {} {
-          label {@+  Menu}
-          callback {add_a_menu()->show();}
-          tooltip {Add a menu item} xywh {10 275 65 35} box GTK_UP_BOX selection_color 47
-        }
-        Fl_Button {} {
-          label { Menu}
-          callback {remove_a_menu();}
-          tooltip {remove a menu item} image {custom_buttons/minus} xywh {80 275 70 35} box GTK_UP_BOX align 256
-        }
-        Fl_Output labler {
-          label Label
-          xywh {180 30 125 30} box GTK_DOWN_BOX align 1
-        }
+      Fl_Browser list_browser {
+        label {Choose a menu value}
+        tooltip {Determine which buttons on the root window activate the menu. This is a list of integers specifying buttons. The default is 123. Multiple root menus may be used by specifying different buttons to activate them. Valid values in this list are 0 to 9 and a to z. The usual mouse buttons are 1 for the left button, 2 for the middle button, 3 for the right button, and 4 and 5 for the scroll wheel. Therefore, accessing root menus that are assigned to buttons 0, 6, 7, 8, 9, or a letter will typically require the use of a tray button or key binding.} xywh {10 40 95 115} type Hold box FLAT_BOX selection_color 80 align 129
+        code0 {Apps app;}
+        code1 {app.listMenus(o);}
+      }
+      Fl_Input new_menu_label {
+        label Label
+        tooltip {The label to display at the top of the menu, normally this is NOT shown} xywh {170 45 120 30} box FLAT_BOX
+      }
+      Fl_Slider menu_height {
+        label Height
+        tooltip {The height of each menu item in pixels 0 indicates that the height of the font will determine the height. The default is 0.} xywh {170 85 120 30} type Horizontal box GTK_DOWN_BOX color 41 align 4 maximum 45
+      }
+      Fl_Check_Button islabeled_button {
+        label {Labeled        }
+        tooltip {Determines if a label appears at the top of the menu, this will have no effect if the label is not set} xywh {190 15 25 25} box FLAT_BOX down_box GTK_DOWN_BOX align 24
+      }
+      Fl_Button {} {
+        label OK
+        callback {unsigned int line = list_browser->value();
+const char* val = list_browser->text(line);
+if (val==NULL){return;}
+std::string menu = val;
+Config conf;
+conf.addRoot(menu);
+const char* menuLabel = new_menu_label->value();
+if (menuLabel!=NULL){
+  unsigned int islabeled = islabeled_button->value();
+  //change label
+  setRootMenuAttribute(val,"label",menuLabel);
+  if(islabeled==0){setRootMenuAttribute(val,"labeled","true");}
+  else{setRootMenuAttribute(val,"labeled","true");}
+}
+int height = menu_height->value();
+setRootMenuHeight(val,height);}
+        xywh {225 130 60 25} box FLAT_BOX color 61 labelcolor 7
       }
     }
   }
-  Function {add_window()} {open
-  } {
-    Fl_Window {} {
+  Function {add_window()} {} {
+    Fl_Window adding_win {
       label {Add an Item} open
-      xywh {1117 307 350 220} type Double hide
+      xywh {106 506 350 220} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Input add_label {
         label Label
-        xywh {70 70 160 25} box GTK_DOWN_BOX
+        xywh {70 70 160 25} box FLAT_BOX
       }
       Fl_Input add_icon {
         label Icon
-        xywh {70 100 160 25} box GTK_DOWN_BOX
+        xywh {70 100 160 25} box FLAT_BOX
       }
       Fl_Input add_input {
         label Program
-        xywh {70 130 160 25} box GTK_DOWN_BOX
+        xywh {70 130 160 25} box FLAT_BOX
       }
       Fl_Check_Button add_button {
         label Confirm
-        xywh {75 165 90 25} box GTK_DOWN_BOX down_box GTK_DOWN_BOX
+        xywh {75 165 90 25} box FLAT_BOX down_box GTK_DOWN_BOX
       }
       Fl_Button add_prog_button {
         label Choose
@@ -173,12 +140,13 @@ char *result = fl_file_chooser(m,p,f,r);
 if(result!=NULL){
 	add_input->value(result);
 }}
-        xywh {235 130 90 25} box GTK_UP_BOX
+        xywh {235 130 90 25} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label OK
-        callback {save_cb();}
-        xywh {230 160 60 25} box GTK_UP_BOX color 61 labelcolor 7
+        callback {int resultant = save_cb();
+if(resultant == 0){adding_win->hide();}}
+        xywh {230 160 60 25} box FLAT_BOX color 61 labelcolor 7
       }
       Fl_Button add_icon_button {
         label Choose
@@ -191,7 +159,7 @@ char *result = fl_file_chooser(m,p,f,r);
 if(result!=NULL){
 	add_icon->value(result);
 }}
-        xywh {235 100 90 25} box GTK_UP_BOX
+        xywh {235 100 90 25} box FLAT_BOX color 23
       }
       Fl_Menu_Button {} {
         label {Item to add}
@@ -279,32 +247,32 @@ if(result!=NULL){
         }
       }
       Fl_Output item_display {
-        xywh {175 20 130 25} box GTK_DOWN_BOX
+        xywh {175 20 130 25} box FLAT_BOX
       }
     }
   }
   Function {conf_window()} {open
   } {
     Fl_Window config_flwin {
-      label {Configure the Item} open
-      xywh {343 518 350 145} type Double hide
+      label {Configure the Item}
+      xywh {459 221 350 145} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Input prog_label {
         label Label
-        xywh {80 15 160 25} box GTK_DOWN_BOX
+        xywh {80 15 160 25} box FLAT_BOX
       }
       Fl_Input prog_icon {
         label Icon
-        xywh {80 45 160 25} box GTK_DOWN_BOX
+        xywh {80 45 160 25} box FLAT_BOX
       }
       Fl_Input prog_input {
         label Program
-        xywh {80 75 160 25} box GTK_DOWN_BOX
+        xywh {80 75 160 25} box FLAT_BOX
       }
       Fl_Check_Button conf_button {
         label Confirm
-        xywh {85 110 90 25} box GTK_DOWN_BOX down_box GTK_DOWN_BOX
+        xywh {85 110 90 25} box FLAT_BOX down_box GTK_DOWN_BOX
       }
       Fl_Button prog_button {
         label Choose
@@ -318,13 +286,13 @@ if(result!=NULL){
 	prog_input->value(result);
 	prog_input->redraw();
 }}
-        xywh {245 75 90 25} box GTK_UP_BOX
+        xywh {245 75 90 25} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label OK
         callback {configure_item();
 config_flwin->hide();}
-        xywh {240 105 60 25} box GTK_UP_BOX color 61 labelcolor 7
+        xywh {240 105 60 25} box FLAT_BOX color 61 labelcolor 7
       }
       Fl_Button icon_button {
         label Choose
@@ -338,48 +306,190 @@ if(result!=NULL){
   prog_icon->value(result);
   prog_icon->redraw();
 }}
-        xywh {245 45 90 25} box GTK_UP_BOX
+        xywh {245 45 90 25} box FLAT_BOX color 23
       }
     }
   }
-  Function {add_a_menu()} {open
+  Function {conf_item_window()} {open
   } {
-    Fl_Window {} {
-      label {Add a Menu} open
-      xywh {911 362 300 160} type Double hide
+    Fl_Window config_item_win {
+      label {Configure the Item} open
+      xywh {163 142 350 145} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
-      Fl_Browser list_browser {
-        label {Choose a menu value}
-        tooltip {Determine which buttons on the root window activate the menu. This is a list of integers specifying buttons. The default is 123. Multiple root menus may be used by specifying different buttons to activate them. Valid values in this list are 0 to 9 and a to z. The usual mouse buttons are 1 for the left button, 2 for the middle button, 3 for the right button, and 4 and 5 for the scroll wheel. Therefore, accessing root menus that are assigned to buttons 0, 6, 7, 8, 9, or a letter will typically require the use of a tray button or key binding.} xywh {10 40 95 115} type Hold box GTK_DOWN_BOX selection_color 80 align 129
-        code0 {Apps app;}
-        code1 {app.listMenus(o);}
-      }
-      Fl_Input {} {
+      Fl_Input item_prog_label {
         label Label
-        tooltip {The label to display at the top of the menu} xywh {170 45 120 30} box GTK_DOWN_BOX
+        xywh {80 15 160 25} box FLAT_BOX
       }
-      Fl_Slider {} {
-        label Height
-        tooltip {The height of each menu item in pixels 0 indicates that the height of the font will determine the height. The default is 0.} xywh {170 85 120 30} type Horizontal box GTK_DOWN_BOX color 41 align 4 maximum 100
+      Fl_Input item_prog_icon {
+        label Icon
+        xywh {80 45 160 25} box FLAT_BOX
       }
-      Fl_Check_Button {} {
-        label {Labeled        }
-        tooltip {Determines if a label appears at the top of the menu} xywh {190 15 25 25} down_box GTK_DOWN_BOX align 24
+      Fl_Input item_prog_input {
+        label Program
+        xywh {80 75 160 25} box FLAT_BOX
+      }
+      Fl_Check_Button item_conf_button {
+        label Confirm
+        xywh {85 110 90 25} box FLAT_BOX down_box GTK_DOWN_BOX
+      }
+      Fl_Button item_prog_button {
+        label Choose
+        callback {Apps apps;apps.loadTemp();
+const char *f = "/usr/bin";
+const char *m = "Choose a Program";
+const char *p = "*";
+int r = 0;
+char *result = fl_file_chooser(m,p,f,r);
+if(result!=NULL){
+	prog_input->value(result);
+	prog_input->redraw();
+}}
+        xywh {245 75 90 25} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label OK
-        callback {save_cb();}
-        xywh {225 130 60 25} box GTK_UP_BOX color 61 labelcolor 7
+        callback {configure_item();
+config_flwin->hide();}
+        xywh {240 105 60 25} box FLAT_BOX color 61 labelcolor 7
+      }
+      Fl_Button item_icon_button {
+        label Choose
+        callback {Apps apps;apps.loadTemp();
+const char *f = "/usr/share/pixmaps";
+const char *m = "Choose an Icon";
+const char *p = "*.{xbm,XBM,xpm,XPM,png,PNG,svg,SVG}";
+int r = 0;
+char *result = fl_file_chooser(m,p,f,r);
+if(result!=NULL){
+  prog_icon->value(result);
+  prog_icon->redraw();
+}}
+        xywh {245 45 90 25} box FLAT_BOX color 23
+      }
+    }
+  }
+  Function {configure_include()} {} {
+    Fl_Window include_win {
+      label {Edit Include Item} open
+      xywh {220 270 325 75} type Double hide
+      code0 {startup(o);}
+    } {
+      Fl_Input include_input {
+        label Include
+        xywh {70 5 245 25} box FLAT_BOX
+      }
+      Fl_Button {} {
+        label OK
+        callback {include_win->hide();
+change_include();}
+        xywh {250 41 60 25} box FLAT_BOX color 61 labelcolor 7
+      }
+      Fl_Input old_include_input {
+        xywh {5 40 245 25} box FLAT_BOX hide
+      }
+      Fl_Input include_input_menu {
+        xywh {0 5 40 25} box FLAT_BOX hide
+      }
+    }
+  }
+  Function {make_window()} {open
+  } {
+    code {load();
+saveChangesTemp();} {}
+    Fl_Window menu_window {
+      label {Menu proerties} open
+      xywh {174 137 320 350} type Double color 31 hide resizable
+      code0 {startup(o);} xclass {jsm-panel}
+    } {
+      Fl_Scroll {} {open
+        xywh {0 0 320 350} color 31
+      } {
+        Fl_Button {} {
+          label {Configure Menu}
+          callback {edit_a_menu();}
+          tooltip {Choose a program to add} xywh {160 275 140 30} box FLAT_BOX color 23 labelfont 1 align 128
+        }
+        Fl_Button {} {
+          label Cancel
+          callback {cancel(menu_window);
+UI ux;
+ux.showSettings();}
+          xywh {185 315 57 25} box FLAT_BOX color 80 selection_color 81 labelcolor 7
+        }
+        Fl_Button save_button {
+          label OK
+          callback {saveJWMRC(menu_window);
+UI ux;
+ux.showSettings();}
+          tooltip {Write to configuration file} xywh {251 315 49 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
+        }
+        Fl_Button {} {
+          label {@+  Item}
+          callback {add_an_item();}
+          tooltip {Add a menu item} xywh {10 235 65 30} box FLAT_BOX color 23 selection_color 47
+        }
+        Fl_Browser menuElement {
+          callback {int linenum = o->value();
+menuElementText->select(linenum);}
+          xywh {10 80 85 140} type Hold box FLAT_BOX selection_color 80
+        }
+        Fl_Button {} {
+          label { Item}
+          callback {remove_an_item();}
+          tooltip {remove a menu item} image {custom_buttons/minus} xywh {80 235 70 30} box FLAT_BOX color 23 align 256
+        }
+        Fl_Browser menuElementText {
+          callback {int linenum = o->value();
+menuElement->select(linenum);}
+          xywh {100 80 215 140} type Hold box FLAT_BOX selection_color 80 labeltype NO_LABEL align 1
+        }
+        Fl_Browser root_menu {
+          label {Root Menu }
+          callback {int line = o->value();
+const char* menu = o->text(line);
+if(menu != NULL){
+  std::string MENU=menu;
+  choose_menu(MENU);
+  Apps app;
+  std::cout<<"Menu: "<<MENU<<std::endl;
+  app.getLabel(labler, MENU.c_str());
+}
+else{std::cerr<<"Problem getting this menus name"<<std::endl;}}
+          xywh {95 20 80 55} type Hold box FLAT_BOX selection_color 80 align 4
+          code0 {Apps app;}
+          code1 {app.getMenus(o);}
+        }
+        Fl_Button {} {
+          label {@+  Menu}
+          callback {add_a_menu()->show();}
+          tooltip {Add a menu item} xywh {10 275 65 30} box FLAT_BOX color 23 selection_color 47
+        }
+        Fl_Button {} {
+          label { Menu}
+          callback {remove_a_menu();}
+          tooltip {remove a menu item} image {custom_buttons/minus} xywh {80 275 70 30} box FLAT_BOX color 23 align 256
+        }
+        Fl_Output labler {
+          label Label
+          xywh {180 30 125 30} box FLAT_BOX align 1
+        }
+        Fl_Button {} {
+          label {Configure Item}
+          callback {edit_an_item();}
+          tooltip {Choose a program to add} xywh {160 235 140 30} box FLAT_BOX color 23 labelfont 1 align 128
+        }
       }
     }
   }
   Function {add_an_item()} {open
   } {
-    code {add_window()->show();} {}
+    code {int linenum = root_menu->value();
+const char* menu_choice = root_menu->text(linenum);
+if(menu_choice==NULL){return;}
+add_window()->show();} {}
   }
-  Function {add_cb(int whichOne)} {open
-  } {
+  Function {add_cb(int whichOne)} {} {
     code {//Program 0
 //Restart 1
 //Exit 2
@@ -470,33 +580,168 @@ switch (whichOne){
 }
 item_display->value(result.c_str());} {}
   }
-  Function {choose_menu(const char* menu)} {open
+  Function {change_include()} {open
   } {
-    code {Apps app;
+    code {const char* old = old_include_input->value();
+if(old==NULL){return;}
+const char* new_include = include_input->value();
+if(new_include==NULL){return;}
+std::string newInclude=new_include;
+if(newInclude.compare(old)==0){return;}
+const char* menu = include_input_menu->value();
+if(menu==NULL){return;}
+std::string MENU = menu;
+std::cout<<"MENU: "<<MENU<<std::endl;
+Apps app;
+app.changeMenuInclude(newInclude,old,MENU);
 app.getMenuItems(menuElement,menu,menuElementText);
 menuElementText->copy_label(menu);} {}
+  }
+  Function {choose_menu(std::string menu)} {open
+  } {
+    code {Apps app;
+const char* my_menu = menu.c_str();
+if(my_menu==NULL){
+  std::cerr<<"Menu is non-existent"<<std::endl;
+  return;
+}
+app.getMenuItems(menuElement,my_menu,menuElementText);
+menuElementText->copy_label(my_menu);} {}
   }
   Function {configure_item()} {open
   } {
     code {Apps app;
 int LINEposition = menuElement->value();
-std::string NAME = menuElement->text(LINEposition);
-app.ConfigMenuItem(menuElement,menuElementText,prog_label,prog_icon,prog_input,conf_button);
+if(LINEposition > menuElement->size()){return;}
+const char* name= menuElement->text(LINEposition);
+if(name==NULL){return;}
 const char* menu = menuElementText->label();
+if(menu==NULL){return;}
+std::string NAME = name;
+std::cout<<"going in to configure"<<std::endl;
+app.ConfigMenuItem(menuElement,menuElementText,prog_label,prog_icon,prog_input,conf_button);
 choose_menu(menu);} {}
   }
-  Function {confirm_check()} {open
-  } {
+  Function {confirm_check()} {} {
     code {int LINEposition = menuElement->value();
 std::string NAME = menuElement->text(LINEposition);
 if(NAME.compare("Exit")!=0){conf_button->hide();}} {}
   }
+  Function {edit_a_menu()} {open
+  } {
+    code {int line = root_menu->value();
+const char* menu = root_menu->text(line);
+if(menu != NULL){
+  conf_window()->show();
+  std::string MENU=menu;
+  Apps app;
+  std::string result = app.getLabel(MENU);
+  prog_label->value(result.c_str());
+}} {}
+  }
   Function {edit_an_item()} {open
   } {
-    code {conf_window()->show();} {}
+    code {int line = menuElement->value();
+const char* text = menuElement->text(line);
+const char* menu = NULL;
+int menuNum = root_menu->value();
+menu=root_menu->text(menuNum);
+std::string EXIT="Exit";
+std::string RESTART="Restart";
+std::string iconattrib = "icon"; 
+std::string labelattrib = "label";
+std::string confirmattrib = "confirm";
+if(menu==NULL){return;}
+if(text==NULL){return;}
+std::string ITEM = text;
+if(ITEM.compare("Program")==0){
+  int line2 = menuElementText->value();
+  const char* text2 = menuElementText->text(line2);
+  if(text2==NULL){return;}
+  conf_item_window()->show();
+  item_prog_input->value(text2);
+  item_conf_button->hide();
+  const char* icon = NULL;
+  Apps app;
+  std::string ICON = app.getItemIcon(text2,menu);
+  icon=ICON.c_str();
+  if(icon!=NULL){
+    item_prog_icon->value(icon);
   }
-  Function {program_check()} {open
-  } {
+  const char* label = NULL;
+  std::string LABEL = app.getItemLabel(text2,menu);
+  label=LABEL.c_str();
+  if(label!=NULL){
+    item_prog_label->value(label);
+  }
+}
+else if(ITEM.compare("Include")==0){
+  std::string exec ="exec:";
+  unsigned int exec_len = exec.length();
+  int line2 = menuElementText->value();
+  const char* text2 = menuElementText->text(line2);
+  if(text2==NULL){return;}
+  std::string INCLUDE = text2;
+  unsigned int found = INCLUDE.find(exec);
+  if(found<INCLUDE.length()){
+    INCLUDE=INCLUDE.erase(0,exec_len);
+    std::cout<<"Include: "<<INCLUDE<<std::endl;
+    configure_include()->show();
+    include_input->value(INCLUDE.c_str());
+    include_input_menu->value(menu);
+    old_include_input->value(INCLUDE.c_str());
+    
+  }
+}
+else if(ITEM.compare("Menu")==0){
+  submenu_window()->show();
+  submenu_menu->value(menu);
+  //Apps app;
+  //app.getSubmenuItems(menu,submenu_items_browser);
+}
+else if(ITEM.compare(EXIT)==0){
+  int line2 = menuElementText->value();
+  const char* text2 = menuElementText->text(line2);
+  if(text2==NULL){return;}
+  conf_item_window()->show();
+  item_prog_input->hide();
+  item_prog_button->hide();
+  const char* icon = NULL;
+  Apps app;
+  std::string ICON = app.getItemAttribute(EXIT,menu,iconattrib);
+  icon=ICON.c_str();
+  if(icon!=NULL){item_prog_icon->value(icon);}
+  const char* label = NULL;
+  std::string LABEL = app.getItemAttribute(EXIT,menu,labelattrib);
+  label=LABEL.c_str();
+  if(label!=NULL){item_prog_label->value(label);}
+  std::string confirm = app.getItemAttribute(EXIT,menu,confirmattrib); 
+  if(confirm.compare("true")){item_conf_button->value(0);}
+  else{item_conf_button->value(1);}
+}
+else if(ITEM.compare(RESTART)==0){
+  int line2 = menuElementText->value();
+  const char* text2 = menuElementText->text(line2);
+  if(text2==NULL){return;}
+  conf_item_window()->show();
+  item_prog_input->hide();
+  item_prog_button->hide();
+  const char* icon = NULL;
+  Apps app;
+  std::string ICON = app.getItemAttribute(RESTART,menu,iconattrib);
+  icon=ICON.c_str();
+  if(icon!=NULL){item_prog_icon->value(icon);}
+  const char* label = NULL;
+  std::string LABEL = app.getItemAttribute(RESTART,menu,labelattrib);
+  label=LABEL.c_str();
+  if(label!=NULL){item_prog_label->value(label);}
+  item_conf_button->hide();
+}
+else{
+  std::cout<<"Nothing to configure"<<std::endl;
+}} {}
+  }
+  Function {program_check()} {} {
     code {int LINEposition = menuElement->value();
 std::string NAME = menuElement->text(LINEposition);
 if(NAME.compare("Program")!=0){
@@ -509,12 +754,10 @@ else{
   //how do I do that??
 }} {}
   }
-  Function {remove_an_item()} {open
-  } {
+  Function {remove_an_item()} {} {
     code {std::cout<<"Remove"<<std::endl;} {}
   }
-  Function {remove_a_menu()} {open
-  } {
+  Function {remove_a_menu()} {} {
     code {int line = root_menu->value();
 const char* value = root_menu->text(line);
 if(value==NULL){return;}
@@ -527,13 +770,38 @@ menuElementText->clear();} {}
   Function {save_cb()} {open return_type int
   } {
     code {//save
+const char* label = add_label->value();
+if(label ==NULL){return 42;}
+const char* icon = add_icon->value();
+if(icon ==NULL){return 42;}
+const char* input = add_input->value();
+if(input ==NULL){return 42;}
 const char* result = item_display->value();
+if(result ==NULL){return 42;}
+std::cout<<"everything exists??"<<std::endl;
 Apps app;
 return app.addMenuItem(menuElement, menuElementText, add_label, add_icon, add_input, add_button, result);} {}
   }
-  Function {startup(Fl_Window *o)} {open
-  } {
+  Function {startup(Fl_Window *o)} {} {
     code {Config config; config.under_mouse(o);
 o->icon(config.Get_Fl_Icon(jsm_panel_xpm));} {}
+  }
+  Function {submenu_window()} {open
+  } {
+    Fl_Window {} {
+      label Submenu open
+      xywh {268 318 315 295} type Double hide
+      code0 {startup(o);}
+    } {
+      Fl_Browser submenu_items_browser {
+        xywh {25 25 245 160} type Hold box FLAT_BOX
+      }
+      Fl_Output submenu_menu {
+        xywh {180 0 25 25} hide
+      }
+      Fl_Input {} {
+        xywh {155 205 135 25} box FLAT_BOX
+      }
+    }
   }
 } 

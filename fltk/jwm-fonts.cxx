@@ -125,8 +125,7 @@ void FontUI::cb_Cancel(Fl_Button* o, void* v) {
 }
 
 void FontUI::cb_OK_i(Fl_Button*, void*) {
-  saveJWMRC();
-font_window->hide();
+  saveJWMRC(font_window);
 UI ux;
 ux.showSettings();
 }
@@ -164,12 +163,11 @@ void FontUI::cb_font_browser(Fl_Browser* o, void* v) {
 }
 
 void FontUI::cb_font_name_i(Fl_Output* o, void*) {
-  /*const char * item = font_browser->text(font_browser->value());
-unsigned int size_of_font = font_size_slider->value();
+  //const char * item = font_browser->text(font_browser->value());
+unsigned int size_of_font = get_font_size();
 Fl_Fontsize fs = size_of_font;
 o->textsize(fs);
 o->redraw();
-*/;
 }
 void FontUI::cb_font_name(Fl_Output* o, void* v) {
   ((FontUI*)(o->parent()->user_data()))->cb_font_name_i(o,v);
@@ -196,11 +194,11 @@ Fl_Double_Window* FontUI::make_window() {
     { Fl_Scroll* o = new Fl_Scroll(0, -5, 380, 415);
       o->color((Fl_Color)31);
       { window_box = new Fl_Box(10, 8, 355, 113);
-        window_box->box(FL_GTK_DOWN_BOX);
-        window_box->color(FL_LIGHT1);
+        window_box->box(FL_FLAT_BOX);
+        window_box->color((Fl_Color)44);
       } // Fl_Box* window_box
       { Fl_Output* o = window_font = new Fl_Output(40, 55, 160, 25, gettext("Window Title Font Name"));
-        window_font->box(FL_GTK_DOWN_BOX);
+        window_font->box(FL_FLAT_BOX);
         window_font->color((Fl_Color)53);
         window_font->selection_color(FL_DARK_RED);
         window_font->align(Fl_Align(FL_ALIGN_TOP));
@@ -211,33 +209,34 @@ Fl_Double_Window* FontUI::make_window() {
         o->align(Fl_Align(FL_ALIGN_WRAP));
       } // Fl_Box* o
       { Fl_Button* o = active_window_font_color_button = new Fl_Button(295, 40, 60, 25);
-        active_window_font_color_button->box(FL_GTK_UP_BOX);
+        active_window_font_color_button->box(FL_FLAT_BOX);
+        active_window_font_color_button->color((Fl_Color)23);
         active_window_font_color_button->callback((Fl_Callback*)cb_active_window_font_color_button);
         active_window_font_color_button->when(FL_WHEN_RELEASE_ALWAYS);
         get_window_font_color(o,1);
       } // Fl_Button* active_window_font_color_button
       { Fl_Button* o = new Fl_Button(210, 50, 75, 30, gettext("Choose"));
         o->tooltip(gettext("Open the font list Window"));
-        o->box(FL_GTK_UP_BOX);
-        o->color((Fl_Color)40);
-        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Choose);
       } // Fl_Button* o
       { Fl_Box* o = new Fl_Box(285, 65, 75, 25, gettext("Inactive"));
         o->align(Fl_Align(FL_ALIGN_WRAP));
       } // Fl_Box* o
       { Fl_Button* o = window_font_color_button = new Fl_Button(295, 90, 60, 25);
-        window_font_color_button->box(FL_GTK_UP_BOX);
+        window_font_color_button->box(FL_FLAT_BOX);
+        window_font_color_button->color((Fl_Color)23);
         window_font_color_button->callback((Fl_Callback*)cb_window_font_color_button);
         window_font_color_button->when(FL_WHEN_RELEASE_ALWAYS);
         get_window_font_color(o,2);
       } // Fl_Button* window_font_color_button
       { menu_box = new Fl_Box(10, 130, 355, 115);
-        menu_box->box(FL_GTK_DOWN_BOX);
-        menu_box->color(FL_LIGHT1);
+        menu_box->box(FL_FLAT_BOX);
+        menu_box->color((Fl_Color)44);
       } // Fl_Box* menu_box
       { Fl_Output* o = menu_font = new Fl_Output(40, 160, 160, 25, gettext("Menu Font Name"));
-        menu_font->box(FL_GTK_DOWN_BOX);
+        menu_font->box(FL_FLAT_BOX);
         menu_font->color((Fl_Color)53);
         menu_font->selection_color(FL_DARK_RED);
         menu_font->align(Fl_Align(FL_ALIGN_TOP));
@@ -245,19 +244,19 @@ Fl_Double_Window* FontUI::make_window() {
       } // Fl_Output* menu_font
       { Fl_Button* o = new Fl_Button(210, 155, 75, 30, gettext("Choose"));
         o->tooltip(gettext("Open the font list Window"));
-        o->box(FL_GTK_UP_BOX);
-        o->color((Fl_Color)40);
-        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Choose1);
       } // Fl_Button* o
       { Fl_Button* o = menu_font_color_button = new Fl_Button(295, 160, 60, 25);
-        menu_font_color_button->box(FL_GTK_UP_BOX);
+        menu_font_color_button->box(FL_FLAT_BOX);
+        menu_font_color_button->color((Fl_Color)23);
         menu_font_color_button->callback((Fl_Callback*)cb_menu_font_color_button);
         menu_font_color_button->when(FL_WHEN_RELEASE_ALWAYS);
         get_font_color(o,"MenuStyle");
       } // Fl_Button* menu_font_color_button
       { Fl_Output* o = panel_button_font = new Fl_Output(40, 210, 160, 25, gettext("Panel Button Font Name"));
-        panel_button_font->box(FL_GTK_DOWN_BOX);
+        panel_button_font->box(FL_FLAT_BOX);
         panel_button_font->color((Fl_Color)53);
         panel_button_font->selection_color(FL_DARK_RED);
         panel_button_font->align(Fl_Align(FL_ALIGN_TOP));
@@ -266,25 +265,25 @@ Fl_Double_Window* FontUI::make_window() {
       } // Fl_Output* panel_button_font
       { Fl_Button* o = new Fl_Button(210, 205, 75, 30, gettext("Choose"));
         o->tooltip(gettext("Open the font list Window"));
-        o->box(FL_GTK_UP_BOX);
-        o->color((Fl_Color)40);
-        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Choose2);
         if(newOne()){o->hide();}
       } // Fl_Button* o
       { Fl_Button* o = traybutton_font_color_button = new Fl_Button(295, 210, 60, 25);
-        traybutton_font_color_button->box(FL_GTK_UP_BOX);
+        traybutton_font_color_button->box(FL_FLAT_BOX);
+        traybutton_font_color_button->color((Fl_Color)23);
         traybutton_font_color_button->callback((Fl_Callback*)cb_traybutton_font_color_button);
         traybutton_font_color_button->when(FL_WHEN_RELEASE_ALWAYS);
         if(!newOne()){get_font_color(o,"TrayButtonStyle");}
         else{o->hide();}
       } // Fl_Button* traybutton_font_color_button
       { panel_box = new Fl_Box(10, 255, 355, 115);
-        panel_box->box(FL_GTK_DOWN_BOX);
-        panel_box->color(FL_LIGHT1);
+        panel_box->box(FL_FLAT_BOX);
+        panel_box->color((Fl_Color)44);
       } // Fl_Box* panel_box
       { Fl_Output* o = panel_font = new Fl_Output(45, 275, 160, 25, gettext("Panel Font Name"));
-        panel_font->box(FL_GTK_DOWN_BOX);
+        panel_font->box(FL_FLAT_BOX);
         panel_font->color((Fl_Color)53);
         panel_font->selection_color(FL_DARK_RED);
         panel_font->align(Fl_Align(FL_ALIGN_TOP));
@@ -292,25 +291,26 @@ Fl_Double_Window* FontUI::make_window() {
       } // Fl_Output* panel_font
       { Fl_Button* o = new Fl_Button(210, 275, 75, 30, gettext("Choose"));
         o->tooltip(gettext("Open the font list Window"));
-        o->box(FL_GTK_UP_BOX);
-        o->color((Fl_Color)40);
-        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Choose3);
       } // Fl_Button* o
       { Fl_Button* o = panel_font_color_button = new Fl_Button(295, 280, 60, 25);
-        panel_font_color_button->box(FL_GTK_UP_BOX);
+        panel_font_color_button->box(FL_FLAT_BOX);
+        panel_font_color_button->color((Fl_Color)23);
         panel_font_color_button->callback((Fl_Callback*)cb_panel_font_color_button);
         panel_font_color_button->when(FL_WHEN_RELEASE_ALWAYS);
         get_font_color(o,"TrayStyle");
       } // Fl_Button* panel_font_color_button
       { Fl_Button* o = task_font_color_button = new Fl_Button(295, 335, 60, 25);
-        task_font_color_button->box(FL_GTK_UP_BOX);
+        task_font_color_button->box(FL_FLAT_BOX);
+        task_font_color_button->color((Fl_Color)23);
         task_font_color_button->callback((Fl_Callback*)cb_task_font_color_button);
         task_font_color_button->when(FL_WHEN_RELEASE_ALWAYS);
         if(newOne()){o->hide();}else{get_font_color(o,"TaskListStyle");}
       } // Fl_Button* task_font_color_button
       { Fl_Output* o = task_font = new Fl_Output(45, 335, 160, 25, gettext("Running App List Font Name"));
-        task_font->box(FL_GTK_DOWN_BOX);
+        task_font->box(FL_FLAT_BOX);
         task_font->color((Fl_Color)53);
         task_font->selection_color(FL_DARK_RED);
         task_font->align(Fl_Align(FL_ALIGN_TOP));
@@ -319,15 +319,14 @@ Fl_Double_Window* FontUI::make_window() {
       } // Fl_Output* task_font
       { Fl_Button* o = new Fl_Button(210, 335, 75, 30, gettext("Choose"));
         o->tooltip(gettext("Open the font list Window"));
-        o->box(FL_GTK_UP_BOX);
-        o->color((Fl_Color)40);
-        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Choose4);
         if(newOne()){o->hide();}
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(245, 375, 60, 25, gettext("Cancel"));
         o->tooltip(gettext("No changes will be saved"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
@@ -336,7 +335,7 @@ Fl_Double_Window* FontUI::make_window() {
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(315, 375, 45, 25, gettext("OK"));
         o->tooltip(gettext("Write to configuration file"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
         o->color((Fl_Color)61);
         o->selection_color((Fl_Color)59);
@@ -358,7 +357,7 @@ Fl_Double_Window* FontUI::font_chooser_window() {
     font_choosing->user_data((void*)(this));
     { Fl_Button* o = new Fl_Button(205, 420, 60, 25, gettext("Cancel"));
       o->tooltip(gettext("No changes will be saved"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
       o->down_box(FL_GTK_DOWN_BOX);
       o->color((Fl_Color)80);
       o->selection_color((Fl_Color)81);
@@ -367,7 +366,7 @@ Fl_Double_Window* FontUI::font_chooser_window() {
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(275, 420, 45, 25, gettext("OK"));
       o->tooltip(gettext("Write to configuration file"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
       o->down_box(FL_GTK_DOWN_BOX);
       o->color((Fl_Color)61);
       o->selection_color((Fl_Color)59);
@@ -376,7 +375,8 @@ Fl_Double_Window* FontUI::font_chooser_window() {
     } // Fl_Button* o
     { Fl_Browser* o = font_browser = new Fl_Browser(20, 15, 305, 285);
       font_browser->type(2);
-      font_browser->color(FL_LIGHT3);
+      font_browser->box(FL_FLAT_BOX);
+      font_browser->color((Fl_Color)55);
       font_browser->selection_color(FL_DARK_RED);
       font_browser->labelfont(8);
       font_browser->callback((Fl_Callback*)cb_font_browser);
@@ -385,8 +385,8 @@ Fl_Double_Window* FontUI::font_chooser_window() {
       //const char* v;
     } // Fl_Browser* font_browser
     { Fl_Output* o = font_name = new Fl_Output(10, 360, 315, 50);
-      font_name->box(FL_GTK_DOWN_BOX);
-      font_name->color(FL_LIGHT2);
+      font_name->box(FL_FLAT_BOX);
+      font_name->color((Fl_Color)55);
       font_name->selection_color((Fl_Color)80);
       font_name->labelsize(20);
       font_name->callback((Fl_Callback*)cb_font_name);
@@ -408,8 +408,8 @@ Fl_Double_Window* FontUI::font_chooser_window() {
       o->value(fs);
     } // Fl_Slider* font_size_slider
     { Fl_Value_Output* o = chooser_size = new Fl_Value_Output(275, 320, 45, 25);
-      chooser_size->box(FL_GTK_DOWN_BOX);
-      chooser_size->color(FL_LIGHT2);
+      chooser_size->box(FL_FLAT_BOX);
+      chooser_size->color((Fl_Color)23);
       chooser_size->minimum(8);
       chooser_size->maximum(200);
       chooser_size->step(1);

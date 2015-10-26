@@ -44,7 +44,7 @@ class flIcons : public Config
          */
 
         void loadTheme(Fl_Browser *o);
-        void useTheme(Fl_Browser *o);
+        bool useTheme(Fl_Browser *o);
         void makeIcons(std::string fullpath,unsigned int icon_size);
         const char* themegrep(const char* args, const char* filename,int line);
 

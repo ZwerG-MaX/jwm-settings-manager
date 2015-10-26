@@ -600,27 +600,27 @@ Fl_Double_Window* WindowUI::add_option_window() {
     { Fl_Scroll* o = new Fl_Scroll(0, 0, 430, 430);
       { Fl_Browser* o = options_available = new Fl_Browser(10, 10, 115, 375);
         options_available->type(2);
-        options_available->box(FL_GTK_DOWN_BOX);
+        options_available->box(FL_FLAT_BOX);
         options_available->selection_color((Fl_Color)80);
         options_available->callback((Fl_Callback*)cb_options_available);
         flWindow win;win.populateOptions(o);
         ;
       } // Fl_Browser* options_available
       { Fl_Button* o = new Fl_Button(25, 400, 80, 25, gettext("@+  Add"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->color(FL_YELLOW);
         o->callback((Fl_Callback*)cb_Add);
       } // Fl_Button* o
       { Fl_Browser* o = options_desc = new Fl_Browser(135, 10, 285, 220);
         options_desc->type(2);
-        options_desc->box(FL_GTK_DOWN_BOX);
+        options_desc->box(FL_FLAT_BOX);
         options_desc->selection_color((Fl_Color)80);
         options_desc->labeltype(FL_NO_LABEL);
         options_desc->align(Fl_Align(FL_ALIGN_TOP));
         flWindow win;win.populateDesc(o);
       } // Fl_Browser* options_desc
       { icon_value = new Fl_Input(195, 255, 100, 25, gettext("Icon"));
-        icon_value->box(FL_GTK_DOWN_BOX);
+        icon_value->box(FL_FLAT_BOX);
         icon_value->deactivate();
       } // Fl_Input* icon_value
       { opacity_value = new Fl_Slider(195, 358, 100, 25, gettext("Opacity"));
@@ -633,16 +633,16 @@ Fl_Double_Window* WindowUI::add_option_window() {
         opacity_value->deactivate();
       } // Fl_Slider* opacity_value
       { desktop_num = new Fl_Value_Input(195, 395, 35, 25, gettext("Desktop"));
-        desktop_num->box(FL_GTK_DOWN_BOX);
+        desktop_num->box(FL_FLAT_BOX);
         desktop_num->maximum(10000);
         desktop_num->deactivate();
       } // Fl_Value_Input* desktop_num
       { add_tracker = new Fl_Browser(310, 255, 110, 125, gettext("Adding"));
-        add_tracker->box(FL_GTK_DOWN_BOX);
+        add_tracker->box(FL_FLAT_BOX);
         add_tracker->align(Fl_Align(FL_ALIGN_TOP));
       } // Fl_Browser* add_tracker
       { Fl_Button* o = new Fl_Button(300, 400, 55, 25, gettext("Cancel"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
@@ -651,7 +651,7 @@ Fl_Double_Window* WindowUI::add_option_window() {
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(375, 400, 45, 25, gettext("OK"));
         o->tooltip(gettext("Write to configuration file"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
         o->color((Fl_Color)61);
         o->selection_color((Fl_Color)59);
@@ -671,7 +671,7 @@ Fl_Double_Window* WindowUI::add_option_window() {
         layer_chooser->menu(menu_layer_chooser);
       } // Fl_Menu_Button* layer_chooser
       { layer_value = new Fl_Output(195, 325, 100, 25);
-        layer_value->box(FL_GTK_DOWN_BOX);
+        layer_value->box(FL_FLAT_BOX);
         layer_value->deactivate();
       } // Fl_Output* layer_value
       o->end();
@@ -687,11 +687,11 @@ Fl_Double_Window* WindowUI::add_class_window() {
   { Fl_Double_Window* o = class_win = new Fl_Double_Window(375, 50, gettext("Add Class"));
     class_win->user_data((void*)(this));
     { input_to_add_class = new Fl_Input(105, 10, 195, 25, gettext("Class to Add"));
-      input_to_add_class->box(FL_GTK_DOWN_BOX);
+      input_to_add_class->box(FL_FLAT_BOX);
     } // Fl_Input* input_to_add_class
     { Fl_Button* o = new Fl_Button(315, 10, 45, 25, gettext("OK"));
       o->tooltip(gettext("Write to configuration file"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
       o->down_box(FL_GTK_DOWN_BOX);
       o->color((Fl_Color)61);
       o->selection_color((Fl_Color)59);
@@ -709,11 +709,11 @@ Fl_Double_Window* WindowUI::add_program_window() {
   { Fl_Double_Window* o = prog_win = new Fl_Double_Window(425, 50, gettext("Program to add"));
     prog_win->user_data((void*)(this));
     { input_to_add_prog = new Fl_Input(135, 10, 195, 25, gettext("Program to Add"));
-      input_to_add_prog->box(FL_GTK_DOWN_BOX);
+      input_to_add_prog->box(FL_FLAT_BOX);
     } // Fl_Input* input_to_add_prog
     { Fl_Button* o = new Fl_Button(350, 10, 45, 25, gettext("OK"));
       o->tooltip(gettext("Write to configuration file"));
-      o->box(FL_GTK_UP_BOX);
+      o->box(FL_FLAT_BOX);
       o->down_box(FL_GTK_DOWN_BOX);
       o->color((Fl_Color)61);
       o->selection_color((Fl_Color)59);
@@ -736,7 +736,7 @@ Fl_Double_Window* WindowUI::make_window() {
     { Fl_Scroll* o = new Fl_Scroll(0, 0, 680, 390);
       o->color((Fl_Color)31);
       { Fl_Button* o = new Fl_Button(510, 360, 55, 25, gettext("Cancel"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
@@ -745,7 +745,7 @@ Fl_Double_Window* WindowUI::make_window() {
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(595, 360, 45, 25, gettext("OK"));
         o->tooltip(gettext("Write to configuration file"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
         o->color((Fl_Color)61);
         o->selection_color((Fl_Color)59);
@@ -753,10 +753,11 @@ Fl_Double_Window* WindowUI::make_window() {
         o->callback((Fl_Callback*)cb_OK3);
       } // Fl_Button* o
       { Fl_Tabs* o = new Fl_Tabs(0, 25, 680, 330);
-        o->box(FL_PLASTIC_THIN_UP_BOX);
+        o->box(FL_FLAT_BOX);
+        o->selection_color((Fl_Color)51);
         { Fl_Group* o = new Fl_Group(10, 45, 670, 305, gettext("Appearance"));
           { Fl_Box* o = new Fl_Box(10, 55, 330, 175);
-            o->box(FL_GTK_DOWN_BOX);
+            o->box(FL_FLAT_BOX);
             o->color((Fl_Color)51);
           } // Fl_Box* o
           { Fl_Box* o = new Fl_Box(100, 60, 160, 25, gettext("Active Window"));
@@ -771,7 +772,8 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = a_title_color1 = new Fl_Button(180, 100, 60, 25);
-            a_title_color1->box(FL_GTK_UP_BOX);
+            a_title_color1->box(FL_FLAT_BOX);
+            a_title_color1->color((Fl_Color)23);
             a_title_color1->callback((Fl_Callback*)cb_a_title_color1);
             active_color_loader(o,1);
           } // Fl_Button* a_title_color1
@@ -779,7 +781,8 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = a_title_color2 = new Fl_Button(245, 100, 60, 25);
-            a_title_color2->box(FL_GTK_UP_BOX);
+            a_title_color2->box(FL_FLAT_BOX);
+            a_title_color2->color((Fl_Color)23);
             a_title_color2->callback((Fl_Callback*)cb_a_title_color2);
             active_color_loader(o,2);
           } // Fl_Button* a_title_color2
@@ -787,7 +790,8 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = a_font_color = new Fl_Button(180, 130, 60, 25);
-            a_font_color->box(FL_GTK_UP_BOX);
+            a_font_color->box(FL_FLAT_BOX);
+            a_font_color->color((Fl_Color)23);
             a_font_color->callback((Fl_Callback*)cb_a_font_color);
             a_font_color->when(FL_WHEN_RELEASE_ALWAYS);
             font_color_loader(o,1);
@@ -796,7 +800,8 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = a_border_color = new Fl_Button(180, 160, 60, 25);
-            a_border_color->box(FL_GTK_UP_BOX);
+            a_border_color->box(FL_FLAT_BOX);
+            a_border_color->color((Fl_Color)23);
             a_border_color->callback((Fl_Callback*)cb_a_border_color);
             a_border_color->when(FL_WHEN_RELEASE_ALWAYS);
             border_color_loader(o,1);
@@ -815,7 +820,7 @@ Fl_Double_Window* WindowUI::make_window() {
             opacity_loader(o,1);
           } // Fl_Slider* active_o_slider
           { Fl_Value_Input* o = active_o_slider_v = new Fl_Value_Input(280, 190, 35, 25, gettext("%"));
-            active_o_slider_v->box(FL_GTK_DOWN_BOX);
+            active_o_slider_v->box(FL_FLAT_BOX);
             active_o_slider_v->selection_color((Fl_Color)80);
             active_o_slider_v->labelsize(10);
             active_o_slider_v->value(1);
@@ -826,7 +831,7 @@ Fl_Double_Window* WindowUI::make_window() {
             o->value(v*100);
           } // Fl_Value_Input* active_o_slider_v
           { Fl_Box* o = new Fl_Box(350, 55, 320, 175);
-            o->box(FL_GTK_DOWN_BOX);
+            o->box(FL_FLAT_BOX);
             o->color(FL_DARK2);
           } // Fl_Box* o
           { Fl_Box* o = new Fl_Box(385, 60, 220, 25, gettext("Background  Window"));
@@ -841,7 +846,8 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = inactive_color = new Fl_Button(515, 100, 60, 25);
-            inactive_color->box(FL_GTK_UP_BOX);
+            inactive_color->box(FL_FLAT_BOX);
+            inactive_color->color((Fl_Color)23);
             inactive_color->callback((Fl_Callback*)cb_inactive_color);
             inactive_color->when(FL_WHEN_RELEASE_ALWAYS);
             inactive_color_loader(o,1);
@@ -850,7 +856,8 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = inactive_color2 = new Fl_Button(580, 100, 60, 25);
-            inactive_color2->box(FL_GTK_UP_BOX);
+            inactive_color2->box(FL_FLAT_BOX);
+            inactive_color2->color((Fl_Color)23);
             inactive_color2->callback((Fl_Callback*)cb_inactive_color2);
             inactive_color2->when(FL_WHEN_RELEASE_ALWAYS);
             inactive_color_loader(o,1);
@@ -859,7 +866,8 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = inactive_font_color = new Fl_Button(515, 130, 60, 25);
-            inactive_font_color->box(FL_GTK_UP_BOX);
+            inactive_font_color->box(FL_FLAT_BOX);
+            inactive_font_color->color((Fl_Color)23);
             inactive_font_color->callback((Fl_Callback*)cb_inactive_font_color);
             inactive_font_color->when(FL_WHEN_RELEASE_ALWAYS);
             font_color_loader(o,2);
@@ -868,7 +876,8 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = inactive_border_color = new Fl_Button(515, 160, 60, 25);
-            inactive_border_color->box(FL_GTK_UP_BOX);
+            inactive_border_color->box(FL_FLAT_BOX);
+            inactive_border_color->color((Fl_Color)23);
             inactive_border_color->callback((Fl_Callback*)cb_inactive_border_color);
             inactive_border_color->when(FL_WHEN_RELEASE_ALWAYS);
             border_color_loader(o,2);
@@ -887,7 +896,7 @@ Fl_Double_Window* WindowUI::make_window() {
             opacity_loader(o,2);
           } // Fl_Slider* inactive_o_slider
           { Fl_Value_Input* o = inactive_o_slider_v = new Fl_Value_Input(614, 190, 35, 25, gettext("%"));
-            inactive_o_slider_v->box(FL_GTK_DOWN_BOX);
+            inactive_o_slider_v->box(FL_FLAT_BOX);
             inactive_o_slider_v->selection_color((Fl_Color)80);
             inactive_o_slider_v->labelsize(10);
             inactive_o_slider_v->callback((Fl_Callback*)cb_inactive_o_slider_v);
@@ -902,19 +911,20 @@ Fl_Double_Window* WindowUI::make_window() {
           } // Fl_Box* o
           { Fl_Button* o = new Fl_Button(30, 260, 225, 25, gettext(" Maximize Button (Activated)"));
             o->tooltip(gettext("Choose an image (XBM) for the Maximized button"));
-            o->box(FL_GTK_UP_BOX);
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
             o->callback((Fl_Callback*)cb_Maximize);
             o->align(Fl_Align(256));
           } // Fl_Button* o
           { Fl_Box* o = max_a_image = new Fl_Box(265, 260, 30, 30);
-            max_a_image->box(FL_GTK_DOWN_BOX);
+            max_a_image->box(FL_FLAT_BOX);
             max_a_image->color((Fl_Color)43);
             max_a_image->callback((Fl_Callback*)cb_max_a_image);
             max_a_image->when(FL_WHEN_RELEASE_ALWAYS);
             get_button(o,"ButtonMaxActive");
           } // Fl_Box* max_a_image
           { Fl_Box* o = i_max_a_image = new Fl_Box(300, 260, 30, 30);
-            i_max_a_image->box(FL_GTK_DOWN_BOX);
+            i_max_a_image->box(FL_FLAT_BOX);
             i_max_a_image->color((Fl_Color)43);
             i_max_a_image->callback((Fl_Callback*)cb_i_max_a_image);
             i_max_a_image->when(FL_WHEN_RELEASE_ALWAYS);
@@ -922,19 +932,20 @@ Fl_Double_Window* WindowUI::make_window() {
           } // Fl_Box* i_max_a_image
           { Fl_Button* o = new Fl_Button(140, 305, 115, 25, gettext("Close Button"));
             o->tooltip(gettext("Choose a XBM for the close button"));
-            o->box(FL_GTK_UP_BOX);
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
             o->callback((Fl_Callback*)cb_Close);
             o->align(Fl_Align(256));
           } // Fl_Button* o
           { Fl_Box* o = close_image = new Fl_Box(265, 300, 30, 30);
-            close_image->box(FL_GTK_DOWN_BOX);
+            close_image->box(FL_FLAT_BOX);
             close_image->color((Fl_Color)43);
             close_image->callback((Fl_Callback*)cb_close_image);
             close_image->when(FL_WHEN_RELEASE_ALWAYS);
             get_button(o,"ButtonClose");
           } // Fl_Box* close_image
           { Fl_Box* o = i_close_image = new Fl_Box(300, 300, 30, 30);
-            i_close_image->box(FL_GTK_DOWN_BOX);
+            i_close_image->box(FL_FLAT_BOX);
             i_close_image->color((Fl_Color)43);
             i_close_image->callback((Fl_Callback*)cb_i_close_image);
             i_close_image->when(FL_WHEN_RELEASE_ALWAYS);
@@ -942,19 +953,20 @@ Fl_Double_Window* WindowUI::make_window() {
           } // Fl_Box* i_close_image
           { Fl_Button* o = new Fl_Button(395, 260, 145, 25, gettext("Maximize Button"));
             o->tooltip(gettext("Choose an image (XBM) for the Maximize button"));
-            o->box(FL_GTK_UP_BOX);
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
             o->callback((Fl_Callback*)cb_Maximize1);
             o->align(Fl_Align(256));
           } // Fl_Button* o
           { Fl_Box* o = max_image = new Fl_Box(550, 260, 30, 30);
-            max_image->box(FL_GTK_DOWN_BOX);
+            max_image->box(FL_FLAT_BOX);
             max_image->color((Fl_Color)43);
             max_image->callback((Fl_Callback*)cb_max_image);
             max_image->when(FL_WHEN_RELEASE_ALWAYS);
             get_button(o,"ButtonMax");
           } // Fl_Box* max_image
           { Fl_Box* o = i_max_image = new Fl_Box(585, 260, 30, 30);
-            i_max_image->box(FL_GTK_DOWN_BOX);
+            i_max_image->box(FL_FLAT_BOX);
             i_max_image->color((Fl_Color)43);
             i_max_image->callback((Fl_Callback*)cb_i_max_image);
             i_max_image->when(FL_WHEN_RELEASE_ALWAYS);
@@ -962,19 +974,20 @@ Fl_Double_Window* WindowUI::make_window() {
           } // Fl_Box* i_max_image
           { Fl_Button* o = new Fl_Button(395, 305, 145, 25, gettext("Minimize Button"));
             o->tooltip(gettext("Choose an image (XBM) for the Minimize button"));
-            o->box(FL_GTK_UP_BOX);
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
             o->callback((Fl_Callback*)cb_Minimize);
             o->align(Fl_Align(256));
           } // Fl_Button* o
           { Fl_Box* o = min_image = new Fl_Box(550, 300, 30, 30);
-            min_image->box(FL_GTK_DOWN_BOX);
+            min_image->box(FL_FLAT_BOX);
             min_image->color((Fl_Color)43);
             min_image->callback((Fl_Callback*)cb_min_image);
             min_image->when(FL_WHEN_RELEASE_ALWAYS);
             get_button(o,"ButtonMin");
           } // Fl_Box* min_image
           { Fl_Box* o = i_min_image = new Fl_Box(585, 300, 30, 30);
-            i_min_image->box(FL_GTK_DOWN_BOX);
+            i_min_image->box(FL_FLAT_BOX);
             i_min_image->color((Fl_Color)43);
             i_min_image->callback((Fl_Callback*)cb_i_min_image);
             i_min_image->when(FL_WHEN_RELEASE_ALWAYS);
@@ -1002,7 +1015,7 @@ re easily"));
             o->value(x);
           } // Fl_Slider* b_slider
           { Fl_Value_Input* o = b_slider_v = new Fl_Value_Input(460, 95, 31, 25, gettext("pixels"));
-            b_slider_v->box(FL_GTK_DOWN_BOX);
+            b_slider_v->box(FL_FLAT_BOX);
             b_slider_v->labelsize(10);
             b_slider_v->callback((Fl_Callback*)cb_b_slider_v);
             b_slider_v->align(Fl_Align(FL_ALIGN_RIGHT));
@@ -1027,7 +1040,7 @@ re easily"));
             o->value(y);
           } // Fl_Slider* t_slider
           { Fl_Value_Input* o = t_slider_v = new Fl_Value_Input(460, 65, 31, 25, gettext("pixels"));
-            t_slider_v->box(FL_GTK_DOWN_BOX);
+            t_slider_v->box(FL_FLAT_BOX);
             t_slider_v->labelsize(10);
             t_slider_v->callback((Fl_Callback*)cb_t_slider_v);
             t_slider_v->align(Fl_Align(FL_ALIGN_RIGHT));
@@ -1084,7 +1097,7 @@ re easily"));
             snap_menu->menu(menu_snap_menu);
           } // Fl_Menu_Button* snap_menu
           { Fl_Value_Input* o = snap_int = new Fl_Value_Input(185, 225, 30, 25, gettext("How close (in pixels) does the window need to be to snap?"));
-            snap_int->box(FL_GTK_DOWN_BOX);
+            snap_int->box(FL_FLAT_BOX);
             snap_int->labelsize(10);
             snap_int->minimum(1);
             snap_int->maximum(32);
@@ -1146,7 +1159,8 @@ re easily"));
             o->value(x);
           } // Fl_Slider* a_b_slider
           { Fl_Value_Output* o = a_b_slider_v = new Fl_Value_Output(400, 155, 35, 25, gettext("pixels"));
-            a_b_slider_v->box(FL_GTK_DOWN_BOX);
+            a_b_slider_v->box(FL_FLAT_BOX);
+            a_b_slider_v->color(FL_LIGHT3);
             a_b_slider_v->labelsize(10);
             a_b_slider_v->align(Fl_Align(FL_ALIGN_RIGHT));
             a_b_slider_v->when(3);
@@ -1170,7 +1184,8 @@ re easily"));
             o->value(y);
           } // Fl_Slider* a_t_slider
           { Fl_Value_Output* o = a_t_slider_v = new Fl_Value_Output(400, 195, 35, 25, gettext("pixels"));
-            a_t_slider_v->box(FL_GTK_DOWN_BOX);
+            a_t_slider_v->box(FL_FLAT_BOX);
+            a_t_slider_v->color(FL_LIGHT3);
             a_t_slider_v->labelsize(10);
             a_t_slider_v->align(Fl_Align(FL_ALIGN_RIGHT));
             a_t_slider_v->when(3);
@@ -1192,62 +1207,70 @@ re easily"));
 s by their name and/or class. A program group is created with the Group tag. A\
 s many program groups can be created as desired."));
             groups_browser->type(2);
-            groups_browser->box(FL_GTK_DOWN_BOX);
+            groups_browser->box(FL_FLAT_BOX);
             groups_browser->callback((Fl_Callback*)cb_groups_browser);
             groups_browser->align(Fl_Align(FL_ALIGN_TOP));
             flWindow win;
             win.getGroups(o);
           } // Fl_Browser* groups_browser
           { group_add = new Fl_Button(80, 260, 35, 30, gettext("@+"));
-            group_add->box(FL_GTK_UP_BOX);
+            group_add->box(FL_FLAT_BOX);
+            group_add->color((Fl_Color)23);
             group_add->callback((Fl_Callback*)cb_group_add);
           } // Fl_Button* group_add
           { rm_group = new Fl_Button(120, 260, 35, 30);
-            rm_group->box(FL_GTK_UP_BOX);
+            rm_group->box(FL_FLAT_BOX);
+            rm_group->color((Fl_Color)23);
             rm_group->image(image_minus);
             rm_group->callback((Fl_Callback*)cb_rm_group);
           } // Fl_Button* rm_group
           { opt_browser = new Fl_Browser(203, 95, 120, 155, gettext("Current Options"));
             opt_browser->type(2);
-            opt_browser->box(FL_GTK_DOWN_BOX);
+            opt_browser->box(FL_FLAT_BOX);
             opt_browser->align(Fl_Align(FL_ALIGN_TOP));
           } // Fl_Browser* opt_browser
           { opt_add = new Fl_Button(203, 260, 35, 30, gettext("@+"));
-            opt_add->box(FL_GTK_UP_BOX);
+            opt_add->box(FL_FLAT_BOX);
+            opt_add->color((Fl_Color)23);
             opt_add->callback((Fl_Callback*)cb_opt_add);
           } // Fl_Button* opt_add
           { rm_opt = new Fl_Button(245, 260, 35, 30);
-            rm_opt->box(FL_GTK_UP_BOX);
+            rm_opt->box(FL_FLAT_BOX);
+            rm_opt->color((Fl_Color)23);
             rm_opt->image(image_minus);
             rm_opt->callback((Fl_Callback*)cb_rm_opt);
             rm_opt->deactivate();
           } // Fl_Button* rm_opt
           { name_browser = new Fl_Browser(346, 95, 115, 155, gettext("Program Name"));
             name_browser->type(2);
-            name_browser->box(FL_GTK_DOWN_BOX);
+            name_browser->box(FL_FLAT_BOX);
             name_browser->align(Fl_Align(FL_ALIGN_TOP));
           } // Fl_Browser* name_browser
           { prog_add = new Fl_Button(346, 260, 35, 30, gettext("@+"));
-            prog_add->box(FL_GTK_UP_BOX);
+            prog_add->box(FL_FLAT_BOX);
+            prog_add->color((Fl_Color)23);
             prog_add->callback((Fl_Callback*)cb_prog_add);
           } // Fl_Button* prog_add
           { rm_prog = new Fl_Button(390, 260, 35, 30);
-            rm_prog->box(FL_GTK_UP_BOX);
+            rm_prog->box(FL_FLAT_BOX);
+            rm_prog->color((Fl_Color)23);
             rm_prog->image(image_minus);
             rm_prog->callback((Fl_Callback*)cb_rm_prog);
             rm_prog->deactivate();
           } // Fl_Button* rm_prog
           { class_browser = new Fl_Browser(485, 95, 115, 155, gettext("Window Class"));
             class_browser->type(2);
-            class_browser->box(FL_GTK_DOWN_BOX);
+            class_browser->box(FL_FLAT_BOX);
             class_browser->align(Fl_Align(FL_ALIGN_TOP));
           } // Fl_Browser* class_browser
           { class_add = new Fl_Button(485, 260, 35, 30, gettext("@+"));
-            class_add->box(FL_GTK_UP_BOX);
+            class_add->box(FL_FLAT_BOX);
+            class_add->color((Fl_Color)23);
             class_add->callback((Fl_Callback*)cb_class_add);
           } // Fl_Button* class_add
           { rm_class = new Fl_Button(525, 260, 35, 30);
-            rm_class->box(FL_GTK_UP_BOX);
+            rm_class->box(FL_FLAT_BOX);
+            rm_class->color((Fl_Color)23);
             rm_class->image(image_minus);
             rm_class->callback((Fl_Callback*)cb_rm_class);
             rm_class->deactivate();

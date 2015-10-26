@@ -37,13 +37,16 @@ Apps::~Apps(){
 #endif // DEBUG
 }
 
-//this is a general checker to see if the panel element exists
+/**
+  \brief isTrayElement looks for an element with text
+  this is a general checker to see if the panel element exists with the given text
+*/
 bool Apps::isTrayElement(const char* element, std::string text){
     loadTemp();
     int length = text.length();
     int i = 1;
 
-    //make sure Tray exists
+    ///make sure Tray exists
     int numOFpanels = numPanels();
     if (numOFpanels == -1){
         createPanel();
@@ -74,8 +77,8 @@ bool Apps::isTrayElement(const char* element, std::string text){
 }
 ///*****************************************  PANEL APPS  **********************************************
 
-//-------------------------- xload  This is the System Monitor -----------------------------------------
-/*
+/**-------------------------- xload  This is the System Monitor -----------------------------------------
+
     <Swallow name="xload" width="64">
         xload -nolabel -bg black -fg red -hl white
     </Swallow>
@@ -355,7 +358,7 @@ std::string Apps::getClock(const char* timeString){
     return stringBuffer;
 }
 void Apps::createClockMenu(std::string thisClockMenu){
-/*
+/** \brief createClockMenu is for new versions of JWM only
 <!-- Clock Menu-->
     <RootMenu height="0" onroot="c">
         <Program icon="time.svg" label="Clock Settings">jwm-settings-manager --clock-settings</Program>
@@ -545,86 +548,6 @@ void Apps::addAPP(const char* app, const char* attribute, const char* value, con
     saveChangesTemp();
 }
 
-//---------------------------------------------  Shutdown Menu ----------------------------------------------
-
-void Apps::addShutdown(){
-
-    bool test = isShutdown();
-    if(!test){
-    const char* menu = gettext("Shutdown");
-    addMenu(9,menu,"system-shutdown");
-    }
-}
-
-void Apps::deleteShutdown(){
-    bool test = isShutdown();
-    if(test){deleteMenu(9);}
-}
-
-void Apps::setShutdownImage(const char* icon){
-    loadTemp();
-    //make sure Tray exists
-    int numOFpanels = numPanels();
-    if (numOFpanels == -1){
-        createPanel();
-        return;
-    }
-    int i = 1;
-    int panel = currentPanel();
-    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "Tray" );
-    if (panel != i){
-        while(panelElement->NextSiblingElement("Tray") && i!=panel){
-            panelElement=panelElement->NextSiblingElement("Tray");
-            i++;
-        }
-    }
-    if(!isElement("Tray","TrayButton")){
-        createElement("Tray","TrayButton");
-    }
-    std::string buttonText ="";
-    for(panelElement=panelElement->FirstChildElement( "TrayButton" );
-        panelElement;
-        panelElement = panelElement->NextSiblingElement("TrayButton")){
-        buttonText=panelElement->GetText();
-
-        //TODO: make text an option to add/change
-        if(buttonText.compare("root:9")==0){
-            panelElement->SetAttribute("icon",icon);
-            saveChangesTemp();
-        }
-    }
-}
-//++++++++++++++++++++++++++++++++++++++++++++ END Shutdown Menu +++++++++++++++++++++++++++++++++++++++++++++
-
-//---------------------------------------------  App Menu ----------------------------------------------
-void Apps::addAppMenu(){
-    bool test = isAppMenu();
-    if(!test){
-        const char* MenuName = gettext("Apps");
-        addMenu(5,MenuName,"/usr/share/pixmaps/distributor-logo");
-    }
-}
-
-void Apps::deleteAppMenu(){
-    bool test = isAppMenu();
-    if(test){deleteMenu(5);}
-}
-
-//---------------------------------------------  Places Menu ----------------------------------------------
-void Apps::addPlaces(){
-    bool test = isPlaces();
-    if(!test){
-        const char* MenuName = gettext("Places");
-        addMenu(7,MenuName,"folder");
-    }
-}
-
-void Apps::deletePlaces(){
-    bool test = isPlaces();
-    if(test){deleteMenu(7);}
-}
-//++++++++++++++++++++++++++++++++++++++++++++ END Places Menu +++++++++++++++++++++++++++++++++++++++++++++
-
 
 ///-----------------------------------------------  Shortcuts -------------------------------------------------
 
@@ -699,6 +622,7 @@ void Apps::populate(Fl_Browser *o){
         //Get the documents text
         std::string item =panelElement->Name();
         std::string add_text;
+        std::string rootMenu = "Menu: ";
         if(item.compare("TrayButton")==0){
             if(panelElement->FirstChildElement("Button")){
 
@@ -710,24 +634,7 @@ void Apps::populate(Fl_Browser *o){
             unsigned found = add_text.find_first_of(":");
             if(!isExec(add_text.c_str())){
                 if(found<add_text.length() && found > 0){add_text = add_text.erase(0,found+1);}
-                int number = convert(add_text.c_str());
-                switch(number){
-                    case 5:
-                        add_text="App Menu";
-                        break;
-                    case 7:
-                        add_text="Places Menu";
-                        break;
-                    case 9:
-                        add_text="Shutdown Menu";
-                        break;
-                    case 8:
-                        add_text="System Menu";
-                        break;
-                    default:
-                        break;
-
-                }
+                add_text=rootMenu + add_text;
             }
         }
         else if(item.compare("Pager")==0){
@@ -758,11 +665,17 @@ void Apps::populate(Fl_Browser *o){
     o->redraw();
 }
 void Apps::deletePanelItem(std::string whichItem){
-    if(whichItem.compare("App Menu")==0){deleteAppMenu();}
-    else if(whichItem.compare("Places Menu")==0){deletePlaces();}
-    else if(whichItem.compare("Shutdown Menu")==0){deleteShutdown();}
-    else if(whichItem.compare("Desktop Switcher")==0){deletePager();}
-    else if(whichItem.compare("Running App List")==0){deleteTaskList();}
+    std::string rootMenu = "Menu: ";
+    unsigned found = whichItem.find(rootMenu);
+    if(found<whichItem.length()){
+        std::string tempMenu = whichItem;
+        tempMenu = tempMenu.erase(0,rootMenu.length());
+        //unsigned int menuNumber = convert(tempMenu.c_str());
+        deleteMenu(tempMenu.c_str());
+        return;
+    }
+
+    if(whichItem.compare("Running App List")==0){deleteTaskList();}
     else if(whichItem.compare("Indicators")==0){deleteDock();}
     else if(whichItem.compare("Clock")==0){deleteClock();}
     else if(whichItem.compare("")==0){return;}
@@ -853,6 +766,7 @@ bool Apps::isShortcuts(){
             if(panelElement->FirstChildElement("Button")->GetText()){
                 programs = panelElement->FirstChildElement("Button")->GetText();
                 checkingEXEC = comparedColon("exec:",programs.c_str());
+                if(checkingEXEC){return checkingEXEC;}
             }
         }
         if(panelElement->GetText()){
@@ -900,6 +814,7 @@ void Apps::deleteShortcut(std::string shortcut){
 
         //make sure there is text
         if(panelElement->GetText()){programs = panelElement->GetText();}
+        //if not see if there is a button
         if(panelElement->FirstChildElement("Button")){
             if(panelElement->FirstChildElement("Button")->GetText()){
                 button = panelElement;
@@ -935,8 +850,25 @@ void Apps::deleteShortcut(std::string shortcut){
         }
     }//for loop
 }
+/********************************************//**
+ \brief Add Shortcut
+        Add a Traybutton with:
+        \param icon - filename (or full path) for icon to use
+        \param program - executable program
+        \param tooltip - text to display on mouse over
+        \param border - size of a border to put around the button
 
+ ***********************************************/
 void Apps::addShortcut(const char* icon, const char * program, const char* popup, int border){
+        //check the inputs
+    if (icon==NULL){
+        std::string testIcon="application-default-icon";
+        testIcon+=getExtention();
+        icon = testIcon.c_str();
+    }
+    if(program==NULL){return;}
+    if(popup==NULL){popup=program;}
+    if(jwmVersion()>0){addButton(icon,program,popup,border);}/// check the binary version... add the correct button if it is newer
     loadTemp();
     int i = 1;
     //make sure Tray exists
@@ -963,11 +895,6 @@ void Apps::addShortcut(const char* icon, const char * program, const char* popup
             i++;
         }
     }
-    if (icon==NULL){
-        std::string testIcon="application-default-icon";
-        testIcon+=getExtention();
-        icon = testIcon.c_str();
-    }
     if(panelElement->FirstChildElement("TrayButton")){
         std::string rootTester;
        // for(panelElement=panelElement->FirstChildElement("TrayButton");panelElement;panelElement->NextSiblingElement("TrayButton")){
@@ -984,7 +911,26 @@ void Apps::addShortcut(const char* icon, const char * program, const char* popup
     else {node->SetAttribute("border",border);}
     saveChangesTemp();
 }
+
+/********************************************//**
+ \brief Add Button
+    Just like Add Shortcut, but only for newer JWM versions.
+    Add a Traybutton with:
+    \param icon - filename (or full path) for icon to use
+    \param program - executable program
+    \param tooltip - text to display on mouse over
+    \param border - size of a border to put around the button
+ ***********************************************/
 void Apps::addButton(const char* icon, const char * program, const char* popup, int border){
+        //check the inputs
+    if (icon==NULL){
+        std::string testIcon="application-default-icon";
+        testIcon+=getExtention();
+        icon = testIcon.c_str();
+    }
+    if(program==NULL){return;}
+    if(popup==NULL){popup=program;}
+
     loadTemp();
     int i = 1;
     //make sure Tray exists
@@ -1010,11 +956,6 @@ void Apps::addButton(const char* icon, const char * program, const char* popup, 
             trayNode=panelElement;
             i++;
         }
-    }
-    if (icon==NULL){
-        std::string testIcon="application-default-icon";
-        testIcon+=getExtention();
-        icon = testIcon.c_str();
     }
     trayNode->InsertEndChild(newNode);
     trayNode2 = newNode;
@@ -1239,7 +1180,6 @@ void Apps::ConfigMenuItem(Fl_Browser *elementName,
                         Fl_Input * itemProgram,
                         Fl_Check_Button *itemCheck){
     const char* root ="RootMenu"; //just so I don't have typos
-
     //this will hold the attribute value to compare with onroot
     std::string attributeValue;
 
@@ -1247,29 +1187,43 @@ void Apps::ConfigMenuItem(Fl_Browser *elementName,
     std::string docText;
 
     // this gets the line position for both things.. since they are set the same
-    int LINEposition = elementName->value();
+    unsigned int LINEposition = elementName->value();
+    if(LINEposition<elementName->size()){return;}
+    //this gets the text at the line position
+    const char* elename = elementName->text(LINEposition);
+    if(elename==NULL){return;}
+    std::string NAME = elename;
 
     //this gets the text at the line position
-    std::string NAME = elementName->text(LINEposition);
-
-    //this gets the text at the line position
-    std::string TEXT = elementText->text(LINEposition);
+    const char* eletext = elementText->text(LINEposition);
+    if(eletext==NULL){return;}
+    std::string TEXT =eletext;
 
     //this is the root menu number...  I have hidden the label, since my menu const char* wont make sense to the user
     //but it is a nice way to store the data easily
     const char* rootmenu = elementText->label();
-
+    if(rootmenu==NULL){return;}
     // this will be the element we check later
     tinyxml2::XMLElement * menuElement;
 
     //these will hold our values from the dialog window
-    std::string label = itemIcon->value();
-    std::string icon = itemLabel->value();
-    std::string program = itemProgram->value();
+    const char* iteml = itemIcon->value();
+    if(iteml==NULL){return;}
+    const char* itemI = itemLabel->value();
+    if(itemI==NULL){return;}
+    const char* itemP=NULL;
+    if(itemProgram->visible()){
+        itemP = itemProgram->value();
+    }
+    else{itemP="None";}
+    if(itemP==NULL){return;}
+    std::string label = iteml;
+    std::string icon = itemI;
+    std::string program = itemP;
     int confirm = itemCheck->value();
     const char* labelAttrib = "label";
     const char* iconAttrib = "icon";
-
+    std::cout<<"configuring"<<label<<":"<<program<<":"<<label<<std::endl;
     //find the menu we want using our hidden rootmenu and the attribute onroot
     for(tinyxml2::XMLElement * menu = doc.FirstChildElement("JWM")->FirstChildElement(root);menu;menu = menu->NextSiblingElement()){
         if(menu->Attribute("onroot")){
@@ -1281,6 +1235,8 @@ void Apps::ConfigMenuItem(Fl_Browser *elementName,
                 //Yes it does... loop through the elements of that menu
                 for(menuElement = menu->FirstChildElement();menuElement;menuElement = menuElement->NextSiblingElement()){
                     //does it match the Name of the item the user clicked?
+                    if(menuElement->Name()){
+                    if(DEBUG_ME)std::cout<<NAME<<std::endl;
                     if(NAME.compare(menuElement->Name())==0){
                         //lets see if there is text
                         if(menuElement->GetText()){
@@ -1367,7 +1323,7 @@ void Apps::ConfigMenuItem(Fl_Browser *elementName,
                                 return;
                             }
                         }
-
+                    }
                     }
                 }
             }
@@ -1385,9 +1341,18 @@ int Apps::addMenuItem(Fl_Browser *menuElementText,
                     std::string whichElement){
 
     //get the user input
-    std::string label = add_label->value();
-    std::string icon = add_icon->value();
-    std::string program = add_input->value();
+    std::string label;
+    const char* my_label = add_label->value();
+    if(my_label!=NULL){label=my_label;}
+    else{errorJWM("No label");}
+    std::string icon;
+    const char* this_icon = add_icon->value();
+    if(this_icon!=NULL){icon=this_icon;}
+    else{errorJWM("No Icon");}
+    std::string program;
+    const char* a_program = add_input->value();
+    if(a_program!=NULL){program=a_program;}
+    else{errorJWM("No program");}
     int confirm = add_button->value();
 
     //prevent typos for attributes by using code completion variable names :D
@@ -1395,7 +1360,10 @@ int Apps::addMenuItem(Fl_Browser *menuElementText,
     const char* iconAttrib = "icon";
 
     //the hidden menu variable
-    std::string whichMENU = menuElementText->label();
+    std::string whichMENU;
+    const char* tempmenu = menuElementText->label();
+    if (tempmenu!=NULL){whichMENU=tempmenu;}
+    else{errorJWM("No menuElementText");}
 
     //this will hold the checking variable for finding our desired menu
     std::string attributeValue;
@@ -1608,9 +1576,11 @@ int Apps::removeMenu(const char* whichMenu){
 ///Get all items in a menu
 void Apps::getMenuItems(Fl_Browser *elementName, const char* rootmenu, Fl_Browser *elementText){
     const char* root ="RootMenu";
+    if(rootmenu==NULL){return;}
     std::string attributeValue;
     if(!testElement(root)){
-        std::cerr<<"No menus found.. this is odd"<<std::endl;
+        errorJWM("No menus found.. this is odd");
+        return;
     }
     else{
     tinyxml2::XMLElement * menuElement;
@@ -1648,11 +1618,21 @@ void Apps::getMenuItems(Fl_Browser *elementName, const char* rootmenu, Fl_Browse
                     //Yes it does
                     for(menuElement = menu->FirstChildElement();menuElement;menuElement = menuElement->NextSiblingElement()){
                         //add the Name... we don't need to check for this to exist, as the for loop does this already
-                        elementName->add(menuElement->Name());
+                        if(menuElement->Name()){
+                            const char* menuName = menuElement->Name();
+                            if(menuName!=NULL){elementName->add(menuName);}
+                        }
                         //add the text if it exists
-                        if(menuElement->GetText()){elementText->add(menuElement->GetText());}
-                        //OR add the name if not...
-                        else{elementText->add(menuElement->Name());}
+                        if(menuElement->GetText()){
+                            const char* menuText = menuElement->GetText();
+                            if(menuText!=NULL){elementText->add(menuText);}
+                        }
+                        else if (menuElement->Name()){
+                            const char* menuName = menuElement->Name();
+                            if(menuName!=NULL){elementText->add(menuName);}
+                            else{elementText->add("Nothing");}
+                        }
+                        else{elementText->add("Nothing");}
                     }
                 }
             }
@@ -1779,73 +1759,211 @@ int Apps::getMenus(Fl_Browser *menuBrowser){
 void Apps::listMenus(Fl_Browser *list_browser){
     list_browser->clear();
     const char* root ="RootMenu";
+
     std::string tempString,convertString,tempString2,convertString2,attributeValue,test1,test2;
     if(newStyle() == -1){
         for (int i = 0; i<=9;i++){
             convertString = convert(i);
-            for(tinyxml2::XMLElement * menu = doc.FirstChildElement("JWM")->FirstChildElement(root);menu;menu = menu->NextSiblingElement(root)){
-                //look for onroot attribute
-                if(menu->Attribute("onroot")){
-                    //if it exists put it in our menuBrowser
-                    attributeValue=menu->Attribute("onroot");
-                    tempString=attributeValue.c_str();
-                    if(tempString.compare(convertString)!=0){
-                        list_browser->add(convertString.c_str());
-                    }
-                }
+            if(!isRootMenu(convertString)){
+                if(DEBUG_ME)std::cout<<"Adding: "<<convertString<<std::endl;
+                list_browser->add(convertString.c_str());
             }
         }
     }
     if(newStyle() >=0){
-       char a = 'a';
-        for(tinyxml2::XMLElement * menu = doc.FirstChildElement("JWM")->FirstChildElement(root);menu;menu = menu->NextSiblingElement(root)){
-            for (int i = 0; i<=9;i++){
-                convertString = convert(i);
-                //look for onroot attribute
-                if(menu->Attribute("onroot")){
-                    //if it exists put it in our menuBrowser
-                    attributeValue=menu->Attribute("onroot");
-                    tempString=attributeValue.c_str();
-                    if(attributeValue.length()>1){
-                        test2=attributeValue.substr(0,1);
-                        test1=attributeValue.substr(1,1);
-                        if((test1.compare(convertString)!=0)&&(test2.compare(convertString)!=0)){
-                            std::cout<<test1<<":"<<test2<<"\n"<<attributeValue<<":"<<convertString<<std::endl;
-                            list_browser->add(convertString.c_str());
-                        }
-                        i++;
-                    }
-                    else{
-                        if(tempString.compare(convertString)!=0){
-                            if(DEBUG_ME){std::cerr<<"THIS:"<<convertString<<std::endl;}
-                            list_browser->add(convertString.c_str());
-                        }
-                    }
+        if(DEBUG_ME)std::cout<<"New Style Menu"<<std::endl;
+        for (char i = '0';i<='z';i++){
+            convertString=i;
+            if((i < ':')||(i > '`')){
+                if(!isRootMenu(convertString)){
+                    if(DEBUG_ME)std::cout<<"Adding: "<<convertString<<std::endl;
+                    list_browser->add(convertString.c_str());
                 }
             }
-            for (int i = 0;a<='z';i++){
-                std::stringstream out;
-                out << a;
-                convertString2 = out.str();
-                //look for onroot attribute
-                if(menu->Attribute("onroot")){
-                    //if it exists put it in our menuBrowser
-                    attributeValue=menu->Attribute("onroot");
-                    tempString=attributeValue.c_str();
-                    if(tempString2.compare(convertString2)!=0){
-                        list_browser->add(convertString2.c_str());
-                    }
-                }
-                a++;
-            }
-		}
+        }
     }
     list_browser->redraw();
 }
-void Apps::getLabel(Fl_Output* menulabel,const char* menu){
-loadTemp();
+std::string Apps::getItemAttribute(const char* program, const char* menu, const char* attribute){
+    if(program==NULL){return "";}
+    if(attribute==NULL){return "";}
+    if(menu==NULL){return "";}
     std::string thisRoot;
     std::string mylabel =gettext("None");
+    std::string none=mylabel;
+    std::string thisMenu = "root:";
+    thisMenu += menu;
+    loadTemp();
+    int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == 0 ){
+        errorJWM("You do not have any Tray elements, so getLabel() will exit after creating one");
+        createPanel();
+        return none;
+    }
+    int panel = currentPanel();
+    //get the current panel to work on
+    const char* result =mylabel.c_str();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    tinyxml2::XMLElement* ButtonElement;
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    for(panelElement=panelElement->FirstChildElement("TrayButton");
+        panelElement;
+        panelElement=panelElement->NextSiblingElement("TrayButton")){
+        if(panelElement->Attribute(attribute)){mylabel = panelElement->Attribute(attribute);}
+
+        if(panelElement->FirstChildElement("Button")){
+            ButtonElement=panelElement;
+            for(ButtonElement=ButtonElement->FirstChildElement("Button");
+            ButtonElement;
+            ButtonElement=ButtonElement->NextSiblingElement("Button")){
+                if(ButtonElement->GetText()){
+                    thisRoot=ButtonElement->GetText();
+                    //if(DEBUG_ME)
+                    std::cout<<"[Button Style] This root: "<<thisRoot<<" the one we want: "<<thisMenu<<std::endl;
+                    if(thisMenu.compare(thisRoot)==0){
+                    //if(DEBUG_ME)
+                    std::cout<<"Found: "<<thisRoot<<std::endl;
+                    return mylabel;
+                    }
+                }
+            }
+        }
+        else{
+            if(panelElement->GetText()){
+                thisRoot=panelElement->GetText();
+                //if(DEBUG_ME)
+                std::cerr<<"[OLD STYLE] This root: "<<thisRoot<<" the one we want: "<<thisMenu<<std::endl;
+                    if(thisMenu.compare(thisRoot)==0){
+                        //if(DEBUG_ME)
+                        std::cerr<<"Found: "<<thisRoot<<std::endl;
+                        return mylabel;
+                    }
+            }
+        }
+    }
+    //if(DEBUG_ME)
+    std::cout<<"Didn't find the menu..."<<std::endl;
+    return none;
+}
+std::string Apps::getItemAttribute(std::string menuElement, const char* thismenu, std::string attribute){
+    if(menuElement.compare("")==0){return "";}
+    if(attribute.compare("")==0){return "";}
+    if(thismenu==NULL){return "";}
+    std::string none =gettext("None");
+    std::string mylabel=none;
+    std::string attributeValue=thismenu;
+    loadTemp();
+    const char* root ="RootMenu";
+    const char* result =mylabel.c_str();
+     for(tinyxml2::XMLElement * base_menu = doc.FirstChildElement("JWM")->FirstChildElement(root);base_menu;base_menu = base_menu->NextSiblingElement(root)){
+        if(base_menu->Attribute("onroot")){
+            const char* root = base_menu->Attribute("onroot");
+            std::cout<<"looking for: "<<attributeValue<<" found: "<<root<<std::endl;
+            if(attributeValue.compare(root)==0){
+                for(tinyxml2::XMLElement * menu = base_menu->FirstChildElement();menu;menu = menu->NextSiblingElement()){
+                    if(menu->Name()){
+                        const char* item = menu->Name();
+                        if(item!=NULL){
+                            std::string ITEM=item;
+                            std::cout<<"looking for: "<<menuElement<<" found: "<<ITEM<<std::endl;
+                            if(ITEM.compare(menuElement.c_str())==0){
+                                mylabel = menu->Attribute(attribute.c_str());
+                                return mylabel;
+                            }
+                        }
+                    }
+                }
+                return none;
+            }
+        }
+    }
+    //if(DEBUG_ME)
+    std::cout<<"Didn't find the menu..."<<std::endl;
+    return none;
+}
+void Apps::changeMenuInclude(std::string newInclude, std::string oldInclude, std::string thismenu){
+    std::string attributeValue=thismenu;
+    newInclude="exec:"+newInclude;
+    oldInclude="exec:"+oldInclude;
+    const char* root ="RootMenu";
+    for(tinyxml2::XMLElement * base_menu = doc.FirstChildElement("JWM")->FirstChildElement(root);base_menu;base_menu = base_menu->NextSiblingElement(root)){
+        if(base_menu->Attribute("onroot")){
+            const char* root = base_menu->Attribute("onroot");
+            std::cout<<"looking for: "<<attributeValue<<" found: "<<root<<std::endl;
+            if(attributeValue.compare(root)==0){
+                for(tinyxml2::XMLElement * menu = base_menu->FirstChildElement();menu;menu = menu->NextSiblingElement()){
+                    if(menu->Name()){
+                        const char* item = menu->Name();
+                        if(item!=NULL){
+                            std::string ITEM=item;
+                            std::cout<<"looking for: Include found: "<<ITEM<<std::endl;
+                            if(ITEM.compare("Include")==0){
+                                if(menu->GetText()){
+                                    const char* text=menu->GetText();
+                                    if(text!=NULL){
+                                        std::cout<<"looking for: "<<oldInclude<<" found: "<<text<<std::endl;
+                                        if(oldInclude.compare(text)==0){
+                                            std::cout<<"FOUND IT!!!!!!!!!!!!"<<std::endl;
+                                            menu->SetText(newInclude.c_str());
+                                            saveChangesTemp();
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return;
+            }
+        }
+    }
+}
+void Apps::getSubmenuItems(std::string menu, Fl_Browser *o){
+    std::string attributeValue=menu;
+    std::string none=gettext("None");
+    const char* root ="RootMenu";
+    for(tinyxml2::XMLElement * base_menu = doc.FirstChildElement("JWM")->FirstChildElement(root);base_menu;base_menu = base_menu->NextSiblingElement(root)){
+        if(base_menu->Attribute("onroot")){
+            const char* root = base_menu->Attribute("onroot");
+            std::cout<<"looking for: "<<attributeValue<<" found: "<<root<<std::endl;
+            if(attributeValue.compare(root)==0){
+                tinyxml2::XMLElement * submenu = base_menu;
+                if(submenu->FirstChildElement("Menu")){
+                    if(submenu->FirstChildElement("Menu")->FirstChildElement()){
+                        for(submenu = submenu->FirstChildElement("Menu")->FirstChildElement();submenu;submenu = submenu->NextSiblingElement("Menu")->NextSiblingElement()){
+                            std::string output;
+                            if(submenu->Name()){output=submenu->Name();}
+                            else{output=none;}
+                            output+='\t';
+                            if(submenu->GetText()){output+=submenu->GetText();}
+                            else{
+                                if(submenu->Name()){output+=submenu->Name();}
+                                else{output+=none;}
+                            }
+                            o->add(output.c_str());
+                        }
+                    }
+                }
+                return;
+            }
+        }
+    }
+}
+
+void Apps::getLabel(Fl_Output* menulabel,const char* menu){
+    if(menu==NULL){return;}
+//loadTemp();
+    std::string thisRoot;
+    std::string mylabel =gettext("None");
+    std::string none=mylabel;
     std::string thisMenu = "root:";
     thisMenu += menu;
     loadTemp();
@@ -1880,9 +1998,11 @@ loadTemp();
             ButtonElement=ButtonElement->NextSiblingElement("Button")){
                 if(ButtonElement->GetText()){
                     thisRoot=ButtonElement->GetText();
-                    if(DEBUG_ME){std::cerr<<"[Button Style] This root: "<<thisRoot<<" the one we want: "<<thisMenu<<std::endl;}
+                    //if(DEBUG_ME)
+                    std::cout<<"[Button Style] This root: "<<thisRoot<<" the one we want: "<<thisMenu<<std::endl;
                     if(thisMenu.compare(thisRoot)==0){
-                    if(DEBUG_ME){std::cerr<<"Found: "<<thisRoot<<std::endl;}
+                    //if(DEBUG_ME)
+                    std::cout<<"Found: "<<thisRoot<<std::endl;
                     menulabel->value(mylabel.c_str());
                     return;
                     }
@@ -1892,18 +2012,86 @@ loadTemp();
         else{
             if(panelElement->GetText()){
                 thisRoot=panelElement->GetText();
-                if(DEBUG_ME){std::cerr<<"[OLD STYLE] This root: "<<thisRoot<<" the one we want: "<<thisMenu<<std::endl;}
+                //if(DEBUG_ME)
+                std::cerr<<"[OLD STYLE] This root: "<<thisRoot<<" the one we want: "<<thisMenu<<std::endl;
                     if(thisMenu.compare(thisRoot)==0){
-                        if(DEBUG_ME){std::cerr<<"Found: "<<thisRoot<<std::endl;}
+                        //if(DEBUG_ME)
+                        std::cerr<<"Found: "<<thisRoot<<std::endl;
                         menulabel->value(mylabel.c_str());
                         return;
                     }
             }
         }
     }
-    if(DEBUG_ME){std::cerr<<"Didn't find the menu..."<<std::endl;}
-    menulabel->value(result);
+    //if(DEBUG_ME)
+    std::cout<<"Didn't find the menu..."<<std::endl;
+    menulabel->value(none.c_str());
     return;
+}
+std::string Apps::getLabel(std::string menu){
+    std::string mylabel =gettext("None");
+    std::string none=mylabel;
+    if(menu.compare("")==0){return mylabel;}
+    std::string thisRoot;
+    std::string thisMenu = "root:";
+    thisMenu += menu;
+    loadTemp();
+    int i = 1;
+    int numOFpanels = numPanels();
+    if (numOFpanels == 0 ){
+        errorJWM("You do not have any Tray elements, so getLabel() will exit after creating one");
+        createPanel();
+        return mylabel;
+    }
+    int panel = currentPanel();
+    //get the current panel to work on
+    const char* result =mylabel.c_str();
+    tinyxml2::XMLElement* panelElement = doc.FirstChildElement( "JWM" )->
+                                        FirstChildElement( "Tray" );
+    tinyxml2::XMLElement* ButtonElement;
+    if (panel != i){
+        while(panelElement->NextSiblingElement("Tray") && i!=panel){
+            panelElement=panelElement->NextSiblingElement("Tray");
+            i++;
+        }
+    }
+    for(panelElement=panelElement->FirstChildElement("TrayButton");
+        panelElement;
+        panelElement=panelElement->NextSiblingElement("TrayButton")){
+        if(panelElement->Attribute("label")){mylabel = panelElement->Attribute("label");}
+
+        if(panelElement->FirstChildElement("Button")){
+            ButtonElement=panelElement;
+            for(ButtonElement=ButtonElement->FirstChildElement("Button");
+            ButtonElement;
+            ButtonElement=ButtonElement->NextSiblingElement("Button")){
+                if(ButtonElement->GetText()){
+                    thisRoot=ButtonElement->GetText();
+                    //if(DEBUG_ME)
+                    std::cout<<"[Button Style] This root: "<<thisRoot<<" the one we want: "<<thisMenu<<std::endl;
+                    if(thisMenu.compare(thisRoot)==0){
+                        //if(DEBUG_ME)
+                        std::cout<<"Found: "<<thisRoot<<std::endl;
+                        return mylabel;
+                    }
+                }
+            }
+        }
+        else{
+            if(panelElement->GetText()){
+                thisRoot=panelElement->GetText();
+                //if(DEBUG_ME)
+                std::cerr<<"[OLD STYLE] This root: "<<thisRoot<<" the one we want: "<<thisMenu<<std::endl;
+                if(thisMenu.compare(thisRoot)==0){
+                    //if(DEBUG_ME)
+                    std::cerr<<"Found: "<<thisRoot<<std::endl;
+                    return mylabel;
+                }
+            }
+        }
+    }
+    if(DEBUG_ME){std::cerr<<"Didn't find the menu..."<<std::endl;}
+    return none;
 
 }
 //++++++++++++++++++++++++++++++++++++++++++++++ END Menu +++++++++++++++++++++++++++++++++++++++++++++++

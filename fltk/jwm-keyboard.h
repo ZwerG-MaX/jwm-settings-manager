@@ -59,6 +59,8 @@ private:
   static void cb_OK(Fl_Button*, void*);
   inline void cb_1_i(Fl_Button*, void*);
   static void cb_1(Fl_Button*, void*);
+  inline void cb_Configure_i(Fl_Button*, void*);
+  static void cb_Configure(Fl_Button*, void*);
 public:
   Fl_Double_Window* grabber_window();
   Fl_Double_Window *grab_win;
@@ -276,13 +278,223 @@ private:
 public:
   Fl_Output *mod_output;
   Fl_Output *key_output;
+  Fl_Double_Window* config_key_win();
+  Fl_Double_Window *conf_key_win;
+private:
+  inline void cb_OK2_i(Fl_Button*, void*);
+  static void cb_OK2(Fl_Button*, void*);
+  static unsigned char menu_Action1_i18n_done;
+  static Fl_Menu_Item menu_Action1[];
+public:
+  static Fl_Menu_Item *next1;
+private:
+  inline void cb_next1_i(Fl_Menu_*, void*);
+  static void cb_next1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *nextstacked1;
+private:
+  inline void cb_nextstacked1_i(Fl_Menu_*, void*);
+  static void cb_nextstacked1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *prev1;
+private:
+  inline void cb_prev1_i(Fl_Menu_*, void*);
+  static void cb_prev1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *prevstacked1;
+private:
+  inline void cb_prevstacked1_i(Fl_Menu_*, void*);
+  static void cb_prevstacked1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *close1;
+private:
+  inline void cb_close1_i(Fl_Menu_*, void*);
+  static void cb_close1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *fullscreen1;
+private:
+  inline void cb_fullscreen1_i(Fl_Menu_*, void*);
+  static void cb_fullscreen1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *minimize1;
+private:
+  inline void cb_minimize1_i(Fl_Menu_*, void*);
+  static void cb_minimize1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *maximize1;
+private:
+  inline void cb_maximize1_i(Fl_Menu_*, void*);
+  static void cb_maximize1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *shade1;
+private:
+  inline void cb_shade1_i(Fl_Menu_*, void*);
+  static void cb_shade1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *move1;
+private:
+  inline void cb_move1_i(Fl_Menu_*, void*);
+  static void cb_move1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *resize1;
+private:
+  inline void cb_resize1_i(Fl_Menu_*, void*);
+  static void cb_resize1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *window1;
+private:
+  inline void cb_window1_i(Fl_Menu_*, void*);
+  static void cb_window1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *root_menu_apps1;
+private:
+  inline void cb_root_menu_apps1_i(Fl_Menu_*, void*);
+  static void cb_root_menu_apps1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *root_menu_places1;
+private:
+  inline void cb_root_menu_places1_i(Fl_Menu_*, void*);
+  static void cb_root_menu_places1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *root_menu_shutdown1;
+private:
+  inline void cb_root_menu_shutdown1_i(Fl_Menu_*, void*);
+  static void cb_root_menu_shutdown1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *rdesktop1;
+private:
+  inline void cb_rdesktop1_i(Fl_Menu_*, void*);
+  static void cb_rdesktop1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *ldesktop1;
+private:
+  inline void cb_ldesktop1_i(Fl_Menu_*, void*);
+  static void cb_ldesktop1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *udesktop1;
+private:
+  inline void cb_udesktop1_i(Fl_Menu_*, void*);
+  static void cb_udesktop1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *ddesktop1;
+private:
+  inline void cb_ddesktop1_i(Fl_Menu_*, void*);
+  static void cb_ddesktop1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *restart1;
+private:
+  inline void cb_restart1_i(Fl_Menu_*, void*);
+  static void cb_restart1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *exit1;
+private:
+  inline void cb_exit1_i(Fl_Menu_*, void*);
+  static void cb_exit1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *showtray1;
+private:
+  inline void cb_showtray1_i(Fl_Menu_*, void*);
+  static void cb_showtray1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *maxtop1;
+private:
+  inline void cb_maxtop1_i(Fl_Menu_*, void*);
+  static void cb_maxtop1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *maxbottom1;
+private:
+  inline void cb_maxbottom1_i(Fl_Menu_*, void*);
+  static void cb_maxbottom1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *maxleft1;
+private:
+  inline void cb_maxleft1_i(Fl_Menu_*, void*);
+  static void cb_maxleft1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *maxright1;
+private:
+  inline void cb_maxright1_i(Fl_Menu_*, void*);
+  static void cb_maxright1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *maxv1;
+private:
+  inline void cb_maxv1_i(Fl_Menu_*, void*);
+  static void cb_maxv1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *maxh1;
+private:
+  inline void cb_maxh1_i(Fl_Menu_*, void*);
+  static void cb_maxh1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *sendu1;
+private:
+  inline void cb_sendu1_i(Fl_Menu_*, void*);
+  static void cb_sendu1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *sendd1;
+private:
+  inline void cb_sendd1_i(Fl_Menu_*, void*);
+  static void cb_sendd1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *sendr1;
+private:
+  inline void cb_sendr1_i(Fl_Menu_*, void*);
+  static void cb_sendr1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *sendl1;
+private:
+  inline void cb_sendl1_i(Fl_Menu_*, void*);
+  static void cb_sendl1(Fl_Menu_*, void*);
+  inline void cb_Choose1_i(Fl_Button*, void*);
+  static void cb_Choose1(Fl_Button*, void*);
+public:
+  Fl_Input *action_name1;
+  Fl_Menu_Button *key_mod_a;
+  static unsigned char menu_key_mod_a_i18n_done;
+  static Fl_Menu_Item menu_key_mod_a[];
+private:
+  inline void cb_Ctrl1_i(Fl_Menu_*, void*);
+  static void cb_Ctrl1(Fl_Menu_*, void*);
+  inline void cb_Alt1_i(Fl_Menu_*, void*);
+  static void cb_Alt1(Fl_Menu_*, void*);
+  inline void cb_Super1_i(Fl_Menu_*, void*);
+  static void cb_Super1(Fl_Menu_*, void*);
+  inline void cb_Shift1_i(Fl_Menu_*, void*);
+  static void cb_Shift1(Fl_Menu_*, void*);
+public:
+  Fl_Menu_Button *key_mod_b;
+  static unsigned char menu_key_mod_b_i18n_done;
+  static Fl_Menu_Item menu_key_mod_b[];
+private:
+  inline void cb_Ctrl2_i(Fl_Menu_*, void*);
+  static void cb_Ctrl2(Fl_Menu_*, void*);
+  inline void cb_Alt2_i(Fl_Menu_*, void*);
+  static void cb_Alt2(Fl_Menu_*, void*);
+  inline void cb_Super2_i(Fl_Menu_*, void*);
+  static void cb_Super2(Fl_Menu_*, void*);
+  inline void cb_Shift2_i(Fl_Menu_*, void*);
+  static void cb_Shift2(Fl_Menu_*, void*);
+public:
+  Fl_Input *keyshortcut;
+private:
+  inline void cb_Cancel2_i(Fl_Button*, void*);
+  static void cb_Cancel2(Fl_Button*, void*);
+public:
+  Fl_Output *mod1_output;
+  Fl_Output *mod2_output;
+  Fl_Output *mod3_output;
+  Fl_Output *current_shortcut;
   void add_cb();
   void key_event();
   void menu_cb(const char* action);
   void mod_cb(const char* mod);
   void mod2_cb(const char* mod);
+  void mod_cb(const char* mod, Fl_Output *o);
+  void mod2_cb(const char* mod, Fl_Output *o);
   int handle(int e);
   bool newpanel();
   void startup(Fl_Window *o);
+  void configure_cb();
+  void key_event(Fl_Input* o, Fl_Output* out);
 };
 #endif

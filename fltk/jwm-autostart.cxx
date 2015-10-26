@@ -77,40 +77,44 @@ Fl_Double_Window* AutostartUI::make_window() {
       o->color((Fl_Color)31);
       { program_name = new Fl_Input(100, 160, 220, 25);
         program_name->tooltip(gettext("You can add extra arguments here"));
-        program_name->box(FL_GTK_DOWN_BOX);
+        program_name->box(FL_FLAT_BOX);
+        program_name->selection_color(FL_DARK1);
         program_name->align(Fl_Align(FL_ALIGN_TOP));
         program_name->when(FL_WHEN_ENTER_KEY);
       } // Fl_Input* program_name
       { Fl_Button* o = new Fl_Button(195, 195, 57, 25, gettext("Cancel"));
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
         o->color((Fl_Color)80);
-        o->selection_color((Fl_Color)81);
+        o->selection_color((Fl_Color)38);
         o->labelcolor(FL_BACKGROUND2_COLOR);
         o->callback((Fl_Callback*)cb_Cancel);
       } // Fl_Button* o
       { save_button = new Fl_Button(261, 195, 49, 25, gettext("OK"));
         save_button->tooltip(gettext("Write to configuration file"));
-        save_button->box(FL_GTK_UP_BOX);
+        save_button->box(FL_FLAT_BOX);
         save_button->color((Fl_Color)61);
-        save_button->selection_color((Fl_Color)59);
+        save_button->selection_color((Fl_Color)38);
         save_button->labelcolor((Fl_Color)55);
         save_button->callback((Fl_Callback*)cb_save_button);
       } // Fl_Button* save_button
       { Fl_Button* o = new Fl_Button(15, 155, 35, 35, gettext("@+"));
         o->tooltip(gettext("Add the chosen program"));
-        o->box(FL_GTK_UP_BOX);
-        o->selection_color(FL_DARK1);
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->selection_color((Fl_Color)38);
         o->callback((Fl_Callback*)cb_);
       } // Fl_Button* o
       { autoStartBrowser = new Fl_Browser(15, 10, 305, 140);
         autoStartBrowser->type(2);
-        autoStartBrowser->box(FL_GTK_DOWN_BOX);
-        autoStartBrowser->selection_color((Fl_Color)80);
+        autoStartBrowser->box(FL_FLAT_BOX);
+        autoStartBrowser->selection_color((Fl_Color)55);
         flAutostart a;
         a.getAutostart(autoStartBrowser);
       } // Fl_Browser* autoStartBrowser
       { Fl_Button* o = new Fl_Button(55, 155, 35, 35);
-        o->box(FL_GTK_UP_BOX);
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->selection_color((Fl_Color)38);
         o->image(image_minus);
         o->callback((Fl_Callback*)cb_1);
       } // Fl_Button* o
