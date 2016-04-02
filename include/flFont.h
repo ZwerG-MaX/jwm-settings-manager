@@ -72,9 +72,9 @@ class flFont : public Config
     const char* slant;
     const char* spacing;
     const char* antialias;
-    const char* defaultFont;
-    const char* defaultFontName;
     const char* defaultFontColor;
+    std::string thisFONT;
+    std::string thisFONTname;
     private:
 };
 

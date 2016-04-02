@@ -16,12 +16,15 @@ Build-Depends:
  libstdc++6,
  libx11-dev,
  libxpm-dev,
+ fluid,
+ pkg-config,
 Standards-Version: 3.9.6
 Homepage: http://www.torios.net/
 
 Package: jwm-settings-manager
 Architecture: any
-Depends: jwm-settings-manager-common (>= ${source:Version}) , ${shlibs:Depends}, ${misc:Depends}, jwm, jwm-menu
+Depends: jwm-settings-manager-common (>= ${source:Version}) , ${shlibs:Depends}, ${misc:Depends}, jwm, jwm-menu (>=2.0.0ubuntu1)| jwm-menu-all
+Replaces: jwm-menu (<= 1.0.1ubuntu3)
 Recommends:
 Suggests: volumeicon-alsa
 Description: JWM Settings Manager

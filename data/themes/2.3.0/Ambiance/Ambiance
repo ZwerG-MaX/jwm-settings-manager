@@ -7,10 +7,10 @@
         <Menu label="About ToriOS" icon="help-about.svg" height="0">
            <Program label="Help" icon="help.svg">x-www-browser /usr/share/doc/torios/html/index.html</Program>
            <Program label="Launchpad" icon="launchpad.svg">x-www-browser https://launchpad.net/~torios</Program>
-           <Program label="G+" icon="googleplus.svg">x-www-browser https://plus.google.com/u/0/b/105245967039953698237/105245967039953698237/posts</Program>
-           <Program label="Facebook" icon="facebook.svg">x-www-browser https://www.facebook.com/ToriOS.Linux</Program>
-           <Program label="Twitter" icon="twitter.svg">x-www-browser https://twitter.com/Tori_OS</Program>
-           <Program label="About Us" icon="/usr/share/pixmaps/distributor-logo.png">torios-about || x-www-browser http://torios.net</Program>
+           <Program label="G+" icon="googleplus.svg">x-www-browser https://plus.google.com/113578220061772446187/posts</Program>
+           <Program label="Facebook" icon="facebook.svg">x-www-browser https://www.facebook.com/ToriOS.Official</Program>
+           <Program label="Twitter" icon="twitter.svg">x-www-browser https://twitter.com/ToriOS_Official</Program>
+           <Program label="About Us" icon="/usr/share/pixmaps/distributor-logo.png">torios-about || x-www-browser http://torios.top</Program>
         </Menu>
         <Separator/>
 	<Restart label="Reload Desktop" icon="system-restart.svg"/>
@@ -19,7 +19,6 @@
     <RootMenu onroot="7">
         <Include>exec:/usr/bin/jwm-places</Include>
     </RootMenu>
-    <!--These menus provide a nice exit dialog and no menu on desktop click 1-->
     <RootMenu height="0" onroot="z">
         <Exit label="Logout" confirm="false" icon="system-logout.svg"/>
     </RootMenu>
@@ -50,7 +49,7 @@
     <RootMenu height="0" onroot="c">
         <Program icon="time.svg" label="Clock Settings">jwm-settings-manager --clock-settings</Program>
          <Separator/>
-        <Program icon="calendar.svg" label="Calendar">zenity --calendar --title="Calendar"</Program>
+        <Program icon="calendar.svg" label="Calendar">torios-calendar</Program>
         <Program icon="time.svg" label="Timezone Settings">xterm -e 'sudo dpkg-reconfigure tzdata'</Program>
     </RootMenu>
 <!-- END MENUS -->
@@ -84,7 +83,7 @@
         </TrayButton>
         <TrayButton icon="browser.svg" border="false">
             <Button mask="1">exec:x-www-browser /usr/share/doc/torios/startpage.html</Button>
-            <Button mask="23">root:p</Button>>
+            <Button mask="23">root:p</Button>
         </TrayButton>
         <Pager labeled="true"/>
         <TaskList maxwidth="256"/>
@@ -408,6 +407,17 @@
   <IconPath>/usr/share/pixmaps</IconPath>
   <IconPath>/usr/share/icons</IconPath>
   <IconPath>/usr/share/app-install/icons</IconPath>
+  <IconPath>$HOME/.local/share/icons/</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/128x128</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/128x128/apps</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/16x16</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/16x16/apps</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/24x24</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/24x24/apps</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/256x256</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/256x256/apps</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/32x32</IconPath>
 <!-- DESKTOP -->
     <Desktops width="2" height="1">
         <Background type="image">/usr/share/backgrounds/default.jpg</Background>
@@ -415,9 +425,8 @@
 <!-- AUTOSTART -->
    <StartupCommand>pcmanfm --desktop</StartupCommand>
    <StartupCommand>$HOME/.config/jsm-mouse</StartupCommand>
-   <StartupCommand>nm-applet</StartupCommand>
-   <StartupCommand>volumeicon</StartupCommand>
-   <StartupCommand>xfce4-power-manager</StartupCommand>
+   <StartupCommand>torios-volume</StartupCommand>
+   <StartupCommand>torios-battery</StartupCommand>
    <StartupCommand>nice-start</StartupCommand>
    <StartupCommand>/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1</StartupCommand>
 <!--POP UP -->

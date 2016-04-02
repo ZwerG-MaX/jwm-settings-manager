@@ -1,4 +1,46 @@
-jwm-settings-manager (1.0.2ubuntu8) UNRELEASED; urgency=medium
+jwm-settings-manager (1.1.0ubuntu2) UNRELEASED; urgency=medium
+  * menu program completely migrated from jwm-setings-manager
+  * fix groups
+  * fix themes 
+
+ -- Israel Dahl <israeldahl@gmail.com>  Tue, 10 Nov 2015 19:05:00 -0600
+
+jwm-settings-manager (1.0.3ubuntu9) UNRELEASED; urgency=medium
+  * closeder(dir)
+    - made sure all these are within dir !=NULL
+  * fltk icons
+    - check to see if anything was changed... if so save, otherwise exit nicely
+  * fltk fonts
+    - reimplement size
+    - make save hide the window correctly
+  * fltk mouse
+    - fix "missing sentinel in function call" with (char *)0
+  *fltk keyboard
+    - use the unused variables to remove warnings eventhough the function is not finished
+  * menu
+    - make sure dir !=NULL to finish BSD fixes
+  * Config
+    - fix saveJWMRC(Fl_window *o) to effectively save and hide
+  * various
+    - checks for NULL char
+  * added places menu in after checking it out and making it work 
+  * reworked UI to make settings manager nicer looking
+  * fixed menus in Panel->Apps
+  * update themes
+  * modified menu.cpp to be simple and stable
+  * fix issues with no LANG or LANGUAGE environment variables
+  * fixes for keyboard
+    - configure current item
+    - delete item 
+  * working on menu editor
+  * fixes for places menu
+  * temp fix for menu icons
+    - saveChanges() is used for now isntead of saveChangesTemp()
+  * fix for autostart and keyboard issues
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 31 Oct 2015 13:17:19 -0500
+
+jwm-settings-manager (1.0.2ubuntu9) UNRELEASED; urgency=medium
   * updated translation po file
   * added script to aide in translation generator
   * added more gettext items in non-fltk code
@@ -17,8 +59,12 @@ jwm-settings-manager (1.0.2ubuntu8) UNRELEASED; urgency=medium
   * binary jwm menu
     - some fixes added
     - fixed duplicates, and notshowin/onlyshowin/tryexec 
+    - fix clang compiler errors for menu
+    - fix all char to initialize correctly
+  * tweaks to xdgpaths to get the full path just right irregardless of if there is a variable or not
+  * changed 'home' screen to be more flat. 
 
- -- Israel Dahl <israeldahl@gmail.com>  Thu, 20 Aug 2015 21:15:11 -0500
+ -- Israel Dahl <israeldahl@gmail.com>  Mon, 24 Aug 2015 19:30:22 -0500
 
 jwm-settings-manager (1.0.1ubuntu6) UNRELEASED; urgency=medium
   * moved menus to separate package jwm-menus

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(jwm-settings-manager CXX C)
 set(PROJECT_NAME jwm-settings-manager)
 SET(VERSION "1.0.0")
-SET(DATE "May 24, 2015")
+SET(DATE "Nov 05, 2015")
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 INCLUDE(AddFileDependencies)
@@ -15,6 +15,20 @@ set(NAME "JWM Settings Manager")
 # Packages we need
 FIND_PACKAGE(FLTK REQUIRED NO_MODULE)
 FIND_PACKAGE(X11 REQUIRED)
+IF(NOT EXISTS ${FLTK_FLUID_EXECUTABLE})
+    # Try to detect full path anyway
+    EXECUTE_PROCESS(COMMAND which fluid OUTPUT_VARIABLE FLTK_FLUID_EXECUTABLE OUTPUT_STRIP_TRAILING_WHITESPACE)
+    IF(NOT EXISTS ${FLTK_FLUID_EXECUTABLE})
+        MESSAGE(FATAL_ERROR "Please install the fluid binary which is part of FLTK.")
+    ENDIF()
+ENDIF()
+IF(NOT EXISTS ${FLTK_INCLUDE_DIR})
+    # Try to detect full path anyway
+    set(FLTK_INCLUDE_DIR "/usr/include")
+    IF(NOT EXISTS ${FLTK_INCLUDE_DIR})
+        MESSAGE(FATAL_ERROR "Please install the fluid binary which is part of FLTK.")
+    ENDIF()
+ENDIF()
 
 # Don't need OpenGL or the Fluid plugin, since I export the source from FLUID
 set(FLTK_SKIP_OPENGL True)
@@ -82,13 +96,11 @@ add_subdirectory(data)
 
 ## make the executable
 add_executable(jwm-settings-manager src/jwm.cpp)
-add_executable(jwm-menu src/menu.cpp)
 ## install the man file
 INSTALL(FILES jwm-settings-manager.1 DESTINATION share/man/man1/ PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)
 
 ## Linker settings
 TARGET_LINK_LIBRARIES(jwm-settings-manager JSM fltk_SHARED fltk_images_SHARED ${X11_LIBRARIES} ${X11_X11_LIB} ${X11_Xpm_LIB})
-install(TARGETS jwm-menu RUNTIME DESTINATION bin)
 ## Install the binary to bin and the library to lib :)
 install(TARGETS jwm-settings-manager JSM
 	RUNTIME DESTINATION bin

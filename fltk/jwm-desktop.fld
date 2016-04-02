@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0302 
+version 1.0303 
 i18n_type 1 
 i18n_include <libintl.h> 
 i18n_function gettext 
@@ -89,8 +89,8 @@ class DesktopUI {open : {public Config}
     code {load();
 saveChangesTemp();} {}
     Fl_Window desktop_window {
-      label {Desktop Settings} open selected
-      xywh {248 281 395 490} type Double color 31 resizable
+      label {Desktop Settings} open
+      xywh {248 277 395 490} type Double color 31 resizable
       code0 {startup(o);} xclass {jsm-desktop} visible
     } {
       Fl_Scroll {} {open
@@ -181,12 +181,12 @@ ux.showSettings();}
   } {
     code {flDesktop desktop;
 std::string bg = desktop.getBackground();
-//if(bg.length()<=4){return;}
 std::string colorTester = bg.substr(0,1);
 if (colorTester.compare("/")==0){
   desktop.setFlImage(o,bg.c_str());
 }
-else{background_displayer_thingie->hide();}} {}
+else{background_displayer_thingie->hide();}} {selected
+    }
   }
   Function {background1(Fl_Box*o)} {open
   } {

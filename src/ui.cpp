@@ -2,8 +2,14 @@
 #include "../include/ui.h"
 //These functions simply call the UI
 UI::UI(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"[UI]->"<<std::endl;
+#endif // DEBUG
 }
 UI::~UI(){
+#ifdef DEBUG_TRACK
+    std::cerr<<"<-[UI] END"<<std::endl;
+#endif // DEBUG
     exit(0);
 }
 //main window
@@ -12,7 +18,6 @@ int UI::showSettings(){
     std::cerr<<"Settings UI activated"<<std::endl;
 #endif // DEBUG
     SettingsUI uiSettings;
-    uiSettings.make_window()->xclass("jwm-settings-manager");
     uiSettings.make_window()->show();
 return Fl::run();
 }

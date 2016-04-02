@@ -46,7 +46,7 @@
         <TaskList maxwidth="256"/>
         <Dock/>
         <Swallow name="xload" width="64">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>
-        <Clock format="%a, %e %b %l:%M %p">zenity --calendar --title="Calendar"</Clock>
+        <Clock format="%a, %e %b %l:%M %p">torios-calendar</Clock>
         <TrayButton label="Shutdown" icon="system-shutdown.svg" border="false">root:9</TrayButton>
     </Tray>
 <!-- Panel Style -->
@@ -87,7 +87,7 @@
     <WindowStyle>
         <Font>ubuntu-12:antialias=true:encoding=utf8</Font>
         <Width>4</Width>
-        <Height>20</Height>
+        <Height>30</Height>
         <Active>
             <Text>#dcdcdc</Text>
             <Title>#2d2d2d</Title>
@@ -352,6 +352,17 @@
   <IconPath>/usr/share/pixmaps</IconPath>
   <IconPath>/usr/share/icons</IconPath>
   <IconPath>/usr/share/app-install/icons</IconPath>
+  <IconPath>$HOME/.local/share/icons/</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/128x128</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/128x128/apps</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/16x16</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/16x16/apps</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/24x24</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/24x24/apps</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/256x256</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/256x256/apps</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/32x32</IconPath>
 <!-- DESKTOP -->
     <Desktops width="2" height="1">
         <Background type="image">/usr/share/backgrounds/default.jpg</Background>
@@ -359,9 +370,8 @@
 <!-- AUTOSTART -->
    <StartupCommand>pcmanfm --desktop</StartupCommand>
    <StartupCommand>$HOME/.config/jsm-mouse</StartupCommand>
-   <StartupCommand>nm-applet</StartupCommand>
-   <StartupCommand>volumeicon</StartupCommand>
-   <StartupCommand>xfce4-power-manager</StartupCommand>
+   <StartupCommand>torios-volume</StartupCommand>
+   <StartupCommand>torios-battery</StartupCommand>
    <StartupCommand>nice-start</StartupCommand>
    <StartupCommand>/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1</StartupCommand>
 <!--POP UP -->

@@ -60,9 +60,21 @@ bool flThemes::isSVG(std::string filename){
     return false;
 }
 std::string flThemes::sysThemeDir(){
-    if (isOLDjwmrc == -1){return OLDthemePATH;}
-    else if (isOLDjwmrc == 0){return themePATH230;}
-    return themePATH;
+    int version = jwmVersion();
+    switch(version){
+        case 0:
+          return OLDthemePATH;
+        case 1:
+          return themePATH;
+        case 2:
+          return themePATH230;
+        case 3:
+          return themePATH230;
+        case 4:
+          return themePATH230;
+        default:
+          return themePATH230;
+    }
 }
 int flThemes::populateUserThemes(Fl_Browser *o){
 
@@ -89,12 +101,7 @@ int flThemes::populateUserThemes(Fl_Browser *o){
 int flThemes::populateThemes(Fl_Browser *o){
     DIR *dir=NULL;
     std::string itemName;
-    std::string checkHERE;
-    if (isOLDjwmrc == -1){checkHERE = OLDthemePATH;}
-    else if (isOLDjwmrc == 0){ checkHERE = themePATH230;}
-    else{
-        checkHERE=themePATH;
-    }
+    std::string checkHERE=sysThemeDir();
     struct dirent *ent=NULL;
     if ((dir = opendir (checkHERE.c_str())) != NULL) {
         while ((ent = readdir (dir)) != NULL) {
@@ -172,8 +179,12 @@ std::string flThemes::getPanelButtonIcon(){
 }
 
 int flThemes::loadTheme(std::string themePath){
+    if(!testFile(themePath.c_str())){return 42;}
     themeDoc.LoadFile( themePath.c_str() );
-    if (themeDoc.ErrorID() !=0){std::cerr<<"An error occured loading "<<themePath<<std::endl; return 42;}
+    if (themeDoc.ErrorID() !=0){
+        std::cerr<<"An error occured loading "<<themePath<<std::endl;
+        return themeDoc.ErrorID();
+    }
     else{
         if(DEBUG_ME){std::cerr<<"Theme loaded: "<<themePath<<std::endl;}
     }
@@ -245,7 +256,7 @@ void flThemes::modCurrentTheme( Fl_Box * button,
                                 std::string filename ){
     int testLoad = loadTheme(filename);
     if (testLoad !=0){return;}
-    checkThemeVersion();
+    //checkThemeVersion();
 
     flWindow win;
 ///window buttons   modCurrentTheme
@@ -514,9 +525,9 @@ std::string flThemes::getThemeItemText(const char* whichOne){
     Element  = themeDoc.FirstChildElement( "JWM" )->
                         FirstChildElement( whichOne );
     if(Element){
-        std::string value= Element->GetText();
-        if (value.compare("")!=0){
-            return value.c_str();
+        if (Element->GetText()){
+            std::string value= Element->GetText();
+            if (value.compare("")!=0){return value.c_str();}
         }
     }
     return "";
@@ -530,11 +541,14 @@ unsigned int flThemes::getThemeItemInt(const char * whichElement, const char* wh
     }
     else {return 0;}
     colorElement =colorElement->FirstChildElement( whichElement )->FirstChildElement( whatToGet );
-    std::string colour = colorElement->GetText();
-    if (colour.compare("")!=0){
-        bg = getColor(colour, color2);
-        return bg;
+    if(colorElement->GetText()){
+        std::string colour = colorElement->GetText();
+        if (colour.compare("")!=0){
+            bg = getColor(colour, color2);
+            return bg;
+        }
     }
+    else{bg=0;}
     return bg;
 }
 
@@ -547,11 +561,14 @@ unsigned int flThemes::getThemeItemInt(const char * whichElement, const char* wh
     }
     else {return 0;}
     colorElement =colorElement->FirstChildElement( whichElement )->FirstChildElement( whatToGet );
-    std::string colour = colorElement->GetText();
-    if (colour.compare("")!=0){
-        unsigned int color2 = 0;
-        bg = getColor(colour, color2);
+    if(colorElement->GetText()){
+        std::string colour = colorElement->GetText();
+        if (colour.compare("")!=0){
+            unsigned int color2 = 0;
+            bg = getColor(colour, color2);
+        }
     }
+    else{bg=0;}
     return bg;
 }
 
@@ -576,10 +593,12 @@ unsigned int flThemes::getTheme2ItemInt(const char * whichElement, const char * 
                         FirstChildElement( whichElement )->
                         FirstChildElement( whichElement2 )->
                         FirstChildElement( whatToGet );
-    std::string colour = colorElement->GetText();
-    if (colour.compare("")!=0){
-        unsigned int color2 = 0;
-        bg = getColor(colour, color2);
+    if(colorElement->GetText()){
+        std::string colour = colorElement->GetText();
+        if (colour.compare("")!=0){
+            unsigned int color2 = 0;
+            bg = getColor(colour, color2);
+        }
     }
     return bg;
 }
@@ -598,17 +617,19 @@ unsigned int flThemes::getTheme2ItemInt_secondColor(const char * whichElement, c
         else {return bg;}
     }
     else {return bg;}
-
+    unsigned int color2 = 0;
     colorElement  = themeDoc.FirstChildElement( "JWM" )->
                         FirstChildElement( whichElement )->
                         FirstChildElement( whichElement2 )->
                         FirstChildElement( whatToGet );
-    std::string colour = colorElement->GetText();
-    unsigned int color2 = 1;
-    if (colour.compare("")!=0){
-        unsigned int color2 = 0;
-        bg = getColor(colour, color2);
-        return color2;
+    if(colorElement->GetText()){
+        std::string colour = colorElement->GetText();
+        color2 = 1;
+        if (colour.compare("")!=0){
+            unsigned int color2 = 0;
+            bg = getColor(colour, color2);
+            return color2;
+        }
     }
     return color2;
 }
@@ -731,20 +752,38 @@ void flThemes::change(const char* themeName){
     std::string themeTest;
     std::string theme;
     bool existant = false;
-    if(isOLDjwmrc == -1){
-        existant = oldThemesExist();
-        theme = OLDthemePATH + stringTheme + "/" + stringTheme;
-        themeTest = OLDthemePATH + stringTheme + "/";
-    }
-    else if (isOLDjwmrc == 0){
-        existant = oldThemesExist();
-        theme = themePATH230 + stringTheme + "/" + stringTheme;
-        themeTest = themePATH230 + stringTheme + "/";
-    }
-    else{
-        existant = themesExist();
-        theme = themePATH + stringTheme + "/" + stringTheme;
-        themeTest = themePATH + stringTheme + "/";
+    int version = jwmVersion();
+    switch (version){
+        case -1:
+            existant = oldThemesExist();
+            theme = OLDthemePATH + stringTheme + "/" + stringTheme;
+            themeTest = OLDthemePATH + stringTheme + "/";
+            break;
+        case 0:
+            existant = oldThemesExist();
+            theme = themePATH230 + stringTheme + "/" + stringTheme;
+            themeTest = themePATH230 + stringTheme + "/";
+            break;
+        case 1:
+            existant = themesExist();
+            theme = themePATH + stringTheme + "/" + stringTheme;
+            themeTest = themePATH + stringTheme + "/";
+            break;
+        case 2:
+            existant = themesExist();
+            theme = themePATH + stringTheme + "/" + stringTheme;
+            themeTest = themePATH + stringTheme + "/";
+            break;
+        case 3:
+            existant = themesExist();
+            theme = themePATH + stringTheme + "/" + stringTheme;
+            themeTest = themePATH + stringTheme + "/";
+            break;
+        default:
+            existant = themesExist();
+            theme = themePATH + stringTheme + "/" + stringTheme;
+            themeTest = themePATH + stringTheme + "/";
+            break;
     }
     if (existant){
         existant = checkForTheme(themeTest);

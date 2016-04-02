@@ -9,8 +9,9 @@ flFont::flFont(){
     weight = "weight";
     slant = "slant";
     spacing = "spacing";
-    defaultFont = "ubuntu-12:antialias=true";
-    defaultFontName = "ubuntu";
+    thisFONT=getDefaultFONT();
+    thisFONTname=getDefaultFONT();
+    thisFONT+="-12:antialias=true";
     defaultFontColor = "#ffffff";
 }
 
@@ -22,14 +23,17 @@ flFont::~flFont(){
 //Font NAME
 std::string flFont::fontTest(const char* whichElement){
 #ifdef DEBUG_TRACK
-    std::cerr<<"std::string flFont::fontTest("<<whichElement<<")--->";
+    std::cerr<<"std::string flFont::fontTest("<<whichElement<<")--->"<<std::endl;
 #endif // DEBUG
-    std::string font = defaultFont;
+    std::string font = thisFONT;
     if(!testElement(whichElement,"Font")){
         createElement(whichElement,"Font");
         missingFont(whichElement);
     }
     else{
+    #ifdef DEBUG_TRACK
+    std::cerr<<"Element exists"<<std::endl;
+#endif // DEBUG
         tinyxml2::XMLElement * currentFont = doc.FirstChildElement("JWM")->FirstChildElement(whichElement)->FirstChildElement("Font");
         const char* fontTester = currentFont->GetText();
         if(fontTester!=NULL){
@@ -39,20 +43,22 @@ std::string flFont::fontTest(const char* whichElement){
             missingFont(whichElement);
         }
     }
+    #ifdef DEBUG_TRACK
+        std::cerr<<"<----flFont::fontTest returns: "<< font<< " Default font is: "<<thisFONT<<std::endl;
+    #endif // DEBUG
     return font;
-#ifdef DEBUG_TRACK
-    std::cerr<<"<----flFont::fontTest returns: "<< font<< " Default font is: "<<defaultFont;
-#endif // DEBUG
 }
 void flFont::missingFont(const char* whichElement){
 #ifdef DEBUG_TRACK
-    std::cerr<<"void flFont::missingFont("<<whichElement<<")--->";
+    std::cerr<<"void flFont::missingFont("<<whichElement<<")--->"<<std::endl;
 #endif // DEBUG
     if(!testElement(whichElement,"Font")){createElement(whichElement,"Font");}
     tinyxml2::XMLElement * currentFont = doc.FirstChildElement("JWM")->FirstChildElement(whichElement)->FirstChildElement("Font");
     std::cerr<<gettext("The current Element doesn't have a font name or is missing a size.\n Recovering by rewriting default values\n");
     ///TODO member var for default font
-    currentFont->SetText(defaultFont);
+    std::string DEFAULTfont=getDefaultFONT();
+    DEFAULTfont=DEFAULTfont+"-12:antialias=true:encoding=utf8";
+    currentFont->SetText(DEFAULTfont.c_str());
     saveChanges();
     saveChangesTemp();
 #ifdef DEBUG_TRACK
@@ -61,10 +67,10 @@ void flFont::missingFont(const char* whichElement){
 }
 std::string flFont::getFontName(const char* whichElement){
 #ifdef DEBUG_TRACK
-    std::cerr<<"std::string flFont::getFontName("<<whichElement<<")--->";
+    std::cerr<<"std::string flFont::getFontName("<<whichElement<<")--->"<<std::endl;
 #endif // DEBUG
     std::string font =fontTest(whichElement);
-    if (font.c_str() != NULL){
+    if (font.compare("")!=0){
         std::string fontName;
         std::string::size_type size = font.find_first_of('-');
         if((font.find_last_of('-')!=std::string::npos)){
@@ -161,7 +167,7 @@ void flFont::setSize(unsigned int &fontSize,std::string whichElement){
     if(currentFont->GetText()){font = currentFont->GetText();}
     else{
         missingFont(whichElement.c_str());
-        font=defaultFont;
+        font=thisFONT;
     }
     if(DEBUG_ME){std::cerr<<"setSize input: "<<font<<std::endl;}
     std::stringstream converter;

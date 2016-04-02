@@ -10,7 +10,7 @@
  * 
  * 1John2:5 KJV Public Domain
  * 
- * g++ -finline-small-functions -ffunction-sections -fdata-sections -fmerge-all-constants -fomit-frame-pointer -mno-accumulate-outgoing-args -fno-unwind-tables -fno-asynchronous-unwind-tables -Os menu.cpp -o menu
+ * g++ -finline-small-functions -ffunction-sections -fdata-sections -fmerge-all-constants -fomit-frame-pointer -mno-accumulate-outgoing-args -fno-unwind-tables -fno-asynchronous-unwind-tables -Os menuXDG.cxx -o menuXDG
  */
 
 #include <string>
@@ -29,34 +29,52 @@
 std::string xdg_paths;
 std::string stringXDG_PATH;
 std::string::size_type XDG_pathPosition;
+
+//functions
+//string vectors
+std::vector<std::string> xdgmenufiles();
+std::vector<std::string> desktop_dirs();
 std::vector<std::string> desktop_paths();
 std::vector<std::string> split_paths(const char* envVar, const char* incasenothingexists);
-std::vector<std::string> menufile_categories();
+std::vector<std::string> sortArray(std::vector<std::string> thisPath);
+//strings
+std::string getDDItem(std::string directory, std::string lineToGet);
+std::string getDDName(std::string directory);
+std::string chopTAG(std::string line);
 std::string loop_desktopfiles(std::string categoryToGet,std::string dirToOpen);
 std::string grep(std::string args, std::string filename);
 std::string get_line(std::string filename, std::string line);
 std::string get_name(std::string filename);
 std::string make_menu();
+std::string make_menu_xdg();
 std::string term_out(std::string terminal_Command_You_Want_Output_From);
+std::string exec_line(std::string filename);
+std::string icon_line(std::string filename);
+std::string name_line(std::string filename);
+std::string cat_line(std::string filename);
+std::string makeXDGmenu(std::vector<std::string> cats,std::vector<std::string> dirs);
+
+//boolean
 bool test_file(const char* fileWithFullPATH);
 bool no_display(std::string filename);
 bool only_show(std::string filename);
 bool not_showin(std::string filename);
 bool terminal(std::string filename);
-std::string exec_line(std::string filename);
-std::string icon_line(std::string filename);
-std::string name_line(std::string filename);
-std::string cat_line(std::string filename);
+
+//void
 void outXML(std::string message);
-int main(int argc, char **argv) {
+
+int main() {
     std::cout<<"<?xml version=\"1.0\"?>\n<JWM>"<<std::endl;
-    std::string result = make_menu();
+    std::string result = make_menu_xdg();
     std::cout<<result<<"\n</JWM>"<<std::endl;
 	return 0;
 }
 void outXML(std::string message){
 	std::cout<<"<!--"<<message<<"-->"<<std::endl;
 	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////string
 std::string grep(std::string args, std::string filename) {
   ///Return the FIRST match of the 'args' from a file
   // this is like  line=`grep $args $filename` that only returns one line
@@ -370,7 +388,7 @@ std::string make_menu(){
 			dirToOpen = testPATH + pathToGet;
 			dir = opendir(dirToOpen.c_str());
 			if (dir!=NULL){
-				outXML(dirToOpen);
+				//outXML(dirToOpen);
 				AV+=loop_desktopfiles("AudioVideo",dirToOpen);
 				DEV+=loop_desktopfiles("Development",dirToOpen);
 				ED+=loop_desktopfiles("Education",dirToOpen);
@@ -418,6 +436,241 @@ std::string term_out(std::string terminal_Command_You_Want_Output_From) {
   if((end-1) == 0){return "";}
   return result.erase(end-1,end);
 }
+std::string exec_line(std::string filename) {
+	std::string execline= get_line(filename,"TryExec=");
+	if(execline.compare("")==0){execline= get_line(filename,"Exec=");}
+	if(terminal(filename)){
+		std::string myterm=term_out("which x-terminal-emulator || which xterm");
+		execline=myterm + " -e " + execline;
+	}
+	return execline;
+}
+
+std::string icon_line(std::string filename) {
+  std::string icon = get_line(filename,"Icon=");
+  //outXML("icon:"+icon+"::");
+  if ( icon.compare("")==0){return "application-default-icon";}
+  return icon;
+}
+
+std::string name_line(std::string filename) {
+  std::string base_lang,result,strlang,strlanguage,startbase,NAME,LOCALNAME,LOCALEND;
+  NAME="Name";
+  LOCALNAME="Name[";
+  LOCALEND="]=";
+  unsigned int underscore = 0;
+  char* lang = getenv("LANG");
+  char* language = getenv("LANGUAGE");
+  if (lang!=NULL){
+	strlang = lang;
+    result=get_line(filename,(LOCALNAME+ strlanguage + LOCALEND));
+
+    if(result.compare("")!=0){return result;}
+    base_lang=strlanguage;
+  }
+  else{
+    if (language!=NULL){
+		strlanguage =language;
+        unsigned int dot = 0;
+        dot=strlang.find('.');
+        if(dot<strlang.length()){
+			startbase=strlang.erase(dot,strlang.length());
+			result=get_line(filename, (LOCALNAME+ startbase + LOCALEND));
+
+			if(result.compare("")!=0){return result;}
+			base_lang=startbase;
+		}
+		else{return get_line(filename,"Name=");}
+     }
+     else{return get_line(filename,"Name=");}
+  }
+
+  underscore=base_lang.find('_');
+  if(underscore<base_lang.length()){
+	base_lang=base_lang.erase(underscore,base_lang.length());
+	result=get_line( (LOCALNAME+ base_lang + LOCALEND) ,filename);
+	if(result.compare("")!=0){return result;}
+  }
+  return get_line(filename,"Name=");
+}
+std::string cat_line(std::string filename){
+	std::string AV,DEV,ED,GAME,ART,NET,OFF,SCI,SET,SYS,ACC,category,CAT;
+	AV = "AudioVideo";
+	DEV = "Development";
+	ED = "Education";
+	GAME = "Game";
+	ART = "Graphics";
+	NET = "Network";
+	OFF = "Office";
+	SCI = "Science";
+	SET = "Settings";
+	SYS = "System";
+	ACC = "Utility";
+	std::string temp1,temp2;
+	unsigned int found;
+	std::string catline = get_line(filename,"Categories=");
+	temp2=catline;
+	found = temp2.find_first_of(';');
+	if(found>temp2.length()){return catline;}
+	for(unsigned int i = 0; i<catline.length();i++){
+		found = temp2.find_first_of(';');
+		if(found < temp2.length()){
+			temp2=temp2.erase(found,temp2.length());
+			temp1 = catline.erase(0,found+1);
+			category=temp2;
+			temp2=temp1;
+			if( category.compare(AV)==0){return AV;}
+			else if( category.compare(DEV)==0){return DEV;}
+			else if( category.compare(ED)==0){return ED;}
+			else if( category.compare(GAME)==0){return GAME;}
+			else if( category.compare(ART)==0){return ART;}
+			else if( category.compare(NET)==0){return NET;}
+			else if( category.compare(OFF)==0){return OFF;}
+			else if( category.compare(SCI)==0){return SCI;}
+			else if( category.compare(SET)==0){return SET;}
+			else if( category.compare(SYS)==0){return SYS;}
+			else if( category.compare(ACC)==0){return ACC;}
+		}
+	}
+	return category;
+}
+std::string chopTAG(std::string line){
+	unsigned int tLen=line.find_first_of('>');
+	std::string temp = line;
+	temp=temp.erase(0,tLen+1);
+	tLen=temp.find_first_of('<');
+	temp=temp.erase(tLen,std::string::npos);	
+	return temp;
+}
+std::string getDDName(std::string directory){
+	std::vector<std::string> uniqueDirs = desktop_paths();
+	std::string testPATH,line;
+	unsigned int found = 0;
+	DIR *dirent = NULL;
+	for( std::vector<std::string>::iterator it = uniqueDirs.begin();
+		it!=uniqueDirs.end();
+		++it){
+			
+		testPATH = *it;
+		//make sure this isn't blank
+		if(testPATH.compare("")!=0){
+			//look to see if we have a / at the end... remove it if we do...
+			found = testPATH.find_last_of('/');
+			if (found == testPATH.length()-1){testPATH=testPATH.substr(0,testPATH.length()-1);}
+			std::string tempdirName=testPATH;
+			tempdirName+="/desktop-directories/";
+			dirent = opendir(tempdirName.c_str());
+			if (dirent!=NULL){
+				tempdirName+=directory;
+			}	if(get_name(tempdirName).compare("")!=0){line=get_name(tempdirName);}
+			
+		}
+	}
+	std::string amp="&amp;";
+	std::string ampPRE,ampPOST,tempAMP;
+	unsigned int xmlfix = line.find('&');
+	if(xmlfix<line.length()){
+		tempAMP=line;
+		ampPOST=line;
+		ampPRE = tempAMP.erase(xmlfix,std::string::npos);
+		ampPOST = line.erase(0,xmlfix+1);
+		line = ampPRE + amp + ampPOST;
+	}
+	return line;
+}
+std::string getDDItem(std::string directory, std::string lineToGet){
+	std::vector<std::string> uniqueDirs = desktop_paths();
+	std::string testPATH,line;
+	unsigned int found = 0;
+	DIR *dirent = NULL;
+	for( std::vector<std::string>::iterator it = uniqueDirs.begin();
+		it!=uniqueDirs.end();
+		++it){
+			
+		testPATH = *it;
+		//make sure this isn't blank
+		if(testPATH.compare("")!=0){
+			//look to see if we have a / at the end... remove it if we do...
+			found = testPATH.find_last_of('/');
+			if (found == testPATH.length()-1){testPATH=testPATH.substr(0,testPATH.length()-1);}
+			std::string tempdirName=testPATH;
+			tempdirName+="/desktop-directories/";
+			dirent = opendir(tempdirName.c_str());
+			if (dirent!=NULL){
+				tempdirName+=directory;
+				if(get_line(tempdirName,lineToGet).compare("")!=0){line=get_line(tempdirName,lineToGet);}
+			}
+		}
+	}
+	std::string amp="&amp;";
+	std::string ampPRE,ampPOST,tempAMP;
+	unsigned int xmlfix = line.find('&');
+	if(xmlfix<line.length()){
+		tempAMP=line;
+		ampPOST=line;
+		ampPRE = tempAMP.erase(xmlfix,std::string::npos);
+		ampPOST = line.erase(0,xmlfix+1);
+		line = ampPRE + amp + ampPOST;
+	}
+	return line;
+}
+std::string makeXDGmenu(std::vector<std::string> cats,std::vector<std::string> dirs){
+	std::string MENU,menuTest,this_ICON,this_NAME,this_Exec,DESKTOPS, desktopTest,testDirFile,testPATH;
+	std::string dirToOpen = "/usr/share/applications/";
+	std::string pathToGet = "/applications/";
+	std::string iconEQ = "Icon=";
+    for( std::vector<std::string>::iterator itr = dirs.begin();
+		itr!=dirs.end();
+		++itr){
+		testDirFile = *itr;
+		if(getDDName(testDirFile).compare("")!=0){this_NAME = getDDName(testDirFile);}
+		if(getDDItem(testDirFile,iconEQ).compare("")!=0){this_ICON = getDDItem(testDirFile,iconEQ);}
+		for( std::vector<std::string>::iterator it = cats.begin();
+		it!=cats.end();
+		++it){
+			std::vector<std::string> uniqueDirs = desktop_paths();
+			unsigned int found = 0;
+			unsigned int foundDesk = 0;
+			unsigned int foundMENU = 0;
+			//initialize directory reading variables to NULL
+			std::string CATS=*it;
+			DIR *dirent = NULL;
+			for( std::vector<std::string>::iterator iter = uniqueDirs.begin();
+				iter!=uniqueDirs.end();
+				++iter){
+				testPATH = *iter;
+				//make sure this isn't blank
+				if(testPATH.compare("")!=0){
+					//look to see if we have a / at the end... remove it if we do...
+					found = testPATH.find_last_of('/');
+					if (found == testPATH.length()-1){testPATH=testPATH.substr(0,testPATH.length()-1);}
+					//see if there is a pathToGet directory
+					dirToOpen = testPATH + pathToGet;
+					dirent = opendir(dirToOpen.c_str());
+						if (dirent!=NULL){
+							
+							if( (this_ICON.compare("")!=0)&&(this_NAME.compare("")!=0) ){
+								//outXML(dirToOpen);
+								desktopTest=loop_desktopfiles(CATS,dirToOpen);
+								foundMENU=MENU.find(desktopTest);
+								if( foundMENU>MENU.length() ){
+									foundDesk=DESKTOPS.find(desktopTest);
+									if( foundDesk>DESKTOPS.length() ){DESKTOPS+=desktopTest;}
+								}
+							}
+						}
+				}
+			}//desktop file path vector
+			unsigned int menuFind=0;
+			menuFind=MENU.find(this_NAME);
+			if(menuFind>MENU.length()){
+				if(DESKTOPS.compare("")!=0){MENU+="\t<Menu label=\""+this_NAME+"\" icon=\""+this_ICON +"\" height=\"0\">\n"+DESKTOPS+"\n\t</Menu>\n";}
+			}
+		}//categories vector
+	}//dirs vector
+	return MENU;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////BOOL
 bool test_file(const char* fileWithFullPATH) {
   if(fileWithFullPATH==NULL){return false;}
   struct stat buffer;
@@ -513,118 +766,9 @@ bool not_showin(std::string filename) {
   }
   return false;
 }
-std::string exec_line(std::string filename) {
-	std::string execline= get_line(filename,"TryExec=");
-	if(execline.compare("")==0){execline= get_line(filename,"Exec=");}
-	if(terminal(filename)){
-		std::string myterm=term_out("which x-terminal-emulator || which xterm");
-		execline=myterm + " -e " + execline;
-	}
-	return execline;
-}
 
-std::string icon_line(std::string filename) {
-  std::string icon = get_line(filename,"Icon=");
-  //outXML("icon:"+icon+"::");
-  if ( icon.compare("")==0){return "application-default-icon";}
-  return icon;
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////String Vectors
 
-std::string name_line(std::string filename) {
-  std::string base_lang,result,strlang,strlanguage,startbase,NAME,LOCALNAME,LOCALEND;
-  NAME="Name";
-  LOCALNAME="Name[";
-  LOCALEND="]=";
-  unsigned int underscore = 0;
-  char* lang = getenv("LANG");
-  char* language = getenv("LANGUAGE");
-  if (lang!=NULL){
-	strlang = lang;
-    result=get_line(filename,(LOCALNAME+ strlanguage + LOCALEND));
-
-    if(result.compare("")!=0){return result;}
-    base_lang=strlanguage;
-  }
-  else{
-    if (language!=NULL){
-		strlanguage =language;
-        unsigned int dot = 0;
-        dot=strlang.find('.');
-        if(dot<strlang.length()){
-			startbase=strlang.erase(dot,strlang.length());
-			result=get_line(filename, (LOCALNAME+ startbase + LOCALEND));
-
-			if(result.compare("")!=0){return result;}
-			base_lang=startbase;
-		}
-		else{return get_line(filename,"Name=");}
-     }
-     else{return get_line(filename,"Name=");}
-  }
-
-  underscore=base_lang.find('_');
-  if(underscore<base_lang.length()){
-	base_lang=base_lang.erase(underscore,base_lang.length());
-	result=get_line( (LOCALNAME+ base_lang + LOCALEND) ,filename);
-	if(result.compare("")!=0){return result;}
-  }
-  return get_line(filename,"Name=");
-}
-std::vector<std::string> menufile_categories(){
-	std::vector<std::string> catarray;
-	std::string menu_filename;
-	std::vector<std::string> confdirs_array=split_paths("XDG_CONFIG_DIRS","/etc/xdg:/etc/xdg/xdg-torios");
-	//$XDG_CONFIG_DIRS/menus/${XDG_MENU_PREFIX}applications.menu
-	const char* XDG_MENU_PREFIX=getenv("XDG_MENU_PREFIX");
-	if(XDG_MENU_PREFIX==NULL){
-		XDG_MENU_PREFIX="jwm-";
-	}
-//<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
- //"http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
-
-	return catarray;
-}
-std::string cat_line(std::string filename){
-	std::string AV,DEV,ED,GAME,ART,NET,OFF,SCI,SET,SYS,ACC,category,CAT;
-	AV = "AudioVideo";
-	DEV = "Development";
-	ED = "Education";
-	GAME = "Game";
-	ART = "Graphics";
-	NET = "Network";
-	OFF = "Office";
-	SCI = "Science";
-	SET = "Settings";
-	SYS = "System";
-	ACC = "Utility";
-	std::string temp1,temp2;
-	unsigned int found;
-	std::string catline = get_line(filename,"Categories=");
-	temp2=catline;
-	found = temp2.find_first_of(';');
-	if(found>temp2.length()){return catline;}
-	for(unsigned int i = 0; i<catline.length();i++){
-		found = temp2.find_first_of(';');
-		if(found < temp2.length()){
-			temp2=temp2.erase(found,temp2.length());
-			temp1 = catline.erase(0,found+1);
-			category=temp2;
-			temp2=temp1;
-			if( category.compare(AV)==0){return AV;}
-			else if( category.compare(DEV)==0){return DEV;}
-			else if( category.compare(ED)==0){return ED;}
-			else if( category.compare(GAME)==0){return GAME;}
-			else if( category.compare(ART)==0){return ART;}
-			else if( category.compare(NET)==0){return NET;}
-			else if( category.compare(OFF)==0){return OFF;}
-			else if( category.compare(SCI)==0){return SCI;}
-			else if( category.compare(SET)==0){return SET;}
-			else if( category.compare(SYS)==0){return SYS;}
-			else if( category.compare(ACC)==0){return ACC;}
-		}
-	}
-	return category;
-}
 
 std::vector<std::string> desktop_paths(){
 	std::vector<std::string> thisPath;
@@ -687,10 +831,13 @@ std::vector<std::string> split_paths(const char* envVar, const char* incasenothi
 	}
     unsigned int numberOfPaths;
     std::string tempXDG = thisXDG;
-    unsigned int tryer;
-    for (numberOfPaths=0;numberOfPaths<thisXDG.length();){
+    unsigned int tryer=0;
+    unsigned int xdgLen=0;
+    xdgLen=thisXDG.length();
+    for (numberOfPaths=0;tryer<xdgLen;){
 		tryer = tempXDG.find(":");
 		tempXDG=tempXDG.erase(0,tryer+1);
+		xdgLen=tempXDG.length();
 		numberOfPaths++;
 		
 	}
@@ -711,4 +858,207 @@ std::vector<std::string> split_paths(const char* envVar, const char* incasenothi
 	thisPath.resize( std::distance(thisPath.begin(),it) );
 	//for(it=thisPath.begin();it<=thisPath.end();it++){outXML(*it);}
 	return thisPath;
+}
+std::vector<std::string> desktop_dirs(){
+	 std::vector<std::string> desktop = split_paths("XDG_DATA_DIRS","/usr/local/share/:/usr/share/");
+	 const char *datahome = getenv("HOME");
+	 std::string thisXDG;
+     if (datahome != NULL){
+			thisXDG = datahome;
+			thisXDG += "/.local/share/";
+	}
+	std::vector<std::string> user = split_paths("XDG_DATA_HOME",thisXDG.c_str());
+	return desktop;
+}
+std::string make_menu_xdg(){
+	std::vector<std::string> catarray;
+	std::string menu_filename,line,JWM_MENU;
+	std::vector<std::string> confdirs_array=split_paths("XDG_CONFIG_DIRS","/etc/xdg:/etc/xdg/xdg-torios");
+		//$XDG_CONFIG_DIRS/menus/${XDG_MENU_PREFIX}applications.menu
+	const char* XDG_MENU_PREFIX=getenv("XDG_MENU_PREFIX");
+	if(XDG_MENU_PREFIX==NULL){
+		XDG_MENU_PREFIX="jwm-";
+	}
+	std::string menuNAME=XDG_MENU_PREFIX;
+	menuNAME+="applications.menu";
+	std::string FALLBACKmenuNAME = "lxde-applications.menu";
+	std::string testPATH;
+	std::vector<std::string> MENUS=xdgmenufiles();
+	std::vector<std::string> directoryFiles;
+	for( std::vector<std::string>::iterator it = MENUS.begin();
+		it!=MENUS.end();
+		++it){
+		testPATH = *it;
+		//make sure this isn't blank
+		std::string nO="<Name>";
+		std::string mO= "<Menu>";
+		std::string mC= "</Menu>";
+		std::string dO="<Directory>";
+		std::string iO="<Include>";
+		std::string aO="<And>";
+		std::string cO="<Category>";
+		std::string NOT="<Not>";
+		std::string NOTc="</Not>";
+		std::string appdirs="<DefaultAppDirs/>";
+		std::string dirdirs="<DefaultDirectoryDirs/>";
+		std::string mergedirs="<DefaultMergeDirs/>";
+		std::string testEntry;
+		bool AppDirs, DirDirs, MergeDirs,Include,No;
+		AppDirs=false;
+		DirDirs=false;
+		MergeDirs=false;
+		Include=false;
+		No=false;
+		unsigned int baseMenu=0;
+		std::string BASENAME,tempCat, NAME,DIRECTORY,CATEGORY;
+		if( (testPATH.find(menuNAME)<testPATH.length()) || (testPATH.find(FALLBACKmenuNAME)<testPATH.length()) ){
+			//outXML(testPATH);
+			std::ifstream inputFileStrem (testPATH.c_str(), std::ifstream::in);
+			if(inputFileStrem.is_open()){	
+				while (getline(inputFileStrem,line)){
+					unsigned int length =line.length();
+					//RESET if we reach the end of a category
+					if( (line.find(mO)) < length ){
+						baseMenu++;
+					}
+					if( (line.find(NOT)) < length ){No=true;}
+					if( (line.find(mC)) < length ){
+						if(baseMenu>1){
+							catarray=sortArray(catarray);
+							directoryFiles=sortArray(directoryFiles);
+							unsigned int finder=0;
+							testEntry=makeXDGmenu(catarray,directoryFiles);
+							finder=JWM_MENU.find(testEntry);
+							if(finder>JWM_MENU.length()){
+								//outXML(JWM_MENU);
+								JWM_MENU+=testEntry;
+							}
+							NAME="";
+							catarray.clear();
+							directoryFiles.clear();
+							
+						//Boolean reset
+							AppDirs=false;
+							DirDirs=false;
+							MergeDirs=false;
+							Include=false;
+							No=false;
+						}
+					}
+					if (NAME.compare("")==0){
+						if( (line.find(nO)) < length ){
+							if(BASENAME.compare("")==0){BASENAME=chopTAG(line);}
+							else{
+								NAME=chopTAG(line);
+								if (NAME.compare("")!=0){
+									//outXML("adding Category: " + NAME);
+									catarray.push_back(NAME);
+								}
+							}
+						}
+					}
+					else{
+						if( (line.find(appdirs))<length ){AppDirs=true;}
+						if( (line.find(dirdirs))<length ){DirDirs=true;}
+						if( (line.find(mergedirs))<length ){MergeDirs=true;}
+						if(!Include){
+							if( (line.find(dO)) < length){
+								DIRECTORY=chopTAG(line);
+								//outXML("adding direcotry: " + DIRECTORY);
+								directoryFiles.push_back(DIRECTORY);
+							}
+							if( (line.find(iO)) <length){Include=true;}
+						}
+						else{
+							if(!No){
+								if( (line.find(cO)) <length ){
+									CATEGORY=chopTAG(line);
+									//outXML("adding Category: " + CATEGORY);
+									catarray.push_back(CATEGORY);
+								}
+								
+							}
+							else{if( (line.find(NOTc)) <length ){No=false;}}
+						}
+					}
+					
+					
+					
+					  //<Name>Applications</Name>  hopefully
+					     //submenu
+					        //name
+					          //stuff
+					          //
+					     //endsub   
+					//UNTIL //</Menu>
+				}
+			}
+		}
+		
+	}
+	return JWM_MENU;
+}
+
+std::vector<std::string> xdgmenufiles(){
+		//$XDG_CONFIG_DIRS/menus/${XDG_MENU_PREFIX}applications.menu
+	std::string dirToOpen = "/etc/xdg/menus/";
+	std::string pathToGet = "/menus/";
+	std::string testPATH,tester,result,fullpath;
+	std::vector<std::string> MENUS;
+    std::vector<std::string> uniqueDirs = split_paths("XDG_CONFIG_DIRS","/etc/xdg:/etc/xdg/xdg-torios");
+	unsigned int found = 0;
+    //initialize directory reading variables to NULL
+    DIR *dir = NULL;
+	struct dirent *entryPointer = NULL;
+   	for( std::vector<std::string>::iterator it = uniqueDirs.begin();
+			it!=uniqueDirs.end();
+			++it){
+        //get the string equvalent for the integer representation if of the xdg path
+        // something like
+        /*
+        1=/usr/share/
+        2=/usr/local/share
+        etc...
+        */
+		testPATH = *it;
+		//make sure this isn't blank
+		if(testPATH.compare("")!=0){
+			//look to see if we have a / at the end... remove it if we do...
+			found = testPATH.find_last_of('/');
+			if (found == testPATH.length()-1){testPATH=testPATH.substr(0,testPATH.length()-1);}
+			//see if there is a pathToGet directory
+			dirToOpen = testPATH + pathToGet;
+			dir = opendir(dirToOpen.c_str());
+			if(dir!=NULL){
+		    while ((entryPointer=readdir(dir)) != NULL){
+				if ((entryPointer->d_type == DT_REG)&&(entryPointer->d_name[0] != '.')){
+					fullpath = entryPointer->d_name;
+					result=dirToOpen+fullpath;
+					tester=dirToOpen+fullpath;
+					unsigned period = result.find_last_of(".");
+					bool isMENU = false;
+					if(result.compare("")!=0){
+						if(period<result.length()){
+							std::string testmenu = result.substr(period+1,std::string::npos);
+							if(testmenu.compare("menu")==0){isMENU = true;}
+						}
+						if(isMENU){
+							MENUS.push_back(result); 
+						} //isMENU
+					}//result !empty
+				}//it is a file
+			}//readdir is not NULL
+			}//dir!=NULL
+			closedir(dir);
+		}//testPath is not ""
+	}//directory looper
+	
+	return MENUS;
+}
+std::vector<std::string> sortArray(std::vector<std::string> thisPath){
+    std::vector<std::string>::iterator it;
+    std::sort (thisPath.begin(), thisPath.end());
+	it = std::unique (thisPath.begin(), thisPath.end());
+	thisPath.resize( std::distance(thisPath.begin(),it) );
+    return thisPath;
 }

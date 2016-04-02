@@ -75,9 +75,9 @@ class WindowUI {open : {public Config}
   Function {add_option_window()} {open
   } {
     Fl_Window add_opt_window {
-      label {Add an Option}
-      xywh {168 164 435 435} type Double hide
-      code0 {startup(o);} xclass {jsm-windows}
+      label {Add an Option} open
+      xywh {168 164 435 435} type Double
+      code0 {startup(o);} xclass {jsm-windows} visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 430 430}
@@ -123,7 +123,10 @@ check_opts(value);}
         }
         Fl_Button {} {
           label OK
-          callback {saveJWMRC(add_opt_window);
+          callback {add_option_to_group();
+loadTemp();
+saveNoRestart();
+add_opt_window->hide();
 populate_groups();}
           tooltip {Write to configuration file} xywh {375 400 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
         }
@@ -175,8 +178,8 @@ class_win->hide();}
   Function {add_program_window()} {} {
     Fl_Window prog_win {
       label {Program to add} open
-      xywh {208 542 425 50} type Double
-      code0 {startup(o);} xclass {jsm-windows} visible
+      xywh {208 542 425 50} type Double hide
+      code0 {startup(o);} xclass {jsm-windows}
     } {
       Fl_Input input_to_add_prog {
         label {Program to Add}
@@ -197,7 +200,7 @@ prog_win->hide();}
 saveChangesTemp();} {}
     Fl_Window window_window {
       label {Window Settings} open
-      xywh {24 376 680 390} type Double color 31 resizable
+      xywh {80 203 680 390} type Double color 31 resizable
       code0 {startup(o);} xclass {jsm-windows} visible
     } {
       Fl_Scroll {} {open
@@ -222,8 +225,8 @@ ui.showSettings();}
           xywh {0 25 680 330} box FLAT_BOX selection_color 51
         } {
           Fl_Group {} {
-            label Appearance selected
-            xywh {10 45 670 305}
+            label Appearance
+            xywh {10 45 670 305} hide
           } {
             Fl_Box {} {
               xywh {10 55 330 175} box FLAT_BOX color 51
@@ -595,7 +598,7 @@ border_modifier(o,a_b_slider_v);
           }
           Fl_Group {} {
             label Groups open
-            xywh {25 50 655 305} hide
+            xywh {25 50 655 305}
           } {
             Fl_Browser groups_browser {
               label {Current Groups}
@@ -648,11 +651,11 @@ else{
     flWindow win;
     const char* value = opt_browser->text(testthis);
     win.removeGroupItem(hidethis,value);
+    populate_groups();
     return;
  }
-}
-populate_groups();}
-              image {custom_buttons/minus} xywh {245 260 35 30} box FLAT_BOX color 23 deactivate
+}}
+              image {custom_buttons/minus} xywh {245 260 35 30} box FLAT_BOX color 23
             }
             Fl_Browser name_browser {
               label {Program Name}
@@ -676,10 +679,11 @@ else{
     flWindow win;
     const char* value = name_browser->text(testthis);
     win.removeGroupProgram(hidethis,value);
+    populate_groups();
+    return;
  }
-}
-populate_groups();}
-              image {custom_buttons/minus} xywh {390 260 35 30} box FLAT_BOX color 23 deactivate
+}}
+              image {custom_buttons/minus} xywh {390 260 35 30} box FLAT_BOX color 23
             }
             Fl_Browser class_browser {
               label {Window Class}
@@ -703,10 +707,11 @@ else{
     flWindow win;
     const char* value = class_browser->text(testthis);
     win.removeGroupClass(hidethis,value);
+    populate_groups();
+    return;
  }
-}
-populate_groups();}
-              image {custom_buttons/minus} xywh {525 260 35 30} box FLAT_BOX color 23 deactivate
+}} selected
+              image {custom_buttons/minus} xywh {525 260 35 30} box FLAT_BOX color 23
             }
           }
         }
@@ -936,10 +941,11 @@ o->value(opacity);} {}
   Function {populate_groups()} {open
   } {
     code {int line = groups_browser->value();
-if ((line == 0) || (line > groups_browser->size())){
   opt_browser->clear();
   class_browser->clear();
   name_browser->clear();
+if ((line == 0) || (line > groups_browser->size())){
+   return;
 }
 else{
   flWindow win;

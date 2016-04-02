@@ -56,13 +56,17 @@ public:
 private:
   inline void cb_save_button_i(Fl_Button*, void*);
   static void cb_save_button(Fl_Button*, void*);
-  inline void cb__i(Fl_Button*, void*);
-  static void cb_(Fl_Button*, void*);
+public:
+  Fl_Button *add_item;
+private:
+  inline void cb_add_item_i(Fl_Button*, void*);
+  static void cb_add_item(Fl_Button*, void*);
 public:
   Fl_Browser *autoStartBrowser;
+  Fl_Button *remove_item;
 private:
-  inline void cb_1_i(Fl_Button*, void*);
-  static void cb_1(Fl_Button*, void*);
+  inline void cb_remove_item_i(Fl_Button*, void*);
+  static void cb_remove_item(Fl_Button*, void*);
 public:
   void choose_a_program();
   void add_program_to_autostart();

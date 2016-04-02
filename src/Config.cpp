@@ -21,7 +21,6 @@ Config::Config(){
     placesmenu = "placesmenu";
     gnomemenu = "gnomeapps";
     sysmenu = "gnomesystem";
-    isNewStyle = newStyle();
     xdg_paths = set_xdg_paths();
     stringXDG_PATH = xdg_paths;
     XDG_pathPosition = stringXDG_PATH.find_first_of(':');
@@ -36,7 +35,7 @@ Config::Config(){
 
 Config::~Config(){
 #ifdef DEBUG_TRACK
-  std::cerr<<"[Config]->"<<std::endl;
+  std::cerr<<"<-[Config]"<<std::endl;
 #endif // DEBUG
 }
 
@@ -163,6 +162,9 @@ void Config::setFileName(std::string &fileName){
 jwmrc = fileName;
 }
 void Config::under_mouse(Fl_Window *o){
+    if(DEBUG_ME){
+        std::cerr<<"void Config::under_mouse(Fl_Window *o)"<<std::endl;
+    }
     int screenHeight = Fl::h()/2;
     int screenWidth = Fl::w()/2;
     int window_w = o->decorated_w();
@@ -175,12 +177,46 @@ void Config::under_mouse(Fl_Window *o){
 int Config::jwmVersion(){
     const char* jwmVers = "jwm -v | grep JWM |sed 's/ by.*//' |sed 's/JWM v//'";
 	std::string version = returnTerminalOutput(jwmVers,"r");
+
     if(version.compare("2.3.0")==0){return 0;}
     if(version.compare("2.3.1")==0){return 1;}
     if(version.compare("2.3.2")==0){return 2;}
     if(version.compare("2.3.3")==0){return 3;}
+    if(version.compare("2.3.4")==0){return 4;}
     return -1;
 }
+int Config::FULLjwmVersion(){
+    const char* jwmVers = "jwm -v | grep JWM |sed 's/ by.*//' |sed 's/JWM v//'";
+	std::string version = returnTerminalOutput(jwmVers, "r");
+std::string major,minor,revno,temp,versionMASH;
+
+	unsigned int finder = version.find_first_of('.');
+	if(finder<version.length()){
+		int retval=0;
+		major=version;
+		temp=version;
+		major=major.erase(finder,std::string::npos);
+		temp=temp.erase(0,finder+1);
+		versionMASH=major;
+		//int MAJOR=convert(major.c_str());
+		finder = temp.find_first_of('.');
+		if(finder<temp.length()){
+			minor=temp;
+			minor=minor.erase(finder,std::string::npos);
+			temp=temp.erase(0,finder+1);
+			//int MINOR=convert(minor.c_str());
+			revno=temp;
+			versionMASH+=minor;
+			versionMASH+=revno;
+			//int REVNO=convert(revno.c_str());
+			//return REVNO;
+			retval=convert(versionMASH.c_str() );
+			return retval;
+		}
+	}
+    return -1;
+}
+
 bool Config::newVersionJWM(){
     const char* jwmVersion = "jwm -v | grep JWM |sed 's/ by.*//' |sed 's/JWM v//'";
 	std::string version = returnTerminalOutput(jwmVersion,"r");
@@ -254,64 +290,747 @@ int Config::newStyle(){
     return not23;
 }
 ///++++++++++++++++++++++++++++++++++++++++++++++++++++++ Recovery ++++++++++++++++++++++++++++++++++++++++++++++++++++
+void Config::write_out(std::string fileContents, std::string FILENAME){
+  std::cout<<"Writing out the file: "<<FILENAME<<std::endl;
+  const char* filename=FILENAME.c_str();
+  std::ofstream outputFileStream(filename, std::ios::out);
+  outputFileStream<<fileContents<<std::endl;
+}
+std::string Config::jwmrcOUT(){
+	int version=FULLjwmVersion();
+	unsigned int len=0;
+	std::string brightUP,
+				brightDown,
+				MANUAL,
+				STARTPAGE,
+				TERM_PROG,
+				SYS_MONITOR,
+				MENU_WEB_PROG,
+				SCREEN_SHOT,
+				RUN_DIALOG,
+				CALC_PROG,
+				DESKTOP_PROG,
+				VOL_PROG,
+				STARTUP,
+				OLD_CLOCK,
+				BUTTONS,
+				BG,
+				addy,
+				ABOUT_PROG;
+	//Translatable strings
+	std::string PLACES_NAME=gettext("Places");
+	std::string ClockSettings=gettext("Clock Settings");
+	std::string Calendarstring=gettext("Calendar");
+	std::string TimezoneSettings=gettext("Timezone Settings");
+	std::string EditPanel=gettext("Edit Panel");
+	std::string EditMENU=gettext("Edit Menu");
+	std::string updateMENU=gettext("Update Menu");
+	std::string SHUTDOWN_NAME=gettext("Shutdown");
+	std::string ReloadDesktop=gettext("Reload Desktop");
+	std::string AboutToriOS=gettext("About ToriOS");
+	std::string AboutUs=gettext("About Us");
+	std::string Help=gettext("Help");
+	std::string MENU_NAME=gettext("Apps");
+	std::string Addnewitems=gettext("Add new items");
 
-void Config::setRecoveryText(std::string &ConfigFile){
-    recoveryText = ConfigFile;
+	len=4;
+	const char *aBG[len];
+	aBG[0]="/usr/share/backgrounds/default.jpg";
+	aBG[1]="/usr/share/backgrounds/warty-final-ubuntu.png";
+	aBG[2]="/usr/share/archlinux/wallpaper/archlinux-elation.jpg";
+	aBG[3]="/usr/share/images/desktop-base/moreblue-orbit-wallpaper.png";
+    for (unsigned int i=0;i<=len;i++){
+		if(BG.compare("")==0){if(testFile(aBG[i])){BG=aBG[i];}}
+	}
+	std::string EXTENTION=".svg";
+	std::string JSMsharePATH=getDefaultFilepath();
+	std::string WHITE = "#ffffff";
+	std::string GREY = "#383838";
+	std::string RED = "#940000";
+	std::string BLACK ="#000000";
+	std::string OPACITY = "1.0";
+	std::string LIGHT_GREY = "#808080";
+	std::string DARK_GREY ="#232323";
+	if (version<230){EXTENTION="";}
+	std::string STARTPAGE_ICON="browser" + EXTENTION;
+	std::string JSM="jwm-settings-manager";
+	std::string EXECjwm="exec:";
+	std::string TORIOSGAMMA="torios-gamma";
+	std::string FACEB="https://www.facebook.com/ToriOS.Official";
+	std::string GPLUS="https://plus.google.com/113578220061772446187/posts";
+	std::string TWITTER="https://twitter.com/ToriOS_Official";
+	std::string LP="https://launchpad.net/~torios";
+	std::string TORIOSwebsite="http://torios.top";
+	MANUAL="/usr/share/doc/torios/html/index.html";
+	STARTPAGE="/usr/share/doc/torios/startpage.html";
+	if(testExec(TORIOSGAMMA.c_str())){
+		brightUP=TORIOSGAMMA+" up";
+		brightDown=TORIOSGAMMA+" down";
+	}
+	/// MENU_WEB_PROG
+	len=8;
+	const char *aWEB[len];
+	aWEB[0]="x-www-browser";
+	aWEB[1]="firefox";
+	aWEB[2]="chromium";
+	aWEB[3]="google-chrome";
+	aWEB[4]="qupzilla";
+	aWEB[5]="opera";
+	aWEB[6]="midori";
+	aWEB[7]="links2";
+    for (unsigned int i=0;i<=len;i++){
+		if(MENU_WEB_PROG.compare("")==0){
+            if(testExec(aWEB[i])){MENU_WEB_PROG=aWEB[i];}
+        }
+	}
+	if(MENU_WEB_PROG.compare("")!=0){
+		if(testFile(MANUAL.c_str())){MANUAL=MENU_WEB_PROG + " " + MANUAL;}
+		else{MANUAL="";}
+		if(testFile(STARTPAGE.c_str())){STARTPAGE=MENU_WEB_PROG + " " + STARTPAGE;}
+		else{STARTPAGE=MENU_WEB_PROG;}
+	}
+	/// TERM_PROG
+	len=8;
+	const char *aterm[len];
+	aterm[0]="x-terminal-emulator";
+	aterm[1]="xterm";
+	aterm[2]="sakura";
+	aterm[3]="lxterminal";
+	aterm[4]="rxvt";
+	aterm[5]="roxterm";
+	aterm[6]="xfce4-terminal";
+	aterm[7]="terminator";
+    for (unsigned int i=0;i<=len;i++){
+		if(TERM_PROG.compare("")==0){if(testExec(aterm[i])){TERM_PROG=aterm[i];}}
+	}
+	if(TERM_PROG.compare("")!=0){SYS_MONITOR="htop";}
+	if(!testExec(SYS_MONITOR.c_str())){
+		SYS_MONITOR="lxtask";
+		if(!testExec(SYS_MONITOR.c_str())){
+			if(TERM_PROG.compare("")!=0){SYS_MONITOR="top";}
+			if(!testExec(SYS_MONITOR.c_str())){
+				SYS_MONITOR="";
+			}
+			else{SYS_MONITOR=TERM_PROG+" -e "+ SYS_MONITOR;}
+		}
+	}
+	else{SYS_MONITOR=TERM_PROG+" -e "+ SYS_MONITOR;}
+	///  SCREEN_SHOT
+	len=6;
+	const char *ascreen[len];
+	ascreen[0]="screenie";
+	ascreen[1]="gnome-screenshot";
+	ascreen[2]="screengrab";
+	ascreen[3]="shutter";
+	ascreen[4]="xfce4-screenshooter";
+	ascreen[5]="scrot";
+    for (unsigned int i=0;i<=len;i++){
+		if(SCREEN_SHOT.compare("")==0){if(testExec(ascreen[i])){SCREEN_SHOT=ascreen[i];}}
+	}
+	///  RUN_DIALOG
+	len=2;
+	const char *RUNa[len];
+	RUNa[0]="zrun";
+	RUNa[1]="grun";
+    for (unsigned int i=0;i<=len;i++){
+		if(RUN_DIALOG.compare("")==0){if(testExec(RUNa[i])){RUN_DIALOG=RUNa[i];}}
+	}
+	/// CALC_PROG="xcalc";
+	len=7;
+	const char *aCALC[len];
+	aCALC[0]="xcalc";
+	aCALC[1]="calcoo";
+	aCALC[2]="galculator";
+	aCALC[3]="gnome-calculator";
+	aCALC[4]="kcalc";
+	aCALC[5]="qalculate-gtk";
+	aCALC[6]="wmcalc";
+    for (unsigned int i=0;i<=len;i++){
+		if(CALC_PROG.compare("CALC_PROG")==0){if(testExec(aCALC[i])){CALC_PROG=aCALC[i];}}
+	}
+	std::string VOL_UP="amixer-up";
+	if(!testExec(VOL_UP.c_str())){VOL_UP="";}
+	std::string VOL_DOWN="amixer-down";
+	if(!testExec(VOL_DOWN.c_str())){VOL_DOWN="";}
+	std::string VOL_MUTE="amixer-toggle";
+	if(!testExec(VOL_MUTE.c_str())){VOL_MUTE="";}
+	std::string HELP_PROG="xman";
+	std::string LOGOUT_PROGRAM="torios-exit";
+	if(!testExec(LOGOUT_PROGRAM.c_str())){LOGOUT_PROGRAM="jwm -exit";}
+	std::string TZ_PROG="xterm -e 'sudo dpkg-reconfigure tzdata'";
+
+	/// OLD_CLOCK
+	len=15;
+	const char *aCLOCK[len];
+	aCLOCK[0]="torios-calendar";
+	aCLOCK[1]="ccal";
+	aCLOCK[2]="evolution";
+	aCLOCK[3]="gdeskcal";
+	aCLOCK[4]="gsimplecal";
+	aCLOCK[5]="gnome-calendar";
+	aCLOCK[6]="osmo";
+	aCLOCK[7]="orage";
+	aCLOCK[8]="python-goocalendar";
+	aCLOCK[9]="remind";
+	aCLOCK[10]="when";
+	aCLOCK[11]="wmdate";
+	aCLOCK[12]="xcal";
+	aCLOCK[13]="yad";
+	aCLOCK[14]="zenity";
+    for (unsigned int i=0;i<=len;i++){
+		if(OLD_CLOCK.compare("")==0){if(testExec(aCLOCK[i])){OLD_CLOCK=aCLOCK[i];}}
+	}
+	if(OLD_CLOCK.compare("zenity")==0){OLD_CLOCK+=" --calendar";}
+	if(OLD_CLOCK.compare("yad")==0){OLD_CLOCK+=" --calendar";}
+	std::string RESTART_PROGRAM="torios-reboot";
+
+	std::string APPMENU_FILE="$HOME/.config/torimenu";
+	std::string JWM_MENU,PLACES_INCLUDE;
+	len=2;
+	const char *aMENU[len];
+	aMENU[0]="jwm-menu";
+	aMENU[1]="jwm-desktopmenu";
+    for (unsigned int i=0;i<=len;i++){
+		if(JWM_MENU.compare("")==0){if(testExec(aMENU[i])){JWM_MENU=aMENU[i];}}
+	}
+	len=2;
+	const char *aMENU2[len];
+	aMENU2[0]="jwm-places";
+	aMENU2[1]="jwm-placesmenu";
+    for (unsigned int i=0;i<=len;i++){
+		if(PLACES_INCLUDE.compare("")==0){if(testExec(aMENU2[i])){PLACES_INCLUDE=aMENU2[i];}}
+	}
+    if(testExec("torios-about")){ABOUT_PROG="torios-about";}
+    else{
+        if(testExec("starttorios")){ABOUT_PROG= MENU_WEB_PROG + " " + TORIOSwebsite;}
+        else{ABOUT_PROG="";}
+    }
+    std::string baseFONT=getDefaultFONT();
+    std::string FONT=baseFONT+"-12:antialias=true:encoding=utf8";
+    std::cerr<<baseFONT<<">>"<<FONT<<std::endl;
+    len=3;
+	const char *aDESKTOP[len];
+	aDESKTOP[0]="pcmanfm";
+	aDESKTOP[1]="rox";
+	aDESKTOP[2]="nautilus";
+    for (unsigned int i=0;i<=len;i++){
+		if(DESKTOP_PROG.compare("")==0){if(testExec(aDESKTOP[i])){DESKTOP_PROG=aDESKTOP[i];}}
+	}
+	if(DESKTOP_PROG.compare("pcmanfm")==0){DESKTOP_PROG+=" --desktop";}
+	if(DESKTOP_PROG.compare("rox")==0){DESKTOP_PROG+=" -p";}
+    if(DESKTOP_PROG.compare("")!=0){STARTUP="<StartupCommand>"+DESKTOP_PROG+"</StartupCommand>\n";}
+    std::string JSMmouse=homePathNoFiles;
+    JSMmouse+="/.config/jsm-mouse";
+    if(testFile(JSMmouse.c_str())){STARTUP=STARTUP+"    <StartupCommand>"+JSMmouse+"</StartupCommand>\n";}
+    len=2;
+	const char *aVOL_PROG[len];
+	aVOL_PROG[0]="torios-volume";
+	aVOL_PROG[1]="volumeicon";
+    for (unsigned int i=0;i<=len;i++){
+		if(VOL_PROG.compare("")==0){if(testExec(aVOL_PROG[i])){VOL_PROG=aVOL_PROG[i];}}
+	}
+    if(testExec(VOL_PROG.c_str())){STARTUP=STARTUP+"    <StartupCommand>"+VOL_PROG+"</StartupCommand>\n";}
+    if(testExec("nice-start")){STARTUP+="   <StartupCommand>nice-start</StartupCommand>\n";}
+    if(testFile("/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1")){STARTUP+="   <StartupCommand>/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1</StartupCommand>";}
+	///TODO: find this actually
+	len=4;
+	const char *buttonA[len];
+	buttonA[0]="/Buttons/Default/close.png";
+	buttonA[1]="/Buttons/Default/max.png";
+	buttonA[2]="/Buttons/Default/max-toggle.png";
+	buttonA[3]="/Buttons/Default/min.png";
+	std::string tempbutton;
+	for (unsigned int i=0;i<=len;i++){
+		tempbutton=JSMsharePATH+buttonA[i];
+		if(testFile(tempbutton.c_str())){
+			switch(len){
+				case 0:
+					BUTTONS="<ButtonClose>" + tempbutton + "</ButtonClose>\n";
+					break;
+				case 1:
+					BUTTONS=BUTTONS+"<ButtonMax>" + tempbutton + "</ButtonMax>\n";
+					break;
+				case 2:
+					BUTTONS=BUTTONS+"<ButtonMaxActive>" + tempbutton + "</ButtonMaxActive>\n";
+					break;
+				case 3:
+					BUTTONS=BUTTONS+"<ButtonMin>" + tempbutton + "</ButtonMin>\n";
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+////////////////////////////////////// MENUS //////////////////////////////////////////////////////////////
+
+//////MENUS
+// 1 nothing
+// 23 mouse menu
+// 5 apps
+// 7 places
+// 8 gnome system
+// 9 shutdown
+// c clock
+// p panel edit
+// m menu edit
+
+	///CLOCK
+	std::string CLOCK_FORMAT="%a, %e %b %l:%M %p";
+	std::string CLOCK="root:c";
+	std::string OLD_CLOCK_TAG="    <Clock format=\"" + CLOCK_FORMAT + "\">" + OLD_CLOCK + "</Clock>";
+	std::string CLOCK_TAG="    <Clock format=\"" + CLOCK_FORMAT + "\">" + CLOCK + "</Clock>";
+	std::string CLOCK_MENU="<!-- Clock Menu-->\n\
+    <RootMenu height=\"0\" onroot=\"c\">\n\
+        <Program icon=\"time" + EXTENTION + "\" label=\""+ClockSettings+"\">" + JSM + " --clock-settings</Program>\n\
+		<Separator/>\n\
+        <Program icon=\"calendar" + EXTENTION + "\" label=\""+Calendarstring+"\">" + OLD_CLOCK + "</Program>\n\
+        <Program icon=\"time" + EXTENTION + "\" label=\""+TimezoneSettings+"\">" + TZ_PROG + "</Program>\n\
+    </RootMenu>";
+//// Panel Edit
+	std::string EDIT_PANEL_ROOT="root:p";
+	std::string EDIT_PANEL="    <RootMenu onroot=\"p\">\n\
+		<Program icon=\"jsm-panel" + EXTENTION + "\" label=\""+EditPanel+"\">" + JSM + " --panel</Program>\n\
+		<Program icon=\"add" + EXTENTION + "\" label=\""+Addnewitems+"\">" + JSM + " --shortcuts</Program>\n\
+    </RootMenu>";
+
+//// Menu Edit
+	std::string EDIT_MENU_ROOT="root:m";
+	std::string EDIT_MENU="    <RootMenu onroot=\"m\">\n";
+	if(testExec("update-menus")){EDIT_MENU=EDIT_MENU+"		<Program icon=\"reload" + EXTENTION + "\" label=\""+updateMENU+"\">update-menus</Program>\n";}
+	EDIT_MENU=EDIT_MENU+"		<Program icon=\"jsm-panel" + EXTENTION + "\" label=\""+EditMENU+"\">" + JSM + " --menu</Program>\n\
+		<Program icon=\"jsm-panel" + EXTENTION + "\" label=\""+EditPanel+"\">" + JSM + " --panel</Program>\n\
+    </RootMenu>";
+//// SHUTDOWN MENU
+	std::string SHUTDOWN_ROOT="root:9";
+	std::string SHUTDOWN_ICON="system-shutdown" + EXTENTION;
+	std::string SHUTDOWN_PROGRAM=JSM + " --halt";
+	std::string LOGOUT_ICON="system-logout" + EXTENTION;
+	std::string RESTART_ICON="system-restart" + EXTENTION;
+	std::string SHUTERDOWN="    <Separator/>\n\
+		<Restart label=\""+ReloadDesktop+"\" icon=\"" + RESTART_ICON + "\"/>\n\
+		<Program icon=\"" + SHUTDOWN_ICON + "\" label=\""+SHUTDOWN_NAME+"\">" + SHUTDOWN_PROGRAM + "</Program>";
+//// MAIN MENU
+
+	std::string JWM_ROOT_NUM="2";
+	std::string JWM_ROOT="root:" + JWM_ROOT_NUM;
+	std::string MENU_ICON="/usr/share/pixmaps/distributor-logo.png";
+	if(!testFile(MENU_ICON.c_str())){MENU_ICON="distributor-logo";}
+//MAIN MENU GENERATOR
+	std::string JWM_ROOT_MENU="<RootMenu onroot=\"" + JWM_ROOT_NUM + "\">\n\
+        <Include>" + EXECjwm + JWM_MENU + "</Include>\n";
+    if(JWM_MENU.compare("")==0){JWM_ROOT_MENU="<RootMenu onroot=\"" + JWM_ROOT_NUM + "\">\n";}
+    if(testExec("starttorios")){
+        JWM_ROOT_MENU=JWM_ROOT_MENU+"        <Menu label=\""+AboutToriOS+"\" icon=\"help-about" + EXTENTION + "\" height=\"0\">\n";
+        if(MANUAL.compare("")!=0){
+            JWM_ROOT_MENU=JWM_ROOT_MENU+"       <Program label=\""+Help+"\" icon=\"help" + EXTENTION + "\">" + MANUAL + "</Program>\n";
+        }
+        if(MENU_WEB_PROG.compare("")!=0){JWM_ROOT_MENU=JWM_ROOT_MENU+"       <Program label=\"Launchpad\" icon=\"launchpad" + EXTENTION + "\">" + MENU_WEB_PROG + " " + LP + "</Program>\n\
+        <Program label=\"G+\" icon=\"googleplus" + EXTENTION + "\">" + MENU_WEB_PROG + " " + GPLUS + "</Program>\n\
+        <Program label=\"Facebook\" icon=\"facebook" + EXTENTION + "\">" + MENU_WEB_PROG + " " + FACEB + "</Program>\n\
+        <Program label=\"Twitter\" icon=\"twitter" + EXTENTION + "\">" + MENU_WEB_PROG + " " + TWITTER + "</Program>\n";
+        }
+        if(ABOUT_PROG.compare("")!=0){
+            JWM_ROOT_MENU=JWM_ROOT_MENU+"       <Program label=\""+AboutUs+"\" icon=\"" + MENU_ICON + "\">" + ABOUT_PROG + "</Program>\n";
+        }
+        JWM_ROOT_MENU=JWM_ROOT_MENU+"        </Menu>\n";
+    }
+
+        JWM_ROOT_MENU=JWM_ROOT_MENU+ SHUTERDOWN + "\n\
+    </RootMenu>";
+	std::string TORI_ROOT=JWM_ROOT;
+//// PLACES MENU
+	std::string PLACES_NUM="7";
+	std::string PLACES_ROOT="root:" + PLACES_NUM;
+
+	std::string PLACES_MENU_FILE="$HOME/.config/placesmenu";
+	std::string PLACES_ICON="folder" + EXTENTION;
+	std::string PLACES_MENU;
+	if(PLACES_INCLUDE.compare("")!=0){
+        PLACES_MENU="    <RootMenu onroot=\"" + PLACES_NUM + "\">\n\
+        <Include>" + EXECjwm + PLACES_INCLUDE + "</Include>\n\
+    </RootMenu>\n";
+    }
+    if(!testExec(PLACES_INCLUDE.c_str())){PLACES_MENU="";}
+	std::string MENUS_LIST="    <Include>" + APPMENU_FILE + "</Include>\n\
+<!--Places Menu-->\n\
+    <Include>" + PLACES_MENU_FILE + "</Include>";
+	std::string MENUS_LIST_NEW=JWM_ROOT_MENU + "\n\
+" + PLACES_MENU+"    <RootMenu height=\"0\" onroot=\"z\">\n\
+        <Exit label=\"Logout\" confirm=\"false\" icon=\"" + LOGOUT_ICON + "\"/>\n\
+    </RootMenu>\n\
+<!--Traybutton Edit Menu-->\n\
+" + EDIT_PANEL+ "\n\
+" + EDIT_MENU+ "\n"
+ + CLOCK_MENU+ "\n";
+	std::string ROOT_MENU="root:" + JWM_ROOT_NUM;
+//// Mouse MENU
+	std::string MOUSE_MENU="<RootMenu height=\"0\" onroot=\"3\">\n\
+        <Program icon=\"folder-home" + EXTENTION + "\" label=\"Home\">xdg-open ~/</Program>\n\
+        <Program icon=\"" + JSM + EXTENTION + "\" label=\"Settings\">" + JSM + "</Program>\n\
+        <Program icon=\"preferences-desktop-wallpaper" + EXTENTION + "\" label=\"Change Desktop Background\">" + JSM + " --desktop</Program>\n\
+    </RootMenu>";
+
+//// window corners override in individual files
+	std::string CORNER="4";
+	std::string W_HEIGHT="20";
+//// PANEL CONFIGURATIONS
+//// THE NORMAL CONFIG used in Default, Ambiance and Live
+	std::string TRAY="<Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign=\"fixed\" layout=\"horizontal\">\n";
+    if(JWM_MENU.compare("")!=0){
+        TRAY=TRAY+"        <TrayButton label=\"" + MENU_NAME + "\" icon=\"" + MENU_ICON + "\" border=\"false\">\n\
+            <Button mask=\"1\">" + JWM_ROOT + "</Button>\n\
+            <Button mask=\"23\">" + EDIT_MENU_ROOT + "</Button>\n\
+        </TrayButton>\n";
+    }
+    if(PLACES_INCLUDE.compare("")!=0){
+        TRAY=TRAY+"        <TrayButton label=\"" + PLACES_NAME + "\" icon=\"" + PLACES_ICON + "\" border=\"false\">\n\
+            <Button mask=\"1\">" + PLACES_ROOT + "</Button>\n\
+            <Button mask=\"23\">" + EDIT_MENU_ROOT + "</Button>\n\
+        </TrayButton>\n";
+    }
+    if(MENU_WEB_PROG.compare("")!=0){
+        TRAY=TRAY+"        <TrayButton icon=\"" + STARTPAGE_ICON + "\" border=\"false\">\n\
+            <Button mask=\"1\">" + EXECjwm + STARTPAGE + "</Button>\n\
+            <Button mask=\"23\">" + EDIT_PANEL_ROOT + "</Button>\n\
+        </TrayButton>\n";
+    }
+    TRAY=TRAY+"        <Pager labeled=\"true\"/>\n\
+        <TaskList maxwidth=\"256\"/>\n\
+        <Dock/>\n";
+    if(testExec("xload")){TRAY +="    <Swallow name=\"xload\" width=\"64\">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>\n";}
+    TRAY = TRAY + CLOCK_TAG + "\n\
+    </Tray>";
+////// OLD STYLE 2.2.2 configs
+	std::string OLD_TRAY="<Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign=\"fixed\" layout=\"horizontal\">\n";
+    if(APPMENU_FILE.compare("")!=0){
+        OLD_TRAY=OLD_TRAY+"        <TrayButton label=\"" + MENU_NAME + "\" icon=\"" + MENU_ICON + "\" border=\"false\">" + TORI_ROOT + "</TrayButton>\n";
+    }
+    if(PLACES_MENU_FILE.compare("")!=0){
+        OLD_TRAY=OLD_TRAY+"        <TrayButton label=\"" + PLACES_NAME + "\" icon=\"" + PLACES_ICON + "\" border=\"false\">" + PLACES_ROOT + "</TrayButton>\n";
+    }
+    if(MENU_WEB_PROG.compare("")!=0){
+        OLD_TRAY=OLD_TRAY+"        <TrayButton icon=\"" + STARTPAGE_ICON + "\" border=\"false\">" + STARTPAGE + "</TrayButton>\n";
+    }
+    OLD_TRAY=OLD_TRAY+"        <Pager labeled=\"true\"/>\n\
+        <TaskList maxwidth=\"256\"/>\n\
+        <Dock/>\n";
+    if(testExec("xload")){
+        OLD_TRAY +="    <Swallow name=\"xload\" width=\"64\">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>\n";
+    }
+        OLD_TRAY = OLD_TRAY + OLD_CLOCK_TAG + "\n\
+        <TrayButton label=\"" + SHUTDOWN_NAME + "\" icon=\"" + SHUTDOWN_ICON + "\" border=\"false\">" + SHUTDOWN_ROOT + "</TrayButton>\n";
+
+    //// see http://en.wikipedia.org/wiki/Table_of_keyboard_shortcuts
+// I tried to implement everything from GNOME, Windows and OSX in here
+    std::string KEYSHORTCUTS="<Key key=\"Up\">up</Key>\n\
+    <Key key=\"Down\">down</Key>\n\
+    <Key key=\"Right\">right</Key>\n\
+    <Key key=\"Left\">left</Key>\n\
+    <Key key=\"a\">left</Key>\n\
+    <Key key=\"s\">down</Key>\n\
+    <Key key=\"w\">up</Key>\n\
+    <Key key=\"d\">right</Key>\n\
+    <Key key=\"Return\">select</Key>\n\
+    <Key key=\"Escape\">escape</Key>\n\
+    <Key mask=\"A\" key=\"Tab\">next</Key>\n\
+    <Key mask=\"4\" key=\"Tab\">next</Key>\n\
+    <Key mask=\"AS\" key=\"Tab\">nextstacked</Key>\n\
+    <Key mask=\"S4\" key=\"Tab\">nextstacked</Key>\n\
+    <Key mask=\"SA\" key=\"Tab\">nextstacked</Key>\n\
+    <Key mask=\"CA\" key=\"Tab\">nextstacked</Key>\n\
+    <Key mask=\"C\" key=\"#\">desktop#</Key>\n\
+    <Key mask=\"CA\" key=\"Right\">rdesktop</Key>\n\
+    <Key mask=\"CA\" key=\"Left\">ldesktop</Key>\n\
+    <Key mask=\"CA\" key=\"Up\">udesktop</Key>\n\
+    <Key mask=\"CA\" key=\"Down\">ddesktop</Key>\n\
+    <Key mask=\"A\" key=\"space\">window</Key>\n\
+    <Key mask=\"A\" key=\"F3\">window</Key>\n\
+    <Key key=\"F11\">fullscreen</Key>\n\
+    <Key mask=\"C\" key=\"F11\">fullscreen</Key>\n\
+    <Key mask=\"CS\" key=\"f\">fullscreen</Key>\n\
+    <Key mask=\"4C\" key=\"f\">fullscreen</Key>\n\
+    <Key mask=\"A\" key=\"F12\">shade</Key>\n\
+    <Key mask=\"SC4\" key=\"Up\">maximize</Key>\n\
+    <Key mask=\"4\" key=\"L\">maximize</Key>\n\
+    <Key mask=\"A\" key=\"F10\">maximize</Key>\n\
+    <Key mask=\"4\" key=\"Down\">minimize</Key>\n\
+    <Key mask=\"4\" key=\"m\">minimize</Key>\n\
+    <Key mask=\"A\" key=\"F9\">minimize</Key>\n\
+    <Key mask=\"4\" key=\"w\">close</Key>\n\
+    <Key mask=\"A\" key=\"F4\">close</Key>\n";
+    if(JWM_ROOT_MENU.compare("")!=0){
+		KEYSHORTCUTS + "    <Key mask=\"C\" key=\"Escape\">" + ROOT_MENU + "</Key>\n";
+    }
+	if(VOL_MUTE.compare("")!=0){
+		KEYSHORTCUTS + "\n    <Key key=\"XF86AudioMute\">" + EXECjwm + VOL_MUTE + "</Key>\n";
+	}
+    if(VOL_UP.compare("")!=0){
+		KEYSHORTCUTS + "\n<Key key=\"XF86AudioRaiseVolume\">" + EXECjwm + VOL_UP + "</Key>\n";
+	}
+    if(VOL_DOWN.compare("")!=0){
+		KEYSHORTCUTS + "\n<Key key=\"XF86AudioLowerVolume\">" + EXECjwm + VOL_DOWN + "</Key>\n";
+    }
+	if(MENU_WEB_PROG.compare("")!=0){
+		KEYSHORTCUTS + "\n    <Key key=\"XF86WWW\">" + EXECjwm + MENU_WEB_PROG + "</Key>\n";
+	}
+	if(CALC_PROG.compare("")!=0){
+		KEYSHORTCUTS + "\n    <Key key=\"XF86Calculator\">" + EXECjwm + CALC_PROG + "</Key>\n";
+	}
+	if(TORIOSGAMMA.compare("")!=0){
+		KEYSHORTCUTS + "\n    <Key key=\"XF86MonBrightnessUp\">" + EXECjwm + brightUP + "</Key>\n\
+    <Key key=\"XF86MonBrightnessDown\">" + EXECjwm + brightDown + "</Key>\n";
+	}
+
+//CHECK for things to add to KEYS
+	if(SCREEN_SHOT.compare("")!=0){
+		KEYSHORTCUTS + "\n    <Key key=\"Print\">" + EXECjwm + SCREEN_SHOT + "</Key>\n\
+    <Key mask=\"CA\" key=\"p\">" + EXECjwm + SCREEN_SHOT + "</Key>\n\
+    <Key mask=\"S4\" key=\"3\">" + EXECjwm + SCREEN_SHOT + "</Key>\n";
+	}
+	if(TERM_PROG.compare("")!=0){
+		KEYSHORTCUTS + "\n    <Key mask=\"CA\" key=\"t\">" + EXECjwm + TERM_PROG + "</Key>\n";
+	}
+	if(SYS_MONITOR.compare("")!=0){
+		KEYSHORTCUTS + "\n    <Key mask=\"CS\" key=\"Escape\">" + EXECjwm + SYS_MONITOR + "</Key>\n\
+    <Key mask=\"A4\" key=\"Escape\">" + EXECjwm + SYS_MONITOR + "</Key>\n\
+    <Key mask=\"CA\" key=\"Delete\">" + EXECjwm + SYS_MONITOR + "</Key>\n\
+    <Key mask=\"C\" key=\"Escape\">" + EXECjwm + SYS_MONITOR + "</Key>\n";
+	}
+	if(HELP_PROG.compare("")!=0){
+		KEYSHORTCUTS + "\n    <Key mask=\"A\" key=\"F1\">" + EXECjwm + HELP_PROG + "</Key>\n";
+	}
+	if(RUN_DIALOG.compare("")!=0){
+		KEYSHORTCUTS + "\n    <Key mask=\"A\" key=\"F2\">" + EXECjwm + RUN_DIALOG + "</Key>\n\
+    <Key mask=\"4\" key=\"F2\">" + EXECjwm + RUN_DIALOG + "</Key>\n\
+    <Key mask=\"4\" key=\"space\">" + EXECjwm + RUN_DIALOG + "</Key>\n";
+	}
+
+    std::string NEW_KEYSHORTCUTS=KEYSHORTCUTS + "\n\
+    <Key mask=\"C4\" key=\"Up\">maxtop</Key>\n\
+    <Key mask=\"C4\" key=\"Left\">maxleft</Key>\n\
+    <Key mask=\"C4\" key=\"Right\">maxright</Key>\n\
+    <Key mask=\"C4\" key=\"Down\">maxbottom</Key>\n\
+    <Key mask=\"C4\" key=\"v\">maxv</Key>\n\
+    <Key mask=\"4S\" key=\"Up\">maxv</Key>\n\
+    <Key mask=\"C4\" key=\"h\">maxh</Key>\n\
+    <Key mask=\"4\" key=\"Right\">sendr</Key>\n\
+    <Key mask=\"4\" key=\"Left\">sendl</Key>\n\
+    <Key mask=\"4\" key=\"Up\">sendu</Key>\n\
+    <Key mask=\"4\" key=\"Down\">sendd</Key>\n\
+    <Key mask=\"SCA\" key=\"Right\">sendr</Key>\n\
+    <Key mask=\"SCA\" key=\"Left\">sendl</Key>\n\
+    <Key mask=\"SCA\" key=\"Up\">sendu</Key>\n\
+    <Key mask=\"SCA\" key=\"Down\">sendd</Key>";
+    std::string theme=getGTKtheme();
+    std::string ICONS_LIST=searchthemes(theme);
+    ICONS_LIST+=homeIcons(theme);
+    std::string MOUSE="<DoubleClickSpeed>400</DoubleClickSpeed>\n\
+	<DoubleClickDelta>2</DoubleClickDelta>";
+
+    std::string GROUPS="<Group>\n\
+		<Option>noshade</Option>\n\
+    </Group>\n\
+    <Group>\n\
+        <Class>Pidgin</Class>\n\
+        <Option>sticky</Option>\n\
+    </Group>\n\
+    <Group>\n\
+        <Name>gkrellm</Name>\n\
+        <Option>nolist</Option>\n\
+        <Option>sticky</Option>\n\
+    </Group>\n\
+    <Group>\n\
+        <Name>conky</Name>\n\
+        <Option>nolist</Option>\n\
+        <Option>sticky</Option>\n\
+    </Group>";
+
+
+	std::string WINDOW_BACKGROUND = GREY+":"+DARK_GREY;
+
+    std::string TrayStyle="    <TrayStyle>\n        <Active>\n\
+            <Foreground>"+WHITE+"</Foreground>\n\
+            <Background>"+RED+"</Background>\n\
+        </Active>\n";
+	std::string TaskListStyle="   <TaskListStyle>\n\
+        <Font>" + FONT + "</Font>\n\
+        <Active>\n\
+		<Foreground>" + WHITE + "</Foreground>\n\
+		<Background>" + RED + "</Background>\n\
+        </Active>\n\
+        <Foreground>" + WHITE + "</Foreground>\n\
+        <Background>" + GREY + "</Background>\n\
+    </TaskListStyle>\n";
+    std::string PagerStyle="		<Active>\n\
+		<Foreground>" + WHITE + "</Foreground>\n\
+		<Background>" + RED + "</Background>\n\
+        </Active>";
+    std::string TrayButtonStyle="	<TrayButtonStyle>\n\
+		<Font>" + FONT+"</Font>\n\
+        <Foreground>" +WHITE+"</Foreground>\n\
+        <Background>" + GREY+"</Background>\n\
+    </TrayButtonStyle>\n";
+    std::string MenuStyle="		<Active>\n\
+	        <Foreground>" + WHITE + "</Foreground>\n\
+			<Background>" + RED + "</Background>\n\
+        </Active>\n";
+    std::string WindowStyle= BUTTONS+"\n	<WindowStyle>\n\
+        <Corner>" + CORNER + "</Corner>\n\
+        <Active>\n\
+            <Foreground>" + WHITE + "</Foreground>\n\
+            <Background>" + WINDOW_BACKGROUND + "</Background>\n\
+            <Outline>" + GREY + "</Outline>\n\
+            <Opacity>" + OPACITY + "</Opacity>\n\
+        </Active>\n\
+		<Foreground>" + LIGHT_GREY + "</Foreground>\n\
+		<Background>" + BLACK + "</Background>\n";
+    std::string  KeysToUse=NEW_KEYSHORTCUTS;
+	std::string TrayToUse=TRAY;
+    std::string MenusToUse=MENUS_LIST_NEW;
+	if (version<230){
+		WindowStyle="<WindowStyle>\n\
+		<Active>\n\
+            <Text>" + WHITE + "</Text>\n\
+            <Title>" + WINDOW_BACKGROUND + "</Title>\n\
+            <Outline>" + GREY + "</Outline>\n\
+            <Opacity>" + OPACITY + "</Opacity>\n\
+        </Active>\n\
+	<Text>" + LIGHT_GREY + "</Text>\n\
+	<Title>" + BLACK + "</Title>\n";
+		PagerStyle="		<Text>" + WHITE + "</Text>\n\
+        <ActiveForeground>" + WHITE + "</ActiveForeground>\n\
+        <ActiveBackground>" + RED + "</ActiveBackground>";
+	  MenuStyle="<ActiveBackground>"+RED+"</ActiveBackground>";
+	  addy="<!--less than 230-->\n";
+	  addy+=TaskListStyle;
+	  addy+=TrayButtonStyle;
+	  KeysToUse=KEYSHORTCUTS;
+	  MenusToUse=MENUS_LIST;
+	  TrayToUse=OLD_TRAY;
+	  TrayStyle="    <TrayStyle>\n";
+	}
+	else if( version==232){addy="<!-- 232-->\n";}
+	else if(version>=232){
+	  TrayStyle="    <TrayStyle group=\"true\">\n        <Active>\n\
+            <Foreground>"+WHITE+"</Foreground>\n\
+            <Background>"+RED+"</Background>\n\
+        </Active>\n";
+
+	}
+	else{addy="<!-- 230 or 231 -->\n";}
+
+	std::string JWMRCoutput="<?xml version=\"1.0\"?>\n\
+<JWM>\n\
+<!-- MENUS -->\n\
+<!-- Main Menu -->\n\
+   " +MenusToUse+"	<RootMenu onroot=\"1\"/>\n\
+	<!-- Mouse Menu-->\n\
+	"+ MOUSE_MENU+ "\n\
+    <!--Shudown Menu-->\n\
+	<RootMenu height=\"0\" onroot=\"9\">\n\
+       " + SHUTERDOWN+ "\n\
+	</RootMenu>\n\
+<!-- END MENUS -->\n\
+<!-- GROUP -->\n\
+	" + GROUPS+ "\n\
+<!-- PANEL -->\n\
+	" + TrayToUse+ "\n\
+<!-- Panel Style -->\n"
++TrayStyle+"		<Font>" + FONT + "</Font>\n\
+		<Foreground>" + WHITE + "</Foreground>\n\
+        <Background>" + GREY + "</Background>\n\
+        <Opacity>" + OPACITY + "</Opacity>\n\
+	</TrayStyle>\n\
+    <PagerStyle>\n" + PagerStyle+ "\n\
+        <Text>" + WHITE + "</Text>\n\
+        <Outline>" + BLACK + "</Outline>\n\
+        <Foreground>" + LIGHT_GREY + "</Foreground>\n\
+        <Background>" + GREY + "</Background>\n\
+    </PagerStyle>\n\
+    <MenuStyle>\n\
+        <Font>" + FONT + "</Font>\n"
+        +MenuStyle+
+"		<Foreground>" + WHITE + "</Foreground>\n\
+        <Background>" + GREY + "</Background>\n\
+        <Opacity>" + OPACITY + "</Opacity>\n\
+    </MenuStyle>\n\
+<!-- WINDOW -->\n	"
++WindowStyle+
+"		<Font>" + FONT + "</Font>\n\
+		<Width>4</Width>\n\
+		<Height>" + W_HEIGHT + "</Height>\n\
+		<Outline>" + BLACK + "</Outline>\n\
+		<Opacity>" + OPACITY + "</Opacity>\n\
+    </WindowStyle>\n\
+    <FocusModel>click</FocusModel>\n\
+    <SnapMode distance=\"10\">border</SnapMode>\n\
+    <MoveMode>opaque</MoveMode>\n\
+    <ResizeMode>opaque</ResizeMode>\n\
+<!-- KEYSHORTCUTS -->\n\
+	"+ KeysToUse + "\n\
+<!-- MOUSE -->\n\
+	" + MOUSE+ "\n\
+<!-- ICONS -->\n\
+   " + ICONS_LIST+ "\n\
+<!-- DESKTOP -->\n\
+    <Desktops width=\"2\" height=\"1\">\n";
+if(BG.compare("")!=0){
+    JWMRCoutput=JWMRCoutput+"        <Background type=\"image\">" + BG + "</Background>\n";
+}
+else{
+    JWMRCoutput=JWMRCoutput+"        <Background type=\"solid\">" + BLACK + "</Background>\n";
+    }
+JWMRCoutput=JWMRCoutput+"    </Desktops>\n\
+<!-- AUTOSTART -->\n\
+	" + STARTUP+ "\n\
+<!--POP UP -->\n\
+    <PopupStyle>\n\
+        <Font>" + FONT + "</Font>\n\
+        <Outline>" + BLACK + "</Outline>\n\
+        <Foreground>" + WHITE + "</Foreground>\n\
+        <Background>" + GREY + "</Background>\n\
+    </PopupStyle>\n\
+</JWM>";
+	return JWMRCoutput;
+}
+std::string Config::getFileName(std::string filename){
+	std::string fileNAME;
+	const char* home=getenv("HOME");
+	if(home !=NULL){
+		fileNAME=home;
+		fileNAME+="/";
+		if(filename.compare("")!=0){fileNAME+=filename;}
+		else{fileNAME+=".jwmrc";}
+	}
+	else{fileNAME="/tmp/jwmrc";}
+	return fileNAME;
 }
 int Config::recover(){
-    //defaultFilePath = "/usr/share/jwm-settings-manager/themes/2.3.0/Default/Default";
-    //defaultOLDFilePath ="/usr/share/jwm-settings-manager/themes/old/Default/Default";
-    //const char* defaultFilePath232 = "/usr/share/jwm-settings-manager/themes/Default/Default";
-    //TODO: rework to use ifstream
-    std::string pathToJWMRC = homePath();
-    std::string tempFile= homePathTemp();
-    std::string recoveryCommand = "cp -f ";
-    if (newStyle() == -1){
-        recoveryCommand += defaultOLDFilePath;
-    }
-    else if (newStyle() == 0){
-        recoveryCommand+=defaultFilePath230;
-    }
-    else if(newStyle() == 1){
-        recoveryCommand+=defaultFilePath;
-    }
-    else{
-        errorJWM("Your version of JWM is incompatible");
-        return 1;
-    }
-    recoveryCommand += " ";
-    recoveryCommand += pathToJWMRC;
-    if(system(recoveryCommand.c_str())!=0){
-        std::cerr<<recoveryCommand<<" did not go well..."<<std::endl;
-        std::string errorMSG = "Running: ";
-        errorMSG += recoveryCommand;
-        errorMSG += "failed, The Default file could not be found. Please reinstall.";
-        errorJWM(errorMSG);
-    }
-    else{
-        std::cout<<"jwmrc should be recovered now"<<std::endl;
-        load();
-        saveChangesTemp();
-        if(std::system("jwm -restart")!=0){
-            errorJWM("Error restarting JWM");
-        }
-        else{return 0;}
-    }
-    return 1;
+    std::string PATH = getFileName(".jwmrc~");
+    std::string jwmRC=getFileName(".jwmrc");
+	std::string contents=jwmrcOUT();
+	write_out(contents,jwmRC);
+	write_out(contents,PATH);
+	return jwmVersion();
 }
-
 int Config::checkFiles(){
+    #ifdef DEBUG_TRACK
+    std::cerr<<"int Config::checkFiles()"<<std::endl;
+    #endif // DEBUG
     std::string fileName = homePath();
     std::string fileName2 = homePathTemp();
     if(!testFile(fileName2.c_str())){
         if(testFile(fileName.c_str())){
             load();
             saveChangesTemp();
+            testedFILE=true;
             return 0;
         }
-        recover();
+        else{recover();testedFILE=true;}
         return 12;
     }
+    if(!testedFILE){
     doc.LoadFile(fileName.c_str() );
     if (doc.ErrorID() !=0){
         errorJWM(jwmrc+" was not loaded properly...");
@@ -324,6 +1043,8 @@ int Config::checkFiles(){
             }
         }
     }
+    }
+    testedFILE=true;
     return 0;
 }
 
@@ -336,7 +1057,6 @@ void Config::saveJWMRC(Fl_Double_Window *o){
     saveChangesTemp();
     o->hide();
 }
-
 void Config::saveJWMRC(){
     doc.LoadFile( homePathTemp().c_str() );
     if (doc.ErrorID() !=0){
@@ -359,42 +1079,61 @@ void Config::saveChanges(){
         std::cerr<<"couldn't restart JWM"<<std::endl;
     }
 }
+void Config::saveNoRestart(){
+    //if(DEBUG_ME)
+    loadTemp();
+    std::cout<<"both Files saved no restart JWM"<<std::endl;
+    saveChangesTemp();
+    doc.SaveFile( homePath().c_str() );
+}
 void Config::saveChangesTemp(){
-    const char* filename = homePathTemp().c_str();
+    std::string hp = homePathTemp();
+    const char* filename = hp.c_str();
     if(filename==NULL){errorJWM("MISSING temporary filename"); return;}
-    if(DEBUG_ME)std::cout<<"saving Temporary jwmrc file to: "<<filename<<std::endl;
+    //if(DEBUG_ME)
+    std::cout<<"saving Temporary jwmrc file to: "<<filename<<std::endl;
     doc.SaveFile( filename );
     //std::cout<<"Temporary File saved\n";
     if(std::system("jwm -p")!=0){
         std::cerr<<"Error checking JWM... please run jwm -p again"<<std::endl;
     }
 }
-
 int Config::loadTemp(){
-    const char* fileName = homePathTemp().c_str();
-    if(fileName==NULL){errorJWM("jwmrc file does not exist");return -1;}
+    std::string fileName = homePathTemp();
+    if(fileName.compare("")==0){errorJWM("jwmrc file does not exist");return -1;}
     if(DEBUG_ME)std::cout<<"Config::loadTemp()->Loading: "<<fileName<<std::endl;
-    doc.LoadFile( fileName);
+    doc.LoadFile( fileName.c_str());
     if (doc.ErrorID() !=0){
-        if(DEBUG_ME)std::cerr<<"The file: "<< fileName<<" was not found.  Trying to fix it now"<<std::endl;
-        errorJWM("[Function] Config::loadTemp()");
-        load();saveChangesTemp();
+        if(!testFile(fileName.c_str())){
+            if(DEBUG_ME)std::cerr<<"The file: "<< fileName<<" was not found.  Trying to fix it now"<<std::endl;
+            if(DEBUG_ME)errorJWM("[Function] Config::loadTemp()");
+            load();saveChangesTemp();
+        }
         return doc.ErrorID();
     }
     return 0;
 }
-
 int Config::load(){
-    const char* fileName = homePath().c_str();
-    if(fileName==NULL){errorJWM("jwmrc file does not exist");return -1;}
+    std::string fileName = homePath();
+    if(fileName.compare("")==0){errorJWM("jwmrc file does not exist");return -1;}
     if(DEBUG_ME)std::cout<<"Config::load()->Loading: "<<fileName<<std::endl;
-    doc.LoadFile( fileName);
+    doc.LoadFile(fileName.c_str());
     if (doc.ErrorID() !=0){
-        if(DEBUG_ME)std::cerr<<"The file: "<< fileName<<" was not found.  Trying to fix it now"<<std::endl;
-        errorJWM("[Function] Config::load()");
-        if(recover()==0)
-        {load();saveChanges();}
-        else{std::cerr<<"An error occured loading "<<jwmrc<<std::endl;}
+        if(!testFile(fileName.c_str())){
+            if(DEBUG_ME)std::cerr<<"The file: "<< fileName<<" was not found.  Trying to fix it now"<<std::endl;
+            if(DEBUG_ME)errorJWM("[Function] Config::load()");
+            if(recover()==0){load();saveChanges();}
+            else{
+                std::cerr<<"An error occured loading "<<jwmrc<<" ErrorID: "<<doc.ErrorID()<<std::endl;
+                return doc.ErrorID();
+            }
+        }
+        else{return doc.ErrorID();}
+    }
+    else{
+    #ifdef DEBUG_TRACK
+    std::cerr<<"document loaded!"<<std::endl;
+    #endif // DEBUG
     }
     return 0;
 }
@@ -413,19 +1152,19 @@ void Config::cancel(Fl_Double_Window *o){
 }
 //End LOADING/SAVING
 
-
 /// JSM <></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></><></>
 void Config::saveJSM(){
     //std::cout<<"File saved\n";
     jsm.SaveFile(jsmPath().c_str());
 }
-
 int Config::loadJSM(){
     std::string fileName = jsmPath();
     jsm.LoadFile( fileName.c_str() );
     if (jsm.ErrorID() !=0){
-        std::cerr<<"An error occured loading: "<< fileName<<std::endl;
-        if(recoverJSM()==0){return 0;}
+        if(!testFile(fileName.c_str())){
+            std::cerr<<"An error occured loading: "<< fileName<<std::endl;
+            if(recoverJSM()==0){return 0;}
+        }
     }
     return jsm.ErrorID();
 }
@@ -456,7 +1195,6 @@ void Config::recoverJSM(int panel){
 <debug>false</debug>\n\
 <ext>"<<"svg"<<"</ext>";
 }
-
 const char* Config::getJSMelement(const char* element){
     loadJSM();
     if(!jsm.FirstChildElement(element)){recoverJSM(1);}
@@ -489,14 +1227,9 @@ std::string Config::jsmPath(){
 	else{errorJWM("ERROR not valid path"); return "HomePath Error 2\n";}
 }
 
-
 //End JSM <></><></><></><></><></><></><></>
 
-
-
-
 ///ENVIROMENT VARIABLES //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 /// $HOME ~/~/~/~/
 
@@ -505,14 +1238,13 @@ std::string Config::homePathTemp(){
     const char* home_env_var=getenv("HOME");
     if (home_env_var!=NULL){
         std::string fileName = home_env_var;
-        fileName += "/jwmrc~";
-        if(DEBUG_ME)std::cout<<fileName<<std::endl;
+        fileName += "/.jwmrc~";
+        if(DEBUG_ME)std::cout<<"std::string Config::homePathTemp()="<<fileName<<std::endl;
         return fileName;
 	}
-	else{errorJWM("ERROR not valid path"); return "HomePath Error 1\n";}
+	else{errorJWM("ERROR not valid path"); return "HomePathTemp Error";}
 	return "~/.jwmrc";
 }
-
 std::string Config::homePath(){
 //this returns $HOME/.jwmrc
     const char* home_env_var=getenv ("HOME");
@@ -522,7 +1254,7 @@ std::string Config::homePath(){
         //std::cout<<"Here is the Path: "<<fileName<<std::endl;//DEBUG
         return fileName;
 	}
-	else{errorJWM("ERROR not valid path"); return "HomePath Error 2\n";}
+	else{errorJWM("ERROR not valid path"); return "HomePath Error";}
 }
 std::string Config::homePathNoFile(){
 //this returns $HOME/
@@ -531,11 +1263,9 @@ std::string Config::homePathNoFile(){
         fileName += "/";
         return fileName;
 	}
-	else{errorJWM("ERROR not valid path"); return "HomePath Error 3\n";}
+	else{errorJWM("ERROR not valid path"); return "HomePath NO FILE Error 3";}
 }
-
 //End $HOME ~/~/~/
-
 
                     /// $PATH /:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:/:
 
@@ -584,7 +1314,6 @@ std::string Config::convert(int num){
     number = out.str();
     return number;
 }
-
 const char* Config::convert(double num){
     std::string number;
     std::stringstream out;
@@ -614,64 +1343,55 @@ std::string Config::fixName(const char* filename){
 
 //End Utility
 
-
-
-
 /// Autostart ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Config::addAutostart(std::string program){
     loadTemp();
     ///Check to see if it is already there...
     if(isAutostart(program)){return;}
-    bool tester = false;
+    //bool tester = false;
     //base XML element
-    tinyxml2::XMLNode *trayNode = doc.FirstChildElement( "JWM" );
-
+    tinyxml2::XMLNode *baseNODE = doc.FirstChildElement( "JWM" );
+    tinyxml2::XMLNode *node = doc.NewElement("StartupCommand");
     //Base startup Node
     //does it even exist???
     tinyxml2::XMLNode *startNode = doc.FirstChildElement( "JWM" );
     if(isElement("StartupCommand")){
         startNode = startNode->LastChildElement("StartupCommand");
-        //Are there some nodes?
-        for(tinyxml2::XMLElement* testNode=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");
-        testNode;
-        testNode=testNode->NextSiblingElement("StartupCommand")){
-
-                tester=true;
-        }
+        baseNODE->InsertAfterChild(startNode,node);
     }
-    tinyxml2::XMLNode *node = doc.NewElement("StartupCommand");
-    //if startup nodes exist add after them
-    if(tester){trayNode->InsertAfterChild(startNode,node);}
-    //otherwise just add at the end
-    else{trayNode->InsertEndChild(node);}
+    else{baseNODE->InsertEndChild(node);}
     //add the text to our new node
     tinyxml2::XMLText *startup = doc.NewText(program.c_str());
     node->LinkEndChild(startup);
 
     ///These are used to check for running instances
     //use the pidof command to check if the program is running
-    std::string PID = "pidof ";
+    std::string PID = "pgrep ";
     int sys = 0;
+    std::string baseprogram = program;
+    unsigned int found_space=baseprogram.find_first_of(' ');
+    if(found_space<baseprogram.length()){
+        baseprogram=baseprogram.erase(found_space,std::string::npos);
+    }
     ///Check if the program is running.  If not start it!
-    PID += program;
+    PID += baseprogram;
+    //if(DEBUG_ME)
     std::cout<<PID<<std::endl;
     std::string pidOF = returnTerminalOutput(PID,"r");
-        if(pidOF.compare("")==0){
-            if(DEBUG_ME){
-            std::cerr<<program<<" is not running"<<std::endl;
-            }
-            sys= run(program.c_str());
-            if (sys !=0){
-                std::string errorMSG = gettext("system call for ");
-                errorMSG +=program;
-                errorMSG +=gettext(" did not return 0");
-                errorJWM(errorMSG);
-            }
+
+
+
+    if(pidOF.compare("")==0){
+        if(DEBUG_ME)std::cerr<<baseprogram<<" is not running"<<std::endl;
+        sys= run(program.c_str());
+        if (sys !=0){
+            std::string errorMSG = gettext("system call did not return 0 for ");
+            errorMSG +=program;
+            errorJWM(errorMSG);
         }
-        if(DEBUG_ME){
-        std::cerr<<"added autostart"<<std::endl;
-        }
+    }
+    if(DEBUG_ME)std::cerr<<"added autostart"<<std::endl;
     saveChangesTemp();
 }
 bool Config::isAutostart(std::string program){
@@ -682,27 +1402,30 @@ bool Config::isAutostart(std::string program){
     for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");node;node=node->NextSiblingElement("StartupCommand")){
         std::string fromDoc = node->GetText();
         const char* value  = fromDoc.c_str();
+        if(DEBUG_ME)std::cout<<"isAutostart "<<value<<":"<<autostart<<std::endl;
         if(autostart.compare(value) ==0){return true;}
     }
     return false;
 }
-
 void Config::removeAutostart(std::string program){
     loadTemp();
     if(!isElement("StartupCommand")){return;}
+    tinyxml2::XMLNode* baseNODE=doc.FirstChildElement("JWM");
+    tinyxml2::XMLNode* deleter;
     for(tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");node;node=node->NextSiblingElement("StartupCommand")){
-        std::string fromDoc = node->GetText();
-        //std::string pkill ="pkill ";
-        ///TODO: test exec to kill process?
-        const char* value  = fromDoc.c_str();
-        std::string fromProgram = program;
-        if(fromProgram.compare(value) ==0){
-            node->DeleteChild(node);
-            //std::cout<<"deleted "<<program<<std::endl;
-            //testExec(value)
-            //if (system(pkill.c_str())!=0){
-              //  std::cout<<"Couldn't run "<<pkill<<std::endl;
-            //}
+        if(node->GetText()){
+            std::string fromDoc = node->GetText();
+            std::cout<<fromDoc<<":"<<program<<std::endl;
+            ///TODO: test exec to kill process?
+            //const char* value  = fromDoc.c_str();
+            //std::string fromProgram = program;
+            deleter=node;
+            if(program.compare(fromDoc) ==0){
+                baseNODE->DeleteChild(deleter);
+                if(DEBUG_ME)std::cout<<"deleted "<<program<<std::endl;
+                saveChangesTemp();
+                return;
+            }
         }
     }
     saveChangesTemp();
@@ -712,6 +1435,9 @@ void Config::removeAutostart(std::string program){
 /// Color Functions //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned int Config::getColor(std::string color, unsigned int &color2){
+#ifdef DEBUG_TRACK
+    std::cerr<<"unsigned int Config::getColor("<<color<<","<<color2<<")--->"<<std::endl;
+#endif // DEBUG
     const char* input =color.c_str();
     std::string c1, c2;
 	unsigned int flColor;
@@ -757,43 +1483,35 @@ std::string Config::colorToString(const double *rgb){
     //std::cout<<tmp<<"\n tmp\n";
     return tmp;
 }
-
-
 bool Config::testElement(tinyxml2::XMLElement* element){
     loadTemp();
     if(element){return true;}
     return false;
 }
 bool Config::testElement(const char* whichElement){
+    loadTemp();
     if(!doc.FirstChildElement( "JWM" )){return false;}
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
-    if (!element->FirstChildElement( whichElement )){return false;}
-    else{return true;}
+    if (element->FirstChildElement( whichElement )){return true;}
     return false;
 
 }
 bool Config::testElement(const char* whichElement, const char* whichSubElement){
-    if(!doc.FirstChildElement( "JWM" )){return false;}
+    loadTemp();
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
-    if (!element->FirstChildElement( whichElement )){return false;}
-    else{
-        if (!element->FirstChildElement( whichElement )->FirstChildElement( whichSubElement )){return false;}
-        else{return true;}
+    if (element->FirstChildElement( whichElement )){
+        if (element->FirstChildElement( whichElement )->FirstChildElement( whichSubElement )){return true;}
     }
     return false;
 }
 bool Config::testElement(const char* whichElement,const char* whichSubElement, const char* whichSUBsubElement){
-    if(!doc.FirstChildElement( "JWM" )){return false;}
+    loadTemp();
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
-    if (!element->FirstChildElement( whichElement )){return false;}
-    else{
-        if (!element->FirstChildElement( whichElement )->FirstChildElement( whichSubElement )){return false;}
-        else{
-            if (!element->FirstChildElement( whichElement )->FirstChildElement( whichSubElement )->FirstChildElement( whichSUBsubElement ) ){return false;}
-            else{return true;}
+    if (element->FirstChildElement( whichElement )){
+        if (element->FirstChildElement( whichElement )->FirstChildElement( whichSubElement )){
+            if (element->FirstChildElement( whichElement )->FirstChildElement( whichSubElement )->FirstChildElement( whichSUBsubElement ) ){return true;}
         }
     }
-    //probably it should never get here.... but return false by default anyhow.
     return false;
 }
 std::string Config::xColor(const char *colorName){
@@ -912,7 +1630,7 @@ std::string Config::getLabelMenu(const char* menu){
     }
     return labelString;
 }
- std::string Config::getImageMenu(const char* menu){
+std::string Config::getImageMenu(const char* menu){
     loadTemp();
     int i = 1;
 
@@ -958,7 +1676,6 @@ std::string Config::getLabelMenu(const char* menu){
     }
     return "";
  }
-
 bool Config::comparedColon(const char* something, const char* text){
     std::string stringText = text;
     unsigned found = stringText.find_first_of(":");
@@ -1005,7 +1722,7 @@ void Config::trayButtonAttribute(const char* text,const char* attribute,const ch
                         if (docText.compare(text)==0){
                             if(DEBUG_ME)std::cout<<"Attribute: "<<attribute<<" set to:"<<attributeValue<<std::endl;
                             panelElement->SetAttribute(attribute,attributeValue);
-                            saveChanges();///TODO figure out why saveChangesTemp doesn't work here
+                            saveChanges();
                             saveChangesTemp();
                             return;
                         }
@@ -1280,9 +1997,6 @@ void Config::createPanel(){
     //update the .jsm file
     updatePanels(1);
 }
-
-
-
 const char* Config::getAttribute(const char* attribute, unsigned int panel){
     loadTemp();
     int numOFpanels = numPanels();
@@ -1311,7 +2025,6 @@ const char* Config::getAttribute(const char* attribute, unsigned int panel){
     }
     return result;
 }
-
 //simply check if there are multiple panels
 bool Config::multipanel(){
     loadTemp();
@@ -1368,7 +2081,6 @@ const char* Config::checkLayout(){
     int layout = currentPanel();
     return checkLayout(layout);
 }
-
 const char* Config::checkLayout(unsigned int panel){
     loadTemp();
     int numOFpanels = numPanels();
@@ -1391,7 +2103,6 @@ const char* Config::checkLayout(unsigned int panel){
     const char* layout = tray->Attribute("layout");
     return layout;
 }
-
 const char* Config::getPanelLayout(){
     int layout = currentPanel();
     return getPanelLayout(layout);
@@ -1436,7 +2147,6 @@ const char* Config::getPanelLayout(unsigned int panel){
     errorJWM(error);
     return error;
 }
-
 //End MultiPanels
 
 
@@ -1448,14 +2158,14 @@ bool Config::testExec(const char* exec){
     std::string stringEXEC = exec;
  /// my cheat sheet
  // /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
-    std:: string testPATH, testExec;
+    std:: string testPATH, testEXEC;
     for (int i = 1; i <= numPATHS; i++){
 		stringEXEC = exec;
 		//std::cout<<"exec: "<<exec<<std::endl;
         testPATH = thisPATH(i);
         stringEXEC = testPATH + "/" + stringEXEC;
-        testExec = stringEXEC.c_str();
-        if (stat(testExec.c_str(), &sb) == 0){return true;}//else{std::cerr<<"Couldn't find "<<exec<<"\n";}
+        testEXEC = stringEXEC.c_str();
+        if (stat(testEXEC.c_str(), &sb) == 0){return true;}//else{std::cerr<<"Couldn't find "<<exec<<"\n";}
     }
     return false;
 }
@@ -1617,9 +2327,9 @@ const char* Config::grep(const char* args, const char* filename){
     std::ifstream inputFileStrem (filename, std::ifstream::in);
     if(inputFileStrem.is_open()){
         while (getline(inputFileStrem,line)){
-            subString=line.substr(0,lengthofARGS);
-            if(subString == args){
-                 if(DEBUG_ME){
+            unsigned int found =line.find(args);
+            if(found<line.length()){
+                if(DEBUG_ME){
                 std::cerr<<"grepped "<<args<<" from: "<<filename<<" returning: "<<line<<std::endl;
                 }
                 return line.c_str();
@@ -1634,26 +2344,56 @@ const char* Config::grep(const char* args, const char* filename){
     }
     return "";
 }
+std::string Config::grep(const char* args, std::string filename){
+    std::string line;
+    std::string subString;
+    std::ifstream inputFileStrem (filename.c_str(), std::ifstream::in);
+    if(inputFileStrem.is_open()){
+        while (getline(inputFileStrem,line)){
+            unsigned int found =line.find(args);
+            if(found<line.length()){
+                if(DEBUG_ME){
+                std::cerr<<"grepped "<<args<<" from: "<<filename<<" returning: "<<line<<std::endl;
+                }
+                return line.c_str();
+            }
+        }
+    }
+    return "";
+}
 ///Array for grep
 std::vector<std::string> Config::egrep(const char* args, const char* filename){
     std::vector<std::string> result;
     std::string line;
-    std::string length = args;
-    int len = length.length();
-    int i = 0; //iterator
+    std::string stringARGS = args;
     std::string sub;
     std::ifstream ifs (filename, std::ifstream::in);
     if(ifs.is_open()){
         while (getline(ifs,line)){
-            i++;
-            sub=line.substr(0,len);
-            if(sub == args){
-               // std::cout<<args<<" "<<sub<<std::endl;
-                result[i]=line;
+            if(line.find(stringARGS)<line.length()){
+                result.push_back(line);
             }
         }
     }
     return result;
+}
+std::string Config::term_out(std::string terminal_Command_You_Want_Output_From) {
+  std::string result="";
+  const int max_buffer = 1024;
+  char buffer[max_buffer];
+  FILE *command_p = popen(terminal_Command_You_Want_Output_From.c_str(), "r");
+  if (command_p){
+    while(!feof(command_p)){
+      if( fgets(buffer, sizeof(buffer), command_p) !=NULL){
+        result.append(buffer);
+      }
+    }
+    pclose(command_p);
+  }
+  else{ return "<!--[returnTerminalOutput] Error from command run-->";}
+  int end = result.length();
+  if((end-1) == 0){return "";}
+  return result.erase(end-1,end);
 }
 std::string Config::returnTerminalOutput(std::string terminal_Command_You_Want_Output_From, const char* type){
     std::string result="";
@@ -1801,7 +2541,8 @@ void Config::createElement(const char* whichMainElement, const char* whichElemen
     tinyxml2::XMLElement* element = doc.FirstChildElement( "JWM" );
     //make sure whichMainElement exists before we go further
     if (!element->FirstChildElement(whichMainElement)){
-        createElement(whichMainElement);
+      tinyxml2::XMLNode *node = doc.NewElement(whichMainElement);
+    element->InsertEndChild(node);
     }
     //make it!
     element = doc.FirstChildElement( "JWM" )->FirstChildElement(whichMainElement);
@@ -1849,7 +2590,6 @@ void Config::createElement(const char* whichMainElement, const char* whichSubEle
     saveChangesTemp();
     saveChanges();
 }
-
 bool Config::isElement(const char* whichElement){
     if(whichElement==NULL){return false;}
     loadTemp();
@@ -1869,7 +2609,6 @@ bool Config::isElement(const char* whichElement, const char* whichSUBElement){
     }
     return false;
 }
-
 bool Config::isElementText(const char* whichElement, std::string textTOcompare){
     if(whichElement==NULL){return false;}
     loadTemp();
@@ -1887,7 +2626,6 @@ bool Config::isElementText(const char* whichElement, std::string textTOcompare){
     //if it never gets to return true then we always return false
     return false;
 }
-
 int Config::getIntAttribute(const char* whichElement,const char* attribute){
     if(whichElement==NULL){return 0;}
     if(attribute==NULL){return 0;}
@@ -1900,7 +2638,6 @@ int Config::getIntAttribute(const char* whichElement,const char* attribute){
     int value = strtoul(result,0,10);
     return value;
 }
-
 const char* Config::getElementAttribute(const char* whichElement,const char* attribute){
     if(whichElement==NULL){return "";}
     if(attribute==NULL){return "";}
@@ -1921,7 +2658,6 @@ const char* Config::getElementAttribute(const char* whichElement,const char* whi
     element=element->FirstChildElement(whichSubElement);
     return element->Attribute(attribute);
 }
-
 unsigned int Config::getELEMENTColor(const char* whichStyle, const char* ActiveORinactive, unsigned int &color2, const char* FGorBG){
     if(whichStyle==NULL){return 0;}
     if(ActiveORinactive==NULL){return 0;}
@@ -1935,7 +2671,7 @@ unsigned int Config::getELEMENTColor(const char* whichStyle, const char* ActiveO
     }
     colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( whichStyle );
     std::string style = whichStyle;
-    if(isNewStyle !=-1){
+    if(newStyle() !=-1){
         std::string check = ActiveORinactive;
         if (check.compare("Active")==0){
             //Active so we have 3 deep we need to check for existence more
@@ -1966,7 +2702,6 @@ unsigned int Config::getELEMENTColor(const char* whichStyle, const char* ActiveO
     bg = getColor(colour, color2);
     return bg;
 }
-
 unsigned int Config::getFGColor(const char* whichStyle, const char* ActiveORinactive, unsigned int &color2){
     return getELEMENTColor(whichStyle, ActiveORinactive, color2, "Foreground");
 }
@@ -1979,7 +2714,7 @@ void Config::setELEMENTColor(const char* whichStyle, const char* ActiveORinactiv
     }
     colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( whichStyle );
     std::string style = whichStyle;
-    if(isNewStyle !=-1){
+    if(newStyle() !=-1){
         std::string check = ActiveORinactive;
         if (check.compare("Active")==0){
             //Active so we have 3 deep we need to check for existence more
@@ -2011,11 +2746,9 @@ void Config::setELEMENTColor(const char* whichStyle, const char* ActiveORinactiv
     colorElement->SetText(color1.c_str());
     saveChangesTemp();
 }
-
 void Config::setFGColor(const char* whichStyle, const char* ActiveORinactive, const double* rgb){
     setELEMENTColor(whichStyle, ActiveORinactive, rgb, "Foreground");
 }
-
 std::string Config::desktopFILE(){
     const char * f = "/usr/share/applications";
     const char * m="Choose a program";
@@ -2060,6 +2793,9 @@ std::string Config::desktopExec(std::string filename){
     return EXEC;
 }
 char* Config::Get_Fl_Icon(const char** pIcon){
+    if(DEBUG_ME){
+        std::cerr<<"char* Config::Get_Fl_Icon(const char** "<<pIcon<<")"<<std::endl;
+    }
     /* Set icon for Linux:
      * This function must be initialised once by assigning an icon with parameter pIcon.
      * For sequential setting of icon to subwindows, this function can be called several
@@ -2088,11 +2824,405 @@ void Config::setDebug(){
     freopen( filename.c_str(), "w", stderr );
     setJSMelement("debug","true");
 }
-void Config::setDebugOff(){
-    setJSMelement("debug","false");
-}
+void Config::setDebugOff(){setJSMelement("debug","false");}
 bool Config::isDebug(){
     std::string debugger= getJSMelement("debug");
     if(debugger.compare("true")==0){return true;}
     return false;
+}
+
+
+///ICON FUNCTIONS
+bool Config::writeToFile(std::string fileContents){
+	const char* home = getenv("HOME");
+	if(home==NULL){return false;}
+	std::string HOME=home;
+	std::string JWM_FILE=HOME + "/.jwmrc";
+	std::string JWM_FILE_BACKUP=HOME + "/.jwmrc~";
+	std::string line,result;
+	std::vector<std::string> VectorBuff;
+	const char* FILENAME =JWM_FILE.c_str();
+	const char* FILENAME2 =JWM_FILE_BACKUP.c_str();
+	std::ifstream inputFileStrem (FILENAME, std::ifstream::in);
+	if(inputFileStrem.is_open()){
+		while (getline(inputFileStrem,line)){
+			if((line.find("<IconPath>")== std::string::npos)&&(line.find("</JWM>")== std::string::npos)){
+				VectorBuff.push_back(line);
+				result+=line+"\n";
+			}
+		}
+	}
+	std::ofstream outputFileStream(FILENAME, std::ios::out);
+    outputFileStream<<result<<fileContents<<"\n</JWM>"<<std::endl;
+    std::ofstream outputFileStreamBAK(FILENAME2, std::ios::out);
+    outputFileStreamBAK<<result<<fileContents<<"\n</JWM>"<<std::endl;
+    return true;
+}
+bool Config::isDir(std::string FullPathToDir){
+	if(DEBUG_ME)errorJWM(FullPathToDir);
+	if(FullPathToDir.compare("")==0){return false;}
+	DIR *dir = NULL;
+	dir = opendir(FullPathToDir.c_str());
+	if(dir!=NULL){closedir(dir);return true;}
+	closedir(dir);
+	return false;
+}
+std::string Config::homeIcons(std::string THEME_TO_USE){
+	const char* home = getenv("HOME");
+	if(home==NULL){std::cerr<<"HOME variable is not set"<<std::endl;return "";}
+	std::string HOME=home;
+	std::string HOME_THEME_DIR=HOME + "/.icons";
+	std::string USER_ICONS;
+	if (isDir(HOME_THEME_DIR)){USER_ICONS=getUserIcons(HOME_THEME_DIR);}
+	std::string LOCALICONS=HOME+"/.local/share/icons/";
+	if (isDir(LOCALICONS)){USER_ICONS+=getUserIcons(LOCALICONS);}
+
+	std::string BASE_THEME_DIR="\n\t<IconPath>/usr/share/pixmaps</IconPath>\n\
+\t<IconPath>/usr/share/icons</IconPath>\n\
+\t<IconPath>/usr/share/app-install/icons</IconPath>";
+	return BASE_THEME_DIR+USER_ICONS;
+}
+std::string Config::searchthemes(std::string THEME_TO_INHERIT){
+	unsigned int SIZE_TO_USE=24;
+	std::string HEADER,INHERITS,DIRS,MIN,MAX,SIZE,TYPE,THRESH,CONTEXT,ICON_PATH,THEME_DIR,THEME_TO_USE,ThemeFile,tempStr,tempPathString,INHERIT_ICON_WRITE,tempInherits;
+	std::vector<std::string> THEME_DIR_XDG=iconThemeDirectories();
+	std::vector<std::string> filesInDir;
+	std::vector<std::string> INHERIT_ARRAY,ICONDIR_ARRAY;
+   	for( std::vector<std::string>::iterator it = THEME_DIR_XDG.begin();
+		it!=THEME_DIR_XDG.end();
+		++it){
+
+		THEME_DIR=*it;
+		//unsigned int found = directory.find_last_of('/');
+		//if (found != directory.length()-1){directory+="/";}
+		THEME_DIR=THEME_DIR+THEME_TO_INHERIT;
+		if(isDir(THEME_DIR)){
+			filesInDir=GetThemeFiles(THEME_DIR);
+			for(std::vector<std::string>::iterator iter = filesInDir.begin();
+			iter!=filesInDir.end();
+			++iter){
+				unsigned int thresh,size,min,max;
+				ThemeFile=*iter;
+				//echo("Searching"+THEME_DIR+" Theme File:"+ThemeFile);
+				std::string line;
+				std::string subString;
+				//reset variables
+				HEADER="";INHERITS="";DIRS="";MIN="";MAX="";SIZE="";TYPE="";THRESH="";CONTEXT="";
+				std::ifstream inputFileStrem (ThemeFile.c_str(), std::ifstream::in);
+				if(inputFileStrem.is_open()){
+					while (getline(inputFileStrem,line)){
+
+				HEADER=PickOut(line,"[",HEADER);
+				tempInherits=PickOut(line,"Inherits=",INHERITS);
+				if(tempInherits.compare("")!=0){INHERITS=tempInherits;}
+				DIRS=PickOut(line,"Directories=",DIRS);
+				MIN=PickOut(line,"MinSize=",MIN);
+				MAX=PickOut(line,"MaxSize=",MAX);
+				SIZE=PickOut(line,"Size=",SIZE);
+				TYPE=PickOut(line,"Type=",TYPE);
+				THRESH=PickOut(line,"Threshold=",THRESH);
+				CONTEXT=PickOut(line,"Context=",CONTEXT);
+				thresh=convert(THRESH.c_str());
+				size=convert(SIZE.c_str());
+				min=convert(MIN.c_str());
+				max=convert(MAX.c_str());
+				HEADER=removeCruft(HEADER,"]");
+				if( (HEADER.compare("Icon Theme")!=0)&&(HEADER.compare("")!=0)){
+					ICON_PATH=HEADER;
+					tempPathString=THEME_DIR+"/"+ICON_PATH;
+				}
+				//echo("H:"+HEADER+" IN:"+INHERITS+" DR:"+DIRS+" MN:"+MIN+" MX:"+MAX+" SZ:"+SIZE+" TY:"+TYPE+" TH:"+THRESH+" C:"+CONTEXT);
+				//echo(tempPathString);
+				if ( (CONTEXT.compare("Animations")!=0)
+				&& (CONTEXT.compare("Stock")!=0)
+				&&(CONTEXT.compare("Status")!=0)
+				&& (CONTEXT.compare("Emblems")!=0)
+				&& (CONTEXT.compare("Emotes")!=0)
+				&& (CONTEXT.compare("International")!=0)){
+							if ( (size==SIZE_TO_USE)
+							||((thresh+size)==SIZE_TO_USE)
+							||((thresh-size)==SIZE_TO_USE ) ){
+								tempStr="<IconPath>"+tempPathString+"</IconPath>";
+								if (ICON_PATH.find(SIZE)<=ICON_PATH.length()&&(isDir(tempPathString))){
+									if(ICON_PATH.find(tempPathString)>ICON_PATH.length()) INHERIT_ICON_WRITE+="\n\t"+tempStr;
+								}
+							}
+							else{
+								tempStr="<IconPath>"+tempPathString+"</IconPath>";
+								if ((TYPE.compare("Scalable")==0)&&( max >= size )&&( min <= size )&&(isDir(tempPathString))){if(ICON_PATH.find(tempPathString)>ICON_PATH.length()) INHERIT_ICON_WRITE+="\n\t"+tempStr;}
+							}
+						}
+					}
+				}
+				if(INHERITS.compare("")!=0){
+					unsigned int comma = INHERITS.find(',');
+					if (comma<INHERITS.length()){INHERIT_ARRAY=commaVector(INHERITS,INHERIT_ARRAY);}
+					else{INHERIT_ARRAY.push_back(INHERITS);}
+				}
+			}
+		}
+	}
+	for( std::vector<std::string>::iterator i = INHERIT_ARRAY.begin();
+	i!=INHERIT_ARRAY.end();
+	++i){
+		THEME_TO_INHERIT=*i;
+		//echo("Inheriting: "+THEME_TO_INHERIT);
+		INHERIT_ICON_WRITE+=searchthemes(THEME_TO_INHERIT);
+	}
+	return INHERIT_ICON_WRITE;
+} // searchthemes()
+std::string Config::getUserIcons(std::string directory){
+	std::string result,fullpath;
+	DIR *dir = NULL;
+	struct dirent *entryPointer = NULL;
+	unsigned int found = directory.find_last_of("/");
+	if (found != directory.length()-1){directory+="/";}
+
+	dir = opendir(directory.c_str());
+	if(dir!=NULL){
+		while ((entryPointer=readdir(dir)) != NULL){
+			if ((entryPointer->d_type == DT_DIR)&&(entryPointer->d_name[0] != '.')){
+				fullpath = entryPointer->d_name;
+				//echo ("getUserIcons("+fullpath+")");
+				result+= "\n\t<IconPath>"+directory+fullpath+"</IconPath>";
+				result+=getUserIcons(directory+fullpath);
+			}
+		}
+	}
+	closedir(dir);
+	return result;
+}
+std::string Config::get_line(std::string filename, std::string line) {
+    std::string INTERNAL_LINE;
+    std::string subString;
+    std::ifstream inputFileStrem (filename.c_str(), std::ifstream::in);
+    if(inputFileStrem.is_open()){
+        while (getline(inputFileStrem,INTERNAL_LINE)){
+            if(INTERNAL_LINE.find(line)<INTERNAL_LINE.length()){
+                unsigned int found =INTERNAL_LINE.find("=");
+                if(found < INTERNAL_LINE.length()){
+                    subString=INTERNAL_LINE.substr(found+1,std::string::npos);
+                   return subString;
+                }
+            }
+        }
+    }
+    return "";
+}
+std::string Config::getGTKtheme(){
+	std::string gtkrc2_result, gtkrc3_result,gtk2;
+	std::string GSETTINGS=term_out("which gsettings");
+	std::string GCONF2=term_out("which gconftool-2");
+	if(GSETTINGS.find("gsettings")<GSETTINGS.length()){
+		gtkrc3_result=term_out(GSETTINGS+" get org.gnome.desktop.interface icon-theme");
+		//gtkrc3_result=removeCruft(gtkrc3_result,"gtk-icon-theme-name=");
+		gtkrc3_result=removeCruft(gtkrc3_result,"\'");
+		gtkrc3_result=removeCruft(gtkrc3_result,"\'");
+		return gtkrc3_result;
+	}
+	if(GCONF2.find("gconftool-2")<GCONF2.length()){
+		gtk2=term_out(GCONF2+" --get /desktop/gnome/interface/icon_theme");
+		return gtk2;
+	}
+	const char* home = getenv("HOME");
+	if(home==NULL){return "hicolor";}
+	std::string HOME=home;
+//CHECK/SET GTKRC FILES
+	std::string GTKRC2=HOME + "/.gtkrc-2.0";
+	const char* xdg_config_home=getenv("XDG_CONFIG_HOME");
+	std::string XDG_CONFIG_HOME;
+	if (xdg_config_home!=NULL){
+		XDG_CONFIG_HOME=xdg_config_home;
+	}
+	else{
+		XDG_CONFIG_HOME=HOME +"/.config";
+	}
+	std::string GTKRC3=XDG_CONFIG_HOME + "/gtk-3.0/settings.ini";
+	if(testFile(GTKRC3.c_str())){
+		gtkrc3_result=get_line(GTKRC3,"gtk-icon-theme-name=");
+		gtkrc3_result=removeCruft(gtkrc3_result,"gtk-icon-theme-name=");
+		gtkrc3_result=removeCruft(gtkrc3_result,"\"");
+		gtkrc3_result=removeCruft(gtkrc3_result,"\"");
+		return gtkrc3_result;
+	}
+	if(testFile(GTKRC2.c_str())){
+		gtkrc2_result=get_line(GTKRC2,"gtk-icon-theme-name=");
+		gtkrc2_result=removeCruft(gtkrc2_result,"\"");
+		gtkrc2_result=removeCruft(gtkrc2_result,"\"");
+		return gtkrc2_result;
+	}
+	return "hicolor";
+}
+std::string Config::PickOut(std::string line, std::string findThis, std::string OriginalVar){
+	//if(OriginalVar.compare("")!=0){return Original/Var;}
+	std::string result=removeCruft(line,findThis);
+	if(result.compare(line)==0){return "";}
+	if(findThis.find(result)<findThis.length()){return "";}
+	return result;
+}
+std::string Config::removeCruft(std::string StringInput, std::string CruftToRemove){
+	if((StringInput.compare("")==0)||(CruftToRemove.compare("")==0)){return StringInput;}
+	unsigned int found=0;
+	unsigned int cruftLength=CruftToRemove.length();
+	found=StringInput.find(CruftToRemove);
+	if(found>StringInput.length()){return StringInput;}
+	std::string temp=StringInput;
+	temp=temp.erase(0,found+cruftLength);
+	if(temp.compare("")!=0){return temp;}
+	std::string temp2=StringInput;
+	temp2=temp2.erase(found,std::string::npos);
+	if(temp2.compare("")!=0){return temp2;}
+	errorJWM("There was a problem removing the cruft.... Giving you back your string");
+	return StringInput;
+
+}
+std::vector<std::string> Config::iconThemeDirectories(){
+	std::vector<std::string> THEME_DIR_XDG;
+	std::string dirToOpen = "/usr/share/icons/";
+	std::string pathToGet = "/icons/";
+	std::string testPATH,tester,result,fullpath;
+    std::vector<std::string> uniqueDirs = split_paths("XDG_DATA_DIRS","/usr/share/:/usr/local/share/");
+	unsigned int found = 0;
+   	for( std::vector<std::string>::iterator it = uniqueDirs.begin();
+		it!=uniqueDirs.end();
+		++it){
+        //get the string equvalent for the integer representation if of the xdg path
+        // something like
+        /*
+        1=/usr/share/
+        2=/usr/local/share
+        etc...
+        */
+		testPATH = *it;
+		//make sure this isn't blank
+		if(testPATH.compare("")!=0){
+			//look to see if we have a / at the end... remove it if we do...
+			found = testPATH.find_last_of('/');
+			if (found == testPATH.length()-1){testPATH=testPATH.substr(0,testPATH.length()-1);}
+			//see if there is a pathToGet directory
+			dirToOpen = testPATH + pathToGet;
+			if(isDir(dirToOpen)){THEME_DIR_XDG.push_back(dirToOpen);		}
+		}//testPath is not ""
+	}//directory looper
+	return THEME_DIR_XDG;
+}
+std::vector<std::string> Config::GetThemeFiles(std::string directory){
+	std::vector<std::string> THEME_DIR_XDG;
+	std::string result,fullpath;
+    DIR *dir = NULL;
+	struct dirent *entryPointer = NULL;
+	unsigned int found = directory.find_last_of("/");
+	if (found != directory.length()-1){directory+="/";}
+	//echo ("GetThemeFiles("+directory+")");
+	dir = opendir(directory.c_str());
+	if(dir!=NULL){
+		while ((entryPointer=readdir(dir)) != NULL){
+			if ((entryPointer->d_type == DT_REG)&&(entryPointer->d_name[0] != '.')){
+				fullpath = entryPointer->d_name;
+				result=directory+fullpath;
+				unsigned period = result.find_last_of(".");
+				bool isTheme = false;
+				if(result.compare("")!=0){
+					if(period<result.length()){
+						std::string testTheme = result.substr(period+1,std::string::npos);
+						if(testTheme.compare("theme")==0){isTheme = true;}
+					}
+					if(isTheme){THEME_DIR_XDG.push_back(result);} //isTheme
+				}//result !empty
+			}//it is a file
+		}//readdir is not NULL
+	}//dir!=NULL
+	closedir(dir);
+	return THEME_DIR_XDG;
+}
+std::vector<std::string> Config::commaVector(std::string LINE,std::vector<std::string> Vector){
+	//std::vector<std::string> itemsVector;
+	std::string original,preComma,postComma;
+	original=LINE;
+	unsigned int found,finder;
+	finder=original.length();
+	for(found=original.find_first_of(",");found<finder;found=original.find(",")){
+		preComma=original;
+		postComma=original;
+		preComma=preComma.erase(found,std::string::npos);
+		Vector.push_back(preComma);
+		postComma=postComma.erase(0,found+1);
+		//echo(preComma+"  "+postComma);
+		original=postComma;
+		finder=original.length();
+	}
+	if(postComma.compare("")!=0){Vector.push_back(postComma);}
+	return Vector;
+}
+std::vector<std::string> Config::sortArray(std::vector<std::string> thisPath){
+    std::vector<std::string>::iterator it;
+    std::sort (thisPath.begin(), thisPath.end());
+	it = std::unique (thisPath.begin(), thisPath.end());
+	thisPath.resize( std::distance(thisPath.begin(),it) );
+    return thisPath;
+}
+std::vector<std::string> Config::split_paths(const char* envVar, const char* incasenothingexists){
+	std::vector<std::string> thisPath;
+	std::vector<std::string>::iterator it;
+	std::string thisXDG;
+	const char* datadirs=getenv(envVar);
+    if (datadirs == NULL){thisXDG=incasenothingexists;}
+    else{thisXDG=datadirs;}
+    unsigned int numberOfPaths;
+    std::string tempXDG = thisXDG;
+    unsigned int tryer=0;
+    unsigned int xdgLen=0;
+    xdgLen=thisXDG.length();
+    for (numberOfPaths=0;tryer<xdgLen;){
+		tryer = tempXDG.find(":");
+		tempXDG=tempXDG.erase(0,tryer+1);
+		xdgLen=tempXDG.length();
+		numberOfPaths++;
+
+	}
+    unsigned int lastPath = 0;
+    std::string result;
+    for (unsigned int whichPath=1;whichPath<=numberOfPaths;whichPath++){
+		if (whichPath >=1){lastPath = whichPath - 1;}
+		else {lastPath = 0;}
+		std::string::size_type firstPosition = thisXDG.find_first_of(':');
+		std::string::size_type position = thisXDG.find(':');
+		for (unsigned int i=1;i<=whichPath;i++){position = thisXDG.find(':',position+1);}
+		for (unsigned int j=1;j<=lastPath;j++){firstPosition = thisXDG.find(':',firstPosition+1);}
+		result = thisXDG.substr (firstPosition+1,((position-firstPosition)-1));
+		thisPath.push_back(result);
+	}
+	std::sort (thisPath.begin(), thisPath.end());
+	it = std::unique (thisPath.begin(), thisPath.end());
+	thisPath.resize( std::distance(thisPath.begin(),it) );
+	//for(it=thisPath.begin();it<=thisPath.end();it++){outXML(*it);}
+	return thisPath;
+}
+bool Config::isFONT(std::string FONTNAME){
+    Fl_Font a;a = Fl::set_fonts("-*");
+    std::string v;
+    Fl_Font i;
+    for (i=1;i!=a;++i){
+        v = Fl::get_font_name(i,0);
+        if(v.compare(FONTNAME)==0){return true;}
+    }
+    return false;
+}
+std::string Config::getDefaultFONT(){
+    unsigned int len=4;
+    std::string DEFAULT;
+	const char *a[len];
+	a[0]="sans";
+	a[1]="droid";
+	a[2]="serif";
+	a[3]="arial";
+    for (unsigned int i=0;i<=len;i++){
+		if(DEFAULT.compare("")==0){
+            if(isFONT(a[i])){
+                DEFAULT=a[i];
+                return DEFAULT;
+            }
+		}
+	}
+	return DEFAULT;
 }

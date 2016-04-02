@@ -4272,7 +4272,7 @@ Fl_Double_Window* SettingsUI::make_window() {
       o->align(Fl_Align(FL_ALIGN_WRAP));
       o->hide();
       o->deactivate();
-      isAdduser(o);
+      //isAdduser(o);
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(150, 295, 80, 65, gettext("System Details"));
       o->box(FL_FLAT_BOX);
@@ -4307,5 +4307,23 @@ void SettingsUI::adduser() {
   int retval = system("bash -c 'fladduser &disown'");
   if(retval !=0){
     std::cerr<<"system(\"bash -c 'fladduser &disown'\") did not return 0"<<std::endl;
+  }
+}
+
+void SettingsUI::isInfo(Fl_Button *o) {
+  Config config;
+  bool isexec = config.testExec("torios-info");
+  if(isexec){
+    o->show();
+  }
+  else{
+    o->hide();
+  }
+}
+
+void SettingsUI::addinfo() {
+  int retval = system("bash -c 'torios-info &disown'");
+  if(retval !=0){
+    std::cerr<<"system(\"bash -c 'torios-info &disown'\") did not return 0"<<std::endl;
   }
 }

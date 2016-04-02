@@ -21,15 +21,22 @@ fi
 
 if [ -f "${GTKRC2}" ]
 then
-  gtkrc2_result=$(grep "gtk-icon-theme-name=" "${GTKRC2}" | sed 's#gtk-icon-theme-name=##' | sed 's|"||g')
-fi
-if [ -f "${GTKRC3}" ]
-then
-  gtkrc3_result=$(grep "gtk-icon-theme-name=" "${GTKRC3}" | sed 's#gtk-icon-theme-name=##' | sed 's|"||g')
+  gtkrc2_result=$(grep "gtk-icon-theme-name=" "${GTKRC2}")
+  gtkrc2_result="${gtkrc2_result/gtk-icon-theme-name=}"
+  gtkrc2_result="${gtkrc2_result//\"}"
 fi
 if [ ! -z "${GSETTINGS}" ]
 then
   gtkrc3_result=$(gsettings get org.gnome.desktop.interface icon-theme | sed "s#'##g")
+  gtkrc3_result="${gtkrc3_result/gtk-icon-theme-name=}"
+  gtkrc3_result="${gtkrc3_result//\"}"
+else
+  if [ -f "${GTKRC3}" ]
+  then
+    gtkrc3_result=$(grep "gtk-icon-theme-name=" "${GTKRC3}")
+    gtkrc3_result="${gtkrc3_result/gtk-icon-theme-name=}"
+    gtkrc3_result="${gtkrc3_result//\"}"
+  fi
 fi
 if [ -z "${gtkrc2_result}" ]
 then
@@ -275,7 +282,7 @@ then
   export THEME_DIR_XDG=($(echo ${THEME_DIR_XDG[*]} |sed 's|$| |' |sed 's|/ |/icons |g' | sed 's://:/:'))
 fi ## ~/.icons
 
-BASE_THEME_DIR=("/usr/share/pixmaps" "/usr/share/icons" "/usr/share/app-install/icons" )
+BASE_THEME_DIR=("/usr/share/pixmaps" "/usr/share/icons" "/usr/share/app-install/icons" "$HOME/.local/share/icons/" $(ls -RDl "$HOME/.local/share/icons/hicolor"| grep ':$' | head | sed "s/://g"))
 TEMP_BASE=""
 for i in "${BASE_THEME_DIR[@]}"
 do

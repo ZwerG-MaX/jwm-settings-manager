@@ -52,7 +52,10 @@ void WindowUI::cb_Cancel(Fl_Button* o, void* v) {
 }
 
 void WindowUI::cb_OK_i(Fl_Button*, void*) {
-  saveJWMRC(add_opt_window);
+  add_option_to_group();
+loadTemp();
+saveNoRestart();
+add_opt_window->hide();
 populate_groups();
 }
 void WindowUI::cb_OK(Fl_Button* o, void* v) {
@@ -529,10 +532,10 @@ else{
     flWindow win;
     const char* value = opt_browser->text(testthis);
     win.removeGroupItem(hidethis,value);
+    populate_groups();
     return;
  }
-}
-populate_groups();
+};
 }
 void WindowUI::cb_rm_opt(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_rm_opt_i(o,v);
@@ -558,9 +561,10 @@ else{
     flWindow win;
     const char* value = name_browser->text(testthis);
     win.removeGroupProgram(hidethis,value);
+    populate_groups();
+    return;
  }
-}
-populate_groups();
+};
 }
 void WindowUI::cb_rm_prog(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_rm_prog_i(o,v);
@@ -586,9 +590,10 @@ else{
     flWindow win;
     const char* value = class_browser->text(testthis);
     win.removeGroupClass(hidethis,value);
+    populate_groups();
+    return;
  }
-}
-populate_groups();
+};
 }
 void WindowUI::cb_rm_class(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_rm_class_i(o,v);
@@ -756,6 +761,7 @@ Fl_Double_Window* WindowUI::make_window() {
         o->box(FL_FLAT_BOX);
         o->selection_color((Fl_Color)51);
         { Fl_Group* o = new Fl_Group(10, 45, 670, 305, gettext("Appearance"));
+          o->hide();
           { Fl_Box* o = new Fl_Box(10, 55, 330, 175);
             o->box(FL_FLAT_BOX);
             o->color((Fl_Color)51);
@@ -1201,7 +1207,6 @@ re easily"));
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(25, 50, 655, 305, gettext("Groups"));
-          o->hide();
           { Fl_Browser* o = groups_browser = new Fl_Browser(80, 95, 85, 155, gettext("Current Groups"));
             groups_browser->tooltip(gettext("Program groups allow one to specify options which apply to a group of program\
 s by their name and/or class. A program group is created with the Group tag. A\
@@ -1239,7 +1244,6 @@ s many program groups can be created as desired."));
             rm_opt->color((Fl_Color)23);
             rm_opt->image(image_minus);
             rm_opt->callback((Fl_Callback*)cb_rm_opt);
-            rm_opt->deactivate();
           } // Fl_Button* rm_opt
           { name_browser = new Fl_Browser(346, 95, 115, 155, gettext("Program Name"));
             name_browser->type(2);
@@ -1256,7 +1260,6 @@ s many program groups can be created as desired."));
             rm_prog->color((Fl_Color)23);
             rm_prog->image(image_minus);
             rm_prog->callback((Fl_Callback*)cb_rm_prog);
-            rm_prog->deactivate();
           } // Fl_Button* rm_prog
           { class_browser = new Fl_Browser(485, 95, 115, 155, gettext("Window Class"));
             class_browser->type(2);
@@ -1273,7 +1276,6 @@ s many program groups can be created as desired."));
             rm_class->color((Fl_Color)23);
             rm_class->image(image_minus);
             rm_class->callback((Fl_Callback*)cb_rm_class);
-            rm_class->deactivate();
           } // Fl_Button* rm_class
           o->end();
         } // Fl_Group* o
@@ -1524,10 +1526,11 @@ void WindowUI::opacity_loader(Fl_Slider *o, int Active1_Inactive2) {
 
 void WindowUI::populate_groups() {
   int line = groups_browser->value();
-  if ((line == 0) || (line > groups_browser->size())){
     opt_browser->clear();
     class_browser->clear();
     name_browser->clear();
+  if ((line == 0) || (line > groups_browser->size())){
+     return;
   }
   else{
     flWindow win;

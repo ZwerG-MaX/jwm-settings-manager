@@ -29,8 +29,8 @@ flPanel::flPanel(){
 #endif // DEBUG
     tinyxml2::XMLDocument doc;
     whichPanel = 1;
-    errorMessage="Error... Don't hack around in the files so much ok? :D";
-    rootMenu = "5";
+    errorMessage=gettext("Error... Don't hack around in the files so much ok? :D");
+    rootMenu = "2";
     systemMenu = "8";
 }
 
@@ -557,12 +557,12 @@ void flPanel::setBackground(const double* rgb, const char * whichElement){
    // loadTemp();
     tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" );
     //check to make sure whichElement exists
-    if(!colorElement->FirstChildElement( whichElement )){
+    if(!testElement( whichElement )){
         createElement(whichElement);
         colorElement=doc.FirstChildElement( "JWM" );
     }
     //check to make sure whichElement->Background exists
-    if(!colorElement->FirstChildElement( whichElement )->FirstChildElement( "Background" )){
+    if(!testElement( whichElement, "Background" )){
         createElement(whichElement,"Background");
     }
     colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Background" );
@@ -575,25 +575,45 @@ void flPanel::setBackground(const double* rgb, const char * whichElement){
 //This will get 2 colors... to get one color make an unused variable for color2
 //this will return the first color fine
 unsigned int flPanel::getBackground(unsigned int &color2, const char * whichElement){
+#ifdef DEBUG_TRACK
+    std::cerr<<"unsigned int flPanel::getBackground("<<color2<<","<<whichElement<<")--->"<<std::endl;
+#endif // DEBUG
    // loadTemp();
+   std::string ELE=whichElement;
     unsigned int bg=0;
-    //check to make sure whichElement exists
-    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" );
-    if(!colorElement->FirstChildElement( whichElement )){
-        createElement(whichElement);
+    if(whichElement==NULL){
+        errorJWM("flPanel::getBackground got a NULL Element");
+        return 0;
     }
-    colorElement = doc.FirstChildElement( "JWM" );
+    if(loadTemp()!=0){errorJWM("There was some trouble loading the file in flPanel::getBackground");}
+    //check to make sure whichElement exists
+    std::cout<<"JWM"<<std::endl;
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" );
+    if(!testElement(ELE.c_str())){
+        std::cerr<<"flPanel::getBackground CALLS Config::createElement("<<whichElement<<")"<<std::endl;
+        createElement(ELE.c_str());
+    }
+    std::cout<<"whichElement"<<std::endl;
+    colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( ELE.c_str() );
     //check to make sure whichElement->Background exists
-    if(!colorElement->FirstChildElement( whichElement )->FirstChildElement( "Background" )){
-        createElement(whichElement,"Background");
-        colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Background" );
+    if(!testElement(ELE.c_str(),"Background" )){
+        std::cerr<<"flPanel::getBackground CALLS Config::createElement("<<ELE.c_str()<<",\"Background\")"<<std::endl;
+        createElement(ELE.c_str(),"Background");
+        colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( ELE.c_str() )->FirstChildElement( "Background" );
         colorElement->SetText("#000000");
         saveChanges();
         saveChangesTemp();
         return 0;
     }
-    colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Background" );
-    std::string colour = colorElement->GetText();
+    std::cout<<"Background"<<std::endl;
+    colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( ELE.c_str() )->FirstChildElement( "Background" );
+    std::string colour;
+    if(colorElement->GetText()){
+        colour = colorElement->GetText();std::cout<<colour<<std::endl;
+    }
+    else{
+        errorJWM("NO text in element");
+    }
     //this is a generic color function in Config
     bg = getColor(colour, color2);
     return bg;
@@ -608,7 +628,7 @@ void flPanel::setActiveBackground(const double* rgb, const char * whichElement){
     if (whichElement==NULL){return;}
 
     //make sure our element exists first
-    if(!colorElement->FirstChildElement( whichElement )){createElement(whichElement);}
+    if(!testElement( whichElement )){createElement(whichElement);}
 
     //use the handy color2string function in Confg
     //this turns our double value (which comes from the Fl color chooser)
@@ -618,11 +638,11 @@ void flPanel::setActiveBackground(const double* rgb, const char * whichElement){
     //either way let's set up colorElement to point to the right place
     if(newStyle() != -1){
         //does the Active element exist?
-        if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )){
+        if(!testElement( whichElement, "Active" )){
             createElement(whichElement,"Active");
         }
         //make sure the Background Element exists as well
-        if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )->FirstChildElement( "Background" )){
+        if(!testElement( whichElement, "Active", "Background" )){
             createElement(whichElement,"Active","Background");
         }
         //point to it
@@ -630,7 +650,7 @@ void flPanel::setActiveBackground(const double* rgb, const char * whichElement){
     }
     else{
         //does Active background exist?
-        if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "ActiveBackground" )){
+        if(!testElement( whichElement, "ActiveBackground" )){
             createElement(whichElement,"ActiveBackground");
         }
         colorElement  = doc.FirstChildElement( "JWM" )->FirstChildElement( "ActiveBackground" );
@@ -644,21 +664,24 @@ void flPanel::setActiveBackground(const double* rgb, const char * whichElement){
 }
 unsigned int flPanel::getActiveBackground(unsigned int  &color2, const char * whichElement){
    // loadTemp();
+   #ifdef DEBUG_TRACK
+    std::cerr<<"unsigned int flPanel::getActiveBackground("<<color2<<","<<whichElement<<")--->"<<std::endl;
+#endif // DEBUG
     unsigned int bg =0;
     tinyxml2::XMLElement* colorElement  = doc.FirstChildElement( "JWM" );
     //make sure our element exists first
-    if(!colorElement->FirstChildElement( whichElement )){
+    if(!testElement( whichElement )){
         createElement(whichElement);
     }
     //OK!  is it newstyle or old??
     //either way let's set up colorElement to point to the right place
     if(newStyle() != -1){
         //does the Active element exist?
-        if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )){
+        if(!testElement( whichElement,"Active" )){
             createElement(whichElement,"Active");
         }
         //make sure the Background Element exists as well
-        if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )->FirstChildElement( "Background" )){
+        if(!testElement(whichElement, "Active", "Background" )){
             createElement(whichElement,"Active","Background");
             colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Active" )->FirstChildElement( "Background" );
             colorElement->SetText("#000000");
@@ -671,7 +694,7 @@ unsigned int flPanel::getActiveBackground(unsigned int  &color2, const char * wh
     }
     else{
         //does Active background exist?
-        if(!doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "ActiveBackground" )){
+        if(!testElement( whichElement, "ActiveBackground" )){
             createElement(whichElement,"ActiveBackground");
             colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "ActiveBackground" );
             colorElement->SetText("#000000");
@@ -680,8 +703,11 @@ unsigned int flPanel::getActiveBackground(unsigned int  &color2, const char * wh
             return 0;
         }
         colorElement  = doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "ActiveBackground" );
+    }std::string colour;
+    if(colorElement->GetText()){
+        colour = colorElement->GetText();
     }
-    std::string colour = colorElement->GetText();
+    else{errorJWM("Color didn't exist");return 0;}
     //use the handy getColor function from Config
     bg = getColor(colour, color2);
     return bg;
@@ -692,11 +718,11 @@ unsigned int flPanel::getActiveBackground(unsigned int  &color2, const char * wh
 void flPanel::setFontColor(const double* rgb, const char * whichElement){
    // loadTemp();
     tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" );
-    if (!colorElement->FirstChildElement( whichElement )){
+    if (!testElement( whichElement )){
         createElement(whichElement);
     }
     colorElement = doc.FirstChildElement( "JWM" );
-    if (!colorElement->FirstChildElement( whichElement )->FirstChildElement( "Foreground" )){
+    if (!testElement( whichElement, "Foreground" )){
         createElement(whichElement,"Foreground");
     }
     colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Foreground" );
@@ -714,11 +740,11 @@ unsigned int flPanel::getFontColor(unsigned int &color2, const char * whichEleme
    // loadTemp();
     unsigned int bg = 0;
     tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" );
-    if (!colorElement->FirstChildElement( whichElement )){
+    if (!testElement( whichElement )){
         createElement(whichElement);
     }
     colorElement = doc.FirstChildElement( "JWM" );
-    if (!colorElement->FirstChildElement( whichElement )->FirstChildElement( "Foreground" )){
+    if (!testElement( whichElement , "Foreground" )){
         createElement(whichElement,"Foreground");
         setFontColor(0,whichElement);
         saveChanges();
@@ -728,7 +754,13 @@ unsigned int flPanel::getFontColor(unsigned int &color2, const char * whichEleme
     colorElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Foreground" );
     std::string background;
     //get the string for the color
-    background = colorElement->GetText();
+    if(colorElement->GetText()){
+        background = colorElement->GetText();
+    }
+    else{
+        errorJWM("Color didn't exist");
+        return 0;
+    }
     //use the Config function to get the colors
     bg = getColor(background, color2);
     return bg;
@@ -780,11 +812,11 @@ void flPanel::setPanelBackground(const double* rgb,const  double* rgb2){
 void flPanel::setOpacity(float &opacity, const char* whichElement){
    // loadTemp();
     tinyxml2::XMLElement* opacityElement = doc.FirstChildElement("JWM");
-    if(!opacityElement->FirstChildElement( whichElement )){
+    if(!testElement( whichElement )){
         createElement(whichElement);
     }
     opacityElement = doc.FirstChildElement( "JWM" );
-    if(!opacityElement->FirstChildElement( whichElement )->FirstChildElement( "Opacity" )){
+    if(!testElement( whichElement, "Opacity" )){
         createElement(whichElement,"Opacity");
     }
     opacityElement=doc.FirstChildElement( "JWM" )->FirstChildElement( whichElement )->FirstChildElement( "Opacity" );
@@ -795,11 +827,11 @@ void flPanel::setOpacity(float &opacity, const char* whichElement){
 float flPanel::getOpacity(const char* whichElement){
    // loadTemp();
    tinyxml2::XMLElement* opacityElement = doc.FirstChildElement("JWM");
-    if(!opacityElement->FirstChildElement( whichElement )){
+    if(!testElement( whichElement )){
         createElement(whichElement);
     }
     opacityElement = doc.FirstChildElement( "JWM" );
-    if(!opacityElement->FirstChildElement( whichElement )->FirstChildElement( "Opacity" )){
+    if(!testElement( whichElement, "Opacity" )){
         createElement(whichElement,"Opacity");
         opacityElement=opacityElement->FirstChildElement( whichElement )->FirstChildElement( "Opacity" );
         opacityElement->SetText(1.0);

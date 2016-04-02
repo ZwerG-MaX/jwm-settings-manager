@@ -34,6 +34,7 @@
 #include <string>
 #include <stdio.h>
 #include <vector>
+#include <algorithm>
 //getExtention for icons
 #include <dirent.h>
 //gettext
@@ -59,8 +60,9 @@ class Config
 /// Basic Functions for JWMRC files
     //Error checking/fixing/reporting
     int checkFiles();
-    void setRecoveryText(std::string &ConfigFile);
     int recover();
+    std::string getFileName(std::string filename);
+    std::string jwmrcOUT();
     int newStyle();/**< Check for newer JWM style tags
     -1 is OLD
     0 is 2.3.0
@@ -73,8 +75,10 @@ class Config
     2 is 2.3.2
     3 is 2.3.3
     */
+    int FULLjwmVersion(); //returns something like (234 for 2.3.4)
     bool newVersionJWM();/**< check if the installed binary of jwm is the newest version*/
-
+    void write_out(std::string fileContents,std::string FILENAME);
+    bool writeToFile(std::string fileContents);
     //Display an Error message to cerr
     void errorJWM(std::string message);
     void errorJWM(const char* message);
@@ -82,6 +86,7 @@ class Config
     void saveJWMRC(); //Fully save and reload
     void saveJWMRC(Fl_Double_Window *o); //Fully save and reload
     void saveChanges();
+    void saveNoRestart();
     void saveChangesTemp();
     //Load
     int load();
@@ -106,7 +111,7 @@ class Config
 ///Functions for checking executables and files
     bool testExec(const char* exec);
     bool testFile(const char* fileWithFullPATH);
-
+    bool isDir(std::string FullPathToDir);
 /// BASH-LIKE functions
 /**
 This contains functions that work like grep, and also that work like
@@ -114,9 +119,10 @@ VARIABLE=$(command)
 where VARIABLE is a std::string
 */
     const char* grep(const char* args, const char* filename);
-    std::string grep(const char* args, std::string filename){return grep(args,filename.c_str());}
+    std::string grep(const char* args, std::string filename);
     std::vector<std::string> egrep(const char* args, const char* filename);
     std::string returnTerminalOutput(std::string terminal_Command_You_Want_Output_From,const char* type);
+    std::string term_out(std::string terminal_Command_You_Want_Output_From);
     int run(const char* command);
 
 /// AUTOSTART Functions ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -213,6 +219,24 @@ it also will save the default clock program, and other defaults (as they are imp
     void setDebug();
     void setDebugOff();
     bool isDebug();
+    ///ICONS//////////////////////
+    std::string searchthemes(std::string THEME_TO_INHERIT);
+    std::string PickOut(std::string line, std::string findThis, std::string OriginalVar);
+    std::string homeIcons(std::string THEME_TO_USE);
+    std::string removeCruft(std::string StringInput, std::string CruftToRemove);
+    std::string getGTKtheme();
+    std::string get_line(std::string filename, std::string line);
+    std::string getUserIcons(std::string Directory);
+    std::vector<std::string> commaVector(std::string LINE,std::vector<std::string>Vector);
+    std::vector<std::string> iconThemeDirectories();
+    std::vector<std::string> split_paths(const char* envVar, const char* incasenothingexists);
+    std::vector<std::string> sortArray(std::vector<std::string> thisPath);
+    std::vector<std::string> GetThemeFiles(std::string direcotry);
+    //FONT stuff
+    bool isFONT(std::string FONTNAME);
+    std::string getDefaultFONT();
+
+    //Set Window Icon
     char* Get_Fl_Icon(char const** pIcon);
     //constructor and destructor
     Config();
@@ -239,13 +263,12 @@ it also will save the default clock program, and other defaults (as they are imp
     std::string placesmenu;/// = "placesmenu";
     std::string gnomemenu;/// = "gnomeapps";
     std::string sysmenu;/// = "gnomesystem";
-
+    bool testedFILE;
     char* home;
     char* path;
     std::string stringPATH;
     std::string::size_type pathPosition;
     int numPATHS;
-    bool isNewStyle;
     std::string defaultPath;
     std::string defaultFilePath;
     std::string defaultFilePath230;

@@ -1,0 +1,15 @@
+#!/bin/bash
+ME="Israel Dahl"
+basedir="${PWD}"
+srcdir="${basedir}/src/"
+fltkdir="${basedir}/fltk/"
+outputdir="${basedir}/po"
+[[ -d "${outputdir}" ]] || mkdir -p "${outputdir}"
+programminglanguage="c++"
+defaultdomain="jwm-settings-manager"
+packagename="jwm-settings-manager"
+comments="//"
+pofile="jwm-settings-manager.pot"
+
+xgettext -c --copyright-holder="\"$ME\"" -p "$outputdir" --strict --default-domain="$defaultdomain" --package-name="\"$packagename\"" --output "${outputdir}/${pofile}" --c++ --package-version=$verno fltk/*.cxx src/*.cpp
+sed -i 's/CHARSET/UTF-8/' "${outputdir}/${pofile}"

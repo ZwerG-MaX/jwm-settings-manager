@@ -41,8 +41,8 @@ flAutostart::~flAutostart(){
 void flAutostart::getAutostart(Fl_Browser *o){
     if(!testElement("StartupCommand")){return;}
     for(const tinyxml2::XMLElement* node=doc.FirstChildElement("JWM")->FirstChildElement("StartupCommand");node;node=node->NextSiblingElement("StartupCommand")){
-        std::string value  = node->GetText();
-        if(value.c_str() !=NULL){
+        if(node->GetText()){
+            std::string value  = node->GetText();
             const char * v = value.c_str();
             o->add(v);
         }

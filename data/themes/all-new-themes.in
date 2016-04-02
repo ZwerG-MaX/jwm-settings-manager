@@ -3,7 +3,6 @@
 <!-- MENUS -->
     <!-- Main Menu -->
     @MENUS_LIST@
-    <!--These menus provide a nice exit dialog and no menu on desktop click 1-->
     <RootMenu height="0" onroot="z">
         <Exit label="Logout" confirm="false" icon="@LOGOUT_ICON@"/>
     </RootMenu>

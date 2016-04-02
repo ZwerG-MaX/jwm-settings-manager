@@ -874,7 +874,6 @@ Fl_Double_Window* PanelUI::make_window() {
         o->box(FL_FLAT_BOX);
         o->selection_color((Fl_Color)51);
         { Fl_Group* o = new Fl_Group(10, 90, 345, 385, gettext("Apps"));
-          o->hide();
           { Fl_Button* o = new Fl_Button(80, 425, 35, 25, gettext("-"));
             o->box(FL_FLAT_BOX);
             o->color((Fl_Color)23);
@@ -1023,6 +1022,7 @@ Fl_Double_Window* PanelUI::make_window() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(10, 85, 330, 380, gettext("Size And Position"));
+          o->hide();
           { Fl_Menu_Button* o = new Fl_Menu_Button(20, 110, 125, 25, gettext("Panel Position"));
             o->box(FL_GTK_UP_BOX);
             o->color((Fl_Color)23);

@@ -29,7 +29,7 @@ flDesktop::flDesktop(){
 #endif // DEBUG
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLDocument roxDoc;
-    std::string backgrounds = "/usr/share/backgrounds/";
+    backgrounds = "/usr/share/backgrounds/";
     roxFileName = "pb_JWM";
     roxCommand = "rox -p pb_JWM";
     pcmanFMfilename = ".config/pcmanfm/default/pcmanfm.conf";
@@ -60,6 +60,7 @@ return Fl::run();
 }*/
 
 bool flDesktop::test(tinyxml2::XMLElement *element){
+if(!testElement(element)){return false;}
     const char *tester = element->GetText();
     if (tester==NULL){
         recover();
@@ -69,31 +70,40 @@ bool flDesktop::test(tinyxml2::XMLElement *element){
 }
 
 void flDesktop::setFlImage(Fl_Box * o, const char * filename){
+    #ifdef DEBUG_TRACK
+        std::cerr <<"void flDesktop::setFlImage(Fl_Box * o,"<< filename<<")" << std::endl;
+    #endif // DEBUG
     std::string extention, filenameStr, isColor;
+    if(filename==NULL){errorJWM("NULL filename sent into flDesktop::setFlImage");return;}
     filenameStr = filename;
-    if((filenameStr.compare("")==0)||(filenameStr.length()<=4)){return;}
+    unsigned int len=filenameStr.length();
+    if(len<=4){errorJWM("Filename is too small");return;}
     Fl_Image* image = NULL;
     isColor = filenameStr.substr(0,1);
-    if(isColor.compare("#")!=0){
-        extention = filenameStr.substr((strlen(filename)-4),4);
+
+    if(isColor.compare("#")==0){return;}
+    unsigned int found;
+    found=filenameStr.find_last_of('.');
+    if(found<len){
+        extention = filenameStr.substr(found,4);
+        std::cerr<<"extention="<<extention<<std::endl;
         std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
-    }
-    else{return;}
-
-    if (extention.compare(".png")==0){
-		image = new Fl_PNG_Image(filename);
-		Fl_Image * image2 = image->copy(345,270);
-        o->image(image2);
-        o->show();
-        o->redraw();
-    }
-
-	else if(extention.compare(".jpg")==0){
-		image = new Fl_JPEG_Image(filename);
-		Fl_Image * image2 = image->copy(345,270);
-        o->image(image2);
-        o->show();
-		o->redraw();
+        if (extention.compare(".png")==0){
+            image = new Fl_PNG_Image(filename);
+            Fl_Image * image2 = image->copy(345,270);
+            o->image(image2);
+            o->show();
+            o->redraw();
+        }
+        else if(extention.compare(".jpg")==0){
+            image = new Fl_JPEG_Image(filename);
+            std::cerr<<"its ajpeg"<<std::endl;
+            Fl_Image * image2 = image->copy(345,270);
+            o->image(image2);
+            o->show();
+            o->redraw();
+        }
+        else{errorJWM("No extention on the filename");return;}
     }
     else{return;}
 }
@@ -103,7 +113,7 @@ void flDesktop::FlBGColor(Fl_Box*o, unsigned int color){
   o->redraw();
 }
 ///This function simply gets the Text of the element.
-const char* flDesktop::getBackground(){
+std::string flDesktop::getBackground(){
     std::string background;
     //check if ROX is being used
     if(!roxActive()){
@@ -116,7 +126,7 @@ const char* flDesktop::getBackground(){
         tinyxml2::XMLElement* element=doc.FirstChildElement( "JWM" )->FirstChildElement( "Desktops" )->FirstChildElement("Background");
         // the element Text exists get the background
         if(!element->GetText()){return "";}
-        //std::cout<<element->GetText()<<std::endl;
+        //std::cout<<"element->GetText()--> "<<element->GetText()<<std::endl;
         //check real attributes... we don't want something that doesn't work...
         if(element->Attribute("type","image")){background = element->GetText();}
         else if(element->Attribute("type","tile")){background = element->GetText();}
@@ -148,13 +158,16 @@ const char* flDesktop::getBackground(){
             //if the background is empty or not the same as the running filemanager...
             if((background.compare(""))||(background.compare(testBG)!=0)){
                 //make the background the test BG
-                background = testBG;
+                if(testFile(testBG.c_str())){
+                    background = testBG;
                 //set it as JWM background
-                setBackground("image",background.c_str());
+                    setBackground("image",background.c_str());
+                }
             }
         }
         //return the background so it can be displayed
-        return background.c_str();
+        std::cerr<<"THE BG is: "<<background<<std::endl;
+        return background;
     }
     ///ROX background
     else if (roxActive()){
@@ -249,8 +262,8 @@ void flDesktop::makeBackgroundElement(){
     loadTemp();
     std::cerr<<"Using "<<defaultBG<<" for the default background "<<defaultBGtype<<std::endl;
     element=doc.FirstChildElement( "JWM" )->FirstChildElement( "Desktops" )->FirstChildElement( "Background" );
-    element->SetAttribute("type",defaultBGtype);
-    element->SetText(defaultBG);
+    element->SetAttribute("type",defaultBGtype.c_str());
+    element->SetText(defaultBG.c_str());
     saveChanges();
     saveChangesTemp();
 }
@@ -267,7 +280,7 @@ bool flDesktop::isPCmanFMconfig(){
     return false;
 }
 void flDesktop::setPCmanFMbg(const char* filename){
-    bool exsits = testExec(pcmanfm);
+    bool exsits = testExec(pcmanfm.c_str());
     std::string FNAME = fixName(filename);
     if (exsits){
         std::string pcmanpid = returnTerminalOutput("pgrep pcmanfm","r");
@@ -292,7 +305,7 @@ void flDesktop::setPCmanFMbg(const char* filename){
     return;
 }
 
-const char* flDesktop::getPCmanFMbg(){
+std::string flDesktop::getPCmanFMbg(){
     if(isPCmanFMconfig()){
         std::string pcmanconfig = homePathNoFile();
         std::string defaultConfig = homePathNoFile();
@@ -344,7 +357,27 @@ std::string flDesktop::getGsettingsBG(){
                 testResult=testResult.substr(8,std::string::npos);
                 found=testResult.find_last_of("'");
                 testResult=testResult.substr(0,found);
-                return testResult;
+                found=testResult.find(".xml");
+                if (found>testResult.length()){
+                    std::cerr<<testResult<<"not xml file"<<std::endl;
+                    if(testFile(testResult.c_str())){return testResult;}
+                }
+                else{
+                    std::cerr<<testResult<<" <--XML file"<<std::endl;
+                    std::string tmp=grep("file",testResult);
+                    std::cerr<<"initial grep: "<<tmp<<std::endl;
+                    found=tmp.find_first_of('>');
+                    if(found<tmp.length()){
+                        tmp=tmp.substr(found+1,std::string::npos);
+                        std::cerr<<"first finder: "<<tmp<<std::endl;
+                    }
+                    found=tmp.find_first_of('<');
+                    if(found<tmp.length()){
+                        tmp=tmp.substr(0,found);
+                        std::cerr<<tmp<<std::endl;
+                    }
+                    if(testFile(tmp.c_str())){return tmp;}
+                }
             }
             std::cerr<<testResult<<std::endl;
         }
@@ -371,7 +404,7 @@ void flDesktop::setGsettingsBG(const char* filename){
 }
 
 ///Which Filemanager
-const char* flDesktop::whichFileManager(){
+std::string flDesktop::whichFileManager(){
     //get the name of the desktop file used for directories
     std::string result = returnTerminalOutput("xdg-mime query default inode/directory","r");
 
@@ -385,17 +418,17 @@ const char* flDesktop::whichFileManager(){
 
     //test the result file... does it exist
     const char* testResult = defaults.c_str();
-    bool xdgMime = testFile(testResult);
-
+    bool xdgMime=false;
+    if(testResult!=NULL){xdgMime = testFile(testResult);}
     //if not, we will guess what you are using
     if (!xdgMime){
         result = "";
 
         //check to see what exists
-        bool roxInstalled = testFile("rox-filer");
-        bool pcmanfmInstalled = testFile(pcmanfm);
-        bool nautilusInstalled = testFile(nautilus);
-        bool thunarInstalled = testFile(thunar);
+        bool roxInstalled = testExec("rox-filer");
+        bool pcmanfmInstalled = testExec(pcmanfm.c_str());
+        bool nautilusInstalled = testExec(nautilus.c_str());
+        bool thunarInstalled = testExec(thunar.c_str());
 
         //prefer pcmanfm
         if (pcmanfmInstalled){return "pcmanfm";}
@@ -749,7 +782,7 @@ int flDesktop::addRoxFileAttribute(const char* element, const char* attribute, c
 void flDesktop::setRoxBackground(const char* value){int result = addRoxFileAttribute("backdrop","style","Stretched", value);std::cout<<result<<std::endl;}
 void flDesktop::setRoxBackground(const char* style, const char* value){int result = addRoxFileAttribute("backdrop","style",style, value);std::cout<<result<<std::endl;}
 
-const char * flDesktop::getRoxBackground(){
+std::string flDesktop::getRoxBackground(){
     const char* background;
     tinyxml2::XMLElement* element = roxDoc.FirstChildElement( "pinboard" )->
                                         FirstChildElement( "backdrop" );

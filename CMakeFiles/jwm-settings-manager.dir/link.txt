@@ -1,1 +1,0 @@
-/usr/bin/c++    -std=c++0x -Os -finline-small-functions -finline-functions-called-once -fno-unwind-tables -fno-asynchronous-unwind-tables -s -O3 -DNDEBUG    CMakeFiles/jwm-settings-manager.dir/src/jwm.cpp.o  -o jwm-settings-manager -rdynamic libJSM.a /usr/lib/x86_64-linux-gnu/libfltk.so.1.3 /usr/lib/x86_64-linux-gnu/libfltk_images.so.1.3 -lSM -lICE -lX11 -lXext 

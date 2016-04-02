@@ -53,7 +53,7 @@
     <WindowStyle>
         <Font>@FONT@</Font>
         <Width>4</Width>
-        <Height>20</Height>
+        <Height>@W_HEIGHT@</Height>
         <Active>
             <Text>@WINDOW_ACTIVE_FOREGROUND@</Text>
             <Title>@WINDOW_ACTIVE_BACKGROUND@</Title>

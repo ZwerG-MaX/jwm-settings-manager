@@ -36,7 +36,7 @@ class flDesktop : public Config{
     public:
 //    int showDesktop();//FLTK SHOW function
 
-    const char * getBackground();// , const char * rgb, const char* rgb2) //Get JWM background
+    std::string getBackground();// , const char * rgb, const char* rgb2) //Get JWM background
     /*If it is an image/command the rgb variables will be ignored.
      * if it is solid/gradient color the return value should be ignored in the UI
      */
@@ -63,7 +63,7 @@ class flDesktop : public Config{
     bool filemanagerRunning();
     bool filemanagerRunning(std::string filemanagerToCheck);
     void setIconsOnDesktop();
-    const char* whichFileManager();
+    std::string whichFileManager();
     std::string whichFileManagerRunning();
     //ROX
     int addRoxFileAttribute(const char* element, const char* attribute, const char* value, const char* text);
@@ -77,13 +77,13 @@ class flDesktop : public Config{
     void setRoxBackground(const char* type, const char* value);//change the rox background from jsm
     void setRoxBackground(const char* value);//change the rox background from jsm
     int loadRox(); /* this loads the Pinboard File... if it does not exist it should create it. by calling recoverRox()*/
-    const char * getRoxBackground();
+    std::string getRoxBackground();
     void saveRox();
     std::string roxPath();
 
     //PCmanFM
     void setPCmanFMbg(const char* filename);
-    const char* getPCmanFMbg();
+    std::string getPCmanFMbg();
     bool isPCmanFMconfig();
 
     //Gsettings (Nautilus/Thunar)
@@ -95,24 +95,25 @@ class flDesktop : public Config{
     virtual ~flDesktop();
 
 private:
-    const char* bash;
-    const char *roxCommand;
+    std::string backgrounds;
+    std::string bash;
+    std::string roxCommand;
     std::string roxFileName;
 
-    const char* pcmanfm;
-    const char* pcmanAutostart;
+    std::string pcmanfm;
+    std::string pcmanAutostart;
     std::string pcmanFMfilename;
     std::string pcmanFMdesktopfilename;
     bool m_usePCmanFM;
 
-    const char* nautilus;
-    const char* nautilusStart;
+    std::string nautilus;
+    std::string nautilusStart;
 
-    const char* thunar;
-    const char* thunarStart;
+    std::string thunar;
+    std::string thunarStart;
 
-    const char* defaultBGtype;
-    const char* defaultBG;
+    std::string defaultBGtype;
+    std::string defaultBG;
 
     tinyxml2::XMLDocument roxDoc;
 

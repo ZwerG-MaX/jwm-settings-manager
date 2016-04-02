@@ -40,8 +40,6 @@
 #include "../include/ui.h"
 #include "../include/tinyxml2.h"
 #include "../data/icons/jwm-settings-manager.xpm"
-//#include <FL/x.H>
-//#include <X11/xpm.h>
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Button.H>
 
@@ -73,5 +71,7 @@ private:
 public:
   void isAdduser(Fl_Button *o);
   void adduser();
+  void isInfo(Fl_Button *o);
+  void addinfo();
 };
 #endif

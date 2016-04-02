@@ -68,8 +68,8 @@ class AutostartUI {open : {public Config}
     code {load();
 saveChangesTemp();} {}
     Fl_Window autostart_window {
-      label {Autostart Programs} open selected
-      xywh {941 242 335 230} type Double color 31 hide resizable
+      label {Autostart Programs} open
+      xywh {221 217 335 230} type Double color 31 hide resizable
       code0 {startup(o);} xclass {jsm-autostart}
     } {
       Fl_Scroll {} {open
@@ -87,12 +87,15 @@ ux.showSettings();}
         }
         Fl_Button save_button {
           label OK
-          callback {saveJWMRC(autostart_window);
+          callback {std::string proggie = program_name->value();
+if(proggie.compare("")!=0){add_program_to_autostart();}
+saveNoRestart();
+autostart_window->hide();
 UI ux;
 ux.showSettings();}
           tooltip {Write to configuration file} xywh {261 195 49 25} box FLAT_BOX color 61 selection_color 38 labelcolor 55
         }
-        Fl_Button {} {
+        Fl_Button add_item {
           label {@+}
           callback {std::string proggie = program_name->value();
 if(proggie.compare("")==0){choose_a_program();}
@@ -104,7 +107,7 @@ else{add_program_to_autostart();}}
           code0 {flAutostart a;}
           code1 {a.getAutostart(autoStartBrowser);}
         }
-        Fl_Button {} {
+        Fl_Button remove_item {
           callback {remove_program_from_autostart();}
           image {custom_buttons/minus} xywh {55 155 35 35} box FLAT_BOX color 23 selection_color 38
         }
@@ -148,9 +151,6 @@ if(input!=NULL){
 	a.addAutostart(input);
 	a.getAutostart(autoStartBrowser);
 	autoStartBrowser->redraw();
-}
-else{
-	fl_message("You have to select a program to add, or type one in!");
 }} {}
   }
   Function {remove_program_from_autostart()} {open

@@ -3,7 +3,7 @@ PROGNAME="${0/.*\/}"
 ## our startup log file
 LOGDIR="$HOME/.jwm/jsm-logs"
 [[ -d "$LOGDIR" ]] || mkdir -p "$LOGDIR"
-LOG="$LOGDIR/.nicestart.log" 
+LOG="$LOGDIR/.nicestart.log"
 ## THESE exist for the scripts in Xsession.d
 date +%F_%I:%M%P > "$LOG"
 echo "$PROGNAME" >> "$LOG"
@@ -11,45 +11,54 @@ echo "$USER" >> "$LOG"
 
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 [[ -z "$XDG_CONFIG_HOME" ]] && export XDG_CONFIG_HOME="$HOME/.config" && echo "exported XDG_CONFIG_HOME=$XDG_CONFIG_HOME" >> "$LOG"
-# AUTOSTART $XDG_CONFIG_HOME/autostart/
-autostart(){
-if [ -d "$XDG_CONFIG_HOME/autostart" ]
-then
-  for i in "${XDG_CONFIG_HOME}"/autostart/*.desktop
-  do
-    grep -q -E "^Hidden=true" "$i" && continue
-    if grep -q -E "^OnlyShowIn=" "$i"
-    then
-      # need to test twice, as lack of the line entirely means we still run it
-      grep -E "^OnlyShowIn=" "$i" | grep -q 'ToriOS;' || continue
-    fi
-    grep -E "^NotShowIn=" "$i" | grep -q 'ToriOS;' && continue
-    # check for TryExec
-    trycmd=$(grep -E "^TryExec=" "$i" | sed 's/.*=//')
-    cmd=$(grep -E "^Exec=" "$i" | sed 's/.*=//')
-    if [ ! -z "$trycmd" ]
-    then
-      echo "Autostarting: $trycmd" >> "$LOG"
-      trycmd &
-      PIDof=$(pidof "${trycmd%% *}")
-      echo "PID of $trycmd is $PIDof" >> "${LOG}"
-    else
-      if [ ! -z "$cmd" ]
-      then
-        echo "Autostarting: $cmd" >> "$LOG"
-        PIDof=$(pidof "${cmd%% *}")
-        $cmd &
-        echo "PID of $cmd is $PIDof)" >> "${LOG}"
-      fi
-    fi
-  done
-else
-  echo "$XDG_CONFIG_HOME/autostart doesn't exist creating it now" >> "${LOG}"
-  mkdir -p "$XDG_CONFIG_HOME/autostart" && echo "made $XDG_CONFIG_HOME/autostart" >> "${LOG}"
-fi
+
+## thanks to technosaurus for this much improved
+# version of the old autostart
+# from JWM bug
+# https://github.com/joewing/jwm/issues/244
+## Lazy evaluation of dynamic menu items #244
+# with modifications...
+matchDeskEnv(){
+   ret=1; IFS=";"
+   for Env in ${1}; do
+      case ":${XDG_CURRENT_DESKTOP}:" in
+         *":${Env}:"*)ret=0;break;;
+      esac
+   done
+   return $ret
 }
-##TODO test this to make it work
-autostart
+
+doDesktopFile(){
+   EXEC="";EXECPATH="";BACK="${PWD}"
+   while read LINE; do
+      case "$LINE" in
+         Exec=*)EXEC="${LINE#*=}";;
+         Path=*)EXECPATH="${LINE#*=}";;
+         Hidden=true*)return;;
+         OnlyShowIn=*)matchDeskEnv "${LINE#*=}" || return;;
+         NotShowIn=*)matchDeskEnv "${LINE#*=}" && return;;
+      esac
+   done < $1
+   [[ -n "$EXECPATH" ]] && cd "${EXECPATH}"
+   [[ -n "$EXEC" ]] && echo "[Autostart] $EXEC">> "$LOG" && $EXEC &
+   [[ -n "$EXECPATH" ]] && cd "${BACK}"
+}
+
+AUTOSTARTDIR=${XDG_CONFIG_HOME:-${HOME}/.config/}/autostart
+for Entry in ${AUTOSTARTDIR}/*.desktop; do
+   doDesktopFile $Entry
+done
+
+IFS=":"
+for DIR in ${XDG_CONFIG_DIRS:-/etc/xdg}; do
+   for Entry in ${DIR}/autostart/*.desktop; do
+      #allow users to block/override system settings
+      [ -f "${AUTOSTARTDIR}/${Entry##*/}" ] && continue
+      [ -f "${Entry}" ] && doDesktopFile $Entry
+   done
+done
+## end technosaurus awesomeness
+
 GSETTINGS="$(which gsettings)"
 GCONF2="$(which gconftool-2)"
 #ICONIZER="$(which jwmIconFinder)"
@@ -57,12 +66,16 @@ GTKRC2="${HOME}/.gtkrc-2.0"
 
 if [ -f "${GTKRC2}" ]
 then
-  THEME_TO_USE=$(grep "gtk-theme-name=" "${GTKRC2}" | sed 's#gtk-theme-name=##' | sed 's|"||g')
-  ICON_THEME_TO_USE=$(grep "gtk-icon-theme-name=" "${GTKRC2}" | sed 's#gtk-theme-name=##' | sed 's|"||g')
-else
-  THEME_TO_USE=Numix
-  ICON_THEME_TO_USE=Numix-Circle
+  gtkrc2_result=$(grep "gtk-icon-theme-name=" "${GTKRC2}")
+  gtkrc2_result="${gtkrc2_result/gtk-icon-theme-name=}"
+  ICON_THEME_TO_USE="${gtkrc2_result//\"}"
+  gtkrc2_result=$(grep "gtk-theme-name=" "${GTKRC2}")
+  gtkrc2_result="${gtkrc2_result/gtk-theme-name=}"
+  THEME_TO_USE="${gtkrc2_result//\"}"
 fi
+
+[[ -z "$THEME_TO_USE" ]] &&  THEME_TO_USE=Numix
+[[ -z "$ICON_THEME_TO_USE" ]] && ICON_THEME_TO_USE=Numix-Circle
 
 echo "[USING]
 gtk theme: $THEME_TO_USE
@@ -71,16 +84,20 @@ as themes
 " >> "$LOG"
 if [ -x "${GCONF2}" ]
 then
-  "${GCONF2}" --type=string --set /desktop/gnome/interface/gtk_theme "${THEME_TO_USE}" && echo "using ${GCONF2} to set ${THEME_TO_USE} as gtk_theme" >> "$LOG"
-  "${GCONF2}" --type=string --set /desktop/gnome/interface/icon_theme  "${ICON_THEME_TO_USE}" && echo "using ${GCONF2} to set ${ICON_THEME_TO_USE} as icon_theme" >> "$LOG"
+  "${GCONF2}" --type=string --set /desktop/gnome/interface/gtk_theme "${THEME_TO_USE}" &
+   echo "using ${GCONF2} to set ${THEME_TO_USE} as gtk_theme" >> "$LOG"
+  "${GCONF2}" --type=string --set /desktop/gnome/interface/icon_theme  "${ICON_THEME_TO_USE}" &
+   echo "using ${GCONF2} to set ${ICON_THEME_TO_USE} as icon_theme" >> "$LOG"
 else
   echo "[WARNING] gconftool-2: ${GCONF2}
 does not exist or is not executable" >> "$LOG"
 fi
 if [ -x "${GSETTINGS}" ]
 then
-  "${GSETTINGS}" set org.gnome.desktop.interface gtk-theme "${THEME_TO_USE}"&& echo "using ${GSETTINGS} to set ${THEME_TO_USE} as gtk-theme" >> "$LOG"
-  "${GSETTINGS}" set org.gnome.desktop.interface icon-theme "${ICON_THEME_TO_USE}"&& echo "using ${GSETTINGS} to set ${ICON_THEME_TO_USE} as icon-theme" >> "$LOG"
+  "${GSETTINGS}" set org.gnome.desktop.interface gtk-theme "${THEME_TO_USE}" &
+  echo "using ${GSETTINGS} to set ${THEME_TO_USE} as gtk-theme" >> "$LOG"
+  "${GSETTINGS}" set org.gnome.desktop.interface icon-theme "${ICON_THEME_TO_USE}" &
+   echo "using ${GSETTINGS} to set ${ICON_THEME_TO_USE} as icon-theme" >> "$LOG"
 else
   echo "[WARNING] gsettings: ${GSETTINGS}
 does not exist or is not executable" >> "$LOG"
@@ -90,15 +107,17 @@ then
   xscreensaver &
   echo "ran: xscreensaver" >> "${LOG}"
 else
-  if [ ! -z "$(which xset)" ]
+  if [ -n "$(which xset)" ]
   then
-    xset s off &
-    xset dpms 0 0 0 &
-    echo "ran: xset s off & ran: xset dpms 0 0 0" >> "${LOG}"
+    COMMAND=("xset s off" "xset dpms force off" "xset -dpms")
+    for i in "${COMMAND[@]}"
+    do
+      $i && echo "ran: $i" >> "${LOG}"
+    done
   else
     echo "[WARNING] couldn't find xset or xscreensaver" >>"${LOG}"
   fi
 fi
 [[ -f "$HOME/.config/jsm-mouse" ]] && MOUSER="$HOME/.config/jsm-mouse"
 [[ -f "$XDG_CONFIG_HOME/jsm-mouse" ]] && MOUSER="$XDG_CONFIG_HOME/jsm-mouse"
-[[ -n "$MOUSER" ]] && $MOUSER && echo "ran: $MOUSER" >> "$LOG"
+[[ -n "$MOUSER" ]] && [[ -x "$MOUSER" ]] && $MOUSER && echo "ran: $MOUSER" >> "$LOG"

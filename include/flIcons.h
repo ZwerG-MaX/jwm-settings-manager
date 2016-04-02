@@ -34,23 +34,12 @@ class flIcons : public Config
 {
     public:
         void getIcons(Fl_Browser *o);
-        std::string currentIconTheme();
-        ///TODO:
-        /* implement actual icon themes
-         * That the user could choose.. I.e.
-         * Box  then this gets ALL the subdirectories and automatically adds them in
-         * There would have to be a 'size' selection, so only 32x32 icons (or whatever)
-         * would be shown.
-         */
-
         void loadTheme(Fl_Browser *o);
-        bool useTheme(Fl_Browser *o);
-        void makeIcons(std::string fullpath,unsigned int icon_size);
-        const char* themegrep(const char* args, const char* filename,int line);
-
         void addIcons(std::string path);
         void removeIcons(const char * icons);
-
+        bool useTheme(Fl_Browser *o);
+        const char* themegrep(const char* args, const char* filename,int line);
+        std::string currentIconTheme();
         flIcons();
         virtual ~flIcons();
     protected:

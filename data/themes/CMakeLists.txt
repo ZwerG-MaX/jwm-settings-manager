@@ -1,16 +1,13 @@
 ## Variables in the configure (*.in) files
 #####################################################################################
 
-
+## DEFAULT PROGRAMS
 set(EXTENTION "svg")
 set(JSM "jwm-settings-manager")
-## DEFAULT PROGRAMS
 set (brightUP "exec:torios-gamma up")
 set (brightDown "exec:torios-gamma down")
-set (WEB_PROG "exec:x-www-browser")
 set (MENU_WEB_PROG "x-www-browser")
-set (MANUAL "${MENU_WEB_PROG} /usr/share/doc/torios/html/index.html")
-set (STARTPAGE "${WEB_PROG} /usr/share/doc/torios/startpage.html")
+set (WEB_PROG "exec:${MENU_WEB_PROG}")
 set (STARTPAGE_ICON "browser.${EXTENTION}")
 set (SYS_MONITOR "exec:xterm htop")
 set (SCREEN_SHOT "exec:screenie")
@@ -21,8 +18,38 @@ set (VOL_UP "exec:amixer-up")
 set (VOL_DOWN "exec:amixer-down")
 set (VOL_MUTE "exec:amixer-toggle")
 set (HELP_PROG "exec:xman")
-set(LOGOUT_PROGRAM "torios-exit")
-set(TZ_PROG "xterm -e 'sudo dpkg-reconfigure tzdata'")
+set (LOGOUT_PROGRAM "torios-exit")
+set (TZ_PROG "xterm -e 'sudo dpkg-reconfigure tzdata'")
+set (CAL_PROG "torios-calendar")
+set (RESTART_PROGRAM "torios-reboot")
+
+## menu programs
+set(PLACES_MENU_FILE "$HOME/.config/placesmenu")
+set(PLACES_INCLUDE "exec:/usr/bin/jwm-places")
+set(APPMENU_FILE "$HOME/.config/torimenu")
+set(JWM_MENU "exec:/usr/bin/jwm-menu")
+
+## help programs
+set(ABOUT_PROG "torios-about || ${MENU_WEB_PROG} http://torios.top")
+set (MANUAL "${MENU_WEB_PROG} /usr/share/doc/torios/html/index.html")
+set (STARTPAGE "${WEB_PROG} /usr/share/doc/torios/startpage.html")
+
+# Web pages
+set(FACEB "https://www.facebook.com/ToriOS.Official")
+set(GPLUS "https://plus.google.com/113578220061772446187/posts")
+set(TWITTER "https://twitter.com/ToriOS_Official")
+set(LP "https://launchpad.net/~torios")
+
+##Startup commands
+set (STARTUP "<StartupCommand>pcmanfm --desktop</StartupCommand>
+   <StartupCommand>$HOME/.config/jsm-mouse</StartupCommand>
+   <StartupCommand>torios-volume</StartupCommand>
+   <StartupCommand>torios-battery</StartupCommand>
+   <StartupCommand>nice-start</StartupCommand>
+   <StartupCommand>/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1</StartupCommand>")
+
+## Desktop Background
+set(BG "/usr/share/backgrounds/default.jpg")
 
 ################### MENUS ###############################
 
@@ -40,15 +67,15 @@ set(TZ_PROG "xterm -e 'sudo dpkg-reconfigure tzdata'")
 ## CLOCK
 set(CLOCK_FORMAT "%a, %e %b %l:%M %p")
 set(CLOCK "root:c")
-set(OLD_CLOCK "zenity --calendar --title=\"Calendar\"")
+set(OLD_CLOCK "${CAL_PROG}")
 set(OLD_CLOCK_TAG "<Clock format=\"${CLOCK_FORMAT}\">${OLD_CLOCK}</Clock>")
 set(CLOCK_TAG "<Clock format=\"${CLOCK_FORMAT}\">${CLOCK}</Clock>")
 set(CLOCK_MENU "<!-- Clock Menu-->
     <RootMenu height=\"0\" onroot=\"c\">
         <Program icon=\"time.${EXTENTION}\" label=\"Clock Settings\">${JSM} --clock-settings</Program>
          <Separator/>
-        <Program icon=\"calendar.${EXTENTION}\" label=\"Calendar\">@OLD_CLOCK@</Program>
-        <Program icon=\"time.${EXTENTION}\" label=\"Timezone Settings\">@TZ_PROG@</Program>
+        <Program icon=\"calendar.${EXTENTION}\" label=\"Calendar\">${OLD_CLOCK}</Program>
+        <Program icon=\"time.${EXTENTION}\" label=\"Timezone Settings\">${TZ_PROG}</Program>
     </RootMenu>")
 
 ## Panel Edit
@@ -72,21 +99,16 @@ set(SHUTDOWN_ICON "system-shutdown.${EXTENTION}")
 set(SHUTDOWN_PROGRAM "${JSM} --halt")
 set(LOGOUT_ICON "system-logout.${EXTENTION}")
 set(RESTART_ICON "system-restart.${EXTENTION}")
-set(RESTART_PROGRAM "torios-reboot")
+
 set(SHUTERDOWN "<Separator/>
 	<Restart label=\"Reload Desktop\" icon=\"${RESTART_ICON}\"/>
 	<Program icon=\"${SHUTDOWN_ICON}\" label=\"Shutdown Computer\">${SHUTDOWN_PROGRAM}</Program>")
 
 ## MAIN MENU
-set(FACEB "https://www.facebook.com/ToriOS.Linux")
-set(GPLUS "https://plus.google.com/u/0/b/105245967039953698237/105245967039953698237/posts")
-set(TWITTER "https://twitter.com/Tori_OS")
-set(LP "https://launchpad.net/~torios")
-set(APPMENU_FILE "$HOME/.config/torimenu")
-set(JWM_MENU "exec:/usr/bin/jwm-menu")
+
 set(JWM_ROOT_NUM "2")
 set(JWM_ROOT "root:${JWM_ROOT_NUM}")
-set(ABOUT_PROG "torios-about || ${MENU_WEB_PROG} http://torios.net")
+
 set(MENU_ICON "/usr/share/pixmaps/distributor-logo.png")
 #MAIN MENU GENERATOR
 
@@ -110,8 +132,7 @@ set(MENU_NAME "Apps")
 set(PLACES_NUM "7")
 set(PLACES_ROOT "root:${PLACES_NUM}")
 set(PLACES_NAME "Places")
-set(PLACES_MENU_FILE "$HOME/.config/placesmenu")
-set(PLACES_INCLUDE "exec:/usr/bin/jwm-places")
+
 set(PLACES_ICON "folder.${EXTENTION}")
 set(PLACES_MENU "    <RootMenu onroot=\"${PLACES_NUM}\">
         <Include>${PLACES_INCLUDE}</Include>
@@ -145,7 +166,7 @@ set (DEFAULT_TRAY "    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width
         </TrayButton>
         <TrayButton icon=\"${STARTPAGE_ICON}\" border=\"false\">
             <Button mask=\"1\">${STARTPAGE}</Button>
-            <Button mask=\"23\">${EDIT_PANEL_ROOT}</Button>>
+            <Button mask=\"23\">${EDIT_PANEL_ROOT}</Button>
         </TrayButton>
         <Pager labeled=\"true\"/>
         <TaskList maxwidth=\"256\"/>
@@ -172,7 +193,7 @@ set(GNOME_MENUS_LIST "<!-- NOTE, if you hand edit this root:5 is the app menu an
     <Include>$HOME/.config/gnomesystem</Include>")
 set (GNOME_SYS_ROOT "root:8")
 set (GNOME_SYS_NAME "System")
-set (GNOME_SYS_ICON "applications-system.@EXTENTION@")
+set (GNOME_SYS_ICON "applications-system.${EXTENTION}")
 
 ## GNOME TRAYS ############
 set (SHOW_DESK_ICON "preferences-system-hotcorners.png")
@@ -493,17 +514,21 @@ set(ICONS_LIST "  <IconPath>/usr/share/icons/Numix-Circle/scalable/apps</IconPat
   <IconPath>/usr/share/icons/Numix/scalable/status</IconPath>
   <IconPath>/usr/share/pixmaps</IconPath>
   <IconPath>/usr/share/icons</IconPath>
-  <IconPath>/usr/share/app-install/icons</IconPath>")
+  <IconPath>/usr/share/app-install/icons</IconPath>
+  <IconPath>$HOME/.local/share/icons/</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/128x128</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/128x128/apps</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/16x16</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/16x16/apps</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/24x24</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/24x24/apps</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/256x256</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/256x256/apps</IconPath>
+  <IconPath>$HOME/.local/share/icons/hicolor/32x32</IconPath>")
 
 set(MOUSE "<DoubleClickSpeed>400</DoubleClickSpeed>
     <DoubleClickDelta>2</DoubleClickDelta>")
-set (STARTUP "<StartupCommand>pcmanfm --desktop</StartupCommand>
-   <StartupCommand>$HOME/.config/jsm-mouse</StartupCommand>
-   <StartupCommand>nm-applet</StartupCommand>
-   <StartupCommand>volumeicon</StartupCommand>
-   <StartupCommand>xfce4-power-manager</StartupCommand>
-   <StartupCommand>nice-start</StartupCommand>
-   <StartupCommand>/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1</StartupCommand>")
 set (GROUPS "<Group>
         <Option>noshade</Option>
     </Group>
@@ -522,7 +547,7 @@ set (GROUPS "<Group>
         <Option>sticky</Option>
     </Group>")
 set(LIVE_GROUPS "<Group>
-        <Name>zenity</Name>
+        <Class>OBI</Class>
         <Option>noclose</Option>
         <Option>constrain</Option>
     </Group>")
@@ -530,7 +555,6 @@ set(BUTTONS "<ButtonClose>/usr/share/jwm-settings-manager/Buttons/Default/close.
     <ButtonMax>/usr/share/jwm-settings-manager/Buttons/Default/max.png</ButtonMax>
     <ButtonMaxActive>/usr/share/jwm-settings-manager/Buttons/Default/max-toggle.png</ButtonMaxActive>
     <ButtonMin>/usr/share/jwm-settings-manager/Buttons/Default/min.png</ButtonMin>")
-set(BG "/usr/share/backgrounds/default.jpg")
 #####################################################################################
 ### End Variables
 

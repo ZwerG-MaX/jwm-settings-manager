@@ -93,7 +93,7 @@ unsigned int flWindow::getActiveColor(const char* element, unsigned int &color2)
 void flWindow::setInactiveColor(const char* element, const double* rgb){
    // loadTemp();
     tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" );
-    if(isNewStyle !=-1){
+    if(newStyle() !=-1){
         if(!testElement("WindowStyle",element)){
             createElement("WindowStyle",element);
         }
@@ -114,7 +114,7 @@ void flWindow::setInactiveColor(const char* element, const double* rgb){
 void flWindow::setInactiveColor(const char* element, const double* rgb, const double* rgb2){
    // loadTemp();
     tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" );
-    if(isNewStyle !=-1){
+    if(newStyle() !=-1){
         if(!testElement("WindowStyle",element)){
             createElement("WindowStyle",element);
         }
@@ -147,29 +147,32 @@ unsigned int flWindow::getInactiveColor(const char* element){
 }
 unsigned int flWindow::getInactiveColor(const char* element, unsigned int &color2){
     #ifdef DEBUG_TRACK
-        const char* functionName = "unsigned int getInactiveColor(const char* element, unsigned int &color2)";
-        std::cerr << functionName << std::endl;
+        std::cerr <<"unsigned int flWindow::getInactiveColor("<< element<<", "<< color2<<")" << std::endl;
     #endif // DEBUG
    // loadTemp();
-    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" )->FirstChildElement( "WindowStyle" );
-    if(isNewStyle !=-1){
-        if(!testElement("WindowStyle",element)){
-            createElement("WindowStyle",element);
+   const char* WindowStyle="WindowStyle";
+    tinyxml2::XMLElement* colorElement = doc.FirstChildElement( "JWM" );
+    if(!testElement(WindowStyle )){createElement(WindowStyle);}
+    if(newStyle() !=-1){
+        if(!testElement(WindowStyle,element)){
+            createElement(WindowStyle,element);
             tinyxml2::XMLElement* fixer = doc.FirstChildElement("JWM")->
-                    FirstChildElement( "WindowStyle")->
+                    FirstChildElement( WindowStyle)->
                     FirstChildElement( element );
             fixer->SetText("#000000");
             saveChanges();
             saveChangesTemp();
             return 0;
         }
-        colorElement  = colorElement->FirstChildElement( element );
+        colorElement  = doc.FirstChildElement("JWM")->
+                    FirstChildElement( WindowStyle)->
+                    FirstChildElement( element );
     }
     else{
-        if(!testElement("WindowStyle","Inactive",element)){
-            createElement("WindowStyle","Inactive",element);
+        if(!testElement(WindowStyle,"Inactive",element)){
+            createElement(WindowStyle,"Inactive",element);
             tinyxml2::XMLElement* fixer = doc.FirstChildElement("JWM")->
-                    FirstChildElement( "WindowStyle")->
+                    FirstChildElement( WindowStyle)->
                     FirstChildElement( "Inactive")->
                     FirstChildElement( element );
             fixer->SetText("#000000");
@@ -177,11 +180,17 @@ unsigned int flWindow::getInactiveColor(const char* element, unsigned int &color
             saveChangesTemp();
             return 0;
         }
-        colorElement  = colorElement->
+        colorElement  = doc.FirstChildElement("JWM")->
+                        FirstChildElement( WindowStyle)->
                         FirstChildElement( "Inactive" )->
                         FirstChildElement( element );
     }
-    std::string colorXML = colorElement->GetText();
+
+    std::string colorXML;
+    if(colorElement->GetText()){
+       colorXML = colorElement->GetText();
+    }
+    else{errorJWM("Element had no color text");return 0;}
     ///this one is important
     unsigned int color;
     color = getColor(colorXML, color2);
@@ -195,26 +204,26 @@ unsigned int flWindow::getInactiveColor(const char* element, unsigned int &color
 //Active
 void flWindow::setActiveWindowColor(const double* rgb, const double* rgb2){
     const char* NewOrOldBG;
-    if(isNewStyle !=-1){NewOrOldBG="Background";}
+    if(newStyle() !=-1){NewOrOldBG="Background";}
     else{NewOrOldBG="Title";}
     setActiveColor(NewOrOldBG,rgb,rgb2);
 }
 void flWindow::setActiveWindowColor(const double* rgb){
     const char* NewOrOldBG;
-    if(isNewStyle !=-1){NewOrOldBG="Background";}
+    if(newStyle() !=-1){NewOrOldBG="Background";}
     else{NewOrOldBG="Title";}
     setActiveColor(NewOrOldBG,rgb);
 }
 //Inactive
 void flWindow::setWindowColor(const double* rgb){
     const char* newORold;
-    if(isNewStyle !=-1){newORold="Background";}
+    if(newStyle() !=-1){newORold="Background";}
     else{newORold="Title";}
     setInactiveColor(newORold,rgb);
 }
 void flWindow::setWindowColor(const double* rgb, const double* rgb2){
     const char* newORold;
-    if(isNewStyle !=-1){newORold="Background";}
+    if(newStyle() !=-1){newORold="Background";}
     else{newORold="Title";}
     setInactiveColor(newORold,rgb,rgb2);
 }
@@ -225,7 +234,7 @@ unsigned int flWindow::getWindowColor(unsigned int &color2){
 //    const char* functionName = "unsigned int getWindowColor(unsigned int &color2)";
     //std::cerr << functionName << std::endl;
     const char* newOrOld;
-    if(isNewStyle !=-1){newOrOld="Background";}
+    if(newStyle() !=-1){newOrOld="Background";}
     else{newOrOld="Title";}
     return getInactiveColor(newOrOld, color2);
 }
@@ -235,7 +244,7 @@ unsigned int flWindow::getActiveWindowColor(unsigned int &color2){
 //    const char* functionName = "unsigned int flWindow::getActiveWindowColor(unsigned int &color2)";
     //std::cerr << functionName << std::endl;
     const char* newOrOld;
-    if(isNewStyle !=-1){newOrOld="Background";}
+    if(newStyle() !=-1){newOrOld="Background";}
     else{newOrOld="Title";}
     if(DEBUG_ME){std::cerr<<newOrOld<<std::endl;}
     return getActiveColor(newOrOld, color2);
@@ -280,7 +289,7 @@ float flWindow::getActiveOpacity(){
 void flWindow::windowOpacity(float &opacity){
    // loadTemp();
    tinyxml2::XMLElement* opacityElement;
-    if(isNewStyle !=-1){
+    if(newStyle() !=-1){
         if(!testElement("WindowStyle","Opacity")){
             createElement("WindowStyle","Opacity");
         }
@@ -303,7 +312,7 @@ float flWindow::getOpacity(){
     tinyxml2::XMLElement* opacityElement;
 
     //if it is the new version
-    if(isNewStyle !=-1){
+    if(newStyle() !=-1){
         //does the element even exist??
         if(!testElement("WindowStyle","Opacity")){
             //hmmm.... nope  we should make it
@@ -518,7 +527,7 @@ void flWindow::setActiveFontColor(const double* rgb){
     const char* newORold;
 
     //if it is new use this
-    if(isNewStyle !=-1){newORold="Foreground";}
+    if(newStyle() !=-1){newORold="Foreground";}
     else{newORold="Text";}//otherwise use this
 
     //set the color
@@ -529,7 +538,7 @@ void flWindow::setFontColor(const double* rgb){
     const char* newORold;
 
     //if it is new use this
-    if(isNewStyle !=-1){newORold="Foreground";}
+    if(newStyle() !=-1){newORold="Foreground";}
     else{newORold="Text";}//otherwise use this
 
     //set the color
@@ -541,7 +550,7 @@ unsigned int flWindow::getActiveFontColor(){
     const char* newORold;
 
     //if it is new use this
-    if(isNewStyle !=-1){newORold="Foreground";}
+    if(newStyle() !=-1){newORold="Foreground";}
     else{newORold="Text";}//otherwise use this
 
     //return the result of our generic function
@@ -553,7 +562,7 @@ unsigned int flWindow::getFontColor(){
     const char* newORold;
 
     //if it is new use this
-    if(isNewStyle !=-1){newORold="Foreground";}
+    if(newStyle() !=-1){newORold="Foreground";}
     else{newORold="Text";}//otherwise use this
 
     //return the result of our generic function
@@ -696,7 +705,6 @@ void flWindow::addGroup(){
 }
 void flWindow::addGroupTHING( unsigned int whichGroup, const char* itemName, const char* whichElement){
 
-    //if there is no group just return
     if(!testElement(GROUP)){addGroup();}
     unsigned int i = 1;
 
@@ -713,15 +721,15 @@ void flWindow::addGroupTHING( unsigned int whichGroup, const char* itemName, con
 
     //create a new element called whichElement... this is whatever we passed in from the functions below
     tinyxml2::XMLNode *newItem = doc.NewElement(whichElement);
-
+    tinyxml2::XMLNode *groupNode = groupElement;
     //insert it at the end of whichGroup we are in
-    groupElement->InsertEndChild(newItem);
+    groupNode->InsertEndChild(newItem);
 
     //save it
     saveChangesTemp();
 
     //set the text
-    groupElement->LastChildElement()->SetText(itemName);
+    groupNode->LastChildElement()->SetText(itemName);
 
     //save it!!
     saveChangesTemp();
@@ -737,7 +745,7 @@ void flWindow::removeGroup(unsigned int whichGroup){
     unsigned int i = 1;
 
     //make a base element
-    tinyxml2::XMLElement * baseElement = doc.FirstChildElement("JWM");
+    tinyxml2::XMLNode * baseElement = doc.FirstChildElement("JWM");
 
     //make our basic pointer
     tinyxml2::XMLElement * groupElement = doc.FirstChildElement("JWM")->FirstChildElement(GROUP);
@@ -795,13 +803,15 @@ void flWindow::removeGroupTHING(unsigned int whichGroup, const char* progName, c
 
             //if our tester text is the same thing we sent in (at our current whichGroup)
             if(tester.compare(progName)==0){
-
+                tinyxml2::XMLNode* groupNode= groupElement;
                 //delete it
-                groupElement->DeleteChild(node);
+                groupNode->DeleteChild(node);
                 if(DEBUG_ME){std::cerr<<"Deleted: "<<whichElement<<" node: "<<progName<<" from: Group "<<whichGroup<<std::endl;}
                 //save!!
-                saveChanges();
                 saveChangesTemp();
+                loadTemp();
+                saveNoRestart();
+                return;
             }
         }
     }
@@ -850,7 +860,7 @@ int flWindow::getGroups(Fl_Browser *o){
 }
 
 int flWindow::getGroupTHING(Fl_Browser *o, unsigned int whichGroup, const char* whichElement){
-
+    loadTemp();
     //clear our browser
     o->clear();
 

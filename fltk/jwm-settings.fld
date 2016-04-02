@@ -70,12 +70,6 @@ decl {\#include "../include/tinyxml2.h"} {public global
 decl {\#include "../data/icons/jwm-settings-manager.xpm"} {public global
 } 
 
-decl {//\#include <FL/x.H>} {public global
-} 
-
-decl {//\#include <X11/xpm.h>} {public global
-} 
-
 class SettingsUI {open
 } {
   Function {make_window()} {open
@@ -143,12 +137,12 @@ UI ui;ui.showAutostart();}
       }
       Fl_Button {} {
         label {Users and Groups}
-        callback {adduser();} selected
+        callback {adduser();}
         image {../data/img/flAdduser.xpm} xywh {55 295 80 65} box FLAT_BOX color 23 align 128 hide deactivate
-        code0 {isAdduser(o);}
+        code0 {//isAdduser(o);}
       }
       Fl_Button {} {
-        label {System Details} selected
+        label {System Details}
         image {../data/img/jsm-theme.png} xywh {150 295 80 65} box FLAT_BOX color 23 align 128 hide deactivate
       }
     }
@@ -170,6 +164,24 @@ else{
     code {int retval = system("bash -c 'fladduser &disown'");
 if(retval !=0){
   std::cerr<<"system(\\"bash -c 'fladduser &disown'\\") did not return 0"<<std::endl;
+}} {}
+  }
+  Function {isInfo(Fl_Button *o)} {open
+  } {
+    code {Config config;
+bool isexec = config.testExec("torios-info");
+if(isexec){
+  o->show();
+}
+else{
+  o->hide();
+}} {}
+  }
+  Function {addinfo()} {open
+  } {
+    code {int retval = system("bash -c 'torios-info &disown'");
+if(retval !=0){
+  std::cerr<<"system(\\"bash -c 'torios-info &disown'\\") did not return 0"<<std::endl;
 }} {}
   }
 } 

@@ -52,7 +52,7 @@ const char* copyright="                 Joe's Window Manager Configuration\n\
 \n\
   This program configures JWM using tinyxml2 and FLTK\n\
 \n\
-          Copyright (C) 2014-2015  Israel <israel@torios.org>\n\
+          Copyright (C) 2014-2015  Israel <israeldahl@gmail.com>\n\
   This program is free software: you can redistribute it and/or modify\n\
   it under the terms of the GNU General Public License as published by\n\
   the Free Software Foundation, either version 3 of the License, or\n\
@@ -168,7 +168,7 @@ int main(int argc, char *argv[]){
                     return 0;
                 }
                 else {
-                    std::cout<< "Invalid command"<<std::endl;
+                    std::cerr<< "Invalid command"<<std::endl;
                     showHelp();
                     return 0;
                 }
@@ -179,17 +179,12 @@ int main(int argc, char *argv[]){
     resetDebug();
     return 0;
     }
-    catch (const std::exception& e)
-    {
+    catch (const std::exception& e){
         std::cerr << "Unhandled exception:\n" << e.what() << std::endl;
-        // or other methods of displaying an error
-
         return EXIT_FAILURE;
     }
-    catch (...)
-    {
+    catch (...){
         std::cerr << "Unknown exception!" << std::endl;
-
         return EXIT_FAILURE;
     }
 }
@@ -236,7 +231,7 @@ if(config.isDebug()){
     std::cerr<<"Debugging Session Ended\n\
 -------------------------------------------------------------------"<<std::endl;
     config.setDebugOff();
-}
+    }
 }
 void debug(){
 UI ux;

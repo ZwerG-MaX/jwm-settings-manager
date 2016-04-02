@@ -103,7 +103,7 @@ class PanelUI {open : {public Config}
 std::string panelLabel = FLPANEL.convert(FLPANEL.currentPanel());
 std::string LABEL = "Panel ";
 LABEL +=panelLabel;
-o->copy_label(LABEL.c_str());} selected
+o->copy_label(LABEL.c_str());}
           xywh {25 20 110 25} box GTK_UP_BOX down_box FLAT_BOX color 23 selection_color 51 when 3
           code0 {flPanel FLPANEL;int n = FLPANEL.currentPanel();//flPanel FLPANEL;}
           code1 {std::string panelLabel = FLPANEL.convert(n);}
@@ -159,7 +159,7 @@ Menu_CB(a);}
         } {
           Fl_Group {} {
             label Apps open
-            xywh {10 90 345 385} hide
+            xywh {10 90 345 385}
           } {
             Fl_Button {} {
               label {-}
@@ -303,7 +303,7 @@ ux.showMenu();}
           }
           Fl_Group {} {
             label {Size And Position} open
-            xywh {10 85 330 380}
+            xywh {10 85 330 380} hide
           } {
             Fl_Menu_Button {} {
               label {Panel Position}
@@ -778,8 +778,8 @@ if(result!=NULL && program !=NULL){
   } {
     Fl_Window conf_menu_window {
       label {Configure Menu} open
-      xywh {203 201 245 130} type Double labelfont 14
-      code0 {startup(o);} xclass {jsm-panel} visible
+      xywh {203 201 245 130} type Double labelfont 14 hide
+      code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Button {} {
         label OK
@@ -793,7 +793,7 @@ if(newLabel==NULL){newLabel=gettext("Menu");}
 config.labelMenu(testNum,newLabel);
 config.setImageMenu(testNum,icon);
 saveChangesTemp();
-conf_menu_window->hide();}
+conf_menu_window->hide();} selected
         xywh {175 95 60 30} box FLAT_BOX color 69 labelfont 1 labelcolor 7
       }
       Fl_Input app_menu {

@@ -37,7 +37,10 @@ void AutostartUI::cb_Cancel(Fl_Button* o, void* v) {
 }
 
 void AutostartUI::cb_save_button_i(Fl_Button*, void*) {
-  saveJWMRC(autostart_window);
+  std::string proggie = program_name->value();
+if(proggie.compare("")!=0){add_program_to_autostart();}
+saveNoRestart();
+autostart_window->hide();
 UI ux;
 ux.showSettings();
 }
@@ -45,20 +48,20 @@ void AutostartUI::cb_save_button(Fl_Button* o, void* v) {
   ((AutostartUI*)(o->parent()->parent()->user_data()))->cb_save_button_i(o,v);
 }
 
-void AutostartUI::cb__i(Fl_Button*, void*) {
+void AutostartUI::cb_add_item_i(Fl_Button*, void*) {
   std::string proggie = program_name->value();
 if(proggie.compare("")==0){choose_a_program();}
 else{add_program_to_autostart();};
 }
-void AutostartUI::cb_(Fl_Button* o, void* v) {
-  ((AutostartUI*)(o->parent()->parent()->user_data()))->cb__i(o,v);
+void AutostartUI::cb_add_item(Fl_Button* o, void* v) {
+  ((AutostartUI*)(o->parent()->parent()->user_data()))->cb_add_item_i(o,v);
 }
 
-void AutostartUI::cb_1_i(Fl_Button*, void*) {
+void AutostartUI::cb_remove_item_i(Fl_Button*, void*) {
   remove_program_from_autostart();
 }
-void AutostartUI::cb_1(Fl_Button* o, void* v) {
-  ((AutostartUI*)(o->parent()->parent()->user_data()))->cb_1_i(o,v);
+void AutostartUI::cb_remove_item(Fl_Button* o, void* v) {
+  ((AutostartUI*)(o->parent()->parent()->user_data()))->cb_remove_item_i(o,v);
 }
 
 #include <FL/Fl_Bitmap.H>
@@ -97,13 +100,13 @@ Fl_Double_Window* AutostartUI::make_window() {
         save_button->labelcolor((Fl_Color)55);
         save_button->callback((Fl_Callback*)cb_save_button);
       } // Fl_Button* save_button
-      { Fl_Button* o = new Fl_Button(15, 155, 35, 35, gettext("@+"));
-        o->tooltip(gettext("Add the chosen program"));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)23);
-        o->selection_color((Fl_Color)38);
-        o->callback((Fl_Callback*)cb_);
-      } // Fl_Button* o
+      { add_item = new Fl_Button(15, 155, 35, 35, gettext("@+"));
+        add_item->tooltip(gettext("Add the chosen program"));
+        add_item->box(FL_FLAT_BOX);
+        add_item->color((Fl_Color)23);
+        add_item->selection_color((Fl_Color)38);
+        add_item->callback((Fl_Callback*)cb_add_item);
+      } // Fl_Button* add_item
       { autoStartBrowser = new Fl_Browser(15, 10, 305, 140);
         autoStartBrowser->type(2);
         autoStartBrowser->box(FL_FLAT_BOX);
@@ -111,13 +114,13 @@ Fl_Double_Window* AutostartUI::make_window() {
         flAutostart a;
         a.getAutostart(autoStartBrowser);
       } // Fl_Browser* autoStartBrowser
-      { Fl_Button* o = new Fl_Button(55, 155, 35, 35);
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)23);
-        o->selection_color((Fl_Color)38);
-        o->image(image_minus);
-        o->callback((Fl_Callback*)cb_1);
-      } // Fl_Button* o
+      { remove_item = new Fl_Button(55, 155, 35, 35);
+        remove_item->box(FL_FLAT_BOX);
+        remove_item->color((Fl_Color)23);
+        remove_item->selection_color((Fl_Color)38);
+        remove_item->image(image_minus);
+        remove_item->callback((Fl_Callback*)cb_remove_item);
+      } // Fl_Button* remove_item
       o->end();
     } // Fl_Scroll* o
     startup(o);
@@ -164,9 +167,6 @@ void AutostartUI::add_program_to_autostart() {
   	a.addAutostart(input);
   	a.getAutostart(autoStartBrowser);
   	autoStartBrowser->redraw();
-  }
-  else{
-  	fl_message("You have to select a program to add, or type one in!");
   }
 }
 
