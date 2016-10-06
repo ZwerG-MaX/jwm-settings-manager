@@ -9,15 +9,15 @@ set (brightDown "exec:torios-gamma down")
 set (MENU_WEB_PROG "x-www-browser")
 set (WEB_PROG "exec:${MENU_WEB_PROG}")
 set (STARTPAGE_ICON "browser.${EXTENTION}")
-set (SYS_MONITOR "exec:xterm htop")
+set (SYS_MONITOR "exec:torios-runchecker xterm htop")
 set (SCREEN_SHOT "exec:screenie")
 set (RUN_DIALOG "exec:zrun")
-set (CALC_PROG "exec:xcalc")
+set (CALC_PROG "exec:torios-runchecker xcalc")
 set (TERM_PROG "exec:x-terminal-emulator")
 set (VOL_UP "exec:amixer-up")
 set (VOL_DOWN "exec:amixer-down")
 set (VOL_MUTE "exec:amixer-toggle")
-set (HELP_PROG "exec:xman")
+set (HELP_PROG "exec:torios-runchecker xman")
 set (LOGOUT_PROGRAM "torios-exit")
 set (TZ_PROG "xterm -e 'sudo dpkg-reconfigure tzdata'")
 set (CAL_PROG "torios-calendar")
@@ -26,7 +26,7 @@ set (RESTART_PROGRAM "torios-reboot")
 ## menu programs
 set(PLACES_MENU_FILE "$HOME/.config/placesmenu")
 set(PLACES_INCLUDE "exec:/usr/bin/jwm-places")
-set(APPMENU_FILE "$HOME/.config/torimenu")
+set(APPMENU_FILE "$HOME/.cache/jwm-menu.cache")
 set(JWM_MENU "exec:/usr/bin/jwm-menu")
 
 ## help programs
@@ -43,10 +43,7 @@ set(LP "https://launchpad.net/~torios")
 ##Startup commands
 set (STARTUP "<StartupCommand>pcmanfm --desktop</StartupCommand>
    <StartupCommand>$HOME/.config/jsm-mouse</StartupCommand>
-   <StartupCommand>torios-volume</StartupCommand>
-   <StartupCommand>torios-battery</StartupCommand>
-   <StartupCommand>nice-start</StartupCommand>
-   <StartupCommand>/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1</StartupCommand>")
+   <StartupCommand>nice-start</StartupCommand>")
 
 ## Desktop Background
 set(BG "/usr/share/backgrounds/default.jpg")
@@ -105,7 +102,17 @@ set(SHUTERDOWN "<Separator/>
 	<Program icon=\"${SHUTDOWN_ICON}\" label=\"Shutdown Computer\">${SHUTDOWN_PROGRAM}</Program>")
 
 ## MAIN MENU
-
+set(SEARCH_PROG "zlocate")
+set(TRAYbuttonForTray "        <TrayButton popup=\"Software Installer\" icon=\"software-center\" border=\"false\">
+          <Button mask=\"1\">exec:torios-installer --search</Button>
+          <Button mask=\"23\">root:j</Button>
+        </TrayButton>
+        <TrayButton popup=\"Run\" icon=\"system-run\" border=\"false\">
+          <Button mask=\"123\">exec:zrun</Button>
+        </TrayButton>
+        <TrayButton popup=\"Locate\" icon=\"system-search\" border=\"false\">
+          <Button mask=\"123\">exec:${SEARCH_PROG}</Button>
+        </TrayButton>")
 set(JWM_ROOT_NUM "2")
 set(JWM_ROOT "root:${JWM_ROOT_NUM}")
 
@@ -139,16 +146,19 @@ set(PLACES_MENU "    <RootMenu onroot=\"${PLACES_NUM}\">
     </RootMenu>")
 set(REGULAR_MENUS_LIST "    <Include>${APPMENU_FILE}</Include>
 <!--Places Menu-->
-    <Include>${PLACES_MENU_FILE}</Include>")
+    <Include>${PLACES_MENU_FILE}</Include>
+${traybuttons}")
 set(MENUS_LIST_NEW "${JWM_ROOT_MENU}
 ${PLACES_MENU}")
 set (ROOT_MENU "root:${JWM_ROOT_NUM}")
 ## Mouse MENU
 set(MOUSE_MENU "<RootMenu height=\"0\" onroot=\"3\">
-        <Program icon=\"folder-home.${EXTENTION}\" label=\"Home\">xdg-open ~/</Program>
-        <Program icon=\"${JSM}.${EXTENTION}\" label=\"Settings\">${JSM}</Program>
-        <Program icon=\"preferences-desktop-wallpaper.${EXTENTION}\" label=\"Change Desktop Background\">${JSM} --desktop</Program>
-    </RootMenu>")
+		<Program icon=\"folder-home.${EXTENTION}\" label=\"Home\">xdg-open ~/</Program>
+		<Program icon=\"${JSM}.${EXTENTION}\" label=\"Settings\">${JSM}</Program>
+		<Program icon=\"add.${EXTENTION}\" label=\"Add new items to Desktop\">desktop-file-editor</Program>
+		<Program icon=\"preferences-desktop-wallpaper.${EXTENTION}\" label=\"Change Desktop Background\">${JSM} --desktop</Program>
+		<Dynamic label=\"Apps\" icon=\"torios-logo.${EXTENTION}\" border=\"false\">exec:jwm-menu||jwm-menu-bash</Dynamic>
+	</RootMenu>")
 
 ## window corners override in individual files
 set(CORNER "4")
@@ -171,6 +181,7 @@ set (DEFAULT_TRAY "    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width
         <Pager labeled=\"true\"/>
         <TaskList maxwidth=\"256\"/>
         <Dock/>
+${TRAYbuttonForTray}
         <Swallow name=\"xload\" width=\"64\">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>
         ${CLOCK_TAG}
     </Tray>")
@@ -182,6 +193,7 @@ set (OLD_DEFAULT_TRAY "    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" w
         <Pager labeled=\"true\"/>
         <TaskList maxwidth=\"256\"/>
         <Dock/>
+${TRAYbuttonForTray}
         <Swallow name=\"xload\" width=\"64\">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>
         ${OLD_CLOCK_TAG}
         <TrayButton label=\"${SHUTDOWN_NAME}\" icon=\"${SHUTDOWN_ICON}\" border=\"false\">${SHUTDOWN_ROOT}</TrayButton>
@@ -264,6 +276,9 @@ set(KEYSHORTCUTS "<Key key=\"Up\">up</Key>
     <Key key=\"d\">right</Key>
     <Key key=\"Return\">select</Key>
     <Key key=\"Escape\">escape</Key>
+    <Key key=\"XF86Search\">exec:${SEARCH_PROG}</Key>
+    <Key key=\"XF86Explorer\">exec:xdg-open $HOME</Key>
+    <Key key=\"XF86PowerOff\">exec:${SHUTDOWN_PROGRAM}</Key>
     <Key key=\"XF86AudioMute\">${VOL_MUTE}</Key>
     <Key key=\"XF86AudioRaiseVolume\">${VOL_UP}</Key>
     <Key key=\"XF86AudioLowerVolume\">${VOL_DOWN}</Key>
@@ -331,51 +346,6 @@ set(ICONS_LIST "  <IconPath>/usr/share/icons/Numix-Circle/scalable/apps</IconPat
   <IconPath>/usr/share/icons/Numix-Circle/scalable/apps</IconPath>
   <IconPath>/usr/share/icons/Numix-Circle/scalable/apps</IconPath>
 <!-- Inherited Icons -->
-  <IconPath>/usr/share/icons/gnome/256x256/actions</IconPath>
-  <IconPath>/usr/share/icons/gnome/256x256/apps</IconPath>
-  <IconPath>/usr/share/icons/gnome/256x256/categories</IconPath>
-  <IconPath>/usr/share/icons/gnome/256x256/devices</IconPath>
-  <IconPath>/usr/share/icons/gnome/256x256/emblems</IconPath>
-  <IconPath>/usr/share/icons/gnome/256x256/mimetypes</IconPath>
-  <IconPath>/usr/share/icons/gnome/256x256/places</IconPath>
-  <IconPath>/usr/share/icons/gnome/256x256/status</IconPath>
-  <IconPath>/usr/share/icons/gnome/32x32/actions</IconPath>
-  <IconPath>/usr/share/icons/gnome/32x32/animations</IconPath>
-  <IconPath>/usr/share/icons/gnome/32x32/apps</IconPath>
-  <IconPath>/usr/share/icons/gnome/32x32/categories</IconPath>
-  <IconPath>/usr/share/icons/gnome/32x32/devices</IconPath>
-  <IconPath>/usr/share/icons/gnome/32x32/emblems</IconPath>
-  <IconPath>/usr/share/icons/gnome/32x32/mimetypes</IconPath>
-  <IconPath>/usr/share/icons/gnome/32x32/places</IconPath>
-  <IconPath>/usr/share/icons/gnome/32x32/status</IconPath>
-  <IconPath>/usr/share/icons/gnome/scalable/actions</IconPath>
-  <IconPath>/usr/share/icons/gnome/scalable/apps</IconPath>
-  <IconPath>/usr/share/icons/gnome/scalable/categories</IconPath>
-  <IconPath>/usr/share/icons/gnome/scalable/devices</IconPath>
-  <IconPath>/usr/share/icons/gnome/scalable/emblems</IconPath>
-  <IconPath>/usr/share/icons/gnome/scalable/mimetypes</IconPath>
-  <IconPath>/usr/share/icons/gnome/scalable/places</IconPath>
-  <IconPath>/usr/share/icons/gnome/scalable/status</IconPath>
-  <IconPath>/usr/share/icons/hicolor/256x256/apps</IconPath>
-  <IconPath>/usr/share/icons/hicolor/256x256/mimetypes</IconPath>
-  <IconPath>/usr/share/icons/hicolor/32x32/actions</IconPath>
-  <IconPath>/usr/share/icons/hicolor/32x32/apps</IconPath>
-  <IconPath>/usr/share/icons/hicolor/32x32/categories</IconPath>
-  <IconPath>/usr/share/icons/hicolor/32x32/devices</IconPath>
-  <IconPath>/usr/share/icons/hicolor/32x32/emblems</IconPath>
-  <IconPath>/usr/share/icons/hicolor/32x32/mimetypes</IconPath>
-  <IconPath>/usr/share/icons/hicolor/32x32/places</IconPath>
-  <IconPath>/usr/share/icons/hicolor/32x32/status</IconPath>
-  <IconPath>/usr/share/icons/hicolor/512x512/apps</IconPath>
-  <IconPath>/usr/share/icons/hicolor/512x512/mimetypes</IconPath>
-  <IconPath>/usr/share/icons/hicolor/scalable/actions</IconPath>
-  <IconPath>/usr/share/icons/hicolor/scalable/apps</IconPath>
-  <IconPath>/usr/share/icons/hicolor/scalable/categories</IconPath>
-  <IconPath>/usr/share/icons/hicolor/scalable/devices</IconPath>
-  <IconPath>/usr/share/icons/hicolor/scalable/emblems</IconPath>
-  <IconPath>/usr/share/icons/hicolor/scalable/mimetypes</IconPath>
-  <IconPath>/usr/share/icons/hicolor/scalable/places</IconPath>
-  <IconPath>/usr/share/icons/hicolor/scalable/status</IconPath>
   <IconPath>/usr/share/icons/Numix/128@2x/actions</IconPath>
   <IconPath>/usr/share/icons/Numix/128@2x/places</IconPath>
   <IconPath>/usr/share/icons/Numix/128/actions</IconPath>
@@ -512,6 +482,51 @@ set(ICONS_LIST "  <IconPath>/usr/share/icons/Numix-Circle/scalable/apps</IconPat
   <IconPath>/usr/share/icons/Numix/scalable/mimetypes</IconPath>
   <IconPath>/usr/share/icons/Numix/scalable/places</IconPath>
   <IconPath>/usr/share/icons/Numix/scalable/status</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/actions</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/apps</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/categories</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/devices</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/emblems</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/places</IconPath>
+  <IconPath>/usr/share/icons/gnome/256x256/status</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/actions</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/animations</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/apps</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/categories</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/devices</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/emblems</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/places</IconPath>
+  <IconPath>/usr/share/icons/gnome/32x32/status</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/actions</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/apps</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/categories</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/devices</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/emblems</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/places</IconPath>
+  <IconPath>/usr/share/icons/gnome/scalable/status</IconPath>
+  <IconPath>/usr/share/icons/hicolor/256x256/apps</IconPath>
+  <IconPath>/usr/share/icons/hicolor/256x256/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/actions</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/apps</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/categories</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/devices</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/emblems</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/places</IconPath>
+  <IconPath>/usr/share/icons/hicolor/32x32/status</IconPath>
+  <IconPath>/usr/share/icons/hicolor/512x512/apps</IconPath>
+  <IconPath>/usr/share/icons/hicolor/512x512/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/actions</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/apps</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/categories</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/devices</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/emblems</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/mimetypes</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/places</IconPath>
+  <IconPath>/usr/share/icons/hicolor/scalable/status</IconPath>
   <IconPath>/usr/share/pixmaps</IconPath>
   <IconPath>/usr/share/icons</IconPath>
   <IconPath>/usr/share/app-install/icons</IconPath>

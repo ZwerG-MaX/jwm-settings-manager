@@ -1,8 +1,8 @@
 /*                 Joe's Window Manager Configuration
  *
- * This program configures JWM using tinyxml2 and FLTK
+ * This program configures JWM using pugixml and FLTK
  *
- *         Copyright (C) 2014  Israel <israel@torios.org>
+ *         Copyright (C) 2016  Israel <israeldahl@gmail.com>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * This has been developed as a part of the ToriOS Project
- * This has been developed by Israel<israel@torios.org>
  *
  *
  * You may redistribute this, but you must keep this comment in place
@@ -28,21 +27,13 @@
 #define jwm_desktop_h
 #include <FL/Fl.H>
 #include <libintl.h>
-#include <FL/Fl_File_Chooser.H>
 #include <string>
 #include <stdlib.h>
 #include <iostream>
-#include "../include/Config.h"
-#include "../include/flDesktop.h"
-#include <FL/Fl_PNG_Image.H>
-#include <FL/Fl_Color_Chooser.H>
+#include "../include/jwmrc.h"
+#include "../include/desktop.hpp"
 #include <algorithm>
-//#include <FL/Fl_Image.H>
-#include <FL/Fl_JPEG_Image.H>
 #include "../include/ui.h"
-//#include <cairo-xlib.h>
-//#include <cairo.h>
-//#include <cairo-svg.h>
 #include "../data/icons/jsm-desktop.xpm"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
@@ -52,8 +43,9 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Value_Input.H>
 
-class DesktopUI : public Config {
+class DesktopUI {
 public:
+  std::string thisBG; 
   Fl_Double_Window* make_window();
   Fl_Double_Window *desktop_window;
   Fl_Box *background_displayer_thingie;
@@ -73,9 +65,10 @@ private:
   static void cb_icons_check(Fl_Check_Button*, void*);
 public:
   Fl_Output *current_bg;
+  Fl_Check_Button *check_desktops;
 private:
-  inline void cb_Multiple_i(Fl_Check_Button*, void*);
-  static void cb_Multiple(Fl_Check_Button*, void*);
+  inline void cb_check_desktops_i(Fl_Check_Button*, void*);
+  static void cb_check_desktops(Fl_Check_Button*, void*);
 public:
   Fl_Value_Input *num_desktop_w;
 private:
@@ -90,19 +83,5 @@ private:
   static void cb_Cancel(Fl_Button*, void*);
   inline void cb_OK_i(Fl_Button*, void*);
   static void cb_OK(Fl_Button*, void*);
-public:
-  void background(Fl_Box*o);
-  void background1(Fl_Box*o);
-  void background2(Fl_Box*o);
-  void bg_chooser_cb();
-  void bg_name(Fl_Output *o);
-  void icons_on_desktop();
-  bool multipleDesktops();
-  void num_desktop_wh_cb(const char* whichone, int value);
-  void one_color();
-  void two_color();
-  void use_icons_on_desktop();
-  void useMultipleDesktops();
-  void startup(Fl_Window *o);
 };
 #endif

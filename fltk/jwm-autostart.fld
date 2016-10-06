@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0302 
+version 1.0303 
 i18n_type 1 
 i18n_include <libintl.h> 
 i18n_function gettext 
@@ -7,9 +7,9 @@ header_name {.h}
 code_name {.cxx}
 comment {/*                 Joe's Window Manager Configuration
  *
- * This program configures JWM using tinyxml2 and FLTK
+ * This program configures JWM using pugixml and FLTK
  *
- *         Copyright (C) 2014  Israel <israel@torios.org>
+ *         Copyright (C) 2016  Israel <israeldahl@gmail.com>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,7 +23,6 @@ comment {/*                 Joe's Window Manager Configuration
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * This has been developed as a part of the ToriOS Project
- * This has been developed by Israel<israel@torios.org>
  *
  *
  * You may redistribute this, but you must keep this comment in place
@@ -32,9 +31,6 @@ comment {/*                 Joe's Window Manager Configuration
 } 
 
 decl {\#include <libintl.h>} {public global
-} 
-
-decl {\#include <FL/Fl_File_Chooser.H>} {public global
 } 
 
 decl {\#include <string>} {public global
@@ -46,131 +42,133 @@ decl {\#include <stdlib.h>} {public global
 decl {\#include <iostream>} {public global
 } 
 
-decl {\#include "../include/Config.h"} {public global
+decl {\#include "../include/jwmrc.h"} {public global
 } 
 
-decl {\#include "../include/flAutostart.h"} {public global
+decl {\#include "../include/autostart.hpp"} {public global
+} 
+
+decl {\#include "../include/fltkfunctions.hpp"} {public global
 } 
 
 decl {\#include <FL/Fl_Select_Browser.H>} {public global
 } 
 
-decl {\#include "../include/ui.h"} {public global
-} 
-
 decl {\#include "../data/icons/jsm-autostart.xpm"} {public global
 } 
 
-class AutostartUI {open : {public Config}
+class AutostartUI {open
 } {
   Function {make_window()} {open
   } {
-    code {load();
-saveChangesTemp();} {}
+    code {load();} {}
     Fl_Window autostart_window {
       label {Autostart Programs} open
-      xywh {221 217 335 230} type Double color 31 hide resizable
-      code0 {startup(o);} xclass {jsm-autostart}
+      xywh {718 242 335 270} type Double color 31 resizable
+      code0 {startup(o,jsm_autostart_xpm);} xclass {jsm-autostart} visible
     } {
-      Fl_Scroll {} {open
-        xywh {0 0 335 230} color 31
+      Fl_Scroll {} {open selected
+        xywh {0 0 335 270} color 31
       } {
         Fl_Input program_name {
-          tooltip {You can add extra arguments here} xywh {100 160 220 25} box FLAT_BOX selection_color 47 align 1 when 8
+          tooltip {You can add extra arguments here} xywh {85 205 245 30} box FLAT_BOX selection_color 47 align 1 when 8
         }
         Fl_Button {} {
           label Cancel
-          callback {cancel(autostart_window);
-UI ux;
-ux.showSettings();}
-          xywh {195 195 57 25} box FLAT_BOX color 80 selection_color 38 labelcolor 7
+          callback {cancel();}
+          xywh {215 240 57 25} box FLAT_BOX color 80 selection_color 38 labelcolor 7
         }
         Fl_Button save_button {
           label OK
-          callback {std::string proggie = program_name->value();
-if(proggie.compare("")!=0){add_program_to_autostart();}
-saveNoRestart();
-autostart_window->hide();
-UI ux;
-ux.showSettings();}
-          tooltip {Write to configuration file} xywh {261 195 49 25} box FLAT_BOX color 61 selection_color 38 labelcolor 55
+          callback {const char* proggie = program_name->value();
+if(proggie!=NULL){add_program_to_autostart(autoStartBrowser,proggie);}}
+          tooltip {Write to configuration file} xywh {281 240 49 25} box FLAT_BOX color 61 selection_color 38 labelcolor 55
         }
         Fl_Button add_item {
           label {@+}
-          callback {std::string proggie = program_name->value();
-if(proggie.compare("")==0){choose_a_program();}
-else{add_program_to_autostart();}}
-          tooltip {Add the chosen program} xywh {15 155 35 35} box FLAT_BOX color 23 selection_color 38
-        }
-        Fl_Browser autoStartBrowser {
-          xywh {15 10 305 140} type Hold box FLAT_BOX selection_color 55
-          code0 {flAutostart a;}
-          code1 {a.getAutostart(autoStartBrowser);}
+          callback {const char* proggie = program_name->value();
+if(proggie==NULL){
+  debug_out("Choose a program");
+  choose_a_program(program_name);
+}
+else{
+  const char* val="JWM";
+  if(tabbies->value() == xdg_tab)val="XDG";
+  if(val==NULL){
+    std::cerr<<"No tab is correctly selected"<<std::endl;
+    return;
+  }
+  std::string VAL=val;
+  debug_out("Configuration for: "+VAL);
+  if(VAL.compare("JWM")==0){
+    std::string pro=proggie;
+    if (pro.compare("")==0){choose_a_program(program_name);}
+    else{
+     debug_out("Adding:"+pro+":");
+      add_program_to_autostart(autoStartBrowser,proggie);
+    }
+  }
+  else{
+    std::string desktopeditor=linuxcommon::term_out("which desktop-file-editor");
+    if(desktopeditor.compare("")!=0){
+      desktopeditor+=" ";
+      desktopeditor+=xdgbrowser->text(xdgbrowser->value());
+      int sys=system(desktopeditor.c_str());
+      if(sys!=0){debug_out(desktopeditor+" did not work");}
+    }
+    else{debug_out("Desktop File editor was not found!");}
+  }
+}
+program_name->value("");
+program_name->redraw();}
+          tooltip {Add OR chose a program} xywh {5 205 30 30} box FLAT_BOX color 23 selection_color 38
         }
         Fl_Button remove_item {
-          callback {remove_program_from_autostart();}
-          image {custom_buttons/minus} xywh {55 155 35 35} box FLAT_BOX color 23 selection_color 38
+          callback {const char* val=browser_name->value();
+if(val==NULL){
+  std::cerr<<"No tab is correctly selected"<<std::endl;
+  return;
+}
+std::string VAL=val;
+if(VAL.compare("JWM")==0){remove_program_from_autostart(autoStartBrowser);}
+else{remove_program_from_xdg_autostart(xdgbrowser);}
+program_name->value("");
+program_name->redraw();}
+          image {custom_buttons/minus} xywh {45 205 30 30} box FLAT_BOX color 23 selection_color 38
+        }
+        Fl_Tabs tabbies {open
+          xywh {0 0 335 200} box FLAT_BOX
+        } {
+          Fl_Group jwm_tab {
+            label JWM
+            callback {browser_name->value("JWM");} open
+            xywh {0 35 335 165}
+          } {
+            Fl_Browser autoStartBrowser {
+              xywh {10 45 315 145} type Hold box FLAT_BOX selection_color 55
+              code0 {populateFLBrowser(o,"StartupCommand");}
+            }
+          }
+          Fl_Group xdg_tab {
+            label XDG
+            callback {//browser_name->value("XDG");} open
+            xywh {0 35 335 165} hide deactivate
+          } {
+            Fl_Browser xdgbrowser {
+              callback {const char* chosen =o->text(o->value());
+if(chosen!=NULL){
+  program_name->value(chosen);
+  program_name->redraw();
+}}
+              xywh {10 45 315 145} type Hold box FLAT_BOX selection_color 55
+              code0 {listAutostartXDG(o);}
+            }
+          }
+        }
+        Fl_Input browser_name {
+          xywh {95 5 220 25} box FLAT_BOX selection_color 47 align 1 when 8 hide
         }
       }
     }
   }
-  Function {choose_a_program()} {open
-  } {
-    code {const char * f = "/usr/bin/";
-const char * m="Choose a program";
-const char *p="*";
-Fl_Native_File_Chooser fnfc;
-fnfc.title(m);
-fnfc.type(Fl_Native_File_Chooser::BROWSE_FILE);
-fnfc.filter(p);
-fnfc.directory(f); // default directory to use
-// Show native chooser
-switch ( fnfc.show() ){
-  case -1:
-     break; // ERROR
-  case 1:
-    break; // CANCEL
-  default:
-    const char *result =fnfc.filename();
-    if(result!=NULL){
-	std::string String = result;
-	unsigned found = String.find_last_of("/");
-	String.erase(0,found+1);
-	result = String.c_str();
-	program_name->value(result);
-    }
-    break; // FILE CHOSEN
-}} {}
-  }
-  Function {add_program_to_autostart()} {open
-  } {
-    code {flAutostart a;
-const char * input = program_name->value();
-if(input!=NULL){
-	autoStartBrowser->clear();
-	a.addAutostart(input);
-	a.getAutostart(autoStartBrowser);
-	autoStartBrowser->redraw();
-}} {}
-  }
-  Function {remove_program_from_autostart()} {open
-  } {
-    code {flAutostart a;
-const char * item = autoStartBrowser->text(autoStartBrowser->value());
-if (item !=NULL){
-	a.removeAutostart(item);
-	autoStartBrowser->clear();
-	a.getAutostart(autoStartBrowser);
-	autoStartBrowser->redraw();
-}
-else{
-	fl_message("Please click on an item to remove!");
-}} {}
-  }
-} 
-
-Function {startup(Fl_Window *o)} {open
-} {
-  code {Config config; config.under_mouse(o);
-o->icon(config.Get_Fl_Icon(jsm_autostart_xpm));} {}
 } 

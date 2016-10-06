@@ -1,52 +1,24 @@
-TODO:
-Version 2.0
+set precompiler defines in cmake project
+(specifically LINUX_COMMON_HAS_X=true) when Xlibs are found
 
-themes
-panels
+missing functions:
 
-*Desktop
- - eventually provide support for different bg on each desktop, or at least check for this possibility
+jwmrc:
+getShortcuts
 
-*Keyboard
-- add a key grabber, as the current implementation is pretty ugly and inefficient and hard to use (though it works)
+panel:
+add_new_menu
+deleteShortcut?
+deleteTrayButton?
 
-* Make a cairo box for displaying svg files
+needs fixing:
+removeAutostart - xdg stuff
 
+node adding functions do not return the correct node... find out why???
 
-*Icons
-Ok, so I have a great script to do this... but how to make it C++ code :)
-
- - figure out a good way to include all subdirectories of a certain icon theme...
-
-some notes:
-${HOME}/.icons
-${XDG_DATA_DIRS}/icons
-/usr/share/pixmaps
-look in hicolor if there are no icons in the other directories
-
-KEYS		TYPE		REQUIRED
-_________________________________________
-Name		string		yes
-Comment		string		yes
-Inherits	string		no
-Direcotries	string		yes
-Hidden		boolean		no
-Example		string		no
-
-PER DIRECTORY
-KEYS		TYPE		REQUIRED
-_________________________________________
-Size		int		yes
-Context		string		no
-Type		string		no
-MaxSize		int		no
-MinSize		int		no
-Threshold	int		no
-
-
-*.icon file
-KEYS			TYPE		REQUIRED
-_________________________________________________
-DisplayName		string		no
-EmbeddedTextRectangle 	int		no
-AttachPoints		point		no
+MENU:
+void getMenus(Fl_Browser* o);
+std::string getLabel(Fl_Output* labler, std::string MENU);
+void listMenus(Fl_Browser* o);
+void addRoot(std::string menu);
+void setRootMenuAttribute(std::string menustring ,std::string attribute,std::string value);

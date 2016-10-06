@@ -13,3 +13,22 @@ pofile="jwm-settings-manager.pot"
 
 xgettext -c --copyright-holder="\"$ME\"" -p "$outputdir" --strict --default-domain="$defaultdomain" --package-name="\"$packagename\"" --output "${outputdir}/${pofile}" --c++ --package-version=$verno fltk/*.cxx src/*.cpp
 sed -i 's/CHARSET/UTF-8/' "${outputdir}/${pofile}"
+programminglanguage="Shell"
+comments="#"
+xgettext -c --copyright-holder="\"$ME\"" -p "$outputdir" -j -L "$programminglanguage" --add-comments="$comments" --strict --default-domain="$defaultdomain" --package-version=$verno --package-name="\"$packagename\"" --output "${outputdir}/${pofile}" debian/postinst
+cd "${basedir}"
+echo "Generating the locales"
+for locale in "$outputdir/"**.po
+do
+  if [[ -f "$locale" ]]
+  then
+    echo $locale
+    DIR="${locale/*\/}"
+    DIR="${DIR/.po}"
+    DIR="$basedir/usr/share/locale/$DIR/LC_MESSAGES/"
+    [[ -d "$DIR" ]] || mkdir -p "$DIR"
+    msgfmt -o "$defaultdomain.mo" "$locale"
+    mv "$defaultdomain.mo" "$DIR"
+  fi
+done
+echo "Done"

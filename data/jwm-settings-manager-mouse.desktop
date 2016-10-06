@@ -1,12 +1,12 @@
 [Desktop Entry]
 Name=Mouse/Touchpad Settings
+Name[en_US]=Mouse/Touchpad Settings
 GenericName=Configuration Tool
 GenericName[fr]=Outil de configuration
 GenericName[lv]=Konfigurācijas rīks
 Icon=jsm-mouse
-Exec=jwm-settings-manager --mouse
+Exec=fltk-mouse
 Terminal=false
 Type=Application
 Categories=Settings;System;
 NotShowIn=GNOME;KDE;LXDE;MATE;Razor;TDE;Unity;XFCE;EDE;Cinnamon;
-Name[en_US]=Mouse/Touchpad Settings

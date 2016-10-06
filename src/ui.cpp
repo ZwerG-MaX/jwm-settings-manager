@@ -1,155 +1,133 @@
-
+/*                 Joe's Window Manager Configuration
+ *
+ * This program configures JWM using pugixml and FLTK
+ *
+ *         Copyright (C) 2016  Israel <israeldahl@gmail.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This has been developed as a part of the ToriOS Project
+ *
+ *
+ * You may redistribute this, but you must keep this comment in place
+ * Jesus is my Lord, and if you don't like it feel free to ignore it.
+ */
 #include "../include/ui.h"
 //These functions simply call the UI
-UI::UI(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"[UI]->"<<std::endl;
-#endif // DEBUG
-}
-UI::~UI(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"<-[UI] END"<<std::endl;
-#endif // DEBUG
-    exit(0);
-}
 //main window
-int UI::showSettings(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Settings UI activated"<<std::endl;
-#endif // DEBUG
+int showSettings(){
     SettingsUI uiSettings;
     uiSettings.make_window()->show();
-return Fl::run();
+	return Fl::run();
 }
 
 //panel
-int UI::showPanel(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Panel UI activated"<<std::endl;
-#endif // DEBUG
+int showPanel(){
+	debug_out("Panel UI activated");
     PanelUI uiPanel;
-    uiPanel.make_window()->xclass("jsm-panel");
     uiPanel.make_window()->show();
-return Fl::run();
+	return Fl::run();
 }
 //clock
-int UI::showClock(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Clock UI activated"<<std::endl;
-#endif // DEBUG
+int showClock(){
+	debug_out("Clock UI activated");
     PanelUI uiPanel;
-    uiPanel.make_window()->xclass("jsm-panel");
     uiPanel.make_window()->show();
     uiPanel.config_clock_window()->show();
-return Fl::run();
+	return Fl::run();
 }
 //desktop
-int UI::showDesktop(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Desktop UI activated"<<std::endl;
-#endif // DEBUG
+int showDesktop(){
+debug_out("Desktop UI activated");
     DesktopUI uiDesktop;
-    uiDesktop.make_window()->xclass("jsm-desktop");
     uiDesktop.make_window()->show();
-return Fl::run();
+	return Fl::run();
 }
 
 //windows
-int UI::showWindow(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Window UI activated"<<std::endl;
-#endif // DEBUG
+int showWindow(){
+	debug_out("Window UI activated");
     WindowUI uiWindow;
-    uiWindow.make_window()->xclass("jsm-windows");
     uiWindow.make_window()->show();
     return Fl::run();
 }
 
 //Autostart
-int UI::showAutostart(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Autostart UI activated"<<std::endl;
-#endif // DEBUG
+int showAutostart(){
+	debug_out("Autostart UI activated");
     AutostartUI uiAutostart;
-    uiAutostart.make_window()->xclass("jsm-autostart");
     uiAutostart.make_window()->show();
-return Fl::run();
+	return Fl::run();
 }
 
 //fonts
-int UI::showFonts(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Font UI activated"<<std::endl;
-#endif // DEBUG
+int showFonts(){
+	debug_out("Font UI activated");
     FontUI uiFonts;
-    uiFonts.make_window()->xclass("jsm-fonts");
     uiFonts.make_window()->show();
-return Fl::run();
+	return Fl::run();
 }
 
 //keyboard
-int UI::showKeyboard(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Keyboard UI activated"<<std::endl;
-#endif // DEBUG
+int showKeyboard(){
+	debug_out("Keyboard UI activated");
     KeyboardUI uiKeyboard;
-    uiKeyboard.make_window()->xclass("jsm-keyboard");
     uiKeyboard.make_window()->show();
-return Fl::run();
+	return Fl::run();
 }
 
 //Themes
-int UI::showThemes(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Themes UI activated"<<std::endl;
-#endif // DEBUG
+int showThemes(){
+	debug_out("Themes UI activated");
     ThemesUI uiThemes;
-    uiThemes.make_window()->xclass("jsm-theme");
     uiThemes.make_window()->show();
-return Fl::run();
+	return Fl::run();
 }
 
 //icons
-int UI::showIcons(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Icons UI activated"<<std::endl;
-#endif // DEBUG
+int showIcons(){
+	debug_out("Icons UI activated");
     IconsUI uiIcons;
-    uiIcons.make_window()->xclass("jsm-icons");
+    //uiIcons.make_window()->xclass("jsm-icons");
     uiIcons.make_window()->show();
-return Fl::run();
+	return Fl::run();
 }
-
 //mouse
-int UI::showMouse(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Mouse UI activated"<<std::endl;
-#endif // DEBUG
-    MouseUI uiMouse;
-    uiMouse.make_window()->xclass("jsm-mouse");
-    uiMouse.make_window()->show();
-return Fl::run();
+int showMouse(){
+	debug_out("Mouse UI activated");
+	std::string progname="fltk-mouse";
+	int retval=system(progname.c_str());
+	if(retval!=0){
+		progname="./"+progname;
+		retval=system(progname.c_str());
+		if(retval!=0){std::cerr<<"Couldn't run "<<progname<<std::endl;}
+	}
+	return retval;
 }
 //menu
-int UI::showMenu(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Menu UI activated"<<std::endl;
-#endif // DEBUG
+int showMenu(){
+	debug_out("Menu UI activated");
     MenuUI Menu;
-    Menu.make_window()->xclass("jsm-panel");
     Menu.make_window()->show();
-return Fl::run();
+	return Fl::run();
 }
 //Shortcuts
-int UI::showShortcuts(){
-#ifdef DEBUG_TRACK
-    std::cerr<<"Shortcuts UI activated"<<std::endl;
-#endif // DEBUG
-    PanelUI uiPanel;
-    uiPanel.make_window()->xclass("jsm-panel");
-    uiPanel.make_window()->show();
-    uiPanel.config_clock_window()->show();
-return Fl::run();
+int showShortcuts(){
+	std::string EDITOR="desktop-file-editor";
+    if(!linuxcommon::test_exec(EDITOR)){
+		EDITOR="torios-shortcut";
+		if(!linuxcommon::test_exec(EDITOR)){EDITOR="lxshortcut";}
+	}
+	return linuxcommon::run_a_program(EDITOR);
 }
 
 

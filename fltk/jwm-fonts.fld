@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0302 
+version 1.0303 
 i18n_type 1 
 i18n_include <libintl.h> 
 i18n_function gettext 
@@ -7,9 +7,9 @@ header_name {.h}
 code_name {.cxx}
 comment {/*                 Joe's Window Manager Configuration
  *
- * This program configures JWM using tinyxml2 and FLTK
+ * This program configures JWM using pugixml and FLTK
  *
- *         Copyright (C) 2014  Israel <israel@torios.org>
+ *         Copyright (C) 2016  Israel <israeldahl@gmail.com>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,15 +23,11 @@ comment {/*                 Joe's Window Manager Configuration
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * This has been developed as a part of the ToriOS Project
- * This has been developed by Israel<israel@torios.org>
  *
  *
  * You may redistribute this, but you must keep this comment in place
  * Jesus is my Lord, and if you don't like it feel free to ignore it.
  */} {in_source in_header
-} 
-
-decl {\#include "../include/flFont.h"} {public global
 } 
 
 decl {\#include <libintl.h>} {public global
@@ -43,9 +39,6 @@ decl {\#include <FL/Fl_File_Chooser.H>} {public global
 decl {\#include <string>} {public global
 } 
 
-decl {\#include "jwm-desktop.h"} {public global
-} 
-
 decl {\#include <stdlib.h>} {public global
 } 
 
@@ -55,16 +48,19 @@ decl {\#include <iostream>} {public global
 decl {\#include <FL/Fl_Color_Chooser.H>} {public global
 } 
 
-decl {\#include "../include/Config.h"} {public global
+decl {\#include "../include/jwmrc.h"} {public global
 } 
 
 decl {\#include "../include/ui.h"} {public global
 } 
 
+decl {\#include "../include/fonts.hpp"} {public global
+} 
+
 decl {\#include "../data/icons/jsm-fonts.xpm"} {public global
 } 
 
-class FontUI {open : {public Config}
+class FontUI {open
 } {
   decl {std::string currentElement} {private local
   }
@@ -72,142 +68,126 @@ class FontUI {open : {public Config}
   }
   Function {make_window()} {open
   } {
-    code {load();
-saveChangesTemp();} {}
+    code {load();} {}
     Fl_Window font_window {
       label {Font Settings} open
-      xywh {143 239 380 410} type Double color 31 resizable
-      code0 {startup(o);} xclass {jsm-fonts} visible
+      xywh {339 85 280 330} type Double color 31 resizable
+      code0 {startup(o,jsm_fonts_xpm);} xclass {jsm-fonts} visible
     } {
-      Fl_Scroll {} {selected
-        xywh {0 -5 380 415} color 31
+      Fl_Scroll {} {open selected
+        xywh {0 -5 280 335} color 31
       } {
         Fl_Box window_box {
-          xywh {10 8 355 113} box FLAT_BOX color 44
+          xywh {5 3 270 97} box FLAT_BOX color 44
         }
         Fl_Output window_font {
-          label {Window Title Font Name}
-          xywh {40 55 160 25} box FLAT_BOX color 53 selection_color 72 align 1 when 1
+          label {Window Title Font}
+          xywh {45 20 160 30} box FLAT_BOX color 53 selection_color 72 align 1 when 1
           code0 {get_font("WindowStyle",o);}
         }
-        Fl_Box {} {
-          label Active
-          xywh {285 10 70 30} align 128
-        }
         Fl_Button active_window_font_color_button {
+          label Active
           callback {window_font_color(o, 1);}
-          xywh {295 40 60 25} box FLAT_BOX color 23 when 6
+          xywh {210 20 60 30} box FLAT_BOX color 23 align 1 when 6
           code0 {get_window_font_color(o,1);}
         }
         Fl_Button {} {
-          label Choose
           callback {currentElement = "WindowStyle";
 Widget=window_font;
 font_chooser_window()->show();}
-          tooltip {Open the font list Window} xywh {210 50 75 30} box FLAT_BOX color 23
-        }
-        Fl_Box {} {
-          label Inactive
-          xywh {285 65 75 25} align 128
+          tooltip {Open the font list Window} image {custom_buttons/gear16.png} xywh {10 20 30 30} box FLAT_BOX color 23
         }
         Fl_Button window_font_color_button {
+          label Inactive
           callback {window_font_color(o, 2);}
-          xywh {295 90 60 25} box FLAT_BOX color 23 when 6
+          xywh {210 65 60 30} box FLAT_BOX color 23 align 5 when 6
           code0 {get_window_font_color(o,2);}
         }
         Fl_Box menu_box {
-          xywh {10 130 355 115} box FLAT_BOX color 44
+          xywh {5 105 270 95} box FLAT_BOX color 44
         }
         Fl_Output menu_font {
-          label {Menu Font Name}
-          xywh {40 160 160 25} box FLAT_BOX color 53 selection_color 72 align 1
+          label {Menu Font}
+          xywh {45 120 160 30} box FLAT_BOX color 53 selection_color 72 align 1
           code0 {get_font("MenuStyle",o);}
         }
         Fl_Button {} {
-          label Choose
           callback {currentElement = "MenuStyle";
 Widget=menu_font;
 font_chooser_window()->show();}
-          tooltip {Open the font list Window} xywh {210 155 75 30} box FLAT_BOX color 23
+          tooltip {Open the font list Window} image {custom_buttons/gear16.png} xywh {10 120 30 30} box FLAT_BOX color 23
         }
         Fl_Button menu_font_color_button {
           callback {font_color(o, "MenuStyle");}
-          xywh {295 160 60 25} box FLAT_BOX color 23 when 6
+          xywh {210 120 60 30} box FLAT_BOX color 23 when 6
           code0 {get_font_color(o,"MenuStyle");}
         }
         Fl_Output panel_button_font {
-          label {Panel Button Font Name}
-          xywh {40 210 160 25} box FLAT_BOX color 53 selection_color 72 align 1
+          label {Panel Button Font}
+          xywh {45 165 160 30} box FLAT_BOX color 53 selection_color 72 align 1
           code0 {if(!newOne()){get_font("TrayButtonStyle",o);}}
           code1 {else{o->hide();}}
         }
         Fl_Button {} {
-          label Choose
           callback {currentElement = "TrayButtonStyle";
 Widget=panel_button_font;
 font_chooser_window()->show();}
-          tooltip {Open the font list Window} xywh {210 205 75 30} box FLAT_BOX color 23
+          tooltip {Open the font list Window} image {custom_buttons/gear16.png} xywh {10 165 30 30} box FLAT_BOX color 23
           code0 {if(newOne()){o->hide();}}
         }
         Fl_Button traybutton_font_color_button {
           callback {font_color(o, "TrayButtonStyle");}
-          xywh {295 210 60 25} box FLAT_BOX color 23 when 6
+          xywh {210 165 60 30} box FLAT_BOX color 23 when 6
           code0 {if(!newOne()){get_font_color(o,"TrayButtonStyle");}}
           code1 {else{o->hide();}}
         }
         Fl_Box panel_box {
-          xywh {10 255 355 115} box FLAT_BOX color 44
+          xywh {5 206 270 96} box FLAT_BOX color 44
         }
         Fl_Output panel_font {
-          label {Panel Font Name}
-          xywh {45 275 160 25} box FLAT_BOX color 53 selection_color 72 align 1
+          label {Panel Font}
+          xywh {45 223 160 30} box FLAT_BOX color 53 selection_color 72 align 1
           code0 {get_font("TrayStyle",o);}
         }
         Fl_Button {} {
-          label Choose
           callback {currentElement = "TrayStyle";
 Widget=panel_font;
 font_chooser_window()->show();}
-          tooltip {Open the font list Window} xywh {210 275 75 30} box FLAT_BOX color 23
+          tooltip {Open the font list Window} image {custom_buttons/gear16.png} xywh {10 223 30 30} box FLAT_BOX color 23
         }
         Fl_Button panel_font_color_button {
           callback {font_color(o, "TrayStyle");}
-          xywh {295 280 60 25} box FLAT_BOX color 23 when 6
+          xywh {210 223 60 30} box FLAT_BOX color 23 when 6
           code0 {get_font_color(o,"TrayStyle");}
         }
         Fl_Button task_font_color_button {
           callback {font_color(o, "TaskListStyle");}
-          xywh {295 335 60 25} box FLAT_BOX color 23 when 6
+          xywh {210 268 60 30} box FLAT_BOX color 23 when 6
           code0 {if(newOne()){o->hide();}else{get_font_color(o,"TaskListStyle");}}
         }
         Fl_Output task_font {
-          label {Running App List Font Name}
-          xywh {45 335 160 25} box FLAT_BOX color 53 selection_color 72 align 1
+          label {Running App List Font}
+          xywh {45 268 160 30} box FLAT_BOX color 53 selection_color 72 align 1
           code0 {if(!newOne()){get_font( "TaskListStyle", o);}}
           code1 {else{o->hide();}}
         }
         Fl_Button {} {
-          label Choose
           callback {currentElement = "TaskListStyle";
 Widget=task_font;
 font_chooser_window()->show();}
-          tooltip {Open the font list Window} xywh {210 335 75 30} box FLAT_BOX color 23
+          tooltip {Open the font list Window} image {custom_buttons/gear16.png} xywh {10 268 30 30} box FLAT_BOX color 23
           code0 {if(newOne()){o->hide();}}
         }
         Fl_Button {} {
           label Cancel
           callback {cancel();
-font_window->hide();
-UI ux;
-ux.showSettings();}
-          tooltip {No changes will be saved} xywh {245 375 60 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+font_window->hide();}
+          tooltip {No changes will be saved} xywh {155 305 60 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button {} {
           label OK
-          callback {saveJWMRC(font_window);
-UI ux;
-ux.showSettings();}
-          tooltip {Write to configuration file} xywh {315 375 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+          callback {saveChanges();}
+          tooltip {Write to configuration file} xywh {225 305 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
         }
       }
     }
@@ -216,41 +196,32 @@ ux.showSettings();}
   } {
     Fl_Window font_choosing {
       label {Choose a Font} open
-      xywh {159 300 340 455} type Double
-      code0 {startup(o);} xclass {jsm-fonts} visible
+      xywh {688 87 315 410} type Double
+      code0 {startup(o,jsm_fonts_xpm);} xclass {jsm-fonts} visible
     } {
       Fl_Button {} {
         label Cancel
         callback {font_choosing->hide();}
-        tooltip {No changes will be saved} xywh {205 420 60 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+        tooltip {No changes will be saved} xywh {195 380 60 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
       }
       Fl_Button {} {
         label OK
-        callback {font_chooser_cb()}
-        tooltip {Write to configuration file} xywh {275 420 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+        callback {font_chooser_cb(Widget,chooser_size,font_name,currentElement);}
+        tooltip {Write to configuration file} xywh {265 380 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
       }
       Fl_Browser font_browser {
-        callback {const char * item = o->text(o->value());
-font_name->value(item);
-Fl_Font b = font_browser->value();
-//std::cout<< Fl::get_font_name(b,0)<<std::endl;
-unsigned int size_of_font = font_size_slider->value();
-Fl_Fontsize fs = size_of_font;
-font_name->textsize(fs);
-font_name->textfont(b);
-font_name->redraw();}
-        xywh {20 15 305 285} type Hold box FLAT_BOX color 55 selection_color 72 labelfont 8 when 4
+        callback {font_browser_cb(font_browser,font_name,font_size_slider);}
+        xywh {5 5 305 285} type Hold box FLAT_BOX color 55 selection_color 72 labelfont 8 when 4
         code0 {font_populate(o);}
-        code1 {//const char* v;}
       }
       Fl_Output font_name {
         callback {//const char * item = font_browser->text(font_browser->value());
-unsigned int size_of_font = get_font_size();
+unsigned int size_of_font = get_font_size(currentElement);
 Fl_Fontsize fs = size_of_font;
 o->textsize(fs);
 o->redraw();}
-        xywh {10 360 315 50} box FLAT_BOX color 55 selection_color 80 labelsize 20 when 6
-        code0 {get_font(currentElement.c_str(),o);}
+        xywh {5 325 305 50} box FLAT_BOX color 55 selection_color 80 labelsize 20 when 6
+        code0 {get_font(currentElement,o);}
       }
       Fl_Slider font_size_slider {
         callback {int size_of_font = o->value();
@@ -259,154 +230,15 @@ chooser_size->redraw();
 Fl_Fontsize fs = size_of_font;
 font_name->textsize(fs);
 font_name->redraw();}
-        xywh {15 320 250 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 48 when 4 minimum 8 maximum 200 step 1 value 12
-        code0 {int fs = get_font_size();}
+        xywh {5 295 250 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 48 when 4 minimum 8 maximum 200 step 1 value 12
+        code0 {int fs = get_font_size(currentElement);}
         code1 {o->value(fs);}
       }
       Fl_Value_Output chooser_size {
-        xywh {275 320 45 25} box FLAT_BOX color 23 minimum 8 maximum 200 step 1 value 12
-        code0 {int fs = get_font_size();}
+        xywh {265 295 45 25} box FLAT_BOX color 23 minimum 8 maximum 200 step 1 value 12
+        code0 {int fs = get_font_size(currentElement);}
         code1 {o->value(fs);}
       }
     }
-  }
-  Function {font_color(Fl_Widget *o, const char * active)} {open
-  } {
-    code {flFont f;
-uchar r;
-uchar g;
-uchar b;
-Fl::get_color((o->color()),r,g,b);
-
-int c;
-const char * label ="choose";
-c= fl_color_chooser(label,r,g,b,2);
-
-double* colors = new double[4];
-colors[0] = int(r); 
-colors[1] = int(g);
-colors[2] = int(b);
-colors[3] = 0;
-
-if(c!=0){ //If color chooser isn't canceled... do stuff
-	f.setFontColor(colors, active);
-	unsigned int colorSet = f.getFontColor(active);
-	o->color(colorSet);
-	o->redraw();
-}} {}
-  }
-  Function {window_font_color(Fl_Widget *o, int Active1_Inactive2)} {open
-  } {
-    code {flWindow window;
-uchar r;
-uchar g;
-uchar b;
-Fl::get_color((o->color()),r,g,b);
-int c;
-const char * label ="choose";
-c= fl_color_chooser(label,r,g,b,2);
-double* colors = new double[4];
-colors[0] = int(r); 
-colors[1] = int(g);
-colors[2] = int(b);
-colors[3] = 0;
-unsigned int colorSet;
-if(c!=0){ //If color chooser isn't canceled... do stuff
-  if(Active1_Inactive2==1){
-    window.setActiveFontColor(colors);
-    colorSet = window.getActiveFontColor();
-   }
-   else{
-    window.setFontColor(colors);
-    colorSet = window.getFontColor();
-   }
-  o->color(colorSet);
-  o->redraw();
-}} {}
-  }
-  Function {font_populate(Fl_Browser *o)} {open
-  } {
-    code {Fl_Font a;a = Fl::set_fonts("-*");
-std::string v;
-Fl_Font i;
-for (i=1;i!=a;++i){
-	v = Fl::get_font_name(i,0);
-	o->add(v.c_str());
-}} {}
-  }
-  Function {get_font(const char* element, Fl_Output *o)} {open
-  } {
-    code {std::string result;
-flFont font;
-result = font.getFontName(element);o->value(result.c_str());} {}
-  }
-  Function {get_font_color(Fl_Widget *o, const char * whichStyle)} {open
-  } {
-    code {flFont font;
-unsigned int colour = font.getFontColor(whichStyle);
-o->color(colour);} {}
-  }
-  Function {get_window_font_color(Fl_Widget *o, int Active1_Inactive2)} {open
-  } {
-    code {flWindow window;
-unsigned int colorSet;
-if(Active1_Inactive2==1){colorSet = window.getActiveFontColor();}
-else{colorSet = window.getFontColor();}
-o->color(colorSet);
-o->redraw();} {}
-  }
-  Function {font_chooser_cb()} {open
-  } {
-    code {flFont font;
-const char* fontFamily = font_name->value();
-std::string family = std::string(fontFamily);
-if (family.compare("")!=0){
-	std::transform(family.begin(), family.end(), family.begin(), ::tolower);
-	font.setFontName(family.c_str(), currentElement.c_str());
-	Widget->value(fontFamily);
-	Widget->redraw();
-}
-
-set_font_size();
-saveJWMRC(font_choosing);} {}
-  }
-  Function {set_font_size()} {open
-  } {
-    code {flFont f;
-unsigned int size = chooser_size->value();
-f.setSize(size,currentElement);} {}
-  }
-  Function {get_font_size()} {open return_type int
-  } {
-    code {flFont f;
-int font_size =f.getFontSize(currentElement);
-return font_size;
-/*font_size_slider->value(font_size);
-Why does this crash everything??
-chooser_size->value(font_size);
-chooser_size->redraw();
-*/} {}
-  }
-  Function {newOne()} {open return_type bool
-  } {
-    code {switch (newStyle()){
-case -1:
-  return false;
-  break;
- case 0:
-   return false;
-   break;
- case 1:
-   return true;
-   break;
- default:
-   return true;
-   break;
-}} {}
-  }
-  Function {startup(Fl_Window *o)} {open
-  } {
-    code {Config config; config.under_mouse(o);
-o->icon(config.Get_Fl_Icon(jsm_fonts_xpm));} {}
   }
 } 

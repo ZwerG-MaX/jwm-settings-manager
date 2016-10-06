@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0302 
+version 1.0303 
 i18n_type 1 
 i18n_include <libintl.h> 
 i18n_function gettext 
@@ -7,9 +7,9 @@ header_name {.h}
 code_name {.cxx}
 comment {/*                 Joe's Window Manager Configuration
  *
- * This program configures JWM using tinyxml2 and FLTK
+ * This program configures JWM using pugixml and FLTK
  *
- *         Copyright (C) 2014  Israel <israel@torios.org>
+ *         Copyright (C) 2016  Israel <israeldahl@gmail.com>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,7 +23,6 @@ comment {/*                 Joe's Window Manager Configuration
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * This has been developed as a part of the ToriOS Project
- * This has been developed by Israel<israel@torios.org>
  *
  *
  * You may redistribute this, but you must keep this comment in place
@@ -46,10 +45,13 @@ decl {\#include <stdlib.h>} {public global
 decl {\#include <iostream>} {public global
 } 
 
-decl {\#include "../include/Config.h"} {public global
+decl {\#include "../include/jwmrc.h"} {public global
 } 
 
-decl {\#include "../include/flIcons.h"} {public global
+decl {\#include "../include/icons.hpp"} {public global
+} 
+
+decl {\#include "../data/icons/jsm-icons.xpm"} {public global
 } 
 
 decl {\#include <FL/Fl_Select_Browser.H>} {public global
@@ -58,52 +60,106 @@ decl {\#include <FL/Fl_Select_Browser.H>} {public global
 decl {\#include "../include/ui.h"} {public global
 } 
 
-decl {\#include "../data/icons/jsm-icons.xpm"} {public global
-} 
-
-class IconsUI {open : {public Config}
+class IconsUI {open
 } {
   Function {make_window()} {open
   } {
-    code {load();
-saveChangesTemp();} {}
+    code {load();} {}
     Fl_Window icons_window {
-      label Icons open selected
-      xywh {192 267 330 280} type Double color 31 resizable
-      code0 {startup(o);} xclass {jsm-icons} visible
+      label Icons open
+      xywh {730 299 320 260} type Double color 31 resizable
+      code0 {startup(o,jsm_desktop_xpm);} xclass {jsm-icons} visible
     } {
       Fl_Scroll {} {open
-        xywh {0 0 330 290} color 31
+        xywh {0 0 316 300} color 31
       } {
         Fl_Button {} {
           label Cancel
-          callback {cancel(icons_window);
+          callback {cancel();
 //icons_window->hide();
-UI ux;
-ux.showSettings();}
-          xywh {205 245 57 25} box FLAT_BOX color 80 selection_color 81 labelcolor 7
+/*UI ux;
+ux.showSettings();*/}
+          xywh {211 230 57 25} box FLAT_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button save_button {
           label OK
-          callback {flIcons icons;
-bool saver = icons.useTheme(iconsBrowser);
-if(saver){saveJWMRC(icons_window);}
-else{icons_window->hide();}
-UI ux;
-ux.showSettings();}
-          tooltip {Write to configuration file} xywh {271 245 45 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
+          callback {if(!switchTheme(iconsBrowser,32)){
+  std::cerr<<"Error switching themes"<<std::endl;
+}}
+          tooltip {Write to configuration file} xywh {271 230 45 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
         }
         Fl_Browser iconsBrowser {
-          xywh {10 15 310 220} type Select box FLAT_BOX selection_color 80 when 8
-          code0 {flIcons icons;}
-          code2 {icons.loadTheme(o);}
+          xywh {5 5 310 220} type Hold box FLAT_BOX selection_color 80 when 8
+          code0 {//populateIconThemes(o);}
+          code1 {populateFLBrowser(o,"IconPath");}
+        }
+        Fl_Light_Button icon_themes_button {
+          label Themes
+          callback {iconsBrowser->clear();
+directories_button->value(0);
+directories_button->value(0);
+edit_button->hide();
+populateIconThemes(iconsBrowser);}
+          xywh {101 230 75 25} box FLAT_BOX value 1 selection_color 63 hide deactivate
+        }
+        Fl_Light_Button directories_button {
+          label Directories
+          callback {iconsBrowser->clear();
+icon_themes_button->value(0);
+icon_themes_button->value(0);
+edit_button->show();
+populateFLBrowser(iconsBrowser,"IconPath");}
+          xywh {4 230 95 25} box FLAT_BOX value 1 selection_color 63
+        }
+        Fl_Button edit_button {
+          label Edit
+          callback {editor_window()->show();
+if(!edit_value(iconsBrowser,dir_edit_input)){
+  std::cerr<<"Line was not edited"<<std::endl;
+}} selected
+          tooltip {Write to configuration file} xywh {140 230 40 25} box FLAT_BOX color 48 selection_color 59 labelcolor 32
         }
       }
     }
   }
-  Function {startup(Fl_Window *o)} {open
+  Function {editor_window()} {open
   } {
-    code {Config config; config.under_mouse(o);
-o->icon(config.Get_Fl_Icon(jsm_icons_xpm));} {}
+    Fl_Window edit_window {
+      label {Edit Directory} open
+      xywh {181 284 310 70} type Double
+      code0 {startup(o,jsm_desktop_xpm);} visible
+    } {
+      Fl_Button {} {
+        label Cancel
+        callback {edit_window->hide();}
+        xywh {195 40 57 25} box FLAT_BOX color 80 selection_color 81 labelcolor 7
+      }
+      Fl_Button {} {
+        label OK
+        callback {if(!saveChanges()){errorOUT("Failed to save the changes");}
+edit_window->hide();}
+        tooltip {Write to configuration file} xywh {260 40 45 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
+      }
+      Fl_Input dir_edit_input {
+        xywh {5 5 300 30} box FLAT_BOX
+      }
+      Fl_Button {} {
+        label {Choose a new directory}
+        callback {const char* original=dir_edit_input->value();
+std::string tempdir="";
+if(original!=NULL){tempdir=original;}
+std::string result=choose_a_directory(tempdir,"");
+if(result.compare("")!=0){
+  if(original==NULL){addElementWithText("IconPath",result);}
+  else{
+    std::string tmp=original;
+    changeElementText("IconPath",tmp,result);
+  }
+  iconsBrowser->clear();
+  populateFLBrowser(iconsBrowser,"IconPath");
+}}
+        xywh {5 40 175 25} box FLAT_BOX color 40 selection_color 0 labelcolor 7
+      }
+    }
   }
 } 

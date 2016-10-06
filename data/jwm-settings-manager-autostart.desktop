@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Startup Program Settings
+Name[en_US]=Startup Program Settings
 GenericName=Configuration Tool
 GenericName[fr]=Outil de configuration
 GenericName[lv]=Konfigurācijas rīks
@@ -9,4 +10,3 @@ Terminal=false
 Type=Application
 Categories=Settings;System;
 NotShowIn=GNOME;KDE;LXDE;MATE;Razor;TDE;Unity;XFCE;EDE;Cinnamon;
-Name[en_US]=Startup Program Settings

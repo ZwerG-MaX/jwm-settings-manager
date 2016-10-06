@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0302 
+version 1.0303 
 i18n_type 1 
 i18n_include <libintl.h> 
 i18n_function gettext 
@@ -7,9 +7,9 @@ header_name {.h}
 code_name {.cxx}
 comment {/*                 Joe's Window Manager Configuration
  *
- * This program configures JWM using tinyxml2 and FLTK
+ * This program configures JWM using pugixml and FLTK
  *
- *         Copyright (C) 2014  Israel <israel@torios.org>
+ *         Copyright (C) 2016  Israel <israeldahl@gmail.com>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,12 +23,11 @@ comment {/*                 Joe's Window Manager Configuration
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * This has been developed as a part of the ToriOS Project
- * This has been developed by Israel<israel@torios.org>
  *
  *
  * You may redistribute this, but you must keep this comment in place
  * Jesus is my Lord, and if you don't like it feel free to ignore it.
- */} {in_source in_header
+ */} {selected in_source in_header
 } 
 
 decl {\#include <libintl.h>} {public global
@@ -43,13 +42,14 @@ decl {\#include <stdlib.h>} {public global
 decl {\#include <iostream>} {public global
 } 
 
-decl {\#include "../include/flPanel.h"} {public global
+decl {\#include "../include/jwmrc.h"} {public global
 } 
 
 class shutdown {open
 } {
   Function {make_window()} {open
   } {
+    code {load();} {}
     Fl_Window shutdown_window {
       label Shutdown open
       xywh {351 113 250 230} type Double color 45
@@ -64,7 +64,7 @@ if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}}
       Fl_Button restart {
         label Restart
         callback {int warn =system("torios-reboot || dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart|| systemctl reboot");
-if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}} selected
+if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}}
         image {../data/img/system-restart.png} xywh {130 20 105 65} box FLAT_BOX color 41 labelcolor 55
       }
       Fl_Button log {
@@ -89,12 +89,17 @@ shutdown_window->hide();}
   }
   Function {window_bg()} {open
   } {
-    code {flPanel panel;
-unsigned int c;
-unsigned int color= panel.getBackground(c,"MenuStyle");
+    code {unsigned int c=0;
+unsigned int color=0;
+std::string menu=getElementText("MenuStyle","Background");
+color=linuxcommon::get_fl_color(menu);
 shutdown_window->color(color);
-unsigned int color2 = panel.getFontColor(c,"MenuStyle");
-unsigned int color3 = panel.getActiveBackground(c,"MenuStyle");
+unsigned int color2 = 0;
+std::string font = getElementText("MenuStyle","Foreground");
+color2=linuxcommon::get_fl_color(font);
+unsigned int color3 = 0;
+std::string active= getElementText("MenuStyle","Active","Background");
+color3=linuxcommon::get_fl_color(active);
 shut->color(color3);
 shut->labelcolor(color2);
 restart->color(color3);
@@ -105,7 +110,7 @@ sus->color(color3);
 sus->labelcolor(color2);
 //can->color(color3);
 //can->labelcolor(color2);
-panel.under_mouse(shutdown_window);} {}
+under_mouse(shutdown_window);} {}
   }
   Function {under_mouse(Fl_Window *o)} {open
   } {

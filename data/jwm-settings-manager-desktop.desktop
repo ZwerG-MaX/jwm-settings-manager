@@ -2,8 +2,6 @@
 Name=Desktop Settings
 Name[en_US]=Desktop Settings
 Name[en_GB]=Desktop Settings
-Name[en_US]=Desktop Settings
-Name[en]=Desktop Settings
 GenericName=Configuration Tool
 Icon=jsm-desktop
 Exec=jwm-settings-manager --desktop

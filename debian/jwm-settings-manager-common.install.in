@@ -1,12 +1,11 @@
 data/Buttons/ usr/share/@EXEC@/
 @COMMON_INSTALL@
 data/time usr/share/@EXEC@/
-data/jwmIconFinder usr/bin
-data/nice-start usr/bin
 data/icons/@EXEC@.png usr/share/pixmaps/
 data/*.desktop usr/share/applications/
 data/pb_JWM usr/share/@EXEC@/
 data/icons/*.svg usr/share/icons/hicolor/scalable/apps
 data/icons/*.png usr/share/icons/hicolor/48x48/apps
 data/icons/*.xpm usr/share/pixmaps/
+data/reconfigure_jwm_themes usr/bin/
 @EXEC@.1 usr/share/man/man1/

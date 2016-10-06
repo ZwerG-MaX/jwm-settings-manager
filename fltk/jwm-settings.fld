@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0302 
+version 1.0303 
 i18n_type 1 
 i18n_include <libintl.h> 
 i18n_function gettext 
@@ -7,9 +7,9 @@ header_name {.h}
 code_name {.cxx}
 comment {/*                 Joe's Window Manager Configuration
  *
- * This program configures JWM using tinyxml2 and FLTK
+ * This program configures JWM using pugixml and FLTK
  *
- *         Copyright (C) 2014  Israel <israel@torios.org>
+ *         Copyright (C) 2016  Israel <israeldahl@gmail.com>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,7 +23,6 @@ comment {/*                 Joe's Window Manager Configuration
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * This has been developed as a part of the ToriOS Project
- * This has been developed by Israel<israel@torios.org>
  *
  *
  * You may redistribute this, but you must keep this comment in place
@@ -34,37 +33,13 @@ comment {/*                 Joe's Window Manager Configuration
 decl {\#include <libintl.h>} {public global
 } 
 
-decl {\#include "../include/flDesktop.h"} {public global
-} 
-
-decl {\#include "../include/flPanel.h"} {public global
-} 
-
-decl {\#include "../include/flWindow.h"} {public global
-} 
-
-decl {\#include "../include/flFont.h"} {public global
-} 
-
-decl {\#include "../include/flAutostart.h"} {public global
-} 
-
-decl {\#include "../include/flKeyboard.h"} {public global
-} 
-
-decl {\#include "../include/flMouse.h"} {public global
-} 
-
-decl {\#include "../include/flThemes.h"} {public global
-} 
-
-decl {\#include "../include/flIcons.h"} {public global
-} 
-
 decl {\#include "../include/ui.h"} {public global
 } 
 
-decl {\#include "../include/tinyxml2.h"} {public global
+decl {\#include "../include/jwmrc.h"} {public global
+} 
+
+decl {\#include "../include/fltkfunctions.hpp"} {public global
 } 
 
 decl {\#include "../data/icons/jwm-settings-manager.xpm"} {public global
@@ -76,63 +51,61 @@ class SettingsUI {open
   } {
     Fl_Window settings_window {
       label {Settings Manager} open
-      xywh {139 297 295 290} type Double color 45 labelcolor 7
-      code0 {Config config;}
-      code1 {o->icon(config.Get_Fl_Icon(jwm_settings_manager));}
-      code2 {config.under_mouse(o);} xclass {jwm-settings-manager} visible
+      xywh {628 249 295 290} type Double color 45 labelcolor 7 hide
+      code1 {startup(o,jwm_settings_manager);} xclass {jwm-settings-manager}
     } {
       Fl_Button {} {
         label Panel
         callback {settings_window->hide();
-UI ui;ui.showPanel();}
+showPanel();}
         image {../data/img/jsm-panel.png} xywh {10 5 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Keyboard
         callback {settings_window->hide();
-UI ui;ui.showKeyboard();}
+showKeyboard();}
         image {../data/img/jsm-keyboard.png} xywh {105 5 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Icons
         callback {settings_window->hide();
-UI ui;ui.showIcons();}
+showIcons();}
         image {../data/img/jsm-icons.png} xywh {200 5 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Desktop
         callback {settings_window->hide();
-UI ui;ui.showDesktop();}
+showDesktop();}
         image {../data/img/jsm-desktop.png} xywh {10 100 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
-        label Mouse
+        label Touchpad
         callback {settings_window->hide();
-UI ui;ui.showMouse();}
+showMouse();} selected
         image {../data/img/jsm-mouse.png} xywh {105 100 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Fonts
         callback {settings_window->hide();
-UI ui;ui.showFonts();}
+showFonts();}
         image {../data/img/jsm-fonts.png} xywh {200 100 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Windows
         callback {settings_window->hide();
-UI ui;ui.showWindow();}
+showWindow();}
         image {../data/img/jsm-windows.png} xywh {10 195 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Themes
         callback {settings_window->hide();
-UI ui;ui.showThemes();}
+showThemes();}
         tooltip {This is for Predefined Thems} image {../data/img/jsm-theme.png} xywh {105 195 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Autostart
         callback {settings_window->hide();
-UI ui;ui.showAutostart();}
+showAutostart();}
         image {../data/img/jsm-autostart.png} xywh {200 195 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
@@ -149,8 +122,7 @@ UI ui;ui.showAutostart();}
   }
   Function {isAdduser(Fl_Button *o)} {open
   } {
-    code {Config config;
-bool isfladduser = config.testExec("fladduser");
+    code {bool isfladduser = testExec("fladduser");
 
 if(isfladduser){
   o->show();
@@ -168,8 +140,7 @@ if(retval !=0){
   }
   Function {isInfo(Fl_Button *o)} {open
   } {
-    code {Config config;
-bool isexec = config.testExec("torios-info");
+    code {bool isexec = testExec("torios-info");
 if(isexec){
   o->show();
 }

@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0302 
+version 1.0303 
 i18n_type 1 
 i18n_include <libintl.h> 
 i18n_function gettext 
@@ -7,9 +7,9 @@ header_name {.h}
 code_name {.cxx}
 comment {/*                 Joe's Window Manager Configuration
  *
- * This program configures JWM using tinyxml2 and FLTK
+ * This program configures JWM using pugixml and FLTK
  *
- *         Copyright (C) 2014  Israel <israel@torios.org>
+ *         Copyright (C) 2016  Israel <israeldahl@gmail.com>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,7 +23,6 @@ comment {/*                 Joe's Window Manager Configuration
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * This has been developed as a part of the ToriOS Project
- * This has been developed by Israel<israel@torios.org>
  *
  *
  * You may redistribute this, but you must keep this comment in place
@@ -43,22 +42,13 @@ decl {\#include <stdlib.h>} {public global
 decl {\#include <iostream>} {public global
 } 
 
-decl {\#include "../include/Config.h"} {public global
+decl {\#include "../include/jwmrc.h"} {public global
 } 
 
-decl {\#include "../include/flThemes.h"} {public global
+decl {\#include "../include/themes.hpp"} {public global
 } 
 
 decl {\#include "../include/ui.h"} {public global
-} 
-
-decl {\#include <FL/fl_ask.H>} {public global
-} 
-
-decl {\#include <FL/Fl_PNG_Image.H>} {public global
-} 
-
-decl {\#include <FL/Fl_Native_File_Chooser.H>} {public global
 } 
 
 decl {\#include "../data/icons/jsm-theme.xpm"} {public global
@@ -70,205 +60,107 @@ class ThemesUI {open
   } {
     Fl_Window themes_window {
       label Themes open
-      xywh {200 451 610 345} type Double color 31 labelcolor 7
-      code0 {Config config;config.under_mouse(o);}
-      code1 {o->icon(config.Get_Fl_Icon(jsm_theme_xpm));} xclass {jsm-theme} visible
+      xywh {619 259 590 300} type Double color 31 labelcolor 7
+      code0 {startup(o,jsm_theme_xpm);} xclass {jsm-theme} visible
     } {
       Fl_Scroll {} {open selected
-        xywh {0 0 845 660} color 31
+        xywh {0 0 585 295} color 31
       } {
         Fl_Button ok {
           label {Change Colors ONLY}
           callback {const char* result = current_theme->label();
 if(result!=NULL){
-  change_theme(result,false);
+  std::string temp=result;
+  change_theme(temp,false);
 }}
-          tooltip {This will copy your current theme somewhere else} xywh {400 210 185 30} box FLAT_BOX color 61 selection_color 58 labelcolor 7
+          tooltip {This will copy your current theme somewhere else} xywh {380 162 195 30} box FLAT_BOX color 61 selection_color 58 labelcolor 7
         }
         Fl_Browser sys_theme {
           label Themes
-          callback {theme_cb(o, true);}
-          xywh {10 30 130 105} type Hold box FLAT_BOX selection_color 72 align 1
-          code0 {flThemes theme;}
-          code1 {theme.populateThemes(o);}
+          callback {std::string filename=theme_cb(o, true,current_theme);
+updateTheme(o,button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,amin,amax,aclose,imin,imax,iclose,filename);}
+          xywh {15 20 130 105} type Hold box FLAT_BOX selection_color 72 align 1
+          code1 {populateThemes(o);}
         }
-        Fl_Box tray {
-          label Panel
-          xywh {280 30 305 40} box FLAT_BOX
+        Fl_Box button_icon {
+          xywh {150 20 45 40} box FLAT_BOX
         }
         Fl_Box button {
           label Button
-          xywh {205 30 75 40} box FLAT_BOX
+          xywh {195 20 75 40} box FLAT_BOX
         }
-        Fl_Box awin {
-          xywh {160 100 425 40} box FLAT_BOX
+        Fl_Box tray {
+          label Panel
+          xywh {270 20 305 40} box FLAT_BOX
         }
         Fl_Box awin2 {
-          xywh {160 110 425 30} box FLAT_BOX
+          xywh {150 77 425 30} box FLAT_BOX
+        }
+        Fl_Box awin {
+          xywh {150 67 425 40} box FLAT_BOX
         }
         Fl_Box awin_text {
           label {Window (Active)}
-          xywh {160 100 425 40}
+          xywh {150 67 425 40}
+        }
+        Fl_Box amin {
+          xywh {480 72 30 30}
+        }
+        Fl_Box amax {
+          xywh {510 72 30 30}
+        }
+        Fl_Box aclose {
+          xywh {540 72 30 30}
         }
         Fl_Box iwin {
-          xywh {160 155 425 40} box FLAT_BOX
+          xywh {150 115 425 40} box FLAT_BOX
         }
         Fl_Box iwin2 {
-          xywh {160 165 425 30} box FLAT_BOX
+          xywh {150 125 425 30} box FLAT_BOX
         }
         Fl_Box iwin_text {
           label {Window (Inactive)}
-          xywh {160 155 425 40}
+          xywh {150 115 425 40}
+        }
+        Fl_Box imin {
+          xywh {480 120 30 30}
+        }
+        Fl_Box imax {
+          xywh {510 120 30 30}
+        }
+        Fl_Box iclose {
+          xywh {540 120 30 30}
         }
         Fl_Button save_button {
           label {Save Custom Theme}
-          callback {save_theme();}
-          tooltip {This will copy your current theme somewhere else} xywh {170 210 160 30} box FLAT_BOX color 94
+          callback {save_theme(usr_theme);}
+          tooltip {This will copy your current theme somewhere else} xywh {155 162 160 30} box FLAT_BOX color 94
         }
-        Fl_Button cancel {
+        Fl_Button cancel_button {
           label Cancel
-          callback {themes_window->hide();
-UI ux;
-ux.showSettings();}
-          tooltip {This will copy your current theme somewhere else} xywh {215 255 65 30} box FLAT_BOX color 80 selection_color 64 labelcolor 7
+          callback {cancel();}
+          tooltip {This will copy your current theme somewhere else} xywh {205 200 65 33} box FLAT_BOX color 80 selection_color 64 labelcolor 7
         }
         Fl_Browser usr_theme {
           label {User Themes}
-          callback {theme_cb(o, false);}
-          xywh {10 155 130 140} type Hold box FLAT_BOX selection_color 72 align 1
-          code0 {flThemes theme;}
-          code1 {theme.populateUserThemes(o);}
-        }
-        Fl_Box button_icon {
-          xywh {160 30 45 40} box FLAT_BOX
+          callback {std::string filename=theme_cb(o, false,current_theme);
+updateTheme(o,button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,amin,amax,aclose,imin,imax,iclose,filename);}
+          xywh {15 145 130 140} type Hold box FLAT_BOX selection_color 72 align 1
+          code1 {populateUserThemes(o);}
         }
         Fl_Button overwritten {
           label {Overwrite Current Theme}
           callback {const char* result = current_theme->label();
-change_theme(result,true);}
-          tooltip {This will copy your current theme somewhere else} xywh {400 250 190 35} box FLAT_BOX color 61 selection_color 58 labelcolor 7
+if(result!=NULL){
+  std::string temp=result;
+  change_theme(temp,true);
+}}
+          tooltip {This will copy your current theme somewhere else} xywh {380 200 195 35} box FLAT_BOX color 61 selection_color 58 labelcolor 7
+        }
+        Fl_Box current_theme {
+          xywh {160 255 415 30} box FLAT_BOX color 55
         }
       }
-      Fl_Box current_theme {
-        xywh {25 305 570 30} box FLAT_BOX color 55
-      }
-      Fl_Box amin {
-        xywh {490 105 30 30}
-      }
-      Fl_Box amax {
-        xywh {520 105 30 30}
-      }
-      Fl_Box aclose {
-        xywh {550 105 30 30}
-      }
-      Fl_Box imin {
-        xywh {485 160 30 30}
-      }
-      Fl_Box imax {
-        xywh {515 160 30 30}
-      }
-      Fl_Box iclose {
-        xywh {545 160 30 30}
-      }
     }
-  }
-  Function {change_theme(const char* whichTheme, bool overwrite)} {open
-  } {
-    code {flThemes theme;
-if (overwrite){theme.copier(whichTheme);}
-else if (!overwrite){theme.modCurrentTheme(button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,whichTheme);}
-theme.saveJWMRC(themes_window);
-UI ux;
-ux.showSettings();} {}
-  }
-  Function {save_theme()} {open
-  } {
-    code {flThemes theme;
-std::string save_name = choose_directory(gettext("Save File"));
-if (save_name.compare("")==0){return;}
-const char* save_file = save_name.c_str();
-int result = theme.saveAs(save_file);
-if(result!=0){fl_alert("Problem saving: %s",save_file); return;}
-theme.populateUserThemes(usr_theme);} {}
-  }
-  Function {choose_directory(const char* whichChoice)} {open return_type {std::string}
-  } {
-    code {std::string result="";
-std::string label = gettext("Choose ");
-label += whichChoice;
-const char * message = label.c_str();
-flThemes themie;
-const char* directory_path = (themie.userThemeDir()).c_str();
-Fl_Native_File_Chooser fnfc;
-fnfc.title(message);
-fnfc.type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);
-fnfc.directory(directory_path); // default directory to use
-int choice =0;
-// Show native chooser
-switch ( fnfc.show() ){
-  case -1:
-//     printf("ERROR: %s\\n", fnfc.errmsg());
-     break; // ERROR
-  case 1:
-//    printf("CANCEL\\n");
-    break; // CANCEL
-  default:
-    result = fnfc.filename();
-    /*
-    std::string message = gettext("Save as ");
-    message +=result;
-    const char* yes = gettext("Yes");
-    const char* no = gettext("No");
-    const char* q = gettext("Cancel");
-    */
-    choice = fl_choice("Save","No","Yes","Cancel");
-    if (choice==1){
-      break;
-    }
-    break; // FILE CHOSEN
-}
-return result;} {}
-  }
-  Function {choose_file()} {open return_type {std::string}
-  } {
-    code {std::string result="";
-std::string label = gettext("Choose a file");
-const char * message = label.c_str();
-flThemes themie;
-const char* directory_path = (themie.userThemeDir()).c_str();
-Fl_Native_File_Chooser fnfc;
-fnfc.title(message);
-fnfc.type(Fl_Native_File_Chooser::BROWSE_FILE);
-fnfc.directory(directory_path); // default directory to use
-// Show native chooser
-switch ( fnfc.show() ){
-  case -1:
-//     printf("ERROR: %s\\n", fnfc.errmsg());
-     break; // ERROR
-  case 1:
-//    printf("CANCEL\\n");
-    break; // CANCEL
-  default:
-    result = fnfc.filename();
-    break; // FILE SAVE NAME
-}
-return result;} {}
-  }
-  Function {theme_cb(Fl_Browser* browser,bool systemTheme)} {open
-  } {
-    code {int line = browser->value();
-std::string text = browser->text(line);
-std::string path ="";
-flThemes theme;
-if(systemTheme){
-path = theme.sysThemeDir();
-path= path + text+"/";
-}
-else{path = theme.userThemeDir();}
-if(path.compare("")==0){return;}
-path+=text;
-//std::cout<<"filename: "<<path<<std::endl;
-current_theme->copy_label(path.c_str());
-theme.updateTheme(button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,amin,amax,aclose,imin,imax,iclose,path);} {}
   }
 } 

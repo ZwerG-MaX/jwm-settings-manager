@@ -1,8 +1,8 @@
 /*                 Joe's Window Manager Configuration
  *
- * This program configures JWM using tinyxml2 and FLTK
+ * This program configures JWM using pugixml and FLTK
  *
- *         Copyright (C) 2014  Israel <israel@torios.org>
+ *         Copyright (C) 2016  Israel <israeldahl@gmail.com>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * This has been developed as a part of the ToriOS Project
- * This has been developed by Israel<israel@torios.org>
  *
  *
  * You may redistribute this, but you must keep this comment in place
@@ -28,43 +27,45 @@
 #include "jwm-desktop.h"
 
 void DesktopUI::cb_Choose_i(Fl_Button*, void*) {
-  bg_chooser_cb();
+  bg_chooser_cb(background_displayer_thingie,current_bg,color_display1,color_display2);
 }
 void DesktopUI::cb_Choose(Fl_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_Choose_i(o,v);
 }
 
 void DesktopUI::cb_Choose1_i(Fl_Button*, void*) {
-  one_color();
+  one_color(color_display1,color_display2,background_displayer_thingie,current_bg);
 }
 void DesktopUI::cb_Choose1(Fl_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_Choose1_i(o,v);
 }
 
 void DesktopUI::cb_Choose2_i(Fl_Button*, void*) {
-  two_color();
+  two_color(color_display1,color_display2,background_displayer_thingie,current_bg);
 }
 void DesktopUI::cb_Choose2(Fl_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_Choose2_i(o,v);
 }
 
-void DesktopUI::cb_icons_check_i(Fl_Check_Button*, void*) {
-  use_icons_on_desktop();
+void DesktopUI::cb_icons_check_i(Fl_Check_Button* o, void*) {
+  bool useful=use_icons_on_desktop(background_displayer_thingie,thisBG);
+o->value(0);
+if(useful){o->value(1);};
 }
 void DesktopUI::cb_icons_check(Fl_Check_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_icons_check_i(o,v);
 }
 
-void DesktopUI::cb_Multiple_i(Fl_Check_Button*, void*) {
-  useMultipleDesktops();
+void DesktopUI::cb_check_desktops_i(Fl_Check_Button*, void*) {
+  useMultipleDesktops(num_desktop_w,num_desktop_h);
 }
-void DesktopUI::cb_Multiple(Fl_Check_Button* o, void* v) {
-  ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_Multiple_i(o,v);
+void DesktopUI::cb_check_desktops(Fl_Check_Button* o, void* v) {
+  ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_check_desktops_i(o,v);
 }
 
 void DesktopUI::cb_num_desktop_w_i(Fl_Value_Input* o, void*) {
   int width = int((o->value()));
-num_desktop_wh_cb("width",width);
+num_desktop_wh_cb("width",width,num_desktop_w,num_desktop_h,check_desktops);
 }
 void DesktopUI::cb_num_desktop_w(Fl_Value_Input* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_num_desktop_w_i(o,v);
@@ -72,7 +73,7 @@ void DesktopUI::cb_num_desktop_w(Fl_Value_Input* o, void* v) {
 
 void DesktopUI::cb_num_desktop_h_i(Fl_Value_Input* o, void*) {
   int height = int((o->value()));
-num_desktop_wh_cb("height",height);
+num_desktop_wh_cb("height",height,num_desktop_w,num_desktop_h,check_desktops);
 }
 void DesktopUI::cb_num_desktop_h(Fl_Value_Input* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_num_desktop_h_i(o,v);
@@ -80,19 +81,14 @@ void DesktopUI::cb_num_desktop_h(Fl_Value_Input* o, void* v) {
 
 void DesktopUI::cb_Cancel_i(Fl_Button*, void*) {
   cancel();
-desktop_window->hide();
-UI ux;
-ux.showSettings();
 }
 void DesktopUI::cb_Cancel(Fl_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_Cancel_i(o,v);
 }
 
 void DesktopUI::cb_OK_i(Fl_Button*, void*) {
-  saveJWMRC();
+  saveChanges();
 desktop_window->hide();
-UI ux;
-ux.showSettings();
 }
 void DesktopUI::cb_OK(Fl_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_OK_i(o,v);
@@ -100,48 +96,48 @@ void DesktopUI::cb_OK(Fl_Button* o, void* v) {
 
 Fl_Double_Window* DesktopUI::make_window() {
   load();
-  saveChangesTemp();
-  { Fl_Double_Window* o = desktop_window = new Fl_Double_Window(395, 490, gettext("Desktop Settings"));
+  thisBG=getBackground();
+  { Fl_Double_Window* o = desktop_window = new Fl_Double_Window(360, 420, gettext("Desktop Settings"));
     desktop_window->color((Fl_Color)31);
     desktop_window->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(0, 0, 395, 490);
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 360, 420);
       o->color((Fl_Color)31);
-      { Fl_Box* o = background_displayer_thingie = new Fl_Box(25, 65, 345, 270);
+      { Fl_Box* o = background_displayer_thingie = new Fl_Box(8, 5, 345, 270);
         background_displayer_thingie->box(FL_FLAT_BOX);
         background_displayer_thingie->color((Fl_Color)37);
         background_displayer_thingie->when(FL_WHEN_RELEASE_ALWAYS);
-        background(o);
+        background(o,thisBG);
       } // Fl_Box* background_displayer_thingie
-      { Fl_Box* o = color_display1 = new Fl_Box(25, 65, 345, 270);
+      { Fl_Box* o = color_display1 = new Fl_Box(8, 5, 345, 270);
         color_display1->box(FL_FLAT_BOX);
         color_display1->color((Fl_Color)37);
         color_display1->when(FL_WHEN_RELEASE_ALWAYS);
-        background1(o);
+        background1(o,thisBG);
       } // Fl_Box* color_display1
-      { Fl_Box* o = color_display2 = new Fl_Box(25, 195, 345, 140);
+      { Fl_Box* o = color_display2 = new Fl_Box(8, 135, 345, 140);
         color_display2->box(FL_FLAT_BOX);
         color_display2->color((Fl_Color)37);
         color_display2->when(FL_WHEN_RELEASE_ALWAYS);
-        background2(o);
+        background2(o,thisBG);
       } // Fl_Box* color_display2
-      { Fl_Button* o = new Fl_Button(20, 345, 110, 25, gettext("Choose Image"));
+      { Fl_Button* o = new Fl_Button(8, 315, 110, 25, gettext("Choose Image"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Choose);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(140, 345, 110, 25, gettext("Choose Color"));
+      { Fl_Button* o = new Fl_Button(123, 315, 100, 25, gettext("Choose Color"));
         o->tooltip(gettext("This will take icons off the desktop"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Choose1);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(260, 345, 125, 25, gettext("Choose Gradient"));
+      { Fl_Button* o = new Fl_Button(228, 315, 125, 25, gettext("Choose Gradient"));
         o->tooltip(gettext("This will take icons off the desktop"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Choose2);
       } // Fl_Button* o
-      { icons_check = new Fl_Check_Button(15, 380, 150, 25, gettext("Icons on Desktop"));
+      { Fl_Check_Button* o = icons_check = new Fl_Check_Button(5, 345, 140, 25, gettext("Icons on Desktop"));
         icons_check->box(FL_FLAT_BOX);
         icons_check->down_box(FL_GTK_DOWN_BOX);
         icons_check->color((Fl_Color)31);
@@ -149,30 +145,29 @@ Fl_Double_Window* DesktopUI::make_window() {
         icons_check->callback((Fl_Callback*)cb_icons_check);
         icons_check->align(Fl_Align(FL_ALIGN_RIGHT|FL_ALIGN_INSIDE));
         icons_check->when(FL_WHEN_CHANGED);
-        icons_on_desktop();
+        if(isIconsOnDesktop())o->value(1);
       } // Fl_Check_Button* icons_check
-      { Fl_Output* o = current_bg = new Fl_Output(25, 30, 345, 30, gettext("Current Background"));
+      { Fl_Output* o = current_bg = new Fl_Output(8, 280, 345, 30);
         current_bg->box(FL_FLAT_BOX);
         current_bg->color(FL_LIGHT1);
         current_bg->selection_color(FL_DARK_RED);
         current_bg->labelfont(1);
         current_bg->align(Fl_Align(33));
-        bg_name(o);
+        bg_name(o,thisBG);
       } // Fl_Output* current_bg
-      { Fl_Check_Button* o = new Fl_Check_Button(15, 405, 155, 25, gettext("Multiple Desktops"));
-        o->tooltip(gettext("This allows you to have multiple screens to work on from one Display"));
-        o->box(FL_FLAT_BOX);
-        o->down_box(FL_GTK_DOWN_BOX);
-        o->color((Fl_Color)31);
-        o->selection_color((Fl_Color)59);
-        o->callback((Fl_Callback*)cb_Multiple);
-        o->align(Fl_Align(FL_ALIGN_RIGHT|FL_ALIGN_INSIDE));
-        o->when(FL_WHEN_CHANGED);
-        bool m = multipleDesktops();
+      { Fl_Check_Button* o = check_desktops = new Fl_Check_Button(5, 370, 142, 25, gettext("Multiple Desktops"));
+        check_desktops->tooltip(gettext("This allows you to have multiple screens to work on from one Display"));
+        check_desktops->box(FL_FLAT_BOX);
+        check_desktops->down_box(FL_GTK_DOWN_BOX);
+        check_desktops->color((Fl_Color)31);
+        check_desktops->selection_color((Fl_Color)59);
+        check_desktops->callback((Fl_Callback*)cb_check_desktops);
+        check_desktops->align(Fl_Align(FL_ALIGN_RIGHT|FL_ALIGN_INSIDE));
+        check_desktops->when(FL_WHEN_CHANGED);
+        bool m = multipleDesktops();o->value(0);
         if(m){o->value(1);}
-        else{o->value(0);}
-      } // Fl_Check_Button* o
-      { Fl_Value_Input* o = num_desktop_w = new Fl_Value_Input(175, 380, 20, 25, gettext("Number of Desktops Wide"));
+      } // Fl_Check_Button* check_desktops
+      { Fl_Value_Input* o = num_desktop_w = new Fl_Value_Input(149, 345, 20, 20, gettext("Number of Desktops Wide"));
         num_desktop_w->box(FL_FLAT_BOX);
         num_desktop_w->color((Fl_Color)53);
         num_desktop_w->callback((Fl_Callback*)cb_num_desktop_w);
@@ -180,7 +175,7 @@ Fl_Double_Window* DesktopUI::make_window() {
         int width = getIntAttribute("Desktops","width");
         o->value(width);
       } // Fl_Value_Input* num_desktop_w
-      { Fl_Value_Input* o = num_desktop_h = new Fl_Value_Input(175, 410, 20, 25, gettext("Number of Desktops High "));
+      { Fl_Value_Input* o = num_desktop_h = new Fl_Value_Input(149, 370, 20, 20, gettext("Number of Desktops High "));
         num_desktop_h->box(FL_FLAT_BOX);
         num_desktop_h->color((Fl_Color)53);
         num_desktop_h->callback((Fl_Callback*)cb_num_desktop_h);
@@ -188,14 +183,14 @@ Fl_Double_Window* DesktopUI::make_window() {
         int height = getIntAttribute("Desktops","height");
         o->value(height);
       } // Fl_Value_Input* num_desktop_h
-      { Fl_Button* o = new Fl_Button(140, 450, 65, 25, gettext("Cancel"));
+      { Fl_Button* o = new Fl_Button(233, 390, 65, 25, gettext("Cancel"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
         o->labelcolor(FL_BACKGROUND2_COLOR);
         o->callback((Fl_Callback*)cb_Cancel);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(215, 450, 45, 25, gettext("OK"));
+      { Fl_Button* o = new Fl_Button(308, 390, 45, 25, gettext("OK"));
         o->tooltip(gettext("Write to configuration file"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)61);
@@ -205,250 +200,10 @@ Fl_Double_Window* DesktopUI::make_window() {
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
-    startup(o);
+    startup(o,jsm_desktop_xpm);
     desktop_window->xclass("jsm-desktop");
     desktop_window->end();
     desktop_window->resizable(desktop_window);
   } // Fl_Double_Window* desktop_window
   return desktop_window;
-}
-
-void DesktopUI::background(Fl_Box*o) {
-  flDesktop desktop;
-  std::string bg = desktop.getBackground();
-  std::string colorTester = bg.substr(0,1);
-  if (colorTester.compare("/")==0){
-    desktop.setFlImage(o,bg.c_str());
-  }
-  else{background_displayer_thingie->hide();}
-}
-
-void DesktopUI::background1(Fl_Box*o) {
-  flDesktop desktop;
-  std::string bg = desktop.getBackground();
-  if(bg.length()<=4){return;}
-  std::string colorTester = bg.substr(0,1);
-  if (colorTester.compare("/")==0){
-    o->hide();
-    return;
-  }
-  else if (colorTester.compare("#")==0){
-    colorTester = bg.substr(1,6);
-    //std::cout<<colorTester<<std::endl;
-    unsigned int ColorGradient;
-    unsigned int colorSet = desktop.getBackground(ColorGradient);
-    o->color(colorSet);
-  }
-  else{return;}
-}
-
-void DesktopUI::background2(Fl_Box*o) {
-  flDesktop desktop;
-  std::string bg = desktop.getBackground();
-  if(bg.length()<=4){
-    o->hide();
-    return;
-  }
-  std::string colorTester = bg.substr(0,1);
-  if (colorTester.compare("/")==0){
-    o->hide();
-    return;
-  }
-  else if (colorTester.compare("#")==0){
-    unsigned int ColorGradient;
-    unsigned int colorSet = desktop.getBackground(ColorGradient);
-    unsigned int found = bg.find(':');
-    if (bg.length()>7){
-      if ((found >= bg.length())||(found <= bg.length())){
-          o->hide();
-      }
-      std::string color2 = bg.substr(found+1,std::string::npos);
-      o->show();
-      o->color(ColorGradient);
-      o->redraw();
-    }
-    else{o->hide();}
-  }
-  else{
-    o->hide();
-    return;
-  }
-}
-
-void DesktopUI::bg_chooser_cb() {
-  flDesktop desktop;
-  std::string background = getenv("HOME");
-  background +="/Pictures/";
-  const char * bg = background.c_str();//this is ~/Pictures
-  const char * m="Choose a Background";
-  const char *p="*.{jpg,JPG,png,PNG}";
-  int r = 0;
-  char *result = fl_file_chooser(m,p,bg,r);
-  if(result!=NULL){
-  	//Is it a png or JPG?
-  	std::string extention, resultStr;
-  	resultStr = result;
-  	if(resultStr.length()<=4){return;}
-  	extention = resultStr.substr((strlen(result)-4),4);
-  	std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
-  	if ((extention.compare(".png")==0) ||
-  	    (extention.compare(".jpg")==0) ||
-  	    (extention.compare(".jpeg")==0) ||
-  	    (extention.compare(".svg")==0)){
-  		current_bg->value(result);
-  		const char* type="image";
-  		desktop.setBackground(type,result);
-  		color_display1->hide();
-  		color_display2->hide();
-  		desktop.setFlImage(background_displayer_thingie,result);
-  	}
-  	else{
-  	  return;
-  	}
-  }
-}
-
-void DesktopUI::bg_name(Fl_Output *o) {
-  flDesktop desktop;
-  std::string bg = desktop.getBackground();
-  if(!bg.length()>1){
-    o->value("");
-    return;
-  }
-  std::string colorTester = bg.substr(0,1);
-  if (colorTester.compare("/")==0){
-    o->value(bg.c_str());
-  }
-  else if (bg.compare("")==0){
-    o->value("");
-    return;
-  }
-  else if (colorTester.compare("#")==0){
-    unsigned int ColorGradient;
-    unsigned int colorSet = desktop.getBackground(ColorGradient);
-    if (bg.length()>6){
-      o->value("Color Gradient");
-    }
-    else{o->value("Color");}
-  
-  }
-  else{
-    o->value("");
-    return;
-  }
-}
-
-void DesktopUI::icons_on_desktop() {
-  flDesktop desktop;
-  //1 is on 0 is off
-  std::string fm = desktop.whichFileManagerRunning();
-  if(fm.compare("unkown")!=0 ){icons_check->value(1);}
-  else{icons_check->value(0);}
-}
-
-bool DesktopUI::multipleDesktops() {
-  int width = getIntAttribute("Desktops","width");
-  int height = getIntAttribute("Desktops","height");
-  // zero for false and non-zero for true.
-  if (height==1 && width ==1){return false;}
-  else if (!height || !width){return false;}
-  return true;
-}
-
-void DesktopUI::num_desktop_wh_cb(const char* whichone, int value) {
-  setAttribute("Desktops",whichone,value);
-  int w = int((num_desktop_w->value()));
-  int h = int((num_desktop_h->value()));
-  int defaultValue = 1;
-  if(w==0){setAttribute("Desktops","width",defaultValue);}
-  if(h==0){setAttribute("Desktops","height",defaultValue);}
-}
-
-void DesktopUI::one_color() {
-  flDesktop desktop;
-  uchar r;
-  uchar g;
-  uchar b;
-  
-  int c;
-  const char * label ="choose";
-  c= fl_color_chooser(label,r,g,b,2);
-  
-  double* colors = new double[4];
-  colors[0] = int(r); 
-  colors[1] = int(g);
-  colors[2] = int(b);
-  colors[3] = 0;
-  if(c!=0){ //If color chooser isn't canceled... do stuff
-    desktop.setBackground(colors);
-    unsigned int unusedColor;
-    unsigned int colorSet = desktop.getBackground(unusedColor);
-    color_display1->color(colorSet);
-    color_display1->show();
-    color_display2->hide();
-    background_displayer_thingie->hide();
-  }
-  current_bg->value("Color");
-}
-
-void DesktopUI::two_color() {
-  flDesktop desktop;
-  uchar r;
-  uchar g;
-  uchar b;
-  int c;
-  const char * label ="Choose 1st Color";
-  c= fl_color_chooser(label,r,g,b,2);
-  double* gradient1 = new double[4];
-  gradient1[0] = int(r); 
-  gradient1[1] = int(g);
-  gradient1[2] = int(b);
-  gradient1[3] = 0;
-  if(c!=0){ //If color chooser isn't canceled... do stuff
-  	uchar r2;
-  	uchar g2;
-  	uchar b2;
-  	int c2;
-  	const char * label2 ="Choose 2nd Color";
-  	c2= fl_color_chooser(label2,r2,g2,b2,2);
-  	double* gradient2 = new double[4];
-  	gradient2[0] = int(r2); 
-  	gradient2[1] = int(g2);
-  	gradient2[2] = int(b2);
-  	gradient2[3] = 0;
-  	if(c2!=0){ //If color chooser isn't canceled... do stuff
-  		desktop.setBackground(gradient1,gradient2);
-  		unsigned int color2;
-  		unsigned int color1 = desktop.getBackground(color2);
-  		color_display1->color(color1);
-  		color_display2->color(color2);
-  		color_display1->show();
-  		color_display2->show();
-  		background_displayer_thingie->hide();
-  		color_display1->redraw();
-  		color_display2->redraw();
-  	}
-  }
-  current_bg->value("Color Gradient");
-}
-
-void DesktopUI::use_icons_on_desktop() {
-  flDesktop desktop;
-  desktop.setIconsOnDesktop();
-  background(background_displayer_thingie);
-}
-
-void DesktopUI::useMultipleDesktops() {
-  if(!multipleDesktops()){
-  int width = int((num_desktop_w->value()));
-  int height = int((num_desktop_h->value()));
-  if (width == 1 && height ==1 ){width =2;}
-  setAttribute("Desktops","width",width);
-  setAttribute("Desktops","height",height);
-  }
-}
-
-void DesktopUI::startup(Fl_Window *o) {
-  Config config; config.under_mouse(o);
-  o->icon(config.Get_Fl_Icon(jsm_desktop_xpm));
 }

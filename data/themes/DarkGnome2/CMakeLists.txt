@@ -2,9 +2,9 @@
 #####################################################################################
 set(THIS_THEME "DarkGnome2")
 #####################################################################################
-set(TRAY "${GNOME_TRAY}")
-set(OLD_TRAY "${OLD_GNOME_TRAY}")
-set(MENUS_LIST "${GNOME_MENUS_LIST}")
+set(TRAY "${DEFAULT_TRAY}")
+set (OLD_TRAY "${OLD_DEFAULT_TRAY}")
+set(MENUS_LIST "${REGULAR_MENUS_LIST}")
 
 set(TASK_ACTIVE_FOREGROUND "#ffffff" )
 set(TASK_ACTIVE_BACKGROUND "#A5A5A5" )

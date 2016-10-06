@@ -6,50 +6,47 @@
 .B @NAME@
 [OPTIONS]
 .SH DESCTIPTION
-A tool to easily configure JWM.  Built using FLTK and Tinyxml2,
-this fast, and light, but doesn't sacrifice aesthetics.
+@SHORT_DESC@
 .PP
-configure JWM easily
+@ONE_LINER@
 
 .SH OPTIONS
 .TP
 
 .TP
-\-a  --autostart   show autostart settings
+\-a  @ARGautostart@   show autostart settings
 .TP
-\-d  --desktop     show desktop settings
+\-d  @ARGdesktop@     show desktop settings
 .TP
-\-f  --font        show font settings
+\-f  @ARGfont@        show font settings
 .TP
-\-h  --help        show this listing
+\-h  @ARGhelp@        show this listing
 .TP
-\-i  --icons       show icon settings
+\-i  @ARGicons@       show icon settings
 .TP
-\-k  --keyboard    show keyboard settings
+\-k  @ARGkeyboard@    show keyboard settings
 .TP
-\-m  --mouse       show mouse settings
+\-m  @ARGmouse@       show mouse settings
 .TP
-\-p  --panel       show panel settings
+\-p  @ARGpanel@       show panel @ARGshutdown@settings
 .TP
-\-t  --themes      show theme settings
+\-t  @ARGthemes@      show theme settings
 .TP
-\-w  --window      show window settings
+\-w  @ARGwindow@      show window settings
 .TP
-\-r  --recover     recover settings file
+\-v  @ARGversion@     show version number
 .TP
-\-v  --version     show version number
-.TP
-\-c  --copyright   show copyright information
+\-c  @ARGcopyright@   show copyright information
 .TP
 .B SHORTCUTS FOR USE IN THE PANELS AND MENUS
 .TP
-\-l -clock        show clock settings
+\-l  @ARGclock@        show clock settings
 .TP
-\-s  --shortcuts   show shortcuts window
+\-s  @ARGshortcuts@   show shortcuts window
 .TP
-\-u  --menu        show menu window
+\-u  @ARGmenu@        show menu window
 .TP
-\    --halt        show shutdown dialog
+\@ARGhalt@ @ARGshutdown@ show shutdown dialog
 
 .SH AUTHOR
-israeldahl
+@AUTHOR@

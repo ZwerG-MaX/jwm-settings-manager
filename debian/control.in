@@ -1,0 +1,40 @@
+Source: @EXEC@
+Section: misc
+Priority: optional
+Maintainer: @AUTHOR@ <@EMAIL@>
+Build-Depends:
+ debhelper (>= 9.0.0),
+ cmake,
+ gcc-multilib [amd64],
+ g++-multilib [amd64],
+ libc6,
+ libfltk-images1.3,
+ libfltk1.3,
+ libfltk1.3-dev,
+ libfltk1.3-compat-headers,
+ libgcc1,
+ libstdc++6,
+ libx11-dev,
+ libxpm-dev,
+ fluid,
+ pkg-config,
+Standards-Version: 3.9.7
+Homepage: @WEBsite@
+
+Package: @EXEC@
+Architecture: any
+Depends: @EXEC@-common (>= @DEBDEPS@, jwm, jwm-menu (>=2.0.0ubuntu1)| jwm-menu-all
+Replaces: jwm-menu (<= 1.0.1ubuntu3)
+Recommends:
+Suggests: volumeicon-alsa
+Description: @NAME@
+@SHORT_DESC@
+
+Package: @EXEC@-common
+Architecture: all
+Depends: @MISCDEPS@
+Description: @NAME@ Common files
+@SHORT_DESC@
+  .
+ This package contains the platform independent files like buttons,
+ and themes.

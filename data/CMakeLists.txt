@@ -14,10 +14,7 @@ FILE(GLOB ICONS_XPM "icons/*.xpm")
 # make sure the Cmake list in themes is included
 add_subdirectory(themes)
 
-# install icon finder script
-install (FILES jwmIconFinder DESTINATION usr/bin)
-
-#install themes 
+#install themes
 install (DIRECTORY themes DESTINATION share/jwm-settings-manager)
 
 #default rox file

@@ -1,2 +1,4 @@
 usr/bin/jwm-settings-manager
-usr/lib/jwm-settings-manager/libJSM.a
+usr/bin/fltk-mouse
+usr/bin/desktop-file-editor
+usr/lib/libJSM.a
