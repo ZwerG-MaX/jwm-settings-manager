@@ -215,16 +215,15 @@ public:
   Fl_Double_Window* add_indicator();
   Fl_Double_Window *indicator_win;
 private:
-  inline void cb_Battery_i(Fl_Button*, void*);
-  static void cb_Battery(Fl_Button*, void*);
-  inline void cb_Volume_i(Fl_Button*, void*);
-  static void cb_Volume(Fl_Button*, void*);
-  inline void cb_Network_i(Fl_Button*, void*);
-  static void cb_Network(Fl_Button*, void*);
   inline void cb_OK_i(Fl_Button*, void*);
   static void cb_OK(Fl_Button*, void*);
   inline void cb_CLOSE_i(Fl_Button*, void*);
   static void cb_CLOSE(Fl_Button*, void*);
+public:
+  Fl_Browser *add_indicator_browser;
+private:
+  inline void cb_2_i(Fl_Button*, void*);
+  static void cb_2(Fl_Button*, void*);
 public:
   Fl_Double_Window* add_to_panel();
   Fl_Double_Window *add_2_panel;
@@ -234,8 +233,8 @@ private:
 public:
   Fl_Browser *panel_items_browser;
 private:
-  inline void cb_2_i(Fl_Button*, void*);
-  static void cb_2(Fl_Button*, void*);
+  inline void cb_3_i(Fl_Button*, void*);
+  static void cb_3(Fl_Button*, void*);
   inline void cb_CLOSE1_i(Fl_Button*, void*);
   static void cb_CLOSE1(Fl_Button*, void*);
 public:
@@ -249,8 +248,8 @@ public:
 private:
   inline void cb_clock_style_i(Fl_Input*, void*);
   static void cb_clock_style(Fl_Input*, void*);
-  inline void cb_3_i(Fl_Browser*, void*);
-  static void cb_3(Fl_Browser*, void*);
+  inline void cb_4_i(Fl_Browser*, void*);
+  static void cb_4(Fl_Browser*, void*);
 public:
   Fl_Output *clock_display;
 private:
@@ -317,10 +316,10 @@ private:
 public:
   Fl_Browser *indicator_browser;
 private:
-  inline void cb_4_i(Fl_Button*, void*);
-  static void cb_4(Fl_Button*, void*);
   inline void cb_5_i(Fl_Button*, void*);
   static void cb_5(Fl_Button*, void*);
+  inline void cb_6_i(Fl_Button*, void*);
+  static void cb_6(Fl_Button*, void*);
 public:
   Fl_Double_Window* configure_manually_window(std::string icon);
   Fl_Double_Window *conf_manual_window;
@@ -331,8 +330,8 @@ private:
 public:
   Fl_Input *label_input;
 private:
-  inline void cb_6_i(Fl_Button*, void*);
-  static void cb_6(Fl_Button*, void*);
+  inline void cb_7_i(Fl_Button*, void*);
+  static void cb_7(Fl_Button*, void*);
 public:
   Fl_Input *hid_in;
   Fl_Input *icon_file;
@@ -351,6 +350,10 @@ private:
 public:
   Fl_Input *hidden_icon_name;
   Fl_Output *tester;
+private:
+  inline void cb_8_i(Fl_Button*, void*);
+  static void cb_8(Fl_Button*, void*);
+public:
   Fl_Double_Window* config_swallow_window();
   Fl_Double_Window *conf_swallow_window;
 private:
@@ -376,10 +379,10 @@ private:
   static void cb_Active(Fl_Button*, void*);
   inline void cb_Active1_i(Fl_Button*, void*);
   static void cb_Active1(Fl_Button*, void*);
-  inline void cb_7_i(Fl_Button*, void*);
-  static void cb_7(Fl_Button*, void*);
-  inline void cb_8_i(Fl_Button*, void*);
-  static void cb_8(Fl_Button*, void*);
+  inline void cb_9_i(Fl_Button*, void*);
+  static void cb_9(Fl_Button*, void*);
+  inline void cb_a_i(Fl_Button*, void*);
+  static void cb_a(Fl_Button*, void*);
 public:
   Fl_Value_Input *num_desktop_w;
 private:
@@ -404,8 +407,8 @@ private:
 public:
   Fl_Input *tooltip;
 private:
-  inline void cb_9_i(Fl_Button*, void*);
-  static void cb_9(Fl_Button*, void*);
+  inline void cb_b_i(Fl_Button*, void*);
+  static void cb_b(Fl_Button*, void*);
 public:
   Fl_Button *ok_button;
 private:
@@ -415,8 +418,8 @@ public:
   Fl_Check_Button *shortcut_border;
   Fl_Browser *shortcut_browser;
 private:
-  inline void cb_a_i(Fl_Button*, void*);
-  static void cb_a(Fl_Button*, void*);
+  inline void cb_c_i(Fl_Button*, void*);
+  static void cb_c(Fl_Button*, void*);
 public:
   Fl_Box *icon_name;
   Fl_Button *app_icon_box;
@@ -445,6 +448,5 @@ public:
   void ok();
   void remove_indicator();
   void save_user_clock();
-#include "../include/jwmrc.h"
 };
 #endif

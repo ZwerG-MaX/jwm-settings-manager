@@ -100,9 +100,11 @@ namespace linuxcommon{
 	std::string find_xdg_config_dir_subdir(std::string subdir);
 	std::vector<std::string> desktop_paths();
 	std::vector<std::string> split_paths(const char* envVar, const char* incasenothingexists);
+	std::vector<std::string> file_to_vector(std::string filename);
 	std::vector<std::string> sort_array(std::vector<std::string> thisPath);
 	std::vector<std::string> join_string_vectors(std::vector<std::string> vectorA,std::vector<std::string> vectorB);
 	//boolean
+	bool look_for_string_in_vector(std::vector<std::string> vector_to_check,std::string item_to_find);
 	bool test_file(std::string fileWithFullPATH);
 	bool test_dir(std::string fullpath);
 	bool test_exec(std::string stringEXEC);
@@ -114,6 +116,7 @@ namespace linuxcommon{
 	int mkdir_p(std::string dirToMake);
 	int getProcIdByName(std::string procName);
 	int run_a_program(std::string program);
+	int run_a_program_in_background(std::string program);
 	//unsigned int
 	unsigned int convert_string_to_number(const char* num);
 	unsigned int items_in_path();

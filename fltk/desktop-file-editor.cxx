@@ -9,7 +9,7 @@ type->redraw();
 check_type();
 }
 void Desktop::cb_Application(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Application_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Application_i(o,v);
 }
 
 void Desktop::cb_Link_i(Fl_Menu_*, void*) {
@@ -18,7 +18,7 @@ type->redraw();
 check_type();
 }
 void Desktop::cb_Link(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Link_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Link_i(o,v);
 }
 
 void Desktop::cb_Directory_i(Fl_Menu_*, void*) {
@@ -27,7 +27,7 @@ type->redraw();
 check_type();
 }
 void Desktop::cb_Directory(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Directory_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Directory_i(o,v);
 }
 
 void Desktop::cb_OTHER_i(Fl_Menu_*, void*) {
@@ -36,7 +36,7 @@ type->redraw();
 check_type();
 }
 void Desktop::cb_OTHER(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_OTHER_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_OTHER_i(o,v);
 }
 
 unsigned char Desktop::menu_Type_i18n_done = 0;
@@ -53,7 +53,7 @@ void Desktop::cb_AudioVideo_i(Fl_Menu_*, void*) {
 categories->redraw();
 }
 void Desktop::cb_AudioVideo(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_AudioVideo_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_AudioVideo_i(o,v);
 }
 
 void Desktop::cb_Development_i(Fl_Menu_*, void*) {
@@ -61,7 +61,7 @@ void Desktop::cb_Development_i(Fl_Menu_*, void*) {
 categories->redraw();
 }
 void Desktop::cb_Development(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Development_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Development_i(o,v);
 }
 
 void Desktop::cb_Education_i(Fl_Menu_*, void*) {
@@ -69,7 +69,7 @@ void Desktop::cb_Education_i(Fl_Menu_*, void*) {
 categories->redraw();
 }
 void Desktop::cb_Education(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Education_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Education_i(o,v);
 }
 
 void Desktop::cb_Game_i(Fl_Menu_*, void*) {
@@ -77,7 +77,7 @@ void Desktop::cb_Game_i(Fl_Menu_*, void*) {
 categories->redraw();
 }
 void Desktop::cb_Game(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Game_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Game_i(o,v);
 }
 
 void Desktop::cb_Graphics_i(Fl_Menu_*, void*) {
@@ -85,7 +85,7 @@ void Desktop::cb_Graphics_i(Fl_Menu_*, void*) {
 categories->redraw();
 }
 void Desktop::cb_Graphics(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Graphics_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Graphics_i(o,v);
 }
 
 void Desktop::cb_Network_i(Fl_Menu_*, void*) {
@@ -93,7 +93,7 @@ void Desktop::cb_Network_i(Fl_Menu_*, void*) {
 categories->redraw();
 }
 void Desktop::cb_Network(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Network_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Network_i(o,v);
 }
 
 void Desktop::cb_Office_i(Fl_Menu_*, void*) {
@@ -101,7 +101,7 @@ void Desktop::cb_Office_i(Fl_Menu_*, void*) {
 categories->redraw();
 }
 void Desktop::cb_Office(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Office_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Office_i(o,v);
 }
 
 void Desktop::cb_Science_i(Fl_Menu_*, void*) {
@@ -109,7 +109,7 @@ void Desktop::cb_Science_i(Fl_Menu_*, void*) {
 categories->redraw();
 }
 void Desktop::cb_Science(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Science_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Science_i(o,v);
 }
 
 void Desktop::cb_Settings_i(Fl_Menu_*, void*) {
@@ -117,7 +117,7 @@ void Desktop::cb_Settings_i(Fl_Menu_*, void*) {
 categories->redraw();
 }
 void Desktop::cb_Settings(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Settings_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Settings_i(o,v);
 }
 
 void Desktop::cb_System_i(Fl_Menu_*, void*) {
@@ -125,7 +125,7 @@ void Desktop::cb_System_i(Fl_Menu_*, void*) {
 categories->redraw();
 }
 void Desktop::cb_System(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_System_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_System_i(o,v);
 }
 
 void Desktop::cb_Utility_i(Fl_Menu_*, void*) {
@@ -133,7 +133,7 @@ void Desktop::cb_Utility_i(Fl_Menu_*, void*) {
 categories->redraw();
 }
 void Desktop::cb_Utility(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Utility_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Utility_i(o,v);
 }
 
 unsigned char Desktop::menu_cat_Button_i18n_done = 0;
@@ -156,91 +156,91 @@ void Desktop::cb_ToriOS_i(Fl_Menu_*, void*) {
   NotShowIn("ToriOS");
 }
 void Desktop::cb_ToriOS(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_ToriOS_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_ToriOS_i(o,v);
 }
 
 void Desktop::cb_GNOME_i(Fl_Menu_*, void*) {
   NotShowIn("GNOME");
 }
 void Desktop::cb_GNOME(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_GNOME_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_GNOME_i(o,v);
 }
 
 void Desktop::cb_KDE_i(Fl_Menu_*, void*) {
   NotShowIn("KDE");
 }
 void Desktop::cb_KDE(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_KDE_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_KDE_i(o,v);
 }
 
 void Desktop::cb_LXDE_i(Fl_Menu_*, void*) {
   NotShowIn("LXDE");
 }
 void Desktop::cb_LXDE(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_LXDE_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_LXDE_i(o,v);
 }
 
 void Desktop::cb_MATE_i(Fl_Menu_*, void*) {
   NotShowIn("MATE");
 }
 void Desktop::cb_MATE(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_MATE_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_MATE_i(o,v);
 }
 
 void Desktop::cb_Razor_i(Fl_Menu_*, void*) {
   NotShowIn("Razor");
 }
 void Desktop::cb_Razor(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Razor_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Razor_i(o,v);
 }
 
 void Desktop::cb_ROX_i(Fl_Menu_*, void*) {
   NotShowIn("ROX");
 }
 void Desktop::cb_ROX(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_ROX_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_ROX_i(o,v);
 }
 
 void Desktop::cb_TDE_i(Fl_Menu_*, void*) {
   NotShowIn("TDE");
 }
 void Desktop::cb_TDE(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_TDE_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_TDE_i(o,v);
 }
 
 void Desktop::cb_Unity_i(Fl_Menu_*, void*) {
   NotShowIn("Unity");
 }
 void Desktop::cb_Unity(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Unity_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Unity_i(o,v);
 }
 
 void Desktop::cb_XFCE_i(Fl_Menu_*, void*) {
   NotShowIn("XFCE");
 }
 void Desktop::cb_XFCE(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_XFCE_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_XFCE_i(o,v);
 }
 
 void Desktop::cb_EDE_i(Fl_Menu_*, void*) {
   NotShowIn("EDE");
 }
 void Desktop::cb_EDE(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_EDE_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_EDE_i(o,v);
 }
 
 void Desktop::cb_Cinnamon_i(Fl_Menu_*, void*) {
   NotShowIn("Cinnamon");
 }
 void Desktop::cb_Cinnamon(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Cinnamon_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Cinnamon_i(o,v);
 }
 
 void Desktop::cb_Old_i(Fl_Menu_*, void*) {
   NotShowIn("Old");
 }
 void Desktop::cb_Old(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Old_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Old_i(o,v);
 }
 
 unsigned char Desktop::menu_nsi_Button_i18n_done = 0;
@@ -265,91 +265,91 @@ void Desktop::cb_ToriOS1_i(Fl_Menu_*, void*) {
   OnlyShowIn("ToriOS");
 }
 void Desktop::cb_ToriOS1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_ToriOS1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_ToriOS1_i(o,v);
 }
 
 void Desktop::cb_GNOME1_i(Fl_Menu_*, void*) {
   OnlyShowIn("GNOME");
 }
 void Desktop::cb_GNOME1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_GNOME1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_GNOME1_i(o,v);
 }
 
 void Desktop::cb_KDE1_i(Fl_Menu_*, void*) {
   OnlyShowIn("KDE");
 }
 void Desktop::cb_KDE1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_KDE1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_KDE1_i(o,v);
 }
 
 void Desktop::cb_LXDE1_i(Fl_Menu_*, void*) {
   OnlyShowIn("LXDE");
 }
 void Desktop::cb_LXDE1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_LXDE1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_LXDE1_i(o,v);
 }
 
 void Desktop::cb_MATE1_i(Fl_Menu_*, void*) {
   OnlyShowIn("MATE");
 }
 void Desktop::cb_MATE1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_MATE1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_MATE1_i(o,v);
 }
 
 void Desktop::cb_Razor1_i(Fl_Menu_*, void*) {
   OnlyShowIn("Razor");
 }
 void Desktop::cb_Razor1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Razor1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Razor1_i(o,v);
 }
 
 void Desktop::cb_ROX1_i(Fl_Menu_*, void*) {
   OnlyShowIn("ROX");
 }
 void Desktop::cb_ROX1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_ROX1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_ROX1_i(o,v);
 }
 
 void Desktop::cb_TDE1_i(Fl_Menu_*, void*) {
   OnlyShowIn("TDE");
 }
 void Desktop::cb_TDE1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_TDE1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_TDE1_i(o,v);
 }
 
 void Desktop::cb_Unity1_i(Fl_Menu_*, void*) {
   OnlyShowIn("Unity");
 }
 void Desktop::cb_Unity1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Unity1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Unity1_i(o,v);
 }
 
 void Desktop::cb_XFCE1_i(Fl_Menu_*, void*) {
   OnlyShowIn("XFCE");
 }
 void Desktop::cb_XFCE1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_XFCE1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_XFCE1_i(o,v);
 }
 
 void Desktop::cb_EDE1_i(Fl_Menu_*, void*) {
   OnlyShowIn("EDE");
 }
 void Desktop::cb_EDE1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_EDE1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_EDE1_i(o,v);
 }
 
 void Desktop::cb_Cinnamon1_i(Fl_Menu_*, void*) {
   OnlyShowIn("Cinnamon");
 }
 void Desktop::cb_Cinnamon1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Cinnamon1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Cinnamon1_i(o,v);
 }
 
 void Desktop::cb_Old1_i(Fl_Menu_*, void*) {
   OnlyShowIn("Old");
 }
 void Desktop::cb_Old1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_Old1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Old1_i(o,v);
 }
 
 unsigned char Desktop::menu_osi_Button_i18n_done = 0;
@@ -375,7 +375,7 @@ void Desktop::cb_True_i(Fl_Menu_*, void*) {
 terminal->redraw();
 }
 void Desktop::cb_True(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_True_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_True_i(o,v);
 }
 
 void Desktop::cb_False_i(Fl_Menu_*, void*) {
@@ -383,7 +383,7 @@ void Desktop::cb_False_i(Fl_Menu_*, void*) {
 terminal->redraw();
 }
 void Desktop::cb_False(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_False_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_False_i(o,v);
 }
 
 unsigned char Desktop::menu_term_Button_i18n_done = 0;
@@ -398,7 +398,7 @@ void Desktop::cb_True1_i(Fl_Menu_*, void*) {
 nodisplay->redraw();
 }
 void Desktop::cb_True1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_True1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_True1_i(o,v);
 }
 
 void Desktop::cb_False1_i(Fl_Menu_*, void*) {
@@ -406,7 +406,7 @@ void Desktop::cb_False1_i(Fl_Menu_*, void*) {
 nodisplay->redraw();
 }
 void Desktop::cb_False1(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_False1_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_False1_i(o,v);
 }
 
 unsigned char Desktop::menu_nod_Button_i18n_done = 0;
@@ -425,7 +425,7 @@ if(iconFILE.compare("")!=0){
 };
 }
 void Desktop::cb_icon_display(Fl_Button* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_icon_display_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_icon_display_i(o,v);
 }
 
 void Desktop::cb_True2_i(Fl_Menu_*, void*) {
@@ -433,7 +433,7 @@ void Desktop::cb_True2_i(Fl_Menu_*, void*) {
 notify->redraw();
 }
 void Desktop::cb_True2(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_True2_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_True2_i(o,v);
 }
 
 void Desktop::cb_False2_i(Fl_Menu_*, void*) {
@@ -441,7 +441,7 @@ void Desktop::cb_False2_i(Fl_Menu_*, void*) {
 notify->redraw();
 }
 void Desktop::cb_False2(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_False2_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_False2_i(o,v);
 }
 
 unsigned char Desktop::menu_notify_Button_i18n_done = 0;
@@ -456,7 +456,7 @@ void Desktop::cb_True3_i(Fl_Menu_*, void*) {
 hidden->redraw();
 }
 void Desktop::cb_True3(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_True3_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_True3_i(o,v);
 }
 
 void Desktop::cb_False3_i(Fl_Menu_*, void*) {
@@ -464,7 +464,7 @@ void Desktop::cb_False3_i(Fl_Menu_*, void*) {
 hidden->redraw();
 }
 void Desktop::cb_False3(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_False3_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_False3_i(o,v);
 }
 
 unsigned char Desktop::menu_Hidden_i18n_done = 0;
@@ -479,7 +479,7 @@ void Desktop::cb_True4_i(Fl_Menu_*, void*) {
 dbus->redraw();
 }
 void Desktop::cb_True4(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_True4_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_True4_i(o,v);
 }
 
 void Desktop::cb_False4_i(Fl_Menu_*, void*) {
@@ -487,7 +487,7 @@ void Desktop::cb_False4_i(Fl_Menu_*, void*) {
 dbus->redraw();
 }
 void Desktop::cb_False4(Fl_Menu_* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->parent()->user_data()))->cb_False4_i(o,v);
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_False4_i(o,v);
 }
 
 unsigned char Desktop::menu_DBusActivatable_i18n_done = 0;
@@ -501,21 +501,21 @@ void Desktop::cb_OPEN_i(Fl_Button*, void*) {
   open_file();
 }
 void Desktop::cb_OPEN(Fl_Button* o, void* v) {
-  ((Desktop*)(o->parent()->user_data()))->cb_OPEN_i(o,v);
+  ((Desktop*)(o->parent()->parent()->user_data()))->cb_OPEN_i(o,v);
 }
 
 void Desktop::cb_SAVE_i(Fl_Button*, void*) {
   save_file();
 }
 void Desktop::cb_SAVE(Fl_Button* o, void* v) {
-  ((Desktop*)(o->parent()->user_data()))->cb_SAVE_i(o,v);
+  ((Desktop*)(o->parent()->parent()->user_data()))->cb_SAVE_i(o,v);
 }
 
 void Desktop::cb_CLEAR_i(Fl_Button*, void*) {
   clear_all();
 }
 void Desktop::cb_CLEAR(Fl_Button* o, void* v) {
-  ((Desktop*)(o->parent()->user_data()))->cb_CLEAR_i(o,v);
+  ((Desktop*)(o->parent()->parent()->user_data()))->cb_CLEAR_i(o,v);
 }
 
 void Desktop::cb_PREVIEW_i(Fl_Button*, void*) {
@@ -525,7 +525,15 @@ if(re.compare("")!=0){
 };
 }
 void Desktop::cb_PREVIEW(Fl_Button* o, void* v) {
-  ((Desktop*)(o->parent()->user_data()))->cb_PREVIEW_i(o,v);
+  ((Desktop*)(o->parent()->parent()->user_data()))->cb_PREVIEW_i(o,v);
+}
+
+void Desktop::cb_File_i(Fl_Button*, void*) {
+  std::string filename=choose_a_directory_to_save("","");
+if(filename.compare("")!=0){Filename->value();};
+}
+void Desktop::cb_File(Fl_Button* o, void* v) {
+  ((Desktop*)(o->parent()->parent()->user_data()))->cb_File_i(o,v);
 }
 
 void Desktop::cb_SAVE1_i(Fl_Button*, void*) {
@@ -545,59 +553,60 @@ void Desktop::cb_CLOSE(Fl_Button* o, void* v) {
 
 Fl_Double_Window* Desktop::make_window(std::string filePassedIn) {
   Fl_Double_Window* w;
-  { Fl_Double_Window* o = new Fl_Double_Window(415, 580, gettext("Desktop File Editor"));
+  { Fl_Double_Window* o = new Fl_Double_Window(415, 570, gettext("Desktop File Editor"));
     w = o;
-    o->color((Fl_Color)46);
+    o->color(FL_DARK1);
     o->user_data((void*)(this));
-    { Fl_Tabs* o = new Fl_Tabs(0, 5, 415, 490);
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)29);
-      o->selection_color((Fl_Color)29);
-      { Fl_Group* o = new Fl_Group(0, 30, 415, 455, gettext("Normal"));
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 420, 563);
+      { Fl_Tabs* o = new Fl_Tabs(5, 5, 415, 490);
         o->box(FL_FLAT_BOX);
-        { name = new Fl_Input(140, 50, 255, 30, gettext("Name"));
-          name->tooltip(gettext("Specific name of the application, for example \"Mozilla\"."));
-          name->box(FL_FLAT_BOX);
-          name->labelfont(1);
-        } // Fl_Input* name
-        { comment = new Fl_Input(140, 86, 255, 31, gettext("Comment"));
-          comment->tooltip(gettext("Tooltip for the entry, for example \"View sites on the Internet\". The value \
+        o->color(FL_DARK1);
+        { Fl_Group* o = new Fl_Group(5, 30, 415, 455, gettext("Normal"));
+          o->box(FL_FLAT_BOX);
+          o->selection_color(FL_DARK2);
+          { name = new Fl_Input(145, 50, 255, 30, gettext("Name"));
+            name->tooltip(gettext("Specific name of the application, for example \"Mozilla\"."));
+            name->box(FL_FLAT_BOX);
+            name->labelfont(1);
+          } // Fl_Input* name
+          { comment = new Fl_Input(145, 86, 255, 31, gettext("Comment"));
+            comment->tooltip(gettext("Tooltip for the entry, for example \"View sites on the Internet\". The value \
 should not be redundant with the values of Name and GenericName."));
-          comment->box(FL_FLAT_BOX);
-        } // Fl_Input* comment
-        { tryexec = new Fl_Input(140, 123, 255, 30, gettext("TryExec"));
-          tryexec->tooltip(gettext("Path to an executable file on disk used to determine if the program is actual\
+            comment->box(FL_FLAT_BOX);
+          } // Fl_Input* comment
+          { tryexec = new Fl_Input(145, 123, 255, 30, gettext("TryExec"));
+            tryexec->tooltip(gettext("Path to an executable file on disk used to determine if the program is actual\
 ly installed. If the path is not an absolute path, the file is looked up in th\
 e $PATH environment variable. If the file is not present or if it is not execu\
 table, the entry may be ignored (not be used in menus, for example)."));
-          tryexec->box(FL_FLAT_BOX);
-        } // Fl_Input* tryexec
-        { exec = new Fl_Input(140, 159, 255, 30, gettext("Exec"));
-          exec->tooltip(gettext("Program to execute, possibly with arguments. See the Exec key for details on \
+            tryexec->box(FL_FLAT_BOX);
+          } // Fl_Input* tryexec
+          { exec = new Fl_Input(145, 159, 255, 30, gettext("Exec"));
+            exec->tooltip(gettext("Program to execute, possibly with arguments. See the Exec key for details on \
 how this key works. The Exec key is required if DBusActivatable is not set to \
 true. Even if DBusActivatable is true, Exec should be specified for compatibil\
 ity with implementations that do not understand DBusActivatable."));
-          exec->box(FL_FLAT_BOX);
-        } // Fl_Input* exec
-        { icon = new Fl_Input(140, 196, 255, 30, gettext("Icon"));
-          icon->tooltip(gettext("Icon to display in file manager, menus, etc. If the name is an absolute path,\
+            exec->box(FL_FLAT_BOX);
+          } // Fl_Input* exec
+          { icon = new Fl_Input(145, 196, 255, 30, gettext("Icon"));
+            icon->tooltip(gettext("Icon to display in file manager, menus, etc. If the name is an absolute path,\
  the given file will be used. If the name is not an absolute path, the algorit\
 hm described in the Icon Theme Specification will be used to locate the icon."));
-          icon->box(FL_FLAT_BOX);
-        } // Fl_Input* icon
-        { type = new Fl_Input(140, 232, 255, 30);
-          type->tooltip(gettext("This specification defines 3 types of desktop entries: Application (type 1), \
+            icon->box(FL_FLAT_BOX);
+          } // Fl_Input* icon
+          { type = new Fl_Input(145, 232, 255, 30);
+            type->tooltip(gettext("This specification defines 3 types of desktop entries: Application (type 1), \
 Link (type 2) and Directory (type 3). To allow the addition of new types in th\
 e future, implementations should ignore desktop entries with an unknown type"));
-          type->box(FL_FLAT_BOX);
-        } // Fl_Input* type
-        { categories = new Fl_Input(140, 269, 255, 30);
-          categories->tooltip(gettext("Categories in which the entry should be shown in a menu (for possible values \
+            type->box(FL_FLAT_BOX);
+          } // Fl_Input* type
+          { categories = new Fl_Input(145, 269, 255, 30);
+            categories->tooltip(gettext("Categories in which the entry should be shown in a menu (for possible values \
 see the Desktop Menu Specification)."));
-          categories->box(FL_FLAT_BOX);
-        } // Fl_Input* categories
-        { notshowin = new Fl_Input(140, 305, 255, 30);
-          notshowin->tooltip(gettext("A list of strings identifying the desktop environments that should display/no\
+            categories->box(FL_FLAT_BOX);
+          } // Fl_Input* categories
+          { notshowin = new Fl_Input(145, 305, 255, 30);
+            notshowin->tooltip(gettext("A list of strings identifying the desktop environments that should display/no\
 t display a given desktop entry.\n\nBy default, a desktop file should be shown\
 , unless an OnlyShowIn key is present, in which case, the default is for the f\
 ile not to be shown.\n\nIf $XDG_CURRENT_DESKTOP is set then it contains a colo\
@@ -606,10 +615,10 @@ g entry is found in OnlyShowIn then the desktop file is shown. If an entry is \
 found in NotShowIn then the desktop file is not shown. If none of the strings \
 match then the default action is taken (as above).\n\nThe same desktop name ma\
 y not appear in both OnlyShowIn and NotShowIn of a group."));
-          notshowin->box(FL_FLAT_BOX);
-        } // Fl_Input* notshowin
-        { onlyshowin = new Fl_Input(140, 342, 255, 30);
-          onlyshowin->tooltip(gettext("A list of strings identifying the desktop environments that should display/no\
+            notshowin->box(FL_FLAT_BOX);
+          } // Fl_Input* notshowin
+          { onlyshowin = new Fl_Input(145, 342, 255, 30);
+            onlyshowin->tooltip(gettext("A list of strings identifying the desktop environments that should display/no\
 t display a given desktop entry.\n\nBy default, a desktop file should be shown\
 , unless an OnlyShowIn key is present, in which case, the default is for the f\
 ile not to be shown.\n\nIf $XDG_CURRENT_DESKTOP is set then it contains a colo\
@@ -618,56 +627,56 @@ g entry is found in OnlyShowIn then the desktop file is shown. If an entry is \
 found in NotShowIn then the desktop file is not shown. If none of the strings \
 match then the default action is taken (as above).\n\nThe same desktop name ma\
 y not appear in both OnlyShowIn and NotShowIn of a group."));
-          onlyshowin->box(FL_FLAT_BOX);
-        } // Fl_Input* onlyshowin
-        { terminal = new Fl_Input(140, 378, 255, 30);
-          terminal->tooltip(gettext("Whether the program runs in a terminal window."));
-          terminal->box(FL_FLAT_BOX);
-        } // Fl_Input* terminal
-        { nodisplay = new Fl_Input(140, 415, 255, 30);
-          nodisplay->tooltip(gettext("NoDisplay means \"this application exists, but don\'t display it in the menus\
+            onlyshowin->box(FL_FLAT_BOX);
+          } // Fl_Input* onlyshowin
+          { terminal = new Fl_Input(145, 378, 255, 30);
+            terminal->tooltip(gettext("Whether the program runs in a terminal window."));
+            terminal->box(FL_FLAT_BOX);
+          } // Fl_Input* terminal
+          { nodisplay = new Fl_Input(145, 415, 255, 30);
+            nodisplay->tooltip(gettext("NoDisplay means \"this application exists, but don\'t display it in the menus\
 \". This can be useful to e.g. associate this application with MIME types, so \
 that it gets launched from a file manager (or other apps), without having a me\
 nu entry for it (there are tons of good reasons for this, including e.g. the n\
 etscape -remote, or kfmclient openURL kind of stuff)."));
-          nodisplay->box(FL_FLAT_BOX);
-        } // Fl_Input* nodisplay
-        { Fl_Menu_Button* o = new Fl_Menu_Button(10, 232, 120, 30, gettext("Type"));
-          o->tooltip(gettext("This specification defines 3 types of desktop entries: Application (type 1), \
+            nodisplay->box(FL_FLAT_BOX);
+          } // Fl_Input* nodisplay
+          { Fl_Menu_Button* o = new Fl_Menu_Button(15, 232, 120, 30, gettext("Type"));
+            o->tooltip(gettext("This specification defines 3 types of desktop entries: Application (type 1), \
 Link (type 2) and Directory (type 3). To allow the addition of new types in th\
 e future, implementations should ignore desktop entries with an unknown type."));
-          o->box(FL_FLAT_BOX);
-          o->down_box(FL_FLAT_BOX);
-          o->color(FL_DARK1);
-          o->selection_color((Fl_Color)37);
-          o->labelfont(1);
-          if (!menu_Type_i18n_done) {
-            int i=0;
-            for ( ; i<4; i++)
-              if (menu_Type[i].label())
-                menu_Type[i].label(gettext(menu_Type[i].label()));
-            menu_Type_i18n_done = 1;
-          }
-          o->menu(menu_Type);
-        } // Fl_Menu_Button* o
-        { cat_Button = new Fl_Menu_Button(10, 269, 120, 30, gettext("Categories"));
-          cat_Button->tooltip(gettext("Categories in which the entry should be shown in a menu (for possible values \
+            o->box(FL_FLAT_BOX);
+            o->down_box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            o->selection_color((Fl_Color)37);
+            o->labelfont(1);
+            if (!menu_Type_i18n_done) {
+              int i=0;
+              for ( ; i<4; i++)
+                if (menu_Type[i].label())
+                  menu_Type[i].label(gettext(menu_Type[i].label()));
+              menu_Type_i18n_done = 1;
+            }
+            o->menu(menu_Type);
+          } // Fl_Menu_Button* o
+          { cat_Button = new Fl_Menu_Button(15, 269, 120, 30, gettext("Categories"));
+            cat_Button->tooltip(gettext("Categories in which the entry should be shown in a menu (for possible values \
 see the Desktop Menu Specification)."));
-          cat_Button->box(FL_FLAT_BOX);
-          cat_Button->down_box(FL_FLAT_BOX);
-          cat_Button->color(FL_DARK1);
-          cat_Button->selection_color((Fl_Color)37);
-          if (!menu_cat_Button_i18n_done) {
-            int i=0;
-            for ( ; i<11; i++)
-              if (menu_cat_Button[i].label())
-                menu_cat_Button[i].label(gettext(menu_cat_Button[i].label()));
-            menu_cat_Button_i18n_done = 1;
-          }
-          cat_Button->menu(menu_cat_Button);
-        } // Fl_Menu_Button* cat_Button
-        { nsi_Button = new Fl_Menu_Button(10, 305, 120, 30, gettext("NotShowIn"));
-          nsi_Button->tooltip(gettext("A list of strings identifying the desktop environments that should display/no\
+            cat_Button->box(FL_FLAT_BOX);
+            cat_Button->down_box(FL_FLAT_BOX);
+            cat_Button->color((Fl_Color)23);
+            cat_Button->selection_color((Fl_Color)37);
+            if (!menu_cat_Button_i18n_done) {
+              int i=0;
+              for ( ; i<11; i++)
+                if (menu_cat_Button[i].label())
+                  menu_cat_Button[i].label(gettext(menu_cat_Button[i].label()));
+              menu_cat_Button_i18n_done = 1;
+            }
+            cat_Button->menu(menu_cat_Button);
+          } // Fl_Menu_Button* cat_Button
+          { nsi_Button = new Fl_Menu_Button(15, 305, 120, 30, gettext("NotShowIn"));
+            nsi_Button->tooltip(gettext("A list of strings identifying the desktop environments that should display/no\
 t display a given desktop entry.\n\nBy default, a desktop file should be shown\
 , unless an OnlyShowIn key is present, in which case, the default is for the f\
 ile not to be shown.\n\nIf $XDG_CURRENT_DESKTOP is set then it contains a colo\
@@ -676,21 +685,21 @@ g entry is found in OnlyShowIn then the desktop file is shown. If an entry is \
 found in NotShowIn then the desktop file is not shown. If none of the strings \
 match then the default action is taken (as above).\n\nThe same desktop name ma\
 y not appear in both OnlyShowIn and NotShowIn of a group."));
-          nsi_Button->box(FL_FLAT_BOX);
-          nsi_Button->down_box(FL_FLAT_BOX);
-          nsi_Button->color(FL_DARK1);
-          nsi_Button->selection_color((Fl_Color)37);
-          if (!menu_nsi_Button_i18n_done) {
-            int i=0;
-            for ( ; i<13; i++)
-              if (menu_nsi_Button[i].label())
-                menu_nsi_Button[i].label(gettext(menu_nsi_Button[i].label()));
-            menu_nsi_Button_i18n_done = 1;
-          }
-          nsi_Button->menu(menu_nsi_Button);
-        } // Fl_Menu_Button* nsi_Button
-        { osi_Button = new Fl_Menu_Button(10, 342, 120, 30, gettext("OnlyShowIn"));
-          osi_Button->tooltip(gettext("A list of strings identifying the desktop environments that should display/no\
+            nsi_Button->box(FL_FLAT_BOX);
+            nsi_Button->down_box(FL_FLAT_BOX);
+            nsi_Button->color((Fl_Color)23);
+            nsi_Button->selection_color((Fl_Color)37);
+            if (!menu_nsi_Button_i18n_done) {
+              int i=0;
+              for ( ; i<13; i++)
+                if (menu_nsi_Button[i].label())
+                  menu_nsi_Button[i].label(gettext(menu_nsi_Button[i].label()));
+              menu_nsi_Button_i18n_done = 1;
+            }
+            nsi_Button->menu(menu_nsi_Button);
+          } // Fl_Menu_Button* nsi_Button
+          { osi_Button = new Fl_Menu_Button(15, 342, 120, 30, gettext("OnlyShowIn"));
+            osi_Button->tooltip(gettext("A list of strings identifying the desktop environments that should display/no\
 t display a given desktop entry.\n\nBy default, a desktop file should be shown\
 , unless an OnlyShowIn key is present, in which case, the default is for the f\
 ile not to be shown.\n\nIf $XDG_CURRENT_DESKTOP is set then it contains a colo\
@@ -699,249 +708,257 @@ g entry is found in OnlyShowIn then the desktop file is shown. If an entry is \
 found in NotShowIn then the desktop file is not shown. If none of the strings \
 match then the default action is taken (as above).\n\nThe same desktop name ma\
 y not appear in both OnlyShowIn and NotShowIn of a group."));
-          osi_Button->box(FL_FLAT_BOX);
-          osi_Button->down_box(FL_FLAT_BOX);
-          osi_Button->color(FL_DARK1);
-          osi_Button->selection_color((Fl_Color)37);
-          if (!menu_osi_Button_i18n_done) {
-            int i=0;
-            for ( ; i<13; i++)
-              if (menu_osi_Button[i].label())
-                menu_osi_Button[i].label(gettext(menu_osi_Button[i].label()));
-            menu_osi_Button_i18n_done = 1;
-          }
-          osi_Button->menu(menu_osi_Button);
-        } // Fl_Menu_Button* osi_Button
-        { term_Button = new Fl_Menu_Button(10, 378, 120, 30, gettext("Terminal"));
-          term_Button->tooltip(gettext("Whether the program runs in a terminal window."));
-          term_Button->box(FL_FLAT_BOX);
-          term_Button->down_box(FL_FLAT_BOX);
-          term_Button->color(FL_DARK1);
-          term_Button->selection_color((Fl_Color)37);
-          if (!menu_term_Button_i18n_done) {
-            int i=0;
-            for ( ; i<2; i++)
-              if (menu_term_Button[i].label())
-                menu_term_Button[i].label(gettext(menu_term_Button[i].label()));
-            menu_term_Button_i18n_done = 1;
-          }
-          term_Button->menu(menu_term_Button);
-        } // Fl_Menu_Button* term_Button
-        { nod_Button = new Fl_Menu_Button(10, 415, 120, 30, gettext("NoDisplay"));
-          nod_Button->tooltip(gettext("NoDisplay means \"this application exists, but don\'t display it in the menus\
+            osi_Button->box(FL_FLAT_BOX);
+            osi_Button->down_box(FL_FLAT_BOX);
+            osi_Button->color((Fl_Color)23);
+            osi_Button->selection_color((Fl_Color)37);
+            if (!menu_osi_Button_i18n_done) {
+              int i=0;
+              for ( ; i<13; i++)
+                if (menu_osi_Button[i].label())
+                  menu_osi_Button[i].label(gettext(menu_osi_Button[i].label()));
+              menu_osi_Button_i18n_done = 1;
+            }
+            osi_Button->menu(menu_osi_Button);
+          } // Fl_Menu_Button* osi_Button
+          { term_Button = new Fl_Menu_Button(15, 378, 120, 30, gettext("Terminal"));
+            term_Button->tooltip(gettext("Whether the program runs in a terminal window."));
+            term_Button->box(FL_FLAT_BOX);
+            term_Button->down_box(FL_FLAT_BOX);
+            term_Button->color((Fl_Color)23);
+            term_Button->selection_color((Fl_Color)37);
+            if (!menu_term_Button_i18n_done) {
+              int i=0;
+              for ( ; i<2; i++)
+                if (menu_term_Button[i].label())
+                  menu_term_Button[i].label(gettext(menu_term_Button[i].label()));
+              menu_term_Button_i18n_done = 1;
+            }
+            term_Button->menu(menu_term_Button);
+          } // Fl_Menu_Button* term_Button
+          { nod_Button = new Fl_Menu_Button(15, 415, 120, 30, gettext("NoDisplay"));
+            nod_Button->tooltip(gettext("NoDisplay means \"this application exists, but don\'t display it in the menus\
 \". This can be useful to e.g. associate this application with MIME types, so \
 that it gets launched from a file manager (or other apps), without having a me\
 nu entry for it (there are tons of good reasons for this, including e.g. the n\
 etscape -remote, or kfmclient openURL kind of stuff)."));
-          nod_Button->box(FL_FLAT_BOX);
-          nod_Button->down_box(FL_FLAT_BOX);
-          nod_Button->color(FL_DARK1);
-          nod_Button->selection_color((Fl_Color)37);
-          if (!menu_nod_Button_i18n_done) {
-            int i=0;
-            for ( ; i<2; i++)
-              if (menu_nod_Button[i].label())
-                menu_nod_Button[i].label(gettext(menu_nod_Button[i].label()));
-            menu_nod_Button_i18n_done = 1;
-          }
-          nod_Button->menu(menu_nod_Button);
-        } // Fl_Menu_Button* nod_Button
-        { icon_display = new Fl_Button(30, 150, 65, 65, gettext("ICON"));
-          icon_display->box(FL_FLAT_BOX);
-          icon_display->color(FL_DARK1);
-          icon_display->labelfont(1);
-          icon_display->callback((Fl_Callback*)cb_icon_display);
-          icon_display->align(Fl_Align(512));
-        } // Fl_Button* icon_display
-        o->end();
-      } // Fl_Group* o
-      { Fl_Group* o = new Fl_Group(5, 30, 405, 455, gettext("Advanced"));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)29);
-        o->selection_color((Fl_Color)29);
-        o->hide();
-        { genericname = new Fl_Input(140, 40, 255, 30, gettext("GenericName"));
-          genericname->tooltip(gettext("Generic name of the application, for example \"Web Browser\"."));
-          genericname->box(FL_FLAT_BOX);
-        } // Fl_Input* genericname
-        { version = new Fl_Input(140, 77, 255, 30, gettext("Version"));
-          version->tooltip(gettext("Version of the Desktop Entry Specification that the desktop entry conforms wi\
+            nod_Button->box(FL_FLAT_BOX);
+            nod_Button->down_box(FL_FLAT_BOX);
+            nod_Button->color((Fl_Color)23);
+            nod_Button->selection_color((Fl_Color)37);
+            if (!menu_nod_Button_i18n_done) {
+              int i=0;
+              for ( ; i<2; i++)
+                if (menu_nod_Button[i].label())
+                  menu_nod_Button[i].label(gettext(menu_nod_Button[i].label()));
+              menu_nod_Button_i18n_done = 1;
+            }
+            nod_Button->menu(menu_nod_Button);
+          } // Fl_Menu_Button* nod_Button
+          { icon_display = new Fl_Button(35, 160, 65, 65, gettext("ICON"));
+            icon_display->box(FL_FLAT_BOX);
+            icon_display->color((Fl_Color)23);
+            icon_display->labelfont(1);
+            icon_display->callback((Fl_Callback*)cb_icon_display);
+            icon_display->align(Fl_Align(512));
+          } // Fl_Button* icon_display
+          o->end();
+        } // Fl_Group* o
+        { Fl_Group* o = new Fl_Group(10, 30, 405, 455, gettext("Advanced"));
+          o->box(FL_FLAT_BOX);
+          o->selection_color(FL_DARK2);
+          o->hide();
+          { genericname = new Fl_Input(145, 40, 255, 30, gettext("GenericName"));
+            genericname->tooltip(gettext("Generic name of the application, for example \"Web Browser\"."));
+            genericname->box(FL_FLAT_BOX);
+          } // Fl_Input* genericname
+          { version = new Fl_Input(145, 77, 255, 30, gettext("Version"));
+            version->tooltip(gettext("Version of the Desktop Entry Specification that the desktop entry conforms wi\
 th. Entries that confirm with this version of the specification should use 1.0\
 . Note that the version field is not required to be present."));
-          version->box(FL_FLAT_BOX);
-        } // Fl_Input* version
-        { path = new Fl_Input(140, 115, 255, 30, gettext("Path"));
-          path->tooltip(gettext("If entry is of type Application, the working directory to run the program in."));
-          path->box(FL_FLAT_BOX);
-        } // Fl_Input* path
-        { mime = new Fl_Input(140, 153, 255, 30, gettext("MimeType"));
-          mime->tooltip(gettext("The MIME type(s) supported by this application."));
-          mime->box(FL_FLAT_BOX);
-        } // Fl_Input* mime
-        { implements = new Fl_Input(140, 190, 255, 30, gettext("Implements"));
-          implements->tooltip(gettext("A list of interfaces that this application implements. By default, a desktop \
+            version->box(FL_FLAT_BOX);
+          } // Fl_Input* version
+          { path = new Fl_Input(145, 115, 255, 30, gettext("Path"));
+            path->tooltip(gettext("If entry is of type Application, the working directory to run the program in."));
+            path->box(FL_FLAT_BOX);
+          } // Fl_Input* path
+          { mime = new Fl_Input(145, 153, 255, 30, gettext("MimeType"));
+            mime->tooltip(gettext("The MIME type(s) supported by this application."));
+            mime->box(FL_FLAT_BOX);
+          } // Fl_Input* mime
+          { implements = new Fl_Input(145, 190, 255, 30, gettext("Implements"));
+            implements->tooltip(gettext("A list of interfaces that this application implements. By default, a desktop \
 file implements no interfaces. See http://standards.freedesktop.org/desktop-en\
 try-spec/latest/ar01s08.html for more information on how this works."));
-          implements->box(FL_FLAT_BOX);
-        } // Fl_Input* implements
-        { keywords = new Fl_Input(140, 228, 255, 30, gettext("Keywords"));
-          keywords->tooltip(gettext("A list of strings which may be used in addition to other metadata to describe\
+            implements->box(FL_FLAT_BOX);
+          } // Fl_Input* implements
+          { keywords = new Fl_Input(145, 228, 255, 30, gettext("Keywords"));
+            keywords->tooltip(gettext("A list of strings which may be used in addition to other metadata to describe\
  this entry. This can be useful e.g. to facilitate searching through entries. \
 The values are not meant for display, and should not be redundant with the val\
 ues of Name or GenericName."));
-          keywords->box(FL_FLAT_BOX);
-        } // Fl_Input* keywords
-        { wmclass = new Fl_Input(140, 266, 255, 30, gettext("StartupWMClass"));
-          wmclass->tooltip(gettext("If specified, it is known that the application will map at least one window w\
+            keywords->box(FL_FLAT_BOX);
+          } // Fl_Input* keywords
+          { wmclass = new Fl_Input(145, 266, 255, 30, gettext("StartupWMClass"));
+            wmclass->tooltip(gettext("If specified, it is known that the application will map at least one window w\
 ith the given string as its WM class or WM name hint (see the Startup Notifica\
 tion Protocol Specification for more details)."));
-          wmclass->box(FL_FLAT_BOX);
-        } // Fl_Input* wmclass
-        { url = new Fl_Input(140, 304, 255, 30, gettext("URL"));
-          url->tooltip(gettext("If entry is Link type, the URL to access."));
-          url->box(FL_FLAT_BOX);
-          url->labelfont(1);
-        } // Fl_Input* url
-        { actions = new Fl_Input(140, 341, 255, 30);
-          actions->tooltip(gettext("Identifiers for application actions. This can be used to tell the application\
+            wmclass->box(FL_FLAT_BOX);
+          } // Fl_Input* wmclass
+          { url = new Fl_Input(145, 304, 255, 30, gettext("URL"));
+            url->tooltip(gettext("If entry is Link type, the URL to access."));
+            url->box(FL_FLAT_BOX);
+            url->labelfont(1);
+          } // Fl_Input* url
+          { actions = new Fl_Input(145, 341, 255, 30);
+            actions->tooltip(gettext("Identifiers for application actions. This can be used to tell the application\
  to make a specific action, different from the default behavior. The Applicati\
 on actions section describes how actions work."));
-          actions->box(FL_FLAT_BOX);
-          actions->deactivate();
-        } // Fl_Input* actions
-        { notify = new Fl_Input(140, 379, 255, 30);
-          notify->tooltip(gettext("If true, it is KNOWN that the application will send a \"remove\" message when\
+            actions->box(FL_FLAT_BOX);
+            actions->deactivate();
+          } // Fl_Input* actions
+          { notify = new Fl_Input(145, 379, 255, 30);
+            notify->tooltip(gettext("If true, it is KNOWN that the application will send a \"remove\" message when\
  started with the DESKTOP_STARTUP_ID environment variable set. If false, it is\
  KNOWN that the application does not work with startup notification at all (do\
 es not shown any window, breaks even when using StartupWMClass, etc.). If abse\
 nt, a reasonable handling is up to implementations (assuming false, using Star\
 tupWMClass, etc.). (See the Startup Notification Protocol Specification for mo\
 re details)."));
-          notify->box(FL_FLAT_BOX);
-        } // Fl_Input* notify
-        { hidden = new Fl_Input(140, 417, 255, 30);
-          hidden->tooltip(gettext("Hidden should have been called Deleted. It means the user deleted (at his lev\
+            notify->box(FL_FLAT_BOX);
+          } // Fl_Input* notify
+          { hidden = new Fl_Input(145, 417, 255, 30);
+            hidden->tooltip(gettext("Hidden should have been called Deleted. It means the user deleted (at his lev\
 el) something that was present (at an upper level, e.g. in the system dirs). I\
 t\'s strictly equivalent to the .desktop file not existing at all, as far as t\
 hat user is concerned. This can also be used to \"uninstall\" existing files (\
 e.g. due to a renaming) - by letting make install install a file with Hidden=t\
 rue in it."));
-          hidden->box(FL_FLAT_BOX);
-        } // Fl_Input* hidden
-        { dbus = new Fl_Input(140, 455, 255, 30);
-          dbus->tooltip(gettext("A boolean value specifying if D-Bus activation is supported for this applicat\
+            hidden->box(FL_FLAT_BOX);
+          } // Fl_Input* hidden
+          { dbus = new Fl_Input(145, 455, 255, 30);
+            dbus->tooltip(gettext("A boolean value specifying if D-Bus activation is supported for this applicat\
 ion. If this key is missing, the default value is false. If the value is true \
 then implementations should ignore the Exec key and send a D-Bus message to la\
 unch the application. See D-Bus Activation for more information on how this wo\
 rks. Applications should still include Exec= lines in their desktop files for \
 compatibility with implementations that do not understand the DBusActivatable \
 key."));
-          dbus->box(FL_FLAT_BOX);
-        } // Fl_Input* dbus
-        { Fl_Button* o = new Fl_Button(5, 341, 130, 30, gettext("Actions"));
-          o->tooltip(gettext("Identifiers for application actions. This can be used to tell the application\
+            dbus->box(FL_FLAT_BOX);
+          } // Fl_Input* dbus
+          { Fl_Button* o = new Fl_Button(10, 341, 130, 30, gettext("Actions"));
+            o->tooltip(gettext("Identifiers for application actions. This can be used to tell the application\
  to make a specific action, different from the default behavior. The Applicati\
 on actions section describes how actions work."));
-          o->box(FL_FLAT_BOX);
-          o->color((Fl_Color)46);
-          o->deactivate();
-        } // Fl_Button* o
-        { notify_Button = new Fl_Menu_Button(5, 379, 130, 30, gettext("StartupNotify"));
-          notify_Button->tooltip(gettext("If true, it is KNOWN that the application will send a \"remove\" message when\
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            o->deactivate();
+          } // Fl_Button* o
+          { notify_Button = new Fl_Menu_Button(10, 379, 130, 30, gettext("StartupNotify"));
+            notify_Button->tooltip(gettext("If true, it is KNOWN that the application will send a \"remove\" message when\
  started with the DESKTOP_STARTUP_ID environment variable set. If false, it is\
  KNOWN that the application does not work with startup notification at all (do\
 es not shown any window, breaks even when using StartupWMClass, etc.). If abse\
 nt, a reasonable handling is up to implementations (assuming false, using Star\
 tupWMClass, etc.). (See the Startup Notification Protocol Specification for mo\
 re details)."));
-          notify_Button->box(FL_FLAT_BOX);
-          notify_Button->down_box(FL_FLAT_BOX);
-          notify_Button->color(FL_DARK1);
-          notify_Button->selection_color((Fl_Color)37);
-          if (!menu_notify_Button_i18n_done) {
-            int i=0;
-            for ( ; i<2; i++)
-              if (menu_notify_Button[i].label())
-                menu_notify_Button[i].label(gettext(menu_notify_Button[i].label()));
-            menu_notify_Button_i18n_done = 1;
-          }
-          notify_Button->menu(menu_notify_Button);
-        } // Fl_Menu_Button* notify_Button
-        { Fl_Menu_Button* o = new Fl_Menu_Button(5, 417, 130, 30, gettext("Hidden"));
-          o->tooltip(gettext("Hidden should have been called Deleted. It means the user deleted (at his lev\
+            notify_Button->box(FL_FLAT_BOX);
+            notify_Button->down_box(FL_FLAT_BOX);
+            notify_Button->color((Fl_Color)23);
+            notify_Button->selection_color((Fl_Color)37);
+            if (!menu_notify_Button_i18n_done) {
+              int i=0;
+              for ( ; i<2; i++)
+                if (menu_notify_Button[i].label())
+                  menu_notify_Button[i].label(gettext(menu_notify_Button[i].label()));
+              menu_notify_Button_i18n_done = 1;
+            }
+            notify_Button->menu(menu_notify_Button);
+          } // Fl_Menu_Button* notify_Button
+          { Fl_Menu_Button* o = new Fl_Menu_Button(10, 417, 130, 30, gettext("Hidden"));
+            o->tooltip(gettext("Hidden should have been called Deleted. It means the user deleted (at his lev\
 el) something that was present (at an upper level, e.g. in the system dirs). I\
 t\'s strictly equivalent to the .desktop file not existing at all, as far as t\
 hat user is concerned. This can also be used to \"uninstall\" existing files (\
 e.g. due to a renaming) - by letting make install install a file with Hidden=t\
 rue in it."));
-          o->box(FL_FLAT_BOX);
-          o->down_box(FL_FLAT_BOX);
-          o->color(FL_DARK1);
-          o->selection_color((Fl_Color)37);
-          if (!menu_Hidden_i18n_done) {
-            int i=0;
-            for ( ; i<2; i++)
-              if (menu_Hidden[i].label())
-                menu_Hidden[i].label(gettext(menu_Hidden[i].label()));
-            menu_Hidden_i18n_done = 1;
-          }
-          o->menu(menu_Hidden);
-        } // Fl_Menu_Button* o
-        { Fl_Menu_Button* o = new Fl_Menu_Button(5, 455, 130, 30, gettext("DBusActivatable"));
-          o->tooltip(gettext("A boolean value specifying if D-Bus activation is supported for this applicat\
+            o->box(FL_FLAT_BOX);
+            o->down_box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            o->selection_color((Fl_Color)37);
+            if (!menu_Hidden_i18n_done) {
+              int i=0;
+              for ( ; i<2; i++)
+                if (menu_Hidden[i].label())
+                  menu_Hidden[i].label(gettext(menu_Hidden[i].label()));
+              menu_Hidden_i18n_done = 1;
+            }
+            o->menu(menu_Hidden);
+          } // Fl_Menu_Button* o
+          { Fl_Menu_Button* o = new Fl_Menu_Button(10, 455, 130, 30, gettext("DBusActivatable"));
+            o->tooltip(gettext("A boolean value specifying if D-Bus activation is supported for this applicat\
 ion. If this key is missing, the default value is false. If the value is true \
 then implementations should ignore the Exec key and send a D-Bus message to la\
 unch the application. See D-Bus Activation for more information on how this wo\
 rks. Applications should still include Exec= lines in their desktop files for \
 compatibility with implementations that do not understand the DBusActivatable \
 key."));
-          o->box(FL_FLAT_BOX);
-          o->down_box(FL_FLAT_BOX);
-          o->color(FL_DARK1);
-          o->selection_color((Fl_Color)37);
-          if (!menu_DBusActivatable_i18n_done) {
-            int i=0;
-            for ( ; i<2; i++)
-              if (menu_DBusActivatable[i].label())
-                menu_DBusActivatable[i].label(gettext(menu_DBusActivatable[i].label()));
-            menu_DBusActivatable_i18n_done = 1;
-          }
-          o->menu(menu_DBusActivatable);
-        } // Fl_Menu_Button* o
+            o->box(FL_FLAT_BOX);
+            o->down_box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            o->selection_color((Fl_Color)37);
+            if (!menu_DBusActivatable_i18n_done) {
+              int i=0;
+              for ( ; i<2; i++)
+                if (menu_DBusActivatable[i].label())
+                  menu_DBusActivatable[i].label(gettext(menu_DBusActivatable[i].label()));
+              menu_DBusActivatable_i18n_done = 1;
+            }
+            o->menu(menu_DBusActivatable);
+          } // Fl_Menu_Button* o
+          o->end();
+        } // Fl_Group* o
         o->end();
-      } // Fl_Group* o
+      } // Fl_Tabs* o
+      { Fl_Button* o = new Fl_Button(15, 533, 80, 30, gettext("OPEN"));
+        o->tooltip(gettext("Open a desktop file"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->callback((Fl_Callback*)cb_OPEN);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(320, 533, 80, 30, gettext("SAVE"));
+        o->tooltip(gettext("Save the current data as a file"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)61);
+        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->callback((Fl_Callback*)cb_SAVE);
+      } // Fl_Button* o
+      { Filename = new Fl_Input(115, 500, 285, 30);
+        Filename->tooltip(gettext("The file you want to save (or the name of the current open file)"));
+        Filename->box(FL_FLAT_BOX);
+      } // Fl_Input* Filename
+      { Fl_Button* o = new Fl_Button(220, 533, 80, 30, gettext("CLEAR"));
+        o->tooltip(gettext("CLEAR EVERYTHING"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)80);
+        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->callback((Fl_Callback*)cb_CLEAR);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(115, 533, 80, 30, gettext("PREVIEW"));
+        o->tooltip(gettext("Preview text"));
+        o->box(FL_FLAT_BOX);
+        o->color(FL_YELLOW);
+        o->labelcolor(FL_GRAY0);
+        o->callback((Fl_Callback*)cb_PREVIEW);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(15, 498, 80, 30, gettext("File Name"));
+        o->tooltip(gettext("Open a desktop file"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->callback((Fl_Callback*)cb_File);
+      } // Fl_Button* o
       o->end();
-    } // Fl_Tabs* o
-    { Fl_Button* o = new Fl_Button(20, 545, 80, 30, gettext("OPEN"));
-      o->tooltip(gettext("Open a desktop file"));
-      o->box(FL_FLAT_BOX);
-      o->callback((Fl_Callback*)cb_OPEN);
-    } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(325, 545, 80, 30, gettext("SAVE"));
-      o->tooltip(gettext("Save the current data as a file"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)61);
-      o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_SAVE);
-    } // Fl_Button* o
-    { Filename = new Fl_Input(80, 500, 330, 30, gettext("File Name"));
-      Filename->tooltip(gettext("The file you want to save (or the name of the current open file)"));
-      Filename->box(FL_FLAT_BOX);
-    } // Fl_Input* Filename
-    { Fl_Button* o = new Fl_Button(225, 545, 80, 30, gettext("CLEAR"));
-      o->tooltip(gettext("CLEAR EVERYTHING"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)80);
-      o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_CLEAR);
-    } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(120, 545, 80, 30, gettext("PREVIEW"));
-      o->tooltip(gettext("Preview text"));
-      o->box(FL_FLAT_BOX);
-      o->color(FL_YELLOW);
-      o->labelcolor(FL_GRAY0);
-      o->callback((Fl_Callback*)cb_PREVIEW);
-    } // Fl_Button* o
+    } // Fl_Scroll* o
     load(filePassedIn);
     o->xclass("desktop-file-editor");
     o->end();

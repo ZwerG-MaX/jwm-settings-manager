@@ -64,14 +64,14 @@ class AutostartUI {open
     code {load();} {}
     Fl_Window autostart_window {
       label {Autostart Programs} open
-      xywh {718 242 335 270} type Double color 31 resizable
+      xywh {718 242 335 275} type Double color 47 resizable
       code0 {startup(o,jsm_autostart_xpm);} xclass {jsm-autostart} visible
     } {
-      Fl_Scroll {} {open selected
+      Fl_Scroll {} {open
         xywh {0 0 335 270} color 31
       } {
         Fl_Input program_name {
-          tooltip {You can add extra arguments here} xywh {85 205 245 30} box FLAT_BOX selection_color 47 align 1 when 8
+          tooltip {You can add extra arguments here} xywh {5 205 325 30} box FLAT_BOX selection_color 47 align 1 when 8
         }
         Fl_Button {} {
           label Cancel
@@ -81,68 +81,66 @@ class AutostartUI {open
         Fl_Button save_button {
           label OK
           callback {const char* proggie = program_name->value();
-if(proggie!=NULL){add_program_to_autostart(autoStartBrowser,proggie);}}
+if(proggie!=NULL){
+std::string val=proggie;
+  if(val.compare("")!=0){add_program_to_autostart(autoStartBrowser,proggie);}
+}
+quit();}
           tooltip {Write to configuration file} xywh {281 240 49 25} box FLAT_BOX color 61 selection_color 38 labelcolor 55
         }
         Fl_Button add_item {
           label {@+}
           callback {const char* proggie = program_name->value();
+std::string pro;
 if(proggie==NULL){
   debug_out("Choose a program");
-  choose_a_program(program_name);
+  std::string myprog=choose_a_program();
+  debug_out("Program chosen="+myprog);
+  if(myprog.compare("")==0)return;
+  program_name->value(myprog.c_str());
+  program_name->redraw();
+  pro=myprog;
 }
-else{
-  const char* val="JWM";
-  if(tabbies->value() == xdg_tab)val="XDG";
-  if(val==NULL){
-    std::cerr<<"No tab is correctly selected"<<std::endl;
-    return;
+else{pro=proggie;}
+
+if(pro.compare("")==0){
+  pro=choose_a_program();
+  debug_out("Program chosen="+pro);
+  if(pro.compare("")==0)return;
+  program_name->value(pro.c_str());
+  program_name->redraw();
+}
+if(tabbies->value() == jwm_tab){
+    debug_out("Adding:"+pro+":");
+    add_program_to_autostart(autoStartBrowser,pro);
+}
+else if (tabbies->value()==xdg_tab){
+  std::string desktopeditor=linuxcommon::term_out("which desktop-file-editor");
+  if(desktopeditor.compare("")!=0){
+    desktopeditor+=" ";
+    desktopeditor+=xdgbrowser->text(xdgbrowser->value());
+    int sys=system(desktopeditor.c_str());
+    if(sys!=0){debug_out(desktopeditor+" did not work");}
   }
-  std::string VAL=val;
-  debug_out("Configuration for: "+VAL);
-  if(VAL.compare("JWM")==0){
-    std::string pro=proggie;
-    if (pro.compare("")==0){choose_a_program(program_name);}
-    else{
-     debug_out("Adding:"+pro+":");
-      add_program_to_autostart(autoStartBrowser,proggie);
-    }
-  }
-  else{
-    std::string desktopeditor=linuxcommon::term_out("which desktop-file-editor");
-    if(desktopeditor.compare("")!=0){
-      desktopeditor+=" ";
-      desktopeditor+=xdgbrowser->text(xdgbrowser->value());
-      int sys=system(desktopeditor.c_str());
-      if(sys!=0){debug_out(desktopeditor+" did not work");}
-    }
-    else{debug_out("Desktop File editor was not found!");}
-  }
+  else{debug_out("Desktop File editor was not found!");}
 }
 program_name->value("");
 program_name->redraw();}
-          tooltip {Add OR chose a program} xywh {5 205 30 30} box FLAT_BOX color 23 selection_color 38
+          tooltip {Add OR chose a program} xywh {5 240 30 30} box FLAT_BOX color 23 selection_color 38
         }
         Fl_Button remove_item {
-          callback {const char* val=browser_name->value();
-if(val==NULL){
-  std::cerr<<"No tab is correctly selected"<<std::endl;
-  return;
-}
-std::string VAL=val;
-if(VAL.compare("JWM")==0){remove_program_from_autostart(autoStartBrowser);}
-else{remove_program_from_xdg_autostart(xdgbrowser);}
+          callback {if(tabbies->value()==jwm_tab){remove_program_from_autostart(autoStartBrowser);}
+else if (tabbies->value()==xdg_tab){remove_program_from_xdg_autostart(xdgbrowser);}
 program_name->value("");
 program_name->redraw();}
-          image {custom_buttons/minus} xywh {45 205 30 30} box FLAT_BOX color 23 selection_color 38
+          image {custom_buttons/minus} xywh {45 240 30 30} box FLAT_BOX color 23 selection_color 38
         }
         Fl_Tabs tabbies {open
-          xywh {0 0 335 200} box FLAT_BOX
+          xywh {0 0 335 200} box FLAT_BOX color 47
         } {
           Fl_Group jwm_tab {
-            label JWM
-            callback {browser_name->value("JWM");} open
-            xywh {0 35 335 165}
+            label JWM open selected
+            xywh {0 35 335 165} selection_color 45
           } {
             Fl_Browser autoStartBrowser {
               xywh {10 45 315 145} type Hold box FLAT_BOX selection_color 55
@@ -150,23 +148,32 @@ program_name->redraw();}
             }
           }
           Fl_Group xdg_tab {
-            label XDG
-            callback {//browser_name->value("XDG");} open
-            xywh {0 35 335 165} hide deactivate
+            label XDG open
+            xywh {0 35 335 165} selection_color 45 hide
           } {
             Fl_Browser xdgbrowser {
               callback {const char* chosen =o->text(o->value());
 if(chosen!=NULL){
-  program_name->value(chosen);
-  program_name->redraw();
+  //program_name->value(chosen);
+  //program_name->redraw();
 }}
               xywh {10 45 315 145} type Hold box FLAT_BOX selection_color 55
               code0 {listAutostartXDG(o);}
             }
           }
         }
-        Fl_Input browser_name {
-          xywh {95 5 220 25} box FLAT_BOX selection_color 47 align 1 when 8 hide
+        Fl_Button config_item {
+          callback {if(tabbies->value()==jwm_tab){
+debug_out("configure JWM line");
+  remove_program_from_autostart(autoStartBrowser);
+  program_name->value(autoStartBrowser->text(autoStartBrowser->value()));
+  program_name->redraw();
+}
+else if (tabbies->value()==xdg_tab){
+  int retval=desktopFileEdit(xdgbrowser);
+  if(retval!=0){debug_out("FAILED to edit the desktop file");}
+}}
+          tooltip {If configuring JWM autostart, please re-add it once you have finished editing it} image {custom_buttons/gear16.png} xywh {90 240 30 30} box FLAT_BOX color 23 selection_color 38
         }
       }
     }

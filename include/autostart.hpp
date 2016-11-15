@@ -36,6 +36,7 @@
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Browser.H>
+int desktopFileEdit(Fl_Browser* o);
 void add_program_to_autostart(Fl_Browser *o,std::string input);
 void remove_program_from_autostart(Fl_Browser *o);
 void removeAutostart(std::string item);

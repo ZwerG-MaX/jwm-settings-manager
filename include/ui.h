@@ -45,6 +45,7 @@ int showFonts();
 int showKeyboard();
 int showMouse();
 int showMenu();
+int showMenu(std::string menu);
 int showAutostart();
 int showSettings();
 int showShortcuts();

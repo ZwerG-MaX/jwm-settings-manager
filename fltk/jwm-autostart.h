@@ -69,21 +69,16 @@ private:
 public:
   Fl_Tabs *tabbies;
   Fl_Group *jwm_tab;
-private:
-  inline void cb_jwm_tab_i(Fl_Group*, void*);
-  static void cb_jwm_tab(Fl_Group*, void*);
-public:
   Fl_Browser *autoStartBrowser;
   Fl_Group *xdg_tab;
-private:
-  inline void cb_xdg_tab_i(Fl_Group*, void*);
-  static void cb_xdg_tab(Fl_Group*, void*);
-public:
   Fl_Browser *xdgbrowser;
 private:
   inline void cb_xdgbrowser_i(Fl_Browser*, void*);
   static void cb_xdgbrowser(Fl_Browser*, void*);
 public:
-  Fl_Input *browser_name;
+  Fl_Button *config_item;
+private:
+  inline void cb_config_item_i(Fl_Button*, void*);
+  static void cb_config_item(Fl_Button*, void*);
 };
 #endif

@@ -502,22 +502,22 @@ void WindowUI::cb_OK3(Fl_Button* o, void* v) {
 }
 
 Fl_Double_Window* WindowUI::add_option_window() {
-  { Fl_Double_Window* o = add_opt_window = new Fl_Double_Window(435, 435, gettext("Add an Option"));
+  { Fl_Double_Window* o = add_opt_window = new Fl_Double_Window(435, 390, gettext("Add an Option"));
     add_opt_window->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(0, 0, 430, 430);
-      { Fl_Browser* o = options_available = new Fl_Browser(10, 10, 115, 375);
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 435, 395);
+      { Fl_Browser* o = options_available = new Fl_Browser(10, 10, 115, 340);
         options_available->type(2);
         options_available->box(FL_FLAT_BOX);
         options_available->selection_color((Fl_Color)80);
         options_available->callback((Fl_Callback*)cb_options_available);
         populateOptions(o);
       } // Fl_Browser* options_available
-      { Fl_Button* o = new Fl_Button(10, 390, 30, 30, gettext("@+"));
+      { Fl_Button* o = new Fl_Button(10, 355, 30, 30, gettext("@+"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_);
       } // Fl_Button* o
-      { Fl_Browser* o = options_desc = new Fl_Browser(135, 10, 285, 220);
+      { Fl_Browser* o = options_desc = new Fl_Browser(135, 10, 290, 195);
         options_desc->type(2);
         options_desc->box(FL_FLAT_BOX);
         options_desc->selection_color((Fl_Color)80);
@@ -525,12 +525,12 @@ Fl_Double_Window* WindowUI::add_option_window() {
         options_desc->align(Fl_Align(FL_ALIGN_TOP));
         populateDesc(o);
       } // Fl_Browser* options_desc
-      { icon_value = new Fl_Input(135, 235, 100, 25, gettext("Icon"));
+      { icon_value = new Fl_Input(135, 210, 100, 25, gettext("Icon"));
         icon_value->box(FL_FLAT_BOX);
         icon_value->align(Fl_Align(FL_ALIGN_RIGHT));
         icon_value->deactivate();
       } // Fl_Input* icon_value
-      { opacity_value = new Fl_Slider(135, 325, 100, 25, gettext("Opacity"));
+      { opacity_value = new Fl_Slider(135, 300, 100, 25, gettext("Opacity"));
         opacity_value->type(1);
         opacity_value->box(FL_GTK_DOWN_BOX);
         opacity_value->color((Fl_Color)41);
@@ -539,17 +539,19 @@ Fl_Double_Window* WindowUI::add_option_window() {
         opacity_value->align(Fl_Align(FL_ALIGN_RIGHT));
         opacity_value->deactivate();
       } // Fl_Slider* opacity_value
-      { desktop_num = new Fl_Value_Input(135, 355, 35, 25, gettext("Desktop"));
+      { desktop_num = new Fl_Value_Input(135, 330, 35, 25, gettext("Desktop"));
         desktop_num->box(FL_FLAT_BOX);
         desktop_num->maximum(10000);
         desktop_num->align(Fl_Align(FL_ALIGN_RIGHT));
         desktop_num->deactivate();
       } // Fl_Value_Input* desktop_num
-      { add_tracker = new Fl_Browser(335, 250, 85, 125, gettext("Adding"));
+      { add_tracker = new Fl_Browser(330, 225, 95, 125, gettext("Adding"));
         add_tracker->box(FL_FLAT_BOX);
+        add_tracker->color(FL_DARK1);
+        add_tracker->selection_color((Fl_Color)80);
         add_tracker->align(Fl_Align(FL_ALIGN_TOP));
       } // Fl_Browser* add_tracker
-      { Fl_Button* o = new Fl_Button(300, 400, 55, 25, gettext("Cancel"));
+      { Fl_Button* o = new Fl_Button(325, 360, 55, 25, gettext("Cancel"));
         o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
         o->color((Fl_Color)80);
@@ -557,7 +559,7 @@ Fl_Double_Window* WindowUI::add_option_window() {
         o->labelcolor(FL_BACKGROUND2_COLOR);
         o->callback((Fl_Callback*)cb_Cancel);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(375, 400, 45, 25, gettext("OK"));
+      { Fl_Button* o = new Fl_Button(385, 360, 45, 25, gettext("OK"));
         o->tooltip(gettext("Write to configuration file"));
         o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
@@ -566,7 +568,7 @@ Fl_Double_Window* WindowUI::add_option_window() {
         o->labelcolor((Fl_Color)55);
         o->callback((Fl_Callback*)cb_OK);
       } // Fl_Button* o
-      { layer_chooser = new Fl_Menu_Button(135, 265, 100, 25, gettext("Layer"));
+      { layer_chooser = new Fl_Menu_Button(135, 240, 100, 25, gettext("Layer"));
         layer_chooser->box(FL_FLAT_BOX);
         layer_chooser->color((Fl_Color)23);
         layer_chooser->deactivate();
@@ -579,11 +581,11 @@ Fl_Double_Window* WindowUI::add_option_window() {
         }
         layer_chooser->menu(menu_layer_chooser);
       } // Fl_Menu_Button* layer_chooser
-      { layer_value = new Fl_Output(135, 295, 100, 25);
+      { layer_value = new Fl_Output(135, 270, 100, 25);
         layer_value->box(FL_FLAT_BOX);
         layer_value->deactivate();
       } // Fl_Output* layer_value
-      { Fl_Button* o = new Fl_Button(275, 235, 50, 50);
+      { Fl_Button* o = new Fl_Button(270, 210, 50, 50);
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_1);
@@ -650,17 +652,19 @@ Fl_Double_Window* WindowUI::make_window() {
   if(!load()){debug_out("DIDN'T LOAD in jwm-window");}
   else{debug_out("LOADED doc in jwm-window");}
   { Fl_Double_Window* o = window_window = new Fl_Double_Window(510, 315, gettext("Window Settings"));
-    window_window->color((Fl_Color)31);
+    window_window->color(FL_DARK1);
     window_window->user_data((void*)(this));
     { Fl_Scroll* o = new Fl_Scroll(0, 0, 510, 315);
       o->color((Fl_Color)31);
       { Fl_Tabs* o = new Fl_Tabs(0, 0, 510, 280);
         o->box(FL_FLAT_BOX);
+        o->color(FL_DARK2);
         o->selection_color((Fl_Color)51);
         { Fl_Group* o = new Fl_Group(0, 30, 510, 250, gettext("Appearance"));
+          o->selection_color(FL_DARK2);
           { Fl_Box* o = new Fl_Box(0, 35, 255, 160);
             o->box(FL_FLAT_BOX);
-            o->color((Fl_Color)51);
+            o->color(FL_DARK1);
           } // Fl_Box* o
           { Fl_Box* o = new Fl_Box(60, 35, 160, 25, gettext("Active Window"));
             o->labelfont(1);
@@ -810,7 +814,7 @@ Fl_Double_Window* WindowUI::make_window() {
           { Fl_Button* o = max_a_image = new Fl_Button(255, 200, 40, 40);
             max_a_image->tooltip(gettext("Choose an image (XBM) for the Maximized button"));
             max_a_image->box(FL_FLAT_BOX);
-            max_a_image->color((Fl_Color)43);
+            max_a_image->color((Fl_Color)23);
             max_a_image->callback((Fl_Callback*)cb_max_a_image);
             max_a_image->align(Fl_Align(256));
             get_button(o,"ButtonMaxActive",a_title_color1);
@@ -820,7 +824,7 @@ Fl_Double_Window* WindowUI::make_window() {
           { Fl_Button* o = max_image = new Fl_Button(360, 200, 40, 40);
             max_image->tooltip(gettext("Choose an image (XBM) for the Maximized button"));
             max_image->box(FL_FLAT_BOX);
-            max_image->color((Fl_Color)43);
+            max_image->color((Fl_Color)23);
             max_image->callback((Fl_Callback*)cb_max_image);
             max_image->align(Fl_Align(256));
             get_button(o,"ButtonMax",a_title_color1);
@@ -830,7 +834,7 @@ Fl_Double_Window* WindowUI::make_window() {
           { Fl_Button* o = min_image = new Fl_Button(145, 200, 40, 40);
             min_image->tooltip(gettext("Choose an image (XBM) for the Maximized button"));
             min_image->box(FL_FLAT_BOX);
-            min_image->color((Fl_Color)43);
+            min_image->color((Fl_Color)23);
             min_image->callback((Fl_Callback*)cb_min_image);
             min_image->align(Fl_Align(256));
             get_button(o,"ButtonMin",a_title_color1);
@@ -840,7 +844,7 @@ Fl_Double_Window* WindowUI::make_window() {
           { Fl_Button* o = close_image = new Fl_Button(450, 200, 40, 40);
             close_image->tooltip(gettext("Choose an image (XBM) for the Maximized button"));
             close_image->box(FL_FLAT_BOX);
-            close_image->color((Fl_Color)43);
+            close_image->color((Fl_Color)23);
             close_image->callback((Fl_Callback*)cb_close_image);
             close_image->align(Fl_Align(256));
             get_button(o,"ButtonClose",a_title_color1);
@@ -848,6 +852,7 @@ Fl_Double_Window* WindowUI::make_window() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(10, 35, 485, 245, gettext("Settings"));
+          o->selection_color(FL_DARK2);
           o->hide();
           { Fl_Slider* o = t_slider = new Fl_Slider(205, 35, 125, 25, gettext("Window Title Bar Size"));
             t_slider->tooltip(gettext("This is the top with the program name, and close button, etc.."));
@@ -990,6 +995,7 @@ re easily"));
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(0, 30, 510, 230, gettext("Groups"));
+          o->selection_color(FL_DARK2);
           o->hide();
           { Fl_Browser* o = groups_browser = new Fl_Browser(15, 55, 85, 155, gettext("Current Groups"));
             groups_browser->tooltip(gettext("Program groups allow one to specify options which apply to a group of program\
@@ -1063,6 +1069,7 @@ s many program groups can be created as desired."));
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(5, 45, 460, 205, gettext("Advanced"));
+          o->selection_color(FL_DARK2);
           o->hide();
           { Fl_Slider* o = a_b_slider = new Fl_Slider(190, 150, 125, 25, gettext("Window Border Size"));
             a_b_slider->tooltip(gettext("Width of the window borders"));

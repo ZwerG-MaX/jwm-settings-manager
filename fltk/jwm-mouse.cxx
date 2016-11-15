@@ -710,14 +710,15 @@ Fl_Double_Window* MouseUI::make_window() {
   deltaChanged = false;
   doubleChanged = false;
   { Fl_Double_Window* o = mouse_window = new Fl_Double_Window(370, 345, gettext("Touchpad Settings"));
-    mouse_window->color((Fl_Color)31);
+    mouse_window->color(FL_DARK1);
     mouse_window->user_data((void*)(this));
     { Fl_Scroll* o = new Fl_Scroll(-5, 0, 545, 520);
       o->color((Fl_Color)31);
       { Fl_Tabs* o = new Fl_Tabs(5, 5, 360, 305);
         o->box(FL_FLAT_BOX);
-        o->selection_color((Fl_Color)51);
+        o->color(FL_DARK2);
         { Fl_Group* o = new Fl_Group(20, 35, 325, 260, gettext("TouchPad"));
+          o->selection_color(FL_DARK2);
           { TouchpadOff = new Fl_Choice(55, 40, 65, 20, gettext("Touchpad Mode"));
             TouchpadOff->tooltip(gettext("Toggle the pad ON/OFF or only move (no scroll, tap, ecc.)"));
             TouchpadOff->box(FL_GTK_DOWN_BOX);
@@ -793,6 +794,7 @@ Fl_Double_Window* MouseUI::make_window() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(10, 30, 345, 280, gettext("Tapping"));
+          o->selection_color(FL_DARK2);
           o->hide();
           { TapButton1 = new Fl_Choice(55, 40, 110, 20, gettext("One Finger"));
             TapButton1->tooltip(gettext("Which mouse button is reported on a non-corner one-finger tap"));
@@ -956,6 +958,7 @@ tap"));
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(20, 35, 335, 265, gettext("Scrolling"));
+          o->selection_color(FL_DARK2);
           o->hide();
           { VertTwoFingerScroll = new Fl_Check_Button(55, 35, 20, 20, gettext("Vertical 2 Finger Scroll"));
             VertTwoFingerScroll->tooltip(gettext("Enable Vertical Edge scrolling for this to work"));
@@ -1094,6 +1097,7 @@ tap"));
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(20, 33, 340, 260, gettext("Movement"));
+          o->selection_color(FL_DARK2);
           o->hide();
           { TopEdge = new Fl_Value_Output(156, 40, 50, 25, gettext("@8->| Top"));
             TopEdge->tooltip(gettext("Y coordinate for top edge"));
@@ -1193,6 +1197,7 @@ tap"));
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(40, 35, 320, 170, gettext("JWM"));
+          o->selection_color(FL_DARK2);
           o->hide();
           { double_click_slider = new Fl_Slider(55, 45, 90, 25, gettext("Double Click Speed"));
             double_click_slider->tooltip(gettext("This sets how fast you must click to Double Click"));

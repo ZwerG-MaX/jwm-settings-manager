@@ -23,10 +23,35 @@
  */
 #include <libintl.h>
 #include "../include/autostart.hpp"
+int desktopFileEdit(Fl_Browser* o){
+	const char* line=o->text(o->value());
+	if(line==NULL) return 1;
+	std::string temp=line;
+	std::string casa=linuxcommon::home_path();
+	std::string desktopeditor=linuxcommon::term_out("which desktop-file-editor");
+    if(desktopeditor.compare("")!=0){
+		desktopeditor+=" ";
+		desktopeditor+=temp;
+		if(temp.find(casa)>temp.length()){
+			std::string pkexec=linuxcommon::term_out("which pkexec");
+			if(pkexec.compare("")==0) pkexec=linuxcommon::term_out("which gksudo");
+			if(pkexec.compare("")==0) pkexec=linuxcommon::term_out("which gksu");
+			if(pkexec.compare("")==0) pkexec=linuxcommon::term_out("which sudo");
+			if(pkexec.compare("")!=0) desktopeditor= pkexec + " " +desktopeditor ;
+		}
+		int sys=system(desktopeditor.c_str());
+		if(sys!=0){debug_out(desktopeditor+" did not work");}
+		return sys;
+	}
+	else{debug_out("Desktop File editor was not found!");}
+	return -1;
+}
+
 void add_program_to_autostart(Fl_Browser *o,std::string input) {
 	o->clear();
 	bool tryADD=addElementWithText("StartupCommand",input);
 	if(!tryADD){errorOUT("ADDING  StartupCommand->"+input+" FAILED");return;}
+	if(!linuxcommon::program_is_running(input)){linuxcommon::run_a_program_in_background(input);}
 	if((loadTemp())&&(saveNoRestart())){
 		load();
 		populateFLBrowser(o,"StartupCommand");

@@ -117,7 +117,14 @@ int showMouse(){
 int showMenu(){
 	debug_out("Menu UI activated");
     MenuUI Menu;
-    Menu.make_window()->show();
+	std::string menu="";
+    Menu.make_window(menu)->show();
+	return Fl::run();
+}
+int showMenu(std::string menu){
+	debug_out("Menu UI activated");
+    MenuUI Menu;
+    Menu.make_window(menu)->show();
 	return Fl::run();
 }
 //Shortcuts

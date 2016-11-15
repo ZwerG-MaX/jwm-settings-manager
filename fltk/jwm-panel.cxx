@@ -426,30 +426,6 @@ void PanelUI::cb_save_button(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->user_data()))->cb_save_button_i(o,v);
 }
 
-void PanelUI::cb_Battery_i(Fl_Button*, void*) {
-  addBattery();
-getIndicators(indicator_browser);
-}
-void PanelUI::cb_Battery(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Battery_i(o,v);
-}
-
-void PanelUI::cb_Volume_i(Fl_Button*, void*) {
-  addVolume();
-getIndicators(indicator_browser);
-}
-void PanelUI::cb_Volume(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Volume_i(o,v);
-}
-
-void PanelUI::cb_Network_i(Fl_Button*, void*) {
-  addNetworkMonitor();
-getIndicators(indicator_browser);
-}
-void PanelUI::cb_Network(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Network_i(o,v);
-}
-
 void PanelUI::cb_OK_i(Fl_Button*, void*) {
   indicator_win->hide();
 }
@@ -464,6 +440,17 @@ void PanelUI::cb_CLOSE(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_CLOSE_i(o,v);
 }
 
+void PanelUI::cb_2_i(Fl_Button*, void*) {
+  if(checkFlBrowserItem(add_indicator_browser)){
+  const char* item=add_indicator_browser->text(add_indicator_browser->value());
+  addIndicator(item);
+  getIndicators(indicator_browser);
+};
+}
+void PanelUI::cb_2(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_2_i(o,v);
+}
+
 void PanelUI::cb_OK1_i(Fl_Button*, void*) {
   saveChanges();
 add_2_panel->hide();
@@ -473,11 +460,11 @@ void PanelUI::cb_OK1(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_OK1_i(o,v);
 }
 
-void PanelUI::cb_2_i(Fl_Button*, void*) {
+void PanelUI::cb_3_i(Fl_Button*, void*) {
   add_item();
 }
-void PanelUI::cb_2(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_2_i(o,v);
+void PanelUI::cb_3(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_3_i(o,v);
 }
 
 void PanelUI::cb_CLOSE1_i(Fl_Button*, void*) {
@@ -508,14 +495,14 @@ void PanelUI::cb_clock_style(Fl_Input* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_clock_style_i(o,v);
 }
 
-void PanelUI::cb_3_i(Fl_Browser* o, void*) {
+void PanelUI::cb_4_i(Fl_Browser* o, void*) {
   std::string item=o->text(o->value());
 item= item.substr(0,2);
 clock_style->insert(item.c_str());
 //std::cerr<<"Click Clock: "<<item<<std::endl;
 }
-void PanelUI::cb_3(Fl_Browser* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_3_i(o,v);
+void PanelUI::cb_4(Fl_Browser* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_4_i(o,v);
 }
 
 void PanelUI::cb_Notes_i(Fl_Button*, void*) {
@@ -650,18 +637,18 @@ void PanelUI::cb_OK5(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_OK5_i(o,v);
 }
 
-void PanelUI::cb_4_i(Fl_Button*, void*) {
-  remove_indicator();
-}
-void PanelUI::cb_4(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_4_i(o,v);
-}
-
 void PanelUI::cb_5_i(Fl_Button*, void*) {
-  add_indicator()->show();
+  removeIndicator(indicator_browser);
 }
 void PanelUI::cb_5(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_5_i(o,v);
+}
+
+void PanelUI::cb_6_i(Fl_Button*, void*) {
+  add_indicator()->show();
+}
+void PanelUI::cb_6(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_6_i(o,v);
 }
 
 void PanelUI::cb_OK6_i(Fl_Button*, void*) {
@@ -678,15 +665,15 @@ void PanelUI::cb_OK6(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_OK6_i(o,v);
 }
 
-void PanelUI::cb_6_i(Fl_Button* o, void*) {
+void PanelUI::cb_7_i(Fl_Button* o, void*) {
   std::string iconFILE=choose_an_icon();
 if(iconFILE.compare("")!=0){
   makeWidgetIcon(iconFILE,o,48);
   icon_file->value(iconFILE.c_str());
 };
 }
-void PanelUI::cb_6(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_6_i(o,v);
+void PanelUI::cb_7(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_7_i(o,v);
 }
 
 void PanelUI::cb_OK7_i(Fl_Button*, void*) {
@@ -710,6 +697,15 @@ if(iconFILE.compare("")!=0)makeWidgetIcon(iconFILE,o,48);
 }
 void PanelUI::cb_icon_view(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_icon_view_i(o,v);
+}
+
+void PanelUI::cb_8_i(Fl_Button*, void*) {
+  const char* tmpTST =tester->value();
+if(tmpTST!=NULL){showMenu(tmpTST);}
+else{showMenu();};
+}
+void PanelUI::cb_8(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_8_i(o,v);
 }
 
 void PanelUI::cb_OK8_i(Fl_Button*, void*) {
@@ -758,18 +754,18 @@ void PanelUI::cb_Active1(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_Active1_i(o,v);
 }
 
-void PanelUI::cb_7_i(Fl_Button* o, void*) {
+void PanelUI::cb_9_i(Fl_Button* o, void*) {
   one_color_Font(o,"PagerStyle");
 }
-void PanelUI::cb_7(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_7_i(o,v);
+void PanelUI::cb_9(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_9_i(o,v);
 }
 
-void PanelUI::cb_8_i(Fl_Button* o, void*) {
+void PanelUI::cb_a_i(Fl_Button* o, void*) {
   one_color(o,"PagerStyle");
 }
-void PanelUI::cb_8(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_8_i(o,v);
+void PanelUI::cb_a(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_a_i(o,v);
 }
 
 void PanelUI::cb_num_desktop_w_i(Fl_Value_Input* o, void*) {
@@ -802,7 +798,7 @@ void PanelUI::cb_app_command(Fl_Input* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_app_command_i(o,v);
 }
 
-void PanelUI::cb_9_i(Fl_Button*, void*) {
+void PanelUI::cb_b_i(Fl_Button*, void*) {
   if(add_new_shortcut(shortcut_browser,app_command,tooltip,icon_name,shortcut_border->value())){
   app_command->value("");
   app_command->redraw();
@@ -811,8 +807,8 @@ void PanelUI::cb_9_i(Fl_Button*, void*) {
   tooltip->redraw();
 };
 }
-void PanelUI::cb_9(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_9_i(o,v);
+void PanelUI::cb_b(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_b_i(o,v);
 }
 
 void PanelUI::cb_ok_button_i(Fl_Button*, void*) {
@@ -827,7 +823,7 @@ void PanelUI::cb_ok_button(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_ok_button_i(o,v);
 }
 
-void PanelUI::cb_a_i(Fl_Button*, void*) {
+void PanelUI::cb_c_i(Fl_Button*, void*) {
   int whichLine = shortcut_browser->value();
 const char* lineIS = shortcut_browser->text(whichLine);
 if (lineIS == NULL){return;}
@@ -837,8 +833,8 @@ if (prog.find("exec:")<prog.length()){
   getShortcuts(shortcut_browser);
 };
 }
-void PanelUI::cb_a(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_a_i(o,v);
+void PanelUI::cb_c(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_c_i(o,v);
 }
 
 void PanelUI::cb_app_icon_box_i(Fl_Button* o, void*) {
@@ -883,8 +879,7 @@ void PanelUI::display(std::string filename) {
 Fl_Double_Window* PanelUI::make_window() {
   load();
   { Fl_Double_Window* o = panel_window = new Fl_Double_Window(285, 450, gettext("Panel Settings"));
-    panel_window->color((Fl_Color)31);
-    panel_window->selection_color((Fl_Color)22);
+    panel_window->color(FL_DARK1);
     panel_window->user_data((void*)(this));
     panel_window->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
     { Fl_Scroll* o = new Fl_Scroll(0, 0, 355, 665);
@@ -935,8 +930,9 @@ Fl_Double_Window* PanelUI::make_window() {
       } // Fl_Menu_Button* panel_chooser
       { Fl_Tabs* o = new Fl_Tabs(0, 35, 285, 380);
         o->box(FL_FLAT_BOX);
-        o->selection_color((Fl_Color)51);
+        o->color(FL_DARK1);
         { Fl_Group* o = new Fl_Group(5, 60, 280, 350, gettext("Apps"));
+          o->selection_color(FL_DARK2);
           { Fl_Button* o = new Fl_Button(50, 380, 30, 30, gettext("-"));
             o->box(FL_FLAT_BOX);
             o->color((Fl_Color)23);
@@ -978,6 +974,7 @@ Fl_Double_Window* PanelUI::make_window() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(0, 60, 275, 335, gettext("Appearance"));
+          o->selection_color(FL_DARK2);
           o->hide();
           { Fl_Button* o = menu_bg_color = new Fl_Button(10, 102, 60, 25, gettext("Menu Background"));
             menu_bg_color->box(FL_FLAT_BOX);
@@ -1082,6 +1079,7 @@ Fl_Double_Window* PanelUI::make_window() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(5, 70, 280, 345, gettext("Size And Position"));
+          o->selection_color(FL_DARK2);
           o->hide();
           { Fl_Menu_Button* o = new Fl_Menu_Button(10, 70, 125, 25, gettext("Panel Position"));
             o->box(FL_FLAT_BOX);
@@ -1165,6 +1163,9 @@ Fl_Double_Window* PanelUI::make_window() {
             o->value(h);
           } // Fl_Slider* w_slider
           { Fl_Value_Input* o = width_input = new Fl_Value_Input(200, 160, 40, 25, gettext("pixels"));
+            width_input->tooltip(gettext("The  width  of  the tray. 0 indicates that the tray\nshould compute an optima\
+l width depending  on  what\nit  contains  and the layout. A negative value su\
+btracts\nfrom with screen width. 0 is the default."));
             width_input->box(FL_FLAT_BOX);
             width_input->color((Fl_Color)23);
             width_input->labelsize(10);
@@ -1176,7 +1177,7 @@ Fl_Double_Window* PanelUI::make_window() {
             const char* text=gettext("pixels");o->label(text);
           } // Fl_Value_Input* width_input
           { Fl_Slider* o = h_slider = new Fl_Slider(10, 205, 180, 25, gettext("Height of Panel  "));
-            h_slider->tooltip(gettext("0 bases the height on the items"));
+            h_slider->tooltip(gettext("0 will base size from the current items in the panel"));
             h_slider->type(1);
             h_slider->box(FL_GTK_DOWN_BOX);
             h_slider->color((Fl_Color)42);
@@ -1192,6 +1193,9 @@ Fl_Double_Window* PanelUI::make_window() {
             o->value(h);
           } // Fl_Slider* h_slider
           { Fl_Value_Input* o = height_input = new Fl_Value_Input(200, 205, 40, 25, gettext("pixels"));
+            height_input->tooltip(gettext("The height of the tray. 0 indicates that  the  tray\nshould  compute an optim\
+al height depending on what\nit contains and the layout. A negative  value  su\
+btracts\nfrom the screen height. 0 is the default."));
             height_input->box(FL_FLAT_BOX);
             height_input->color((Fl_Color)23);
             height_input->labelsize(10);
@@ -1208,6 +1212,8 @@ Fl_Double_Window* PanelUI::make_window() {
             const char* text=gettext("Advanced Options");o->label(text);
           } // Fl_Box* o
           { Fl_Value_Input* o = new Fl_Value_Input(10, 270, 25, 25, gettext("X position of panel"));
+            o->tooltip(gettext("The x-coordinate of the tray. This may be  negative\nto indicate an offset fr\
+om the right of the screen."));
             o->box(FL_FLAT_BOX);
             o->color((Fl_Color)23);
             o->minimum(-100);
@@ -1218,6 +1224,8 @@ Fl_Double_Window* PanelUI::make_window() {
             const char* text=gettext("X position of panel");o->label(text);
           } // Fl_Value_Input* o
           { Fl_Value_Input* o = new Fl_Value_Input(10, 300, 25, 25, gettext("Y position of panel"));
+            o->tooltip(gettext("The  y-coordinate of the tray. This may be negative\nto indicate  an  offset \
+ from  the  bottom  of  the\nscreen."));
             o->box(FL_FLAT_BOX);
             o->color((Fl_Color)23);
             o->minimum(-100);
@@ -1285,36 +1293,32 @@ Fl_Double_Window* PanelUI::make_window() {
 }
 
 Fl_Double_Window* PanelUI::add_indicator() {
-  { Fl_Double_Window* o = indicator_win = new Fl_Double_Window(190, 130, gettext("Add Indicator"));
+  { Fl_Double_Window* o = indicator_win = new Fl_Double_Window(155, 185, gettext("Add Indicator"));
     indicator_win->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(5, 5, 90, 30, gettext("Battery"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_Battery);
-    } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(5, 45, 90, 30, gettext("Volume"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_Volume);
-    } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(5, 85, 90, 30, gettext("Network"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_Network);
-    } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(110, 45, 60, 30, gettext("OK"));
+    { Fl_Button* o = new Fl_Button(105, 140, 45, 30, gettext("OK"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->selection_color((Fl_Color)59);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(110, 85, 60, 30, gettext("CLOSE"));
+    { Fl_Button* o = new Fl_Button(45, 140, 55, 30, gettext("CLOSE"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)80);
       o->selection_color((Fl_Color)64);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_CLOSE);
+    } // Fl_Button* o
+    { Fl_Browser* o = add_indicator_browser = new Fl_Browser(5, 5, 145, 130);
+      add_indicator_browser->type(2);
+      add_indicator_browser->box(FL_FLAT_BOX);
+      add_indicator_browser->selection_color(FL_DARK_RED);
+      listIndicators(o);
+    } // Fl_Browser* add_indicator_browser
+    { Fl_Button* o = new Fl_Button(10, 140, 30, 30, gettext("@+"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->callback((Fl_Callback*)cb_2);
     } // Fl_Button* o
     startup(o,jsm_panel_xpm);
     indicator_win->end();
@@ -1342,7 +1346,7 @@ Fl_Double_Window* PanelUI::add_to_panel() {
     { Fl_Button* o = new Fl_Button(5, 225, 30, 30, gettext("@+"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_2);
+      o->callback((Fl_Callback*)cb_3);
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(55, 225, 60, 30, gettext("CLOSE"));
       o->box(FL_FLAT_BOX);
@@ -1381,7 +1385,7 @@ Fl_Double_Window* PanelUI::clock_window() {
       o->type(2);
       o->box(FL_FLAT_BOX);
       o->selection_color(FL_DARK_RED);
-      o->callback((Fl_Callback*)cb_3);
+      o->callback((Fl_Callback*)cb_4);
       populateClocks(o);
     } // Fl_Browser* o
     { clock_display = new Fl_Output(10, 470, 445, 25);
@@ -1605,12 +1609,12 @@ Fl_Double_Window* PanelUI::config_indicator_window() {
       o->color((Fl_Color)23);
       o->labelfont(1);
       o->labelsize(34);
-      o->callback((Fl_Callback*)cb_4);
+      o->callback((Fl_Callback*)cb_5);
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(5, 180, 30, 30, gettext("@+"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_5);
+      o->callback((Fl_Callback*)cb_6);
     } // Fl_Button* o
     startup(o,jsm_panel_xpm);
     conf_indicator_window->xclass("jsm-panel");
@@ -1640,7 +1644,7 @@ Fl_Double_Window* PanelUI::configure_manually_window(std::string icon) {
     { Fl_Button* o = new Fl_Button(10, 45, 50, 50);
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_6);
+      o->callback((Fl_Callback*)cb_7);
       if(icon.compare("")!=0)makeWidgetIcon(icon,o,48);
     } // Fl_Button* o
     { hid_in = new Fl_Input(10, 10, 340, 30);
@@ -1673,13 +1677,15 @@ Fl_Double_Window* PanelUI::config_menu_window(std::string file) {
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK7);
     } // Fl_Button* o
-    { app_menu = new Fl_Input(95, 5, 130, 25, gettext("Menu Label"));
+    { app_menu = new Fl_Input(95, 5, 130, 25, gettext("Button Text"));
+      app_menu->tooltip(gettext("Text for the Button that shows the menu"));
       app_menu->box(FL_FLAT_BOX);
       app_menu->color((Fl_Color)55);
       app_menu->selection_color(FL_DARK_RED);
       app_menu->when(FL_WHEN_CHANGED);
     } // Fl_Input* app_menu
-    { Fl_Button* o = icon_view = new Fl_Button(95, 35, 50, 50, gettext("Icon"));
+    { Fl_Button* o = icon_view = new Fl_Button(45, 35, 50, 50, gettext("Icon"));
+      icon_view->tooltip(gettext("Choose an Icon"));
       icon_view->box(FL_FLAT_BOX);
       icon_view->color((Fl_Color)23);
       icon_view->callback((Fl_Callback*)cb_icon_view);
@@ -1687,13 +1693,22 @@ Fl_Double_Window* PanelUI::config_menu_window(std::string file) {
       if(file.compare("")!=0)makeWidgetIcon(file,o,48);
     } // Fl_Button* icon_view
     { hidden_icon_name = new Fl_Input(5, 90, 155, 25);
+      hidden_icon_name->tooltip(gettext("The icon file name"));
       hidden_icon_name->box(FL_FLAT_BOX);
       hidden_icon_name->color((Fl_Color)23);
     } // Fl_Input* hidden_icon_name
-    { tester = new Fl_Output(200, 35, 25, 25, gettext("Menu"));
+    { tester = new Fl_Output(150, 40, 25, 25, gettext("Menu"));
+      tester->tooltip(gettext("The root menu the button is tied to"));
       tester->box(FL_FLAT_BOX);
       tester->color((Fl_Color)55);
     } // Fl_Output* tester
+    { Fl_Button* o = new Fl_Button(180, 35, 30, 30);
+      o->tooltip(gettext("Configure the menu items"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->image(image_gear16);
+      o->callback((Fl_Callback*)cb_8);
+    } // Fl_Button* o
     startup(o,jsm_panel_xpm);
     conf_menu_window->xclass("jsm-panel");
     conf_menu_window->end();
@@ -1702,7 +1717,7 @@ Fl_Double_Window* PanelUI::config_menu_window(std::string file) {
 }
 
 Fl_Double_Window* PanelUI::config_swallow_window() {
-  { Fl_Double_Window* o = conf_swallow_window = new Fl_Double_Window(465, 75, gettext("Configure Swallowed Application"));
+  { Fl_Double_Window* o = conf_swallow_window = new Fl_Double_Window(465, 70, gettext("Configure Swallowed Application"));
     conf_swallow_window->user_data((void*)(this));
     { Fl_Button* o = new Fl_Button(395, 40, 60, 25, gettext("OK"));
       o->box(FL_FLAT_BOX);
@@ -1710,7 +1725,7 @@ Fl_Double_Window* PanelUI::config_swallow_window() {
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK8);
     } // Fl_Button* o
-    { Fl_Input* o = swallow_name = new Fl_Input(85, 40, 305, 25, gettext("App Name"));
+    { Fl_Input* o = swallow_name = new Fl_Input(85, 40, 155, 25, gettext("App Name"));
       swallow_name->tooltip(gettext("This MUST be the same as the executable\'s name"));
       swallow_name->box(FL_FLAT_BOX);
       swallow_name->color((Fl_Color)53);
@@ -1729,6 +1744,22 @@ Fl_Double_Window* PanelUI::config_swallow_window() {
       std::string name=getElementText(currentPanel(),"Tray","Swallow");
       o->value(name.c_str());
     } // Fl_Input* swallow_config
+    { Fl_Value_Input* o = new Fl_Value_Input(285, 40, 25, 25, gettext("Width"));
+      o->tooltip(gettext("The  width of the swallowed program. 0 indicates\nthat the width  should  be \
+ determined\nfrom  the  tray  and size requested from the\nprogram. 0 is the d\
+efault."));
+      o->box(FL_FLAT_BOX);
+      o->selection_color(FL_DARK_RED);
+      o->deactivate();
+    } // Fl_Value_Input* o
+    { Fl_Value_Input* o = new Fl_Value_Input(365, 40, 25, 25, gettext("Height"));
+      o->tooltip(gettext("The  height of the swallowed program. 0 indicates\nthat the height  should  b\
+e  determined\nfrom  the  tray  and size requested from the\nprogram. 0 is the\
+ default."));
+      o->box(FL_FLAT_BOX);
+      o->selection_color(FL_DARK_RED);
+      o->deactivate();
+    } // Fl_Value_Input* o
     startup(o,jsm_panel_xpm);
     conf_swallow_window->xclass("jsm-panel");
     conf_swallow_window->end();
@@ -1773,14 +1804,14 @@ Fl_Double_Window* PanelUI::config_switcher_window() {
     { Fl_Button* o = new Fl_Button(135, 75, 75, 30);
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_7);
+      o->callback((Fl_Callback*)cb_9);
       if(style_gone()){o->hide();}
       else{getColorFromItem(false,"PagerStyle","Foreground",o);}
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(135, 125, 75, 30);
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_8);
+      o->callback((Fl_Callback*)cb_a);
       if(style_gone()){o->hide();}
       else{getColorFromItem(false,"PagerStyle","Background",o);}
     } // Fl_Button* o
@@ -1830,7 +1861,7 @@ Fl_Double_Window* PanelUI::make_shortcut_window() {
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->selection_color((Fl_Color)40);
-      o->callback((Fl_Callback*)cb_9);
+      o->callback((Fl_Callback*)cb_b);
     } // Fl_Button* o
     { ok_button = new Fl_Button(250, 300, 50, 30, gettext("SAVE"));
       ok_button->tooltip(gettext("Write to configuration file"));
@@ -1862,7 +1893,7 @@ Fl_Double_Window* PanelUI::make_shortcut_window() {
       o->selection_color((Fl_Color)40);
       o->labelfont(1);
       o->labelsize(45);
-      o->callback((Fl_Callback*)cb_a);
+      o->callback((Fl_Callback*)cb_c);
     } // Fl_Button* o
     { icon_name = new Fl_Box(115, 65, 185, 25, gettext("Icon File Name"));
       icon_name->box(FL_FLAT_BOX);
@@ -2036,7 +2067,7 @@ void PanelUI::config_Item(std::string whichItem) {
       manually_in->value(temp.c_str());
     }
     else if(whichItem.compare("")==0){no_config()->show();}
-    else if(whichItem.compare(SWALLOW)==0){config_swallow_window()->show();}
+    else if(whichItem.find(SWALLOW)<whichItem.length()){config_swallow_window()->show();}
     else{
       configure_manually_window("")->show();
       manually_in->value(whichItem.c_str());

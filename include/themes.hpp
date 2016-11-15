@@ -62,7 +62,8 @@ void updateTheme( Fl_Browser *o,
 					Fl_Box *inactive_min_button,
 					Fl_Box *inactive_max_button,
 					Fl_Box *inactive_close_button,
-					std::string filename);
+					std::string filename,
+					bool user);
 //string
 std::string choose_directory(std::string whichChoice);
 std::string choose_file();

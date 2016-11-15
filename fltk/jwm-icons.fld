@@ -67,11 +67,11 @@ class IconsUI {open
     code {load();} {}
     Fl_Window icons_window {
       label Icons open
-      xywh {730 299 320 260} type Double color 31 resizable
-      code0 {startup(o,jsm_desktop_xpm);} xclass {jsm-icons} visible
+      xywh {648 54 320 260} type Double color 31 hide resizable
+      code0 {startup(o,jsm_desktop_xpm);} xclass {jsm-icons}
     } {
       Fl_Scroll {} {open
-        xywh {0 0 316 300} color 31
+        xywh {0 0 316 260} color 31
       } {
         Fl_Button {} {
           label Cancel
@@ -99,8 +99,8 @@ ux.showSettings();*/}
 directories_button->value(0);
 directories_button->value(0);
 edit_button->hide();
-populateIconThemes(iconsBrowser);}
-          xywh {101 230 75 25} box FLAT_BOX value 1 selection_color 63 hide deactivate
+populateIconThemes(iconsBrowser);} selected
+          tooltip {Icon themes to choose from} xywh {102 230 71 25} box FLAT_BOX selection_color 63
         }
         Fl_Light_Button directories_button {
           label Directories
@@ -109,15 +109,14 @@ icon_themes_button->value(0);
 icon_themes_button->value(0);
 edit_button->show();
 populateFLBrowser(iconsBrowser,"IconPath");}
-          xywh {4 230 95 25} box FLAT_BOX value 1 selection_color 63
+          tooltip {The icon directories JWM will search} xywh {4 230 95 25} box FLAT_BOX value 1 selection_color 63
         }
         Fl_Button edit_button {
-          label Edit
           callback {editor_window()->show();
 if(!edit_value(iconsBrowser,dir_edit_input)){
   std::cerr<<"Line was not edited"<<std::endl;
-}} selected
-          tooltip {Write to configuration file} xywh {140 230 40 25} box FLAT_BOX color 48 selection_color 59 labelcolor 32
+}}
+          tooltip {Write to configuration file} image {custom_buttons/gear16.png} xywh {177 230 25 25} box FLAT_BOX color 48 selection_color 59 labelcolor 32
         }
       }
     }
@@ -126,8 +125,8 @@ if(!edit_value(iconsBrowser,dir_edit_input)){
   } {
     Fl_Window edit_window {
       label {Edit Directory} open
-      xywh {181 284 310 70} type Double
-      code0 {startup(o,jsm_desktop_xpm);} visible
+      xywh {181 284 310 70} type Double hide
+      code0 {startup(o,jsm_desktop_xpm);}
     } {
       Fl_Button {} {
         label Cancel

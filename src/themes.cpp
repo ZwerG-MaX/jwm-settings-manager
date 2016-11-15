@@ -154,11 +154,22 @@ void updateTheme( Fl_Browser *o,
 					Fl_Box *inactive_min_button,
 					Fl_Box *inactive_max_button,
 					Fl_Box *inactive_close_button,
-					std::string filename){
+					std::string filename,
+					bool user){
 	if(linuxcommon::test_dir(filename)){
 		o->clear();
 		populateANYThemes(o,filename,true);
 		return;
+	}
+	const char* notNULL=o->text(o->value());
+	if(notNULL!=NULL){
+		std::string tempitem=notNULL;
+		if(tempitem.compare("..")==0){
+			//
+			o->clear();
+			if(user){populateUserThemes(o);}
+			else{populateThemes(o);}
+		}
 	}
     if(!load(filename)){return;}
 //menu buttons
@@ -238,8 +249,8 @@ void updateTheme( Fl_Browser *o,
     tray->redraw();
 
     //panel Button
-    unsigned int panelButtonColorText=0;
-    unsigned int panelButtonColor=0;
+    unsigned int panelButtonColorText=panelColorText;
+    unsigned int panelButtonColor=panelColor;
     //New version
     if(themeNewStyle(filename)<1){
         panelButtonColor = flCOLOR(getElementText("TrayButtonStyle","Background"));
@@ -253,9 +264,10 @@ void updateTheme( Fl_Browser *o,
     button->color(panelButtonColor);
     button->labelcolor(panelButtonColorText);
     button_icon->color(panelButtonColor);
-    button->redraw();
     std::string icon_file = getPanelButtonIcon();
     makeWidgetIcon(icon_file,button_icon,30);
+    button->redraw();
+    button_icon->redraw();
 }
 //String////////////////////////////////////////////////////////////////
 std::string choose_directory(std::string whichChoice){

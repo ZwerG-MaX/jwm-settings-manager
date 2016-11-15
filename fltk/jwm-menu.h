@@ -155,12 +155,9 @@ private:
 public:
   Fl_Input *old_include_input;
   Fl_Input *include_input_menu;
-  Fl_Double_Window* make_window();
+  Fl_Double_Window* make_window(std::string INPUTmenu);
   Fl_Double_Window *menu_window;
-  Fl_Browser *root_menu;
 private:
-  inline void cb_root_menu_i(Fl_Browser*, void*);
-  static void cb_root_menu(Fl_Browser*, void*);
   inline void cb__i(Fl_Button*, void*);
   static void cb_(Fl_Button*, void*);
   inline void cb_1_i(Fl_Button*, void*);
@@ -189,6 +186,11 @@ private:
   inline void cb_save_button_i(Fl_Button*, void*);
   static void cb_save_button(Fl_Button*, void*);
 public:
+  Fl_Browser *root_menu;
+private:
+  inline void cb_root_menu_i(Fl_Browser*, void*);
+  static void cb_root_menu(Fl_Browser*, void*);
+public:
   Fl_Double_Window* nada_window();
   Fl_Double_Window *nada_win;
 private:
@@ -212,5 +214,6 @@ public:
   void remove_an_item();
   void remove_a_menu();
   int save_cb();
+  void select_sent_in(std::string thatMenu);
 };
 #endif

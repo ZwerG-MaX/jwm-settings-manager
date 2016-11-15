@@ -35,7 +35,11 @@ void AutostartUI::cb_Cancel(Fl_Button* o, void* v) {
 
 void AutostartUI::cb_save_button_i(Fl_Button*, void*) {
   const char* proggie = program_name->value();
-if(proggie!=NULL){add_program_to_autostart(autoStartBrowser,proggie);};
+if(proggie!=NULL){
+std::string val=proggie;
+  if(val.compare("")!=0){add_program_to_autostart(autoStartBrowser,proggie);}
+}
+quit();
 }
 void AutostartUI::cb_save_button(Fl_Button* o, void* v) {
   ((AutostartUI*)(o->parent()->parent()->user_data()))->cb_save_button_i(o,v);
@@ -43,37 +47,38 @@ void AutostartUI::cb_save_button(Fl_Button* o, void* v) {
 
 void AutostartUI::cb_add_item_i(Fl_Button*, void*) {
   const char* proggie = program_name->value();
+std::string pro;
 if(proggie==NULL){
   debug_out("Choose a program");
-  choose_a_program(program_name);
+  std::string myprog=choose_a_program();
+  debug_out("Program chosen="+myprog);
+  if(myprog.compare("")==0)return;
+  program_name->value(myprog.c_str());
+  program_name->redraw();
+  pro=myprog;
 }
-else{
-  const char* val="JWM";
-  if(tabbies->value() == xdg_tab)val="XDG";
-  if(val==NULL){
-    std::cerr<<"No tab is correctly selected"<<std::endl;
-    return;
+else{pro=proggie;}
+
+if(pro.compare("")==0){
+  pro=choose_a_program();
+  debug_out("Program chosen="+pro);
+  if(pro.compare("")==0)return;
+  program_name->value(pro.c_str());
+  program_name->redraw();
+}
+if(tabbies->value() == jwm_tab){
+    debug_out("Adding:"+pro+":");
+    add_program_to_autostart(autoStartBrowser,pro);
+}
+else if (tabbies->value()==xdg_tab){
+  std::string desktopeditor=linuxcommon::term_out("which desktop-file-editor");
+  if(desktopeditor.compare("")!=0){
+    desktopeditor+=" ";
+    desktopeditor+=xdgbrowser->text(xdgbrowser->value());
+    int sys=system(desktopeditor.c_str());
+    if(sys!=0){debug_out(desktopeditor+" did not work");}
   }
-  std::string VAL=val;
-  debug_out("Configuration for: "+VAL);
-  if(VAL.compare("JWM")==0){
-    std::string pro=proggie;
-    if (pro.compare("")==0){choose_a_program(program_name);}
-    else{
-     debug_out("Adding:"+pro+":");
-      add_program_to_autostart(autoStartBrowser,proggie);
-    }
-  }
-  else{
-    std::string desktopeditor=linuxcommon::term_out("which desktop-file-editor");
-    if(desktopeditor.compare("")!=0){
-      desktopeditor+=" ";
-      desktopeditor+=xdgbrowser->text(xdgbrowser->value());
-      int sys=system(desktopeditor.c_str());
-      if(sys!=0){debug_out(desktopeditor+" did not work");}
-    }
-    else{debug_out("Desktop File editor was not found!");}
-  }
+  else{debug_out("Desktop File editor was not found!");}
 }
 program_name->value("");
 program_name->redraw();
@@ -83,14 +88,8 @@ void AutostartUI::cb_add_item(Fl_Button* o, void* v) {
 }
 
 void AutostartUI::cb_remove_item_i(Fl_Button*, void*) {
-  const char* val=browser_name->value();
-if(val==NULL){
-  std::cerr<<"No tab is correctly selected"<<std::endl;
-  return;
-}
-std::string VAL=val;
-if(VAL.compare("JWM")==0){remove_program_from_autostart(autoStartBrowser);}
-else{remove_program_from_xdg_autostart(xdgbrowser);}
+  if(tabbies->value()==jwm_tab){remove_program_from_autostart(autoStartBrowser);}
+else if (tabbies->value()==xdg_tab){remove_program_from_xdg_autostart(xdgbrowser);}
 program_name->value("");
 program_name->redraw();
 }
@@ -104,39 +103,84 @@ static const unsigned char idata_minus[] =
 0,0,0};
 static Fl_Bitmap image_minus(idata_minus, 16, 16);
 
-void AutostartUI::cb_jwm_tab_i(Fl_Group*, void*) {
-  browser_name->value("JWM");
-}
-void AutostartUI::cb_jwm_tab(Fl_Group* o, void* v) {
-  ((AutostartUI*)(o->parent()->parent()->parent()->user_data()))->cb_jwm_tab_i(o,v);
-}
-
-void AutostartUI::cb_xdg_tab_i(Fl_Group*, void*) {
-  //browser_name->value("XDG");
-}
-void AutostartUI::cb_xdg_tab(Fl_Group* o, void* v) {
-  ((AutostartUI*)(o->parent()->parent()->parent()->user_data()))->cb_xdg_tab_i(o,v);
-}
-
 void AutostartUI::cb_xdgbrowser_i(Fl_Browser* o, void*) {
   const char* chosen =o->text(o->value());
 if(chosen!=NULL){
-  program_name->value(chosen);
-  program_name->redraw();
+  //program_name->value(chosen);
+  //program_name->redraw();
 };
 }
 void AutostartUI::cb_xdgbrowser(Fl_Browser* o, void* v) {
   ((AutostartUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_xdgbrowser_i(o,v);
 }
 
+void AutostartUI::cb_config_item_i(Fl_Button*, void*) {
+  if(tabbies->value()==jwm_tab){
+debug_out("configure JWM line");
+  remove_program_from_autostart(autoStartBrowser);
+  program_name->value(autoStartBrowser->text(autoStartBrowser->value()));
+  program_name->redraw();
+}
+else if (tabbies->value()==xdg_tab){
+  int retval=desktopFileEdit(xdgbrowser);
+  if(retval!=0){debug_out("FAILED to edit the desktop file");}
+};
+}
+void AutostartUI::cb_config_item(Fl_Button* o, void* v) {
+  ((AutostartUI*)(o->parent()->parent()->user_data()))->cb_config_item_i(o,v);
+}
+
+#include <FL/Fl_Image.H>
+static const unsigned char idata_gear16[] =
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,148,0,255,0,252,0,252,0,255,0,146,0,
+2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,0,48,0,3,0,0,0,2,0,149,
+0,255,0,255,0,255,0,255,0,147,0,2,0,0,0,2,0,24,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,20,0,151,0,218,0,79,0,0,0,2,0,149,0,255,0,255,0,255,0,255,0,147,0,1,0,0,0,
+69,0,193,0,96,0,2,0,0,0,0,0,0,0,0,0,0,0,22,0,156,0,251,0,255,0,221,0,75,0,22,0,
+169,0,255,0,255,0,255,0,255,0,167,0,22,0,73,0,217,0,255,0,231,0,89,0,2,0,0,0,0,
+0,0,0,24,0,162,0,252,0,255,0,255,0,255,0,224,0,199,0,245,0,255,0,255,0,255,0,
+255,0,245,0,200,0,225,0,255,0,255,0,255,0,228,0,85,0,2,0,0,0,0,0,46,0,212,0,255,
+0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,
+0,255,0,255,0,255,0,255,0,196,0,25,0,0,0,0,0,0,0,71,0,219,0,255,0,255,0,255,0,
+255,0,255,0,246,0,209,0,172,0,172,0,209,0,246,0,255,0,255,0,255,0,255,0,255,0,
+223,0,83,0,3,0,0,0,0,0,0,0,0,0,76,0,227,0,255,0,255,0,255,0,210,0,95,0,25,0,9,0,
+10,0,25,0,95,0,210,0,255,0,255,0,255,0,225,0,77,0,1,0,0,0,0,0,2,0,2,0,0,0,23,0,
+203,0,255,0,255,0,210,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,210,0,255,0,255,0,202,
+0,23,0,0,0,2,0,2,0,147,0,149,0,148,0,169,0,246,0,255,0,246,0,94,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,94,0,246,0,255,0,246,0,169,0,148,0,149,0,147,0,254,0,255,
+0,255,0,255,0,255,0,255,0,207,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,207,
+0,255,0,255,0,255,0,255,0,255,0,254,0,252,0,255,0,255,0,255,0,255,0,255,0,170,
+0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,170,0,255,0,255,0,255,0,255,0,255,0,
+252,0,252,0,255,0,255,0,255,0,255,0,255,0,170,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,9,0,170,0,255,0,255,0,255,0,255,0,255,0,252,0,254,0,255,0,255,0,255,0,255,
+0,255,0,207,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,207,0,255,0,255,0,255,
+0,255,0,255,0,254,0,144,0,146,0,144,0,166,0,245,0,255,0,246,0,94,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,94,0,246,0,255,0,246,0,167,0,144,0,146,0,144,0,1,0,1,0,
+0,0,36,0,220,0,255,0,255,0,210,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,210,0,255,
+0,255,0,193,0,20,0,0,0,1,0,1,0,0,0,0,0,19,0,148,0,249,0,255,0,255,0,255,0,210,
+0,95,0,25,0,9,0,10,0,25,0,95,0,210,0,255,0,255,0,255,0,187,0,26,0,0,0,0,0,0,0,
+0,0,24,0,156,0,250,0,255,0,255,0,255,0,255,0,255,0,246,0,209,0,172,0,172,0,
+209,0,246,0,255,0,255,0,255,0,255,0,253,0,162,0,23,0,0,0,0,0,0,0,96,0,246,0,255,
+0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,
+0,255,0,255,0,255,0,253,0,142,0,6,0,0,0,0,0,22,0,158,0,252,0,255,0,255,0,250,
+0,183,0,191,0,246,0,255,0,255,0,255,0,255,0,244,0,218,0,247,0,255,0,255,0,255,
+0,229,0,90,0,2,0,0,0,0,0,0,0,23,0,163,0,253,0,251,0,156,0,22,0,20,0,169,0,255,
+0,255,0,255,0,255,0,166,0,33,0,142,0,249,0,255,0,225,0,85,0,2,0,0,0,0,0,0,0,0,
+0,0,0,26,0,164,0,149,0,20,0,0,0,2,0,149,0,255,0,255,0,255,0,255,0,147,0,0,0,
+16,0,149,0,216,0,80,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,0,13,0,0,0,0,0,2,0,
+149,0,255,0,255,0,255,0,255,0,147,0,2,0,0,0,20,0,46,0,2,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,148,0,255,0,252,0,252,0,255,0,146,0,2,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0};
+static Fl_RGB_Image image_gear16(idata_gear16, 24, 24, 2, 0);
+
 Fl_Double_Window* AutostartUI::make_window() {
   load();
-  { Fl_Double_Window* o = autostart_window = new Fl_Double_Window(335, 270, gettext("Autostart Programs"));
-    autostart_window->color((Fl_Color)31);
+  { Fl_Double_Window* o = autostart_window = new Fl_Double_Window(335, 275, gettext("Autostart Programs"));
+    autostart_window->color(FL_DARK1);
     autostart_window->user_data((void*)(this));
     { Fl_Scroll* o = new Fl_Scroll(0, 0, 335, 270);
       o->color((Fl_Color)31);
-      { program_name = new Fl_Input(85, 205, 245, 30);
+      { program_name = new Fl_Input(5, 205, 325, 30);
         program_name->tooltip(gettext("You can add extra arguments here"));
         program_name->box(FL_FLAT_BOX);
         program_name->selection_color(FL_DARK1);
@@ -158,14 +202,14 @@ Fl_Double_Window* AutostartUI::make_window() {
         save_button->labelcolor((Fl_Color)55);
         save_button->callback((Fl_Callback*)cb_save_button);
       } // Fl_Button* save_button
-      { add_item = new Fl_Button(5, 205, 30, 30, gettext("@+"));
+      { add_item = new Fl_Button(5, 240, 30, 30, gettext("@+"));
         add_item->tooltip(gettext("Add OR chose a program"));
         add_item->box(FL_FLAT_BOX);
         add_item->color((Fl_Color)23);
         add_item->selection_color((Fl_Color)38);
         add_item->callback((Fl_Callback*)cb_add_item);
       } // Fl_Button* add_item
-      { remove_item = new Fl_Button(45, 205, 30, 30);
+      { remove_item = new Fl_Button(45, 240, 30, 30);
         remove_item->box(FL_FLAT_BOX);
         remove_item->color((Fl_Color)23);
         remove_item->selection_color((Fl_Color)38);
@@ -174,8 +218,9 @@ Fl_Double_Window* AutostartUI::make_window() {
       } // Fl_Button* remove_item
       { tabbies = new Fl_Tabs(0, 0, 335, 200);
         tabbies->box(FL_FLAT_BOX);
+        tabbies->color(FL_DARK1);
         { jwm_tab = new Fl_Group(0, 35, 335, 165, gettext("JWM"));
-          jwm_tab->callback((Fl_Callback*)cb_jwm_tab);
+          jwm_tab->selection_color(FL_DARK2);
           { Fl_Browser* o = autoStartBrowser = new Fl_Browser(10, 45, 315, 145);
             autoStartBrowser->type(2);
             autoStartBrowser->box(FL_FLAT_BOX);
@@ -185,9 +230,8 @@ Fl_Double_Window* AutostartUI::make_window() {
           jwm_tab->end();
         } // Fl_Group* jwm_tab
         { xdg_tab = new Fl_Group(0, 35, 335, 165, gettext("XDG"));
-          xdg_tab->callback((Fl_Callback*)cb_xdg_tab);
+          xdg_tab->selection_color(FL_DARK2);
           xdg_tab->hide();
-          xdg_tab->deactivate();
           { Fl_Browser* o = xdgbrowser = new Fl_Browser(10, 45, 315, 145);
             xdgbrowser->type(2);
             xdgbrowser->box(FL_FLAT_BOX);
@@ -199,13 +243,15 @@ Fl_Double_Window* AutostartUI::make_window() {
         } // Fl_Group* xdg_tab
         tabbies->end();
       } // Fl_Tabs* tabbies
-      { browser_name = new Fl_Input(95, 5, 220, 25);
-        browser_name->box(FL_FLAT_BOX);
-        browser_name->selection_color(FL_DARK1);
-        browser_name->align(Fl_Align(FL_ALIGN_TOP));
-        browser_name->when(FL_WHEN_ENTER_KEY);
-        browser_name->hide();
-      } // Fl_Input* browser_name
+      { config_item = new Fl_Button(90, 240, 30, 30);
+        config_item->tooltip(gettext("If configuring JWM autostart, please re-add it once you have finished editing\
+ it"));
+        config_item->box(FL_FLAT_BOX);
+        config_item->color((Fl_Color)23);
+        config_item->selection_color((Fl_Color)38);
+        config_item->image(image_gear16);
+        config_item->callback((Fl_Callback*)cb_config_item);
+      } // Fl_Button* config_item
       o->end();
     } // Fl_Scroll* o
     startup(o,jsm_autostart_xpm);

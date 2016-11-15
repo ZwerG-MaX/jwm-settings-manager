@@ -319,19 +319,6 @@ void MenuUI::cb_OK4(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->user_data()))->cb_OK4_i(o,v);
 }
 
-void MenuUI::cb_root_menu_i(Fl_Browser* o, void*) {
-  int line = o->value();
-const char* menu = o->text(line);
-if(menu != NULL){
-  std::string MENU=menu;
-  choose_menu(MENU);
-}
-else{std::cerr<<"Problem getting this menu"<<std::endl;};
-}
-void MenuUI::cb_root_menu(Fl_Browser* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_root_menu_i(o,v);
-}
-
 void MenuUI::cb__i(Fl_Button*, void*) {
   add_a_menu()->show();
 }
@@ -383,7 +370,11 @@ void MenuUI::cb_menuElementText(Fl_Browser* o, void* v) {
 }
 
 void MenuUI::cb_4_i(Fl_Button*, void*) {
-  edit_an_item();
+  if(checkFlBrowserItem(menuElementText)){edit_an_item();}
+else{
+  if(checkFlBrowserItem(menuElement)){edit_a_menu();}
+  else if(checkFlBrowserItem(root_menu)){submenu_window()->show();}
+};
 }
 void MenuUI::cb_4(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->parent()->user_data()))->cb_4_i(o,v);
@@ -402,6 +393,19 @@ void MenuUI::cb_save_button_i(Fl_Button*, void*) {
 }
 void MenuUI::cb_save_button(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->parent()->user_data()))->cb_save_button_i(o,v);
+}
+
+void MenuUI::cb_root_menu_i(Fl_Browser* o, void*) {
+  int line = o->value();
+const char* menu = o->text(line);
+if(menu != NULL){
+  std::string MENU=menu;
+  choose_menu(MENU);
+}
+else{std::cerr<<"Problem getting this menu"<<std::endl;};
+}
+void MenuUI::cb_root_menu(Fl_Browser* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_root_menu_i(o,v);
 }
 
 void MenuUI::cb_nada_win_i(Fl_Double_Window* o, void*) {
@@ -631,29 +635,22 @@ Fl_Double_Window* MenuUI::configure_include() {
   return include_win;
 }
 
-Fl_Double_Window* MenuUI::make_window() {
+Fl_Double_Window* MenuUI::make_window(std::string INPUTmenu) {
   load();
-  { Fl_Double_Window* o = menu_window = new Fl_Double_Window(435, 150, gettext("Menu proerties"));
+  { Fl_Double_Window* o = menu_window = new Fl_Double_Window(435, 150, gettext("Menu properties"));
     menu_window->color((Fl_Color)31);
     menu_window->user_data((void*)(this));
     { Fl_Scroll* o = new Fl_Scroll(0, -330, 1015, 580);
       o->color((Fl_Color)31);
-      { Fl_Browser* o = root_menu = new Fl_Browser(5, 5, 65, 105, gettext(" "));
-        root_menu->type(2);
-        root_menu->box(FL_FLAT_BOX);
-        root_menu->selection_color((Fl_Color)80);
-        root_menu->callback((Fl_Callback*)cb_root_menu);
-        getMenus(o);
-      } // Fl_Browser* root_menu
       { Fl_Button* o = new Fl_Button(5, 115, 30, 30, gettext("@+"));
-        o->tooltip(gettext("Add a menu item"));
+        o->tooltip(gettext("Add a menu"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->selection_color(FL_DARK1);
         o->callback((Fl_Callback*)cb_);
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(40, 115, 30, 30);
-        o->tooltip(gettext("remove a menu item"));
+        o->tooltip(gettext("remove a menu"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->image(image_minus);
@@ -661,6 +658,8 @@ Fl_Double_Window* MenuUI::make_window() {
         o->align(Fl_Align(256));
       } // Fl_Button* o
       { menuElement = new Fl_Browser(80, 5, 90, 105);
+        menuElement->tooltip(gettext("Options: Menu, Dynamic, Include, Program, Separator, Desktops, SendTo, Stick,\
+ Maximize, Minimize, Shade, Move, Resize, Kill, Close, Restart, Exit"));
         menuElement->type(2);
         menuElement->box(FL_FLAT_BOX);
         menuElement->selection_color((Fl_Color)80);
@@ -682,6 +681,7 @@ Fl_Double_Window* MenuUI::make_window() {
         o->align(Fl_Align(256));
       } // Fl_Button* o
       { menuElementText = new Fl_Browser(175, 5, 255, 105);
+        menuElementText->tooltip(gettext("These options correspond to specific Root Menu items"));
         menuElementText->type(2);
         menuElementText->box(FL_FLAT_BOX);
         menuElementText->selection_color((Fl_Color)80);
@@ -690,7 +690,7 @@ Fl_Double_Window* MenuUI::make_window() {
         menuElementText->align(Fl_Align(FL_ALIGN_TOP));
       } // Fl_Browser* menuElementText
       { Fl_Button* o = new Fl_Button(175, 115, 30, 30);
-        o->tooltip(gettext("Configure the item"));
+        o->tooltip(gettext("Configure"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->image(image_gear16);
@@ -713,6 +713,17 @@ Fl_Double_Window* MenuUI::make_window() {
         save_button->labelcolor((Fl_Color)55);
         save_button->callback((Fl_Callback*)cb_save_button);
       } // Fl_Button* save_button
+      { Fl_Browser* o = root_menu = new Fl_Browser(5, 5, 65, 105, gettext(" "));
+        root_menu->tooltip(gettext("The range of possible values is 0 to 9 inclusive as  well\n                  \
+   as  a to z inclusive, providing for up to 36 menus.  Note\n                \
+     that only the numeric values map to mouse buttons."));
+        root_menu->type(2);
+        root_menu->box(FL_FLAT_BOX);
+        root_menu->selection_color((Fl_Color)80);
+        root_menu->callback((Fl_Callback*)cb_root_menu);
+        getMenus(o);
+        if(INPUTmenu.compare("")!=0){select_sent_in(INPUTmenu);}
+      } // Fl_Browser* root_menu
       o->end();
     } // Fl_Scroll* o
     startup(o);
@@ -971,7 +982,10 @@ void MenuUI::edit_an_item() {
   else{
     nada_window()->show();
   }
-  if(ICON.compare("")!=0){item_prog_icon->value(ICON.c_str());}
+  if(ICON.compare("")!=0){
+    item_prog_icon->value(ICON.c_str());
+    makeWidgetIcon(ICON,item_icon_button,48);
+  }
   if(LABEL.compare("")!=0){item_prog_label->value(LABEL.c_str());}
 }
 
@@ -1017,4 +1031,16 @@ int MenuUI::save_cb() {
   if(result ==NULL){return 42;}
   std::cout<<"everything exists??"<<std::endl;
   return addMenuItem(menuElement, menuElementText, add_label, add_icon, add_input, add_button, result);
+}
+
+void MenuUI::select_sent_in(std::string thatMenu) {
+  if(thatMenu.compare("")==0)return;
+  choose_menu(thatMenu);
+  int tot=root_menu->size();
+  if(tot>0){
+    for (int i=0;i!=tot;i++){
+      const char* txt=root_menu->text(i);
+      if((txt!=NULL)&&(thatMenu.compare(txt)==0)){root_menu->select(i);}
+    }
+  }
 }

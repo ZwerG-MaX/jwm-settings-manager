@@ -71,10 +71,10 @@ class FontUI {open
     code {load();} {}
     Fl_Window font_window {
       label {Font Settings} open
-      xywh {339 85 280 330} type Double color 31 resizable
-      code0 {startup(o,jsm_fonts_xpm);} xclass {jsm-fonts} visible
+      xywh {339 85 280 330} type Double color 47 hide resizable
+      code0 {startup(o,jsm_fonts_xpm);} xclass {jsm-fonts}
     } {
-      Fl_Scroll {} {open selected
+      Fl_Scroll {} {open
         xywh {0 -5 280 335} color 31
       } {
         Fl_Box window_box {
@@ -195,9 +195,9 @@ font_window->hide();}
   Function {font_chooser_window()} {open
   } {
     Fl_Window font_choosing {
-      label {Choose a Font} open
-      xywh {688 87 315 410} type Double
-      code0 {startup(o,jsm_fonts_xpm);} xclass {jsm-fonts} visible
+      label {Choose a Font} open selected
+      xywh {688 87 315 410} type Double hide
+      code0 {startup(o,jsm_fonts_xpm);} xclass {jsm-fonts}
     } {
       Fl_Button {} {
         label Cancel

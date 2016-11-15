@@ -57,11 +57,11 @@ class WindowUI {open
   } {
     Fl_Window add_opt_window {
       label {Add an Option} open
-      xywh {730 133 435 435} type Double hide
-      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows}
+      xywh {730 133 435 390} type Double
+      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows} visible
     } {
-      Fl_Scroll {} {open
-        xywh {0 0 430 430}
+      Fl_Scroll {} {open selected
+        xywh {0 0 435 395}
       } {
         Fl_Browser options_available {
           callback {int line = options_available->value();
@@ -69,77 +69,77 @@ options_desc->select(line);
 const char* value = options_available->text(line);
 if(value!=NULL){
   check_opts(value,desktop_num,layer_value,opacity_value,icon_value,layer_chooser);
-}}
-          xywh {10 10 115 375} type Hold box FLAT_BOX selection_color 80
+}} selected
+          xywh {10 10 115 340} type Hold box FLAT_BOX selection_color 80
           code0 {populateOptions(o);}
         }
         Fl_Button {} {
           label {@+}
-          callback {add_option_to_group(options_available, icon_value, desktop_num, layer_value, opacity_value, add_tracker, options_desc);}
-          xywh {10 390 30 30} box FLAT_BOX color 23
+          callback {add_option_to_group(options_available, icon_value, desktop_num, layer_value, opacity_value, add_tracker, options_desc);} selected
+          xywh {10 355 30 30} box FLAT_BOX color 23
         }
-        Fl_Browser options_desc {
-          xywh {135 10 285 220} type Hold box FLAT_BOX selection_color 80 labeltype NO_LABEL align 1
+        Fl_Browser options_desc {selected
+          xywh {135 10 290 195} type Hold box FLAT_BOX selection_color 80 labeltype NO_LABEL align 1
           code0 {populateDesc(o);}
         }
         Fl_Input icon_value {
-          label Icon
-          xywh {135 235 100 25} box FLAT_BOX align 8 deactivate
+          label Icon selected
+          xywh {135 210 100 25} box FLAT_BOX align 8 deactivate
         }
         Fl_Slider opacity_value {
-          label Opacity
-          xywh {135 325 100 25} type Horizontal box GTK_DOWN_BOX color 41 align 8 step 0.2 value 1 deactivate
+          label Opacity selected
+          xywh {135 300 100 25} type Horizontal box GTK_DOWN_BOX color 41 align 8 step 0.2 value 1 deactivate
         }
         Fl_Value_Input desktop_num {
-          label Desktop
-          xywh {135 355 35 25} box FLAT_BOX align 8 maximum 10000 deactivate
+          label Desktop selected
+          xywh {135 330 35 25} box FLAT_BOX align 8 maximum 10000 deactivate
         }
         Fl_Browser add_tracker {
-          label Adding
-          xywh {335 250 85 125} box FLAT_BOX align 1
+          label Adding selected
+          xywh {330 225 95 125} box FLAT_BOX color 47 selection_color 80 align 1
         }
         Fl_Button {} {
           label Cancel
-          callback {add_opt_window->hide();}
-          xywh {300 400 55 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+          callback {add_opt_window->hide();} selected
+          xywh {325 360 55 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button {} {
           label OK
           callback {add_option_to_group(options_available, icon_value, desktop_num, layer_value, opacity_value, add_tracker, options_desc);saveChanges();
 add_opt_window->hide();
-populate_groups(groups_browser,opt_browser,class_browser,name_browser);}
-          tooltip {Write to configuration file} xywh {375 400 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+populate_groups(groups_browser,opt_browser,class_browser,name_browser);} selected
+          tooltip {Write to configuration file} xywh {385 360 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
         }
         Fl_Menu_Button layer_chooser {
-          label Layer open
-          xywh {135 265 100 25} box FLAT_BOX color 23 deactivate
+          label Layer open selected
+          xywh {135 240 100 25} box FLAT_BOX color 23 deactivate
         } {
           MenuItem {} {
             label below
-            callback {layer_value->value("below");}
+            callback {layer_value->value("below");} selected
             xywh {0 0 100 20}
           }
           MenuItem {} {
             label normal
-            callback {layer_value->value("normal");}
+            callback {layer_value->value("normal");} selected
             xywh {10 10 100 20}
           }
           MenuItem {} {
             label above
-            callback {layer_value->value("above");}
+            callback {layer_value->value("above");} selected
             xywh {20 20 100 20}
           }
         }
-        Fl_Output layer_value {
-          xywh {135 295 100 25} box FLAT_BOX deactivate
+        Fl_Output layer_value {selected
+          xywh {135 270 100 25} box FLAT_BOX deactivate
         }
         Fl_Button {} {
           callback {std::string ICON=choose_an_icon();
 if(ICON.compare("")!=0){
   icon_value->value(ICON.c_str());
   makeWidgetIcon(ICON,o,48);
-}}
-          xywh {275 235 50 50} box FLAT_BOX color 23
+}} selected
+          xywh {270 210 50 50} box FLAT_BOX color 23
         }
       }
     }
@@ -194,27 +194,26 @@ if(input!=NULL){
       }
     }
   }
-  Function {make_window()} {open
-  } {
+  Function {make_window()} {} {
     code {if(!load()){debug_out("DIDN'T LOAD in jwm-window");}
 else{debug_out("LOADED doc in jwm-window");}} {}
     Fl_Window window_window {
       label {Window Settings} open
-      xywh {75 163 510 315} type Double color 31 resizable
-      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows} visible
+      xywh {711 146 510 315} type Double color 47 hide resizable
+      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows}
     } {
       Fl_Scroll {} {open
         xywh {0 0 510 315} color 31
       } {
         Fl_Tabs {} {open
-          xywh {0 0 510 280} box FLAT_BOX selection_color 51
+          xywh {0 0 510 280} box FLAT_BOX color 45 selection_color 51
         } {
           Fl_Group {} {
-            label Appearance open selected
-            xywh {0 30 510 250}
+            label Appearance open
+            xywh {0 30 510 250} selection_color 45
           } {
             Fl_Box {} {
-              xywh {0 35 255 160} box FLAT_BOX color 51
+              xywh {0 35 255 160} box FLAT_BOX color 47
             }
             Fl_Box {} {
               label {Active Window}
@@ -332,7 +331,7 @@ else{debug_out("LOADED doc in jwm-window");}} {}
             Fl_Button max_a_image {
               callback {choose_button("ButtonMaxActive");
 get_button(o,"ButtonMaxActive",a_title_color1);}
-              tooltip {Choose an image (XBM) for the Maximized button} xywh {255 200 40 40} box FLAT_BOX color 43 align 256
+              tooltip {Choose an image (XBM) for the Maximized button} xywh {255 200 40 40} box FLAT_BOX color 23 align 256
               code0 {get_button(o,"ButtonMaxActive",a_title_color1);}
             }
             Fl_Box {} {
@@ -342,7 +341,7 @@ get_button(o,"ButtonMaxActive",a_title_color1);}
             Fl_Button max_image {
               callback {choose_button("ButtonMax");
 get_button(o,"ButtonMax",a_title_color1);}
-              tooltip {Choose an image (XBM) for the Maximized button} xywh {360 200 40 40} box FLAT_BOX color 43 align 256
+              tooltip {Choose an image (XBM) for the Maximized button} xywh {360 200 40 40} box FLAT_BOX color 23 align 256
               code0 {get_button(o,"ButtonMax",a_title_color1);}
             }
             Fl_Box {} {
@@ -352,7 +351,7 @@ get_button(o,"ButtonMax",a_title_color1);}
             Fl_Button min_image {
               callback {choose_button("ButtonMin");
 get_button(o,"ButtonMin",a_title_color1);}
-              tooltip {Choose an image (XBM) for the Maximized button} xywh {145 200 40 40} box FLAT_BOX color 43 align 256
+              tooltip {Choose an image (XBM) for the Maximized button} xywh {145 200 40 40} box FLAT_BOX color 23 align 256
               code0 {get_button(o,"ButtonMin",a_title_color1);}
             }
             Fl_Box {} {
@@ -362,13 +361,13 @@ get_button(o,"ButtonMin",a_title_color1);}
             Fl_Button close_image {
               callback {choose_button("ButtonClose");
 get_button(o,"ButtonClose",a_title_color1);}
-              tooltip {Choose an image (XBM) for the Maximized button} xywh {450 200 40 40} box FLAT_BOX color 43 align 256
+              tooltip {Choose an image (XBM) for the Maximized button} xywh {450 200 40 40} box FLAT_BOX color 23 align 256
               code0 {get_button(o,"ButtonClose",a_title_color1);}
             }
           }
           Fl_Group {} {
             label Settings open
-            xywh {10 35 485 245} hide
+            xywh {10 35 485 245} selection_color 45 hide
           } {
             Fl_Slider t_slider {
               label {Window Title Bar Size}
@@ -486,7 +485,7 @@ setSnap(d);}
           }
           Fl_Group {} {
             label Groups open
-            xywh {0 30 510 230} hide
+            xywh {0 30 510 230} selection_color 45 hide
           } {
             Fl_Browser groups_browser {
               label {Current Groups}
@@ -557,7 +556,7 @@ populate_groups(groups_browser,opt_browser,class_browser,name_browser);}
           }
           Fl_Group {} {
             label Advanced
-            xywh {5 45 460 205} hide
+            xywh {5 45 460 205} selection_color 45 hide
           } {
             Fl_Slider a_b_slider {
               label {Window Border Size}

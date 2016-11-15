@@ -1,5 +1,5 @@
 /* XPM */
-static const char*  jsm_panel_xpm[] = {
+static const char* jsm_panel_xpm[] = {
 "48 48 82 1",
 " 	c None",
 ".	c #2E344C",

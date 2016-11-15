@@ -18,12 +18,12 @@
 #include <FL/Fl_Text_Buffer.H>
 #include "../include/common.hpp"
 #include <FL/Fl_Double_Window.H>
+#include <FL/Fl_Scroll.H>
 #include <FL/Fl_Tabs.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Button.H>
-#include <FL/Fl_Scroll.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Box.H>
 
@@ -209,6 +209,8 @@ private:
   static void cb_CLEAR(Fl_Button*, void*);
   inline void cb_PREVIEW_i(Fl_Button*, void*);
   static void cb_PREVIEW(Fl_Button*, void*);
+  inline void cb_File_i(Fl_Button*, void*);
+  static void cb_File(Fl_Button*, void*);
 public:
   Fl_Double_Window* preview_window(std::string message);
   Fl_Double_Window *preview_win;

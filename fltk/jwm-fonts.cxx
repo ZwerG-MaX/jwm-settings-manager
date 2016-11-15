@@ -218,7 +218,7 @@ void FontUI::cb_font_size_slider(Fl_Slider* o, void* v) {
 Fl_Double_Window* FontUI::make_window() {
   load();
   { Fl_Double_Window* o = font_window = new Fl_Double_Window(280, 330, gettext("Font Settings"));
-    font_window->color((Fl_Color)31);
+    font_window->color(FL_DARK1);
     font_window->user_data((void*)(this));
     { Fl_Scroll* o = new Fl_Scroll(0, -5, 280, 335);
       o->color((Fl_Color)31);

@@ -237,7 +237,8 @@ if(icon.compare("")!=0){
       }
     }
   }
-  Function {conf_item_window()} {} {
+  Function {conf_item_window()} {open
+  } {
     Fl_Window config_item_win {
       label {Configure the Item} open
       xywh {706 308 280 125} type Double hide
@@ -283,11 +284,12 @@ if(icon.compare("")!=0){
       }
     }
   }
-  Function {conf_window()} {} {
+  Function {conf_window()} {open
+  } {
     Fl_Window config_flwin {
       label {Configure the Item} open
-      xywh {738 156 275 130} type Double hide
-      code0 {startup(o);} xclass {jsm-panel}
+      xywh {738 156 275 130} type Double
+      code0 {startup(o);} xclass {jsm-panel} visible
     } {
       Fl_Input prog_icon {
         label Icon
@@ -329,7 +331,8 @@ if(icon.compare("")!=0){
       }
     }
   }
-  Function {configure_include()} {} {
+  Function {configure_include()} {open
+  } {
     Fl_Window include_win {
       label {Edit Include Item} open
       xywh {666 457 390 45} type Double hide
@@ -353,42 +356,30 @@ change_include();}
       }
     }
   }
-  Function {make_window()} {open
+  Function {make_window(std::string INPUTmenu)} {open
   } {
     code {load();} {}
     Fl_Window menu_window {
-      label {Menu proerties} open
-      xywh {425 466 435 150} type Double color 31 resizable
+      label {Menu properties} open
+      xywh {197 461 435 150} type Double color 31 resizable
       code0 {startup(o);} xclass {jsm-panel} visible
     } {
       Fl_Scroll {} {open
         xywh {0 -330 1015 580} color 31
       } {
-        Fl_Browser root_menu {
-          label { }
-          callback {int line = o->value();
-const char* menu = o->text(line);
-if(menu != NULL){
-  std::string MENU=menu;
-  choose_menu(MENU);
-}
-else{std::cerr<<"Problem getting this menu"<<std::endl;}}
-          xywh {5 5 65 105} type Hold box FLAT_BOX selection_color 80
-          code1 {getMenus(o);}
-        }
         Fl_Button {} {
           label {@+}
           callback {add_a_menu()->show();}
-          tooltip {Add a menu item} xywh {5 115 30 30} box FLAT_BOX color 23 selection_color 47
+          tooltip {Add a menu} xywh {5 115 30 30} box FLAT_BOX color 23 selection_color 47
         }
         Fl_Button {} {
           callback {remove_a_menu();}
-          tooltip {remove a menu item} image {custom_buttons/minus} xywh {40 115 30 30} box FLAT_BOX color 23 align 256
+          tooltip {remove a menu} image {custom_buttons/minus} xywh {40 115 30 30} box FLAT_BOX color 23 align 256
         }
         Fl_Browser menuElement {
           callback {int linenum = o->value();
 menuElementText->select(linenum);}
-          xywh {80 5 90 105} type Hold box FLAT_BOX selection_color 80
+          tooltip {Options: Menu, Dynamic, Include, Program, Separator, Desktops, SendTo, Stick, Maximize, Minimize, Shade, Move, Resize, Kill, Close, Restart, Exit} xywh {80 5 90 105} type Hold box FLAT_BOX selection_color 80
         }
         Fl_Button {} {
           label {@+}
@@ -402,11 +393,15 @@ menuElementText->select(linenum);}
         Fl_Browser menuElementText {
           callback {int linenum = o->value();
 menuElement->select(linenum);}
-          xywh {175 5 255 105} type Hold box FLAT_BOX selection_color 80 labeltype NO_LABEL align 1
+          tooltip {These options correspond to specific Root Menu items} xywh {175 5 255 105} type Hold box FLAT_BOX selection_color 80 labeltype NO_LABEL align 1
         }
         Fl_Button {} {
-          callback {edit_an_item();} selected
-          tooltip {Configure the item} image {custom_buttons/gear16.png} xywh {175 115 30 30} box FLAT_BOX color 23 labelfont 1 align 128
+          callback {if(checkFlBrowserItem(menuElementText)){edit_an_item();}
+else{
+  if(checkFlBrowserItem(menuElement)){edit_a_menu();}
+  else if(checkFlBrowserItem(root_menu)){submenu_window()->show();}
+}}
+          tooltip Configure image {custom_buttons/gear16.png} xywh {175 115 30 30} box FLAT_BOX color 23 labelfont 1 align 128
         }
         Fl_Button {} {
           label Cancel
@@ -418,6 +413,21 @@ menuElement->select(linenum);}
           callback {saveChanges();
 //showSettings();}
           tooltip {Write to configuration file} xywh {381 120 49 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
+        }
+        Fl_Browser root_menu {
+          label { }
+          callback {int line = o->value();
+const char* menu = o->text(line);
+if(menu != NULL){
+  std::string MENU=menu;
+  choose_menu(MENU);
+}
+else{std::cerr<<"Problem getting this menu"<<std::endl;}}
+          tooltip {The range of possible values is 0 to 9 inclusive as  well
+                     as  a to z inclusive, providing for up to 36 menus.  Note
+                     that only the numeric values map to mouse buttons.} xywh {5 5 65 105} type Hold box FLAT_BOX selection_color 80
+          code1 {getMenus(o);}
+          code2 {if(INPUTmenu.compare("")!=0){select_sent_in(INPUTmenu);}}
         }
       }
     }
@@ -438,8 +448,8 @@ menuElement->select(linenum);}
   Function {submenu_window()} {} {
     Fl_Window {} {
       label Submenu open
-      xywh {790 291 255 200} type Double hide
-      code0 {startup(o);}
+      xywh {790 291 255 200} type Double
+      code0 {startup(o);} visible
     } {
       Fl_Browser submenu_items_browser {
         xywh {5 5 245 160} type Hold box FLAT_BOX
@@ -665,7 +675,10 @@ else if(ITEM.compare(RESTART)==0){
 else{
   nada_window()->show();
 }
-if(ICON.compare("")!=0){item_prog_icon->value(ICON.c_str());}
+if(ICON.compare("")!=0){
+  item_prog_icon->value(ICON.c_str());
+  makeWidgetIcon(ICON,item_icon_button,48);
+}
 if(LABEL.compare("")!=0){item_prog_label->value(LABEL.c_str());}} {}
   }
   Function {program_check()} {open
@@ -711,5 +724,18 @@ const char* result = item_display->value();
 if(result ==NULL){return 42;}
 std::cout<<"everything exists??"<<std::endl;
 return addMenuItem(menuElement, menuElementText, add_label, add_icon, add_input, add_button, result);} {}
+  }
+  Function {select_sent_in(std::string thatMenu)} {open
+  } {
+    code {if(thatMenu.compare("")==0)return;
+choose_menu(thatMenu);
+int tot=root_menu->size();
+if(tot>0){
+  for (int i=0;i!=tot;i++){
+    const char* txt=root_menu->text(i);
+    if((txt!=NULL)&&(thatMenu.compare(txt)==0)){root_menu->select(i);}
+  }
+}} {selected
+    }
   }
 } 

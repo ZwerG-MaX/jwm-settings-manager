@@ -39,7 +39,9 @@ void ThemesUI::cb_ok(Fl_Button* o, void* v) {
 
 void ThemesUI::cb_sys_theme_i(Fl_Browser* o, void*) {
   std::string filename=theme_cb(o, true,current_theme);
-updateTheme(o,button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,amin,amax,aclose,imin,imax,iclose,filename);
+if(usr_theme->value()>0)
+  usr_theme->select(usr_theme->value(),0);
+updateTheme(o,button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,amin,amax,aclose,imin,imax,iclose,filename,false);
 }
 void ThemesUI::cb_sys_theme(Fl_Browser* o, void* v) {
   ((ThemesUI*)(o->parent()->parent()->user_data()))->cb_sys_theme_i(o,v);
@@ -61,7 +63,9 @@ void ThemesUI::cb_cancel_button(Fl_Button* o, void* v) {
 
 void ThemesUI::cb_usr_theme_i(Fl_Browser* o, void*) {
   std::string filename=theme_cb(o, false,current_theme);
-updateTheme(o,button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,amin,amax,aclose,imin,imax,iclose,filename);
+if(sys_theme->value()>0)
+  sys_theme->select(sys_theme->value(),0);
+updateTheme(o,button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,amin,amax,aclose,imin,imax,iclose,filename,true);
 }
 void ThemesUI::cb_usr_theme(Fl_Browser* o, void* v) {
   ((ThemesUI*)(o->parent()->parent()->user_data()))->cb_usr_theme_i(o,v);
@@ -80,7 +84,7 @@ void ThemesUI::cb_overwritten(Fl_Button* o, void* v) {
 
 Fl_Double_Window* ThemesUI::make_window() {
   { Fl_Double_Window* o = themes_window = new Fl_Double_Window(590, 300, gettext("Themes"));
-    themes_window->color((Fl_Color)31);
+    themes_window->color(FL_DARK1);
     themes_window->labelcolor(FL_BACKGROUND2_COLOR);
     themes_window->user_data((void*)(this));
     { Fl_Scroll* o = new Fl_Scroll(0, 0, 585, 295);
@@ -94,6 +98,7 @@ Fl_Double_Window* ThemesUI::make_window() {
         ok->callback((Fl_Callback*)cb_ok);
       } // Fl_Button* ok
       { Fl_Browser* o = sys_theme = new Fl_Browser(15, 20, 130, 105, gettext("Themes"));
+        sys_theme->tooltip(gettext("All the installed system themes"));
         sys_theme->type(2);
         sys_theme->box(FL_FLAT_BOX);
         sys_theme->selection_color(FL_DARK_RED);
@@ -103,40 +108,55 @@ Fl_Double_Window* ThemesUI::make_window() {
       } // Fl_Browser* sys_theme
       { button_icon = new Fl_Box(150, 20, 45, 40);
         button_icon->box(FL_FLAT_BOX);
+        button_icon->color((Fl_Color)23);
       } // Fl_Box* button_icon
       { button = new Fl_Box(195, 20, 75, 40, gettext("Button"));
         button->box(FL_FLAT_BOX);
+        button->color((Fl_Color)23);
       } // Fl_Box* button
       { tray = new Fl_Box(270, 20, 305, 40, gettext("Panel"));
         tray->box(FL_FLAT_BOX);
+        tray->color((Fl_Color)23);
       } // Fl_Box* tray
       { awin2 = new Fl_Box(150, 77, 425, 30);
         awin2->box(FL_FLAT_BOX);
+        awin2->color((Fl_Color)23);
       } // Fl_Box* awin2
       { awin = new Fl_Box(150, 67, 425, 40);
         awin->box(FL_FLAT_BOX);
+        awin->color((Fl_Color)23);
       } // Fl_Box* awin
       { awin_text = new Fl_Box(150, 67, 425, 40, gettext("Window (Active)"));
+        awin_text->color((Fl_Color)23);
       } // Fl_Box* awin_text
       { amin = new Fl_Box(480, 72, 30, 30);
+        amin->color((Fl_Color)23);
       } // Fl_Box* amin
       { amax = new Fl_Box(510, 72, 30, 30);
+        amax->color((Fl_Color)23);
       } // Fl_Box* amax
       { aclose = new Fl_Box(540, 72, 30, 30);
+        aclose->color((Fl_Color)23);
       } // Fl_Box* aclose
       { iwin = new Fl_Box(150, 115, 425, 40);
         iwin->box(FL_FLAT_BOX);
+        iwin->color((Fl_Color)23);
       } // Fl_Box* iwin
       { iwin2 = new Fl_Box(150, 125, 425, 30);
         iwin2->box(FL_FLAT_BOX);
+        iwin2->color((Fl_Color)23);
       } // Fl_Box* iwin2
       { iwin_text = new Fl_Box(150, 115, 425, 40, gettext("Window (Inactive)"));
+        iwin_text->color((Fl_Color)23);
       } // Fl_Box* iwin_text
       { imin = new Fl_Box(480, 120, 30, 30);
+        imin->color((Fl_Color)23);
       } // Fl_Box* imin
       { imax = new Fl_Box(510, 120, 30, 30);
+        imax->color((Fl_Color)23);
       } // Fl_Box* imax
       { iclose = new Fl_Box(540, 120, 30, 30);
+        iclose->color((Fl_Color)23);
       } // Fl_Box* iclose
       { save_button = new Fl_Button(155, 162, 160, 30, gettext("Save Custom Theme"));
         save_button->tooltip(gettext("This will copy your current theme somewhere else"));
@@ -153,6 +173,7 @@ Fl_Double_Window* ThemesUI::make_window() {
         cancel_button->callback((Fl_Callback*)cb_cancel_button);
       } // Fl_Button* cancel_button
       { Fl_Browser* o = usr_theme = new Fl_Browser(15, 145, 130, 140, gettext("User Themes"));
+        usr_theme->tooltip(gettext("This contains all the themes in ~/.themes which MAY NOT be JWM themes"));
         usr_theme->type(2);
         usr_theme->box(FL_FLAT_BOX);
         usr_theme->selection_color(FL_DARK_RED);

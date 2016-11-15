@@ -64,6 +64,7 @@
 //A
 bool addElementAndSub(std::string element, std::string subelelemnt);
 bool addElementWithText(std::string element, std::string text);
+bool addElementWithTextAfter(std::string element, std::string text);
 bool addElementWithAttribute(std::string element, std::string attribute, std::string value);
 bool addElementWithTextAndAttribute(std::string element, std::string attribute, std::string value,std::string text);
 bool addElementWithTextAndAttribute(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text);
@@ -77,7 +78,11 @@ bool addSubNodewithAttributeAndText(pugi::xml_node node,std::string element,std:
 //C
 bool changeCursorTheme(Fl_Browser *o);
 bool checkDE(std::string file);
+bool checkExec(std::string exec);
 bool checkFlBrowserItem(Fl_Browser* o);
+bool checkVector(std::vector<std::string> myVec,std::string item);
+//D
+bool deleteElements(std::string element);
 //G
 bool getIcons(Fl_Browser *o);
 bool getMenuItems(Fl_Browser* menuElement,std::string menu,Fl_Browser* menuElementText);
@@ -88,10 +93,12 @@ bool isElement(std::string element);
 bool isElement(std::string element, std::string subelement);
 bool isElement(std::string element, std::string subelement, std::string SUBsubelement);
 //bool isElement(std::string element, std::string subelement, std::string SUBsubsubelement);
+bool isExec(std::string exec);
 bool isImage(std::string filename);
 bool isMenu(std::string rootNumber);
 bool isRootMenu(std::string rootmenu);
 bool isSVG(std::string filename);
+bool isTrayElement(std::string element);
 //L
 bool load();
 bool load(std::string filename);
@@ -139,6 +146,7 @@ bool setRootMenuHeight(std::string val, int height);
 bool testExec(std::string command); //linuxcommon wrapper
 
 //String////////////////////////////////////////////////////////////////
+std::string checkListofExec(std::vector<std::string> list);
 std::string homePath();
 std::string getAttribute(pugi::xml_node node,std::string attribute);
 std::string getElementText(std::string element);
@@ -148,10 +156,11 @@ std::string getElementText(std::string element, std::string subelement, std::str
 std::string getElementAttribute(std::string element, std::string attribute);
 std::string getElementAttribute(std::string element, std::string subelement, std::string attribute);
 std::string getElementAttribute(std::string element, std::string subelement, std::string SUBsubsubelement, std::string attribute);
+std::string getElementAttributeFromElementWithAttributeAndValue(std::string element, std::string attribOfEle, std::string value, std::string subelement, std::string attribute);
+std::string getElementAttributeFromElementWithAttributeAndValueAndText(std::string element, std::string attribOfEle, std::string value, std::string subelement, std::string attribute,std::string text);
 std::string getElementAttribute(unsigned int whichElement,std::string element, std::string subelement, std::string attribute);
 std::string getElementAttribute(unsigned int whichElement,std::string element, std::string attribute);
 std::string getElementAttribute(unsigned int whichElement,std::string element,unsigned int whichItem, std::string subelement, std::string attribute);
-std::string checkIncludes(std::string element);
 std::string terminal(std::string terminal);//linuxcommon wrapper
 std::string colorToString(const double *rgb);
 std::string joinColors(const double* rgb, const double* rgb2);
@@ -186,10 +195,12 @@ float getElementFloat(std::string element, std::string subelement, std::string S
 std::vector<std::string> AnythingVector(std::string element);
 std::vector<std::string> IconPaths();
 std::vector<std::string> Includes();
+std::vector<std::string> XDGautostart();
 //void//////////////////////////////////////////////////////////////////
 void debug_out(std::string msg);
 void errorOUT(std::string msg);
 void cancel();
+void quit();
 void under_mouse(Fl_Window *o);
 void addCursorsToBrowser(Fl_Browser *o);
 void createElement(std::string element,std::string text);
@@ -209,6 +220,10 @@ void populateOptions(Fl_Browser *o);
 void populateApps(Fl_Browser*o);
 void setRootMenuAttribute(std::string menustring ,std::string attribute,std::string value);
 //pugixml/////////////////////////////////////////////////////////////
+pugi::xml_node checkIncludes(unsigned int whichOne,std::string element);
+pugi::xml_node checkIncludes(std::string element);
+pugi::xml_node checkIncludes(std::string element,std::string subelement);
+pugi::xml_node checkIncludes(std::string element,std::string subelement,std::string SUBsubelement);
 pugi::xml_node addNode(unsigned int whichElement,std::string element, std::string subelement);
 pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned int whichNODE, std::string subelement);
 pugi::xml_node getMenu(std::string text);

@@ -54,499 +54,508 @@ class Desktop {open
   Function {make_window(std::string filePassedIn)} {open
   } {
     Fl_Window {} {
-      label {Desktop File Editor} open
-      xywh {600 216 415 580} type Double color 46
+      label {Desktop File Editor} open selected
+      xywh {217 115 415 570} type Double color 47
       code0 {load(filePassedIn);} xclass {desktop-file-editor} visible
     } {
-      Fl_Tabs {} {open
-        xywh {0 5 415 490} box FLAT_BOX color 29 selection_color 29
+      Fl_Scroll {} {open
+        xywh {0 0 420 563}
       } {
-        Fl_Group {} {
-          label Normal open
-          xywh {0 30 415 455} box FLAT_BOX
+        Fl_Tabs {} {open
+          xywh {5 5 415 490} box FLAT_BOX color 47
         } {
-          Fl_Input name {
-            label Name
-            tooltip {Specific name of the application, for example "Mozilla".} xywh {140 50 255 30} box FLAT_BOX labelfont 1
-          }
-          Fl_Input comment {
-            label Comment
-            tooltip {Tooltip for the entry, for example "View sites on the Internet". The value should not be redundant with the values of Name and GenericName.} xywh {140 86 255 31} box FLAT_BOX
-          }
-          Fl_Input tryexec {
-            label TryExec
-            tooltip {Path to an executable file on disk used to determine if the program is actually installed. If the path is not an absolute path, the file is looked up in the $PATH environment variable. If the file is not present or if it is not executable, the entry may be ignored (not be used in menus, for example).} xywh {140 123 255 30} box FLAT_BOX
-          }
-          Fl_Input exec {
-            label Exec
-            tooltip {Program to execute, possibly with arguments. See the Exec key for details on how this key works. The Exec key is required if DBusActivatable is not set to true. Even if DBusActivatable is true, Exec should be specified for compatibility with implementations that do not understand DBusActivatable.} xywh {140 159 255 30} box FLAT_BOX
-          }
-          Fl_Input icon {
-            label Icon
-            tooltip {Icon to display in file manager, menus, etc. If the name is an absolute path, the given file will be used. If the name is not an absolute path, the algorithm described in the Icon Theme Specification will be used to locate the icon.} xywh {140 196 255 30} box FLAT_BOX
-          }
-          Fl_Input type {
-            tooltip {This specification defines 3 types of desktop entries: Application (type 1), Link (type 2) and Directory (type 3). To allow the addition of new types in the future, implementations should ignore desktop entries with an unknown type} xywh {140 232 255 30} box FLAT_BOX
-          }
-          Fl_Input categories {
-            tooltip {Categories in which the entry should be shown in a menu (for possible values see the Desktop Menu Specification).} xywh {140 269 255 30} box FLAT_BOX
-          }
-          Fl_Input notshowin {
-            tooltip {A list of strings identifying the desktop environments that should display/not display a given desktop entry.
+          Fl_Group {} {
+            label Normal open
+            xywh {5 30 415 455} box FLAT_BOX selection_color 45
+          } {
+            Fl_Input name {
+              label Name
+              tooltip {Specific name of the application, for example "Mozilla".} xywh {145 50 255 30} box FLAT_BOX labelfont 1
+            }
+            Fl_Input comment {
+              label Comment
+              tooltip {Tooltip for the entry, for example "View sites on the Internet". The value should not be redundant with the values of Name and GenericName.} xywh {145 86 255 31} box FLAT_BOX
+            }
+            Fl_Input tryexec {
+              label TryExec
+              tooltip {Path to an executable file on disk used to determine if the program is actually installed. If the path is not an absolute path, the file is looked up in the $PATH environment variable. If the file is not present or if it is not executable, the entry may be ignored (not be used in menus, for example).} xywh {145 123 255 30} box FLAT_BOX
+            }
+            Fl_Input exec {
+              label Exec
+              tooltip {Program to execute, possibly with arguments. See the Exec key for details on how this key works. The Exec key is required if DBusActivatable is not set to true. Even if DBusActivatable is true, Exec should be specified for compatibility with implementations that do not understand DBusActivatable.} xywh {145 159 255 30} box FLAT_BOX
+            }
+            Fl_Input icon {
+              label Icon
+              tooltip {Icon to display in file manager, menus, etc. If the name is an absolute path, the given file will be used. If the name is not an absolute path, the algorithm described in the Icon Theme Specification will be used to locate the icon.} xywh {145 196 255 30} box FLAT_BOX
+            }
+            Fl_Input type {
+              tooltip {This specification defines 3 types of desktop entries: Application (type 1), Link (type 2) and Directory (type 3). To allow the addition of new types in the future, implementations should ignore desktop entries with an unknown type} xywh {145 232 255 30} box FLAT_BOX
+            }
+            Fl_Input categories {
+              tooltip {Categories in which the entry should be shown in a menu (for possible values see the Desktop Menu Specification).} xywh {145 269 255 30} box FLAT_BOX
+            }
+            Fl_Input notshowin {
+              tooltip {A list of strings identifying the desktop environments that should display/not display a given desktop entry.
 
 By default, a desktop file should be shown, unless an OnlyShowIn key is present, in which case, the default is for the file not to be shown.
 
 If $XDG_CURRENT_DESKTOP is set then it contains a colon-separated list of strings. In order, each string is considered. If a matching entry is found in OnlyShowIn then the desktop file is shown. If an entry is found in NotShowIn then the desktop file is not shown. If none of the strings match then the default action is taken (as above).
 
-The same desktop name may not appear in both OnlyShowIn and NotShowIn of a group.} xywh {140 305 255 30} box FLAT_BOX
-          }
-          Fl_Input onlyshowin {
-            tooltip {A list of strings identifying the desktop environments that should display/not display a given desktop entry.
+The same desktop name may not appear in both OnlyShowIn and NotShowIn of a group.} xywh {145 305 255 30} box FLAT_BOX
+            }
+            Fl_Input onlyshowin {
+              tooltip {A list of strings identifying the desktop environments that should display/not display a given desktop entry.
 
 By default, a desktop file should be shown, unless an OnlyShowIn key is present, in which case, the default is for the file not to be shown.
 
 If $XDG_CURRENT_DESKTOP is set then it contains a colon-separated list of strings. In order, each string is considered. If a matching entry is found in OnlyShowIn then the desktop file is shown. If an entry is found in NotShowIn then the desktop file is not shown. If none of the strings match then the default action is taken (as above).
 
-The same desktop name may not appear in both OnlyShowIn and NotShowIn of a group.} xywh {140 342 255 30} box FLAT_BOX
-          }
-          Fl_Input terminal {
-            tooltip {Whether the program runs in a terminal window.} xywh {140 378 255 30} box FLAT_BOX
-          }
-          Fl_Input nodisplay {
-            tooltip {NoDisplay means "this application exists, but don't display it in the menus". This can be useful to e.g. associate this application with MIME types, so that it gets launched from a file manager (or other apps), without having a menu entry for it (there are tons of good reasons for this, including e.g. the netscape -remote, or kfmclient openURL kind of stuff).} xywh {140 415 255 30} box FLAT_BOX
-          }
-          Fl_Menu_Button {} {
-            label Type open
-            tooltip {This specification defines 3 types of desktop entries: Application (type 1), Link (type 2) and Directory (type 3). To allow the addition of new types in the future, implementations should ignore desktop entries with an unknown type.} xywh {10 232 120 30} box FLAT_BOX down_box FLAT_BOX color 47 selection_color 37 labelfont 1
-          } {
-            MenuItem {} {
-              label Application
-              callback {type->value("Application");
+The same desktop name may not appear in both OnlyShowIn and NotShowIn of a group.} xywh {145 342 255 30} box FLAT_BOX
+            }
+            Fl_Input terminal {
+              tooltip {Whether the program runs in a terminal window.} xywh {145 378 255 30} box FLAT_BOX
+            }
+            Fl_Input nodisplay {
+              tooltip {NoDisplay means "this application exists, but don't display it in the menus". This can be useful to e.g. associate this application with MIME types, so that it gets launched from a file manager (or other apps), without having a menu entry for it (there are tons of good reasons for this, including e.g. the netscape -remote, or kfmclient openURL kind of stuff).} xywh {145 415 255 30} box FLAT_BOX
+            }
+            Fl_Menu_Button {} {
+              label Type open
+              tooltip {This specification defines 3 types of desktop entries: Application (type 1), Link (type 2) and Directory (type 3). To allow the addition of new types in the future, implementations should ignore desktop entries with an unknown type.} xywh {15 232 120 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37 labelfont 1
+            } {
+              MenuItem {} {
+                label Application
+                callback {type->value("Application");
 type->redraw();
 check_type();}
-              tooltip {An application} xywh {10 135 100 20}
-            }
-            MenuItem {} {
-              label Link
-              callback {type->value("Link");
+                tooltip {An application} xywh {15 140 100 20}
+              }
+              MenuItem {} {
+                label Link
+                callback {type->value("Link");
 type->redraw();
 check_type();}
-              tooltip {A URL Link} xywh {10 145 100 20}
-            }
-            MenuItem {} {
-              label Directory
-              callback {type->value("Directory");
+                tooltip {A URL Link} xywh {15 150 100 20}
+              }
+              MenuItem {} {
+                label Directory
+                callback {type->value("Directory");
 type->redraw();
 check_type();}
-              tooltip {A Directory} xywh {10 155 100 20}
-            }
-            MenuItem {} {
-              label OTHER
-              callback {type->value("");
+                tooltip {A Directory} xywh {15 160 100 20}
+              }
+              MenuItem {} {
+                label OTHER
+                callback {type->value("");
 type->redraw();
 check_type();}
-              tooltip {Allowing the addition of new types in the future.} xywh {10 165 100 20}
+                tooltip {Allowing the addition of new types in the future.} xywh {15 170 100 20}
+              }
             }
-          }
-          Fl_Menu_Button cat_Button {
-            label Categories
-            tooltip {Categories in which the entry should be shown in a menu (for possible values see the Desktop Menu Specification).} xywh {10 269 120 30} box FLAT_BOX down_box FLAT_BOX color 47 selection_color 37
-          } {
-            MenuItem {} {
-              label AudioVideo
-              callback {categories->value("AudioVideo");
+            Fl_Menu_Button cat_Button {
+              label Categories
+              tooltip {Categories in which the entry should be shown in a menu (for possible values see the Desktop Menu Specification).} xywh {15 269 120 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
+            } {
+              MenuItem {} {
+                label AudioVideo
+                callback {categories->value("AudioVideo");
 categories->redraw();}
-              tooltip {Application for presenting, creating, or processing multimedia (audio/video)} xywh {10 125 100 20}
-            }
-            MenuItem {} {
-              label Development
-              callback {categories->value("Development");
+                tooltip {Application for presenting, creating, or processing multimedia (audio/video)} xywh {15 130 100 20}
+              }
+              MenuItem {} {
+                label Development
+                callback {categories->value("Development");
 categories->redraw();}
-              tooltip {An application for development} xywh {10 10 100 20}
-            }
-            MenuItem {} {
-              label Education
-              callback {categories->value("Education");
+                tooltip {An application for development} xywh {15 15 100 20}
+              }
+              MenuItem {} {
+                label Education
+                callback {categories->value("Education");
 categories->redraw();}
-              tooltip {Educational software} xywh {10 10 100 20}
-            }
-            MenuItem {} {
-              label Game
-              callback {categories->value("Game");
+                tooltip {Educational software} xywh {15 15 100 20}
+              }
+              MenuItem {} {
+                label Game
+                callback {categories->value("Game");
 categories->redraw();}
-              tooltip {A game} xywh {10 20 100 20}
-            }
-            MenuItem {} {
-              label Graphics
-              callback {categories->value("Graphics");
+                tooltip {A game} xywh {15 25 100 20}
+              }
+              MenuItem {} {
+                label Graphics
+                callback {categories->value("Graphics");
 categories->redraw();}
-              tooltip {Application for viewing, creating, or processing graphics} xywh {10 30 100 20}
-            }
-            MenuItem {} {
-              label Network
-              callback {categories->value("Network");
+                tooltip {Application for viewing, creating, or processing graphics} xywh {15 35 100 20}
+              }
+              MenuItem {} {
+                label Network
+                callback {categories->value("Network");
 categories->redraw();}
-              tooltip {Network application such as a web browser} xywh {10 40 100 20}
-            }
-            MenuItem {} {
-              label Office
-              callback {categories->value("Office");
+                tooltip {Network application such as a web browser} xywh {15 45 100 20}
+              }
+              MenuItem {} {
+                label Office
+                callback {categories->value("Office");
 categories->redraw();}
-              tooltip {An office type application} xywh {10 50 100 20}
-            }
-            MenuItem {} {
-              label Science
-              callback {categories->value("Science");
+                tooltip {An office type application} xywh {15 55 100 20}
+              }
+              MenuItem {} {
+                label Science
+                callback {categories->value("Science");
 categories->redraw();}
-              tooltip {Scientific software} xywh {10 60 100 20}
-            }
-            MenuItem {} {
-              label Settings
-              callback {categories->value("Settings");
+                tooltip {Scientific software} xywh {15 65 100 20}
+              }
+              MenuItem {} {
+                label Settings
+                callback {categories->value("Settings");
 categories->redraw();}
-              tooltip {Settings applications} xywh {10 70 100 20}
-            }
-            MenuItem {} {
-              label System
-              callback {categories->value("System");
+                tooltip {Settings applications} xywh {15 75 100 20}
+              }
+              MenuItem {} {
+                label System
+                callback {categories->value("System");
 categories->redraw();}
-              tooltip {System application, "System Tools" such as say a log viewer or network monitor} xywh {10 80 100 20}
-            }
-            MenuItem {} {
-              label Utility
-              callback {categories->value("Utility");
+                tooltip {System application, "System Tools" such as say a log viewer or network monitor} xywh {15 85 100 20}
+              }
+              MenuItem {} {
+                label Utility
+                callback {categories->value("Utility");
 categories->redraw();}
-              tooltip {Small utility application, "Accessories"} xywh {10 90 100 20}
+                tooltip {Small utility application, "Accessories"} xywh {15 95 100 20}
+              }
             }
-          }
-          Fl_Menu_Button nsi_Button {
-            label NotShowIn
-            tooltip {A list of strings identifying the desktop environments that should display/not display a given desktop entry.
+            Fl_Menu_Button nsi_Button {
+              label NotShowIn
+              tooltip {A list of strings identifying the desktop environments that should display/not display a given desktop entry.
 
 By default, a desktop file should be shown, unless an OnlyShowIn key is present, in which case, the default is for the file not to be shown.
 
 If $XDG_CURRENT_DESKTOP is set then it contains a colon-separated list of strings. In order, each string is considered. If a matching entry is found in OnlyShowIn then the desktop file is shown. If an entry is found in NotShowIn then the desktop file is not shown. If none of the strings match then the default action is taken (as above).
 
-The same desktop name may not appear in both OnlyShowIn and NotShowIn of a group.} xywh {10 305 120 30} box FLAT_BOX down_box FLAT_BOX color 47 selection_color 37
-          } {
-            MenuItem {} {
-              label ToriOS
-              callback {NotShowIn("ToriOS");}
-              tooltip {ToriOS Desktop} xywh {10 115 100 20}
+The same desktop name may not appear in both OnlyShowIn and NotShowIn of a group.} xywh {15 305 120 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
+            } {
+              MenuItem {} {
+                label ToriOS
+                callback {NotShowIn("ToriOS");}
+                tooltip {ToriOS Desktop} xywh {15 120 100 20}
+              }
+              MenuItem {} {
+                label GNOME
+                callback {NotShowIn("GNOME");}
+                tooltip {GNOME Desktop} xywh {15 5 100 20}
+              }
+              MenuItem {} {
+                label KDE
+                callback {NotShowIn("KDE");}
+                tooltip {KDE Desktop} xywh {15 5 100 20}
+              }
+              MenuItem {} {
+                label LXDE
+                callback {NotShowIn("LXDE");}
+                tooltip {LXDE Desktop} xywh {15 15 100 20}
+              }
+              MenuItem {} {
+                label MATE
+                callback {NotShowIn("MATE");}
+                tooltip {MATÉ Desktop} xywh {15 25 100 20}
+              }
+              MenuItem {} {
+                label Razor
+                callback {NotShowIn("Razor");}
+                tooltip {Razor-qt Desktop} xywh {15 35 100 20}
+              }
+              MenuItem {} {
+                label ROX
+                callback {NotShowIn("ROX");}
+                tooltip {ROX Desktop} xywh {15 45 100 20}
+              }
+              MenuItem {} {
+                label TDE
+                callback {NotShowIn("TDE");}
+                tooltip {Trinity Desktop} xywh {15 55 100 20}
+              }
+              MenuItem {} {
+                label Unity
+                callback {NotShowIn("Unity");}
+                tooltip {Unity Shell} xywh {15 65 100 20}
+              }
+              MenuItem {} {
+                label XFCE
+                callback {NotShowIn("XFCE");}
+                tooltip {XFCE Desktop} xywh {15 75 100 20}
+              }
+              MenuItem {} {
+                label EDE
+                callback {NotShowIn("EDE");}
+                tooltip {EDE Desktop} xywh {15 85 100 20}
+              }
+              MenuItem {} {
+                label Cinnamon
+                callback {NotShowIn("Cinnamon");}
+                tooltip {Cinnamon Desktop} xywh {15 95 100 20}
+              }
+              MenuItem {} {
+                label Old
+                callback {NotShowIn("Old");}
+                tooltip {Legacy menu systems} xywh {15 105 100 20}
+              }
             }
-            MenuItem {} {
-              label GNOME
-              callback {NotShowIn("GNOME");}
-              tooltip {GNOME Desktop} xywh {10 0 100 20}
-            }
-            MenuItem {} {
-              label KDE
-              callback {NotShowIn("KDE");}
-              tooltip {KDE Desktop} xywh {10 0 100 20}
-            }
-            MenuItem {} {
-              label LXDE
-              callback {NotShowIn("LXDE");}
-              tooltip {LXDE Desktop} xywh {10 10 100 20}
-            }
-            MenuItem {} {
-              label MATE
-              callback {NotShowIn("MATE");}
-              tooltip {MATÉ Desktop} xywh {10 20 100 20}
-            }
-            MenuItem {} {
-              label Razor
-              callback {NotShowIn("Razor");}
-              tooltip {Razor-qt Desktop} xywh {10 30 100 20}
-            }
-            MenuItem {} {
-              label ROX
-              callback {NotShowIn("ROX");}
-              tooltip {ROX Desktop} xywh {10 40 100 20}
-            }
-            MenuItem {} {
-              label TDE
-              callback {NotShowIn("TDE");}
-              tooltip {Trinity Desktop} xywh {10 50 100 20}
-            }
-            MenuItem {} {
-              label Unity
-              callback {NotShowIn("Unity");}
-              tooltip {Unity Shell} xywh {10 60 100 20}
-            }
-            MenuItem {} {
-              label XFCE
-              callback {NotShowIn("XFCE");}
-              tooltip {XFCE Desktop} xywh {10 70 100 20}
-            }
-            MenuItem {} {
-              label EDE
-              callback {NotShowIn("EDE");}
-              tooltip {EDE Desktop} xywh {10 80 100 20}
-            }
-            MenuItem {} {
-              label Cinnamon
-              callback {NotShowIn("Cinnamon");}
-              tooltip {Cinnamon Desktop} xywh {10 90 100 20}
-            }
-            MenuItem {} {
-              label Old
-              callback {NotShowIn("Old");}
-              tooltip {Legacy menu systems} xywh {10 100 100 20}
-            }
-          }
-          Fl_Menu_Button osi_Button {
-            label OnlyShowIn
-            tooltip {A list of strings identifying the desktop environments that should display/not display a given desktop entry.
+            Fl_Menu_Button osi_Button {
+              label OnlyShowIn
+              tooltip {A list of strings identifying the desktop environments that should display/not display a given desktop entry.
 
 By default, a desktop file should be shown, unless an OnlyShowIn key is present, in which case, the default is for the file not to be shown.
 
 If $XDG_CURRENT_DESKTOP is set then it contains a colon-separated list of strings. In order, each string is considered. If a matching entry is found in OnlyShowIn then the desktop file is shown. If an entry is found in NotShowIn then the desktop file is not shown. If none of the strings match then the default action is taken (as above).
 
-The same desktop name may not appear in both OnlyShowIn and NotShowIn of a group.} xywh {10 342 120 30} box FLAT_BOX down_box FLAT_BOX color 47 selection_color 37
-          } {
-            MenuItem {} {
-              label ToriOS
-              callback {OnlyShowIn("ToriOS");}
-              tooltip {ToriOS Desktop} xywh {10 125 100 20}
+The same desktop name may not appear in both OnlyShowIn and NotShowIn of a group.} xywh {15 342 120 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
+            } {
+              MenuItem {} {
+                label ToriOS
+                callback {OnlyShowIn("ToriOS");}
+                tooltip {ToriOS Desktop} xywh {15 130 100 20}
+              }
+              MenuItem {} {
+                label GNOME
+                callback {OnlyShowIn("GNOME");}
+                tooltip {GNOME Desktop} xywh {15 15 100 20}
+              }
+              MenuItem {} {
+                label KDE
+                callback {OnlyShowIn("KDE");}
+                tooltip {KDE Desktop} xywh {15 15 100 20}
+              }
+              MenuItem {} {
+                label LXDE
+                callback {OnlyShowIn("LXDE");}
+                tooltip {LXDE Desktop} xywh {15 25 100 20}
+              }
+              MenuItem {} {
+                label MATE
+                callback {OnlyShowIn("MATE");}
+                tooltip {MATÉ Desktop} xywh {15 35 100 20}
+              }
+              MenuItem {} {
+                label Razor
+                callback {OnlyShowIn("Razor");}
+                tooltip {Razor-qt Desktop} xywh {15 45 100 20}
+              }
+              MenuItem {} {
+                label ROX
+                callback {OnlyShowIn("ROX");}
+                tooltip {ROX Desktop} xywh {15 55 100 20}
+              }
+              MenuItem {} {
+                label TDE
+                callback {OnlyShowIn("TDE");}
+                tooltip {Trinity Desktop} xywh {15 65 100 20}
+              }
+              MenuItem {} {
+                label Unity
+                callback {OnlyShowIn("Unity");}
+                tooltip {Unity Shell} xywh {15 75 100 20}
+              }
+              MenuItem {} {
+                label XFCE
+                callback {OnlyShowIn("XFCE");}
+                tooltip {XFCE Desktop} xywh {15 85 100 20}
+              }
+              MenuItem {} {
+                label EDE
+                callback {OnlyShowIn("EDE");}
+                tooltip {EDE Desktop} xywh {15 95 100 20}
+              }
+              MenuItem {} {
+                label Cinnamon
+                callback {OnlyShowIn("Cinnamon");}
+                tooltip {Cinnamon Desktop} xywh {15 105 100 20}
+              }
+              MenuItem {} {
+                label Old
+                callback {OnlyShowIn("Old");}
+                tooltip {Legacy menu systems} xywh {15 115 100 20}
+              }
             }
-            MenuItem {} {
-              label GNOME
-              callback {OnlyShowIn("GNOME");}
-              tooltip {GNOME Desktop} xywh {10 10 100 20}
-            }
-            MenuItem {} {
-              label KDE
-              callback {OnlyShowIn("KDE");}
-              tooltip {KDE Desktop} xywh {10 10 100 20}
-            }
-            MenuItem {} {
-              label LXDE
-              callback {OnlyShowIn("LXDE");}
-              tooltip {LXDE Desktop} xywh {10 20 100 20}
-            }
-            MenuItem {} {
-              label MATE
-              callback {OnlyShowIn("MATE");}
-              tooltip {MATÉ Desktop} xywh {10 30 100 20}
-            }
-            MenuItem {} {
-              label Razor
-              callback {OnlyShowIn("Razor");}
-              tooltip {Razor-qt Desktop} xywh {10 40 100 20}
-            }
-            MenuItem {} {
-              label ROX
-              callback {OnlyShowIn("ROX");}
-              tooltip {ROX Desktop} xywh {10 50 100 20}
-            }
-            MenuItem {} {
-              label TDE
-              callback {OnlyShowIn("TDE");}
-              tooltip {Trinity Desktop} xywh {10 60 100 20}
-            }
-            MenuItem {} {
-              label Unity
-              callback {OnlyShowIn("Unity");}
-              tooltip {Unity Shell} xywh {10 70 100 20}
-            }
-            MenuItem {} {
-              label XFCE
-              callback {OnlyShowIn("XFCE");}
-              tooltip {XFCE Desktop} xywh {10 80 100 20}
-            }
-            MenuItem {} {
-              label EDE
-              callback {OnlyShowIn("EDE");}
-              tooltip {EDE Desktop} xywh {10 90 100 20}
-            }
-            MenuItem {} {
-              label Cinnamon
-              callback {OnlyShowIn("Cinnamon");}
-              tooltip {Cinnamon Desktop} xywh {10 100 100 20}
-            }
-            MenuItem {} {
-              label Old
-              callback {OnlyShowIn("Old");}
-              tooltip {Legacy menu systems} xywh {10 110 100 20}
-            }
-          }
-          Fl_Menu_Button term_Button {
-            label Terminal
-            tooltip {Whether the program runs in a terminal window.} xywh {10 378 120 30} box FLAT_BOX down_box FLAT_BOX color 47 selection_color 37
-          } {
-            MenuItem {} {
-              label True
-              callback {terminal->value("True");
+            Fl_Menu_Button term_Button {
+              label Terminal
+              tooltip {Whether the program runs in a terminal window.} xywh {15 378 120 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
+            } {
+              MenuItem {} {
+                label True
+                callback {terminal->value("True");
 terminal->redraw();}
-              tooltip {Program requires a Terminal} xywh {10 165 100 20}
-            }
-            MenuItem {} {
-              label False
-              callback {terminal->value("False");
+                tooltip {Program requires a Terminal} xywh {15 170 100 20}
+              }
+              MenuItem {} {
+                label False
+                callback {terminal->value("False");
 terminal->redraw();}
-              tooltip {Program does NOT require a Terminal} xywh {10 175 100 20}
+                tooltip {Program does NOT require a Terminal} xywh {15 180 100 20}
+              }
             }
-          }
-          Fl_Menu_Button nod_Button {
-            label NoDisplay
-            tooltip {NoDisplay means "this application exists, but don't display it in the menus". This can be useful to e.g. associate this application with MIME types, so that it gets launched from a file manager (or other apps), without having a menu entry for it (there are tons of good reasons for this, including e.g. the netscape -remote, or kfmclient openURL kind of stuff).} xywh {10 415 120 30} box FLAT_BOX down_box FLAT_BOX color 47 selection_color 37
-          } {
-            MenuItem {} {
-              label True
-              callback {nodisplay->value("True");
+            Fl_Menu_Button nod_Button {
+              label NoDisplay
+              tooltip {NoDisplay means "this application exists, but don't display it in the menus". This can be useful to e.g. associate this application with MIME types, so that it gets launched from a file manager (or other apps), without having a menu entry for it (there are tons of good reasons for this, including e.g. the netscape -remote, or kfmclient openURL kind of stuff).} xywh {15 415 120 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
+            } {
+              MenuItem {} {
+                label True
+                callback {nodisplay->value("True");
 nodisplay->redraw();}
-              tooltip {This application exists, but DO NOT display it in the menus} xywh {155 155 100 20}
-            }
-            MenuItem {} {
-              label False
-              callback {nodisplay->value("False");
+                tooltip {This application exists, but DO NOT display it in the menus} xywh {160 160 100 20}
+              }
+              MenuItem {} {
+                label False
+                callback {nodisplay->value("False");
 nodisplay->redraw();}
-              tooltip {The default (Display the item in menus)} xywh {165 165 100 20}
+                tooltip {The default (Display the item in menus)} xywh {170 170 100 20}
+              }
             }
-          }
-          Fl_Button icon_display {
-            label ICON
-            callback {std::string iconFILE=choose_an_icon();
+            Fl_Button icon_display {
+              label ICON
+              callback {std::string iconFILE=choose_an_icon();
 if(iconFILE.compare("")!=0){
   makeWidgetIcon(iconFILE,o,48);
   o->copy_label("");
   icon->value(iconFILE.c_str());
 }}
-            xywh {30 150 65 65} box FLAT_BOX color 47 labelfont 1 align 512
+              xywh {35 160 65 65} box FLAT_BOX color 23 labelfont 1 align 512
+            }
+          }
+          Fl_Group {} {
+            label Advanced open
+            xywh {10 30 405 455} box FLAT_BOX selection_color 45 hide
+          } {
+            Fl_Input genericname {
+              label GenericName
+              tooltip {Generic name of the application, for example "Web Browser".} xywh {145 40 255 30} box FLAT_BOX
+            }
+            Fl_Input version {
+              label Version
+              tooltip {Version of the Desktop Entry Specification that the desktop entry conforms with. Entries that confirm with this version of the specification should use 1.0. Note that the version field is not required to be present.} xywh {145 77 255 30} box FLAT_BOX
+            }
+            Fl_Input path {
+              label Path
+              tooltip {If entry is of type Application, the working directory to run the program in.} xywh {145 115 255 30} box FLAT_BOX
+            }
+            Fl_Input mime {
+              label MimeType
+              tooltip {The MIME type(s) supported by this application.} xywh {145 153 255 30} box FLAT_BOX
+            }
+            Fl_Input implements {
+              label Implements
+              tooltip {A list of interfaces that this application implements. By default, a desktop file implements no interfaces. See http://standards.freedesktop.org/desktop-entry-spec/latest/ar01s08.html for more information on how this works.} xywh {145 190 255 30} box FLAT_BOX
+            }
+            Fl_Input keywords {
+              label Keywords
+              tooltip {A list of strings which may be used in addition to other metadata to describe this entry. This can be useful e.g. to facilitate searching through entries. The values are not meant for display, and should not be redundant with the values of Name or GenericName.} xywh {145 228 255 30} box FLAT_BOX
+            }
+            Fl_Input wmclass {
+              label StartupWMClass
+              tooltip {If specified, it is known that the application will map at least one window with the given string as its WM class or WM name hint (see the Startup Notification Protocol Specification for more details).} xywh {145 266 255 30} box FLAT_BOX
+            }
+            Fl_Input url {
+              label URL
+              tooltip {If entry is Link type, the URL to access.} xywh {145 304 255 30} box FLAT_BOX labelfont 1
+            }
+            Fl_Input actions {
+              tooltip {Identifiers for application actions. This can be used to tell the application to make a specific action, different from the default behavior. The Application actions section describes how actions work.} xywh {145 341 255 30} box FLAT_BOX deactivate
+            }
+            Fl_Input notify {
+              tooltip {If true, it is KNOWN that the application will send a "remove" message when started with the DESKTOP_STARTUP_ID environment variable set. If false, it is KNOWN that the application does not work with startup notification at all (does not shown any window, breaks even when using StartupWMClass, etc.). If absent, a reasonable handling is up to implementations (assuming false, using StartupWMClass, etc.). (See the Startup Notification Protocol Specification for more details).} xywh {145 379 255 30} box FLAT_BOX
+            }
+            Fl_Input hidden {
+              tooltip {Hidden should have been called Deleted. It means the user deleted (at his level) something that was present (at an upper level, e.g. in the system dirs). It's strictly equivalent to the .desktop file not existing at all, as far as that user is concerned. This can also be used to "uninstall" existing files (e.g. due to a renaming) - by letting make install install a file with Hidden=true in it.} xywh {145 417 255 30} box FLAT_BOX
+            }
+            Fl_Input dbus {
+              tooltip {A boolean value specifying if D-Bus activation is supported for this application. If this key is missing, the default value is false. If the value is true then implementations should ignore the Exec key and send a D-Bus message to launch the application. See D-Bus Activation for more information on how this works. Applications should still include Exec= lines in their desktop files for compatibility with implementations that do not understand the DBusActivatable key.} xywh {145 455 255 30} box FLAT_BOX
+            }
+            Fl_Button {} {
+              label Actions
+              tooltip {Identifiers for application actions. This can be used to tell the application to make a specific action, different from the default behavior. The Application actions section describes how actions work.} xywh {10 341 130 30} box FLAT_BOX color 23 deactivate
+            }
+            Fl_Menu_Button notify_Button {
+              label StartupNotify
+              tooltip {If true, it is KNOWN that the application will send a "remove" message when started with the DESKTOP_STARTUP_ID environment variable set. If false, it is KNOWN that the application does not work with startup notification at all (does not shown any window, breaks even when using StartupWMClass, etc.). If absent, a reasonable handling is up to implementations (assuming false, using StartupWMClass, etc.). (See the Startup Notification Protocol Specification for more details).} xywh {10 379 130 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
+            } {
+              MenuItem {} {
+                label True
+                callback {notify->value("True");
+notify->redraw();}
+                tooltip {It is KNOWN that the application will send a "remove" message when started with the DESKTOP_STARTUP_ID environment variable set.} xywh {20 150 100 20}
+              }
+              MenuItem {} {
+                label False
+                callback {notify->value("False");
+notify->redraw();}
+                tooltip {It is KNOWN that the application does not work with startup notification at all (does not shown any window, breaks even when using StartupWMClass, etc.)} xywh {20 160 100 20}
+              }
+            }
+            Fl_Menu_Button {} {
+              label Hidden
+              tooltip {Hidden should have been called Deleted. It means the user deleted (at his level) something that was present (at an upper level, e.g. in the system dirs). It's strictly equivalent to the .desktop file not existing at all, as far as that user is concerned. This can also be used to "uninstall" existing files (e.g. due to a renaming) - by letting make install install a file with Hidden=true in it.} xywh {10 417 130 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
+            } {
+              MenuItem {} {
+                label True
+                callback {hidden->value("True");
+hidden->redraw();}
+                tooltip {It means the user deleted (at his level) something that was present (at an upper level, e.g. in the system dirs). It's strictly equivalent to the .desktop file not existing at all, as far as that user is concerned.} xywh {20 160 100 20}
+              }
+              MenuItem {} {
+                label False
+                callback {hidden->value("False");
+hidden->redraw();}
+                tooltip {The default is not to hide this} xywh {20 170 100 20}
+              }
+            }
+            Fl_Menu_Button {} {
+              label DBusActivatable
+              tooltip {A boolean value specifying if D-Bus activation is supported for this application. If this key is missing, the default value is false. If the value is true then implementations should ignore the Exec key and send a D-Bus message to launch the application. See D-Bus Activation for more information on how this works. Applications should still include Exec= lines in their desktop files for compatibility with implementations that do not understand the DBusActivatable key.} xywh {10 455 130 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
+            } {
+              MenuItem {} {
+                label True
+                callback {dbus->value("True");
+dbus->redraw();}
+                tooltip {Implementations should ignore the Exec key and send a D-Bus message to launch the application. See D-Bus Activation for more information on how this works.} xywh {170 170 100 20}
+              }
+              MenuItem {} {
+                label False
+                callback {dbus->value("False");
+dbus->redraw();}
+                tooltip {The default is to assume D-Bus activation is not supported} xywh {180 180 100 20}
+              }
+            }
           }
         }
-        Fl_Group {} {
-          label Advanced open
-          xywh {5 30 405 455} box FLAT_BOX color 29 selection_color 29 hide
-        } {
-          Fl_Input genericname {
-            label GenericName
-            tooltip {Generic name of the application, for example "Web Browser".} xywh {140 40 255 30} box FLAT_BOX
-          }
-          Fl_Input version {
-            label Version
-            tooltip {Version of the Desktop Entry Specification that the desktop entry conforms with. Entries that confirm with this version of the specification should use 1.0. Note that the version field is not required to be present.} xywh {140 77 255 30} box FLAT_BOX
-          }
-          Fl_Input path {
-            label Path
-            tooltip {If entry is of type Application, the working directory to run the program in.} xywh {140 115 255 30} box FLAT_BOX
-          }
-          Fl_Input mime {
-            label MimeType
-            tooltip {The MIME type(s) supported by this application.} xywh {140 153 255 30} box FLAT_BOX
-          }
-          Fl_Input implements {
-            label Implements
-            tooltip {A list of interfaces that this application implements. By default, a desktop file implements no interfaces. See http://standards.freedesktop.org/desktop-entry-spec/latest/ar01s08.html for more information on how this works.} xywh {140 190 255 30} box FLAT_BOX
-          }
-          Fl_Input keywords {
-            label Keywords
-            tooltip {A list of strings which may be used in addition to other metadata to describe this entry. This can be useful e.g. to facilitate searching through entries. The values are not meant for display, and should not be redundant with the values of Name or GenericName.} xywh {140 228 255 30} box FLAT_BOX
-          }
-          Fl_Input wmclass {
-            label StartupWMClass
-            tooltip {If specified, it is known that the application will map at least one window with the given string as its WM class or WM name hint (see the Startup Notification Protocol Specification for more details).} xywh {140 266 255 30} box FLAT_BOX
-          }
-          Fl_Input url {
-            label URL
-            tooltip {If entry is Link type, the URL to access.} xywh {140 304 255 30} box FLAT_BOX labelfont 1
-          }
-          Fl_Input actions {
-            tooltip {Identifiers for application actions. This can be used to tell the application to make a specific action, different from the default behavior. The Application actions section describes how actions work.} xywh {140 341 255 30} box FLAT_BOX deactivate
-          }
-          Fl_Input notify {
-            tooltip {If true, it is KNOWN that the application will send a "remove" message when started with the DESKTOP_STARTUP_ID environment variable set. If false, it is KNOWN that the application does not work with startup notification at all (does not shown any window, breaks even when using StartupWMClass, etc.). If absent, a reasonable handling is up to implementations (assuming false, using StartupWMClass, etc.). (See the Startup Notification Protocol Specification for more details).} xywh {140 379 255 30} box FLAT_BOX
-          }
-          Fl_Input hidden {
-            tooltip {Hidden should have been called Deleted. It means the user deleted (at his level) something that was present (at an upper level, e.g. in the system dirs). It's strictly equivalent to the .desktop file not existing at all, as far as that user is concerned. This can also be used to "uninstall" existing files (e.g. due to a renaming) - by letting make install install a file with Hidden=true in it.} xywh {140 417 255 30} box FLAT_BOX
-          }
-          Fl_Input dbus {
-            tooltip {A boolean value specifying if D-Bus activation is supported for this application. If this key is missing, the default value is false. If the value is true then implementations should ignore the Exec key and send a D-Bus message to launch the application. See D-Bus Activation for more information on how this works. Applications should still include Exec= lines in their desktop files for compatibility with implementations that do not understand the DBusActivatable key.} xywh {140 455 255 30} box FLAT_BOX
-          }
-          Fl_Button {} {
-            label Actions
-            tooltip {Identifiers for application actions. This can be used to tell the application to make a specific action, different from the default behavior. The Application actions section describes how actions work.} xywh {5 341 130 30} box FLAT_BOX color 46 deactivate
-          }
-          Fl_Menu_Button notify_Button {
-            label StartupNotify
-            tooltip {If true, it is KNOWN that the application will send a "remove" message when started with the DESKTOP_STARTUP_ID environment variable set. If false, it is KNOWN that the application does not work with startup notification at all (does not shown any window, breaks even when using StartupWMClass, etc.). If absent, a reasonable handling is up to implementations (assuming false, using StartupWMClass, etc.). (See the Startup Notification Protocol Specification for more details).} xywh {5 379 130 30} box FLAT_BOX down_box FLAT_BOX color 47 selection_color 37
-          } {
-            MenuItem {} {
-              label True
-              callback {notify->value("True");
-notify->redraw();}
-              tooltip {It is KNOWN that the application will send a "remove" message when started with the DESKTOP_STARTUP_ID environment variable set.} xywh {15 145 100 20}
-            }
-            MenuItem {} {
-              label False
-              callback {notify->value("False");
-notify->redraw();}
-              tooltip {It is KNOWN that the application does not work with startup notification at all (does not shown any window, breaks even when using StartupWMClass, etc.)} xywh {15 155 100 20}
-            }
-          }
-          Fl_Menu_Button {} {
-            label Hidden
-            tooltip {Hidden should have been called Deleted. It means the user deleted (at his level) something that was present (at an upper level, e.g. in the system dirs). It's strictly equivalent to the .desktop file not existing at all, as far as that user is concerned. This can also be used to "uninstall" existing files (e.g. due to a renaming) - by letting make install install a file with Hidden=true in it.} xywh {5 417 130 30} box FLAT_BOX down_box FLAT_BOX color 47 selection_color 37
-          } {
-            MenuItem {} {
-              label True
-              callback {hidden->value("True");
-hidden->redraw();}
-              tooltip {It means the user deleted (at his level) something that was present (at an upper level, e.g. in the system dirs). It's strictly equivalent to the .desktop file not existing at all, as far as that user is concerned.} xywh {15 155 100 20}
-            }
-            MenuItem {} {
-              label False
-              callback {hidden->value("False");
-hidden->redraw();}
-              tooltip {The default is not to hide this} xywh {15 165 100 20}
-            }
-          }
-          Fl_Menu_Button {} {
-            label DBusActivatable
-            tooltip {A boolean value specifying if D-Bus activation is supported for this application. If this key is missing, the default value is false. If the value is true then implementations should ignore the Exec key and send a D-Bus message to launch the application. See D-Bus Activation for more information on how this works. Applications should still include Exec= lines in their desktop files for compatibility with implementations that do not understand the DBusActivatable key.} xywh {5 455 130 30} box FLAT_BOX down_box FLAT_BOX color 47 selection_color 37
-          } {
-            MenuItem {} {
-              label True
-              callback {dbus->value("True");
-dbus->redraw();}
-              tooltip {Implementations should ignore the Exec key and send a D-Bus message to launch the application. See D-Bus Activation for more information on how this works.} xywh {165 165 100 20}
-            }
-            MenuItem {} {
-              label False
-              callback {dbus->value("False");
-dbus->redraw();}
-              tooltip {The default is to assume D-Bus activation is not supported} xywh {175 175 100 20}
-            }
-          }
+        Fl_Button {} {
+          label OPEN
+          callback {open_file();}
+          tooltip {Open a desktop file} xywh {15 533 80 30} box FLAT_BOX color 23
         }
-      }
-      Fl_Button {} {
-        label OPEN
-        callback {open_file();}
-        tooltip {Open a desktop file} xywh {20 545 80 30} box FLAT_BOX
-      }
-      Fl_Button {} {
-        label SAVE
-        callback {save_file();}
-        tooltip {Save the current data as a file} xywh {325 545 80 30} box FLAT_BOX color 61 labelcolor 7
-      }
-      Fl_Input Filename {
-        label {File Name}
-        tooltip {The file you want to save (or the name of the current open file)} xywh {80 500 330 30} box FLAT_BOX
-      }
-      Fl_Button {} {
-        label CLEAR
-        callback {clear_all();}
-        tooltip {CLEAR EVERYTHING} xywh {225 545 80 30} box FLAT_BOX color 80 labelcolor 7
-      }
-      Fl_Button {} {
-        label PREVIEW
-        callback {std::string re=stringfile();
+        Fl_Button {} {
+          label SAVE
+          callback {save_file();}
+          tooltip {Save the current data as a file} xywh {320 533 80 30} box FLAT_BOX color 61 labelcolor 7
+        }
+        Fl_Input Filename {
+          tooltip {The file you want to save (or the name of the current open file)} xywh {115 500 285 30} box FLAT_BOX
+        }
+        Fl_Button {} {
+          label CLEAR
+          callback {clear_all();}
+          tooltip {CLEAR EVERYTHING} xywh {220 533 80 30} box FLAT_BOX color 80 labelcolor 7
+        }
+        Fl_Button {} {
+          label PREVIEW
+          callback {std::string re=stringfile();
 if(re.compare("")!=0){
   preview_window(re)->show();
 }}
-        tooltip {Preview text} xywh {120 545 80 30} box FLAT_BOX color 95 labelcolor 32
+          tooltip {Preview text} xywh {115 533 80 30} box FLAT_BOX color 95 labelcolor 32
+        }
+        Fl_Button {} {
+          label {File Name}
+          callback {std::string filename=choose_a_directory_to_save("","");
+if(filename.compare("")!=0){Filename->value();}}
+          tooltip {Open a desktop file} xywh {15 498 80 30} box FLAT_BOX color 23
+        }
       }
     }
   }
@@ -938,8 +947,7 @@ set_input(nodisplay,NODISPLAY);
 set_input(terminal,TERMINAL);
 set_input(hidden,HIDDEN);
 set_input(dbus,DBUS);
-check_type();} {selected
-    }
+check_type();} {}
   }
   Function {save_file()} {} {
     code {std::string testFilename;

@@ -113,7 +113,7 @@ class MouseUI {open
       Fl_Button save_button2 {
         label OK
         callback {save_cursors();
-CURSOR_win->hide();} selected
+CURSOR_win->hide();}
         tooltip {Write to configuration file} xywh {215 190 45 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
       }
     }
@@ -216,20 +216,20 @@ exit(0);}
 deltaChanged = false;
 doubleChanged = false;} {}
     Fl_Window mouse_window {
-      label {Touchpad Settings} open
-      xywh {805 177 370 345} type Double color 31 hide resizable
+      label {Touchpad Settings} open selected
+      xywh {782 128 370 345} type Double color 47 resizable
       code0 {readsynclientoutput();}
-      code1 {startup(o,jsm_mouse_xpm);} xclass {jsm-mouse}
+      code1 {startup(o,jsm_mouse_xpm);} xclass {jsm-mouse} visible
     } {
       Fl_Scroll {} {open
         xywh {-5 0 545 520} color 31
       } {
         Fl_Tabs {} {open
-          xywh {5 5 360 305} box FLAT_BOX selection_color 51
+          xywh {5 5 360 305} box FLAT_BOX color 45
         } {
           Fl_Group {} {
             label TouchPad open
-            xywh {20 35 325 260}
+            xywh {20 35 325 260} selection_color 45
           } {
             Fl_Choice TouchpadOff {
               label {Touchpad Mode}
@@ -284,7 +284,7 @@ synclient("FingerHigh",o->value());}
           }
           Fl_Group {} {
             label Tapping open
-            xywh {10 30 345 280} hide
+            xywh {10 30 345 280} selection_color 45 hide
           } {
             Fl_Choice TapButton1 {
               label {One Finger}
@@ -576,7 +576,7 @@ synclient("FingerHigh",o->value());}
           }
           Fl_Group {} {
             label Scrolling open
-            xywh {20 35 335 265} hide
+            xywh {20 35 335 265} selection_color 45 hide
           } {
             Fl_Check_Button VertTwoFingerScroll {
               label {Vertical 2 Finger Scroll}
@@ -691,7 +691,7 @@ synclient("EdgeMotionMaxZ",o->value()*2);}
           }
           Fl_Group {} {
             label Movement open
-            xywh {20 33 340 260} hide
+            xywh {20 33 340 260} selection_color 45 hide
           } {
             Fl_Value_Output TopEdge {
               label {@8->| Top}
@@ -753,7 +753,7 @@ synclient("EdgeMotionMaxZ",o->value()*2);}
           }
           Fl_Group {} {
             label JWM open
-            xywh {40 35 320 170} hide
+            xywh {40 35 320 170} selection_color 45 hide
           } {
             Fl_Slider double_click_slider {
               label {Double Click Speed}

@@ -167,7 +167,16 @@ bool toomanypanels(){
 //Void//////////////////////////////////////////////////////////////////
 //////A
 void addBattery(){
-
+	checkDock();
+	std::string batt="torios-battery";
+	if(!isExec(batt)){
+		batt="xfce4-power-manager";
+		if(!isExec(batt)){
+			errorOUT("No known battery indicator found");
+			return;
+		}
+	}
+	addIndicator(batt);
 }
 void addClock(){
 	debug_out("");
@@ -182,11 +191,42 @@ void addClock(){
 	setAttribute(addNode(currentPanel(),"Tray", "Clock"),"format",defaultFormat);
 	addSubNodewithAttributeAndText(getLastSubNode(currentPanel(),"Tray", "Clock"),"Button","mask","123",defaultclock);
 }
+void addIndicator(std::string indicator){
+	if(!linuxcommon::look_for_string_in_vector(AnythingVector("StartupCommand"),indicator)){
+		bool isauto=false;
+		std::vector<std::string> myVec=XDGautostart();
+		std::string currentInclude;
+		for(std::vector<std::string>::iterator it = myVec.begin();it!=myVec.end();++it){
+			currentInclude=*it;
+			currentInclude=linuxcommon::grep(indicator,currentInclude);
+			if(currentInclude.compare("")!=0){isauto=true;}
+		}
+		if(!isauto){
+			bool tryADD=addElementWithText("StartupCommand",indicator);
+			if(!tryADD){errorOUT("ADDING  StartupCommand->"+indicator+" FAILED");return;}
+			if(!linuxcommon::program_is_running(indicator)){linuxcommon::run_a_program_in_background(indicator);}
+		}
+	}
+}
 void addNetworkMonitor(){
-	
+	checkDock();
+	std::string nm="nm-applet";
+	if(!isExec(nm)){
+		nm="wicd-gtk";
+		if(linuxcommon::program_is_running(nm)){return;}
+		if(isExec(nm)) nm+=" -t";
+	}
+	else{if(linuxcommon::program_is_running(nm)){return;}}
+	if(!isExec(nm)){
+		debug_out("No known network applet found");
+		return;
+	}
+	addIndicator(nm);
 }
 void add_new_menu(){
 	debug_out("void add_new_menu()");
+	//TODO... launcher window for a 'root' rather than exec
+	showMenu();
 }
 void addPager(){
 	debug_out("void addPager()");
@@ -202,7 +242,16 @@ void addTaskList(){
 	if(!setAttribute(addNode(currentPanel(),"Tray", "TaskList"),"maxwidth","256")){debug_out("Could not add the TaskList");}	
 }
 void addVolume(){
-
+	checkDock();
+	std::string vol="torios-volume";
+	if(!isExec(vol)){
+		vol="volumeicon";
+		if(!isExec(vol)){
+			errorOUT("No known volume icon found...");
+			return;
+		}
+	}
+	addIndicator(vol);
 }
 void app_command_CB(Fl_Input* o, Fl_Input* app_command){
 	debug_out("void app_command_CB(Fl_Input* o, Fl_Input* app_command)");
@@ -248,30 +297,25 @@ void changePanel(int number){
 	debug_out("void changePanel(int number)");
 	if(!setJSMItem("panel",linuxcommon::convert_num_to_string(number))){debug_out("FAILED to change panel");}
 }
+void checkDock(){
+	if(!isTrayElement("Dock")){addSubElement(currentPanel(),"Tray","Dock");}
+}
 //////D
 void deleteBattery(){
 	debug_out("void deleteBattery()");
 	std::string TORI="torios-battery";
 	std::string XFCEB="xfce4-power-manager";
-	std::string xfcebatt=linuxcommon::term_out("which "+XFCEB);
-	std::string toribatt=linuxcommon::term_out("which "+TORI);
-	std::string yad=linuxcommon::term_out("which yad");
-	if((yad.compare("")!=0)&&(toribatt.compare("")!=0)){deleteSomeIndicator(TORI);}
-	else if(xfcebatt.compare("")!=0){deleteSomeIndicator(XFCEB);}
+	if(checkExec("yad")&&checkExec(TORI)){deleteSomeIndicator(TORI);}
+	if(checkExec(XFCEB)){deleteSomeIndicator(XFCEB);}
 }
 void deleteNetworkMonitor(){
 	debug_out("void deleteNetworkMonitor()");
 	//std::string TORI="torios-network";
 	std::string NM="nm-applet";
-	std::string nm=linuxcommon::term_out("which "+NM);
+	if(checkExec(NM)){deleteSomeIndicator(NM);}
 	std::string WICD="wicd-gtk";
-	std::string wicd=linuxcommon::term_out("which "+WICD);
-	//std::string toribatt=linuxcommon::term_out("which "+TORI);
-	//std::string yad=linuxcommon::term_out("which yad");
-	if(nm.compare("")!=0){deleteSomeIndicator(NM);}
-	else if(wicd.compare("")!=0){deleteSomeIndicator(WICD);}
+	if(checkExec(WICD)){deleteSomeIndicator(WICD);}
 	//else if(.compare("")!=0){deleteSomeIndicator();}
-	
 }
 void deletePanel(){removeElement(currentPanel(),"Tray");}
 void deletePanelItem(std::string item){
@@ -303,9 +347,13 @@ void deleteShortcut(std::string program){
 	debug_out("");
 }
 void deleteSomeIndicator(std::string indicator){
-	std::string tmp="pkill "+indicator;
-	int retval=system(tmp.c_str());
-	if(retval!=0){debug_out("Couldn't stop "+indicator);}
+	debug_out("void deleteSomeIndicator(std::string "+indicator+")");
+	if(indicator.find("torios-")<indicator.length()){
+		debug_out("found torios program");
+		linuxcommon::run_a_program(indicator+" --kill");
+	}
+	if(!linuxcommon::pkill(indicator)){debug_out("Couldn't stop "+indicator);}
+	if(linuxcommon::program_is_running(indicator)){linuxcommon::run_a_program("pkill "+indicator);}
 	removeAutostart(indicator);
 }
 void deleteTrayButton(std::string text_to_find){
@@ -316,11 +364,8 @@ void deleteVolume(){
 	debug_out("void deleteVolume()");
 	std::string TORI="torios-volume";
 	std::string VOL="volumeicon";
-	std::string vol=linuxcommon::term_out("which "+VOL);
-	std::string torivol=linuxcommon::term_out("which "+TORI);
-	std::string yad=linuxcommon::term_out("which yad");
-	if((yad.compare("")!=0)&&(torivol.compare("")!=0)){deleteSomeIndicator(TORI);}
-	else if(vol.compare("")!=0){deleteSomeIndicator(VOL);}
+	if(checkExec("yad")&&checkExec(TORI)){deleteSomeIndicator(TORI);}
+	else if(checkExec(VOL)){deleteSomeIndicator(VOL);}
 }
 //////G
 void getColorFromItem(bool active, std::string element,std::string subelement,Fl_Button* o){
@@ -331,8 +376,30 @@ void getColorFromItem(bool active, std::string element,std::string subelement,Fl
 	o->color(color);
 }
 void getIndicators(Fl_Browser* o){
-	debug_out("");
+	debug_out("void getIndicators(Fl_Browser* o)");
 	o->clear();
+	o->redraw();
+	//TODO xdg dir
+	std::string filename=linuxcommon::test_file_in_vector_path("jwm-settings-manager/indicators.list",linuxcommon::desktop_dirs());
+	std::vector<std::string> myVec;
+	if(linuxcommon::test_file(filename)){myVec=linuxcommon::file_to_vector(filename);}
+	else{
+		myVec.push_back("wicd-gtk");
+		myVec.push_back("nm-applet");
+		myVec.push_back("torios-volume");
+		myVec.push_back("volumeicon");
+		myVec.push_back("torios-battery");
+		myVec.push_back("xfce4-power-manager");
+		myVec.push_back("torios-installer");
+	}
+	getIndicatorsPopulate(o,myVec);
+	
+}
+void getIndicatorsPopulate(Fl_Browser* o,std::vector<std::string> list){
+	for(std::vector<std::string>::iterator it = list.begin();it!=list.end();++it){
+		std::string item=*it;
+		if(checkExec(item)){o->add(item.c_str());}
+	}
 	o->redraw();
 }
 //////H
@@ -383,6 +450,26 @@ void labelMenu(std::string testNum,std::string newLabel){
 	testNum="root:"+testNum;
 	if(!setAttribute(getMenu(testNum),"label",newLabel)){
 		debug_out("Didn't set the label "+newLabel+" for the Menu");
+	}
+}
+void listIndicators(Fl_Browser *o){
+	std::string filename=linuxcommon::test_file_in_vector_path("jwm-settings-manager/indicators.list",linuxcommon::desktop_dirs());
+	std::vector<std::string> myVec;
+	if(linuxcommon::test_file(filename)){myVec=linuxcommon::file_to_vector(filename);}
+	else{
+		myVec.push_back("wicd-gtk");
+		myVec.push_back("nm-applet");
+		myVec.push_back("torios-volume");
+		myVec.push_back("volumeicon");
+		myVec.push_back("torios-battery");
+		myVec.push_back("xfce4-power-manager");
+		myVec.push_back("torios-installer");
+	}
+	for( std::vector<std::string>::iterator it = myVec.begin();
+	it!=myVec.end();
+	++it){
+		std::string tester=*it;
+		if(isExec(tester)){o->add(tester.c_str());}
 	}
 }
 //////N
@@ -523,6 +610,32 @@ void remove_app(Fl_Browser* app_browser){
 		deletePanelItem(whichAPP);
 		refresh_app_browser(app_browser);
 	}
+}
+void removeIndicator(Fl_Browser* o){
+	debug_out("void removeIndicator(Fl_Browser* o)");
+	if(!checkFlBrowserItem(o))return;
+	std::string item=o->text(o->value());
+	#if 0
+	//possibly need this at some point?
+	std::string filename=linuxcommon::test_file_in_vector_path("jwm-settings-manager/indicators.list",linuxcommon::desktop_dirs());
+	std::vector<std::string> myVec;
+	if(linuxcommon::test_file(filename)){myVec=linuxcommon::file_to_vector(filename);}
+	else{
+		myVec.push_back("wicd-gtk");
+		myVec.push_back("nm-applet");
+		myVec.push_back("torios-volume");
+		myVec.push_back("volumeicon");
+		myVec.push_back("torios-battery");
+		myVec.push_back("xfce4-power-manager");
+		myVec.push_back("torios-installer");
+	}
+	if(linuxcommon::program_is_running(item)){
+		if(!linuxcommon::pkill(item))errorOUT("Could not kill the program: "+item);
+		
+	}
+	#endif
+	deleteSomeIndicator(item);
+	getIndicators(o);
 }
 void removeAutostart(std::string exec){
 	debug_out("void removeAutostart(std::string "+exec+")");

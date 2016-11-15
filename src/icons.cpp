@@ -116,13 +116,20 @@ bool switchTheme(Fl_Browser* o,int size){
 bool populateIncludes(std::string themefile,int size_to_use){
 	debug_out("bool populateIncludes(std::string "+themefile+",int size_to_use)");
 	bool non_empty=false;
+	std::string icPATH="IconPath";
 	std::vector<std::string> IconFileVector=list_icon_dirs_in_themefile( themefile, size_to_use);
+	if(!deleteElements(icPATH)){
+		debug_out("Could not delete IconPath items");
+		return false;
+	}
 	for( std::vector<std::string>::iterator it = IconFileVector.begin();
 	it!=IconFileVector.end();
 	++it){
 		std::string item=*it;
-		if(item.compare("")!=0){non_empty=true;}
-		debug_out("Icon path="+item);
+		if(item.compare("")!=0){
+			non_empty=true;
+			if(!addElementWithTextAfter(icPATH,item)) debug_out("Couldn't add Icon path="+item);
+		}
 	}
 	return non_empty;
 }

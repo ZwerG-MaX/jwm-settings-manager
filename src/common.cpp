@@ -51,7 +51,7 @@ LINUX_COMMON__NS_BEGIN
 	}
 	std::string get_symlinkpath(std::string symlink){
 		std::vector<char> buf(400);
-		ssize_t len;
+		size_t len;
 		do{
 			buf.resize(buf.size() + 100);
 			len = ::readlink(symlink.c_str(), &(buf[0]), buf.size());
@@ -848,6 +848,17 @@ LINUX_COMMON__NS_BEGIN
 		//for(it=thisPath.begin();it<=thisPath.end();it++){echo(*it);}
 		return thisPath;
 	}
+	std::vector<std::string> file_to_vector(std::string filename){
+		std::vector<std::string> fullString;
+		if(filename.compare("")==0){return fullString;}
+		if(!test_file(filename)){echo_error("No file sent in: "+filename);}
+		std::string thisLine;
+		std::ifstream inputFileStream(filename.c_str(), std::ifstream::in);
+		if(inputFileStream.is_open()){
+			while (getline(inputFileStream,thisLine)){fullString.push_back(thisLine);}
+		}
+		return fullString;
+	}
 	std::vector<std::string> desktop_dirs(){
 		std::vector<std::string> desktop = split_paths("XDG_DATA_DIRS","/usr/local/share/:/usr/share/");
 		const char *datahome = getenv("HOME");
@@ -886,6 +897,15 @@ LINUX_COMMON__NS_BEGIN
 		return bothVectors;
 	}
 ///BOOLEAN FUNCTIONS
+	bool look_for_string_in_vector(std::vector<std::string> vector_to_check,std::string item_to_find){
+		for( std::vector<std::string>::iterator it = vector_to_check.begin();
+		it!=vector_to_check.end();
+		++it){
+			std::string tmp=*it;
+			if(tmp.compare(item_to_find)==0){return true;}
+		}
+		return false;
+	}
 	bool test_file(std::string fileWithFullPATH){
 		if(fileWithFullPATH.compare("")==0){
 			echo_error("Empty string sent into bool test_file(std::string fileWithFullPATH)");
@@ -1006,7 +1026,7 @@ LINUX_COMMON__NS_BEGIN
 	bool pkill(std::string programname){
 		int pid=getProcIdByName(programname);
 		if(pid<=0){
-			echo_error("Invalid process ID");
+			echo_error("Invalid process ID for "+programname);
 			return false;
 		}
 		int result=kill(pid,SIGKILL);
@@ -1068,6 +1088,7 @@ LINUX_COMMON__NS_BEGIN
 			}
 		}
 		closedir(dp);
+		std::cout<<"Process Name="<<procName<<" pid="<<pid<<std::endl;
 		return pid;
 	}
 	int mkdir_p(std::string dirToMake){
@@ -1091,6 +1112,16 @@ LINUX_COMMON__NS_BEGIN
 	}
 	int run_a_program(std::string program){
 		std::string shell=get_shell_for_C();
+		if(shell.compare("")!=0){
+			shell+=program;
+			shell+="'";
+		}
+		else{shell=program;}
+		return system(shell.c_str());
+	}
+	int run_a_program_in_background(std::string program){
+		std::string shell=get_shell_for_C();
+		program += " &disown";
 		if(shell.compare("")!=0){
 			shell+=program;
 			shell+="'";

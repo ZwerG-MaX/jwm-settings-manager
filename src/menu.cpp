@@ -35,15 +35,15 @@ std::string getLabel(std::string MENU){
 }
 std::string getItemIcon(std::string text2, std::string menu){
 	debug_out("std::string getItemIcon(std::string "+text2+",std::string "+menu+")");
-	return "";
+	return getElementAttributeFromElementWithAttributeAndValueAndText("RootMenu","onroot",menu,"Program","icon",text2);
 }
 std::string getItemLabel(std::string text2, std::string menu){
 	debug_out("std::string getItemLabel(std::string "+text2+", std::string "+menu+")");
-	return "";
+	return getElementAttributeFromElementWithAttributeAndValueAndText("RootMenu","onroot",menu,"Program","label",text2);
 }
 std::string getItemAttribute(std::string EXIT,std::string menu,std::string attrib){
 	debug_out("std::string getItemAttribute(std::string "+EXIT+",std::string "+menu+",std::string "+attrib+")");
-	return "";
+	return getElementAttributeFromElementWithAttributeAndValue("RootMenu","onroot",menu,EXIT,attrib);
 }
 //  debug_out("");
 

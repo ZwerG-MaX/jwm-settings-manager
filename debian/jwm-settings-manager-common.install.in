@@ -1,5 +1,6 @@
 data/Buttons/ usr/share/@EXEC@/
 @COMMON_INSTALL@
+usr/share/polkit-1/actions/org.freedesktop.policykit.desktop-file-editor.policy usr/share/polkit-1/actions/
 data/time usr/share/@EXEC@/
 data/icons/@EXEC@.png usr/share/pixmaps/
 data/*.desktop usr/share/applications/
@@ -8,4 +9,5 @@ data/icons/*.svg usr/share/icons/hicolor/scalable/apps
 data/icons/*.png usr/share/icons/hicolor/48x48/apps
 data/icons/*.xpm usr/share/pixmaps/
 data/reconfigure_jwm_themes usr/bin/
+data/indicators.list usr/share/jwm-settings-manager/
 @EXEC@.1 usr/share/man/man1/

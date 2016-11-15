@@ -79,6 +79,7 @@ bool toomanypanels();
 //         A
 void addBattery();
 void addClock();
+void addIndicator(std::string indicator);
 void addNetworkMonitor();
 void add_new_menu();
 void addPager();
@@ -91,6 +92,7 @@ void autohide_position(const char* where);
 //         C
 void changeClock(std::string style);
 void changePanel(int number);
+void checkDock();
 //         D
 void deleteBattery();
 void deleteNetworkMonitor();
@@ -103,6 +105,7 @@ void deleteVolume();
 //         G
 void getColorFromItem(bool active, std::string element,std::string subelement,Fl_Button* o);
 void getIndicators(Fl_Browser* o);
+void getIndicatorsPopulate(Fl_Browser* o,std::vector<std::string> list);
 //         H
 void hide_menu(Fl_Menu_Item * o, int whichOne);
 //         I
@@ -110,6 +113,7 @@ void icon_for_desktop(Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Box*
 void input_width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension);
 //         L
 void labelMenu(std::string testNum,std::string newLabel);
+void listIndicators(Fl_Browser *o);
 //         N
 void new_panel_items(Fl_Browser *o);
 void num_desktop_wh_CB(std::string whichone, int value,Fl_Value_Input* num_desktop_w, Fl_Value_Input* num_desktop_h);
@@ -127,6 +131,7 @@ void populateClocks(Fl_Browser* o);
 void refresh_app_browser(Fl_Browser* app_browser);
 void remove_app(Fl_Browser* app_browser);
 void removeAutostart(std::string exec);
+void removeIndicator(Fl_Browser* o);
 //         S
 void setImageMenu(std::string testNum,std::string icon);
 void setCoordinate(std::string xy, int value);
