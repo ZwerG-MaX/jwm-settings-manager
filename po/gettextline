@@ -1,6 +1,0 @@
-#!/bin/bash
-prog=jwm-settings-manager
-auth="Israel Dahl"
-verno="1.0.1"
-
-xgettext -d po/$prog -a --copyright-holder=$auth --package-name=$prog --c++ --package-version=$verno fltk/*.cxx src/*.cpp
