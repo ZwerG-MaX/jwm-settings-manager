@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <vector>
 #define NANOSVG_ALL_COLOR_KEYWORDS  // Include full list of color keywords.
 #define NANOSVG_IMPLEMENTATION      // Expands implementation
 #include "../include/nanosvg.h"
@@ -315,6 +316,35 @@ void makeWidgetIcon(std::string icon_file, Fl_Widget * widget, int w, int h){
 	}
 	else{return;}
 	widget->image(image2);
+}
+void populateBrowserWithTextFile(Fl_Browser *o, std::string filename){
+	if(filename.compare("")==0)return;
+	std::vector<std::string> myfile=linuxcommon::file_to_vector(filename);
+	for( std::vector<std::string>::iterator it = myfile.begin();
+		it!=myfile.end();
+		++it){
+		std::string tmp=*it;
+		o->add(tmp.c_str());
+	}
+}
+void populateBrowserWithString(Fl_Browser *o, std::string STRING){
+	if(STRING.compare("")==0)return;
+	std::string sep="\n";
+	unsigned int finder=STRING.find(sep);
+	unsigned int length=STRING.length();
+	if(finder>length){
+		o->add(STRING.c_str());
+		return;
+	}
+	while(finder<length){
+		std::string tmp1=STRING;
+		std::string tmp2=tmp1.erase(finder,std::string::npos);	
+		o->add(tmp2.c_str());
+		STRING=tmp1.substr(finder+1,std::string::npos);
+		finder=STRING.find(sep);
+		length=STRING.length();
+		if(finder>=length){o->add(STRING.c_str());}
+	}
 }
 void startup(Fl_Window *o){under_mouse(o);}
 void startup(Fl_Window *o ,const char** windowIcon){

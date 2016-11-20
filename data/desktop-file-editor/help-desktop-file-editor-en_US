@@ -1,0 +1,5 @@
+If you have trouble saving your file, ensure that you are able to save in the directory.  You may need to reopen the program as administrator by running:
+
+pkexec desktop-file-editor
+
+

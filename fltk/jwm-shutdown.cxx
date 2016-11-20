@@ -560,7 +560,6 @@ Fl_Double_Window* shutdown::make_window() {
 }
 
 void shutdown::window_bg() {
-  unsigned int c=0;
   unsigned int color=0;
   std::string menu=getElementText("MenuStyle","Background");
   color=linuxcommon::get_fl_color(menu);

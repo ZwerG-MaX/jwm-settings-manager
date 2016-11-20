@@ -51,6 +51,7 @@ std::string getClock(std::string timeString);
 std::string getClock();
 std::string getImageMenu(std::string item);
 std::string getLabelMenu(std::string item);
+std::string getNextPanelPosition();
 std::string Menu_Label(int num);
 //unsigned int
 unsigned int getActiveBackground(unsigned int c,std::string element);
@@ -98,7 +99,6 @@ void deleteBattery();
 void deleteNetworkMonitor();
 void deletePanel();
 void deletePanelItem(std::string item);
-void deleteShortcut(std::string program);
 void deleteSomeIndicator(std::string indicator);
 void deleteTrayButton(std::string text_to_find);
 void deleteVolume();

@@ -98,10 +98,15 @@ bool addApp(std::string element,std::string attribute,std::string value){return 
 bool addButton(std::string icon,std::string execLine,std::string popup,int border){
 	if(execLine.find("exec:")>execLine.length()){execLine="exec:"+execLine;}
 	debug_out("void addButton(std::string "+icon+",std::string "+execLine+",std::string "+popup+",int border)");
-	if(setAttribute(addNode(currentPanel(),"Tray", "TrayButton"),"icon",icon)){
-		if(setAttribute(getLastSubNode(currentPanel(),"Tray", "TrayButton"),"popup",popup)){
-			if(setAttribute(getLastSubNode(currentPanel(),"Tray", "TrayButton"),"border",linuxcommon::convert_num_to_string(border))){
-				return addSubNodewithAttributeAndText(getLastSubNode(currentPanel(),"Tray", "TrayButton"),"Button","mask","123",execLine);
+	if(!addSubElementWithText(currentPanel(),"Tray","TrayButton",execLine)){
+		errorOUT("Could not add the TrayButton");
+		return false;
+	}
+	else{loadTemp();}
+	if(setLastTrayButtonAttribute("icon",icon)){
+		if(setLastTrayButtonAttribute("popup",popup)){
+			if(setLastTrayButtonAttribute("border",linuxcommon::convert_num_to_string(border))){
+				return addButtonToLastTray("mask","123",execLine);
 			}
 			debug_out("addButton failed to set the border");
 			return false;
@@ -235,7 +240,48 @@ void addPager(){
 	}
 }
 void addPanel(){
-
+	debug_out("void addPanel()");
+	std::string position=getSmartLayout();
+	debug_out("Using position: "+position);
+	std::string valign = getSmartVert(position);
+	std::string halign = getSmartHoriz(position);
+	debug_out("using valign:"+valign+"\nhalign:"+halign);
+	int vert = whichAlign(valign);
+	int horiz = whichAlign(halign);
+	int panels=numPanels();
+	panels+=1;
+	std::string numPanels=linuxcommon::convert_num_to_string(panels);
+	if(!setJSMItem("panel", numPanels)){
+		errorOUT("Could not set new panel as the current");
+	}
+	//Now we will start guessing the width and height to use
+    std::string w,h;
+    int screenHeight = Fl::h();
+    //a nice starter for a vertical panel is screenheight/2.5
+    std::string guessHeight = linuxcommon::convert_num_to_string(screenHeight /2.5);
+    if(vert==1 && horiz==3){
+        //if it is a top or bottom panel
+        //0 means the FULL width
+        w = "0";
+        h = "34";
+    }
+    else if(horiz==2 && vert==3){
+        //if it is a left or right panel
+        //make it 34 wide and screenHeight /2.5 tall
+        w = "34";
+        h = guessHeight;
+    }
+    else{
+        //if it is something else... just make it visible?
+        w = "34";
+        h = "34";
+    }//
+    if(!addElementAndSub("Tray","Separator")){errorOUT("FAILED to create Panel with separator");}
+	if(!setAttribute(parseNodes(panels,"Tray"),"width",w)){errorOUT("FAILED to set width");}
+	if(!setAttribute(parseNodes(panels,"Tray"),"height",h)){errorOUT("FAILED to set height");}
+    if(!setAttribute(parseNodes(panels,"Tray"),"valign",valign)){errorOUT("FAILED to set valign");}
+    if(!setAttribute(parseNodes(panels,"Tray"),"halign",halign)){errorOUT("FAILED to set halign");}
+    if(!setAttribute(parseNodes(panels,"Tray"),"border","false")){errorOUT("FAILED to set border");}
 }
 void addTaskList(){
 	debug_out("void addTaskList()");
@@ -343,9 +389,6 @@ void deletePanelItem(std::string item){
 		removeElement(whichPanel,"Tray",item);
 	}
 }
-void deleteShortcut(std::string program){
-	debug_out("");
-}
 void deleteSomeIndicator(std::string indicator){
 	debug_out("void deleteSomeIndicator(std::string "+indicator+")");
 	if(indicator.find("torios-")<indicator.length()){
@@ -423,6 +466,7 @@ void icon_for_desktop(Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Box*
 	icon_name->copy_label(iconName.c_str());
 	std::string iconFILE=iconName;
 	makeWidgetIcon(iconFILE,app_icon_box,48);
+	app_icon_box->redraw();
     tooltip->value(name.c_str());
     app_command->redraw();
     //Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Input* tooltip,Fl_Box* icon_name,int border
@@ -603,11 +647,8 @@ void populateClocks(Fl_Browser* o){
 void refresh_app_browser(Fl_Browser* app_browser){populateApps(app_browser);}
 void remove_app(Fl_Browser* app_browser){
 	debug_out("void remove_app(Fl_Browser* app_browser)");
-	unsigned int appLine=app_browser->value();
-	unsigned int size =app_browser->size();
-	if(appLine <= size && appLine !=0){
-		std::string whichAPP = app_browser->text(appLine);
-		deletePanelItem(whichAPP);
+	if(checkFlBrowserItem(app_browser)){
+		deletePanelItem(app_browser->value());
 		refresh_app_browser(app_browser);
 	}
 }

@@ -75,6 +75,9 @@ private:
   static void cb_Panel3(Fl_Menu_*, void*);
   inline void cb_Remove_i(Fl_Menu_*, void*);
   static void cb_Remove(Fl_Menu_*, void*);
+public:
+  Fl_Group *apps_tab;
+private:
   inline void cb__i(Fl_Button*, void*);
   static void cb_(Fl_Button*, void*);
 public:

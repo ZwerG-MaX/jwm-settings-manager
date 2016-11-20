@@ -54,19 +54,19 @@ class Desktop {open
   Function {make_window(std::string filePassedIn)} {open
   } {
     Fl_Window {} {
-      label {Desktop File Editor} open selected
-      xywh {217 115 415 570} type Double color 47
+      label {Desktop File Editor} open
+      xywh {542 97 410 570} type Double color 47
       code0 {load(filePassedIn);} xclass {desktop-file-editor} visible
     } {
       Fl_Scroll {} {open
-        xywh {0 0 420 563}
+        xywh {0 0 409 563}
       } {
         Fl_Tabs {} {open
-          xywh {5 5 415 490} box FLAT_BOX color 47
+          xywh {5 5 402 460} box FLAT_BOX color 47
         } {
           Fl_Group {} {
             label Normal open
-            xywh {5 30 415 455} box FLAT_BOX selection_color 45
+            xywh {5 30 402 430} box FLAT_BOX selection_color 45
           } {
             Fl_Input name {
               label Name
@@ -421,7 +421,7 @@ if(iconFILE.compare("")!=0){
           }
           Fl_Group {} {
             label Advanced open
-            xywh {10 30 405 455} box FLAT_BOX selection_color 45 hide
+            xywh {10 30 395 430} box FLAT_BOX selection_color 45 hide
           } {
             Fl_Input genericname {
               label GenericName
@@ -429,51 +429,51 @@ if(iconFILE.compare("")!=0){
             }
             Fl_Input version {
               label Version
-              tooltip {Version of the Desktop Entry Specification that the desktop entry conforms with. Entries that confirm with this version of the specification should use 1.0. Note that the version field is not required to be present.} xywh {145 77 255 30} box FLAT_BOX
+              tooltip {Version of the Desktop Entry Specification that the desktop entry conforms with. Entries that confirm with this version of the specification should use 1.0. Note that the version field is not required to be present.} xywh {145 75 255 30} box FLAT_BOX
             }
             Fl_Input path {
               label Path
-              tooltip {If entry is of type Application, the working directory to run the program in.} xywh {145 115 255 30} box FLAT_BOX
+              tooltip {If entry is of type Application, the working directory to run the program in.} xywh {145 110 255 30} box FLAT_BOX
             }
             Fl_Input mime {
               label MimeType
-              tooltip {The MIME type(s) supported by this application.} xywh {145 153 255 30} box FLAT_BOX
+              tooltip {The MIME type(s) supported by this application.} xywh {145 145 255 30} box FLAT_BOX
             }
             Fl_Input implements {
               label Implements
-              tooltip {A list of interfaces that this application implements. By default, a desktop file implements no interfaces. See http://standards.freedesktop.org/desktop-entry-spec/latest/ar01s08.html for more information on how this works.} xywh {145 190 255 30} box FLAT_BOX
+              tooltip {A list of interfaces that this application implements. By default, a desktop file implements no interfaces. See http://standards.freedesktop.org/desktop-entry-spec/latest/ar01s08.html for more information on how this works.} xywh {145 180 255 30} box FLAT_BOX
             }
             Fl_Input keywords {
               label Keywords
-              tooltip {A list of strings which may be used in addition to other metadata to describe this entry. This can be useful e.g. to facilitate searching through entries. The values are not meant for display, and should not be redundant with the values of Name or GenericName.} xywh {145 228 255 30} box FLAT_BOX
+              tooltip {A list of strings which may be used in addition to other metadata to describe this entry. This can be useful e.g. to facilitate searching through entries. The values are not meant for display, and should not be redundant with the values of Name or GenericName.} xywh {145 215 255 30} box FLAT_BOX
             }
             Fl_Input wmclass {
               label StartupWMClass
-              tooltip {If specified, it is known that the application will map at least one window with the given string as its WM class or WM name hint (see the Startup Notification Protocol Specification for more details).} xywh {145 266 255 30} box FLAT_BOX
+              tooltip {If specified, it is known that the application will map at least one window with the given string as its WM class or WM name hint (see the Startup Notification Protocol Specification for more details).} xywh {145 250 255 30} box FLAT_BOX
             }
             Fl_Input url {
               label URL
-              tooltip {If entry is Link type, the URL to access.} xywh {145 304 255 30} box FLAT_BOX labelfont 1
+              tooltip {If entry is Link type, the URL to access.} xywh {145 285 255 30} box FLAT_BOX labelfont 1
             }
             Fl_Input actions {
-              tooltip {Identifiers for application actions. This can be used to tell the application to make a specific action, different from the default behavior. The Application actions section describes how actions work.} xywh {145 341 255 30} box FLAT_BOX deactivate
+              tooltip {Identifiers for application actions. This can be used to tell the application to make a specific action, different from the default behavior. The Application actions section describes how actions work.} xywh {145 320 255 30} box FLAT_BOX deactivate
             }
             Fl_Input notify {
-              tooltip {If true, it is KNOWN that the application will send a "remove" message when started with the DESKTOP_STARTUP_ID environment variable set. If false, it is KNOWN that the application does not work with startup notification at all (does not shown any window, breaks even when using StartupWMClass, etc.). If absent, a reasonable handling is up to implementations (assuming false, using StartupWMClass, etc.). (See the Startup Notification Protocol Specification for more details).} xywh {145 379 255 30} box FLAT_BOX
+              tooltip {If true, it is KNOWN that the application will send a "remove" message when started with the DESKTOP_STARTUP_ID environment variable set. If false, it is KNOWN that the application does not work with startup notification at all (does not shown any window, breaks even when using StartupWMClass, etc.). If absent, a reasonable handling is up to implementations (assuming false, using StartupWMClass, etc.). (See the Startup Notification Protocol Specification for more details).} xywh {145 355 255 30} box FLAT_BOX
             }
             Fl_Input hidden {
-              tooltip {Hidden should have been called Deleted. It means the user deleted (at his level) something that was present (at an upper level, e.g. in the system dirs). It's strictly equivalent to the .desktop file not existing at all, as far as that user is concerned. This can also be used to "uninstall" existing files (e.g. due to a renaming) - by letting make install install a file with Hidden=true in it.} xywh {145 417 255 30} box FLAT_BOX
+              tooltip {Hidden should have been called Deleted. It means the user deleted (at his level) something that was present (at an upper level, e.g. in the system dirs). It's strictly equivalent to the .desktop file not existing at all, as far as that user is concerned. This can also be used to "uninstall" existing files (e.g. due to a renaming) - by letting make install install a file with Hidden=true in it.} xywh {145 390 255 30} box FLAT_BOX
             }
             Fl_Input dbus {
-              tooltip {A boolean value specifying if D-Bus activation is supported for this application. If this key is missing, the default value is false. If the value is true then implementations should ignore the Exec key and send a D-Bus message to launch the application. See D-Bus Activation for more information on how this works. Applications should still include Exec= lines in their desktop files for compatibility with implementations that do not understand the DBusActivatable key.} xywh {145 455 255 30} box FLAT_BOX
+              tooltip {A boolean value specifying if D-Bus activation is supported for this application. If this key is missing, the default value is false. If the value is true then implementations should ignore the Exec key and send a D-Bus message to launch the application. See D-Bus Activation for more information on how this works. Applications should still include Exec= lines in their desktop files for compatibility with implementations that do not understand the DBusActivatable key.} xywh {145 425 255 30} box FLAT_BOX
             }
             Fl_Button {} {
               label Actions
-              tooltip {Identifiers for application actions. This can be used to tell the application to make a specific action, different from the default behavior. The Application actions section describes how actions work.} xywh {10 341 130 30} box FLAT_BOX color 23 deactivate
+              tooltip {Identifiers for application actions. This can be used to tell the application to make a specific action, different from the default behavior. The Application actions section describes how actions work.} xywh {10 320 130 30} box FLAT_BOX color 23 deactivate
             }
             Fl_Menu_Button notify_Button {
               label StartupNotify
-              tooltip {If true, it is KNOWN that the application will send a "remove" message when started with the DESKTOP_STARTUP_ID environment variable set. If false, it is KNOWN that the application does not work with startup notification at all (does not shown any window, breaks even when using StartupWMClass, etc.). If absent, a reasonable handling is up to implementations (assuming false, using StartupWMClass, etc.). (See the Startup Notification Protocol Specification for more details).} xywh {10 379 130 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
+              tooltip {If true, it is KNOWN that the application will send a "remove" message when started with the DESKTOP_STARTUP_ID environment variable set. If false, it is KNOWN that the application does not work with startup notification at all (does not shown any window, breaks even when using StartupWMClass, etc.). If absent, a reasonable handling is up to implementations (assuming false, using StartupWMClass, etc.). (See the Startup Notification Protocol Specification for more details).} xywh {10 355 130 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
             } {
               MenuItem {} {
                 label True
@@ -490,7 +490,7 @@ notify->redraw();}
             }
             Fl_Menu_Button {} {
               label Hidden
-              tooltip {Hidden should have been called Deleted. It means the user deleted (at his level) something that was present (at an upper level, e.g. in the system dirs). It's strictly equivalent to the .desktop file not existing at all, as far as that user is concerned. This can also be used to "uninstall" existing files (e.g. due to a renaming) - by letting make install install a file with Hidden=true in it.} xywh {10 417 130 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
+              tooltip {Hidden should have been called Deleted. It means the user deleted (at his level) something that was present (at an upper level, e.g. in the system dirs). It's strictly equivalent to the .desktop file not existing at all, as far as that user is concerned. This can also be used to "uninstall" existing files (e.g. due to a renaming) - by letting make install install a file with Hidden=true in it.} xywh {10 390 130 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
             } {
               MenuItem {} {
                 label True
@@ -507,7 +507,7 @@ hidden->redraw();}
             }
             Fl_Menu_Button {} {
               label DBusActivatable
-              tooltip {A boolean value specifying if D-Bus activation is supported for this application. If this key is missing, the default value is false. If the value is true then implementations should ignore the Exec key and send a D-Bus message to launch the application. See D-Bus Activation for more information on how this works. Applications should still include Exec= lines in their desktop files for compatibility with implementations that do not understand the DBusActivatable key.} xywh {10 455 130 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
+              tooltip {A boolean value specifying if D-Bus activation is supported for this application. If this key is missing, the default value is false. If the value is true then implementations should ignore the Exec key and send a D-Bus message to launch the application. See D-Bus Activation for more information on how this works. Applications should still include Exec= lines in their desktop files for compatibility with implementations that do not understand the DBusActivatable key.} xywh {10 425 130 30} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 37
             } {
               MenuItem {} {
                 label True
@@ -527,42 +527,43 @@ dbus->redraw();}
         Fl_Button {} {
           label OPEN
           callback {open_file();}
-          tooltip {Open a desktop file} xywh {15 533 80 30} box FLAT_BOX color 23
+          tooltip {Open a desktop file} xywh {15 530 80 30} box FLAT_BOX color 23
         }
         Fl_Button {} {
           label SAVE
           callback {save_file();}
-          tooltip {Save the current data as a file} xywh {320 533 80 30} box FLAT_BOX color 61 labelcolor 7
+          tooltip {Save the current data as a file} xywh {320 530 80 30} box FLAT_BOX color 61 selection_color 59 labelcolor 7
         }
         Fl_Input Filename {
-          tooltip {The file you want to save (or the name of the current open file)} xywh {115 500 285 30} box FLAT_BOX
+          tooltip {The file you want to save (or the name of the current open file)} xywh {115 475 285 30} box FLAT_BOX
         }
         Fl_Button {} {
           label CLEAR
           callback {clear_all();}
-          tooltip {CLEAR EVERYTHING} xywh {220 533 80 30} box FLAT_BOX color 80 labelcolor 7
+          tooltip {CLEAR EVERYTHING} xywh {220 530 80 30} box FLAT_BOX color 80 selection_color 72 labelcolor 7
         }
         Fl_Button {} {
           label PREVIEW
           callback {std::string re=stringfile();
 if(re.compare("")!=0){
   preview_window(re)->show();
-}}
-          tooltip {Preview text} xywh {115 533 80 30} box FLAT_BOX color 95 labelcolor 32
+}} selected
+          tooltip {Preview text} xywh {115 530 80 30} box FLAT_BOX color 95 selection_color 94 labelcolor 32
         }
         Fl_Button {} {
-          label {File Name}
+          label Filename
           callback {std::string filename=choose_a_directory_to_save("","");
 if(filename.compare("")!=0){Filename->value();}}
-          tooltip {Open a desktop file} xywh {15 498 80 30} box FLAT_BOX color 23
+          tooltip {The filename to save this as.} xywh {15 473 80 30} box FLAT_BOX color 61 selection_color 59 labelcolor 7
         }
       }
     }
   }
-  Function {preview_window(std::string message)} {} {
+  Function {preview_window(std::string message)} {open
+  } {
     Fl_Window preview_win {
       label Preview open
-      xywh {70 194 465 465} type Double hide
+      xywh {535 206 465 465} type Double hide
     } {
       Fl_Scroll {} {open
         xywh {10 5 440 410}
@@ -572,20 +573,20 @@ if(filename.compare("")!=0){Filename->value();}}
           code0 {//if(message.compare("")!=0)o->insert(message.c_str());}
         }
         Fl_Box {} {
-          xywh {10 5 440 410} align 21
+          xywh {10 5 440 410} align 149
           code0 {if(message.compare("")!=0)o->copy_label(message.c_str());}
         }
       }
       Fl_Button {} {
         label SAVE
-        callback {save_file();
-preview_win->hide();}
-        tooltip {Save the current data as a file} xywh {365 425 80 30} box FLAT_BOX color 61 labelcolor 7
+        callback {if(check_file()){write_out();}
+close(preview_win);;}
+        tooltip {Save the current data as a file} xywh {365 425 80 30} box FLAT_BOX color 61 selection_color 58 labelcolor 7
       }
       Fl_Button {} {
         label CLOSE
-        callback {preview_win->hide();}
-        tooltip {CLEAR EVERYTHING} xywh {275 425 80 30} box FLAT_BOX color 80 labelcolor 7
+        callback {close(preview_win);}
+        xywh {275 425 80 30} box FLAT_BOX color 80 selection_color 72 labelcolor 7
       }
     }
   }
@@ -662,7 +663,10 @@ show_all();} {}
     code {o->value("");
 o->redraw();} {}
   }
-  Function {close()} {} {}
+  Function {close(Fl_Double_Window* o)} {open
+  } {
+    code {o->hide();} {}
+  }
   Function {DEactivate(Fl_Input* o)} {} {
     code {o->deactivate();
 o->color(FL_LIGHT2);
@@ -949,19 +953,23 @@ set_input(hidden,HIDDEN);
 set_input(dbus,DBUS);
 check_type();} {}
   }
-  Function {save_file()} {} {
+  Function {check_file()} {open return_type bool
+  } {
     code {std::string testFilename;
-const char* filer = Filename->value();
 if (isEmpty(Filename)){
   make_red(Filename);
-  return;
+  return false;
 }
+const char* filer = Filename->value();
 testFilename=filer;
 unsigned int found = 0;
 found=testFilename.find(".desktop");
 if (found > testFilename.length()){
   make_red(Filename);
   testFilename += ".desktop";
+  Filename->value(testFilename.c_str());
+  Filename->redraw();
+  
 }
 found = 0;
 found= testFilename.find("/");
@@ -969,7 +977,7 @@ if(found>testFilename.length()){
   std::string choice=choose_directory();
   if(choice.compare("")==0){
     make_red(Filename);
-    return;
+    return false;
   }
   choice+="/";
   choice+=testFilename;
@@ -977,9 +985,7 @@ if(found>testFilename.length()){
 }
 Filename->value(testFilename.c_str());
 Filename->redraw();
-write_out();
-
-//clear_all();} {}
+return true;} {}
   }
   Function {set_input(Fl_Input *o, std::string val)} {} {
     code {make_white(o);
@@ -1134,12 +1140,82 @@ fileContents+=TEMPval;
 fileContents+="\\n";
 return fileContents;} {}
   }
-  Function {write_out()} {} {
+  Function {write_out()} {open
+  } {
     code {const char* FILENAME=Filename->value();
 std::string fileContents=stringfile();
-preview_window(fileContents)->show();
 if(!linuxcommon::save_string_to_file(fileContents,FILENAME)){
+  error_win->show();
   linuxcommon::echo_error("Did not save the file correctly");
+}} {}
+  }
+  Function {save_file()} {open
+  } {
+    code {if(check_file()){
+  std::string fileContents=stringfile();
+  preview_window(fileContents)->show();
+}} {}
+  }
+  Function {save_error()} {open
+  } {
+    Fl_Window error_win {
+      label {Save Error} open
+      xywh {657 237 270 90} type Double visible
+    } {
+      Fl_Output {} {
+        label {There was an error saving the file:}
+        tooltip {Make sure you have permission to save.} xywh {5 25 255 25} box FLAT_BOX align 1
+        code0 {o->value(Filename->value());}
+      }
+      Fl_Button {} {
+        label OK
+        callback {close(error_win);}
+        xywh {195 55 60 25} box FLAT_BOX color 62 selection_color 60 labelcolor 7
+      }
+      Fl_Button {} {
+        label {?}
+        callback {help_window()->show();
+get_help(help_browser);}
+        xywh {130 55 40 25} box FLAT_BOX color 219 selection_color 176 labelfont 1 labelsize 17 labelcolor 7
+      }
+    }
+  }
+  Function {help_window()} {open
+  } {
+    Fl_Window help_win {
+      label Help open
+      xywh {52 102 280 280} type Double visible
+    } {
+      Fl_Button {} {
+        label CLOSE
+        callback {close(help_win);}
+        xywh {210 245 60 25} box FLAT_BOX color 80 selection_color 64 labelcolor 7
+      }
+      Fl_Browser help_browser {
+        xywh {15 5 255 230} box FLAT_BOX
+      }
+    }
+  }
+  Function {get_help(Fl_Browser *o)} {open
+  } {
+    code {const char* lang=getenv("LANG");
+if(lang==NULL)lang=getenv("LANGUAGE");
+else{
+  std::string tmp=lang;
+  unsigned int finder=tmp.find('.');
+  if(finder<tmp.length()){tmp=tmp.erase(finder,std::string::npos);}
+  lang=tmp.c_str();
+}
+if(lang==NULL)lang="en_US";
+std::string helpfile="/jwm-settings-manager/help-desktop-file-editor-";
+helpfile+=lang;
+std::string fullfile=linuxcommon::test_file_in_vector_path(helpfile,linuxcommon::desktop_dirs());
+if(linuxcommon::test_file(fullfile)){
+  populateBrowserWithTextFile(o,fullfile);
+}
+else{
+  fullfile="If you have trouble saving your file, ensure that you are able to save in the directory.  You may need to reopen the program as administrator by running:\\n\\npkexec desktop-file-editor";
+  populateBrowserWithString(o,fullfile);
 }} {}
   }
 } 

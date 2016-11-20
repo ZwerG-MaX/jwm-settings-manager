@@ -921,7 +921,7 @@ LINUX_COMMON__NS_BEGIN
 		mydir=opendir(dir.c_str());
 		if(mydir!=NULL){
 			while ((entryPointer=readdir(mydir))!=NULL){
-				if((entryPointer->d_type == DT_REG)&&(entryPointer->d_name[0]!='.')){
+				if(entryPointer->d_type == DT_REG){
 					std::string fullpath=entryPointer->d_name;
 					if(dir.rfind('/')!=dir.length()-1){dir+="/";}
 					fullpath=dir+fullpath;
@@ -970,7 +970,7 @@ LINUX_COMMON__NS_BEGIN
 		//cannot be a directory
 		if(last+1==filename.length()){return false;}
 		///must have some path
-		if(last<=filename.length()){
+		if(last<filename.length()){
 			//generally assume they know what they are doing sending in a filename if it has at least one '/'
 			std::string dircheck=filename;
 			dircheck=dircheck.erase(last,std::string::npos);
@@ -987,7 +987,7 @@ LINUX_COMMON__NS_BEGIN
 		if(!dest.is_open()){return false;}
 		dest << MSG;
 		dest.close();
-		if(dest.is_open()){return false;}
+		//if(dest.is_open()){return false;}
 		return true;
 	}
 	bool has_file_extention_at_end(std::string filename,std::string extention){

@@ -150,7 +150,7 @@ Menu_CB(a);}
         Fl_Tabs {} {open
           xywh {0 35 285 380} box FLAT_BOX color 47
         } {
-          Fl_Group {} {
+          Fl_Group apps_tab {
             label Apps open
             xywh {5 60 280 350} selection_color 45
             code0 {const char* text=gettext("Apps");o->label(text);}
@@ -460,8 +460,8 @@ screen.} xywh {10 300 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum 
   } {
     Fl_Window indicator_win {
       label {Add Indicator} open
-      xywh {552 213 155 185} type Double
-      code0 {startup(o,jsm_panel_xpm);} visible
+      xywh {552 213 155 185} type Double hide
+      code0 {startup(o,jsm_panel_xpm);}
     } {
       Fl_Button {} {
         label OK
@@ -483,7 +483,7 @@ screen.} xywh {10 300 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum 
   const char* item=add_indicator_browser->text(add_indicator_browser->value());
   addIndicator(item);
   getIndicators(indicator_browser);
-}} selected
+}}
         xywh {10 140 30 30} box FLAT_BOX color 23
       }
     }
@@ -1109,10 +1109,13 @@ switch (line){
 }
 populateApps(app_browser);} {}
   }
-  Function {cancel_button()} {} {
-    code {cancel();
+  Function {cancel_button()} {open
+  } {
+    code {setJSMItem("panel","1");
+cancel();
 panel_window->hide();
-//UI ux;ux.showSettings();} {}
+//UI ux;ux.showSettings();} {selected
+    }
   }
   Function {change_manual_item(std::string input, std::string old_input)} {open
   } {
@@ -1193,10 +1196,12 @@ else{
     code {makeWidgetIcon(filename,widget,48);
 //widget->redraw();} {}
   }
-  Function {Menu_CB(int num)} {} {
+  Function {Menu_CB(int num)} {open
+  } {
     code {std::string LABEL = Menu_Label(num);
 panel_chooser->copy_label(LABEL.c_str());
 panel_chooser->redraw();
+populateApps(app_browser);
 //panel_window->hide();} {}
   }
   Function {move_up()} {open

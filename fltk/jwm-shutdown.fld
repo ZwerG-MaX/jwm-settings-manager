@@ -27,7 +27,7 @@ comment {/*                 Joe's Window Manager Configuration
  *
  * You may redistribute this, but you must keep this comment in place
  * Jesus is my Lord, and if you don't like it feel free to ignore it.
- */} {selected in_source in_header
+ */} {in_source in_header
 } 
 
 decl {\#include <libintl.h>} {public global
@@ -89,8 +89,7 @@ shutdown_window->hide();}
   }
   Function {window_bg()} {open
   } {
-    code {unsigned int c=0;
-unsigned int color=0;
+    code {unsigned int color=0;
 std::string menu=getElementText("MenuStyle","Background");
 color=linuxcommon::get_fl_color(menu);
 shutdown_window->color(color);
@@ -110,7 +109,8 @@ sus->color(color3);
 sus->labelcolor(color2);
 //can->color(color3);
 //can->labelcolor(color2);
-under_mouse(shutdown_window);} {}
+under_mouse(shutdown_window);} {selected
+    }
   }
   Function {under_mouse(Fl_Window *o)} {open
   } {

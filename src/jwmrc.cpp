@@ -176,6 +176,35 @@ debug_out("bool populateFLBrowser2Attr(Fl_Browser *o,std::string "+element+",std
 bool getIcons(Fl_Browser *o){
 	return populateFLBrowser(o,"IconPath");
 }
+bool addButtonToLastTray(std::string attribute, std::string value, std::string text){
+	debug_out("bool addButtonToLastTray(std::string "+attribute+", std::string "+value+",std::string "+text+")");
+	if(text.compare("")==0){return false;}
+	unsigned int whichElement=currentPanel();
+	pugi::xml_node node;
+	std::string element="Tray";
+	std::string subelement="TrayButton";
+	node=parseNodes(whichElement,element);
+	if(!node.child(subelement.c_str())){
+		debug_out("No subelement "+subelement+" found");
+		return false;
+	}
+    node=node.child(subelement.c_str());
+    while(node.next_sibling(subelement.c_str())){
+		std::string noder=node.name();
+		debug_out("getting next "+noder);
+		node=node.next_sibling(subelement.c_str());
+	}
+	if(!node){
+		std::string nodie=node.name();
+		debug_out(nodie+" node does not exist");
+		return false;
+	}
+	std::string button="Button";
+	node=node.append_child(button.c_str());
+	node.text().set(text.c_str());
+	node.append_attribute(attribute.c_str())=value.c_str();
+	return saveChangesTemp();
+}
 bool addElementAndSub(std::string element, std::string subelement){
 //	if(!loadTemp()){return false;}
 	debug_out("addElementAndSub(std::string "+element+", std::string "+ subelement+ ")");
@@ -248,7 +277,7 @@ bool addSubElementWithText(unsigned int whichElement,std::string element, std::s
             i++;
         }
     }
-    if(!node.child(subelement.c_str())){node.append_child(subelement.c_str());}
+    node.append_child(subelement.c_str());
     node.child(subelement.c_str()).text().set(text.c_str());
     return saveChangesTemp();
 }
@@ -344,29 +373,57 @@ bool addElementWithSubAndText(std::string element, std::string subelement, std::
     return saveChangesTemp();
 }
 bool setAttribute(pugi::xml_node node,std::string attribute,std::string value){
+	if(!node){
+		std::string texter=node.name();
+		debug_out("setAttribute::"+texter+" node doesn't exist");
+		return false;
+	}
 	std::string name=node.name();
 	if(name.compare("")==0){name="node";}
 	debug_out("bool setAttribute(pugi::xml_node "+name+",std::string "+attribute+",std::string "+value+")");
-	if(!node){
-		std::string texter=node.name();
-		debug_out(texter+" node doesn't exist");
-		return false;
-	}
 	if(attribute.compare("")==0){return false;}
 	if(value.compare("")==0){return false;}
-	node.attribute(attribute.c_str())=value.c_str();
+	node.append_attribute(attribute.c_str())=value.c_str();
+	std::string nodename;
+	nodename = node.attribute(attribute.c_str()).as_string();
+	debug_out("Attribute name:"+nodename);
+	return saveChangesTemp();
+}
+bool setLastTrayButtonAttribute(std::string attribute,std::string value){
+	debug_out("bool setLastTrayButtonAttribute(std::string "+attribute+",std::string "+value+")");
+	if(attribute.compare("")==0){return false;}
+	if(value.compare("")==0){return false;}
+	unsigned int whichElement=currentPanel();
+	pugi::xml_node node;
+	std::string element="Tray";
+	std::string subelement="TrayButton";
+	node=parseNodes(whichElement,element);
+	if(!node.child(subelement.c_str())){
+		debug_out("No subelement "+subelement+" found");
+		return false;
+	}
+    node=node.child(subelement.c_str());
+    while(node.next_sibling(subelement.c_str())){
+		std::string noder=node.name();
+		debug_out("getting next "+noder);
+		node=node.next_sibling(subelement.c_str());
+	}
+	node.append_attribute(attribute.c_str())=value.c_str();
+	std::string nodename=doc.child(node.name()).name();
+	debug_out("Node name:"+nodename);
 	return saveChangesTemp();
 }
 bool setNodeText(pugi::xml_node node,std::string text){
+	if(!node){return false;}
 	std::string name=node.name();
 	if(name.compare("")==0){name="node";}
-	debug_out("bool setAttribute(pugi::xml_node "+name+",std::string "+text+")");
-	if(!node){return false;}
+	debug_out("bool setNodeText(pugi::xml_node "+name+",std::string "+text+")");
 	if(text.compare("")==0){return false;}
 	node.text().set(text.c_str());
 	return saveChangesTemp();
 }
 bool addSubNodewithText(pugi::xml_node node,std::string element,std::string text){
+	if(!node){return false;}
 	std::string name=node.name();
 	if(name.compare("")==0){name="node";}
 	debug_out("bool addSubNodewithText(pugi::xml_node "+name+",std::string "+element+",std::string "+text+")");
@@ -378,6 +435,7 @@ bool addSubNodewithText(pugi::xml_node node,std::string element,std::string text
 	return saveChangesTemp();
 }
 bool addSubNodewithAttributeAndText(pugi::xml_node node,std::string element,std::string attribute, std::string value, std::string text){
+	if(!node){return false;}
 	std::string name=node.name();
 	if(name.compare("")==0){name="node";}
 	debug_out("bool addSubNodewithAttributeAndText(pugi::xml_node "+name+",std::string "+element+",std::string "+attribute+", std::string "+value+",std::string "+text+")");
@@ -1231,168 +1289,117 @@ std::string getElementAttribute(unsigned int whichElement,std::string element,un
     if(!node){return "";}
     return node.attribute(attribute.c_str()).as_string();
 }
-pugi::xml_node checkIncludes(unsigned int whichElement,std::string element){
-	debug_out("std::string checkIncludes(std::string "+element+")");
-	pugi::xml_node node;
-	unsigned int i=1;
-	if(element.compare("")==0){return node;}
-	std::vector<std::string> includeVec=Includes();
-	std::string currentInclude ="";
-	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
-		currentInclude=*it;
-		unsigned int finder=0;
-		finder=currentInclude.find("exec:");
-		if(finder<currentInclude.length()){
-			std::string command=currentInclude.erase(0,finder+5);//???
-			//executable
-			if(!linuxcommon::test_exec(command)){debug_out(command+"doesn't exist?");}
-			else{
-				std::string INCLUDEcontents=linuxcommon::term_out(command);
-				if(!doc.load_string(INCLUDEcontents.c_str())){
-					debug_out("Error loading contents of "+command);
-					return node;
-				}
-				node= doc.child("JWM").child(element.c_str());
-				if(whichElement!=i){
-					while(node.next_sibling(element.c_str()) && i!=whichElement){
-						node=node.next_sibling(element.c_str());
-						i++;
-					}
-				}
-				return node;
-			}//TODO: pugi load string and look for element.c_str();
-		}
-		else{
-			//load it
-			debug_out(currentInclude);
-			if(!linuxcommon::test_file(currentInclude)){debug_out(currentInclude+" is neither executable NOR a file???");}
-			else{
-				load(currentInclude);
-				node = doc.child("JWM").child(element.c_str());
-				if(whichElement!=i){
-					while(node.next_sibling(element.c_str()) && i!=whichElement){
-						node=node.next_sibling(element.c_str());
-						i++;
-					}
-				}
-				return node;
-			}//TODO: pugi load file and look for element.c_str();
+std::string getLayoutThing(std::string attribute,std::string value1,std::string value2,std::string value3,std::string layout){
+	debug_out("std::string getLayoutThing(std::string "+attribute+",std::string "+value1+",std::string "+value2+",std::string "+value3+",std::string "+layout+")");
+	std::string subelement="Tray";
+	pugi::xml_node node=doc.child("JWM").child(subelement.c_str());
+	if(!node){node=checkIncludes(subelement.c_str());}
+	std::list<std::string> layouts;
+	int Iter=0;
+	for(node=node;node;node=node.next_sibling(subelement.c_str())){
+		if(node.attribute(attribute.c_str())){
+			layouts.push_back(node.attribute(attribute.c_str()).as_string());
+			Iter++;
 		}
 	}
-	return node;
+	int fixed = 0, left = 0, right = 0, center = 0;
+	for (std::list<std::string>::iterator it = layouts.begin(); it != layouts.end(); ++it){
+		std::string layout=*it;
+		if(layout.compare(value1)==0)fixed++;
+		else if(layout.compare(value2)==0)left++;
+		else if(layout.compare(value3)==0)right++;
+		else center++;
+	}
+	std::string smartieAlign;
+	//HORIZONTAL
+	if(attribute.compare("halign")==0){
+		if(layout.compare("horizontal")==0){
+			if (((left+right+center)<=1)&&(fixed<=1)){smartieAlign =value1;}
+			else if (((left+right)<=1)&&(fixed<1)){smartieAlign =value1;}
+			else if (((left+center)<=1)&&(fixed<1)){smartieAlign =value1;}
+			else if (((right+center)<=1)&&(fixed<1)){smartieAlign =value1;}
+			else{smartieAlign ="center";}
+		}
+		else{
+			if (left==0){smartieAlign =value2;}
+			else if ((left==1)&&(fixed+right==0)){smartieAlign =value3;}
+			else{smartieAlign =value1;}
+		}
+    }
+    else{
+		//VERTICAL
+		if(layout.compare("horizontal")==0){
+			if ((left==1)&&((right+fixed)==0)){smartieAlign ="bottom";}
+			else if ((left==0)&&((right+fixed)==1)){smartieAlign ="top";}
+			else{smartieAlign ="fixed";}
+		}
+		else if(layout.compare("vertical")==0){
+			//this is our vertical Tray, since it can only be vertical or horizontal
+			//so we pretty much only want fixed....
+			if (fixed>=3){smartieAlign ="center";}
+			else{smartieAlign ="fixed";}
+		}
+		else{
+			debug_out("Not vertical or horizontal??");
+			smartieAlign="fixed";
+		}
+    }
+	return smartieAlign;
 }
-pugi::xml_node checkIncludes(std::string element){
-	debug_out("std::string checkIncludes(std::string "+element+")");
-	pugi::xml_node node;
-	if(element.compare("")==0){return node;}
-	std::vector<std::string> includeVec=Includes();
-	std::string currentInclude ="";
-	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
-		currentInclude=*it;
-		unsigned int finder=0;
-		finder=currentInclude.find("exec:");
-		if(finder<currentInclude.length()){
-			std::string command=currentInclude.erase(0,finder+5);//???
-			//executable
-			if(!linuxcommon::test_exec(command)){debug_out(command+"doesn't exist?");}
-			else{
-				std::string INCLUDEcontents=linuxcommon::term_out(command);
-				if(!doc.load_string(INCLUDEcontents.c_str())){
-					debug_out("Error loading contents of "+command);
-					return node;
-				}
-				node= doc.child("JWM").child(element.c_str());
-				return node;
-			}//TODO: pugi load string and look for element.c_str();
-		}
-		else{
-			//load it
-			debug_out(currentInclude);
-			if(!linuxcommon::test_file(currentInclude)){debug_out(currentInclude+" is neither executable NOR a file???");}
-			else{
-				load(currentInclude);
-				node = doc.child("JWM").child(element.c_str());
-				return node;
-			}//TODO: pugi load file and look for element.c_str();
+std::string getSmartHoriz(std::string layout){return getLayoutThing("halign","fixed","left","right",layout);}
+std::string getSmartVert(std::string layout){return getLayoutThing("valign","fixed","top","bottom",layout);}
+std::string getSmartLayout(){
+	debug_out("std::string getSmartLayout()");
+    std::string smartiePosition ="";
+    std::string layout;
+    std::string subelement="Tray";
+	pugi::xml_node node=doc.child("JWM").child(subelement.c_str());
+	if(!node){node=checkIncludes(subelement.c_str());}
+	std::list<std::string> layouts;
+	int Iter=0;
+	std::string attribute="layout";
+	for(node=node;node;node=node.next_sibling(subelement.c_str())){
+		if(node.attribute(attribute.c_str())){
+			layouts.push_back(node.attribute(attribute.c_str()).as_string());
+			Iter++;
 		}
 	}
-	return node;
+	int v1 = 0, v2 = 0, v3 = 0;
+	for (std::list<std::string>::iterator it = layouts.begin(); it != layouts.end(); ++it){
+		std::string layout=*it;
+		if(layout.compare("horizontal")==0)v1++;
+		else if(layout.compare("vertical")==0)v2++;
+		else{v3++;}
+	}
+    //call horizontalORvertical to figure out which one to pick.
+    smartiePosition = horizontalORvertical(v1,v2);
+    return smartiePosition;
 }
-pugi::xml_node checkIncludes(std::string element,std::string subelement){
-	debug_out("std::string checkIncludes(std::string "+element+","+subelement+")");
-	pugi::xml_node node;
-	if(element.compare("")==0){return node;}
-	if(subelement.compare("")==0){return node;}
-	std::vector<std::string> includeVec=Includes();
-	std::string currentInclude ="";
-	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
-		currentInclude=*it;
-		unsigned int finder=0;
-		finder=currentInclude.find("exec:");
-		if(finder<currentInclude.length()){
-			std::string command=currentInclude.erase(0,finder+5);//???
-			//executable
-			if(!linuxcommon::test_exec(command)){debug_out(command+"doesn't exist?");}
-			else{
-				std::string INCLUDEcontents=linuxcommon::term_out(command);
-				if(!doc.load_string(INCLUDEcontents.c_str())){
-					debug_out("Error loading contents of "+command);
-					return node;
-				}
-				node= doc.child("JWM").child(element.c_str()).child(subelement.c_str());
-				return node;
-			}//TODO: pugi load string and look for element.c_str();
-		}
-		else{
-			//load it
-			debug_out(currentInclude);
-			if(!linuxcommon::test_file(currentInclude)){debug_out(currentInclude+" is neither executable NOR a file???");}
-			else{
-				load(currentInclude);
-				node = doc.child("JWM").child(element.c_str()).child(subelement.c_str());
-				return node;
-			}//TODO: pugi load file and look for element.c_str();
-		}
-	}
-	return node;
-}
-pugi::xml_node checkIncludes(std::string element,std::string subelement,std::string SUBsubelement){
-debug_out("std::string checkIncludes(std::string "+element+","+subelement+","+SUBsubelement+")");
-	pugi::xml_node node;
-	if(element.compare("")==0){return node;}
-	if(subelement.compare("")==0){return node;}
-	std::vector<std::string> includeVec=Includes();
-	std::string currentInclude ="";
-	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
-		currentInclude=*it;
-		unsigned int finder=0;
-		finder=currentInclude.find("exec:");
-		if(finder<currentInclude.length()){
-			std::string command=currentInclude.erase(0,finder+5);//???
-			//executable
-			if(!linuxcommon::test_exec(command)){debug_out(command+"doesn't exist?");}
-			else{
-				std::string INCLUDEcontents=linuxcommon::term_out(command);
-				if(!doc.load_string(INCLUDEcontents.c_str())){
-					debug_out("Error loading contents of "+command);
-					return node;
-				}
-				node= doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubelement.c_str());
-				return node;
-			}//TODO: pugi load string and look for element.c_str();
-		}
-		else{
-			//load it
-			debug_out(currentInclude);
-			if(!linuxcommon::test_file(currentInclude)){debug_out(currentInclude+" is neither executable NOR a file???");}
-			else{
-				load(currentInclude);
-				node = doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubelement.c_str());
-				return node;
-			}//TODO: pugi load file and look for element.c_str();
-		}
-	}
-	return node;
+std::string horizontalORvertical(int horizontalValue, int verticalValue){
+	debug_out("std::string horizontalORvertical(int horizontalValue, int verticalValue)");
+    std::string horizontal = "horizontal";
+    std::string vertical= "vertical";
+    /*
+    if there are:
+
+    0 horiz                     make the next horizontal
+    1 horiz 0 vert              make the next horizontal
+    1 vert 1 horiz              make the next horizontal
+    2 vert 1 horiz              make the next horizontal
+
+    2 horiz 0 vert              make the next vertical
+    1 vert 2 horiz              make the next vertical
+    anything else... just center it
+
+    Basically I want to preferr Horizontal, because people are used to it.
+    */
+    if((horizontalValue == 0)){return horizontal;}
+    else if((horizontalValue ==1)&&(verticalValue == 0)){return horizontal;}
+    else if((horizontalValue==2) && (verticalValue == 0)){return vertical;}
+    else if((verticalValue==1) && (horizontalValue == 1)){return horizontal;}
+    else if((verticalValue==2) && (horizontalValue == 1)){return horizontal;}
+    else if((verticalValue==1) && (horizontalValue == 2)){return vertical;}
+    else {return "center";}
 }
 std::string terminal(std::string terminal){
   return linuxcommon::term_out(terminal);
@@ -1625,6 +1632,11 @@ int newStyle(){
     return not23;
 }
 unsigned int numPanels(){return elementCounter("Tray");}
+int whichAlign(std::string align){
+    if(align.compare("top")==0 || align.compare("bottom")==0){return 1;}
+    else if(align.compare("left")==0 || align.compare("right")==0){return 2;}
+    else {return 3;}
+}
 //float//////////////////////////////////////////////////////////////////
 float getElementFloat(std::string element){
 	//if(!loadTemp()){return false;}
@@ -1720,7 +1732,11 @@ void debug_out(std::string msg){
 	#endif
 }
 void errorOUT(std::string msg){
-	linuxcommon::echo_error(msg);
+	std::string lines="\n";
+	#ifdef DEBUG
+	lines+="----------------\n";
+	#endif
+	linuxcommon::echo_error(lines+msg+lines);
 }
 void cancel(){
   debug_out("Cancel");
@@ -2002,7 +2018,6 @@ void populateOptions(Fl_Browser *o){
     o->add("vmax");
 }
 void populateApps(Fl_Browser*o){
-	//TODO check includes
 	debug_out("void populateApps(Fl_Browser*o)");
 	o->clear();
 	std::string element="Tray";
@@ -2015,7 +2030,7 @@ void populateApps(Fl_Browser*o){
             i++;
         }
     }
-    if(!node){return;}
+    if(!node){checkIncludes(whichElement,element);}
     std::string RUNNINGAPPLIST=gettext("Running App List");
 	std::string INDICATORS=gettext("Indicators");
 	std::string CLOCK=gettext("Clock");
@@ -2083,6 +2098,43 @@ void setRootMenuAttribute(std::string menustring ,std::string attribute,std::str
 	}
 	
 }
+void deleteShortcut(std::string program){
+	debug_out("void deleteShortcut(std::string "+program+")");
+	std::string element="Tray";
+	pugi::xml_node node =doc.child("JWM").child(element.c_str());
+	if(!node){node=checkIncludes(element);}
+	unsigned int whichElement=currentPanel();
+	unsigned int i=1;
+    if(whichElement!=i){
+		while(node.next_sibling(element.c_str()) && i!=whichElement){
+            node=node.next_sibling(element.c_str());
+            i++;
+        }
+    }
+    std::string button="Button";
+    if(!node){node=checkIncludes(whichElement,element);}
+    for (node=node.child("TrayButton");node;node=node.next_sibling("TrayButton")){
+		std::string add_text=node.text().as_string();
+		pugi::xml_node buttonnode=node.child(button.c_str());
+		if(buttonnode){
+			for(buttonnode=node.child(button.c_str());buttonnode;buttonnode=buttonnode.next_sibling(button.c_str())){
+				std::string temp2=buttonnode.text().as_string();
+				if(temp2.compare(program)==0){
+					doc.remove_child(node);
+					saveChangesTemp();
+					return;
+				}
+			}
+		}
+		else{
+			if(add_text.compare(program)==0){
+				doc.remove_child(node);
+				saveChangesTemp();
+				return;
+			}
+		}	
+	}
+}
 void getShortcuts(Fl_Browser*o){
 	debug_out("void getShortcuts(Fl_Browser*o)");
 	o->clear();
@@ -2105,15 +2157,300 @@ void getShortcuts(Fl_Browser*o){
 		if(buttonnode){
 			for(buttonnode=node.child(button.c_str());buttonnode;buttonnode=buttonnode.next_sibling(button.c_str())){
 				std::string temp2=buttonnode.text().as_string();
-				if(temp2.compare("")!=0){o->add(temp2.c_str());}
+				if((temp2.compare("")!=0)&&(temp2.find("exec:")<temp2.length())){o->add(temp2.c_str());}
 			}
 		}
 		else{
-			if(add_text.compare("")!=0){o->add(add_text.c_str());}
-		}
-		
+			if((add_text.compare("")!=0)&&(add_text.find("exec:")<add_text.length())){o->add(add_text.c_str());}
+		}	
 	}
 	o->redraw();
+}
+void moveUp(int whichElement){
+	debug_out("void moveUp( int whichone)");
+	pugi::xml_node node=getCurrentTrayNode();
+	if(!node){debug_out("Tray does not exist");}
+	pugi::xml_node basenode=getCurrentTrayNode();
+	node=node.first_child();
+	int i=1;
+	if(whichElement!=i){
+		while(node.next_sibling() && i!=whichElement){
+            i++;
+            node=node.next_sibling();
+        }
+    }
+    else{
+		debug_out("The selected node is at the top, and cannot be moved up");
+		return;
+	}
+	pugi::xml_node nodeparser=node.previous_sibling();
+	basenode.insert_move_before(node,nodeparser);
+	saveChangesTemp();
+}
+void moveDown(int whichElement){
+	debug_out("void moveDown( int whichone)");
+	pugi::xml_node node=getCurrentTrayNode();
+	if(!node){debug_out("Tray does not exist");}
+	pugi::xml_node basenode=getCurrentTrayNode();
+	node=node.first_child();
+	int i=1;
+	if(whichElement!=i){
+		while(node.next_sibling() && i!=whichElement){
+            i++;
+            node=node.next_sibling();
+        }
+    }
+	pugi::xml_node nodeparser=node.next_sibling();
+	basenode.insert_move_after(node,nodeparser);
+	saveChangesTemp();
+}
+void deletePanelItem(int whichElement){
+	debug_out("void deletePanelItem(int whichElement)");
+	pugi::xml_node node=getCurrentTrayNode();
+	if(!node){debug_out("Tray does not exist");}
+	node=node.first_child();
+	int i=1;
+	if(whichElement!=i){
+		while(node.next_sibling() && i!=whichElement){
+            i++;
+            node=node.next_sibling();
+        }
+    }
+    else{
+		debug_out("The selected node is at the top, and cannot be moved up");
+		return;
+	}
+	if(node){doc.remove_child(node);}
+	else{debug_out("Node not found...");}
+	saveChangesTemp();
+}
+std::string getJSMItem(std::string item){
+	debug_out("std::string getJSMItem(std::string "+item+")");
+	if(item.compare("")==0){return "";}
+	std::string filename=linuxcommon::home_path();
+	if(filename.compare("")==0){return "";}
+	filename+=".jsm";
+	debug_out("Filename="+filename);
+	if(!linuxcommon::test_file(filename)){
+		std::string defaultFile="panel=1\ndebug=false\n";
+		debug_out(filename+" does not seem to be a file");
+		if(!linuxcommon::save_string_to_file(defaultFile,filename)){
+			debug_out("could not write default config file:"+filename);
+			return "";
+		}
+	}
+	debug_out("item="+item);
+	item+="=";
+	return linuxcommon::get_line_with_equal(filename,item);
+}
+
+void listAutostartXDG(Fl_Browser *o){
+	debug_out("void listAutostartXDG(Fl_Browser *o)");
+	std::vector<std::string> myVec=XDGautostart();
+	std::string currentInclude;
+	for(std::vector<std::string>::iterator it = myVec.begin();it!=myVec.end();++it){
+		currentInclude=*it;
+		o->add(currentInclude.c_str());
+	}
+}
+
+void remove_program_from_xdg_autostart(Fl_Browser* o){
+	debug_out("void remove_program_from_xdg_autostart(Fl_Browser* o)");
+	const char* item=o->text(o->value());
+	if(item==NULL){
+		debug_out("could not get the current value from the browser sent in");
+		return;
+	}
+	
+}
+
+//PUGI XML//////////////////////////////////////////////////////////////
+pugi::xml_node addNextSubelement(std::string element){
+	debug_out("pugi::xml_node addNextSubelement(std::string "+element+")");
+	pugi::xml_node node = parseNodes(currentPanel(),element.c_str());
+	pugi::xml_node basenode = doc.child("JWM");
+	pugi::xml_node newnode;
+	if(!node){
+		node=checkIncludes(currentPanel(),element.c_str());
+		if(node){
+			basenode=node.parent();
+			newnode=node.insert_child_after(element.c_str(),basenode);
+		}
+	}
+	else{
+		basenode=node.parent();
+		newnode=node.insert_child_after(element.c_str(),basenode);
+	}
+	if(!node){
+		node=doc.child("JWM");
+		newnode=doc.append_child(element.c_str());
+	}
+	if(!saveChangesTemp()){errorOUT("Did not save the changes to the temporary file");}
+	if(!newnode)newnode=parseNodes(currentPanel(),element.c_str());
+	return newnode;
+}
+pugi::xml_node checkIncludes(unsigned int whichElement,std::string element){
+	debug_out("std::string checkIncludes(std::string "+element+")");
+	pugi::xml_node node;
+	unsigned int i=1;
+	if(element.compare("")==0){return node;}
+	std::vector<std::string> includeVec=Includes();
+	std::string currentInclude ="";
+	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
+		currentInclude=*it;
+		unsigned int finder=0;
+		finder=currentInclude.find("exec:");
+		if(finder<currentInclude.length()){
+			std::string command=currentInclude.erase(0,finder+5);//???
+			//executable
+			if(!linuxcommon::test_exec(command)){debug_out(command+"doesn't exist?");}
+			else{
+				std::string INCLUDEcontents=linuxcommon::term_out(command);
+				if(!doc.load_string(INCLUDEcontents.c_str())){
+					debug_out("Error loading contents of "+command);
+					return node;
+				}
+				node= doc.child("JWM").child(element.c_str());
+				if(whichElement!=i){
+					while(node.next_sibling(element.c_str()) && i!=whichElement){
+						node=node.next_sibling(element.c_str());
+						i++;
+					}
+				}
+				return node;
+			}
+		}
+		else{
+			//load it
+			debug_out(currentInclude);
+			if(!linuxcommon::test_file(currentInclude)){debug_out(currentInclude+" is neither executable NOR a file???");}
+			else{
+				load(currentInclude);
+				node = doc.child("JWM").child(element.c_str());
+				if(whichElement!=i){
+					while(node.next_sibling(element.c_str()) && i!=whichElement){
+						node=node.next_sibling(element.c_str());
+						i++;
+					}
+				}
+				return node;
+			}//TODO: pugi load file and look for element.c_str();
+		}
+	}
+	return node;
+}
+pugi::xml_node checkIncludes(std::string element){
+	debug_out("std::string checkIncludes(std::string "+element+")");
+	pugi::xml_node node;
+	if(element.compare("")==0){return node;}
+	std::vector<std::string> includeVec=Includes();
+	std::string currentInclude ="";
+	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
+		currentInclude=*it;
+		unsigned int finder=0;
+		finder=currentInclude.find("exec:");
+		if(finder<currentInclude.length()){
+			std::string command=currentInclude.erase(0,finder+5);//???
+			//executable
+			if(!linuxcommon::test_exec(command)){debug_out(command+"doesn't exist?");}
+			else{
+				std::string INCLUDEcontents=linuxcommon::term_out(command);
+				if(!doc.load_string(INCLUDEcontents.c_str())){
+					debug_out("Error loading contents of "+command);
+					return node;
+				}
+				node= doc.child("JWM").child(element.c_str());
+				return node;
+			}//TODO: pugi load string and look for element.c_str();
+		}
+		else{
+			//load it
+			debug_out(currentInclude);
+			if(!linuxcommon::test_file(currentInclude)){debug_out(currentInclude+" is neither executable NOR a file???");}
+			else{
+				load(currentInclude);
+				node = doc.child("JWM").child(element.c_str());
+				return node;
+			}//TODO: pugi load file and look for element.c_str();
+		}
+	}
+	return node;
+}
+pugi::xml_node checkIncludes(std::string element,std::string subelement){
+	debug_out("std::string checkIncludes(std::string "+element+","+subelement+")");
+	pugi::xml_node node;
+	if(element.compare("")==0){return node;}
+	if(subelement.compare("")==0){return node;}
+	std::vector<std::string> includeVec=Includes();
+	std::string currentInclude ="";
+	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
+		currentInclude=*it;
+		unsigned int finder=0;
+		finder=currentInclude.find("exec:");
+		if(finder<currentInclude.length()){
+			std::string command=currentInclude.erase(0,finder+5);//???
+			//executable
+			if(!linuxcommon::test_exec(command)){debug_out(command+"doesn't exist?");}
+			else{
+				std::string INCLUDEcontents=linuxcommon::term_out(command);
+				if(!doc.load_string(INCLUDEcontents.c_str())){
+					debug_out("Error loading contents of "+command);
+					return node;
+				}
+				node= doc.child("JWM").child(element.c_str()).child(subelement.c_str());
+				return node;
+			}//TODO: pugi load string and look for element.c_str();
+		}
+		else{
+			//load it
+			debug_out(currentInclude);
+			if(!linuxcommon::test_file(currentInclude)){debug_out(currentInclude+" is neither executable NOR a file???");}
+			else{
+				load(currentInclude);
+				node = doc.child("JWM").child(element.c_str()).child(subelement.c_str());
+				return node;
+			}//TODO: pugi load file and look for element.c_str();
+		}
+	}
+	return node;
+}
+pugi::xml_node checkIncludes(std::string element,std::string subelement,std::string SUBsubelement){
+debug_out("std::string checkIncludes(std::string "+element+","+subelement+","+SUBsubelement+")");
+	pugi::xml_node node;
+	if(element.compare("")==0){return node;}
+	if(subelement.compare("")==0){return node;}
+	std::vector<std::string> includeVec=Includes();
+	std::string currentInclude ="";
+	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
+		currentInclude=*it;
+		unsigned int finder=0;
+		finder=currentInclude.find("exec:");
+		if(finder<currentInclude.length()){
+			std::string command=currentInclude.erase(0,finder+5);//???
+			//executable
+			if(!linuxcommon::test_exec(command)){debug_out(command+"doesn't exist?");}
+			else{
+				std::string INCLUDEcontents=linuxcommon::term_out(command);
+				if(!doc.load_string(INCLUDEcontents.c_str())){
+					debug_out("Error loading contents of "+command);
+					return node;
+				}
+				node= doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubelement.c_str());
+				return node;
+			}//TODO: pugi load string and look for element.c_str();
+		}
+		else{
+			//load it
+			debug_out(currentInclude);
+			if(!linuxcommon::test_file(currentInclude)){debug_out(currentInclude+" is neither executable NOR a file???");}
+			else{
+				load(currentInclude);
+				node = doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubelement.c_str());
+				return node;
+			}//TODO: pugi load file and look for element.c_str();
+		}
+	}
+	return node;
 }
 pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned int whichNODE, std::string subelement){
 	unsigned int i=1;
@@ -2142,22 +2479,15 @@ pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned in
 pugi::xml_node getMenu(std::string text){
 	debug_out("pugi::xml_node getMenu(std::string "+text+")");
 	unsigned int whichElement=currentPanel();
-	unsigned int i=1;
 	pugi::xml_node node;
 	std::string element="Tray";
 	std::string subelement="TrayButton";
 	std::string button="Button";
 	if(element.compare("")==0){return node;}
 	if(subelement.compare("")==0){return node;}
-	node =doc.child("JWM").child(element.c_str());
-	if(!node){node=checkIncludes(element);}
-    if(whichElement!=i){
-		while(node.next_sibling(element.c_str()) && i!=whichElement){
-            node=node.next_sibling(element.c_str());
-            i++;
-        }
-    }
-    if(!node){node=checkIncludes(whichElement,element);}
+	node =parseNodes(whichElement,element);
+	if(!node){return node;}
+    if(!node.child(subelement.c_str())){node.append_child(subelement.c_str());}
     node=node.child(subelement.c_str());
     while(node.next_sibling(subelement.c_str())){
 		std::string temp=node.text().as_string();
@@ -2175,12 +2505,11 @@ pugi::xml_node getMenu(std::string text){
 	}
     return node;
 }
-pugi::xml_node addNode(unsigned int whichElement,std::string element, std::string subelement){
-	debug_out("pugi::xml_node addNode(unsigned int whichElement,std::string "+element+", std::string "+subelement+")");
+pugi::xml_node parseNodes(unsigned int whichElement,std::string element){
+	debug_out("pugi::xml_node parseNodes(unsigned int whichElement,std::string "+element+")");
 	unsigned int i=1;
 	pugi::xml_node node;
 	if(element.compare("")==0){return node;}
-	if(subelement.compare("")==0){return node;}
 	node =doc.child("JWM").child(element.c_str());
 	if(!node){node=checkIncludes(element);}
     if(whichElement!=i){
@@ -2190,30 +2519,37 @@ pugi::xml_node addNode(unsigned int whichElement,std::string element, std::strin
         }
     }
     if(!node){node=checkIncludes(whichElement,element);}
+    return node;
+}
+pugi::xml_node addNode(unsigned int whichElement,std::string element, std::string subelement){
+	debug_out("pugi::xml_node addNode(unsigned int whichElement,std::string "+element+", std::string "+subelement+")");
+	pugi::xml_node node;
+	if(element.compare("")==0){return node;}
+	if(subelement.compare("")==0){return node;}
+	node=parseNodes(whichElement,element);
+    if(!node){
+		debug_out("Node not found!");
+		return node;
+	}
     node.append_child(subelement.c_str());
     node=node.last_child();
     std::string tmpnoder=node.name();
     debug_out("added "+tmpnoder);
-    while(node.next_sibling(subelement.c_str())){
-		std::string tmpnoder=node.name();
-		debug_out("found next "+tmpnoder);
-		node=node.next_sibling(subelement.c_str());
+    if(node.next_sibling(subelement.c_str())){
+		while(node.next_sibling(subelement.c_str())){
+			std::string tmpnoder=node.name();
+			debug_out("found next "+tmpnoder);
+			node=node.next_sibling(subelement.c_str());
+		}
     }
     saveChangesTemp();
     return node;
 }
 pugi::xml_node getCurrentTrayNode(){
 	debug_out("pugi::xml_node getCurrentTrayNode()");
-	unsigned int i=1;
 	unsigned int whichElement=currentPanel();
 	std::string element="Tray";
-	pugi::xml_node node=doc.child("JWM").child(element.c_str());
-    if(whichElement!=i){
-		while(node.next_sibling(element.c_str()) && i!=whichElement){
-            node=node.next_sibling(element.c_str());
-            i++;
-        }
-    }
+	pugi::xml_node node=parseNodes(whichElement,element);
     if(!node){node=checkIncludes(whichElement,element);}
     return node;
 }
@@ -2223,15 +2559,8 @@ pugi::xml_node getSubNode(unsigned int whichElement,std::string element,unsigned
 	pugi::xml_node node;
 	if(element.compare("")==0){return node;}
 	if(subelement.compare("")==0){return node;}
-	node =doc.child("JWM").child(element.c_str());
-    if(whichElement!=i){
-		while(node.next_sibling(element.c_str()) && i!=whichElement){
-            node=node.next_sibling(element.c_str());
-            i++;
-        }
-    }
+	node=parseNodes(whichElement,element);
     i=1;
-    if(!node){node=checkIncludes(whichElement,element);}
     node=node.child(subelement.c_str());
     if(whichSubElement!=i){
 		while(node.next_sibling(subelement.c_str()) && i!=whichElement){
@@ -2245,18 +2574,14 @@ pugi::xml_node getSubNode(unsigned int whichElement,std::string element,unsigned
 }
 pugi::xml_node getLastSubNode(unsigned int whichElement,std::string element, std::string subelement){
 	debug_out("pugi::xml_node getLastSubNode(unsigned int whichElement,std::string "+element+", std::string "+subelement+")");
-	unsigned int i=1;
 	pugi::xml_node node;
 	if(element.compare("")==0){return node;}
 	if(subelement.compare("")==0){return node;}
-	node=doc.child("JWM").child(element.c_str());
-    if(whichElement!=i){
-		while(node.next_sibling(element.c_str()) && i!=whichElement){
-            node=node.next_sibling(element.c_str());
-            i++;
-        }
-    }
-    if(!node){node=checkIncludes(whichElement,element);}
+	node=parseNodes(whichElement,element);
+	if(!node.child(subelement.c_str())){
+		debug_out("No subelement "+subelement+" found");
+		return node;
+	}
     node=node.child(subelement.c_str());
     while(node.next_sibling(subelement.c_str())){
 		std::string noder=node.name();
@@ -2302,81 +2627,4 @@ pugi::xml_node compareNode(std::string element, std::string attribute, std::stri
 
 	}
 	return node;
-}
-void moveUp(int whichElement){
-	debug_out("void moveUp( int whichone)");
-	pugi::xml_node node=getCurrentTrayNode();
-	if(!node){debug_out("Tray does not exist");}
-	pugi::xml_node basenode=getCurrentTrayNode();
-	node=node.first_child();
-	int i=1;
-	if(whichElement!=i){
-		while(node.next_sibling() && i!=whichElement){
-            i++;
-            node=node.next_sibling();
-        }
-    }
-    else{
-		debug_out("The selected node is at the top, and cannot be moved up");
-		return;
-	}
-	pugi::xml_node nodeparser=node.previous_sibling();
-	basenode.insert_move_before(node,nodeparser);
-	saveChangesTemp();
-}
-void moveDown(int whichElement){
-	debug_out("void moveDown( int whichone)");
-	pugi::xml_node node=getCurrentTrayNode();
-	if(!node){debug_out("Tray does not exist");}
-	pugi::xml_node basenode=getCurrentTrayNode();
-	node=node.first_child();
-	int i=1;
-	if(whichElement!=i){
-		while(node.next_sibling() && i!=whichElement){
-            i++;
-            node=node.next_sibling();
-        }
-    }
-	pugi::xml_node nodeparser=node.next_sibling();
-	basenode.insert_move_after(node,nodeparser);
-	saveChangesTemp();
-}
-std::string getJSMItem(std::string item){
-	debug_out("std::string getJSMItem(std::string "+item+")");
-	if(item.compare("")==0){return "";}
-	std::string filename=linuxcommon::home_path();
-	if(filename.compare("")==0){return "";}
-	filename+=".jsm";
-	debug_out("Filename="+filename);
-	if(!linuxcommon::test_file(filename)){
-		std::string defaultFile="panel=1\ndebug=false";
-		debug_out(filename+" does not seem to be a file");
-		if(!linuxcommon::save_string_to_file(defaultFile,filename)){
-			debug_out("could not write default config file:"+filename);
-			return "";
-		}
-	}
-	debug_out("item="+item);
-	item+="=";
-	return linuxcommon::get_line_with_equal(filename,item);
-}
-
-void listAutostartXDG(Fl_Browser *o){
-	debug_out("void listAutostartXDG(Fl_Browser *o)");
-	std::vector<std::string> myVec=XDGautostart();
-	std::string currentInclude;
-	for(std::vector<std::string>::iterator it = myVec.begin();it!=myVec.end();++it){
-		currentInclude=*it;
-		o->add(currentInclude.c_str());
-	}
-}
-
-void remove_program_from_xdg_autostart(Fl_Browser* o){
-	debug_out("void remove_program_from_xdg_autostart(Fl_Browser* o)");
-	const char* item=o->text(o->value());
-	if(item==NULL){
-		debug_out("could not get the current value from the browser sent in");
-		return;
-	}
-	
 }

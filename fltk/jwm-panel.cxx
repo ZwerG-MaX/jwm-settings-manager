@@ -931,8 +931,8 @@ Fl_Double_Window* PanelUI::make_window() {
       { Fl_Tabs* o = new Fl_Tabs(0, 35, 285, 380);
         o->box(FL_FLAT_BOX);
         o->color(FL_DARK1);
-        { Fl_Group* o = new Fl_Group(5, 60, 280, 350, gettext("Apps"));
-          o->selection_color(FL_DARK2);
+        { Fl_Group* o = apps_tab = new Fl_Group(5, 60, 280, 350, gettext("Apps"));
+          apps_tab->selection_color(FL_DARK2);
           { Fl_Button* o = new Fl_Button(50, 380, 30, 30, gettext("-"));
             o->box(FL_FLAT_BOX);
             o->color((Fl_Color)23);
@@ -971,8 +971,8 @@ Fl_Double_Window* PanelUI::make_window() {
             o->callback((Fl_Callback*)cb_92);
           } // Fl_Button* o
           const char* text=gettext("Apps");o->label(text);
-          o->end();
-        } // Fl_Group* o
+          apps_tab->end();
+        } // Fl_Group* apps_tab
         { Fl_Group* o = new Fl_Group(0, 60, 275, 335, gettext("Appearance"));
           o->selection_color(FL_DARK2);
           o->hide();
@@ -1995,6 +1995,7 @@ void PanelUI::add_item() {
 }
 
 void PanelUI::cancel_button() {
+  setJSMItem("panel","1");
   cancel();
   panel_window->hide();
   //UI ux;ux.showSettings();
@@ -2084,6 +2085,7 @@ void PanelUI::Menu_CB(int num) {
   std::string LABEL = Menu_Label(num);
   panel_chooser->copy_label(LABEL.c_str());
   panel_chooser->redraw();
+  populateApps(app_browser);
   //panel_window->hide();
 }
 

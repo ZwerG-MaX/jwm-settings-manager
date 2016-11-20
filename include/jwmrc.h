@@ -53,6 +53,7 @@
 #include <stdio.h>
 #include <vector>
 #include <algorithm>
+#include <list>
 //getExtention for icons
 #include <dirent.h>
 //gettext
@@ -62,6 +63,7 @@
 
 ///Boolean//////////////////////////////////////////////////////////////
 //A
+bool addButtonToLastTray(std::string attribute, std::string value, std::string text);
 bool addElementAndSub(std::string element, std::string subelelemnt);
 bool addElementWithText(std::string element, std::string text);
 bool addElementWithTextAfter(std::string element, std::string text);
@@ -118,6 +120,7 @@ bool saveChangesTemp();
 bool saveChangesTempOverwrite();
 bool saveNoRestart();
 bool setAttribute(pugi::xml_node node,std::string attribute,std::string value);
+bool setLastTrayButtonAttribute(std::string attribute,std::string value);
 bool setElementText(std::string element, std::string text);
 bool setElementText(unsigned int whichElement, std::string element, std::string subelement, std::string text);
 bool setElementText(std::string element, std::string subelement, std::string text);
@@ -161,6 +164,12 @@ std::string getElementAttributeFromElementWithAttributeAndValueAndText(std::stri
 std::string getElementAttribute(unsigned int whichElement,std::string element, std::string subelement, std::string attribute);
 std::string getElementAttribute(unsigned int whichElement,std::string element, std::string attribute);
 std::string getElementAttribute(unsigned int whichElement,std::string element,unsigned int whichItem, std::string subelement, std::string attribute);
+std::string getLayoutThing(std::string attribute,std::string vaule1,std::string value2,std::string value3,std::string layout);
+std::string getSmartHoriz(std::string layout);
+std::string getSmartVert(std::string layout);
+std::string getSmartLayout();
+std::string horizontalORvertical(int horizontalValue, int verticalValue);
+
 std::string terminal(std::string terminal);//linuxcommon wrapper
 std::string colorToString(const double *rgb);
 std::string joinColors(const double* rgb, const double* rgb2);
@@ -185,7 +194,7 @@ int addMenuItem(Fl_Browser* menuElement, Fl_Browser* menuElementText, Fl_Input* 
 int getIntAttribute(std::string element, std::string attribute);
 int getIntAttribute(std::string element, std::string subelement, std::string attribute);
 int newStyle();
-
+int whichAlign(std::string align);
 //float/////////////////////////////////////////////////////////////////
 float getElementFloat(std::string element);
 float getElementFloat(std::string element, std::string subelement);
@@ -205,6 +214,8 @@ void under_mouse(Fl_Window *o);
 void addCursorsToBrowser(Fl_Browser *o);
 void createElement(std::string element,std::string text);
 void changeElementText(std::string element,std::string text,std::string NEWTEXT);
+void deletePanelItem(int whichElement);
+void deleteShortcut(std::string program);
 void getShortcuts(Fl_Browser*o);
 void listAutostartXDG(Fl_Browser *o);
 void moveUp(int whichone);
@@ -220,15 +231,18 @@ void populateOptions(Fl_Browser *o);
 void populateApps(Fl_Browser*o);
 void setRootMenuAttribute(std::string menustring ,std::string attribute,std::string value);
 //pugixml/////////////////////////////////////////////////////////////
+pugi::xml_node addNextSubelement(std::string element);
 pugi::xml_node checkIncludes(unsigned int whichOne,std::string element);
 pugi::xml_node checkIncludes(std::string element);
 pugi::xml_node checkIncludes(std::string element,std::string subelement);
 pugi::xml_node checkIncludes(std::string element,std::string subelement,std::string SUBsubelement);
+pugi::xml_node parseNodes(unsigned int whichElement,std::string element);
 pugi::xml_node addNode(unsigned int whichElement,std::string element, std::string subelement);
 pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned int whichNODE, std::string subelement);
 pugi::xml_node getMenu(std::string text);
 pugi::xml_node getSubNode(unsigned int whichElement,std::string element,unsigned int whichSubElement, std::string subelement);
 pugi::xml_node getLastSubNode(unsigned int whichElement,std::string element, std::string subelement);
 pugi::xml_node compareNode(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text);
+pugi::xml_node getCurrentTrayNode();
 //variables/////////////////////////////////////////////////////////////
 #endif

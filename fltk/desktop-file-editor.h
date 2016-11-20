@@ -26,6 +26,8 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Box.H>
+#include <FL/Fl_Output.H>
+#include <FL/Fl_Browser.H>
 
 class Desktop {
 public:
@@ -209,8 +211,8 @@ private:
   static void cb_CLEAR(Fl_Button*, void*);
   inline void cb_PREVIEW_i(Fl_Button*, void*);
   static void cb_PREVIEW(Fl_Button*, void*);
-  inline void cb_File_i(Fl_Button*, void*);
-  static void cb_File(Fl_Button*, void*);
+  inline void cb_Filename_i(Fl_Button*, void*);
+  static void cb_Filename(Fl_Button*, void*);
 public:
   Fl_Double_Window* preview_window(std::string message);
   Fl_Double_Window *preview_win;
@@ -226,7 +228,7 @@ public:
   std::string choose_directory();
   void clear_all();
   void clear_input(Fl_Input *o);
-  void close();
+  void close(Fl_Double_Window* o);
   void DEactivate(Fl_Input* o);
   void DEactivate(Fl_Menu_Button* o);
   std::string get_line(std::string filename, std::string line);
@@ -243,7 +245,7 @@ public:
   void OnlyShowIn(const char* DE);
   void open_file();
   void populate(std::string fileName);
-  void save_file();
+  bool check_file();
   void set_input(Fl_Input *o, std::string val);
   void show_all();
   void show_apps_only();
@@ -253,6 +255,23 @@ public:
   std::string termie_out(std::string terminal_Command_You_Want_Output_From);
   std::string testValue(std::string TEXT, Fl_Input* o);
   void write_out();
+  void save_file();
+  Fl_Double_Window* save_error();
+  Fl_Double_Window *error_win;
+private:
+  inline void cb_OK_i(Fl_Button*, void*);
+  static void cb_OK(Fl_Button*, void*);
+  inline void cb__i(Fl_Button*, void*);
+  static void cb_(Fl_Button*, void*);
+public:
+  Fl_Double_Window* help_window();
+  Fl_Double_Window *help_win;
+private:
+  inline void cb_CLOSE1_i(Fl_Button*, void*);
+  static void cb_CLOSE1(Fl_Button*, void*);
+public:
+  Fl_Browser *help_browser;
+  void get_help(Fl_Browser *o);
 };
 int main(int argc, char *argv[]);
 #endif

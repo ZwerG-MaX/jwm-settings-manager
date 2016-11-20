@@ -528,40 +528,62 @@ void Desktop::cb_PREVIEW(Fl_Button* o, void* v) {
   ((Desktop*)(o->parent()->parent()->user_data()))->cb_PREVIEW_i(o,v);
 }
 
-void Desktop::cb_File_i(Fl_Button*, void*) {
+void Desktop::cb_Filename_i(Fl_Button*, void*) {
   std::string filename=choose_a_directory_to_save("","");
 if(filename.compare("")!=0){Filename->value();};
 }
-void Desktop::cb_File(Fl_Button* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->user_data()))->cb_File_i(o,v);
+void Desktop::cb_Filename(Fl_Button* o, void* v) {
+  ((Desktop*)(o->parent()->parent()->user_data()))->cb_Filename_i(o,v);
 }
 
 void Desktop::cb_SAVE1_i(Fl_Button*, void*) {
-  save_file();
-preview_win->hide();
+  if(check_file()){write_out();}
+close(preview_win);;
 }
 void Desktop::cb_SAVE1(Fl_Button* o, void* v) {
   ((Desktop*)(o->parent()->user_data()))->cb_SAVE1_i(o,v);
 }
 
 void Desktop::cb_CLOSE_i(Fl_Button*, void*) {
-  preview_win->hide();
+  close(preview_win);
 }
 void Desktop::cb_CLOSE(Fl_Button* o, void* v) {
   ((Desktop*)(o->parent()->user_data()))->cb_CLOSE_i(o,v);
 }
 
+void Desktop::cb_OK_i(Fl_Button*, void*) {
+  close(error_win);
+}
+void Desktop::cb_OK(Fl_Button* o, void* v) {
+  ((Desktop*)(o->parent()->user_data()))->cb_OK_i(o,v);
+}
+
+void Desktop::cb__i(Fl_Button*, void*) {
+  help_window()->show();
+get_help(help_browser);
+}
+void Desktop::cb_(Fl_Button* o, void* v) {
+  ((Desktop*)(o->parent()->user_data()))->cb__i(o,v);
+}
+
+void Desktop::cb_CLOSE1_i(Fl_Button*, void*) {
+  close(help_win);
+}
+void Desktop::cb_CLOSE1(Fl_Button* o, void* v) {
+  ((Desktop*)(o->parent()->user_data()))->cb_CLOSE1_i(o,v);
+}
+
 Fl_Double_Window* Desktop::make_window(std::string filePassedIn) {
   Fl_Double_Window* w;
-  { Fl_Double_Window* o = new Fl_Double_Window(415, 570, gettext("Desktop File Editor"));
+  { Fl_Double_Window* o = new Fl_Double_Window(410, 570, gettext("Desktop File Editor"));
     w = o;
     o->color(FL_DARK1);
     o->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(0, 0, 420, 563);
-      { Fl_Tabs* o = new Fl_Tabs(5, 5, 415, 490);
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 409, 563);
+      { Fl_Tabs* o = new Fl_Tabs(5, 5, 402, 460);
         o->box(FL_FLAT_BOX);
         o->color(FL_DARK1);
-        { Fl_Group* o = new Fl_Group(5, 30, 415, 455, gettext("Normal"));
+        { Fl_Group* o = new Fl_Group(5, 30, 402, 430, gettext("Normal"));
           o->box(FL_FLAT_BOX);
           o->selection_color(FL_DARK2);
           { name = new Fl_Input(145, 50, 255, 30, gettext("Name"));
@@ -764,7 +786,7 @@ etscape -remote, or kfmclient openURL kind of stuff)."));
           } // Fl_Button* icon_display
           o->end();
         } // Fl_Group* o
-        { Fl_Group* o = new Fl_Group(10, 30, 405, 455, gettext("Advanced"));
+        { Fl_Group* o = new Fl_Group(10, 30, 395, 430, gettext("Advanced"));
           o->box(FL_FLAT_BOX);
           o->selection_color(FL_DARK2);
           o->hide();
@@ -772,52 +794,52 @@ etscape -remote, or kfmclient openURL kind of stuff)."));
             genericname->tooltip(gettext("Generic name of the application, for example \"Web Browser\"."));
             genericname->box(FL_FLAT_BOX);
           } // Fl_Input* genericname
-          { version = new Fl_Input(145, 77, 255, 30, gettext("Version"));
+          { version = new Fl_Input(145, 75, 255, 30, gettext("Version"));
             version->tooltip(gettext("Version of the Desktop Entry Specification that the desktop entry conforms wi\
 th. Entries that confirm with this version of the specification should use 1.0\
 . Note that the version field is not required to be present."));
             version->box(FL_FLAT_BOX);
           } // Fl_Input* version
-          { path = new Fl_Input(145, 115, 255, 30, gettext("Path"));
+          { path = new Fl_Input(145, 110, 255, 30, gettext("Path"));
             path->tooltip(gettext("If entry is of type Application, the working directory to run the program in."));
             path->box(FL_FLAT_BOX);
           } // Fl_Input* path
-          { mime = new Fl_Input(145, 153, 255, 30, gettext("MimeType"));
+          { mime = new Fl_Input(145, 145, 255, 30, gettext("MimeType"));
             mime->tooltip(gettext("The MIME type(s) supported by this application."));
             mime->box(FL_FLAT_BOX);
           } // Fl_Input* mime
-          { implements = new Fl_Input(145, 190, 255, 30, gettext("Implements"));
+          { implements = new Fl_Input(145, 180, 255, 30, gettext("Implements"));
             implements->tooltip(gettext("A list of interfaces that this application implements. By default, a desktop \
 file implements no interfaces. See http://standards.freedesktop.org/desktop-en\
 try-spec/latest/ar01s08.html for more information on how this works."));
             implements->box(FL_FLAT_BOX);
           } // Fl_Input* implements
-          { keywords = new Fl_Input(145, 228, 255, 30, gettext("Keywords"));
+          { keywords = new Fl_Input(145, 215, 255, 30, gettext("Keywords"));
             keywords->tooltip(gettext("A list of strings which may be used in addition to other metadata to describe\
  this entry. This can be useful e.g. to facilitate searching through entries. \
 The values are not meant for display, and should not be redundant with the val\
 ues of Name or GenericName."));
             keywords->box(FL_FLAT_BOX);
           } // Fl_Input* keywords
-          { wmclass = new Fl_Input(145, 266, 255, 30, gettext("StartupWMClass"));
+          { wmclass = new Fl_Input(145, 250, 255, 30, gettext("StartupWMClass"));
             wmclass->tooltip(gettext("If specified, it is known that the application will map at least one window w\
 ith the given string as its WM class or WM name hint (see the Startup Notifica\
 tion Protocol Specification for more details)."));
             wmclass->box(FL_FLAT_BOX);
           } // Fl_Input* wmclass
-          { url = new Fl_Input(145, 304, 255, 30, gettext("URL"));
+          { url = new Fl_Input(145, 285, 255, 30, gettext("URL"));
             url->tooltip(gettext("If entry is Link type, the URL to access."));
             url->box(FL_FLAT_BOX);
             url->labelfont(1);
           } // Fl_Input* url
-          { actions = new Fl_Input(145, 341, 255, 30);
+          { actions = new Fl_Input(145, 320, 255, 30);
             actions->tooltip(gettext("Identifiers for application actions. This can be used to tell the application\
  to make a specific action, different from the default behavior. The Applicati\
 on actions section describes how actions work."));
             actions->box(FL_FLAT_BOX);
             actions->deactivate();
           } // Fl_Input* actions
-          { notify = new Fl_Input(145, 379, 255, 30);
+          { notify = new Fl_Input(145, 355, 255, 30);
             notify->tooltip(gettext("If true, it is KNOWN that the application will send a \"remove\" message when\
  started with the DESKTOP_STARTUP_ID environment variable set. If false, it is\
  KNOWN that the application does not work with startup notification at all (do\
@@ -827,7 +849,7 @@ tupWMClass, etc.). (See the Startup Notification Protocol Specification for mo\
 re details)."));
             notify->box(FL_FLAT_BOX);
           } // Fl_Input* notify
-          { hidden = new Fl_Input(145, 417, 255, 30);
+          { hidden = new Fl_Input(145, 390, 255, 30);
             hidden->tooltip(gettext("Hidden should have been called Deleted. It means the user deleted (at his lev\
 el) something that was present (at an upper level, e.g. in the system dirs). I\
 t\'s strictly equivalent to the .desktop file not existing at all, as far as t\
@@ -836,7 +858,7 @@ e.g. due to a renaming) - by letting make install install a file with Hidden=t\
 rue in it."));
             hidden->box(FL_FLAT_BOX);
           } // Fl_Input* hidden
-          { dbus = new Fl_Input(145, 455, 255, 30);
+          { dbus = new Fl_Input(145, 425, 255, 30);
             dbus->tooltip(gettext("A boolean value specifying if D-Bus activation is supported for this applicat\
 ion. If this key is missing, the default value is false. If the value is true \
 then implementations should ignore the Exec key and send a D-Bus message to la\
@@ -846,7 +868,7 @@ compatibility with implementations that do not understand the DBusActivatable \
 key."));
             dbus->box(FL_FLAT_BOX);
           } // Fl_Input* dbus
-          { Fl_Button* o = new Fl_Button(10, 341, 130, 30, gettext("Actions"));
+          { Fl_Button* o = new Fl_Button(10, 320, 130, 30, gettext("Actions"));
             o->tooltip(gettext("Identifiers for application actions. This can be used to tell the application\
  to make a specific action, different from the default behavior. The Applicati\
 on actions section describes how actions work."));
@@ -854,7 +876,7 @@ on actions section describes how actions work."));
             o->color((Fl_Color)23);
             o->deactivate();
           } // Fl_Button* o
-          { notify_Button = new Fl_Menu_Button(10, 379, 130, 30, gettext("StartupNotify"));
+          { notify_Button = new Fl_Menu_Button(10, 355, 130, 30, gettext("StartupNotify"));
             notify_Button->tooltip(gettext("If true, it is KNOWN that the application will send a \"remove\" message when\
  started with the DESKTOP_STARTUP_ID environment variable set. If false, it is\
  KNOWN that the application does not work with startup notification at all (do\
@@ -875,7 +897,7 @@ re details)."));
             }
             notify_Button->menu(menu_notify_Button);
           } // Fl_Menu_Button* notify_Button
-          { Fl_Menu_Button* o = new Fl_Menu_Button(10, 417, 130, 30, gettext("Hidden"));
+          { Fl_Menu_Button* o = new Fl_Menu_Button(10, 390, 130, 30, gettext("Hidden"));
             o->tooltip(gettext("Hidden should have been called Deleted. It means the user deleted (at his lev\
 el) something that was present (at an upper level, e.g. in the system dirs). I\
 t\'s strictly equivalent to the .desktop file not existing at all, as far as t\
@@ -895,7 +917,7 @@ rue in it."));
             }
             o->menu(menu_Hidden);
           } // Fl_Menu_Button* o
-          { Fl_Menu_Button* o = new Fl_Menu_Button(10, 455, 130, 30, gettext("DBusActivatable"));
+          { Fl_Menu_Button* o = new Fl_Menu_Button(10, 425, 130, 30, gettext("DBusActivatable"));
             o->tooltip(gettext("A boolean value specifying if D-Bus activation is supported for this applicat\
 ion. If this key is missing, the default value is false. If the value is true \
 then implementations should ignore the Exec key and send a D-Bus message to la\
@@ -920,42 +942,47 @@ key."));
         } // Fl_Group* o
         o->end();
       } // Fl_Tabs* o
-      { Fl_Button* o = new Fl_Button(15, 533, 80, 30, gettext("OPEN"));
+      { Fl_Button* o = new Fl_Button(15, 530, 80, 30, gettext("OPEN"));
         o->tooltip(gettext("Open a desktop file"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_OPEN);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(320, 533, 80, 30, gettext("SAVE"));
+      { Fl_Button* o = new Fl_Button(320, 530, 80, 30, gettext("SAVE"));
         o->tooltip(gettext("Save the current data as a file"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)61);
+        o->selection_color((Fl_Color)59);
         o->labelcolor(FL_BACKGROUND2_COLOR);
         o->callback((Fl_Callback*)cb_SAVE);
       } // Fl_Button* o
-      { Filename = new Fl_Input(115, 500, 285, 30);
+      { Filename = new Fl_Input(115, 475, 285, 30);
         Filename->tooltip(gettext("The file you want to save (or the name of the current open file)"));
         Filename->box(FL_FLAT_BOX);
       } // Fl_Input* Filename
-      { Fl_Button* o = new Fl_Button(220, 533, 80, 30, gettext("CLEAR"));
+      { Fl_Button* o = new Fl_Button(220, 530, 80, 30, gettext("CLEAR"));
         o->tooltip(gettext("CLEAR EVERYTHING"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)80);
+        o->selection_color(FL_DARK_RED);
         o->labelcolor(FL_BACKGROUND2_COLOR);
         o->callback((Fl_Callback*)cb_CLEAR);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(115, 533, 80, 30, gettext("PREVIEW"));
+      { Fl_Button* o = new Fl_Button(115, 530, 80, 30, gettext("PREVIEW"));
         o->tooltip(gettext("Preview text"));
         o->box(FL_FLAT_BOX);
         o->color(FL_YELLOW);
+        o->selection_color((Fl_Color)94);
         o->labelcolor(FL_GRAY0);
         o->callback((Fl_Callback*)cb_PREVIEW);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(15, 498, 80, 30, gettext("File Name"));
-        o->tooltip(gettext("Open a desktop file"));
+      { Fl_Button* o = new Fl_Button(15, 473, 80, 30, gettext("Filename"));
+        o->tooltip(gettext("The filename to save this as."));
         o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)23);
-        o->callback((Fl_Callback*)cb_File);
+        o->color((Fl_Color)61);
+        o->selection_color((Fl_Color)59);
+        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->callback((Fl_Callback*)cb_Filename);
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
@@ -975,7 +1002,7 @@ Fl_Double_Window* Desktop::preview_window(std::string message) {
         //if(message.compare("")!=0)o->insert(message.c_str());
       } // Fl_Text_Display* o
       { Fl_Box* o = new Fl_Box(10, 5, 440, 410);
-        o->align(Fl_Align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE));
+        o->align(Fl_Align(133|FL_ALIGN_INSIDE));
         if(message.compare("")!=0)o->copy_label(message.c_str());
       } // Fl_Box* o
       o->end();
@@ -984,13 +1011,14 @@ Fl_Double_Window* Desktop::preview_window(std::string message) {
       o->tooltip(gettext("Save the current data as a file"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
+      o->selection_color((Fl_Color)58);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_SAVE1);
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(275, 425, 80, 30, gettext("CLOSE"));
-      o->tooltip(gettext("CLEAR EVERYTHING"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)80);
+      o->selection_color(FL_DARK_RED);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_CLOSE);
     } // Fl_Button* o
@@ -1075,6 +1103,10 @@ void Desktop::clear_all() {
 void Desktop::clear_input(Fl_Input *o) {
   o->value("");
   o->redraw();
+}
+
+void Desktop::close(Fl_Double_Window* o) {
+  o->hide();
 }
 
 void Desktop::DEactivate(Fl_Input* o) {
@@ -1371,19 +1403,22 @@ void Desktop::populate(std::string fileName) {
   check_type();
 }
 
-void Desktop::save_file() {
+bool Desktop::check_file() {
   std::string testFilename;
-  const char* filer = Filename->value();
   if (isEmpty(Filename)){
     make_red(Filename);
-    return;
+    return false;
   }
+  const char* filer = Filename->value();
   testFilename=filer;
   unsigned int found = 0;
   found=testFilename.find(".desktop");
   if (found > testFilename.length()){
     make_red(Filename);
     testFilename += ".desktop";
+    Filename->value(testFilename.c_str());
+    Filename->redraw();
+    
   }
   found = 0;
   found= testFilename.find("/");
@@ -1391,7 +1426,7 @@ void Desktop::save_file() {
     std::string choice=choose_directory();
     if(choice.compare("")==0){
       make_red(Filename);
-      return;
+      return false;
     }
     choice+="/";
     choice+=testFilename;
@@ -1399,9 +1434,7 @@ void Desktop::save_file() {
   }
   Filename->value(testFilename.c_str());
   Filename->redraw();
-  write_out();
-  
-  //clear_all();
+  return true;
 }
 
 void Desktop::set_input(Fl_Input *o, std::string val) {
@@ -1565,9 +1598,86 @@ std::string Desktop::testValue(std::string TEXT, Fl_Input* o) {
 void Desktop::write_out() {
   const char* FILENAME=Filename->value();
   std::string fileContents=stringfile();
-  preview_window(fileContents)->show();
   if(!linuxcommon::save_string_to_file(fileContents,FILENAME)){
+    error_win->show();
     linuxcommon::echo_error("Did not save the file correctly");
+  }
+}
+
+void Desktop::save_file() {
+  if(check_file()){
+    std::string fileContents=stringfile();
+    preview_window(fileContents)->show();
+  }
+}
+
+Fl_Double_Window* Desktop::save_error() {
+  { error_win = new Fl_Double_Window(270, 90, gettext("Save Error"));
+    error_win->user_data((void*)(this));
+    { Fl_Output* o = new Fl_Output(5, 25, 255, 25, gettext("There was an error saving the file:"));
+      o->tooltip(gettext("Make sure you have permission to save."));
+      o->box(FL_FLAT_BOX);
+      o->align(Fl_Align(FL_ALIGN_TOP));
+      o->value(Filename->value());
+    } // Fl_Output* o
+    { Fl_Button* o = new Fl_Button(195, 55, 60, 25, gettext("OK"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)62);
+      o->selection_color(FL_DARK_GREEN);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_OK);
+    } // Fl_Button* o
+    { Fl_Button* o = new Fl_Button(130, 55, 40, 25, gettext("?"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)219);
+      o->selection_color((Fl_Color)176);
+      o->labelfont(1);
+      o->labelsize(17);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_);
+    } // Fl_Button* o
+    error_win->end();
+  } // Fl_Double_Window* error_win
+  return error_win;
+}
+
+Fl_Double_Window* Desktop::help_window() {
+  { help_win = new Fl_Double_Window(280, 280, gettext("Help"));
+    help_win->user_data((void*)(this));
+    { Fl_Button* o = new Fl_Button(210, 245, 60, 25, gettext("CLOSE"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)80);
+      o->selection_color((Fl_Color)64);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_CLOSE1);
+    } // Fl_Button* o
+    { help_browser = new Fl_Browser(15, 5, 255, 230);
+      help_browser->box(FL_FLAT_BOX);
+    } // Fl_Browser* help_browser
+    help_win->end();
+  } // Fl_Double_Window* help_win
+  return help_win;
+}
+
+void Desktop::get_help(Fl_Browser *o) {
+  const char* lang=getenv("LANG");
+  if(lang==NULL)lang=getenv("LANGUAGE");
+  else{
+    std::string tmp=lang;
+    unsigned int finder=tmp.find('.');
+    if(finder<tmp.length()){tmp=tmp.erase(finder,std::string::npos);}
+    lang=tmp.c_str();
+  }
+  if(lang==NULL)lang="en_US";
+  std::string helpfile="/jwm-settings-manager/help-desktop-file-editor-";
+  helpfile+=lang;
+  std::string fullfile=linuxcommon::test_file_in_vector_path(helpfile,linuxcommon::desktop_dirs());
+  if(linuxcommon::test_file(fullfile)){
+    populateBrowserWithTextFile(o,fullfile);
+  }
+  else{
+    fullfile="If you have trouble saving your file, ensure that you are able to save in the directory.  You may need to reopen the program as administrator by running:\n\npkexec desktop-file-editor";
+    populateBrowserWithString(o,fullfile);
   }
 }
 

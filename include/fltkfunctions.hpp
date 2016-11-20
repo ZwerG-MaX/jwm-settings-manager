@@ -53,6 +53,8 @@ void choose_a_program(Fl_Input *o);
 void clearOutput(Fl_Output* o);
 void makeWidgetIcon(std::string icon_file,Fl_Widget * widget,int wh);
 void makeWidgetIcon(std::string icon_file,Fl_Widget * widget,int w,int h);
+void populateBrowserWithTextFile(Fl_Browser *o, std::string filename);
+void populateBrowserWithString(Fl_Browser *o, std::string STRING);
 void startup(Fl_Window *o);
 void startup(Fl_Window *o ,const char** windowIcon);
 //bool
