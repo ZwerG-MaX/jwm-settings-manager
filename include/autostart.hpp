@@ -37,7 +37,9 @@
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Browser.H>
 int desktopFileEdit(Fl_Browser* o);
+int desktopFileEdit(std::string line);
 void add_program_to_autostart(Fl_Browser *o,std::string input);
 void remove_program_from_autostart(Fl_Browser *o);
-void removeAutostart(std::string item);
+void remove_program_from_xdg_autostart(Fl_Browser* o);
+//void removeAutostart(std::string item);
 #endif

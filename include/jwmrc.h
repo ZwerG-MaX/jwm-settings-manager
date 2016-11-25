@@ -225,7 +225,7 @@ void removeElement(unsigned int whichMainElement, std::string element,std::strin
 void removeElement(unsigned int whichMainElement, std::string element);
 void removeElement(std::string element,std::string text);
 void removeElementCompare2Attr(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text);
-void remove_program_from_xdg_autostart(Fl_Browser* o);
+void removeXDGautostart(bool NOT, bool ONLY, bool DE, std::string filename, std::string env);
 void populateDesc(Fl_Browser *o);
 void populateOptions(Fl_Browser *o);
 void populateApps(Fl_Browser*o);

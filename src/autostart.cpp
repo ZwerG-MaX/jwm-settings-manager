@@ -46,7 +46,29 @@ int desktopFileEdit(Fl_Browser* o){
 	else{debug_out("Desktop File editor was not found!");}
 	return -1;
 }
-
+int desktopFileEdit(std::string line){
+	debug_out("int desktopFileEdit(const char* "+line+")");
+	if(line.compare("")==0) return 1;
+	std::string temp=line;
+	std::string casa=linuxcommon::home_path();
+	std::string desktopeditor=linuxcommon::term_out("which desktop-file-editor");
+    if(desktopeditor.compare("")!=0){
+		desktopeditor+=" ";
+		desktopeditor+=temp;
+		if(temp.find(casa)>temp.length()){
+			std::string pkexec=linuxcommon::term_out("which pkexec");
+			if(pkexec.compare("")==0) pkexec=linuxcommon::term_out("which gksudo");
+			if(pkexec.compare("")==0) pkexec=linuxcommon::term_out("which gksu");
+			if(pkexec.compare("")==0) pkexec=linuxcommon::term_out("which sudo");
+			if(pkexec.compare("")!=0) desktopeditor= pkexec + " " +desktopeditor ;
+		}
+		int sys=system(desktopeditor.c_str());
+		if(sys!=0){debug_out(desktopeditor+" did not work");}
+		return sys;
+	}
+	else{debug_out("Desktop File editor was not found!");}
+	return -1;
+}
 void add_program_to_autostart(Fl_Browser *o,std::string input) {
 	o->clear();
 	bool tryADD=addElementWithText("StartupCommand",input);
@@ -72,4 +94,50 @@ void remove_program_from_autostart(Fl_Browser *o) {
 		else{std::cerr<<"Couldn't save the file correctly"<<std::endl;}
 	}
 	else{std::cerr<<"Please click on an item to remove!"<<std::endl;}
+}
+void remove_program_from_xdg_autostart(Fl_Browser* o){
+	debug_out("void remove_program_from_xdg_autostart(Fl_Browser* o)");
+	const char* item=o->text(o->value());
+	if(item==NULL){
+		debug_out("could not get the current value from the browser sent in");
+		return;
+	}
+	int retval=desktopFileEdit(o);
+	if(retval!=0){debug_out("FAILED to edit the desktop file");}
+	return;
+	std::string file=item;
+	bool findDE=false;
+	bool findONLY=false;
+	bool findNOT=false;
+	const char* DE=getenv("DESKTOP_SESSION");
+	const char* xdgDE=getenv("XDG_SESSION_DESKTOP");
+	const char* xdgCurrentDE=getenv("XDG_CURRENT_DESKTOP");
+	std::string JWM="JWM";
+	std::string ONLY=linuxcommon::get_line_with_equal(file,"OnlyShowIn=");
+	std::string NOT=linuxcommon::get_line_with_equal(file,"NotShowIn=");
+	debug_out("File="+file+"\nOnlyShowIn="+ONLY+"\nNotShowIn="+NOT);
+	if(DE!=NULL){
+		if(ONLY.find(DE)<ONLY.length()){findONLY=true;}
+		else{if(ONLY.compare("")!=0){findDE=true;}}
+		if(NOT.find(DE)<NOT.length()){findNOT=true;}
+		removeXDGautostart(findNOT,findONLY,findDE,file,DE);
+	}
+	
+	if(xdgDE!=NULL){
+		if(ONLY.find(xdgDE)<ONLY.length()){findONLY=true;}
+		else{if(ONLY.compare("")!=0){findDE=true;}}
+		if(NOT.find(xdgDE)<NOT.length()){findNOT=true;}
+		removeXDGautostart(findNOT,findONLY,findDE,file,xdgDE);
+	}
+	if(xdgCurrentDE!=NULL){
+		if(ONLY.find(xdgCurrentDE)<ONLY.length()){findONLY=true;}
+		else{if(ONLY.compare("")!=0){findDE=true;}}
+		if(NOT.find(xdgCurrentDE)<NOT.length()){findNOT=true;}
+		removeXDGautostart(findNOT,findONLY,findDE,file,xdgCurrentDE);
+	}
+	if(ONLY.find(JWM)<ONLY.length()){ONLY=true;}
+	else{if(ONLY.compare("")!=0){findDE=true;}}
+	if(NOT.find(JWM)<NOT.length()){NOT=true;}
+	removeXDGautostart(findNOT,findONLY,findDE,file,JWM);
+	
 }

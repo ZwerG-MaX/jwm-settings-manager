@@ -66,22 +66,9 @@ if(pro.compare("")==0){
   program_name->value(pro.c_str());
   program_name->redraw();
 }
-if(tabbies->value() == jwm_tab){
-    debug_out("Adding:"+pro+":");
-    add_program_to_autostart(autoStartBrowser,pro);
-}
-else if (tabbies->value()==xdg_tab){
-  std::string desktopeditor=linuxcommon::term_out("which desktop-file-editor");
-  if(desktopeditor.compare("")!=0){
-    desktopeditor+=" ";
-    desktopeditor+=xdgbrowser->text(xdgbrowser->value());
-    int sys=system(desktopeditor.c_str());
-    if(sys!=0){debug_out(desktopeditor+" did not work");}
-  }
-  else{debug_out("Desktop File editor was not found!");}
-}
-program_name->value("");
-program_name->redraw();
+debug_out("Adding:"+pro+":");
+tabbies->value(jwm_tab);
+add_program_to_autostart(autoStartBrowser,pro);
 }
 void AutostartUI::cb_add_item(Fl_Button* o, void* v) {
   ((AutostartUI*)(o->parent()->parent()->user_data()))->cb_add_item_i(o,v);
@@ -124,6 +111,7 @@ debug_out("configure JWM line");
 else if (tabbies->value()==xdg_tab){
   int retval=desktopFileEdit(xdgbrowser);
   if(retval!=0){debug_out("FAILED to edit the desktop file");}
+  listAutostartXDG(xdgbrowser);
 };
 }
 void AutostartUI::cb_config_item(Fl_Button* o, void* v) {

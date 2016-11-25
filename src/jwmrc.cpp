@@ -1694,7 +1694,9 @@ std::vector<std::string> AnythingVector(std::string element){
 std::vector<std::string> IconPaths(){return AnythingVector("IconPath");}
 std::vector<std::string> Includes(){return AnythingVector("Include");}
 std::vector<std::string> XDGautostart(){
+	debug_out("std::vector<std::string> XDGautostart()");
 	std::string thisDIR=linuxcommon::find_xdg_config_dir_subdir("autostart");
+	debug_out("system XDG config dir:"+thisDIR);
 	std::string currentInclude;
 	std::vector<std::string> totalVector;
 	if(linuxcommon::test_dir(thisDIR)){
@@ -1711,11 +1713,12 @@ std::vector<std::string> XDGautostart(){
 		std::string thisXDG;
 		if (xdgconf != NULL){
 			thisXDG = xdgconf;
-			thisXDG += "/.config/";
+			thisXDG += "/.config";
 		}
 	}
 	else{thisXDG=xdgconf;}
-	thisXDG=thisXDG+"autostart/";
+	thisXDG=thisXDG+"/autostart/";
+	debug_out("User XDG config dir: "+thisXDG);
 	if(linuxcommon::test_dir(thisXDG)){
 		std::vector<std::string> dirs=linuxcommon::get_file_vector(thisXDG,".desktop");
 		for(std::vector<std::string>::iterator it = dirs.begin();it!=dirs.end();++it){
@@ -2248,22 +2251,22 @@ void listAutostartXDG(Fl_Browser *o){
 	debug_out("void listAutostartXDG(Fl_Browser *o)");
 	std::vector<std::string> myVec=XDGautostart();
 	std::string currentInclude;
+	o->clear();
 	for(std::vector<std::string>::iterator it = myVec.begin();it!=myVec.end();++it){
 		currentInclude=*it;
 		o->add(currentInclude.c_str());
 	}
+	o->redraw();
 }
-
-void remove_program_from_xdg_autostart(Fl_Browser* o){
-	debug_out("void remove_program_from_xdg_autostart(Fl_Browser* o)");
-	const char* item=o->text(o->value());
-	if(item==NULL){
-		debug_out("could not get the current value from the browser sent in");
-		return;
+void removeXDGautostart(bool NOT, bool ONLY, bool DE, std::string filename, std::string env){
+	if(!NOT){
+		debug_out("Not NOT");
+	}
+	if(ONLY){
+		debug_out("ONLY");
 	}
 	
 }
-
 //PUGI XML//////////////////////////////////////////////////////////////
 pugi::xml_node addNextSubelement(std::string element){
 	debug_out("pugi::xml_node addNextSubelement(std::string "+element+")");
