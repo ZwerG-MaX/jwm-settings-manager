@@ -56,11 +56,11 @@ class WindowUI {open
   Function {add_option_window()} {open
   } {
     Fl_Window add_opt_window {
-      label {Add an Option} open
-      xywh {730 133 435 390} type Double
-      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows} visible
+      label {Add an Option}
+      xywh {730 133 435 390} type Double hide
+      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows}
     } {
-      Fl_Scroll {} {open selected
+      Fl_Scroll {} {open
         xywh {0 0 435 395}
       } {
         Fl_Browser options_available {
@@ -69,68 +69,68 @@ options_desc->select(line);
 const char* value = options_available->text(line);
 if(value!=NULL){
   check_opts(value,desktop_num,layer_value,opacity_value,icon_value,layer_chooser);
-}} selected
+}}
           xywh {10 10 115 340} type Hold box FLAT_BOX selection_color 80
           code0 {populateOptions(o);}
         }
         Fl_Button {} {
           label {@+}
-          callback {add_option_to_group(options_available, icon_value, desktop_num, layer_value, opacity_value, add_tracker, options_desc);} selected
+          callback {add_option_to_group(options_available, icon_value, desktop_num, layer_value, opacity_value, add_tracker, options_desc);}
           xywh {10 355 30 30} box FLAT_BOX color 23
         }
-        Fl_Browser options_desc {selected
+        Fl_Browser options_desc {
           xywh {135 10 290 195} type Hold box FLAT_BOX selection_color 80 labeltype NO_LABEL align 1
           code0 {populateDesc(o);}
         }
         Fl_Input icon_value {
-          label Icon selected
+          label Icon
           xywh {135 210 100 25} box FLAT_BOX align 8 deactivate
         }
         Fl_Slider opacity_value {
-          label Opacity selected
+          label Opacity
           xywh {135 300 100 25} type Horizontal box GTK_DOWN_BOX color 41 align 8 step 0.2 value 1 deactivate
         }
         Fl_Value_Input desktop_num {
-          label Desktop selected
+          label Desktop
           xywh {135 330 35 25} box FLAT_BOX align 8 maximum 10000 deactivate
         }
         Fl_Browser add_tracker {
-          label Adding selected
+          label Adding
           xywh {330 225 95 125} box FLAT_BOX color 47 selection_color 80 align 1
         }
         Fl_Button {} {
           label Cancel
-          callback {add_opt_window->hide();} selected
+          callback {add_opt_window->hide();}
           xywh {325 360 55 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
         }
         Fl_Button {} {
           label OK
           callback {add_option_to_group(options_available, icon_value, desktop_num, layer_value, opacity_value, add_tracker, options_desc);saveChanges();
 add_opt_window->hide();
-populate_groups(groups_browser,opt_browser,class_browser,name_browser);} selected
+populate_groups(groups_browser,opt_browser,class_browser,name_browser);}
           tooltip {Write to configuration file} xywh {385 360 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
         }
         Fl_Menu_Button layer_chooser {
-          label Layer open selected
+          label Layer open
           xywh {135 240 100 25} box FLAT_BOX color 23 deactivate
         } {
           MenuItem {} {
             label below
-            callback {layer_value->value("below");} selected
+            callback {layer_value->value("below");}
             xywh {0 0 100 20}
           }
           MenuItem {} {
             label normal
-            callback {layer_value->value("normal");} selected
+            callback {layer_value->value("normal");}
             xywh {10 10 100 20}
           }
           MenuItem {} {
             label above
-            callback {layer_value->value("above");} selected
+            callback {layer_value->value("above");}
             xywh {20 20 100 20}
           }
         }
-        Fl_Output layer_value {selected
+        Fl_Output layer_value {
           xywh {135 270 100 25} box FLAT_BOX deactivate
         }
         Fl_Button {} {
@@ -138,7 +138,7 @@ populate_groups(groups_browser,opt_browser,class_browser,name_browser);} selecte
 if(ICON.compare("")!=0){
   icon_value->value(ICON.c_str());
   makeWidgetIcon(ICON,o,48);
-}} selected
+}}
           xywh {270 210 50 50} box FLAT_BOX color 23
         }
       }
@@ -194,7 +194,8 @@ if(input!=NULL){
       }
     }
   }
-  Function {make_window()} {} {
+  Function {make_window()} {open
+  } {
     code {if(!load()){debug_out("DIDN'T LOAD in jwm-window");}
 else{debug_out("LOADED doc in jwm-window");}} {}
     Fl_Window window_window {
@@ -256,13 +257,13 @@ else{debug_out("LOADED doc in jwm-window");}} {}
             Fl_Slider active_o_slider {
               label {Opacity  }
               callback {set_opacity(active_o_slider,active_o_slider_v,1);}
-              tooltip {A compositor (like xcompmgr) must be installed} xywh {108 165 90 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 29 align 4 when 4 step 0.01 value 1
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {108 165 90 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 29 align 4 when 3 step 0.01 value 1
               code0 {opacity_loader(o,1);}
             }
             Fl_Value_Input active_o_slider_v {
               label {%}
               callback {set_opacity(active_o_slider,active_o_slider_v,1);}
-              xywh {203 165 35 25} box FLAT_BOX selection_color 80 labelsize 10 align 8 when 3 value 1
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {203 165 35 25} box FLAT_BOX selection_color 80 labelsize 10 align 8 when 3
               code0 {float v = active_o_slider->value();}
               code1 {o->value(v*100);}
             }
@@ -310,13 +311,13 @@ else{debug_out("LOADED doc in jwm-window");}} {}
             Fl_Slider inactive_o_slider {
               label {Opacity }
               callback {set_opacity(inactive_o_slider,inactive_o_slider_v,2);}
-              tooltip {A compositor (like xcompmgr) must be installed} xywh {355 165 90 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 29 align 4 when 4 step 0.01 value 1
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {355 165 90 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 29 align 4 when 3 step 0.01 value 1
               code0 {opacity_loader(o,2);}
             }
             Fl_Value_Input inactive_o_slider_v {
               label {%}
               callback {set_opacity(inactive_o_slider,inactive_o_slider_v,2);}
-              xywh {450 165 35 25} box FLAT_BOX selection_color 80 labelsize 10 align 8 when 3
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {450 165 35 25} box FLAT_BOX selection_color 80 labelsize 10 align 8 when 3
               code0 {float v = inactive_o_slider->value();}
               code1 {o->value(v*100);}
             }
@@ -372,28 +373,28 @@ get_button(o,"ButtonClose",a_title_color1);}
             Fl_Slider t_slider {
               label {Window Title Bar Size}
               callback {title_bar_modifier(t_slider,t_slider_v,2);}
-              tooltip {This is the top with the program name, and close button, etc..} xywh {205 35 125 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 50 align 4 minimum 2 maximum 78 step 1 value 20
+              tooltip {This is the top with the program name, and close button, etc..} xywh {205 35 125 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 50 align 4 when 3 minimum 2 maximum 78 step 1 value 20
               code1 {int y = getBorderHeight();}
               code2 {o->value(y);}
             }
             Fl_Value_Input t_slider_v {
               label pixels
               callback {title_bar_modifier(t_slider,t_slider_v,1);}
-              xywh {340 35 31 25} box FLAT_BOX labelsize 10 align 8 when 3
+              tooltip {This is the top with the program name, and close button, etc..} xywh {340 35 31 25} box FLAT_BOX labelsize 10 align 8 when 3
               code0 {int v = t_slider->value();}
               code1 {o->value(v);}
             }
             Fl_Slider b_slider {
               label {Size of the Window Frame}
               callback {border_modifier(o,b_slider_v,2);}
-              tooltip {This makes the edges of the window larger or smaller to help you grab them more easily} xywh {205 65 125 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 50 align 4 minimum 1 maximum 28 step 1 value 4
+              tooltip {This makes the edges of the window larger or smaller to help you grab them more easily} xywh {205 65 125 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 50 align 4 when 3 minimum 1 maximum 28 step 1 value 4
               code1 {int x = getBorderWidth();}
               code2 {o->value(x);}
             }
             Fl_Value_Input b_slider_v {
               label pixels
               callback {border_modifier(b_slider,o,1);}
-              xywh {340 65 31 25} box FLAT_BOX labelsize 10 align 8 when 3
+              tooltip {This makes the edges of the window larger or smaller to help you grab them more easily} xywh {340 65 31 25} box FLAT_BOX labelsize 10 align 8 when 3
               code0 {int v = b_slider->value();}
               code1 {o->value(v);}
             }
@@ -496,15 +497,15 @@ setSnap(d);}
             Fl_Button group_add {
               label {@+}
               callback {XplusG(groups_browser);}
-              xywh {15 230 30 30} box FLAT_BOX color 23
+              tooltip {Add a new group of options for windows} xywh {15 230 30 30} box FLAT_BOX color 23
             }
             Fl_Button rm_group {
               callback {XminusG(groups_browser);}
-              image {custom_buttons/minus} xywh {51 230 30 30} box FLAT_BOX color 23
+              tooltip {Remove ENTIRE selected group} image {custom_buttons/minus} xywh {51 230 30 30} box FLAT_BOX color 23
             }
             Fl_Browser opt_browser {
               label {Current Options}
-              xywh {120 55 120 155} type Hold box FLAT_BOX align 1
+              tooltip {Window specific options} xywh {120 55 120 155} type Hold box FLAT_BOX align 1
             }
             Fl_Button opt_add {
               label {@+}
@@ -513,74 +514,74 @@ if(value.compare("")!=0){
   add_option_window()->show();
   options_desc->copy_label(value.c_str());
 }}
-              xywh {120 230 30 30} box FLAT_BOX color 23
+              tooltip {Add a new option to the current group} xywh {120 230 30 30} box FLAT_BOX color 23
             }
             Fl_Button rm_opt {
               callback {if(XminusO(groups_browser,opt_browser)){
   populate_groups(groups_browser,opt_browser,class_browser,name_browser);
 }}
-              image {custom_buttons/minus} xywh {156 230 30 30} box FLAT_BOX color 23
+              tooltip {Remove selected option} image {custom_buttons/minus} xywh {156 230 30 30} box FLAT_BOX color 23
             }
             Fl_Browser name_browser {
               label {Program Name}
-              xywh {255 55 115 155} type Hold box FLAT_BOX align 1
+              tooltip {Programs that are effected by the options} xywh {255 55 115 155} type Hold box FLAT_BOX align 1
             }
             Fl_Button prog_add {
               label {@+}
               callback {if(XplusN(groups_browser)){
   add_program_window()->show();
 }}
-              xywh {255 230 30 30} box FLAT_BOX color 23
+              tooltip {Add a program effected by the option} xywh {255 230 30 30} box FLAT_BOX color 23
             }
             Fl_Button rm_prog {
               callback {XminusN(groups_browser,name_browser);
 populate_groups(groups_browser,opt_browser,class_browser,name_browser);}
-              image {custom_buttons/minus} xywh {291 230 30 30} box FLAT_BOX color 23
+              tooltip {Remove selected Program name} image {custom_buttons/minus} xywh {291 230 30 30} box FLAT_BOX color 23
             }
             Fl_Browser class_browser {
               label {Window Class}
-              xywh {385 55 115 155} type Hold box FLAT_BOX align 1
+              tooltip {Window classes that effected by the options} xywh {385 55 115 155} type Hold box FLAT_BOX align 1
             }
             Fl_Button class_add {
               label {@+}
               callback {if(XplusC(groups_browser)){
   add_class_window()->show();
 }}
-              xywh {385 230 30 30} box FLAT_BOX color 23
+              tooltip {Add a new Window class effected by the option} xywh {385 230 30 30} box FLAT_BOX color 23
             }
             Fl_Button rm_class {
               callback {XminusC(groups_browser,class_browser);
 populate_groups(groups_browser,opt_browser,class_browser,name_browser);}
-              image {custom_buttons/minus} xywh {422 230 30 30} box FLAT_BOX color 23
+              tooltip {Remove selected Window Class} image {custom_buttons/minus} xywh {422 230 30 30} box FLAT_BOX color 23
             }
           }
           Fl_Group {} {
-            label Advanced
+            label Advanced open
             xywh {5 45 460 205} selection_color 45 hide
           } {
             Fl_Slider a_b_slider {
               label {Window Border Size}
               callback {border_modifier(o,a_b_slider_v);}
-              tooltip {Width of the window borders} xywh {190 150 125 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 50 align 4 minimum 1 maximum 128 step 1 value 4
+              tooltip {Width of the window borders} xywh {190 150 125 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 50 align 4 when 3 minimum 1 maximum 128 step 1 value 4
               code1 {int x = getBorderWidth();}
               code2 {o->value(x);}
             }
             Fl_Value_Output a_b_slider_v {
               label pixels
-              xywh {320 150 35 25} box FLAT_BOX color 54 labelsize 10 align 8 when 3
+              tooltip {Width of the window borders} xywh {320 150 35 25} box FLAT_BOX color 54 labelsize 10 align 8 when 3
               code0 {int v = a_b_slider->value();}
               code1 {o->value(v);}
             }
             Fl_Slider a_t_slider {
               label {Window Title Bar Size}
               callback {title_bar_modifier(a_t_slider,a_t_slider_v);}
-              tooltip {Height of the Window's Title Bar} xywh {190 190 125 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 50 align 4 minimum 2 maximum 256 step 1 value 20
+              tooltip {Height of the Window's Title Bar} xywh {190 190 125 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 50 align 4 when 3 minimum 2 maximum 256 step 1 value 20
               code1 {int y = getBorderHeight();}
               code2 {o->value(y);}
             }
             Fl_Value_Output a_t_slider_v {
               label pixels
-              xywh {320 190 35 25} box FLAT_BOX color 54 labelsize 10 align 8 when 3
+              tooltip {Height of the Window's Title Bar} xywh {320 190 35 25} box FLAT_BOX color 54 labelsize 10 align 8 when 3
               code0 {int v = a_t_slider->value();}
               code1 {o->value(v);}
             }
@@ -606,6 +607,43 @@ cancel();
           callback {saveChanges();
 //showSettings();}
           tooltip {Write to configuration file} xywh {455 285 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+        }
+        Fl_Button {} {
+          label {Widget theme}
+          callback {make_gtk_theme_window()->show();} selected
+          xywh {75 285 110 25} box FLAT_BOX color 23 selection_color 48
+        }
+      }
+    }
+  }
+  Function {make_gtk_theme_window()} {open
+  } {
+    Fl_Window theme_window {
+      label {Widget theme} open
+      xywh {358 469 310 230} type Double hide
+    } {
+      Fl_Scroll {} {open
+        xywh {0 0 310 230}
+      } {
+        Fl_Browser theme_browser {
+          xywh {5 5 300 190} type Hold box FLAT_BOX selection_color 80
+          code0 {populateGTKThemes(o);}
+        }
+        Fl_Button {} {
+          label Cancel
+          callback {theme_window->hide();}
+          xywh {190 200 55 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+        }
+        Fl_Button {} {
+          label OK
+          callback {if(!switchGTKTheme(theme_browser)){debug_out("Failed to change the GTK theme");}
+theme_window->hide();}
+          tooltip {Write to configuration file} xywh {255 200 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+        }
+        Fl_Output theme_name {
+          xywh {10 200 170 25} box FLAT_BOX color 53
+          code0 {std::string tmp=linuxcommon::get_gtk_widget_theme();}
+          code1 {o->value(tmp.c_str());o->redraw();}
         }
       }
     }

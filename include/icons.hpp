@@ -39,11 +39,14 @@
 #include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Value_Input.H>
-void populateIconThemes(Fl_Browser* o);
+//Boolean
 bool edit_value(Fl_Browser* iconsBrowser,Fl_Input* dir_edit_input);
+bool populateIncludes(std::string themefile,int size_to_use);
 bool save_edit_value(Fl_Browser* iconsBrowser,Fl_Input* dir_edit_input);
 bool switchTheme(Fl_Browser* o,int size);
+//Vector
 std::vector<std::string> list_icon_dirs_in_themefile(std::string themefile,int size_to_use);
 std::vector<std::string> icon_themefiles_vector();
-bool populateIncludes(std::string themefile,int size_to_use);
+//Void
+void populateIconThemes(Fl_Browser* o);
 #endif

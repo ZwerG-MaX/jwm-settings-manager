@@ -23,6 +23,7 @@
  */
 
 #include "../include/window.hpp"
+//A
 void active_color_loader(Fl_Button *o, unsigned int one_or_two){
   unsigned int color=0;
   unsigned int c = 0;
@@ -41,7 +42,6 @@ void active_color_loader(Fl_Button *o, unsigned int one_or_two){
   else{o->color(color);}
   debug_out("<-active color loader");
 }
-
 void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser *add_tracker, Fl_Browser* browser){
 	debug_out("void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser *add_tracker, Fl_Browser* browser)");
 	const char* input=browser->label();
@@ -81,7 +81,6 @@ void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl
 		addGroupItem( whichGroup, group,result);
 	}
 }
-
 void add_thingie(Fl_Browser *groups_browser,std::string input,std::string Item){
 	debug_out("void add_thingie(Fl_Browser *groups_browser,std::string "+input+",std::string "+Item+")");
 	if(input.compare("")!=0){
@@ -89,17 +88,17 @@ void add_thingie(Fl_Browser *groups_browser,std::string input,std::string Item){
 		addGroupItem(line,Item,input);
 	}
 }
-
 void addGroup(){
 	//bool ans=addElement("Group");
 }
-
 void addGroupItem(unsigned int whichone, std::string subelement,std::string value){
 	debug_out("void addGroupItem(unsigned int whichone, std::string "+subelement+",std::string "+value+")");
 	bool ans=addSubElementWithText(whichone,"Group",subelement,value);
 	if(!ans){debug_out("addSubElementWithText(whichone,Group, "+subelement+"," +value +") FAILED");}
 }
-
+void add_prog(Fl_Browser *groups_browser,std::string input){return add_thingie(groups_browser,input,"Name");}
+void add_class(Fl_Browser *groups_browser,std::string input){return add_thingie(groups_browser,input,"Class");}
+//B
 void border_color_loader(Fl_Widget *o, int Active1_Inactive2){
 	debug_out("void border_color_loader(Fl_Widget *o, int Active1_Inactive2)");
 	unsigned int colour=0;
@@ -108,7 +107,6 @@ void border_color_loader(Fl_Widget *o, int Active1_Inactive2){
 	else{colour = getElementInt("WindowStyle",OUT);}
 	o->color(colour);
 }
-
 void border_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2){
 	debug_out("void border_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2)");
 	int whichone = 0;
@@ -131,15 +129,7 @@ void border_modifier(Fl_Slider *o1, Fl_Value_Output *o2){
 	o2->value(slider);
 	setElementInt("WindowStyle","Width",slider);
 }
-
-std::string buttonPath(){
-	debug_out("std::string buttonPath()");
-	std::string defaultPath=linuxcommon::find_xdg_data_dir_subdir("jwm-settings-manager");
-	std::string ButtonPath = defaultPath + "Buttons/";
-	debug_out("Button Path="+ButtonPath);
-	return ButtonPath;
-}
-
+//C
 void check_opts(std::string itemValue,Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Input* icon_value, Fl_Menu_Button* layer_chooser){
 	debug_out("void check_opts(std::string "+itemValue+",Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Input* icon_value, Fl_Menu_Button* layer_chooser)");
 	if(itemValue.compare("")==0){return;}
@@ -162,7 +152,26 @@ void check_opts(std::string itemValue,Fl_Value_Input* desktop_num, Fl_Output* la
 		opacity_value->activate();
 	}
 }
-
+void choose_button(std::string whichButton){
+	debug_out("void choose_button(std::string "+whichButton+")");
+	std::string label = "Choose ";
+	label += whichButton;
+	std::string tempPath = buttonPath();
+	if(tempPath.compare("")==0){
+		std::cerr<<"Button Path not found... must exit!!"<<std::endl;
+		return;
+	}
+	std::string ICON=choose_an_icon(tempPath);
+	if(ICON.compare("")!=0){setElementText(whichButton, ICON);}
+}
+void corner_change(Fl_Slider *o){
+	debug_out("void corner_change(Fl_Slider *o)");
+	if(newStyle() == -1){o->hide();}
+	else{
+		unsigned int corner =o->value();  
+		setElementInt("WindowStyle","Corner",corner);
+	}
+}
 void corner_load(Fl_Slider *o){
 	debug_out("void corner_load(Fl_Slider *o)");
 	if(newStyle() == -1){o->hide();}
@@ -173,21 +182,12 @@ void corner_load(Fl_Slider *o){
 		o->value(corner);
 	}
 }
-
-void corner_change(Fl_Slider *o){
-	debug_out("void corner_change(Fl_Slider *o)");
-	if(newStyle() == -1){o->hide();}
-	else{
-		unsigned int corner =o->value();  
-		setElementInt("WindowStyle","Corner",corner);
-	}
-}
-
+//D
 void display(std::string filename, Fl_Widget *o){
 	debug_out("void display(std::string "+filename+", Fl_Widget *o)");
 	makeWidgetIcon(filename,o,32);
 }
-
+//F
 void font_color_loader(Fl_Widget *o, int Active1_Inactive2){
 	debug_out("void font_color_loader(Fl_Widget *o, int Active1_Inactive2)->");
 	std::string colour="";
@@ -202,17 +202,7 @@ void font_color_loader(Fl_Widget *o, int Active1_Inactive2){
 	o->color(colorint);
 	debug_out("<-font color loader");
 }
-
-int getBorderHeight(){
-	debug_out("int getBorderHeight()");
-	return getElementInt("WindowStyle","Height");
-}
-
-int getBorderWidth(){
-	debug_out("int getBorderWidth()");
-	return getElementInt("WindowStyle","Width");
-}
-
+//G
 void getGroups(Fl_Browser *o){
 	debug_out("void getGroups(Fl_Browser *o)");
 	int groups=elementCounter("Group");
@@ -221,15 +211,6 @@ void getGroups(Fl_Browser *o){
 		o->add(tmp.c_str());
 	}
 }
-
-int getSnap(){
-	debug_out("int getSnap()");
-	std::string dist= getElementAttribute("SnapMode","distance");
-	debug_out("current Snap="+dist);
-	if(dist.compare("")==0) return 0;//TODO default snap
-	return convert(dist.c_str());
-}
-
 void get_button(Fl_Widget*o, std::string whichElement,Fl_Widget* a_title_color1){
 	debug_out("void get_button(Fl_Widget*o, std::string "+whichElement+",Fl_Button* a_title_color1)");
 	o->color(a_title_color1->color());
@@ -239,7 +220,6 @@ void get_button(Fl_Widget*o, std::string whichElement,Fl_Widget* a_title_color1)
 	o->redraw();
 	debug_out("<-button loader");
 }
-
 void get_button_inactive(Fl_Widget*o, std::string whichElement,Fl_Button* inactive_color,Fl_Button* inactive_font_color){
 	debug_out("void get_button_inactive(Fl_Widget*o, std::string "+whichElement+",Fl_Button* inactive_color,Fl_Button* inactive_font_color)");
 	o->color(inactive_color->color());
@@ -249,7 +229,7 @@ void get_button_inactive(Fl_Widget*o, std::string whichElement,Fl_Button* inacti
 	if(result.compare("")!=0){display(result,o);}
 	o->redraw();
 }
-
+//I
 void inactive_color_loader(Fl_Button *o, int one_or_two){
 	debug_out("void inactive_color_loader(Fl_Button *o, int one_or_two)");
 	unsigned int color=0;
@@ -262,7 +242,7 @@ void inactive_color_loader(Fl_Button *o, int one_or_two){
 	if(one_or_two ==1){o->color(c);}
 	else{o->color(color);}
 }
-
+//O
 void opacity_loader(Fl_Slider *o, int Active1_Inactive2){
 	debug_out("void opacity_loader(Fl_Slider *o, int Active1_Inactive2)");
 	float opacity;
@@ -270,7 +250,7 @@ void opacity_loader(Fl_Slider *o, int Active1_Inactive2){
 	else{opacity=getElementFloat("WindowStyle","Opacity");}
 	o->value(opacity);
 }
-
+//P
 void populate_groups(Fl_Browser *groups_browser,Fl_Browser *opt_browser,Fl_Browser *class_browser,Fl_Browser *name_browser){
 	debug_out("void populate_groups(Fl_Browser *groups_browser,Fl_Browser *opt_browser,Fl_Browser *class_browser,Fl_Browser *name_browser)");
 	int line = groups_browser->value();
@@ -284,7 +264,40 @@ void populate_groups(Fl_Browser *groups_browser,Fl_Browser *opt_browser,Fl_Brows
 		populateFLBrowser(name_browser,"Group","Name",line);
 	}
 }
-
+void populateGTKThemes(Fl_Browser* o){
+	debug_out("void populateIconThemes(Fl_Browser* o)");
+	o->clear();
+	int chosen=1;
+	std::vector<std::string> themesVector=gtk_themefiles_vector();
+	std::string gtk_theme=linuxcommon::get_gtk_widget_theme();
+	if(themesVector.empty()){
+		errorOUT("Didn't find any GTK themes");
+		return;
+	}
+	for( std::vector<std::string>::iterator it = themesVector.begin();
+		it!=themesVector.end();
+		++it){
+		std::string themefile=*it;
+		debug_out("File="+themefile);
+		if(themefile.compare("")!=0){
+			std::string themeStyle=linuxcommon::get_line_with_equal(themefile,"Name=");
+			if(themeStyle.compare("")!=0){o->add(themeStyle.c_str());
+				debug_out("Name="+themeStyle);
+				if((themefile.find(gtk_theme)<themefile.length())||(gtk_theme.compare(themeStyle)==0)){
+					debug_out("Found the current one:"+themeStyle);
+					chosen=o->size();
+					o->select(chosen);
+				}
+			}
+		}
+	}
+	o->redraw();
+	themesVector.clear();
+}
+//R
+void removeGroup(int hidethis){removeElement(hidethis,"Group");}
+void removeGroupTHING(int hidethis, std::string value,std::string THING){removeElement(hidethis,"Group",THING,value);}
+//S
 void set_border_color(Fl_Widget *o, int Active1_Inactive2){
 	debug_out("void set_border_color(Fl_Widget *o, int Active1_Inactive2)");
 	int c;
@@ -307,7 +320,6 @@ void set_border_color(Fl_Widget *o, int Active1_Inactive2){
 		o->redraw();
 	}
 }
-
 void set_font_color(Fl_Widget *o, int Active1_Inactive2){
 	debug_out("void set_font_color(Fl_Widget *o, int Active1_Inactive2)");
 	int c;
@@ -338,6 +350,97 @@ void set_font_color(Fl_Widget *o, int Active1_Inactive2){
 	theANS=flCOLOR(current);
 	o->color(theANS);
 	o->redraw();
+}
+void set_one_title_color(Fl_Widget *o,  int Active1_Inactive2){
+	debug_out("void set_one_title_color(Fl_Widget *o,  int Active1_Inactive2)");
+	unsigned int c=set_title_color(o,Active1_Inactive2,1);
+	o->color(c);
+	o->redraw();
+}
+void set_one_title_color(Fl_Widget *o, int Active1_Inactive2, Fl_Widget* max_a_image, Fl_Widget* max_image, Fl_Widget* min_image, Fl_Widget* close_image){
+	debug_out("void set_one_title_color(Fl_Widget *o, int Active1_Inactive2, Fl_Widget* max_a_image, Fl_Widget* max_image, Fl_Widget* min_image, Fl_Widget* close_image)");
+	unsigned int c=set_title_color(o,Active1_Inactive2,1);
+	get_button(max_a_image,"ButtonMaxActive",o);
+	get_button(max_image,"ButtonMax",o);
+	get_button(min_image,"ButtonMin",o);
+	get_button(close_image,"ButtonClose",o);
+	o->color(c);
+	o->redraw();
+}
+void set_opacity(Fl_Slider *o, Fl_Value_Input *o2, int Active1_or_Inactive2){
+	debug_out("void set_opacity(Fl_Slider *o, Fl_Value_Input *o2, int Active1_or_Inactive2)");
+	double opac=o->value();
+	double* opacity=&opac;
+	if (Active1_or_Inactive2==1){setElementFloat("WindowStyle","Active","Opacity",opacity);}
+	else{setElementFloat("WindowStyle","Opacity",opacity);}
+	o2->value(opac*100);
+}
+void set_two_title_colors(Fl_Widget *o, int Active1_Inactive2){
+	debug_out("void set_two_title_colors(Fl_Widget *o, int Active1_Inactive2)");
+	unsigned int c=set_title_color(o,Active1_Inactive2,2);
+	o->color(c);
+	o->redraw();
+}
+void setThing(std::string thing,std::string mode){
+	debug_out("void setThing(std::string "+thing+",std::string "+mode+")");
+	setElementText(thing,mode);
+}
+void setThings(std::string thing,std::string mode,int &distance){
+	debug_out("void setThings(std::string "+thing+",std::string "+mode+",int &distance)");
+	setElementText(thing,mode);
+	setSnap(distance);
+}
+//T
+void title_bar_modifier(Fl_Slider *o1, Fl_Value_Output *o2){
+	debug_out("void title_bar_modifier(Fl_Slider *o1, Fl_Value_Output *o2)");
+	int slider = o1->value();
+	o2->value(slider);
+	bool ans=setElementInt("WindowStyle","Height",slider);
+	if(!ans){debug_out("title bar modifier FAILED");}
+}
+void title_bar_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2){
+	int whichone = 0;
+	if(change_o1_or_o2==1){
+		int input = o2->value();
+		o1->value(input);
+		whichone = input;
+	}
+	else{
+		int slider = o1->value();
+		o2->value(slider);
+		whichone = slider;
+	}
+	bool ans=setElementInt("WindowStyle","Height",whichone);
+	if(!ans){debug_out("title bar modifier FAILED");}
+}
+//X
+void XminusG(Fl_Browser *groups_browser){
+	int hidethis = groups_browser->value();
+	if ((hidethis == 0) || (hidethis > groups_browser->size())){return;}
+	else{
+		removeGroup(hidethis);
+		getGroups(groups_browser);
+	}
+}
+void XplusG(Fl_Browser *groups_browser){
+	addGroup();
+	getGroups(groups_browser);
+}
+///INT//////////////////////////////////////////////////////////////////
+int getBorderHeight(){
+	debug_out("int getBorderHeight()");
+	return getElementInt("WindowStyle","Height");
+}
+int getBorderWidth(){
+	debug_out("int getBorderWidth()");
+	return getElementInt("WindowStyle","Width");
+}
+int getSnap(){
+	debug_out("int getSnap()");
+	std::string dist= getElementAttribute("SnapMode","distance");
+	debug_out("current Snap="+dist);
+	if(dist.compare("")==0) return 0;//TODO default snap
+	return convert(dist.c_str());
 }
 unsigned int set_title_color(Fl_Widget *o, int Active1_Inactive2,int First1_or_Second2){
 	debug_out("");
@@ -383,103 +486,46 @@ unsigned int set_title_color(Fl_Widget *o, int Active1_Inactive2,int First1_or_S
 	if(!ans){debug_out("Did not save the changes!!!!");}
 	return splitColor(colorSet,First1_or_Second2);
 }
-void set_one_title_color(Fl_Widget *o,  int Active1_Inactive2){
-	debug_out("void set_one_title_color(Fl_Widget *o,  int Active1_Inactive2)");
-	unsigned int c=set_title_color(o,Active1_Inactive2,1);
-	o->color(c);
-	o->redraw();
+//STRING//////////////////////////////////////////////////////////////////
+std::string buttonPath(){
+	debug_out("std::string buttonPath()");
+	std::string defaultPath=linuxcommon::find_xdg_data_dir_subdir("jwm-settings-manager");
+	std::string ButtonPath = defaultPath + "Buttons/";
+	debug_out("Button Path="+ButtonPath);
+	return ButtonPath;
 }
-void set_one_title_color(Fl_Widget *o, int Active1_Inactive2, Fl_Widget* max_a_image, Fl_Widget* max_image, Fl_Widget* min_image, Fl_Widget* close_image){
-	debug_out("void set_one_title_color(Fl_Widget *o, int Active1_Inactive2, Fl_Widget* max_a_image, Fl_Widget* max_image, Fl_Widget* min_image, Fl_Widget* close_image)");
-	unsigned int c=set_title_color(o,Active1_Inactive2,1);
-	get_button(max_a_image,"ButtonMaxActive",o);
-	get_button(max_image,"ButtonMax",o);
-	get_button(min_image,"ButtonMin",o);
-	get_button(close_image,"ButtonClose",o);
-	o->color(c);
-	o->redraw();
+std::string XplusO(Fl_Browser *groups_browser){
+	int hidethis = groups_browser->value();
+	if ((hidethis == 0) || (hidethis > groups_browser->size())){return "";}
+	else{
+		const char* value = groups_browser->text(hidethis);
+		if(value==NULL){return "";}
+		std::string test=value;
+		if(test.compare("")==0){return "";}
+		return test;
+	}
+	return "";
 }
-
-void set_opacity(Fl_Slider *o, Fl_Value_Input *o2, int Active1_or_Inactive2){
-	debug_out("void set_opacity(Fl_Slider *o, Fl_Value_Input *o2, int Active1_or_Inactive2)");
-	double opac=o->value();
-	double* opacity=&opac;
-	if (Active1_or_Inactive2==1){setElementFloat("WindowStyle","Active","Opacity",opacity);}
-	else{setElementFloat("WindowStyle","Opacity",opacity);}
-	o2->value(opac*100);
-}
-
-void set_two_title_colors(Fl_Widget *o, int Active1_Inactive2){
-	debug_out("void set_two_title_colors(Fl_Widget *o, int Active1_Inactive2)");
-	unsigned int c=set_title_color(o,Active1_Inactive2,2);
-	o->color(c);
-	o->redraw();
-}
-
-void setThing(std::string thing,std::string mode){
-	debug_out("void setThing(std::string "+thing+",std::string "+mode+")");
-	setElementText(thing,mode);
-}
-
-void setThings(std::string thing,std::string mode,int &distance){
-	debug_out("void setThings(std::string "+thing+",std::string "+mode+",int &distance)");
-	setElementText(thing,mode);
-	setSnap(distance);
-}
-
+//BOOL//////////////////////////////////////////////////////////////////
 bool setSnap(int &distance){
 	debug_out("bool setSnap(int &distance)");
 	const char* conversion=convert(distance);
 	if(conversion==NULL){return false;}
 	return setElementAttribute("SnapMode","distance",conversion);
 }
-
-void title_bar_modifier(Fl_Slider *o1, Fl_Value_Output *o2){
-	debug_out("void title_bar_modifier(Fl_Slider *o1, Fl_Value_Output *o2)");
-	int slider = o1->value();
-	o2->value(slider);
-	bool ans=setElementInt("WindowStyle","Height",slider);
-	if(!ans){debug_out("title bar modifier FAILED");}
-}
-
-void title_bar_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2){
-	int whichone = 0;
-	if(change_o1_or_o2==1){
-		int input = o2->value();
-		o1->value(input);
-		whichone = input;
+bool switchGTKTheme(Fl_Browser* o){
+	debug_out("bool switchGTKTheme(Fl_Browser* o,int size)");
+	const char* theme_selection=o->text(o->value());
+	if(theme_selection==NULL){
+		debug_out("Browser selection is NULL");
+		return false;
 	}
-	else{
-		int slider = o1->value();
-		o2->value(slider);
-		whichone = slider;
-	}
-	bool ans=setElementInt("WindowStyle","Height",whichone);
-	if(!ans){debug_out("title bar modifier FAILED");}
+	std::string SELECTION=theme_selection;
+	return linuxcommon::switch_gtk_item("theme",SELECTION);
 }
-
-void removeGroup(int hidethis){
-	removeElement(hidethis,"Group");
-}
-
-void removeGroupTHING(int hidethis, std::string value,std::string THING){
-	removeElement(hidethis,"Group",THING,value);
-}
-
-void XminusG(Fl_Browser *groups_browser){
-	int hidethis = groups_browser->value();
-	if ((hidethis == 0) || (hidethis > groups_browser->size())){return;}
-	else{
-		removeGroup(hidethis);
-		getGroups(groups_browser);
-	}
-}
-
-void XplusG(Fl_Browser *groups_browser){
-	addGroup();
-	getGroups(groups_browser);
-}
-
+bool XminusO(Fl_Browser *groups_browser, Fl_Browser *opt_browser){return Xminus(groups_browser,opt_browser,"Option");}
+bool XminusN(Fl_Browser *groups_browser,Fl_Browser *opt_browser){return Xminus(groups_browser,opt_browser,"Name");}
+bool XminusC(Fl_Browser *groups_browser,Fl_Browser *opt_browser){return Xminus(groups_browser,opt_browser,"Class");}
 bool Xminus(Fl_Browser *groups_browser, Fl_Browser *opt_browser, std::string THING){
 	if(THING.compare("")==0){return false;}
 	int hidethis = groups_browser->value();
@@ -499,41 +545,20 @@ bool Xminus(Fl_Browser *groups_browser, Fl_Browser *opt_browser, std::string THI
 	}
 	return false;
 }
-
+bool XplusN(Fl_Browser *groups_browser){return Xplus(groups_browser);}
+bool XplusC(Fl_Browser *groups_browser){return Xplus(groups_browser);}
 bool Xplus(Fl_Browser *groups_browser){
   int hidethis = groups_browser->value();
   if ((hidethis == 0) || (hidethis > groups_browser->size())){return false;}
   return true;
 }
-
-std::string XplusO(Fl_Browser *groups_browser){
-	int hidethis = groups_browser->value();
-	if ((hidethis == 0) || (hidethis > groups_browser->size())){return "";}
-	else{
-		const char* value = groups_browser->text(hidethis);
-		if(value==NULL){return "";}
-		std::string test=value;
-		if(test.compare("")==0){return "";}
-		return test;
-	}
-	return "";
+//VECTOR
+std::vector<std::string> gtk_themefiles_vector(){
+	debug_out("std::vector<std::string> gtk_themefiles_vector()");
+	std::string DIRECTORY=linuxcommon::find_xdg_data_dir_subdir("themes");
+	std::vector<std::string> thisISmyVector;
+	if(DIRECTORY.compare("")==0){errorOUT("Theme directory NOT found");}
+	else{thisISmyVector=linuxcommon::get_file_vector(DIRECTORY,"index.theme");}
+	if(thisISmyVector.empty()){errorOUT("Didn't find and GTK themes");}
+	return thisISmyVector;
 }
-void choose_button(std::string whichButton){
-	debug_out("void choose_button(std::string "+whichButton+")");
-	std::string label = "Choose ";
-	label += whichButton;
-	std::string tempPath = buttonPath();
-	if(tempPath.compare("")==0){
-		std::cerr<<"Button Path not found... must exit!!"<<std::endl;
-		return;
-	}
-	std::string ICON=choose_an_icon(tempPath);
-	if(ICON.compare("")!=0){setElementText(whichButton, ICON);}
-}
-void add_prog(Fl_Browser *groups_browser,std::string input){return add_thingie(groups_browser,input,"Name");}
-void add_class(Fl_Browser *groups_browser,std::string input){return add_thingie(groups_browser,input,"Class");}
-bool XminusO(Fl_Browser *groups_browser, Fl_Browser *opt_browser){return Xminus(groups_browser,opt_browser,"Option");}
-bool XminusN(Fl_Browser *groups_browser,Fl_Browser *opt_browser){return Xminus(groups_browser,opt_browser,"Name");}
-bool XminusC(Fl_Browser *groups_browser,Fl_Browser *opt_browser){return Xminus(groups_browser,opt_browser,"Class");}
-bool XplusN(Fl_Browser *groups_browser){return Xplus(groups_browser);}
-bool XplusC(Fl_Browser *groups_browser){return Xplus(groups_browser);}

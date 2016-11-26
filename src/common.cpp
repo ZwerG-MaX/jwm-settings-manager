@@ -238,23 +238,33 @@ LINUX_COMMON__NS_BEGIN
 		}
 		return dirToOpen;
 	}
-	std::string get_gtk_theme(){
+	std::string get_gtk_icon_theme(){return get_gtk_item("icon","hicolor");}
+	std::string get_gtk_widget_theme(){return get_gtk_item("gtk","Raleigh");}
+	std::string get_gtk_item(std::string itemToGet, std::string defaultTheme){
 		std::string gtkrc2_result, gtkrc3_result,gtk2;
+		if((itemToGet.compare("icon")!=0)&&(itemToGet.compare("")!=0)){
+			itemToGet="";
+		}
+		std::string item=itemToGet;
 		std::string GSETTINGS=term_out("which gsettings");
 		std::string GCONF2=term_out("which gconftool-2");
 		if(GSETTINGS.find("gsettings")<GSETTINGS.length()){
-			gtkrc3_result=term_out(GSETTINGS+" get org.gnome.desktop.interface icon-theme");
+			std::string temp=item;
+			if(item.compare("")==0)temp="gtk";
+			gtkrc3_result=term_out(GSETTINGS+" get org.gnome.desktop.interface "+temp+"-theme");
 			//gtkrc3_result=remove_cruft(gtkrc3_result,"gtk-icon-theme-name=");
 			gtkrc3_result=remove_cruft(gtkrc3_result,"\'");
 			gtkrc3_result=remove_cruft(gtkrc3_result,"\'");
 			return gtkrc3_result;
 		}
 		if(GCONF2.find("gconftool-2")<GCONF2.length()){
-			gtk2=term_out(GCONF2+" --get /desktop/gnome/interface/icon_theme");
+			std::string temp="gtk";
+			if(item.compare("")!=0)temp=item;
+			gtk2=term_out(GCONF2+" --get /desktop/gnome/interface/"+temp+"_theme");
 			return gtk2;
 		}
 		const char* home = getenv("HOME");
-		if(home==NULL){return "hicolor";}
+		if(home==NULL){return defaultTheme;}
 		std::string HOME=home;
 		//CHECK/SET GTKRC FILES
 		std::string GTKRC2=HOME + "/.gtkrc-2.0";
@@ -268,21 +278,26 @@ LINUX_COMMON__NS_BEGIN
 		}
 		std::string GTKRC3=XDG_CONFIG_HOME + "/gtk-3.0/settings.ini";
 		if(test_file(GTKRC3.c_str())){
-			gtkrc3_result=get_line_with_equal(GTKRC3,"gtk-icon-theme-name=");
-			gtkrc3_result=remove_cruft(gtkrc3_result,"gtk-icon-theme-name=");
+			std::string temp;
+			if(item.compare("")!=0)temp=item+"-";
+			temp="gtk"+temp+"-theme-name=";
+			gtkrc3_result=get_line_with_equal(GTKRC3,temp);
+			gtkrc3_result=remove_cruft(gtkrc3_result,temp);
 			gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
 			gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
 			return gtkrc3_result;
 		}
 		if(test_file(GTKRC2.c_str())){
-			gtkrc2_result=get_line_with_equal(GTKRC2,"gtk-icon-theme-name=");
+			std::string temp;
+			if(item.compare("")!=0)temp=item+"-";
+			temp="gtk"+temp+"-theme-name=";
+			gtkrc2_result=get_line_with_equal(GTKRC2,temp);
 			gtkrc2_result=remove_cruft(gtkrc2_result,"\"");
 			gtkrc2_result=remove_cruft(gtkrc2_result,"\"");
 			return gtkrc2_result;
 		}
-		return "hicolor";
+		return defaultTheme;
 	}
-	
 	std::string remove_cruft(std::string StringInput, std::string CruftToRemove){
 		if((StringInput.compare("")==0)||(CruftToRemove.compare("")==0)){return StringInput;}
 		unsigned int found=0;
@@ -460,7 +475,7 @@ LINUX_COMMON__NS_BEGIN
 	std::string look_for_icon_file(std::string fileWITHOUTpath){//,std::string answer){
 		std::string dir=find_xdg_data_dir_subdir("icons");
 		echo("std::string look_for_icon_file(std::string "+fileWITHOUTpath+")");
-		std::string gtktheme=get_gtk_theme();
+		std::string gtktheme=get_gtk_icon_theme();
 		if(dir.rfind('/')!=dir.length()-1){dir+="/";}
 		std::string testingDIR=dir+gtktheme;
 		if(testingDIR.rfind('/')!=testingDIR.length()-1){testingDIR+="/";}
@@ -905,6 +920,74 @@ LINUX_COMMON__NS_BEGIN
 			if(tmp.compare(item_to_find)==0){return true;}
 		}
 		return false;
+	}
+	bool switch_gtk_item(std::string item, std::string value){
+		std::string gtkrc2_result, gtkrc3_result,gtk2;
+		if(value.compare("")==0){return false;}
+		if((item.compare("icon")!=0)&&(item.compare("")!=0)){
+			item="";
+		}
+		int retval=0;
+		std::string GSETTINGS=term_out("which gsettings");
+		std::string GCONF2=term_out("which gconftool-2");
+		if(GSETTINGS.find("gsettings")<GSETTINGS.length()){
+			std::string temp=item;
+			if(temp.compare("")==0)temp="gtk";
+			retval=run_a_program(GSETTINGS+" set org.gnome.desktop.interface "+temp+"-theme "+ value);
+			if(retval!=0){echo_error("Error setting the theme");}
+		}
+		if(GCONF2.find("gconftool-2")<GCONF2.length()){
+			std::string temp="gtk";
+			if(item.compare("")!=0)temp=item;
+			retval=run_a_program(GCONF2+" --get /desktop/gnome/interface/"+temp+"_theme");
+			if(retval!=0){echo_error("Error setting the theme");}
+		}
+		const char* home = getenv("HOME");
+		bool fileFix=true;
+		if(home==NULL){fileFix=false;}
+		else{
+			std::string HOME=home;
+		//CHECK/SET GTKRC FILES
+			std::string GTKRC2=HOME + "/.gtkrc-2.0";
+			const char* xdg_config_home=getenv("XDG_CONFIG_HOME");
+			std::string XDG_CONFIG_HOME;
+			if (xdg_config_home!=NULL){XDG_CONFIG_HOME=xdg_config_home;}
+			else{XDG_CONFIG_HOME=HOME +"/.config";}
+			std::string GTKRC3=XDG_CONFIG_HOME + "/gtk-3.0/settings.ini";
+			if(test_file(GTKRC3.c_str())){
+				std::string temp;
+				if(item.compare("")!=0)temp=item+"-";
+				temp="gtk"+temp+"-theme-name=";
+				gtkrc3_result=get_line_with_equal(GTKRC3,temp);
+				gtkrc3_result=remove_cruft(gtkrc3_result,temp);
+				gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
+				gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
+				if(value.compare(gtkrc3_result)!=0){
+					fileFix=false;
+				std::string command="sed -i s#"+gtkrc3_result+"#"+value+"# "+GTKRC3;
+				retval=run_a_program(command);
+				if(retval==0)fileFix=true;
+				//TODO don't use sed... actually do it :P
+				}
+			}
+			if(test_file(GTKRC2.c_str())){
+				std::string temp;
+				if(item.compare("")!=0)temp=item+"-";
+				temp="gtk"+temp+"-theme-name=";
+				gtkrc2_result=get_line_with_equal(GTKRC2,temp);
+				gtkrc2_result=remove_cruft(gtkrc2_result,"\"");
+				gtkrc2_result=remove_cruft(gtkrc2_result,"\"");
+				if(value.compare(gtkrc2_result)!=0){
+				//TODO
+					fileFix=false;
+				std::string command="sed -i s#"+gtkrc2_result+"#"+value+"# "+GTKRC2;
+				retval=run_a_program(command);
+				if(retval==0)fileFix=true;
+				}
+			}
+		}
+		if((retval!=0)&&(!fileFix))return false;
+		return true;
 	}
 	bool test_file(std::string fileWithFullPATH){
 		if(fileWithFullPATH.compare("")==0){

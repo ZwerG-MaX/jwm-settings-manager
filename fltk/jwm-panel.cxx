@@ -478,7 +478,7 @@ void PanelUI::cb_OK2_i(Fl_Button*, void*) {
   save_user_clock();
 }
 void PanelUI::cb_OK2(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_OK2_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_OK2_i(o,v);
 }
 
 void PanelUI::cb_clock_style_i(Fl_Input* o, void*) {
@@ -492,7 +492,7 @@ clock_displayer->copy_label(result.c_str());
 clock_displayer->redraw();
 }
 void PanelUI::cb_clock_style(Fl_Input* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_clock_style_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_clock_style_i(o,v);
 }
 
 void PanelUI::cb_4_i(Fl_Browser* o, void*) {
@@ -502,21 +502,21 @@ clock_style->insert(item.c_str());
 //std::cerr<<"Click Clock: "<<item<<std::endl;
 }
 void PanelUI::cb_4(Fl_Browser* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_4_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_4_i(o,v);
 }
 
 void PanelUI::cb_Notes_i(Fl_Button*, void*) {
   clock_notes_window()->show();
 }
 void PanelUI::cb_Notes(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Notes_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Notes_i(o,v);
 }
 
 void PanelUI::cb_Modifier_i(Fl_Button*, void*) {
   clock_info_window()->show();
 }
 void PanelUI::cb_Modifier(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Modifier_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Modifier_i(o,v);
 }
 
 void PanelUI::cb_CLOSE2_i(Fl_Button*, void*) {
@@ -1013,7 +1013,7 @@ Fl_Double_Window* PanelUI::make_window() {
             o_menu_slider->value(1);
             o_menu_slider->callback((Fl_Callback*)cb_o_menu_slider);
             o_menu_slider->align(Fl_Align(FL_ALIGN_RIGHT));
-            o_menu_slider->when(FL_WHEN_RELEASE);
+            o_menu_slider->when(FL_WHEN_RELEASE_ALWAYS);
             const char* text=gettext("Opacity of Menu");o->label(text);
             float h=getOpacity("MenuStyle");
             o->value(h);
@@ -1055,7 +1055,7 @@ Fl_Double_Window* PanelUI::make_window() {
             o_slider->value(1);
             o_slider->callback((Fl_Callback*)cb_o_slider);
             o_slider->align(Fl_Align(FL_ALIGN_RIGHT));
-            o_slider->when(FL_WHEN_RELEASE);
+            o_slider->when(FL_WHEN_RELEASE_ALWAYS);
             const char* text=gettext("Opacity of Panel");o->label(text);
             float h = getOpacity("TrayStyle");
             o->value(h);
@@ -1157,7 +1157,7 @@ Fl_Double_Window* PanelUI::make_window() {
             w_slider->value(32);
             w_slider->callback((Fl_Callback*)cb_w_slider);
             w_slider->align(Fl_Align(FL_ALIGN_TOP));
-            w_slider->when(FL_WHEN_RELEASE);
+            w_slider->when(3);
             const char* text=gettext("Width of Panel");o->label(text);
             int h = getWidth();
             o->value(h);
@@ -1187,7 +1187,7 @@ btracts\nfrom with screen width. 0 is the default."));
             h_slider->value(32);
             h_slider->callback((Fl_Callback*)cb_h_slider);
             h_slider->align(Fl_Align(FL_ALIGN_TOP));
-            h_slider->when(FL_WHEN_RELEASE);
+            h_slider->when(FL_WHEN_RELEASE_ALWAYS);
             const char* text=gettext("Height of Panel");o->label(text);
             int h = getHeight();
             o->value(h);
@@ -1244,7 +1244,7 @@ om the right of the screen."));
             border_slider->step(1);
             border_slider->callback((Fl_Callback*)cb_border_slider);
             border_slider->align(Fl_Align(FL_ALIGN_TOP));
-            border_slider->when(FL_WHEN_RELEASE);
+            border_slider->when(FL_WHEN_RELEASE_ALWAYS);
             const char* text=gettext("Width of Panel Border");o->label(text);
             int border =getBorder();
             o->value(border);
@@ -1364,48 +1364,51 @@ Fl_Double_Window* PanelUI::add_to_panel() {
 }
 
 Fl_Double_Window* PanelUI::clock_window() {
-  { Fl_Double_Window* o = clock_config_window = new Fl_Double_Window(465, 545, gettext("Configure Clock"));
+  { Fl_Double_Window* o = clock_config_window = new Fl_Double_Window(460, 540, gettext("Configure Clock"));
     clock_config_window->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(380, 505, 75, 30, gettext("OK"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)61);
-      o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_OK2);
-      Fl_Group::current()->resizable(o);
-      const char* text=gettext("OK");o->label(text);
-    } // Fl_Button* o
-    { Fl_Input* o = clock_style = new Fl_Input(45, 505, 290, 30, gettext("style"));
-      clock_style->box(FL_FLAT_BOX);
-      clock_style->selection_color(FL_DARK_RED);
-      clock_style->callback((Fl_Callback*)cb_clock_style);
-      clock_style->when(3);
-      const char* text=gettext("style");o->label(text);
-    } // Fl_Input* clock_style
-    { Fl_Browser* o = new Fl_Browser(5, 5, 450, 405);
-      o->type(2);
-      o->box(FL_FLAT_BOX);
-      o->selection_color(FL_DARK_RED);
-      o->callback((Fl_Callback*)cb_4);
-      populateClocks(o);
-    } // Fl_Browser* o
-    { clock_display = new Fl_Output(10, 470, 445, 25);
-      clock_display->box(FL_FLAT_BOX);
-      clock_display->labelfont(1);
-      clock_display->labelsize(18);
-      clock_display->align(Fl_Align(FL_ALIGN_TOP));
-    } // Fl_Output* clock_display
-    { Fl_Button* o = new Fl_Button(5, 415, 75, 30, gettext("Notes"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_Notes);
-      const char* text=gettext("Notes");o->label(text);
-    } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(90, 415, 110, 30, gettext("Modifier Notes"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_Modifier);
-      const char* text=gettext("Modifier Notes");o->label(text);
-    } // Fl_Button* o
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 455, 540);
+      { Fl_Button* o = new Fl_Button(380, 505, 75, 30, gettext("OK"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)61);
+        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->callback((Fl_Callback*)cb_OK2);
+        Fl_Group::current()->resizable(o);
+        const char* text=gettext("OK");o->label(text);
+      } // Fl_Button* o
+      { Fl_Input* o = clock_style = new Fl_Input(45, 505, 290, 30, gettext("style"));
+        clock_style->box(FL_FLAT_BOX);
+        clock_style->selection_color(FL_DARK_RED);
+        clock_style->callback((Fl_Callback*)cb_clock_style);
+        clock_style->when(3);
+        const char* text=gettext("style");o->label(text);
+      } // Fl_Input* clock_style
+      { Fl_Browser* o = new Fl_Browser(5, 5, 450, 405);
+        o->type(2);
+        o->box(FL_FLAT_BOX);
+        o->selection_color(FL_DARK_RED);
+        o->callback((Fl_Callback*)cb_4);
+        populateClocks(o);
+      } // Fl_Browser* o
+      { clock_display = new Fl_Output(10, 470, 445, 25);
+        clock_display->box(FL_FLAT_BOX);
+        clock_display->labelfont(1);
+        clock_display->labelsize(18);
+        clock_display->align(Fl_Align(FL_ALIGN_TOP));
+      } // Fl_Output* clock_display
+      { Fl_Button* o = new Fl_Button(5, 415, 75, 30, gettext("Notes"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->callback((Fl_Callback*)cb_Notes);
+        const char* text=gettext("Notes");o->label(text);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(90, 415, 110, 30, gettext("Modifier Notes"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->callback((Fl_Callback*)cb_Modifier);
+        const char* text=gettext("Modifier Notes");o->label(text);
+      } // Fl_Button* o
+      o->end();
+    } // Fl_Scroll* o
     startup(o,jsm_panel_xpm);
     const char* text=gettext("Configure Clock");o->label(text);
     clock_config_window->xclass("jsm-panel");

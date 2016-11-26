@@ -180,6 +180,7 @@ void FontUI::cb_Cancel1(Fl_Button* o, void* v) {
 
 void FontUI::cb_OK1_i(Fl_Button*, void*) {
   font_chooser_cb(Widget,chooser_size,font_name,currentElement);
+font_choosing->hide();
 }
 void FontUI::cb_OK1(Fl_Button* o, void* v) {
   ((FontUI*)(o->parent()->user_data()))->cb_OK1_i(o,v);
@@ -432,7 +433,6 @@ Fl_Double_Window* FontUI::font_chooser_window() {
       font_size_slider->step(1);
       font_size_slider->value(12);
       font_size_slider->callback((Fl_Callback*)cb_font_size_slider);
-      font_size_slider->when(FL_WHEN_RELEASE);
       int fs = get_font_size(currentElement);
       o->value(fs);
     } // Fl_Slider* font_size_slider

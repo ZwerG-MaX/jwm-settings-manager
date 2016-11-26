@@ -637,7 +637,7 @@ Fl_Double_Window* MouseUI::jwm_window() {
       double_click_slider2->value(400);
       double_click_slider2->callback((Fl_Callback*)cb_double_click_slider2);
       double_click_slider2->align(Fl_Align(FL_ALIGN_LEFT));
-      double_click_slider2->when(FL_WHEN_RELEASE);
+      double_click_slider2->when(FL_WHEN_RELEASE_ALWAYS);
       JWMmouse();
     } // Fl_Slider* double_click_slider2
     { delta_slider2 = new Fl_Slider(150, 40, 90, 25, gettext("Double Click Delta"));
@@ -652,7 +652,7 @@ Fl_Double_Window* MouseUI::jwm_window() {
       delta_slider2->value(2);
       delta_slider2->callback((Fl_Callback*)cb_delta_slider2);
       delta_slider2->align(Fl_Align(FL_ALIGN_LEFT));
-      delta_slider2->when(FL_WHEN_RELEASE);
+      delta_slider2->when(FL_WHEN_RELEASE_ALWAYS);
       JWMmouse();
     } // Fl_Slider* delta_slider2
     { Fl_Value_Input* o = delta_v2 = new Fl_Value_Input(245, 40, 40, 25, gettext("Pixels"));
@@ -1211,7 +1211,7 @@ tap"));
             double_click_slider->value(400);
             double_click_slider->callback((Fl_Callback*)cb_double_click_slider);
             double_click_slider->align(Fl_Align(FL_ALIGN_RIGHT));
-            double_click_slider->when(FL_WHEN_RELEASE);
+            double_click_slider->when(FL_WHEN_RELEASE_ALWAYS);
             JWMmouse();
           } // Fl_Slider* double_click_slider
           { Fl_Value_Input* o = double_v = new Fl_Value_Input(55, 75, 60, 25, gettext("Miliseconds"));
@@ -1236,7 +1236,7 @@ tap"));
             delta_slider->value(2);
             delta_slider->callback((Fl_Callback*)cb_delta_slider);
             delta_slider->align(Fl_Align(FL_ALIGN_RIGHT));
-            delta_slider->when(FL_WHEN_RELEASE);
+            delta_slider->when(FL_WHEN_RELEASE_ALWAYS);
             JWMmouse();
           } // Fl_Slider* delta_slider
           { Fl_Value_Input* o = delta_v = new Fl_Value_Input(55, 145, 40, 25, gettext("Pixels"));

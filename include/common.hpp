@@ -70,7 +70,9 @@ namespace linuxcommon{
 	std::string sed_i(std::string input, std::string remove, std::string replace);
 	std::string current_path(int whichPath);
 	std::string current_directory();
-	std::string get_gtk_theme();
+	std::string get_gtk_icon_theme();
+	std::string get_gtk_widget_theme();
+	std::string get_gtk_item(std::string itemToGet, std::string defaultTheme);
 	std::string remove_cruft(std::string StringInput, std::string CruftToRemove);
 	std::string convert_num_to_string(int num);
 	std::string get_line_with_equal(std::string filename, std::string line);
@@ -109,6 +111,7 @@ namespace linuxcommon{
 	bool test_dir(std::string fullpath);
 	bool test_exec(std::string stringEXEC);
 	bool save_string_to_file(std::string MSG,std::string filename);/***This should make the directory recursively if it does not exist***/
+	bool switch_gtk_item(std::string item, std::string value);
 	bool has_file_extention_at_end(std::string filename,std::string extention);
 	bool program_is_running(std::string program_line);
 	bool pkill(std::string programname);

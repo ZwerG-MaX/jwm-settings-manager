@@ -501,6 +501,28 @@ void WindowUI::cb_OK3(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK3_i(o,v);
 }
 
+void WindowUI::cb_Widget_i(Fl_Button*, void*) {
+  make_gtk_theme_window()->show();
+}
+void WindowUI::cb_Widget(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Widget_i(o,v);
+}
+
+void WindowUI::cb_Cancel2_i(Fl_Button*, void*) {
+  theme_window->hide();
+}
+void WindowUI::cb_Cancel2(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Cancel2_i(o,v);
+}
+
+void WindowUI::cb_OK4_i(Fl_Button*, void*) {
+  if(!switchGTKTheme(theme_browser)){debug_out("Failed to change the GTK theme");}
+theme_window->hide();
+}
+void WindowUI::cb_OK4(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK4_i(o,v);
+}
+
 Fl_Double_Window* WindowUI::add_option_window() {
   { Fl_Double_Window* o = add_opt_window = new Fl_Double_Window(435, 390, gettext("Add an Option"));
     add_opt_window->user_data((void*)(this));
@@ -718,14 +740,14 @@ Fl_Double_Window* WindowUI::make_window() {
             active_o_slider->value(1);
             active_o_slider->callback((Fl_Callback*)cb_active_o_slider);
             active_o_slider->align(Fl_Align(FL_ALIGN_LEFT));
-            active_o_slider->when(FL_WHEN_RELEASE);
+            active_o_slider->when(3);
             opacity_loader(o,1);
           } // Fl_Slider* active_o_slider
           { Fl_Value_Input* o = active_o_slider_v = new Fl_Value_Input(203, 165, 35, 25, gettext("%"));
+            active_o_slider_v->tooltip(gettext("A compositor (like xcompmgr) must be installed"));
             active_o_slider_v->box(FL_FLAT_BOX);
             active_o_slider_v->selection_color((Fl_Color)80);
             active_o_slider_v->labelsize(10);
-            active_o_slider_v->value(1);
             active_o_slider_v->callback((Fl_Callback*)cb_active_o_slider_v);
             active_o_slider_v->align(Fl_Align(FL_ALIGN_RIGHT));
             active_o_slider_v->when(3);
@@ -790,10 +812,11 @@ Fl_Double_Window* WindowUI::make_window() {
             inactive_o_slider->value(1);
             inactive_o_slider->callback((Fl_Callback*)cb_inactive_o_slider);
             inactive_o_slider->align(Fl_Align(FL_ALIGN_LEFT));
-            inactive_o_slider->when(FL_WHEN_RELEASE);
+            inactive_o_slider->when(3);
             opacity_loader(o,2);
           } // Fl_Slider* inactive_o_slider
           { Fl_Value_Input* o = inactive_o_slider_v = new Fl_Value_Input(450, 165, 35, 25, gettext("%"));
+            inactive_o_slider_v->tooltip(gettext("A compositor (like xcompmgr) must be installed"));
             inactive_o_slider_v->box(FL_FLAT_BOX);
             inactive_o_slider_v->selection_color((Fl_Color)80);
             inactive_o_slider_v->labelsize(10);
@@ -866,10 +889,12 @@ Fl_Double_Window* WindowUI::make_window() {
             t_slider->value(20);
             t_slider->callback((Fl_Callback*)cb_t_slider);
             t_slider->align(Fl_Align(FL_ALIGN_LEFT));
+            t_slider->when(3);
             int y = getBorderHeight();
             o->value(y);
           } // Fl_Slider* t_slider
           { Fl_Value_Input* o = t_slider_v = new Fl_Value_Input(340, 35, 31, 25, gettext("pixels"));
+            t_slider_v->tooltip(gettext("This is the top with the program name, and close button, etc.."));
             t_slider_v->box(FL_FLAT_BOX);
             t_slider_v->labelsize(10);
             t_slider_v->callback((Fl_Callback*)cb_t_slider_v);
@@ -891,10 +916,13 @@ re easily"));
             b_slider->value(4);
             b_slider->callback((Fl_Callback*)cb_b_slider);
             b_slider->align(Fl_Align(FL_ALIGN_LEFT));
+            b_slider->when(3);
             int x = getBorderWidth();
             o->value(x);
           } // Fl_Slider* b_slider
           { Fl_Value_Input* o = b_slider_v = new Fl_Value_Input(340, 65, 31, 25, gettext("pixels"));
+            b_slider_v->tooltip(gettext("This makes the edges of the window larger or smaller to help you grab them mo\
+re easily"));
             b_slider_v->box(FL_FLAT_BOX);
             b_slider_v->labelsize(10);
             b_slider_v->callback((Fl_Callback*)cb_b_slider_v);
@@ -1008,59 +1036,70 @@ s many program groups can be created as desired."));
             getGroups(o);
           } // Fl_Browser* groups_browser
           { group_add = new Fl_Button(15, 230, 30, 30, gettext("@+"));
+            group_add->tooltip(gettext("Add a new group of options for windows"));
             group_add->box(FL_FLAT_BOX);
             group_add->color((Fl_Color)23);
             group_add->callback((Fl_Callback*)cb_group_add);
           } // Fl_Button* group_add
           { rm_group = new Fl_Button(51, 230, 30, 30);
+            rm_group->tooltip(gettext("Remove ENTIRE selected group"));
             rm_group->box(FL_FLAT_BOX);
             rm_group->color((Fl_Color)23);
             rm_group->image(image_minus);
             rm_group->callback((Fl_Callback*)cb_rm_group);
           } // Fl_Button* rm_group
           { opt_browser = new Fl_Browser(120, 55, 120, 155, gettext("Current Options"));
+            opt_browser->tooltip(gettext("Window specific options"));
             opt_browser->type(2);
             opt_browser->box(FL_FLAT_BOX);
             opt_browser->align(Fl_Align(FL_ALIGN_TOP));
           } // Fl_Browser* opt_browser
           { opt_add = new Fl_Button(120, 230, 30, 30, gettext("@+"));
+            opt_add->tooltip(gettext("Add a new option to the current group"));
             opt_add->box(FL_FLAT_BOX);
             opt_add->color((Fl_Color)23);
             opt_add->callback((Fl_Callback*)cb_opt_add);
           } // Fl_Button* opt_add
           { rm_opt = new Fl_Button(156, 230, 30, 30);
+            rm_opt->tooltip(gettext("Remove selected option"));
             rm_opt->box(FL_FLAT_BOX);
             rm_opt->color((Fl_Color)23);
             rm_opt->image(image_minus);
             rm_opt->callback((Fl_Callback*)cb_rm_opt);
           } // Fl_Button* rm_opt
           { name_browser = new Fl_Browser(255, 55, 115, 155, gettext("Program Name"));
+            name_browser->tooltip(gettext("Programs that are effected by the options"));
             name_browser->type(2);
             name_browser->box(FL_FLAT_BOX);
             name_browser->align(Fl_Align(FL_ALIGN_TOP));
           } // Fl_Browser* name_browser
           { prog_add = new Fl_Button(255, 230, 30, 30, gettext("@+"));
+            prog_add->tooltip(gettext("Add a program effected by the option"));
             prog_add->box(FL_FLAT_BOX);
             prog_add->color((Fl_Color)23);
             prog_add->callback((Fl_Callback*)cb_prog_add);
           } // Fl_Button* prog_add
           { rm_prog = new Fl_Button(291, 230, 30, 30);
+            rm_prog->tooltip(gettext("Remove selected Program name"));
             rm_prog->box(FL_FLAT_BOX);
             rm_prog->color((Fl_Color)23);
             rm_prog->image(image_minus);
             rm_prog->callback((Fl_Callback*)cb_rm_prog);
           } // Fl_Button* rm_prog
           { class_browser = new Fl_Browser(385, 55, 115, 155, gettext("Window Class"));
+            class_browser->tooltip(gettext("Window classes that effected by the options"));
             class_browser->type(2);
             class_browser->box(FL_FLAT_BOX);
             class_browser->align(Fl_Align(FL_ALIGN_TOP));
           } // Fl_Browser* class_browser
           { class_add = new Fl_Button(385, 230, 30, 30, gettext("@+"));
+            class_add->tooltip(gettext("Add a new Window class effected by the option"));
             class_add->box(FL_FLAT_BOX);
             class_add->color((Fl_Color)23);
             class_add->callback((Fl_Callback*)cb_class_add);
           } // Fl_Button* class_add
           { rm_class = new Fl_Button(422, 230, 30, 30);
+            rm_class->tooltip(gettext("Remove selected Window Class"));
             rm_class->box(FL_FLAT_BOX);
             rm_class->color((Fl_Color)23);
             rm_class->image(image_minus);
@@ -1083,10 +1122,12 @@ s many program groups can be created as desired."));
             a_b_slider->value(4);
             a_b_slider->callback((Fl_Callback*)cb_a_b_slider);
             a_b_slider->align(Fl_Align(FL_ALIGN_LEFT));
+            a_b_slider->when(3);
             int x = getBorderWidth();
             o->value(x);
           } // Fl_Slider* a_b_slider
           { Fl_Value_Output* o = a_b_slider_v = new Fl_Value_Output(320, 150, 35, 25, gettext("pixels"));
+            a_b_slider_v->tooltip(gettext("Width of the window borders"));
             a_b_slider_v->box(FL_FLAT_BOX);
             a_b_slider_v->color(FL_LIGHT3);
             a_b_slider_v->labelsize(10);
@@ -1107,10 +1148,12 @@ s many program groups can be created as desired."));
             a_t_slider->value(20);
             a_t_slider->callback((Fl_Callback*)cb_a_t_slider);
             a_t_slider->align(Fl_Align(FL_ALIGN_LEFT));
+            a_t_slider->when(3);
             int y = getBorderHeight();
             o->value(y);
           } // Fl_Slider* a_t_slider
           { Fl_Value_Output* o = a_t_slider_v = new Fl_Value_Output(320, 190, 35, 25, gettext("pixels"));
+            a_t_slider_v->tooltip(gettext("Height of the Window\'s Title Bar"));
             a_t_slider_v->box(FL_FLAT_BOX);
             a_t_slider_v->color(FL_LIGHT3);
             a_t_slider_v->labelsize(10);
@@ -1146,6 +1189,12 @@ s many program groups can be created as desired."));
         o->labelcolor((Fl_Color)55);
         o->callback((Fl_Callback*)cb_OK3);
       } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(75, 285, 110, 25, gettext("Widget theme"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->selection_color((Fl_Color)48);
+        o->callback((Fl_Callback*)cb_Widget);
+      } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
     startup(o,jsm_windows_xpm);
@@ -1154,4 +1203,44 @@ s many program groups can be created as desired."));
     window_window->resizable(window_window);
   } // Fl_Double_Window* window_window
   return window_window;
+}
+
+Fl_Double_Window* WindowUI::make_gtk_theme_window() {
+  { theme_window = new Fl_Double_Window(310, 230, gettext("Widget theme"));
+    theme_window->user_data((void*)(this));
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 310, 230);
+      { Fl_Browser* o = theme_browser = new Fl_Browser(5, 5, 300, 190);
+        theme_browser->type(2);
+        theme_browser->box(FL_FLAT_BOX);
+        theme_browser->selection_color((Fl_Color)80);
+        populateGTKThemes(o);
+      } // Fl_Browser* theme_browser
+      { Fl_Button* o = new Fl_Button(190, 200, 55, 25, gettext("Cancel"));
+        o->box(FL_FLAT_BOX);
+        o->down_box(FL_GTK_DOWN_BOX);
+        o->color((Fl_Color)80);
+        o->selection_color((Fl_Color)81);
+        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->callback((Fl_Callback*)cb_Cancel2);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(255, 200, 45, 25, gettext("OK"));
+        o->tooltip(gettext("Write to configuration file"));
+        o->box(FL_FLAT_BOX);
+        o->down_box(FL_GTK_DOWN_BOX);
+        o->color((Fl_Color)61);
+        o->selection_color((Fl_Color)59);
+        o->labelcolor((Fl_Color)55);
+        o->callback((Fl_Callback*)cb_OK4);
+      } // Fl_Button* o
+      { Fl_Output* o = theme_name = new Fl_Output(10, 200, 170, 25);
+        theme_name->box(FL_FLAT_BOX);
+        theme_name->color((Fl_Color)53);
+        std::string tmp=linuxcommon::get_gtk_widget_theme();
+        o->value(tmp.c_str());o->redraw();
+      } // Fl_Output* theme_name
+      o->end();
+    } // Fl_Scroll* o
+    theme_window->end();
+  } // Fl_Double_Window* theme_window
+  return theme_window;
 }

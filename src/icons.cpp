@@ -23,6 +23,7 @@
  */
 
 #include "../include/icons.hpp"
+//BOOL//////////////////////////////////////////////////////////////////
 bool edit_value(Fl_Browser* iconsBrowser,Fl_Input* dir_edit_input){
 	const char* line=iconsBrowser->text(iconsBrowser->value());
 	if(line==NULL){return false;}
@@ -35,36 +36,6 @@ bool save_edit_value(Fl_Browser* iconsBrowser,Fl_Input* dir_edit_input){
 	if(line==NULL){return false;}
 	
 	return true;
-}
-void populateIconThemes(Fl_Browser* o){
-	debug_out("void populateIconThemes(Fl_Browser* o)");
-	o->clear();
-	int chosen=1;
-	std::vector<std::string> themesVector=icon_themefiles_vector();
-	std::string gtk_theme=linuxcommon::get_gtk_theme();
-	if(themesVector.empty()){
-		errorOUT("Didn't find and Icon themes");
-		return;
-	}
-	for( std::vector<std::string>::iterator it = themesVector.begin();
-		it!=themesVector.end();
-		++it){
-		std::string themefile=*it;
-		debug_out("File="+themefile);
-		if(themefile.compare("")!=0){
-			std::string themeStyle=linuxcommon::get_line_with_equal(themefile,"Name=");
-			if(themeStyle.compare("")!=0){o->add(themeStyle.c_str());
-				debug_out("Name="+themeStyle);
-				if((themefile.find(gtk_theme)<themefile.length())||(gtk_theme.compare(themeStyle)==0)){
-					debug_out("Found the current one:"+themeStyle);
-					chosen=o->size();
-					o->select(chosen);
-				}
-			}
-		}
-	}
-	o->redraw();
-	themesVector.clear();
 }
 bool switchTheme(Fl_Browser* o,int size){
 	debug_out("bool switchTheme(Fl_Browser* o,int size)");
@@ -133,6 +104,7 @@ bool populateIncludes(std::string themefile,int size_to_use){
 	}
 	return non_empty;
 }
+//VECTOR////////////////////////////////////////////////////////////////
 std::vector<std::string> icon_themefiles_vector(){
 	debug_out("std::vector<std::string> icon_themefiles_vector()");
 	std::string DIRECTORY=linuxcommon::find_xdg_data_dir_subdir("icons");
@@ -264,4 +236,35 @@ std::vector<std::string> list_icon_dirs_in_themefile(std::string themefile,int s
 		}
 	}
 	return ListOfIconDirs;
+}
+//VOID//////////////////////////////////////////////////////////////////
+void populateIconThemes(Fl_Browser* o){
+	debug_out("void populateIconThemes(Fl_Browser* o)");
+	o->clear();
+	int chosen=1;
+	std::vector<std::string> themesVector=icon_themefiles_vector();
+	std::string gtk_theme=linuxcommon::get_gtk_icon_theme();
+	if(themesVector.empty()){
+		errorOUT("Didn't find any Icon themes");
+		return;
+	}
+	for( std::vector<std::string>::iterator it = themesVector.begin();
+		it!=themesVector.end();
+		++it){
+		std::string themefile=*it;
+		debug_out("File="+themefile);
+		if(themefile.compare("")!=0){
+			std::string themeStyle=linuxcommon::get_line_with_equal(themefile,"Name=");
+			if(themeStyle.compare("")!=0){o->add(themeStyle.c_str());
+				debug_out("Name="+themeStyle);
+				if((themefile.find(gtk_theme)<themefile.length())||(gtk_theme.compare(themeStyle)==0)){
+					debug_out("Found the current one:"+themeStyle);
+					chosen=o->size();
+					o->select(chosen);
+				}
+			}
+		}
+	}
+	o->redraw();
+	themesVector.clear();
 }

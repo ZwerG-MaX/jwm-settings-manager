@@ -97,7 +97,7 @@ class MouseUI {open
   Function {cursors_window()} {open
   } {
     Fl_Window CURSOR_win {
-      label {Mouse Cursors} open
+      label {Mouse Cursors} open selected
       xywh {455 361 265 220} type Double hide
       code0 {startup(o,jsm_mouse_xpm);} xclass JSM
     } {
@@ -135,7 +135,8 @@ CURSOR_win->hide();}
       }
     }
   }
-  Function {jwm_window()} {} {
+  Function {jwm_window()} {open
+  } {
     Fl_Window {} {
       label {JWM Mouse Settings} open
       xywh {172 222 400 115} type Double hide
@@ -149,7 +150,7 @@ setElementText("DoubleClickSpeed",SPEED);
 double_v2->value(speed);
 saveChangesTemp();
 doubleChanged = true;}
-        tooltip {This sets how fast you must click to Double Click} xywh {150 10 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 minimum 1 maximum 2000 step 1 value 400
+        tooltip {This sets how fast you must click to Double Click} xywh {150 10 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 6 minimum 1 maximum 2000 step 1 value 400
         code0 {JWMmouse();}
       }
       Fl_Slider delta_slider2 {
@@ -160,7 +161,7 @@ setElementText("DoubleClickDelta",SPEED);
 delta_v2->value(delta);
 saveChangesTemp();
 deltaChanged = true;}
-        tooltip {This sets how closely you must click to Double Click} xywh {150 40 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 4 minimum 1 maximum 32 step 1 value 2
+        tooltip {This sets how closely you must click to Double Click} xywh {150 40 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 when 6 minimum 1 maximum 32 step 1 value 2
         code0 {JWMmouse();}
       }
       Fl_Value_Input delta_v2 {
@@ -216,8 +217,8 @@ exit(0);}
 deltaChanged = false;
 doubleChanged = false;} {}
     Fl_Window mouse_window {
-      label {Touchpad Settings} open selected
-      xywh {782 128 370 345} type Double color 47 resizable
+      label {Touchpad Settings} open
+      xywh {194 133 370 345} type Double color 47 resizable
       code0 {readsynclientoutput();}
       code1 {startup(o,jsm_mouse_xpm);} xclass {jsm-mouse} visible
     } {
@@ -763,7 +764,7 @@ setElementText("DoubleClickSpeed",SPEED);
 double_v->value(speed);
 saveChangesTemp();
 doubleChanged = true;}
-              tooltip {This sets how fast you must click to Double Click} xywh {55 45 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 4 minimum 1 maximum 2000 step 1 value 400
+              tooltip {This sets how fast you must click to Double Click} xywh {55 45 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 6 minimum 1 maximum 2000 step 1 value 400
               code0 {JWMmouse();}
             }
             Fl_Value_Input double_v {
@@ -785,7 +786,7 @@ setElementText("DoubleClickDelta",SPEED);
 delta_v->value(delta);
 saveChangesTemp();
 deltaChanged = true;}
-              tooltip {This sets how closely you must click to Double Click} xywh {55 115 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 4 minimum 1 maximum 32 step 1 value 2
+              tooltip {This sets how closely you must click to Double Click} xywh {55 115 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 6 minimum 1 maximum 32 step 1 value 2
               code0 {JWMmouse();}
             }
             Fl_Value_Input delta_v {

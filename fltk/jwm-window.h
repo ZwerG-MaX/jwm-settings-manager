@@ -316,5 +316,18 @@ private:
   static void cb_Cancel1(Fl_Button*, void*);
   inline void cb_OK3_i(Fl_Button*, void*);
   static void cb_OK3(Fl_Button*, void*);
+  inline void cb_Widget_i(Fl_Button*, void*);
+  static void cb_Widget(Fl_Button*, void*);
+public:
+  Fl_Double_Window* make_gtk_theme_window();
+  Fl_Double_Window *theme_window;
+  Fl_Browser *theme_browser;
+private:
+  inline void cb_Cancel2_i(Fl_Button*, void*);
+  static void cb_Cancel2(Fl_Button*, void*);
+  inline void cb_OK4_i(Fl_Button*, void*);
+  static void cb_OK4(Fl_Button*, void*);
+public:
+  Fl_Output *theme_name;
 };
 #endif

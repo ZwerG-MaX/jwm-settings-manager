@@ -195,9 +195,9 @@ font_window->hide();}
   Function {font_chooser_window()} {open
   } {
     Fl_Window font_choosing {
-      label {Choose a Font} open selected
-      xywh {688 87 315 410} type Double hide
-      code0 {startup(o,jsm_fonts_xpm);} xclass {jsm-fonts}
+      label {Choose a Font} open
+      xywh {688 87 315 410} type Double
+      code0 {startup(o,jsm_fonts_xpm);} xclass {jsm-fonts} visible
     } {
       Fl_Button {} {
         label Cancel
@@ -206,7 +206,8 @@ font_window->hide();}
       }
       Fl_Button {} {
         label OK
-        callback {font_chooser_cb(Widget,chooser_size,font_name,currentElement);}
+        callback {font_chooser_cb(Widget,chooser_size,font_name,currentElement);
+font_choosing->hide();}
         tooltip {Write to configuration file} xywh {265 380 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
       }
       Fl_Browser font_browser {
@@ -229,8 +230,8 @@ chooser_size->value(size_of_font);
 chooser_size->redraw();
 Fl_Fontsize fs = size_of_font;
 font_name->textsize(fs);
-font_name->redraw();}
-        xywh {5 295 250 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 48 when 4 minimum 8 maximum 200 step 1 value 12
+font_name->redraw();} selected
+        xywh {5 295 250 25} type Horizontal box GTK_DOWN_BOX color 41 selection_color 48 minimum 8 maximum 200 step 1 value 12
         code0 {int fs = get_font_size(currentElement);}
         code1 {o->value(fs);}
       }

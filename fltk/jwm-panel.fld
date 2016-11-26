@@ -197,7 +197,7 @@ if(appLine <= size && appLine !=0){
             }
           }
           Fl_Group {} {
-            label Appearance
+            label Appearance open
             xywh {0 60 275 335} selection_color 45 hide
             code0 {const char* text=gettext("Appearance");o->label(text);}
           } {
@@ -228,7 +228,7 @@ if(appLine <= size && appLine !=0){
             Fl_Slider o_menu_slider {
               label {Opacity of Menu }
               callback {opacity(o_menu_slider_v,o,"MenuStyle");}
-              tooltip {A compositor (like xcompmgr) must be installed} xywh {10 227 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 4 step 0.02 value 1
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {10 227 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 6 step 0.02 value 1
               code0 {const char* text=gettext("Opacity of Menu");o->label(text);}
               code1 {float h=getOpacity("MenuStyle");}
               code2 {o->value(h);}
@@ -259,7 +259,7 @@ if(appLine <= size && appLine !=0){
             Fl_Slider o_slider {
               label {Opacity of Panel  }
               callback {opacity(o_slider_v,o_slider,"TrayStyle");}
-              tooltip {A compositor (like xcompmgr) must be installed} xywh {10 355 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 4 step 0.02 value 1
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {10 355 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 6 step 0.02 value 1
               code0 {const char* text=gettext("Opacity of Panel");o->label(text);}
               code1 {float h = getOpacity("TrayStyle");}
               code2 {o->value(h);}
@@ -366,7 +366,7 @@ else{
             Fl_Slider w_slider {
               label {Width of Panel  }
               callback {width_height_border(o,width_input,"width");}
-              tooltip {0 is Full Length} xywh {10 150 180 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 1 when 4 maximum 3000 step 1 value 32
+              tooltip {0 is Full Length} xywh {10 150 180 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 1 when 3 maximum 3000 step 1 value 32
               code0 {const char* text=gettext("Width of Panel");o->label(text);}
               code1 {int h = getWidth();}
               code2 {o->value(h);}
@@ -385,7 +385,7 @@ from with screen width. 0 is the default.} xywh {200 160 40 25} box FLAT_BOX col
             Fl_Slider h_slider {
               label {Height of Panel  }
               callback {width_height_border(o,height_input,"height");}
-              tooltip {0 will base size from the current items in the panel} xywh {10 205 180 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 1 when 4 maximum 3000 step 1 value 32
+              tooltip {0 will base size from the current items in the panel} xywh {10 205 180 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 1 when 6 maximum 3000 step 1 value 32
               code0 {const char* text=gettext("Height of Panel");o->label(text);}
               code1 {int h = getHeight();}
               code2 {o->value(h);}
@@ -426,7 +426,7 @@ screen.} xywh {10 300 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum 
             Fl_Slider border_slider {
               label {Width of Panel Border}
               callback {width_height_border(o,border_input,"border");}
-              xywh {10 350 180 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 1 when 4 maximum 32 step 1
+              xywh {10 350 180 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 1 when 6 maximum 32 step 1
               code0 {const char* text=gettext("Width of Panel Border");o->label(text);}
               code1 {int border =getBorder();}
               code2 {o->value(border);}
@@ -520,58 +520,64 @@ refresh_app_browser(app_browser);}
       }
     }
   }
-  Function {clock_window()} {} {
+  Function {clock_window()} {open
+  } {
     Fl_Window clock_config_window {
       label {Configure Clock} open
-      xywh {710 112 465 545} type Double hide resizable
+      xywh {749 116 460 540} type Double hide resizable
       code0 {startup(o,jsm_panel_xpm);}
       code1 {const char* text=gettext("Configure Clock");o->label(text);} xclass {jsm-panel}
     } {
-      Fl_Button {} {
-        label OK
-        callback {save_user_clock();}
-        xywh {380 505 75 30} box FLAT_BOX color 61 labelcolor 7 resizable
-        code0 {const char* text=gettext("OK");o->label(text);}
-      }
-      Fl_Input clock_style {
-        label style
-        callback {const char* style = o->value();
+      Fl_Scroll {} {open
+        xywh {0 0 455 540}
+      } {
+        Fl_Button {} {
+          label OK
+          callback {save_user_clock();} selected
+          xywh {380 505 75 30} box FLAT_BOX color 61 labelcolor 7 resizable
+          code0 {const char* text=gettext("OK");o->label(text);}
+        }
+        Fl_Input clock_style {
+          label style
+          callback {const char* style = o->value();
 std::string result = getClock(style);
 clock_display->redraw_label();
 clock_display->copy_label(result.c_str());
 clock_display->redraw();
 clock_displayer->redraw_label();
 clock_displayer->copy_label(result.c_str());
-clock_displayer->redraw();}
-        xywh {45 505 290 30} box FLAT_BOX selection_color 72 when 3
-        code0 {const char* text=gettext("style");o->label(text);}
-      }
-      Fl_Browser {} {
-        callback {std::string item=o->text(o->value());
+clock_displayer->redraw();} selected
+          xywh {45 505 290 30} box FLAT_BOX selection_color 72 when 3
+          code0 {const char* text=gettext("style");o->label(text);}
+        }
+        Fl_Browser {} {
+          callback {std::string item=o->text(o->value());
 item= item.substr(0,2);
 clock_style->insert(item.c_str());
-//std::cerr<<"Click Clock: "<<item<<std::endl;}
-        xywh {5 5 450 405} type Hold box FLAT_BOX selection_color 72
-        code1 {populateClocks(o);}
-      }
-      Fl_Output clock_display {
-        xywh {10 470 445 25} box FLAT_BOX labelfont 1 labelsize 18 align 1
-      }
-      Fl_Button {} {
-        label Notes
-        callback {clock_notes_window()->show();}
-        xywh {5 415 75 30} box FLAT_BOX color 23
-        code0 {const char* text=gettext("Notes");o->label(text);}
-      }
-      Fl_Button {} {
-        label {Modifier Notes}
-        callback {clock_info_window()->show();}
-        xywh {90 415 110 30} box FLAT_BOX color 23
-        code0 {const char* text=gettext("Modifier Notes");o->label(text);}
+//std::cerr<<"Click Clock: "<<item<<std::endl;} selected
+          xywh {5 5 450 405} type Hold box FLAT_BOX selection_color 72
+          code1 {populateClocks(o);}
+        }
+        Fl_Output clock_display {selected
+          xywh {10 470 445 25} box FLAT_BOX labelfont 1 labelsize 18 align 1
+        }
+        Fl_Button {} {
+          label Notes
+          callback {clock_notes_window()->show();} selected
+          xywh {5 415 75 30} box FLAT_BOX color 23
+          code0 {const char* text=gettext("Notes");o->label(text);}
+        }
+        Fl_Button {} {
+          label {Modifier Notes}
+          callback {clock_info_window()->show();} selected
+          xywh {90 415 110 30} box FLAT_BOX color 23
+          code0 {const char* text=gettext("Modifier Notes");o->label(text);}
+        }
       }
     }
   }
-  Function {clock_notes_window()} {} {
+  Function {clock_notes_window()} {open
+  } {
     Fl_Window clock_info {
       label Notes open
       xywh {691 194 350 435} type Double hide resizable
@@ -620,7 +626,8 @@ if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;}}
       }
     }
   }
-  Function {config_applist_window()} {} {
+  Function {config_applist_window()} {open
+  } {
     Fl_Window conf_applist_window {
       label {Running App List} open
       xywh {739 651 235 70} type Double hide
@@ -1114,8 +1121,7 @@ populateApps(app_browser);} {}
     code {setJSMItem("panel","1");
 cancel();
 panel_window->hide();
-//UI ux;ux.showSettings();} {selected
-    }
+//UI ux;ux.showSettings();} {}
   }
   Function {change_manual_item(std::string input, std::string old_input)} {open
   } {
