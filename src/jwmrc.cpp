@@ -205,6 +205,14 @@ bool addButtonToLastTray(std::string attribute, std::string value, std::string t
 	node.append_attribute(attribute.c_str())=value.c_str();
 	return saveChangesTemp();
 }
+bool addElement(std::string element){
+//	if(!loadTemp()){return false;}
+	debug_out("addElementAndSub(std::string "+element+")");
+	if(element.compare("")==0){return false;}
+	pugi::xml_node node =doc.child("JWM").append_child(element.c_str());
+	if(!node){return false;}
+    return saveChangesTemp();
+}
 bool addElementAndSub(std::string element, std::string subelement){
 //	if(!loadTemp()){return false;}
 	debug_out("addElementAndSub(std::string "+element+", std::string "+ subelement+ ")");
@@ -278,7 +286,8 @@ bool addSubElementWithText(unsigned int whichElement,std::string element, std::s
         }
     }
     node.append_child(subelement.c_str());
-    node.child(subelement.c_str()).text().set(text.c_str());
+    node=node.last_child();
+    node.text().set(text.c_str());
     return saveChangesTemp();
 }
 bool addSubElementWithTextandAttribute(unsigned int whichElement,std::string element, std::string subelement, std::string text,std::string attribute, std::string value){
@@ -296,7 +305,7 @@ bool addSubElementWithTextandAttribute(unsigned int whichElement,std::string ele
         }
     }
     node.append_child(subelement.c_str());
-    node=node.child(subelement.c_str());
+    node=node.last_child();
     node.text().set(text.c_str());
     node.append_attribute(attribute.c_str())=value.c_str();
     return saveChangesTemp();
@@ -316,7 +325,7 @@ bool addSubElementWithAttribute(unsigned int whichElement,std::string element, s
         }
     }
     node.append_child(subelement.c_str());
-    node=node.child(subelement.c_str());
+    node=node.last_child();
     node.append_attribute(attribute.c_str())=value.c_str();
     return saveChangesTemp();
 
@@ -336,7 +345,8 @@ bool addElementWithAttribute(std::string element, std::string attribute, std::st
 		return false;
 	}
 	pugi::xml_node node =  doc.child("JWM").append_child(element.c_str());
-    node.child(element.c_str()).append_attribute(attribute.c_str())=value.c_str();
+    node=node.last_child();
+    node.append_attribute(attribute.c_str())=value.c_str();
     return saveChangesTemp();
 }
 bool addElementWithTextAndAttribute(std::string element, std::string attribute, std::string value,std::string text){
@@ -346,8 +356,8 @@ bool addElementWithTextAndAttribute(std::string element, std::string attribute, 
 	if(value.compare("")==0){return false;}
 	if(text.compare("")==0){return false;}
 	pugi::xml_node node =  doc.child("JWM").append_child(element.c_str());
-    node.child(element.c_str()).text().set(text.c_str());
-    node.child(element.c_str()).append_attribute(attribute.c_str())=value.c_str();
+    node.last_child().text().set(text.c_str());
+    node.last_child().append_attribute(attribute.c_str())=value.c_str();
     return saveChangesTemp();
 }
 bool addElementWithTextAndAttribute(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text){
@@ -1121,8 +1131,8 @@ std::string getAttribute(pugi::xml_node node,std::string attribute){
 	std::string res=node.attribute(attribute.c_str()).as_string();
 	return res;
 }
-std::string getElementText(std::string element){
 
+std::string getElementText(std::string element){
 	if(element.compare("")==0){return "";}
 	debug_out("std::string getElementText(std::string "+element +")");
     pugi::xml_node node = doc.child("JWM").child(element.c_str());

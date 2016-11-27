@@ -64,6 +64,7 @@
 ///Boolean//////////////////////////////////////////////////////////////
 //A
 bool addButtonToLastTray(std::string attribute, std::string value, std::string text);
+bool addElement(std::string element);
 bool addElementAndSub(std::string element, std::string subelelemnt);
 bool addElementWithText(std::string element, std::string text);
 bool addElementWithTextAfter(std::string element, std::string text);

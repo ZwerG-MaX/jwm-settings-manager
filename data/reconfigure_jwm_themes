@@ -1,44 +1,70 @@
 #!/bin/bash
+. gettext.sh
+export TEXTDOMAIN=jwm-settings-manager
 #####################################################################################
-# translate
-PLACES_NAME=$"Places"
-MENU_NAME=$"Apps"
-SHUTDOWN_NAME=$"Shutdown"
-Help=$"Help"
-Calendar=$"Calendar"
-ReloadDesktop=$"Reload Desktop"
-ClockSettings=$"Clock Settings"
-Home=$"Home"
-TimezoneSettings=$"Timezone Settings"
-Settings=$"Settings"
-EditPanel=$"Edit Panel"
-ChangeDesktopBackground=$"Change Desktop Background"
-AboutToriOS="About ToriOS"
-AboutUs=$"About Us"
-SoftwareInstaller=$"Software Installer"
-Run=$"Run"
-Locate=$"Locate"
+## Places Menu
+PLACES_NAME=$(gettext "Places")
+## Applications menu
+MENU_NAME=$(gettext "Apps")
+SHUTDOWN_NAME=$(gettext "Shutdown")
+Help=$(gettext "Help")
+Calendar=$(gettext "Calendar")
+## This menu item refreshes/reloads the window manager
+ReloadDesktop=$(gettext "Reload Desktop")
+ClockSettings=$(gettext "Clock Settings")
+## this opens the home folder
+Home=$(gettext "Home")
+TimezoneSettings=$(gettext "Timezone Settings")
+## This is the general settings
+Settings=$(gettext "Settings")
+EditPanel=$(gettext "Edit Panel")
+ChangeDesktopBackground=$(gettext "Change Desktop Background")
+AboutToriOS=$(gettext "About ToriOS")
+AboutUs=$(gettext "About Us")
+SoftwareInstaller=$(gettext "Software Installer")
+## this is to run a program
+Run=$(gettext "Run")
+## This is to locate a file
+Locate=$(gettext "Locate")
+UPDATE_SYS=$(gettext "Update System")
+## Software packages, or programs
+INSTALL_PKGS=$(gettext "Install Packages")
+INFO=$(gettext "Information")
+ABOUT_SOFT_INST=$(gettext "About Software installer")
+## Software packages, or programs
+LIST_BROKEN=$(gettext "List All Installed Packages")
+## Software packages, or programs
+FIX_BROKEN=$(gettext "Fix broken packages")
+## Add an icon to the desktop
+ADD_NEW=$(gettext "Add new items to Desktop")
 #####################################################################################
-RELINSTDIR="$1"
-directory="/etc/menu-methods"
-bin_list=(jwm-placesmenu jwm-desktopmenu)
-## make our menu-methods executables
-for app in "${bin_list[@]}"
-do
-  [[ -f "${directory}${app}" ]] && [[ ! -x "${directory}${app}" ]] && chmod +x "${directory}${app}"
-done
-#make our nice startup program executable
-nicestart="$(which nice-start)"
-[[ -f "${nicestart}" ]] && [[ ! -x "${nicestart}" ]] && chmod +x "${nicestart}"
-#####################################################################################
+##TODO: fix this so the install dir can be changed via the user
+RELINSTDIR="/usr/share"
+PROGNAME="${0/*\/}"
+## our startup log file
+LOGDIR="$HOME/.jwm/jsm-logs"
+if [[ ! -d "$HOME" ]]
+then
+   if [[ -d "/var/log" ]]
+   then
+     LOGDIR="/var/log"
+   else
+     LOGDIR="/"
+   fi
+fi
+[[ -d "$LOGDIR" ]] || mkdir -p "$LOGDIR" 2> /dev/null
+chmod -R a+rw "${LOGDIR}" 2> /dev/null
+LOG="$LOGDIR/$PROGNAME.log"
+date -I >"$LOG"
+LOG(){
+    printf "%s\n" "$*" >> "$LOG" 2> /dev/null
+}
 ## program arrays to test to use in the jwmrc files
 BATTprogs=(xfce4-power-manager batteri)
 TERMS=(sakura lxterminal gnome-terminal xfce4-terminal xterm roxterm mrxvt rxvt)
-APPlauncherProgs=()
-EXTERNALDISPLAYprogs=(arandr)
 WEBLIST=(firefox chromium chrome qupzilla midori dillo links2)
 SYS_MONITORS=(xfce4-task-manager htop top gnome-system-monitor)
-DESKTOPprogS=(thunar xfe rox nautilus)
+DESKTOPprogS=(rox nautilus)
 screenieProgs=(scrot import screengrab shutter xfce4-screenshooter gnome-screenshot)
 calcProgs=(calcoo galculator gnome-calculator kcalc qalculate-gtk wmcalc)
 runProgs=(grun)
@@ -71,8 +97,7 @@ else
 fi
 ## TODO compose a list of common default backgrounds
 BG_LIST=("/usr/share/backgrounds/warty-final-ubuntu.png" "/usr/share/archlinux/wallpaper/archlinux-elation.jpg" "/usr/share/images/desktop-base/moreblue-orbit-wallpaper.png")
-iconDIRS=("/usr/share/app-install/icons" "\$HOME/.local/share/icons/" "\$HOME/.local/share/icons/hicolor" "\$HOME/.local/share/icons/hicolor/128x128" "\$HOME/.local/share/icons/hicolor/128x128/apps" "\$HOME/.local/share/icons/hicolor/16x16" "\$HOME/.local/share/icons/hicolor/16x16/apps" "\$HOME/.local/share/icons/hicolor/24x24" "\$HOME/.local/share/icons/hicolor/24x24/apps" "\$HOME/.local/share/icons/hicolor/256x256" "\$HOME/.local/share/icons/hicolor/256x256/apps" "\$HOME/.local/share/icons/hicolor/32x32" "/usr/share/pixmaps" "/usr/share/icons"
-)
+iconDIRS=("\$HOME/.local/share/icons/" "\$HOME/.local/share/icons/hicolor" "\$HOME/.local/share/icons/hicolor/128x128" "\$HOME/.local/share/icons/hicolor/128x128/apps" "\$HOME/.local/share/icons/hicolor/16x16" "\$HOME/.local/share/icons/hicolor/16x16/apps" "\$HOME/.local/share/icons/hicolor/24x24" "\$HOME/.local/share/icons/hicolor/24x24/apps" "\$HOME/.local/share/icons/hicolor/256x256" "\$HOME/.local/share/icons/hicolor/256x256/apps" "\$HOME/.local/share/icons/hicolor/32x32")
 FONT="${FONT}-12:antialias=true:encoding=utf8"
 EXEC="jwm-settings-manager"
 [[ -z "$RELINSTDIR" ]] && RELINSTDIR="/usr/share/"
@@ -109,30 +134,32 @@ getPROG(){
   EXEC="$1"
   shift
   LIST=(${@})
-  if [ ! -x "$EXEC" ]
+  if [ ! -x "$(which $EXEC)" ]
   then
     PROG=""
     for i in "${LIST[@]}"
     do
-      [[ -z "$TRUETEST" ]] && [[ -x "$i" ]] && TRUETEST="true" && PROG="$i"
+      [[ -x "$(which $i)" ]] && PROG="$i" && echo "$PROG" && break
     done
-    TRUETEST=""
   else
     PROG="$EXEC"
+    echo "$PROG"
   fi
-  echo "$PROG"
+  
 }
-EXT_DISPLAY_PROG=$(getPROG "arandr" "${EXTERNALDISPLAYprogs[@]}")
-APP_LIST_PROG=$(getPROG "" "${APPlauncherProgs[@]}")
 TERM_PROG=$(getPROG "x-terminal-emulator" "${TERMS[@]}")
+[[ -n $TERM_PROG ]] && LOG "TERM_PROG=$TERM_PROG"
 SYS_MONITOR=$(getPROG "lxtask" "${SYS_MONITORS[@]}")
+[[ -n "$SYS_MONITOR" ]] && LOG "System Monitor=$SYS_MONITOR"
 case $SYS_MONITOR in
   top|htop)SYS_MONITOR="$TERM_PROG -e $SYS_MONITOR";;
   *);;
 esac
 STARTvol=$(getPROG "torios-volume" "${STARTvolS[@]}")
+[[ -n $STARTvol ]] && LOG "STARTvol=$STARTvol"
 ##Startup commands
 DESKTOPprog=$(getPROG "pcmanfm" "${DESKTOPprogS[@]}")
+[[ -n $DESKTOPprog ]] && LOG "DESKTOPprog=$DESKTOPprog"
 case $DESKTOPprog in
   rox) DESKTOPprog="$DESKTOPprog -p";;
   pcmanfm)DESKTOPprog="$DESKTOPprog --desktop";;
@@ -156,31 +183,25 @@ LOGOUT_PROGRAM="torios-exit"
 [[ -x "$LOGOUT_PROGRAM" ]] || LOGOUT_PROGRAM="jwm -ext"
 TZ_PROG="xterm -e 'sudo dpkg-reconfigure tzdata'"
 CAL_PROG=$(getPROG "torios-calendar" "${calendarProgs[@]}")
+[[ -n $CAL_PROG ]] && LOG "CAL_PROG=$CAL_PROG"
 case $CAL_PROG in
   zenity|yad)CAL_PROG="$CAL_PROG --calendar";;
   *);;
 esac
 SEARCH_PROG=$(getPROG "zlocate" "${searchProgs[@]}")
-
+[[ -n $SEARCH_PROG ]] && LOG "SEARCH_PROG=$SEARCH_PROG"
 RESTART_PROGRAM="torios-reboot"
 [[ -x "$RESTART_PROGRAM" ]] || RESTART_PROGRAM=""
 ## menu programs
-PLACES_MENU_FILE="$HOME/.config/placesmenu"
-[[ -f "$PLACES_MENU_FILE" ]] || PLACES_MENU_FILE=""
-PLACES_INCLUDE="/usr/bin/jwm-places"
-if [ ! -x "$PLACES_INCLUDE" ]
+PLACES_INCLUDE=$(getPROG "jwm-places" "jwm-places-bash")
+if [[ -z "$(which $PLACES_INCLUDE)" ]]
 then
   PLACES_INCLUDE=""
-else
-  PLACES_INCLUDE="${PLACES_INCLUDE/*\/}"
 fi
-APPMENU_FILE="$HOME/.config/torimenu"
-JWM_MENU="/usr/bin/jwm-menu"
-if [ ! -x "$JWM_MENU" ]
+JWM_MENU=$(getPROG "jwm-menu" "jwm-menu-bash")
+if [[ -z "$(which $JWM_MENU)" ]]
 then
   JWM_MENU=""
-else
-  JWM_MENU="${JWM_MENU/*\/}"
 fi
 
 ## help programs
@@ -210,34 +231,36 @@ then
   done
   [[ -n "$MYBG" ]] && BG="$MYBG"
 fi
+[[ -n "$BG" ]] && LOG "BG=$BG"
 STARTPAGE_ICON="browser${EXTENTION}"
 ################### MENUS ###############################
 if [[ -n $(which torios-installer) ]]
 then
-  INCLUDMENUS="    <Include>exec:torios-installer --jwmrc j</Include>
-"
   TRAYbuttonForTray="        <TrayButton popup=\"$SoftwareInstaller\" icon=\"software-center\" border=\"false\">
-          <Button mask=\"1\">exec:torios-installer --search</Button>
+          <Button mask=\"123\">exec:torios-installer --search</Button>
           <Button mask=\"23\">root:j</Button>
         </TrayButton>
 "
+  INTSTALLER_MENU="	<RootMenu height=\"16\" onroot=\"j\">
+		<Program icon=\"system-software-update\" label=\"$UPDATE_SYS\">torios-installer --update</Program>
+		<Program icon=\"software-center\" label=\"$INSTALL_PKGS\">torios-installer --search</Program>
+		<Program icon=\"system-software-update\" label=\"$INFO\">torios-installer --info</Program>
+		<Program icon=\"gtk-about\" label=\"$ABOUT_SOFT_INST\">torios-installer --about</Program>
+		<Program icon=\"gtk-info\" label=\"$LIST_BROKEN\">torios-installer --list</Program>
+		<Program icon=\"system-error\" label=\"$FIX_BROKEN\">torios-installer --fix</Program>
+	</RootMenu>"
 fi
 if [[ -n $(which zrun) ]]
 then
-  INCLUDMENUS="${INCLUDMENUS}    <Include>exec:zrun --zrun-history r</Include>
-"
 TRAYbuttonForTray="$TRAYbuttonForTray        <TrayButton popup=\"$Locate\" icon=\"system-search\" border=\"false\">
-          <Button mask=\"1\">exec:zlocate</Button>
-          <Button mask=\"23\">root:l</Button>
+          <Button mask=\"123\">exec:zlocate</Button>
         </TrayButton>
 "
 fi
 if [[ -n $(which zlocate) ]]
 then
-  INCLUDMENUS="${INCLUDMENUS}    <Include>exec:zlocate --zlocate-history l</Include>"
 TRAYbuttonForTray="$TRAYbuttonForTray        <TrayButton popup=\"$Run\" icon=\"system-run\" border=\"false\">
-          <Button mask=\"1\">exec:zrun</Button>
-          <Button mask=\"23\">root:r</Button>
+          <Button mask=\"123\">exec:zrun</Button>
         </TrayButton>
 "
 fi
@@ -281,6 +304,8 @@ SHUTERDOWN="<Separator/>
 	<Program icon=\"${SHUTDOWN_ICON}\" label=\"$SHUTDOWN_NAME\">${SHUTDOWN_PROGRAM}</Program>"
 
 ## MAIN MENU
+JWM_ROOT_NUM="2"
+JWM_ROOT="root:${JWM_ROOT_NUM}"
 if [ -n "$(which starttorios)" ]
 then
   JWM_ROOT_MENU="<RootMenu onroot=\"${JWM_ROOT_NUM}\">"
@@ -303,8 +328,7 @@ else
 JWM_ROOT_MENU="$JWM_ROOT_MENU        ${SHUTERDOWN}
     </RootMenu>"
 fi
-JWM_ROOT_NUM="2"
-JWM_ROOT="root:${JWM_ROOT_NUM}"
+
 
 MENU_ICON="/usr/share/pixmaps/distributor-logo.png"
 if [ ! -f "$MENU_ICON" ]
@@ -327,20 +351,30 @@ PLACES_ICON="folder${EXTENTION}"
 PLACES_MENU="    <RootMenu onroot=\"${PLACES_NUM}\">
         <Include>${PLACES_INCLUDE}</Include>
     </RootMenu>"
-REGULAR_MENUS_LIST="    <Include>${APPMENU_FILE}</Include>
-<!--Places Menu-->
-    <Include>${PLACES_MENU_FILE}</Include>
-${INCLUDMENUS}"
+
 MENUS_LIST_NEW="${JWM_ROOT_MENU}
 ${PLACES_MENU}"
 ROOT_MENU="root:${JWM_ROOT_NUM}"
+REGULAR_MENUS_LIST="$MENUS_LIST_NEW"
 ## Mouse MENU
+
 MOUSE_MENU="<RootMenu height=\"0\" onroot=\"3\">
         <Program icon=\"folder-home${EXTENTION}\" label=\"$Home\">xdg-open ~/</Program>
         <Program icon=\"${JSM}${EXTENTION}\" label=\"$Settings\">${JSM}</Program>
-        <Program icon=\"preferences-desktop-wallpaper${EXTENTION}\" label=\"$ChangeDesktopBackground\">${JSM} --desktop</Program>
+		<Program icon=\"add${EXTENTION}\" label=\"$ADD_NEW\">desktop-file-editor</Program>
+        <Program icon=\"preferences-desktop-wallpaper${EXTENTION}\" label=\"$ChangeDesktopBackground\">${JSM} --desktop</Program>"
+if [[ "$JWMver" == "new" ]]
+then
+MOUSE_MENU="${MOUSE_MENU}
+		<Dynamic label=\"$MENU_NAME\" icon=\"torios-logo\" border=\"false\">exec:jwm-menu||jwm-menu-bash</Dynamic>"
+fi
+MOUSE_MENU="${MOUSE_MENU}
     </RootMenu>"
-
+if [[ -n "${INTSTALLER_MENU}" ]]
+then
+MOUSE_MENU="${MOUSE_MENU}
+${INTSTALLER_MENU}"
+fi
 ## window corners override in individual files
 CORNER="4"
 W_HEIGHT="20"
@@ -422,20 +456,15 @@ KEYSHORTCUTS="<Key key=\"Up\">up</Key>
     <Key mask=\"4\" key=\"m\">minimize</Key>
     <Key mask=\"A\" key=\"F9\">minimize</Key>
     <Key mask=\"4\" key=\"w\">close</Key>
-    <Key mask=\"A\" key=\"F4\">close</Key>
-    <Key key=\"XF86Tools\">${JWMexec}jwm-settings-manager</Key>"
+    <Key mask=\"A\" key=\"F4\">close</Key>"
 
 ## DYNAMIC includes of things that exist :)
-[[ -n "$EXT_DISPLAY_PROG" ]] && && KEYSHORTCUTS="${KEYSHORTCUTS}
-    <Key key=\"XF86Display\">${JWMexec}$EXT_DISPLAY_PROG</Key>"
-[[ -n "$APP_LIST_PROG" ]] && && KEYSHORTCUTS="${KEYSHORTCUTS}
-    <Key key=\"XF86Explorer\">${JWMexec}$APP_LIST_PROG</Key>"
 [[ -n "$(which torios-shutdown)" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
-    <Key key=\"XF86PowerOff\">${JWMexec}torios-shutdown</Key>"
+    <Key key=\"XF86PowerOff\">exec:torios-shutdown</Key>"
 [[ -n "$DESKTOPprog" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
-    <Key key=\"XF86Explorer\">${JWMexec}"${DESKTOPprog/ *}"</Key>"
+    <Key key=\"XF86Explorer\">${JWMexec}${DESKTOPprog/ *}</Key>"
 [[ -n "$SEARCH_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
-    <Key key=\"XF86Search\">${JWMexec}"$SEARCH_PROG"</Key>"
+    <Key key=\"XF86Search\">${JWMexec}$SEARCH_PROG</Key>"
 [[ -n "$ROOT_MENU" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
     <Key mask=\"C\" key=\"Escape\">${ROOT_MENU}</Key>"
 [[ -n "$VOL_MUTE" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
@@ -444,20 +473,28 @@ KEYSHORTCUTS="<Key key=\"Up\">up</Key>
     <Key key=\"XF86AudioRaiseVolume\">${JWMexec}${VOL_UP}</Key>"
 [[ -n "$VOL_DOWN" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
     <Key key=\"XF86AudioLowerVolume\">${JWMexec}${VOL_DOWN}</Key>"
-[[ -n "$WEB_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}    <Key key=\"XF86WWW\">${JWMexec}${WEB_PROG}</Key>"
-[[ -n "$CALC_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}   <Key key=\"XF86Calculator\">${JWMexec}$toriOSrunCheck${CALC_PROG}</Key>"
-[[ -n "$TORIGAMMA" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}    <Key key=\"XF86MonBrightnessUp\">${JWMexec}${brightUP}</Key>
+[[ -n "$WEB_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
+    <Key key=\"XF86WWW\">${JWMexec}${WEB_PROG}</Key>"
+[[ -n "$CALC_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
+   <Key key=\"XF86Calculator\">${JWMexec}$toriOSrunCheck${CALC_PROG}</Key>"
+[[ -n "$TORIGAMMA" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
+    <Key key=\"XF86MonBrightnessUp\">${JWMexec}${brightUP}</Key>
     <Key key=\"XF86MonBrightnessDown\">${JWMexec}${brightDown}</Key>"
-[[ -n "$SCREEN_SHOT" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}    <Key key=\"Print\">${JWMexec}${SCREEN_SHOT}</Key>
+[[ -n "$SCREEN_SHOT" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
+    <Key key=\"Print\">${JWMexec}${SCREEN_SHOT}</Key>
     <Key mask=\"CA\" key=\"p\">${JWMexec}${SCREEN_SHOT}</Key>
     <Key mask=\"S4\" key=\"3\">${JWMexec}${SCREEN_SHOT}</Key>"
-[[ -n "$TERM_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}    <Key mask=\"CA\" key=\"t\">${JWMexec}${TERM_PROG}</Key>"
-[[ -n "$SYS_MONITOR" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}    <Key mask=\"CS\" key=\"Escape\">${JWMexec}$toriOSrunCheck${SYS_MONITOR}</Key>
+[[ -n "$TERM_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
+    <Key mask=\"CA\" key=\"t\">${JWMexec}${TERM_PROG}</Key>"
+[[ -n "$SYS_MONITOR" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
+    <Key mask=\"CS\" key=\"Escape\">${JWMexec}$toriOSrunCheck${SYS_MONITOR}</Key>
     <Key mask=\"A4\" key=\"Escape\">${JWMexec}$toriOSrunCheck${SYS_MONITOR}</Key>
     <Key mask=\"CA\" key=\"Delete\">${JWMexec}$toriOSrunCheck${SYS_MONITOR}</Key>
     <Key mask=\"C\" key=\"Escape\">${JWMexec}$toriOSrunCheck${SYS_MONITOR}</Key>"
-[[ -n "$HELP_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}    <Key mask=\"A\" key=\"F1\">${JWMexec}${HELP_PROG}</Key>"
-[[ -n "$RUN_DIALOG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}    <Key mask=\"A\" key=\"F2\">${JWMexec}${RUN_DIALOG}</Key>
+[[ -n "$HELP_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
+    <Key mask=\"A\" key=\"F1\">${JWMexec}${HELP_PROG}</Key>"
+[[ -n "$RUN_DIALOG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
+    <Key mask=\"A\" key=\"F2\">${JWMexec}${RUN_DIALOG}</Key>
     <Key mask=\"4\" key=\"F2\">${JWMexec}${RUN_DIALOG}</Key>
     <Key mask=\"4\" key=\"space\">${JWMexec}${RUN_DIALOG}</Key>"
 
@@ -480,7 +517,10 @@ NEW_KEYSHORTCUTS="${KEYSHORTCUTS}
 
 if [[ -n $(which jwmIconFinder) ]]
 then
+  LOG "Generating Icons with jwmIconFinder"
   ICONS_LIST=$(jwmIconFinder -o -s 48)
+ICONS_LIST="${ICONS_LIST/<JWM>}"
+ICONS_LIST="${ICONS_LIST/<\/JWM>}"
 else
   [[ -d "/usr/share/icons/Numix/" ]] && ICONS_LIST="$ICONS_LIST  <IconPath>/usr/share/icons/Numix-Circle/scalable/apps</IconPath>
   <IconPath>/usr/share/icons/Numix-Circle/scalable/apps</IconPath>
@@ -670,6 +710,12 @@ else
   <IconPath>/usr/share/icons/Numix/scalable/places</IconPath>
   <IconPath>/usr/share/icons/Numix/scalable/status</IconPath>
 $ICONS_LIST"
+  myICONS=("/usr/share/pixmaps" "/usr/share/icons" "/usr/share/app-install/icons")
+  for i in "${myICONS[@]}"
+  do  
+     ICONS_LIST="$ICONS_LIST
+   <IconPath>$i</IconPath>"
+  done
 fi
 ## list up top
 for i in "${iconDIRS[@]}"
@@ -702,18 +748,9 @@ GROUPS="<Group>
         <Option>nolist</Option>
         <Option>sticky</Option>
     </Group>"
-BUTTONS="<ButtonClose>$INSTDIR/Buttons/Default/close.png</ButtonClose>
-    <ButtonMax>$INSTDIR/Buttons/Default/max.png</ButtonMax>
-    <ButtonMaxActive>$INSTDIR/Buttons/Default/max-toggle.png</ButtonMaxActive>
-    <ButtonMin>$INSTDIR/Buttons/Default/min.png</ButtonMin>"
+
 #####################################################################################
 ### End Variables
-#add_subdirectory(Default)
-#add_subdirectory(Ambiance)
-#add_subdirectory(DarkGnome2)
-#add_subdirectory(LightGnome2)
-#add_subdirectory(Bassem)
-#add_subdirectory(Numix)
 THEMEfiles=("Default" "Ambiance" "DarkGnome2" "LightGnome2" "Bassem" "Numix" )
 defaulttheme(){
 TRAY="${TRAY}"
@@ -749,6 +786,10 @@ WINDOW_OPACITY="0.7"
 POPUP_OUTLINE="#000000"
 POPUP_FOREGROUND="#ffffff"
 POPUP_BACKGROUND="#383838"
+BUTTONS="<ButtonClose>$INSTDIR/Buttons/Default/close.png</ButtonClose>
+    <ButtonMax>$INSTDIR/Buttons/Default/max.png</ButtonMax>
+    <ButtonMaxActive>$INSTDIR/Buttons/Default/max-toggle.png</ButtonMaxActive>
+    <ButtonMin>$INSTDIR/Buttons/Default/min.png</ButtonMin>"
 }
 ambiancetheme(){
 TRAY="${DEFAULT_TRAY}"
@@ -823,6 +864,10 @@ WINDOW_OPACITY="0.7"
 POPUP_OUTLINE="#000000"
 POPUP_FOREGROUND="#ffffff"
 POPUP_BACKGROUND="#464646"
+BUTTONS="<ButtonClose>$INSTDIR/Buttons/Default/close.png</ButtonClose>
+    <ButtonMax>$INSTDIR/Buttons/Default/max.png</ButtonMax>
+    <ButtonMaxActive>$INSTDIR/Buttons/Default/max-toggle.png</ButtonMaxActive>
+    <ButtonMin>$INSTDIR/Buttons/Default/min.png</ButtonMin>"
 }
 lightgnome2theme(){
 TRAY="${DEFAULT_TRAY}"
@@ -858,6 +903,10 @@ WINDOW_OPACITY="0.7"
 POPUP_OUTLINE="#000000"
 POPUP_FOREGROUND="#000000"
 POPUP_BACKGROUND="#353535"
+BUTTONS="<ButtonClose>$INSTDIR/Buttons/Default/close.png</ButtonClose>
+    <ButtonMax>$INSTDIR/Buttons/Default/max.png</ButtonMax>
+    <ButtonMaxActive>$INSTDIR/Buttons/Default/max-toggle.png</ButtonMaxActive>
+    <ButtonMin>$INSTDIR/Buttons/Default/min.png</ButtonMin>"
 }
 baseemtheme(){
 TRAY="    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign=\"fixed\" layout=\"horizontal\">
@@ -923,6 +972,10 @@ WINDOW_OPACITY="0.7"
 POPUP_OUTLINE="#000000"
 POPUP_FOREGROUND="#ffffff"
 POPUP_BACKGROUND="#353535"
+BUTTONS="<ButtonClose>$INSTDIR/Buttons/Default/close.png</ButtonClose>
+    <ButtonMax>$INSTDIR/Buttons/Default/max.png</ButtonMax>
+    <ButtonMaxActive>$INSTDIR/Buttons/Default/max-toggle.png</ButtonMaxActive>
+    <ButtonMin>$INSTDIR/Buttons/Default/min.png</ButtonMin>"
 }
 numixtheme(){
 TRAY="${DEFAULT_TRAY}"
@@ -1287,6 +1340,7 @@ skelfile(){
 		"old")oldthemes&& [[ -n "$JWMRC_TEXT" ]] && echo "$JWMRC_TEXT" | sudo tee "$FILE" > /dev/null
 			;;
 	esac
+    LOG "Modify $FILE for the $JWMver version of JWM"
 }
 configure_file(){
   OUTFILE="$1"
@@ -1295,6 +1349,7 @@ configure_file(){
   themesAVIL=("Default" "Ambiance" "DarkGnome2" "LightGnome2" "Bassem" "Numix" )
 for thisTHEME in "${themesAVIL[@]}"
 do
+  LOG "Generating $thisTHEME in $DIR"
   case $thisTHEME in
    "Ambiance")
       ambiancetheme

@@ -38,13 +38,6 @@ void WindowUI::cb_options_available(Fl_Browser* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->user_data()))->cb_options_available_i(o,v);
 }
 
-void WindowUI::cb__i(Fl_Button*, void*) {
-  add_option_to_group(options_available, icon_value, desktop_num, layer_value, opacity_value, add_tracker, options_desc);
-}
-void WindowUI::cb_(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->user_data()))->cb__i(o,v);
-}
-
 void WindowUI::cb_Cancel_i(Fl_Button*, void*) {
   add_opt_window->hide();
 }
@@ -53,7 +46,8 @@ void WindowUI::cb_Cancel(Fl_Button* o, void* v) {
 }
 
 void WindowUI::cb_OK_i(Fl_Button*, void*) {
-  add_option_to_group(options_available, icon_value, desktop_num, layer_value, opacity_value, add_tracker, options_desc);saveChanges();
+  add_option_to_group(options_available, icon_value, desktop_num, layer_value, opacity_value, groups_browser);
+saveChangesTemp();
 add_opt_window->hide();
 populate_groups(groups_browser,opt_browser,class_browser,name_browser);
 }
@@ -90,15 +84,15 @@ Fl_Menu_Item WindowUI::menu_layer_chooser[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
-void WindowUI::cb_1_i(Fl_Button* o, void*) {
+void WindowUI::cb__i(Fl_Button* o, void*) {
   std::string ICON=choose_an_icon();
 if(ICON.compare("")!=0){
   icon_value->value(ICON.c_str());
   makeWidgetIcon(ICON,o,48);
 };
 }
-void WindowUI::cb_1(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_1_i(o,v);
+void WindowUI::cb_(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb__i(o,v);
 }
 
 void WindowUI::cb_OK1_i(Fl_Button*, void*) {
@@ -417,11 +411,7 @@ static const unsigned char idata_minus[] =
 static Fl_Bitmap image_minus(idata_minus, 16, 16);
 
 void WindowUI::cb_opt_add_i(Fl_Button*, void*) {
-  std::string value=XplusO(groups_browser);
-if(value.compare("")!=0){
   add_option_window()->show();
-  options_desc->copy_label(value.c_str());
-};
 }
 void WindowUI::cb_opt_add(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_opt_add_i(o,v);
@@ -495,17 +485,17 @@ void WindowUI::cb_Cancel1(Fl_Button* o, void* v) {
 
 void WindowUI::cb_OK3_i(Fl_Button*, void*) {
   saveChanges();
-//showSettings();
+quit();
 }
 void WindowUI::cb_OK3(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK3_i(o,v);
 }
 
-void WindowUI::cb_Widget_i(Fl_Button*, void*) {
+void WindowUI::cb_Change_i(Fl_Button*, void*) {
   make_gtk_theme_window()->show();
 }
-void WindowUI::cb_Widget(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Widget_i(o,v);
+void WindowUI::cb_Change(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Change_i(o,v);
 }
 
 void WindowUI::cb_Cancel2_i(Fl_Button*, void*) {
@@ -524,22 +514,17 @@ void WindowUI::cb_OK4(Fl_Button* o, void* v) {
 }
 
 Fl_Double_Window* WindowUI::add_option_window() {
-  { Fl_Double_Window* o = add_opt_window = new Fl_Double_Window(435, 390, gettext("Add an Option"));
+  { Fl_Double_Window* o = add_opt_window = new Fl_Double_Window(500, 275, gettext("Add an Option"));
     add_opt_window->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(0, 0, 435, 395);
-      { Fl_Browser* o = options_available = new Fl_Browser(10, 10, 115, 340);
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 500, 273);
+      { Fl_Browser* o = options_available = new Fl_Browser(10, 10, 115, 195);
         options_available->type(2);
         options_available->box(FL_FLAT_BOX);
         options_available->selection_color((Fl_Color)80);
         options_available->callback((Fl_Callback*)cb_options_available);
         populateOptions(o);
       } // Fl_Browser* options_available
-      { Fl_Button* o = new Fl_Button(10, 355, 30, 30, gettext("@+"));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)23);
-        o->callback((Fl_Callback*)cb_);
-      } // Fl_Button* o
-      { Fl_Browser* o = options_desc = new Fl_Browser(135, 10, 290, 195);
+      { Fl_Browser* o = options_desc = new Fl_Browser(135, 10, 360, 195);
         options_desc->type(2);
         options_desc->box(FL_FLAT_BOX);
         options_desc->selection_color((Fl_Color)80);
@@ -547,12 +532,13 @@ Fl_Double_Window* WindowUI::add_option_window() {
         options_desc->align(Fl_Align(FL_ALIGN_TOP));
         populateDesc(o);
       } // Fl_Browser* options_desc
-      { icon_value = new Fl_Input(135, 210, 100, 25, gettext("Icon"));
+      { icon_value = new Fl_Input(65, 210, 100, 25, gettext("Icon"));
+        icon_value->tooltip(gettext("The Icon Name"));
         icon_value->box(FL_FLAT_BOX);
         icon_value->align(Fl_Align(FL_ALIGN_RIGHT));
         icon_value->deactivate();
       } // Fl_Input* icon_value
-      { opacity_value = new Fl_Slider(135, 300, 100, 25, gettext("Opacity"));
+      { opacity_value = new Fl_Slider(320, 210, 100, 25, gettext("Opacity"));
         opacity_value->type(1);
         opacity_value->box(FL_GTK_DOWN_BOX);
         opacity_value->color((Fl_Color)41);
@@ -561,19 +547,15 @@ Fl_Double_Window* WindowUI::add_option_window() {
         opacity_value->align(Fl_Align(FL_ALIGN_RIGHT));
         opacity_value->deactivate();
       } // Fl_Slider* opacity_value
-      { desktop_num = new Fl_Value_Input(135, 330, 35, 25, gettext("Desktop"));
+      { desktop_num = new Fl_Value_Input(215, 210, 35, 25, gettext("Desktop"));
+        desktop_num->tooltip(gettext("Which virtual desktop does this effect?"));
         desktop_num->box(FL_FLAT_BOX);
         desktop_num->maximum(10000);
         desktop_num->align(Fl_Align(FL_ALIGN_RIGHT));
         desktop_num->deactivate();
       } // Fl_Value_Input* desktop_num
-      { add_tracker = new Fl_Browser(330, 225, 95, 125, gettext("Adding"));
-        add_tracker->box(FL_FLAT_BOX);
-        add_tracker->color(FL_DARK1);
-        add_tracker->selection_color((Fl_Color)80);
-        add_tracker->align(Fl_Align(FL_ALIGN_TOP));
-      } // Fl_Browser* add_tracker
-      { Fl_Button* o = new Fl_Button(325, 360, 55, 25, gettext("Cancel"));
+      { Fl_Button* o = new Fl_Button(370, 245, 55, 25, gettext("Cancel"));
+        o->tooltip(gettext("Cancel changes"));
         o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
         o->color((Fl_Color)80);
@@ -581,8 +563,8 @@ Fl_Double_Window* WindowUI::add_option_window() {
         o->labelcolor(FL_BACKGROUND2_COLOR);
         o->callback((Fl_Callback*)cb_Cancel);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(385, 360, 45, 25, gettext("OK"));
-        o->tooltip(gettext("Write to configuration file"));
+      { Fl_Button* o = new Fl_Button(430, 245, 45, 25, gettext("OK"));
+        o->tooltip(gettext("Save Changes"));
         o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
         o->color((Fl_Color)61);
@@ -590,7 +572,8 @@ Fl_Double_Window* WindowUI::add_option_window() {
         o->labelcolor((Fl_Color)55);
         o->callback((Fl_Callback*)cb_OK);
       } // Fl_Button* o
-      { layer_chooser = new Fl_Menu_Button(135, 240, 100, 25, gettext("Layer"));
+      { layer_chooser = new Fl_Menu_Button(65, 240, 100, 25, gettext("Layer"));
+        layer_chooser->tooltip(gettext("Choose a layer"));
         layer_chooser->box(FL_FLAT_BOX);
         layer_chooser->color((Fl_Color)23);
         layer_chooser->deactivate();
@@ -603,16 +586,19 @@ Fl_Double_Window* WindowUI::add_option_window() {
         }
         layer_chooser->menu(menu_layer_chooser);
       } // Fl_Menu_Button* layer_chooser
-      { layer_value = new Fl_Output(135, 270, 100, 25);
+      { layer_value = new Fl_Output(170, 240, 100, 25);
+        layer_value->tooltip(gettext("The layer this option effects"));
         layer_value->box(FL_FLAT_BOX);
         layer_value->deactivate();
       } // Fl_Output* layer_value
-      { Fl_Button* o = new Fl_Button(270, 210, 50, 50);
+      { Fl_Button* o = new Fl_Button(10, 210, 50, 50);
+        o->tooltip(gettext("Choose an Icon"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
-        o->callback((Fl_Callback*)cb_1);
+        o->callback((Fl_Callback*)cb_);
       } // Fl_Button* o
       o->end();
+      Fl_Group::current()->resizable(o);
     } // Fl_Scroll* o
     startup(o,jsm_windows_xpm);
     add_opt_window->xclass("jsm-windows");
@@ -684,6 +670,7 @@ Fl_Double_Window* WindowUI::make_window() {
         o->selection_color((Fl_Color)51);
         { Fl_Group* o = new Fl_Group(0, 30, 510, 250, gettext("Appearance"));
           o->selection_color(FL_DARK2);
+          o->hide();
           { Fl_Box* o = new Fl_Box(0, 35, 255, 160);
             o->box(FL_FLAT_BOX);
             o->color(FL_DARK1);
@@ -1024,7 +1011,6 @@ re easily"));
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(0, 30, 510, 230, gettext("Groups"));
           o->selection_color(FL_DARK2);
-          o->hide();
           { Fl_Browser* o = groups_browser = new Fl_Browser(15, 55, 85, 155, gettext("Current Groups"));
             groups_browser->tooltip(gettext("Program groups allow one to specify options which apply to a group of program\
 s by their name and/or class. A program group is created with the Group tag. A\
@@ -1189,11 +1175,12 @@ s many program groups can be created as desired."));
         o->labelcolor((Fl_Color)55);
         o->callback((Fl_Callback*)cb_OK3);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(75, 285, 110, 25, gettext("Widget theme"));
+      { Fl_Button* o = new Fl_Button(10, 285, 205, 25, gettext("Change GTK Widget theme"));
+        o->tooltip(gettext("You will need to close any open windows to see the change"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->selection_color((Fl_Color)48);
-        o->callback((Fl_Callback*)cb_Widget);
+        o->callback((Fl_Callback*)cb_Change);
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
@@ -1206,16 +1193,18 @@ s many program groups can be created as desired."));
 }
 
 Fl_Double_Window* WindowUI::make_gtk_theme_window() {
-  { theme_window = new Fl_Double_Window(310, 230, gettext("Widget theme"));
+  { theme_window = new Fl_Double_Window(310, 265, gettext("Widget theme"));
     theme_window->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(0, 0, 310, 230);
-      { Fl_Browser* o = theme_browser = new Fl_Browser(5, 5, 300, 190);
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 310, 265);
+      { Fl_Browser* o = theme_browser = new Fl_Browser(5, 5, 300, 190, gettext("You will need to close any open windows to see the change"));
+        theme_browser->tooltip(gettext("You will need to close any open windows to see the change"));
         theme_browser->type(2);
         theme_browser->box(FL_FLAT_BOX);
         theme_browser->selection_color((Fl_Color)80);
+        theme_browser->align(Fl_Align(130));
         populateGTKThemes(o);
       } // Fl_Browser* theme_browser
-      { Fl_Button* o = new Fl_Button(190, 200, 55, 25, gettext("Cancel"));
+      { Fl_Button* o = new Fl_Button(190, 240, 55, 25, gettext("Cancel"));
         o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
         o->color((Fl_Color)80);
@@ -1223,8 +1212,8 @@ Fl_Double_Window* WindowUI::make_gtk_theme_window() {
         o->labelcolor(FL_BACKGROUND2_COLOR);
         o->callback((Fl_Callback*)cb_Cancel2);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(255, 200, 45, 25, gettext("OK"));
-        o->tooltip(gettext("Write to configuration file"));
+      { Fl_Button* o = new Fl_Button(255, 240, 45, 25, gettext("OK"));
+        o->tooltip(gettext("You will need to close any open windows to see the change"));
         o->box(FL_FLAT_BOX);
         o->down_box(FL_GTK_DOWN_BOX);
         o->color((Fl_Color)61);
@@ -1232,12 +1221,6 @@ Fl_Double_Window* WindowUI::make_gtk_theme_window() {
         o->labelcolor((Fl_Color)55);
         o->callback((Fl_Callback*)cb_OK4);
       } // Fl_Button* o
-      { Fl_Output* o = theme_name = new Fl_Output(10, 200, 170, 25);
-        theme_name->box(FL_FLAT_BOX);
-        theme_name->color((Fl_Color)53);
-        std::string tmp=linuxcommon::get_gtk_widget_theme();
-        o->value(tmp.c_str());o->redraw();
-      } // Fl_Output* theme_name
       o->end();
     } // Fl_Scroll* o
     theme_window->end();

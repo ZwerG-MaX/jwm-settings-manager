@@ -42,43 +42,49 @@ void active_color_loader(Fl_Button *o, unsigned int one_or_two){
   else{o->color(color);}
   debug_out("<-active color loader");
 }
-void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser *add_tracker, Fl_Browser* browser){
-	debug_out("void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser *add_tracker, Fl_Browser* browser)");
-	const char* input=browser->label();
-	if(input==NULL)return;
-	std::string group=input;
-	if(group.compare("")==0)return;
+void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser* browser){
+	debug_out("void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser* browser)");
+	int whichGroup=browser->value();
+	if((whichGroup==0)||(whichGroup>browser->size())){
+		errorOUT("group number does not exist...");
+		return;
+	}
 	int line =options_available->value();
 	if((line == 0)||(line>options_available->size())){return;}
 	else{
-		unsigned int found = group.find_first_of(' ');
-		group = group.substr(found+1,std::string::npos);
-		unsigned int whichGroup = convert(group.c_str());
-		std::string val = options_available->text(line);
+		const char* tmp = options_available->text(line);
+		if(tmp==NULL){return;}
+		std::string val = tmp;
 		std::string thisitem;
-		std::string result = val;
-		if(result.compare("")==0){return;}
+		if(val.compare("")==0){return;}
 		if(val.compare("icon:")==0){
-			thisitem=icon_value->value();
+			const char* temp =icon_value->value();
+			if(temp==NULL){return;}
+			thisitem=temp;
 			if(thisitem.compare("")==0){return;}
+			thisitem=val+thisitem;
+			addGroupItem( whichGroup, "Option",thisitem);
 		}
 		else if(val.compare("desktop:")==0){
 			thisitem=convert(desktop_num->value());
-			result+=thisitem;
 			if(thisitem.compare("")==0){return;}
+			thisitem=val+thisitem;
+			addGroupItem( whichGroup, "Option",thisitem);
 		}
 		else if(val.compare("layer:")==0){
-			thisitem=layer_value->value();
-			result+=thisitem;
+			const char* temp =layer_value->value();
+			if(temp==NULL){return;}
 			if(thisitem.compare("")==0){return;}
+			thisitem=val+thisitem;
+			addGroupItem( whichGroup, "Option",thisitem);
 		}
 		else if(val.compare("opacity:")==0){
 			thisitem = convert(opacity_value->value());
-			result+=thisitem;
 			if(thisitem.compare("")==0){return;}
+			thisitem=val+thisitem;
+			addGroupItem( whichGroup, "Option",thisitem);
 		}
-		add_tracker->add(result.c_str());
-		addGroupItem( whichGroup, group,result);
+		else{addGroupItem( whichGroup, "Option",val);}
 	}
 }
 void add_thingie(Fl_Browser *groups_browser,std::string input,std::string Item){
@@ -89,7 +95,8 @@ void add_thingie(Fl_Browser *groups_browser,std::string input,std::string Item){
 	}
 }
 void addGroup(){
-	//bool ans=addElement("Group");
+	debug_out("void addGroup()");
+	if(!addElement("Group")){errorOUT("Could not add new group");}
 }
 void addGroupItem(unsigned int whichone, std::string subelement,std::string value){
 	debug_out("void addGroupItem(unsigned int whichone, std::string "+subelement+",std::string "+value+")");
@@ -206,10 +213,12 @@ void font_color_loader(Fl_Widget *o, int Active1_Inactive2){
 void getGroups(Fl_Browser *o){
 	debug_out("void getGroups(Fl_Browser *o)");
 	int groups=elementCounter("Group");
+	o->clear();
 	for (int i=1;i<=groups;i++){
 		std::string tmp =linuxcommon::convert_num_to_string(i);
 		o->add(tmp.c_str());
 	}
+	o->redraw();
 }
 void get_button(Fl_Widget*o, std::string whichElement,Fl_Widget* a_title_color1){
 	debug_out("void get_button(Fl_Widget*o, std::string "+whichElement+",Fl_Button* a_title_color1)");

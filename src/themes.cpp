@@ -92,6 +92,7 @@ void setThemeElementTextwithSub(std::string filename,std::string element,std::st
 	else{saveNoRestart();}
 }
 void modCurrentTheme(std::string filename){
+	debug_out("void modCurrentTheme(std::string "+filename+")");
     if(!load(filename)){return;}
     setButton(filename,"ButtonMin");
 	setButton(filename,"ButtonMax");
@@ -156,6 +157,7 @@ void updateTheme( Fl_Browser *o,
 					Fl_Box *inactive_close_button,
 					std::string filename,
 					bool user){
+	debug_out("void updateTheme(..."+filename+"...)");
 	if(linuxcommon::test_dir(filename)){
 		o->clear();
 		populateANYThemes(o,filename,true);

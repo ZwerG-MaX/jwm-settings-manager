@@ -36,10 +36,10 @@
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Browser.H>
-#include <FL/Fl_Button.H>
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Slider.H>
 #include <FL/Fl_Value_Input.H>
+#include <FL/Fl_Button.H>
 #include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Tabs.H>
@@ -55,14 +55,11 @@ public:
 private:
   inline void cb_options_available_i(Fl_Browser*, void*);
   static void cb_options_available(Fl_Browser*, void*);
-  inline void cb__i(Fl_Button*, void*);
-  static void cb_(Fl_Button*, void*);
 public:
   Fl_Browser *options_desc;
   Fl_Input *icon_value;
   Fl_Slider *opacity_value;
   Fl_Value_Input *desktop_num;
-  Fl_Browser *add_tracker;
 private:
   inline void cb_Cancel_i(Fl_Button*, void*);
   static void cb_Cancel(Fl_Button*, void*);
@@ -82,8 +79,8 @@ private:
 public:
   Fl_Output *layer_value;
 private:
-  inline void cb_1_i(Fl_Button*, void*);
-  static void cb_1(Fl_Button*, void*);
+  inline void cb__i(Fl_Button*, void*);
+  static void cb_(Fl_Button*, void*);
 public:
   Fl_Double_Window* add_class_window();
   Fl_Double_Window *class_win;
@@ -316,8 +313,8 @@ private:
   static void cb_Cancel1(Fl_Button*, void*);
   inline void cb_OK3_i(Fl_Button*, void*);
   static void cb_OK3(Fl_Button*, void*);
-  inline void cb_Widget_i(Fl_Button*, void*);
-  static void cb_Widget(Fl_Button*, void*);
+  inline void cb_Change_i(Fl_Button*, void*);
+  static void cb_Change(Fl_Button*, void*);
 public:
   Fl_Double_Window* make_gtk_theme_window();
   Fl_Double_Window *theme_window;
@@ -327,7 +324,5 @@ private:
   static void cb_Cancel2(Fl_Button*, void*);
   inline void cb_OK4_i(Fl_Button*, void*);
   static void cb_OK4(Fl_Button*, void*);
-public:
-  Fl_Output *theme_name;
 };
 #endif

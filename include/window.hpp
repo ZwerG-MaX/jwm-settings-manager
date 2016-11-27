@@ -49,7 +49,7 @@
 ///Void
 //a
 void active_color_loader(Fl_Button *o, unsigned int one_or_two);
-void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser *add_tracker, Fl_Browser* browser);
+void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser* browser);
 void add_thingie(Fl_Browser *groups_browser,std::string input,std::string Item);
 void add_class(Fl_Browser *groups_browser,std::string input);
 void add_prog(Fl_Browser *groups_browser,std::string input);
