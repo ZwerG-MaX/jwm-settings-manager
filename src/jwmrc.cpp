@@ -1125,6 +1125,11 @@ std::string homePath(){
 	//debug_out("std::string homePath() RETURNS "+filename );
 	return filename;
 }
+std::string fixHomieInclude(std::string includeLine){
+	std::string result=linuxcommon::sed_i(includeLine,"$HOME/",linuxcommon::home_path());
+	result=linuxcommon::sed_i(result,"~/",linuxcommon::home_path());
+	return result;
+}
 std::string getAttribute(pugi::xml_node node,std::string attribute){
 	debug_out("std::string getAttribute(pugi::xml_node node,std::string "+attribute+")");
 	if(!node){return "";}
@@ -1743,6 +1748,8 @@ std::vector<std::string> XDGautostart(){
 void debug_out(std::string msg){
 	#ifdef DEBUG
 	linuxcommon::echo_error(msg);
+	#else
+	if(getJSMItem("debug").compare("true")==0){linuxcommon::echo_error(msg);}
 	#endif
 }
 void errorOUT(std::string msg){
@@ -2239,23 +2246,26 @@ void deletePanelItem(int whichElement){
 	saveChangesTemp();
 }
 std::string getJSMItem(std::string item){
-	debug_out("std::string getJSMItem(std::string "+item+")");
+	//debug_out("std::string getJSMItem(std::string "+item+")");
 	if(item.compare("")==0){return "";}
 	std::string filename=linuxcommon::home_path();
 	if(filename.compare("")==0){return "";}
 	filename+=".jsm";
-	debug_out("Filename="+filename);
+	//debug_out("Filename="+filename);
 	if(!linuxcommon::test_file(filename)){
 		std::string defaultFile="panel=1\ndebug=false\n";
-		debug_out(filename+" does not seem to be a file");
+		//debug_out(filename+" does not seem to be a file");
 		if(!linuxcommon::save_string_to_file(defaultFile,filename)){
-			debug_out("could not write default config file:"+filename);
+			//debug_out("could not write default config file:"+filename);
 			return "";
 		}
 	}
-	debug_out("item="+item);
+	//debug_out("item="+item);
 	item+="=";
-	return linuxcommon::get_line_with_equal(filename,item);
+	std::string result = linuxcommon::get_line_with_equal(filename,item);
+	if(result.compare("")==0)return "";
+	std::transform(result.begin(), result.end(), result.begin(), ::tolower);
+	return result;
 }
 
 void listAutostartXDG(Fl_Browser *o){
@@ -2312,6 +2322,8 @@ pugi::xml_node checkIncludes(unsigned int whichElement,std::string element){
 	std::string currentInclude ="";
 	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
 		currentInclude=*it;
+		currentInclude=linuxcommon::sed_i(currentInclude,"$HOME/",linuxcommon::home_path());
+		currentInclude=linuxcommon::sed_i(currentInclude,"~/",linuxcommon::home_path());
 		unsigned int finder=0;
 		finder=currentInclude.find("exec:");
 		if(finder<currentInclude.length()){
@@ -2361,6 +2373,7 @@ pugi::xml_node checkIncludes(std::string element){
 	std::string currentInclude ="";
 	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
 		currentInclude=*it;
+		currentInclude=fixHomieInclude(currentInclude);
 		unsigned int finder=0;
 		finder=currentInclude.find("exec:");
 		if(finder<currentInclude.length()){
@@ -2399,6 +2412,7 @@ pugi::xml_node checkIncludes(std::string element,std::string subelement){
 	std::string currentInclude ="";
 	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
 		currentInclude=*it;
+		currentInclude=fixHomieInclude(currentInclude);
 		unsigned int finder=0;
 		finder=currentInclude.find("exec:");
 		if(finder<currentInclude.length()){
@@ -2437,6 +2451,7 @@ debug_out("std::string checkIncludes(std::string "+element+","+subelement+","+SU
 	std::string currentInclude ="";
 	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
 		currentInclude=*it;
+		currentInclude=fixHomieInclude(currentInclude);
 		unsigned int finder=0;
 		finder=currentInclude.find("exec:");
 		if(finder<currentInclude.length()){

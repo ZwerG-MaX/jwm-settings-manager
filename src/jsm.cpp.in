@@ -33,6 +33,7 @@
 int showHelp();
 int makeWindow();
 int Shutdown();
+int showDEBUG();
 std::string copyrightFile;
 std::string email="@EMAIL@";
 std::string author="@AUTHOR@";
@@ -84,7 +85,7 @@ std::string ARGshortcuts = "@ARGshortcuts@";
 std::string ARGhelp="@ARGhelp@";
 std::string ARGversion="@ARGversion@";
 std::string ARGcopyright="@ARGcopyright@";
-
+std::string ARGdebug="@ARGdebug@";
 int main(int argc, char *argv[]){
 
     try{
@@ -156,6 +157,9 @@ int main(int argc, char *argv[]){
 					}
                     return 0;
                 }
+                else if(command.compare(ARGdebug)==0){
+                    return showDEBUG();
+                }
                 else {
                     std::cerr<< "Invalid command"<<std::endl;
                     showHelp();
@@ -164,10 +168,6 @@ int main(int argc, char *argv[]){
             }
         }
     }
-    /*
-//int showMouse();
-int showShortcuts();
-*/
     return showSettings();
     }
     catch (const std::exception& e){
@@ -197,13 +197,20 @@ int showHelp(){
         <<" -v "<<ARGversion<<"     show current version\n"
         <<" -c "<<ARGcopyright<<"   show copyright information\n"
         <<"\n SHORTCUTS FOR USE IN THE PANELS AND MENUS\n"
-        <<" "<<ARGshutdown<<"|"<<halt <<"   show shutdown menu\n"
+        <<" "<<ARGshutdown<<" "<<halt <<"   show shutdown menu\n"
         <<" -u "<<menu<<"        show menu editor\n"
         <<" -l "<<ARGclock<<"        show clock settings\n"
+        <<" "<<ARGdebug<<"        show debugging output\n"
         <<" -s "<<ARGshortcuts <<"         show shortcut editor\n\n"
         <<" Version: "<<versionMajor<<"."<<versionMinor<<"."<<revNo
         << std::endl;
     return 0;
+}
+int showDEBUG(){
+std::cout<<"int showDEBUG()"<<std::endl;
+	if(!setJSMItem("debug","true")){std::cerr<<"Could not activate debug settings";}
+	else{std::cout<<"I suppose the item was set correctly"<<std::endl;}
+	return showSettings();
 }
 int Shutdown(){
     shutdown ui;

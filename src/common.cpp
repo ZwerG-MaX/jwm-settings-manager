@@ -149,19 +149,23 @@ LINUX_COMMON__NS_BEGIN
 	std::string sed_i(std::string input, std::string remove, std::string replace){
 		unsigned int xmlfix=0;
 		unsigned int oldFind=0;
-		while(input.find(remove,oldFind)<input.length()){
-			xmlfix = input.find(remove,oldFind);
-			oldFind=xmlfix+4;
+		unsigned int length=input.length();
+		unsigned int removeLength=remove.length();
+		std::string modinput=input;
+		while(modinput.find(remove,oldFind)<length){
+			xmlfix = modinput.find(remove,oldFind);
+			oldFind=xmlfix+replace.length();
 			std::string tempPRE,tempPOST,temp;
-			if(xmlfix<input.length()){
-				temp=input;
-				tempPOST=input;
+			if(xmlfix<length){
+				temp=modinput;
+				tempPOST=modinput;
 				tempPRE = temp.erase(xmlfix,std::string::npos);
-				tempPOST = input.erase(0,xmlfix+1);
-				input = tempPRE + replace + tempPOST;
+				tempPOST = modinput.erase(0,xmlfix+removeLength);
+				modinput = tempPRE + replace + tempPOST;
+				length=modinput.length();
 			}
 		}
-		return input;
+		return modinput;
 	}
 	std::string term_out(std::string terminal_Command_You_Want_Output_From) {
 		if(terminal_Command_You_Want_Output_From.compare("")==0){return "";}

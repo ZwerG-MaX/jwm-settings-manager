@@ -867,7 +867,7 @@ o->deactivate();}
       }
       Fl_Menu_Button {} {
         label {Special Keys} open selected
-        xywh {220 75 130 30} box FLAT_BOX color 23 selection_color 80
+        tooltip {Picture button keys on the keyboard} xywh {220 75 130 30} box FLAT_BOX color 23 selection_color 80
       } {
         MenuItem {} {
           label XF86Tools

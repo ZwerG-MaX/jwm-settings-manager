@@ -1489,6 +1489,7 @@ Fl_Double_Window* KeyboardUI::config_key_win() {
       old_action->hide();
     } // Fl_Output* old_action
     { Fl_Menu_Button* o = new Fl_Menu_Button(220, 75, 130, 30, gettext("Special Keys"));
+      o->tooltip(gettext("Picture button keys on the keyboard"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->selection_color((Fl_Color)80);

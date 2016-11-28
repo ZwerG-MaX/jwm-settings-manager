@@ -152,6 +152,7 @@ bool testExec(std::string command); //linuxcommon wrapper
 //String////////////////////////////////////////////////////////////////
 std::string checkListofExec(std::vector<std::string> list);
 std::string homePath();
+std::string fixHomieInclude(std::string includeLine);
 std::string getAttribute(pugi::xml_node node,std::string attribute);
 std::string getElementText(std::string element);
 std::string getElementText(std::string element, std::string subelement);

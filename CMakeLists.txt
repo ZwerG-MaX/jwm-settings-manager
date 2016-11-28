@@ -44,7 +44,7 @@ set(ARGversion "--version")
 set(ARGrecover "--recover")
 set(MISCDEPS "\${misc:Depends}")
 set(DEBDEPS "\${source:Version}) , \${shlibs:Depends}, ${MISCDEPS}")
-
+set(ARGdebug "--debug")
 # Packages we need
 FIND_PACKAGE(FLTK REQUIRED NO_MODULE)
 FIND_PACKAGE(X11 REQUIRED)
