@@ -244,6 +244,42 @@ private:
 public:
   Fl_Output *modder3_output;
   Fl_Output *key;
+  static unsigned char menu_Special_i18n_done;
+  static Fl_Menu_Item menu_Special[];
+private:
+  inline void cb_XF86Tools_i(Fl_Menu_*, void*);
+  static void cb_XF86Tools(Fl_Menu_*, void*);
+  inline void cb_XF86Search_i(Fl_Menu_*, void*);
+  static void cb_XF86Search(Fl_Menu_*, void*);
+  inline void cb_XF86LaunchA_i(Fl_Menu_*, void*);
+  static void cb_XF86LaunchA(Fl_Menu_*, void*);
+  inline void cb_XF86Explorer_i(Fl_Menu_*, void*);
+  static void cb_XF86Explorer(Fl_Menu_*, void*);
+  inline void cb_XF86Display_i(Fl_Menu_*, void*);
+  static void cb_XF86Display(Fl_Menu_*, void*);
+  inline void cb_XF86PowerOff_i(Fl_Menu_*, void*);
+  static void cb_XF86PowerOff(Fl_Menu_*, void*);
+  inline void cb_XF86AudioMute_i(Fl_Menu_*, void*);
+  static void cb_XF86AudioMute(Fl_Menu_*, void*);
+  inline void cb_XF86AudioRaiseVolume_i(Fl_Menu_*, void*);
+  static void cb_XF86AudioRaiseVolume(Fl_Menu_*, void*);
+  inline void cb_XF86AudioLowerVolume_i(Fl_Menu_*, void*);
+  static void cb_XF86AudioLowerVolume(Fl_Menu_*, void*);
+  inline void cb_XF86MonBrightnessDown_i(Fl_Menu_*, void*);
+  static void cb_XF86MonBrightnessDown(Fl_Menu_*, void*);
+  inline void cb_XF86MonBrightnessUp_i(Fl_Menu_*, void*);
+  static void cb_XF86MonBrightnessUp(Fl_Menu_*, void*);
+  inline void cb_XF86Calculator_i(Fl_Menu_*, void*);
+  static void cb_XF86Calculator(Fl_Menu_*, void*);
+  inline void cb_XF86AudioMicMute_i(Fl_Menu_*, void*);
+  static void cb_XF86AudioMicMute(Fl_Menu_*, void*);
+  inline void cb_XF86HomePage_i(Fl_Menu_*, void*);
+  static void cb_XF86HomePage(Fl_Menu_*, void*);
+  inline void cb_XF86MyComputer_i(Fl_Menu_*, void*);
+  static void cb_XF86MyComputer(Fl_Menu_*, void*);
+  inline void cb_XF86WWW_i(Fl_Menu_*, void*);
+  static void cb_XF86WWW(Fl_Menu_*, void*);
+public:
   Fl_Double_Window* config_key_win();
   Fl_Double_Window *conf_key_win;
 private:
@@ -432,8 +468,45 @@ public:
   Fl_Output *current_mod2;
   Fl_Output *current_mod3;
   Fl_Output *old_action;
+  static unsigned char menu_Special1_i18n_done;
+  static Fl_Menu_Item menu_Special1[];
+private:
+  inline void cb_XF86Tools1_i(Fl_Menu_*, void*);
+  static void cb_XF86Tools1(Fl_Menu_*, void*);
+  inline void cb_XF86Search1_i(Fl_Menu_*, void*);
+  static void cb_XF86Search1(Fl_Menu_*, void*);
+  inline void cb_XF86LaunchA1_i(Fl_Menu_*, void*);
+  static void cb_XF86LaunchA1(Fl_Menu_*, void*);
+  inline void cb_XF86Explorer1_i(Fl_Menu_*, void*);
+  static void cb_XF86Explorer1(Fl_Menu_*, void*);
+  inline void cb_XF86Display1_i(Fl_Menu_*, void*);
+  static void cb_XF86Display1(Fl_Menu_*, void*);
+  inline void cb_XF86PowerOff1_i(Fl_Menu_*, void*);
+  static void cb_XF86PowerOff1(Fl_Menu_*, void*);
+  inline void cb_XF86AudioMute1_i(Fl_Menu_*, void*);
+  static void cb_XF86AudioMute1(Fl_Menu_*, void*);
+  inline void cb_XF86AudioRaiseVolume1_i(Fl_Menu_*, void*);
+  static void cb_XF86AudioRaiseVolume1(Fl_Menu_*, void*);
+  inline void cb_XF86AudioLowerVolume1_i(Fl_Menu_*, void*);
+  static void cb_XF86AudioLowerVolume1(Fl_Menu_*, void*);
+  inline void cb_XF86MonBrightnessDown1_i(Fl_Menu_*, void*);
+  static void cb_XF86MonBrightnessDown1(Fl_Menu_*, void*);
+  inline void cb_XF86MonBrightnessUp1_i(Fl_Menu_*, void*);
+  static void cb_XF86MonBrightnessUp1(Fl_Menu_*, void*);
+  inline void cb_XF86Calculator1_i(Fl_Menu_*, void*);
+  static void cb_XF86Calculator1(Fl_Menu_*, void*);
+  inline void cb_XF86AudioMicMute1_i(Fl_Menu_*, void*);
+  static void cb_XF86AudioMicMute1(Fl_Menu_*, void*);
+  inline void cb_XF86HomePage1_i(Fl_Menu_*, void*);
+  static void cb_XF86HomePage1(Fl_Menu_*, void*);
+  inline void cb_XF86MyComputer1_i(Fl_Menu_*, void*);
+  static void cb_XF86MyComputer1(Fl_Menu_*, void*);
+  inline void cb_XF86WWW1_i(Fl_Menu_*, void*);
+  static void cb_XF86WWW1(Fl_Menu_*, void*);
+public:
   void menu_cb(const char* action);
   void key_wait(Fl_Output* mod1,Fl_Output* mod2,Fl_Output* mod3,Fl_Output* KEY);
+  void special_cb(const char* item, Fl_Output *o);
 };
 int handle(int e);
 #endif

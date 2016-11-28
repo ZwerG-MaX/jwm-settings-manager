@@ -161,9 +161,9 @@ grabber_window()->show();}
   } {
     Fl_Window grab_win {
       label {Create Keyboard Shortcut} open
-      xywh {868 189 350 150} type Double when 6
+      xywh {719 196 350 150} type Double when 6 hide
       code0 {startup(o,jsm_keyboard_xpm);}
-      code1 {debug_out("grabber_window()->show()");} xclass {jsm-keyboard} visible
+      code1 {debug_out("grabber_window()->show()");} xclass {jsm-keyboard}
     } {
       Fl_Button {} {
         label OK
@@ -447,7 +447,7 @@ else{
         label {GRAB KEY}
         callback {key_wait(mod_output,modder_output,modder3_output,key);
 o->deactivate();}
-        tooltip {This will grab a new key combo} xywh {10 40 335 30} box FLAT_BOX color 95 selection_color 31
+        tooltip {This will grab a new key combo} xywh {5 40 200 30} box FLAT_BOX color 95 selection_color 31
       }
       Fl_Output modder3_output {
         tooltip {Second keyboard modifier} xywh {185 5 50 30} box FLAT_BOX color 53
@@ -455,6 +455,91 @@ o->deactivate();}
       Fl_Output key {
         label Key
         tooltip {Second keyboard modifier} xywh {270 5 75 30} box FLAT_BOX color 53
+      }
+      Fl_Menu_Button {} {
+        label {Special Keys} open
+        tooltip {Picture button keys on the keyboard} xywh {210 40 135 30} box FLAT_BOX color 23 selection_color 80
+      } {
+        MenuItem {} {
+          label XF86Tools
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used for settings} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86Search
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to launch a search program} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86LaunchA
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to show the applications} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86Explorer
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to open a file manager} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86Display
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to open display settings} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86PowerOff
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to turn off computer} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86AudioMute
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to Mute audio} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86AudioRaiseVolume
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to raise the volume} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86AudioLowerVolume
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to lower the volume} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86MonBrightnessDown
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to lower monitor brightness} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86MonBrightnessUp
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to raise monitor brightness} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86Calculator
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to launch the calculator program} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86AudioMicMute
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to mute a microphone} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86HomePage
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to launch a web browser} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86MyComputer
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to launch a filemanager} xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label XF86WWW
+          callback {special_cb(o->text(),key);}
+          tooltip {Usually used to launch a web browser} xywh {10 10 100 20}
+        }
       }
     }
   }
@@ -476,11 +561,11 @@ o->deactivate();}
                             current_mod3);
 if(Configure_CB(mod1_output,mod2_output,mod3_output,keyshortcut,action_name1,oldval)){
   conf_key_win->hide();
-}} selected
+}}
         xywh {285 145 65 30} box FLAT_BOX color 61 selection_color 58 labelcolor 7
       }
       Fl_Menu_Button {} {
-        label Action
+        label Action open
         xywh {220 110 130 30} box FLAT_BOX color 23 selection_color 80
       } {
         MenuItem next1 {
@@ -761,7 +846,7 @@ else{
         label {GRAB KEY}
         callback {key_wait(mod1_output,mod2_output,mod3_output,keyshortcut);
 o->deactivate();}
-        tooltip {This will grab a new key combo} xywh {5 75 345 30} box FLAT_BOX color 95 selection_color 31
+        tooltip {This will grab a new key combo} xywh {5 75 205 30} box FLAT_BOX color 95 selection_color 31
       }
       Fl_Output keyshortcut {
         label Key
@@ -779,6 +864,91 @@ o->deactivate();}
       }
       Fl_Output old_action {
         xywh {140 20 50 20} box FLAT_BOX color 45 textcolor 55 hide
+      }
+      Fl_Menu_Button {} {
+        label {Special Keys} open selected
+        xywh {220 75 130 30} box FLAT_BOX color 23 selection_color 80
+      } {
+        MenuItem {} {
+          label XF86Tools
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used for settings} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86Search
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to launch a search program} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86LaunchA
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to show the applications} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86Explorer
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to open a file manager} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86Display
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to open display settings} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86PowerOff
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to turn off computer} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86AudioMute
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to Mute audio} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86AudioRaiseVolume
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to raise the volume} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86AudioLowerVolume
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to lower the volume} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86MonBrightnessDown
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to lower monitor brightness} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86MonBrightnessUp
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to raise monitor brightness} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86Calculator
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to launch the calculator program} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86AudioMicMute
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to mute a microphone} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86HomePage
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to launch a web browser} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86MyComputer
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to launch a filemanager} xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label XF86WWW
+          callback {special_cb(o->text(),keyshortcut);}
+          tooltip {Usually used to launch a web browser} xywh {0 0 100 20}
+        }
       }
     }
   }
@@ -827,6 +997,13 @@ while (Fl::wait()){
       }
     }
   }
+}} {}
+  }
+  Function {special_cb(const char* item, Fl_Output *o)} {open
+  } {
+    code {if(item!=NULL){
+  o->value(item);
+  o->redraw();
 }} {}
   }
 } 

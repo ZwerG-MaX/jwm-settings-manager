@@ -202,8 +202,8 @@ else{debug_out("LOADED doc in jwm-window");}} {}
           xywh {0 0 510 280} box FLAT_BOX color 45 selection_color 51
         } {
           Fl_Group {} {
-            label Appearance open
-            xywh {0 30 510 250} selection_color 45 hide
+            label Appearance open selected
+            xywh {0 30 510 250} selection_color 45
           } {
             Fl_Box {} {
               xywh {0 35 255 160} box FLAT_BOX color 47
@@ -478,7 +478,7 @@ setSnap(d);}
           }
           Fl_Group {} {
             label Groups open
-            xywh {0 30 510 230} selection_color 45
+            xywh {0 30 510 230} selection_color 45 hide
           } {
             Fl_Browser groups_browser {
               label {Current Groups}
@@ -518,7 +518,7 @@ setSnap(d);}
               label {@+}
               callback {if(XplusN(groups_browser)){
   add_program_window()->show();
-}} selected
+}}
               tooltip {Add a program effected by the option} xywh {255 230 30 30} box FLAT_BOX color 23
             }
             Fl_Button rm_prog {

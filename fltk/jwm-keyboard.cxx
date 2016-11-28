@@ -561,6 +561,139 @@ void KeyboardUI::cb_GRAB(Fl_Button* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_GRAB_i(o,v);
 }
 
+void KeyboardUI::cb_XF86Tools_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86Tools(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Tools_i(o,v);
+}
+
+void KeyboardUI::cb_XF86Search_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86Search(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Search_i(o,v);
+}
+
+void KeyboardUI::cb_XF86LaunchA_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86LaunchA(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86LaunchA_i(o,v);
+}
+
+void KeyboardUI::cb_XF86Explorer_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86Explorer(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Explorer_i(o,v);
+}
+
+void KeyboardUI::cb_XF86Display_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86Display(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Display_i(o,v);
+}
+
+void KeyboardUI::cb_XF86PowerOff_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86PowerOff(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86PowerOff_i(o,v);
+}
+
+void KeyboardUI::cb_XF86AudioMute_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86AudioMute(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioMute_i(o,v);
+}
+
+void KeyboardUI::cb_XF86AudioRaiseVolume_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86AudioRaiseVolume(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioRaiseVolume_i(o,v);
+}
+
+void KeyboardUI::cb_XF86AudioLowerVolume_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86AudioLowerVolume(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioLowerVolume_i(o,v);
+}
+
+void KeyboardUI::cb_XF86MonBrightnessDown_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86MonBrightnessDown(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MonBrightnessDown_i(o,v);
+}
+
+void KeyboardUI::cb_XF86MonBrightnessUp_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86MonBrightnessUp(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MonBrightnessUp_i(o,v);
+}
+
+void KeyboardUI::cb_XF86Calculator_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86Calculator(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Calculator_i(o,v);
+}
+
+void KeyboardUI::cb_XF86AudioMicMute_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86AudioMicMute(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioMicMute_i(o,v);
+}
+
+void KeyboardUI::cb_XF86HomePage_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86HomePage(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86HomePage_i(o,v);
+}
+
+void KeyboardUI::cb_XF86MyComputer_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86MyComputer(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MyComputer_i(o,v);
+}
+
+void KeyboardUI::cb_XF86WWW_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),key);
+}
+void KeyboardUI::cb_XF86WWW(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86WWW_i(o,v);
+}
+
+unsigned char KeyboardUI::menu_Special_i18n_done = 0;
+Fl_Menu_Item KeyboardUI::menu_Special[] = {
+ {"XF86Tools", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Tools, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86Search", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Search, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86LaunchA", 0,  (Fl_Callback*)KeyboardUI::cb_XF86LaunchA, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86Explorer", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Explorer, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86Display", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Display, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86PowerOff", 0,  (Fl_Callback*)KeyboardUI::cb_XF86PowerOff, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86AudioMute", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioMute, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86AudioRaiseVolume", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioRaiseVolume, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86AudioLowerVolume", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioLowerVolume, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86MonBrightnessDown", 0,  (Fl_Callback*)KeyboardUI::cb_XF86MonBrightnessDown, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86MonBrightnessUp", 0,  (Fl_Callback*)KeyboardUI::cb_XF86MonBrightnessUp, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86Calculator", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Calculator, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86AudioMicMute", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioMicMute, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86HomePage", 0,  (Fl_Callback*)KeyboardUI::cb_XF86HomePage, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86MyComputer", 0,  (Fl_Callback*)KeyboardUI::cb_XF86MyComputer, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86WWW", 0,  (Fl_Callback*)KeyboardUI::cb_XF86WWW, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
 void KeyboardUI::cb_OK2_i(Fl_Button*, void*) {
   std::string oldval=oldvalue(old_action,
                             current_key,
@@ -972,6 +1105,139 @@ void KeyboardUI::cb_GRAB1(Fl_Button* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_GRAB1_i(o,v);
 }
 
+void KeyboardUI::cb_XF86Tools1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86Tools1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Tools1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86Search1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86Search1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Search1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86LaunchA1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86LaunchA1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86LaunchA1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86Explorer1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86Explorer1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Explorer1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86Display1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86Display1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Display1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86PowerOff1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86PowerOff1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86PowerOff1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86AudioMute1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86AudioMute1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioMute1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86AudioRaiseVolume1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86AudioRaiseVolume1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioRaiseVolume1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86AudioLowerVolume1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86AudioLowerVolume1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioLowerVolume1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86MonBrightnessDown1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86MonBrightnessDown1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MonBrightnessDown1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86MonBrightnessUp1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86MonBrightnessUp1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MonBrightnessUp1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86Calculator1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86Calculator1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Calculator1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86AudioMicMute1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86AudioMicMute1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioMicMute1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86HomePage1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86HomePage1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86HomePage1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86MyComputer1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86MyComputer1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MyComputer1_i(o,v);
+}
+
+void KeyboardUI::cb_XF86WWW1_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86WWW1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86WWW1_i(o,v);
+}
+
+unsigned char KeyboardUI::menu_Special1_i18n_done = 0;
+Fl_Menu_Item KeyboardUI::menu_Special1[] = {
+ {"XF86Tools", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Tools1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86Search", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Search1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86LaunchA", 0,  (Fl_Callback*)KeyboardUI::cb_XF86LaunchA1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86Explorer", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Explorer1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86Display", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Display1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86PowerOff", 0,  (Fl_Callback*)KeyboardUI::cb_XF86PowerOff1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86AudioMute", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioMute1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86AudioRaiseVolume", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioRaiseVolume1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86AudioLowerVolume", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioLowerVolume1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86MonBrightnessDown", 0,  (Fl_Callback*)KeyboardUI::cb_XF86MonBrightnessDown1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86MonBrightnessUp", 0,  (Fl_Callback*)KeyboardUI::cb_XF86MonBrightnessUp1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86Calculator", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Calculator1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86AudioMicMute", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioMicMute1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86HomePage", 0,  (Fl_Callback*)KeyboardUI::cb_XF86HomePage1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86MyComputer", 0,  (Fl_Callback*)KeyboardUI::cb_XF86MyComputer1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86WWW", 0,  (Fl_Callback*)KeyboardUI::cb_XF86WWW1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
 Fl_Double_Window* KeyboardUI::make_window() {
   load();
   //Fl::add_handler(handle);
@@ -1087,7 +1353,7 @@ Fl_Double_Window* KeyboardUI::grabber_window() {
       modder_output->box(FL_FLAT_BOX);
       modder_output->color((Fl_Color)53);
     } // Fl_Output* modder_output
-    { Fl_Button* o = new Fl_Button(10, 40, 335, 30, gettext("GRAB KEY"));
+    { Fl_Button* o = new Fl_Button(5, 40, 200, 30, gettext("GRAB KEY"));
       o->tooltip(gettext("This will grab a new key combo"));
       o->box(FL_FLAT_BOX);
       o->color(FL_YELLOW);
@@ -1104,6 +1370,20 @@ Fl_Double_Window* KeyboardUI::grabber_window() {
       key->box(FL_FLAT_BOX);
       key->color((Fl_Color)53);
     } // Fl_Output* key
+    { Fl_Menu_Button* o = new Fl_Menu_Button(210, 40, 135, 30, gettext("Special Keys"));
+      o->tooltip(gettext("Picture button keys on the keyboard"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->selection_color((Fl_Color)80);
+      if (!menu_Special_i18n_done) {
+        int i=0;
+        for ( ; i<16; i++)
+          if (menu_Special[i].label())
+            menu_Special[i].label(gettext(menu_Special[i].label()));
+        menu_Special_i18n_done = 1;
+      }
+      o->menu(menu_Special);
+    } // Fl_Menu_Button* o
     startup(o,jsm_keyboard_xpm);
     debug_out("grabber_window()->show()");
     grab_win->xclass("jsm-keyboard");
@@ -1173,7 +1453,7 @@ Fl_Double_Window* KeyboardUI::config_key_win() {
       current_mod1->color(FL_DARK2);
       current_mod1->textcolor((Fl_Color)55);
     } // Fl_Output* current_mod1
-    { Fl_Button* o = new Fl_Button(5, 75, 345, 30, gettext("GRAB KEY"));
+    { Fl_Button* o = new Fl_Button(5, 75, 205, 30, gettext("GRAB KEY"));
       o->tooltip(gettext("This will grab a new key combo"));
       o->box(FL_FLAT_BOX);
       o->color(FL_YELLOW);
@@ -1208,6 +1488,19 @@ Fl_Double_Window* KeyboardUI::config_key_win() {
       old_action->textcolor((Fl_Color)55);
       old_action->hide();
     } // Fl_Output* old_action
+    { Fl_Menu_Button* o = new Fl_Menu_Button(220, 75, 130, 30, gettext("Special Keys"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->selection_color((Fl_Color)80);
+      if (!menu_Special1_i18n_done) {
+        int i=0;
+        for ( ; i<16; i++)
+          if (menu_Special1[i].label())
+            menu_Special1[i].label(gettext(menu_Special1[i].label()));
+        menu_Special1_i18n_done = 1;
+      }
+      o->menu(menu_Special1);
+    } // Fl_Menu_Button* o
     debug_out("config_key_win()->show()");
     startup(o,jsm_keyboard_xpm);
     if(!Configure(key_browser,action_name1,current_key,current_mod1,current_mod2,current_mod3,old_action)){debug_out("Configure failed");}
@@ -1261,6 +1554,13 @@ void KeyboardUI::key_wait(Fl_Output* mod1,Fl_Output* mod2,Fl_Output* mod3,Fl_Out
         }
       }
     }
+  }
+}
+
+void KeyboardUI::special_cb(const char* item, Fl_Output *o) {
+  if(item!=NULL){
+    o->value(item);
+    o->redraw();
   }
 }
 

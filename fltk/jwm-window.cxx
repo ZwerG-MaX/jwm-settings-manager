@@ -670,7 +670,6 @@ Fl_Double_Window* WindowUI::make_window() {
         o->selection_color((Fl_Color)51);
         { Fl_Group* o = new Fl_Group(0, 30, 510, 250, gettext("Appearance"));
           o->selection_color(FL_DARK2);
-          o->hide();
           { Fl_Box* o = new Fl_Box(0, 35, 255, 160);
             o->box(FL_FLAT_BOX);
             o->color(FL_DARK1);
@@ -1011,6 +1010,7 @@ re easily"));
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(0, 30, 510, 230, gettext("Groups"));
           o->selection_color(FL_DARK2);
+          o->hide();
           { Fl_Browser* o = groups_browser = new Fl_Browser(15, 55, 85, 155, gettext("Current Groups"));
             groups_browser->tooltip(gettext("Program groups allow one to specify options which apply to a group of program\
 s by their name and/or class. A program group is created with the Group tag. A\

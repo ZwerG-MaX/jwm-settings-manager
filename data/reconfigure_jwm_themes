@@ -14,7 +14,7 @@ ReloadDesktop=$(gettext "Reload Desktop")
 ClockSettings=$(gettext "Clock Settings")
 ## this opens the home folder
 Home=$(gettext "Home")
-TimezoneSettings=$(gettext "Timezone Settings")
+TimezoneSettings=$(gettext "Timezone")
 ## This is the general settings
 Settings=$(gettext "Settings")
 EditPanel=$(gettext "Edit Panel")
@@ -62,14 +62,19 @@ LOG(){
 ## program arrays to test to use in the jwmrc files
 BATTprogs=(xfce4-power-manager batteri)
 TERMS=(sakura lxterminal gnome-terminal xfce4-terminal xterm roxterm mrxvt rxvt)
-WEBLIST=(firefox chromium chrome qupzilla midori dillo links2)
-SYS_MONITORS=(xfce4-task-manager htop top gnome-system-monitor)
+WEBLIST=(firefox chromium chrome qupzilla palemoon midori opera elinks dillo links2)
+SYS_MONITORS=(xfce4-task-manager htop atop top gnome-system-monitor)
 DESKTOPprogS=(rox nautilus)
+FMprogs=(thunar rox spacefm xfe caja nautilus dolphin doublecmd-gtk emelfm2 gentoo gnome-commander mc nemo tuxcmd worker xfm)
 screenieProgs=(scrot import screengrab shutter xfce4-screenshooter gnome-screenshot)
 calcProgs=(calcoo galculator gnome-calculator kcalc qalculate-gtk wmcalc)
 runProgs=(grun)
 searchProgs=(catfish)
+displayProgs=(lxrandr gvidm gddccontrol)
+helpProgs=(gman yelp)
 calendarProgs=(zenity yad ccal evolution gdeskcal gsimplecal gnome-calendar osmo orage python-goocalendar remind when wmdate xcal)
+clockProgs=(sunclock gworldclock)
+STARTvolS=(volumeicon)
 toriOSrunCheck="$(which torios-runchecker) "
 FONT="serif"
 JWMver=$(jwm -v)
@@ -95,8 +100,33 @@ then
 else
   echo "JWM version is found as $JWMver"
 fi
-## TODO compose a list of common default backgrounds
-BG_LIST=("/usr/share/backgrounds/warty-final-ubuntu.png" "/usr/share/archlinux/wallpaper/archlinux-elation.jpg" "/usr/share/images/desktop-base/moreblue-orbit-wallpaper.png")
+
+Gbg=$(gsettings get org.gnome.desktop.background picture-uri)
+Gbg="${Gbg//\'}"
+Gbg="${Gbg/file:\/\/}"
+BG_LIST=("$Gbg")
+isImage(){
+  file="$1"
+  [[ ! -f $file ]] && return 1
+  formats=("png" "svg" "jpg" "jpeg" "gif")
+  for fmt in "${formats[@]}"
+  do
+    tmpimg="${file,,}"
+     if [[ "${tmpimg%$fmt}" != "$tmpimg" ]]
+     then
+       echo "$file"
+       return 0
+     fi
+  done
+}
+for image in /usr/share/backgrounds/**
+do
+  [[ -n $(isImage "$image") ]] && BG_LIST=(${BG_LIST[@]} "$image")
+done
+for image in /usr/share/images/desktop-base/**
+do
+  [[ -n $(isImage "$image") ]] && BG_LIST=(${BG_LIST[@]} "$image")
+done
 iconDIRS=("\$HOME/.local/share/icons/" "\$HOME/.local/share/icons/hicolor" "\$HOME/.local/share/icons/hicolor/128x128" "\$HOME/.local/share/icons/hicolor/128x128/apps" "\$HOME/.local/share/icons/hicolor/16x16" "\$HOME/.local/share/icons/hicolor/16x16/apps" "\$HOME/.local/share/icons/hicolor/24x24" "\$HOME/.local/share/icons/hicolor/24x24/apps" "\$HOME/.local/share/icons/hicolor/256x256" "\$HOME/.local/share/icons/hicolor/256x256/apps" "\$HOME/.local/share/icons/hicolor/32x32")
 FONT="${FONT}-12:antialias=true:encoding=utf8"
 EXEC="jwm-settings-manager"
@@ -168,6 +198,7 @@ esac
 [[ -n "$DESKTOPprog" ]] && STARTUP="<StartupCommand>$DESKTOPprog</StartupCommand>"
 [[ -n "$STARTvol" ]] && STARTUP="$STARTUP
    <StartupCommand>$STARTvol</StartupCommand>"
+FM_PROG=$(getPROG "pcmanfm" "${FMprogs[@]}")
 BATTprog=$(getPROG "torios-battery" "${BATTprogs[@]}")
 SCREEN_SHOT=$(getPROG "screenie" "${screenieProgs[@]}")
 RUN_DIALOG=$(getPROG "zrun" "${runProgs[@]}")
@@ -178,10 +209,12 @@ VOL_DOWN="amixer-down"
 [[ -x "$VOL_DOWN" ]] || VOL_DOWN=""
 VOL_MUTE="amixer-toggle"
 [[ -x "$VOL_MUTE" ]] || VOL_MUTE=""
-HELP_PROG="xman"
+HELP_PROG=$(getPROG "xman" "${helpProgs[@]}")
+DISPLAY_PROG=$("arandr" "${displayProgs[@]}")
 LOGOUT_PROGRAM="torios-exit"
 [[ -x "$LOGOUT_PROGRAM" ]] || LOGOUT_PROGRAM="jwm -ext"
-TZ_PROG="xterm -e 'sudo dpkg-reconfigure tzdata'"
+TZ_PROG=$(getPROG "dpkg-reconfigure" "${clockProgs[@]}")
+[[ $TZ_PROG == "dpkg-reconfigure" ]] && TZ_PROG="xterm -e 'sudo dpkg-reconfigure tzdata'"
 CAL_PROG=$(getPROG "torios-calendar" "${calendarProgs[@]}")
 [[ -n $CAL_PROG ]] && LOG "CAL_PROG=$CAL_PROG"
 case $CAL_PROG in
@@ -456,17 +489,20 @@ KEYSHORTCUTS="<Key key=\"Up\">up</Key>
     <Key mask=\"4\" key=\"m\">minimize</Key>
     <Key mask=\"A\" key=\"F9\">minimize</Key>
     <Key mask=\"4\" key=\"w\">close</Key>
-    <Key mask=\"A\" key=\"F4\">close</Key>"
+    <Key mask=\"A\" key=\"F4\">close</Key>
+	<Key key=\"XF86Tools\">jwm-settings-manager</Key>"
 
 ## DYNAMIC includes of things that exist :)
+[[ -n "$FM_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
+    <Key key=\"XF86MyComputer\">${JWMexec}$FM_PROG</Key>
+    <Key key=\"XF86Explorer\">${JWMexec}${FM_PROG/ *}</Key>"
 [[ -n "$(which torios-shutdown)" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
-    <Key key=\"XF86PowerOff\">exec:torios-shutdown</Key>"
-[[ -n "$DESKTOPprog" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
-    <Key key=\"XF86Explorer\">${JWMexec}${DESKTOPprog/ *}</Key>"
+    <Key key=\"XF86PowerOff\">${JWMexec}torios-shutdown</Key>"
 [[ -n "$SEARCH_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
     <Key key=\"XF86Search\">${JWMexec}$SEARCH_PROG</Key>"
 [[ -n "$ROOT_MENU" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
-    <Key mask=\"C\" key=\"Escape\">${ROOT_MENU}</Key>"
+    <Key mask=\"C\" key=\"Escape\">${ROOT_MENU}</Key>
+    <Key key=\"XF86LaunchA\">${ROOT_MENU}</Key>"
 [[ -n "$VOL_MUTE" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
     <Key key=\"XF86AudioMute\">${JWMexec}${VOL_MUTE}</Key>"
 [[ -n "$VOL_UP" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
@@ -474,7 +510,8 @@ KEYSHORTCUTS="<Key key=\"Up\">up</Key>
 [[ -n "$VOL_DOWN" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
     <Key key=\"XF86AudioLowerVolume\">${JWMexec}${VOL_DOWN}</Key>"
 [[ -n "$WEB_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
-    <Key key=\"XF86WWW\">${JWMexec}${WEB_PROG}</Key>"
+    <Key key=\"XF86WWW\">${JWMexec}${WEB_PROG}</Key>
+    <Key key=\"XF86HomePage\">${JWMexec}${WEB_PROG}</Key>"
 [[ -n "$CALC_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
    <Key key=\"XF86Calculator\">${JWMexec}$toriOSrunCheck${CALC_PROG}</Key>"
 [[ -n "$TORIGAMMA" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
@@ -484,6 +521,8 @@ KEYSHORTCUTS="<Key key=\"Up\">up</Key>
     <Key key=\"Print\">${JWMexec}${SCREEN_SHOT}</Key>
     <Key mask=\"CA\" key=\"p\">${JWMexec}${SCREEN_SHOT}</Key>
     <Key mask=\"S4\" key=\"3\">${JWMexec}${SCREEN_SHOT}</Key>"
+[[ -n  "${DISPLAY_PROG}" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
+    <Key key=\"XF86Display\">${JWMexec}${DISPLAY_PROG}</Key>"
 [[ -n "$TERM_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
     <Key mask=\"CA\" key=\"t\">${JWMexec}${TERM_PROG}</Key>"
 [[ -n "$SYS_MONITOR" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}

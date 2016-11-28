@@ -9,9 +9,6 @@ add_new_menu
 deleteShortcut?
 deleteTrayButton?
 
-needs fixing:
-removeAutostart - xdg stuff
-
 node adding functions do not return the correct node... find out why???
 
 MENU:

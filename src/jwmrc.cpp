@@ -356,8 +356,9 @@ bool addElementWithTextAndAttribute(std::string element, std::string attribute, 
 	if(value.compare("")==0){return false;}
 	if(text.compare("")==0){return false;}
 	pugi::xml_node node =  doc.child("JWM").append_child(element.c_str());
-    node.last_child().text().set(text.c_str());
-    node.last_child().append_attribute(attribute.c_str())=value.c_str();
+    //node=node.last_child();
+    node.text().set(text.c_str());
+    node.append_attribute(attribute.c_str())=value.c_str();
     return saveChangesTemp();
 }
 bool addElementWithTextAndAttribute(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text){
