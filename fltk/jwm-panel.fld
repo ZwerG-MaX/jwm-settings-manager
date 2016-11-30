@@ -82,8 +82,8 @@ makeWidgetIcon(filename,icon_view,48);} {}
     code {load();} {}
     Fl_Window panel_window {
       label {Panel Settings} open
-      xywh {238 184 285 450} type Double color 47 align 80 hide resizable
-      code1 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
+      xywh {238 184 285 450} type Double color 47 align 80 resizable
+      code1 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 355 665} color 31
@@ -151,7 +151,7 @@ Menu_CB(a);}
           xywh {0 35 285 380} box FLAT_BOX color 47
         } {
           Fl_Group apps_tab {
-            label Apps open
+            label Apps open selected
             xywh {5 60 280 350} selection_color 45
             code0 {const char* text=gettext("Apps");o->label(text);}
           } {
@@ -533,7 +533,7 @@ refresh_app_browser(app_browser);}
       } {
         Fl_Button {} {
           label OK
-          callback {save_user_clock();} selected
+          callback {save_user_clock();}
           xywh {380 505 75 30} box FLAT_BOX color 61 labelcolor 7 resizable
           code0 {const char* text=gettext("OK");o->label(text);}
         }
@@ -546,7 +546,7 @@ clock_display->copy_label(result.c_str());
 clock_display->redraw();
 clock_displayer->redraw_label();
 clock_displayer->copy_label(result.c_str());
-clock_displayer->redraw();} selected
+clock_displayer->redraw();}
           xywh {45 505 290 30} box FLAT_BOX selection_color 72 when 3
           code0 {const char* text=gettext("style");o->label(text);}
         }
@@ -554,22 +554,22 @@ clock_displayer->redraw();} selected
           callback {std::string item=o->text(o->value());
 item= item.substr(0,2);
 clock_style->insert(item.c_str());
-//std::cerr<<"Click Clock: "<<item<<std::endl;} selected
+//std::cerr<<"Click Clock: "<<item<<std::endl;}
           xywh {5 5 450 405} type Hold box FLAT_BOX selection_color 72
           code1 {populateClocks(o);}
         }
-        Fl_Output clock_display {selected
+        Fl_Output clock_display {
           xywh {10 470 445 25} box FLAT_BOX labelfont 1 labelsize 18 align 1
         }
         Fl_Button {} {
           label Notes
-          callback {clock_notes_window()->show();} selected
+          callback {clock_notes_window()->show();}
           xywh {5 415 75 30} box FLAT_BOX color 23
           code0 {const char* text=gettext("Notes");o->label(text);}
         }
         Fl_Button {} {
           label {Modifier Notes}
-          callback {clock_info_window()->show();} selected
+          callback {clock_info_window()->show();}
           xywh {90 415 110 30} box FLAT_BOX color 23
           code0 {const char* text=gettext("Modifier Notes");o->label(text);}
         }
@@ -1217,7 +1217,9 @@ unsigned int size =app_browser->size();
 if(appLine <= size && appLine !=0){
   moveUp(appLine);
   populateApps(app_browser);
-}} {}
+}
+if(appLine-1 != 0 )app_browser->select(appLine-1);
+else app_browser->select(1);} {}
   }
   Function {move_down()} {open
   } {
@@ -1226,7 +1228,10 @@ unsigned int size =app_browser->size();
 if(appLine <= size && appLine !=0){
   moveDown(appLine);
   populateApps(app_browser);
-}} {}
+}
+size =app_browser->size();
+if(appLine+1 < size )app_browser->select(appLine+1);
+else app_browser->select(size);} {}
   }
   Function {ok()} {open
   } {

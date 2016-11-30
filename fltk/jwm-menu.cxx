@@ -26,6 +26,14 @@
 #include <libintl.h>
 #include "jwm-menu.h"
 
+void MenuUI::cb_menu_height_i(Fl_Slider* o, void*) {
+  double val=o->value();
+height_input->value(val);
+}
+void MenuUI::cb_menu_height(Fl_Slider* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_menu_height_i(o,v);
+}
+
 void MenuUI::cb_OK_i(Fl_Button*, void*) {
   if(!checkFlBrowserItem(list_browser)){return;}
 unsigned int line = list_browser->value();
@@ -46,6 +54,14 @@ setRootMenuHeight(val,height);
 }
 void MenuUI::cb_OK(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->user_data()))->cb_OK_i(o,v);
+}
+
+void MenuUI::cb_height_input_i(Fl_Value_Input* o, void*) {
+  double val=o->value();
+menu_height->value(val);
+}
+void MenuUI::cb_height_input(Fl_Value_Input* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_height_input_i(o,v);
 }
 
 void MenuUI::cb_add_prog_button_i(Fl_Button*, void*) {
@@ -424,10 +440,10 @@ void MenuUI::cb_Nothing(Fl_Button* o, void* v) {
 
 Fl_Double_Window* MenuUI::add_a_menu() {
   Fl_Double_Window* w;
-  { Fl_Double_Window* o = new Fl_Double_Window(280, 125, gettext("Add a Menu"));
+  { Fl_Double_Window* o = new Fl_Double_Window(310, 110, gettext("Add a Menu"));
     w = o;
     o->user_data((void*)(this));
-    { Fl_Browser* o = list_browser = new Fl_Browser(5, 5, 95, 100, gettext("Menu"));
+    { Fl_Browser* o = list_browser = new Fl_Browser(5, 5, 95, 100);
       list_browser->tooltip(gettext("Determine which buttons on the root window activate the menu. This is a list \
 of integers specifying buttons. The default is 123. Multiple root menus may be\
  used by specifying different buttons to activate them. Valid values in this l\
@@ -441,32 +457,37 @@ eel. Therefore, accessing root menus that are assigned to buttons 0, 6, 7, 8, \
       list_browser->align(Fl_Align(130));
       listMenus(o);
     } // Fl_Browser* list_browser
-    { new_menu_label = new Fl_Input(105, 40, 120, 30, gettext("Label"));
+    { new_menu_label = new Fl_Input(135, 5, 120, 30, gettext("Label"));
       new_menu_label->tooltip(gettext("The label to display at the top of the menu, normally this is NOT shown"));
       new_menu_label->box(FL_FLAT_BOX);
       new_menu_label->align(Fl_Align(FL_ALIGN_RIGHT));
     } // Fl_Input* new_menu_label
-    { menu_height = new Fl_Slider(105, 5, 120, 30, gettext("Height"));
+    { menu_height = new Fl_Slider(135, 40, 120, 30, gettext("Height"));
       menu_height->tooltip(gettext("The height of each menu item in pixels 0 indicates that the height of the fon\
 t will determine the height. The default is 0."));
       menu_height->type(1);
       menu_height->box(FL_GTK_DOWN_BOX);
       menu_height->color((Fl_Color)41);
       menu_height->maximum(45);
+      menu_height->callback((Fl_Callback*)cb_menu_height);
       menu_height->align(Fl_Align(FL_ALIGN_RIGHT));
     } // Fl_Slider* menu_height
-    { islabeled_button = new Fl_Check_Button(110, 75, 25, 25, gettext("Labeled        "));
+    { islabeled_button = new Fl_Check_Button(105, 5, 20, 25);
       islabeled_button->tooltip(gettext("Determines if a label appears at the top of the menu, this will have no effec\
 t if the label is not set"));
       islabeled_button->box(FL_FLAT_BOX);
       islabeled_button->down_box(FL_GTK_DOWN_BOX);
     } // Fl_Check_Button* islabeled_button
-    { Fl_Button* o = new Fl_Button(215, 95, 60, 25, gettext("OK"));
+    { Fl_Button* o = new Fl_Button(220, 75, 60, 25, gettext("OK"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK);
     } // Fl_Button* o
+    { height_input = new Fl_Value_Input(105, 40, 25, 25);
+      height_input->box(FL_FLAT_BOX);
+      height_input->callback((Fl_Callback*)cb_height_input);
+    } // Fl_Value_Input* height_input
     startup(o);
     o->xclass("jsm-panel");
     o->end();

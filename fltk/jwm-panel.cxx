@@ -1413,6 +1413,7 @@ Fl_Double_Window* PanelUI::clock_window() {
     const char* text=gettext("Configure Clock");o->label(text);
     clock_config_window->xclass("jsm-panel");
     clock_config_window->end();
+    clock_config_window->resizable(clock_config_window);
   } // Fl_Double_Window* clock_config_window
   return clock_config_window;
 }
@@ -2099,6 +2100,8 @@ void PanelUI::move_up() {
     moveUp(appLine);
     populateApps(app_browser);
   }
+  if(appLine-1 != 0 )app_browser->select(appLine-1);
+  else app_browser->select(1);
 }
 
 void PanelUI::move_down() {
@@ -2108,6 +2111,9 @@ void PanelUI::move_down() {
     moveDown(appLine);
     populateApps(app_browser);
   }
+  size =app_browser->size();
+  if(appLine+1 < size )app_browser->select(appLine+1);
+  else app_browser->select(size);
 }
 
 void PanelUI::ok() {

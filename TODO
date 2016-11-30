@@ -10,6 +10,3 @@ deleteShortcut?
 deleteTrayButton?
 
 node adding functions do not return the correct node... find out why???
-
-MENU:
-void setRootMenuAttribute(std::string menustring ,std::string attribute,std::string value);

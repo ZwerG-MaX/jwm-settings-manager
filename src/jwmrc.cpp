@@ -36,6 +36,7 @@ bool loadTemp(){
 	return load(fileName);
 }
 bool load(std::string fileName){
+	debug_out("bool load(std::string "+fileName+")");
     if(fileName.compare("")==0){linuxcommon::echo_error("file does not exist and cannot be loaded");return false;}
    // debug_out("load(): "+fileName);
     if(!doc.load_file( fileName.c_str() )){
@@ -46,20 +47,22 @@ bool load(std::string fileName){
     }
     else{
 		//debug_out("document loaded!");
-		return saveChangesTempOverwrite(); //save the current file as the temp file
+		setJSMItem("file",fileName);
+		return saveChangesTempOverwrite(fileName); //save the current file as the temp file
     }
     return true;
 }
 bool saveChanges(){
-	std::string myhomie=homePath();
+	std::string myhomie=getJSMItem("file");
 	if(myhomie.compare("")==0){return false;}
+	myhomie=makeNOTtemp(myhomie);
 	return saveChanges(myhomie,true,true);
 }
 bool saveChanges(std::string filename, bool restart, bool reload){
-	//debug_out("bool saveChanges(std::string "+filename+", bool restart, bool reload)");
+	debug_out("bool saveChanges(std::string "+filename+", bool restart, bool reload)");
 	if(filename.compare("")==0){return false;}
     if(!doc.save_file( filename.c_str() )){
-		debug_out("saveChanges failed for: "+homePath());
+		debug_out("saveChanges failed for: "+filename);
 		return false;
 	}
 	if(restart){
@@ -73,20 +76,26 @@ bool saveChanges(std::string filename, bool restart, bool reload){
 }
 bool saveNoRestart(){
 	loadTemp();
-	std::string myhomie=homePath();
+	std::string myhomie=getJSMItem("file");
 	if(myhomie.compare("")==0){return false;}
+	myhomie=makeNOTtemp(myhomie);
 	return saveChanges(myhomie,false,false);
 }
 bool saveChangesTemp(){
-	std::string myhomie=homePath();
+	std::string myhomie=getJSMItem("file");
 	if(myhomie.compare("")==0){return false;}
-	myhomie+="~";
+	myhomie=makeTempName(myhomie);
 	return saveChanges(myhomie,false,true);
 }
 bool saveChangesTempOverwrite(){
-	std::string myhomie=homePath();
+	std::string myhomie=getJSMItem("file");
 	if(myhomie.compare("")==0){return false;}
-	myhomie+="~";
+	myhomie=makeTempName(myhomie);
+	return saveChanges(myhomie,false,false);
+}
+bool saveChangesTempOverwrite(std::string myhomie){
+	if(myhomie.compare("")==0){return false;}
+	myhomie=makeTempName(myhomie);
 	return saveChanges(myhomie,false,false);
 }
 bool testExec(std::string command){
@@ -275,16 +284,25 @@ bool addSubElementWithText(unsigned int whichElement,std::string element, std::s
 //	if(!loadTemp()){return false;}
 	debug_out("addSubElementWithText(unsigned int whichElement,std::string "+ element+", std::string "+ subelement+ ", std::string " + text+ ")");
 	unsigned int i=1;
-	if(element.compare("")==0){return false;}
-	if(subelement.compare("")==0){return false;}
-	if(text.compare("")==0){return false;}
+	if(element.compare("")==0){errorOUT("Empty element");return false;}
+	if(subelement.compare("")==0){errorOUT("Empty sub-element");return false;}
+	if(text.compare("")==0){errorOUT("Empty text");return false;}
 	pugi::xml_node node =doc.child("JWM").child(element.c_str());
+	if(!node){
+		node=checkIncludes(whichElement,element);
+		if(!node){
+			errorOUT("COULD NOT FIND "+element);
+			return false;
+		}
+		whichElement=i;
+	}
     if(whichElement!=i){
 		while(node.next_sibling(element.c_str()) && i!=whichElement){
             node=node.next_sibling(element.c_str());
             i++;
         }
     }
+    if(!node){errorOUT("Empty Node");return false;}
     node.append_child(subelement.c_str());
     node=node.last_child();
     node.text().set(text.c_str());
@@ -675,6 +693,7 @@ bool isElement(std::string element){
 	pugi::xml_node node = doc.child("JWM").child(element.c_str());
 	if(!node){node=checkIncludes(element);}
 	if(node){return true;}
+	setJSMItem("file",homePath());
 	return false;
 }
 bool isElement(std::string element, std::string subelement){
@@ -684,6 +703,7 @@ bool isElement(std::string element, std::string subelement){
 	pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str());
 	if(!node){node=checkIncludes(element,subelement);}
 	if(node){return true;}
+	setJSMItem("file",homePath());
 	return false;
 }
 bool isElement(std::string element, std::string subelement, std::string SUBsubelement){
@@ -693,6 +713,7 @@ bool isElement(std::string element, std::string subelement, std::string SUBsubel
 	pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubelement.c_str());
 	if(!node){node=checkIncludes(element,subelement,SUBsubelement);}
 	if(node){return true;}
+	setJSMItem("file",homePath());
 	return false;
 }
 bool isExec(std::string exec){
@@ -1072,30 +1093,22 @@ bool setJSMItem(std::string item, std::string value){
 	std::string filename=linuxcommon::home_path();
 	if(filename.compare("")==0){return false;}
 	filename+=".jsm";
-	std::string stringfile;
+	std::string stringfile,p,d,f;
 	if(!linuxcommon::test_file(filename)){
-		if(item.compare("panel")==0){
-			stringfile="panel="+value+"\ndebug=false";
-		}
-		else if(item.compare("debug")==0){
-			stringfile="panel=1\ndebug="+value;
-		}
-		//OTHER OPTS
-	
+		debug_out(filename+" NOT found");
+		p="1";
+		d="false";
+		f=homePath();
 	}
 	else{
-		std::string oldval;
-		if(item.compare("panel")==0){
-			oldval=getJSMItem("debug");
-			stringfile="panel="+value+"\ndebug="+oldval;
-		}
-		else if(item.compare("debug")==0){
-			oldval=getJSMItem("panel");
-			stringfile="panel="+oldval+"\ndebug="+value;
-		}
-		//OTHER OPTS
+		d=getJSMItem("debug");
+		p=getJSMItem("panel");
+		f=getJSMItem("file");
 	}
-	if(stringfile.compare("")==0){return false;}
+	if(item.compare("panel")==0){p=value;}
+	else if(item.compare("debug")==0){d=value;}
+	else if(item.compare("file")==0){f=value;}
+	stringfile="panel="+p+"\ndebug="+d+"\nfile="+f+"\n";
 	return linuxcommon::save_string_to_file(stringfile,filename);
 }
 bool setRootMenuHeight(std::string val, int height){
@@ -1493,6 +1506,12 @@ std::string getEQUALvalue(std::string INTERNAL_LINE){
 	}
 	return "";
 }
+std::string makeTempName(std::string filename){
+	if(filename.find("~")<filename.length()){return filename;}
+	filename+="~";
+	return filename;
+}
+std::string makeNOTtemp(std::string filename){return linuxcommon::remove_cruft(filename,"~");}
 const char* convert(double num){
 	return linuxcommon::convert_num_to_string(num);
 }
@@ -2114,10 +2133,18 @@ void populateApps(Fl_Browser*o){
 void setRootMenuAttribute(std::string menustring ,std::string attribute,std::string value){
 	debug_out("void setRootMenuAttribute(std::string "+menustring+", std::string "+attribute+", std::string "+value+")");
 	if((menustring.compare("")==0)||(attribute.compare("")==0)||(value.compare("")==0)){
-		debug_out("");
+		debug_out("Missing a value");
 		return;
 	}
-	
+	pugi::xml_node node=getRootMenu(menustring);
+	if(!node){
+		errorOUT("Could not find the menu");
+		return;
+	}
+	pugi::xml_attribute attri=node.attribute(attribute.c_str());
+	if(!attri){node.append_attribute(attribute.c_str()).set_value(value.c_str());}
+	else{attri.set_value(value.c_str());}
+	if(!saveChangesTemp()){errorOUT("Could not save the changes properly");}
 }
 void deleteShortcut(std::string program){
 	debug_out("void deleteShortcut(std::string "+program+")");
@@ -2253,7 +2280,7 @@ std::string getJSMItem(std::string item){
 	filename+=".jsm";
 	//debug_out("Filename="+filename);
 	if(!linuxcommon::test_file(filename)){
-		std::string defaultFile="panel=1\ndebug=false\n";
+		std::string defaultFile="panel=1\ndebug=false\nfile="+homePath()+"\n";
 		//debug_out(filename+" does not seem to be a file");
 		if(!linuxcommon::save_string_to_file(defaultFile,filename)){
 			//debug_out("could not write default config file:"+filename);
@@ -2263,7 +2290,10 @@ std::string getJSMItem(std::string item){
 	//debug_out("item="+item);
 	item+="=";
 	std::string result = linuxcommon::get_line_with_equal(filename,item);
-	if(result.compare("")==0)return "";
+	if(result.compare("")==0){
+		errorOUT("Could not get "+item+" from "+filename);
+		return "";
+	}
 	std::transform(result.begin(), result.end(), result.begin(), ::tolower);
 	return result;
 }
@@ -2334,16 +2364,16 @@ pugi::xml_node checkIncludes(unsigned int whichElement,std::string element){
 				std::string INCLUDEcontents=linuxcommon::term_out(command);
 				if(!doc.load_string(INCLUDEcontents.c_str())){
 					debug_out("Error loading contents of "+command);
-					return node;
 				}
-				node= doc.child("JWM").child(element.c_str());
-				if(whichElement!=i){
-					while(node.next_sibling(element.c_str()) && i!=whichElement){
-						node=node.next_sibling(element.c_str());
-						i++;
+				else{
+					node= doc.child("JWM").child(element.c_str());
+					if(whichElement!=i){
+						while(node.next_sibling(element.c_str()) && i!=whichElement){
+							node=node.next_sibling(element.c_str());
+							i++;
+						}
 					}
 				}
-				return node;
 			}
 		}
 		else{
@@ -2359,9 +2389,13 @@ pugi::xml_node checkIncludes(unsigned int whichElement,std::string element){
 						i++;
 					}
 				}
-				return node;
-			}//TODO: pugi load file and look for element.c_str();
+			}
 		}
+	}
+	if((node)&&(linuxcommon::test_file(currentInclude))){setJSMItem("file",currentInclude);}
+	else{
+		loadTemp();
+		setJSMItem("file",homePath());
 	}
 	return node;
 }
@@ -2384,10 +2418,7 @@ pugi::xml_node checkIncludes(std::string element){
 				std::string INCLUDEcontents=linuxcommon::term_out(command);
 				if(!doc.load_string(INCLUDEcontents.c_str())){
 					debug_out("Error loading contents of "+command);
-					return node;
 				}
-				node= doc.child("JWM").child(element.c_str());
-				return node;
 			}//TODO: pugi load string and look for element.c_str();
 		}
 		else{
@@ -2395,11 +2426,16 @@ pugi::xml_node checkIncludes(std::string element){
 			debug_out(currentInclude);
 			if(!linuxcommon::test_file(currentInclude)){debug_out(currentInclude+" is neither executable NOR a file???");}
 			else{
-				load(currentInclude);
-				node = doc.child("JWM").child(element.c_str());
-				return node;
+				if(load(currentInclude)){
+					node = doc.child("JWM").child(element.c_str());
+				}
 			}//TODO: pugi load file and look for element.c_str();
 		}
+	}
+	if((node)&&(linuxcommon::test_file(currentInclude))){setJSMItem("file",currentInclude);}
+	else{
+		loadTemp();
+		setJSMItem("file",homePath());
 	}
 	return node;
 }
@@ -2423,10 +2459,8 @@ pugi::xml_node checkIncludes(std::string element,std::string subelement){
 				std::string INCLUDEcontents=linuxcommon::term_out(command);
 				if(!doc.load_string(INCLUDEcontents.c_str())){
 					debug_out("Error loading contents of "+command);
-					return node;
 				}
-				node= doc.child("JWM").child(element.c_str()).child(subelement.c_str());
-				return node;
+				else{node= doc.child("JWM").child(element.c_str()).child(subelement.c_str());}
 			}//TODO: pugi load string and look for element.c_str();
 		}
 		else{
@@ -2434,11 +2468,16 @@ pugi::xml_node checkIncludes(std::string element,std::string subelement){
 			debug_out(currentInclude);
 			if(!linuxcommon::test_file(currentInclude)){debug_out(currentInclude+" is neither executable NOR a file???");}
 			else{
-				load(currentInclude);
-				node = doc.child("JWM").child(element.c_str()).child(subelement.c_str());
-				return node;
+				if(load(currentInclude)){
+					node = doc.child("JWM").child(element.c_str()).child(subelement.c_str());
+				}
 			}//TODO: pugi load file and look for element.c_str();
 		}
+	}
+	if((node)&&(linuxcommon::test_file(currentInclude))){setJSMItem("file",currentInclude);}
+	else{
+		loadTemp();
+		setJSMItem("file",homePath());
 	}
 	return node;
 }
@@ -2462,10 +2501,8 @@ debug_out("std::string checkIncludes(std::string "+element+","+subelement+","+SU
 				std::string INCLUDEcontents=linuxcommon::term_out(command);
 				if(!doc.load_string(INCLUDEcontents.c_str())){
 					debug_out("Error loading contents of "+command);
-					return node;
 				}
-				node= doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubelement.c_str());
-				return node;
+				else{node= doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubelement.c_str());}
 			}//TODO: pugi load string and look for element.c_str();
 		}
 		else{
@@ -2473,11 +2510,16 @@ debug_out("std::string checkIncludes(std::string "+element+","+subelement+","+SU
 			debug_out(currentInclude);
 			if(!linuxcommon::test_file(currentInclude)){debug_out(currentInclude+" is neither executable NOR a file???");}
 			else{
-				load(currentInclude);
-				node = doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubelement.c_str());
-				return node;
+				if(load(currentInclude)){
+					node = doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubelement.c_str());
+				}
 			}//TODO: pugi load file and look for element.c_str();
 		}
+	}
+	if((node)&&(linuxcommon::test_file(currentInclude))){setJSMItem("file",currentInclude);}
+	else{
+		loadTemp();
+		setJSMItem("file",homePath());
 	}
 	return node;
 }
@@ -2533,6 +2575,23 @@ pugi::xml_node getMenu(std::string text){
 		node=node.next_sibling(subelement.c_str());
 	}
     return node;
+}
+pugi::xml_node getRootMenu(std::string text){
+	debug_out("pugi::xml_node getRootMenu(std::string "+text+")");
+	pugi::xml_node node;
+	std::string element="RootMenu";
+	if(element.compare("")==0){return node;}
+	node=doc.child("JWM").child(element.c_str());
+	if(!node)node=checkIncludes(element.c_str());
+	std::string docroot=node.attribute(text.c_str()).as_string();
+	if(docroot.compare(text)==0){return node;}
+    while(node.next_sibling(element.c_str())){
+		node=node.next_sibling(element.c_str());
+		std::string temp=node.attribute(text.c_str()).as_string();
+		if(temp.compare(text)==0)return node;
+	}
+	pugi::xml_node empty;
+    return empty;
 }
 pugi::xml_node parseNodes(unsigned int whichElement,std::string element){
 	debug_out("pugi::xml_node parseNodes(unsigned int whichElement,std::string "+element+")");

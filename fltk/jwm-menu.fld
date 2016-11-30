@@ -61,28 +61,29 @@ class MenuUI {open
 } {
   decl {int menuItemLineNumber;} {public local
   }
-  Function {add_a_menu()} {} {
+  Function {add_a_menu()} {open
+  } {
     Fl_Window {} {
       label {Add a Menu} open
-      xywh {726 91 280 125} type Double hide
+      xywh {132 177 305 110} type Double hide
       code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Browser list_browser {
-        label Menu
         tooltip {Determine which buttons on the root window activate the menu. This is a list of integers specifying buttons. The default is 123. Multiple root menus may be used by specifying different buttons to activate them. Valid values in this list are 0 to 9 and a to z. The usual mouse buttons are 1 for the left button, 2 for the middle button, 3 for the right button, and 4 and 5 for the scroll wheel. Therefore, accessing root menus that are assigned to buttons 0, 6, 7, 8, 9, or a letter will typically require the use of a tray button or key binding.} xywh {5 5 95 100} type Hold box FLAT_BOX selection_color 80 align 130
         code1 {listMenus(o);}
       }
       Fl_Input new_menu_label {
         label Label
-        tooltip {The label to display at the top of the menu, normally this is NOT shown} xywh {105 40 120 30} box FLAT_BOX align 8
+        tooltip {The label to display at the top of the menu, normally this is NOT shown} xywh {130 5 120 25} box FLAT_BOX align 8
       }
       Fl_Slider menu_height {
         label Height
-        tooltip {The height of each menu item in pixels 0 indicates that the height of the font will determine the height. The default is 0.} xywh {105 5 120 30} type Horizontal box GTK_DOWN_BOX color 41 align 8 maximum 45
+        callback {double val=o->value();
+height_input->value(val);}
+        tooltip {The height of each menu item in pixels 0 indicates that the height of the font will determine the height. The default is 0.} xywh {130 40 120 25} type Horizontal box GTK_DOWN_BOX color 41 align 8 maximum 45
       }
       Fl_Check_Button islabeled_button {
-        label {Labeled        }
-        tooltip {Determines if a label appears at the top of the menu, this will have no effect if the label is not set} xywh {110 75 25 25} box FLAT_BOX down_box GTK_DOWN_BOX
+        tooltip {Determines if a label appears at the top of the menu, this will have no effect if the label is not set} xywh {105 5 20 25} box FLAT_BOX down_box GTK_DOWN_BOX
       }
       Fl_Button {} {
         label OK
@@ -101,8 +102,13 @@ if (menuLabel!=NULL){
   else{setRootMenuAttribute(val,"labeled","true");}
 }
 int height = menu_height->value();
-setRootMenuHeight(val,height);}
-        xywh {215 95 60 25} box FLAT_BOX color 61 labelcolor 7
+setRootMenuHeight(val,height);} selected
+        xywh {240 75 60 25} box FLAT_BOX color 61 labelcolor 7
+      }
+      Fl_Value_Input height_input {
+        callback {double val=o->value();
+menu_height->value(val);}
+        xywh {105 40 20 25} box FLAT_BOX
       }
     }
   }
@@ -288,8 +294,8 @@ if(icon.compare("")!=0){
   } {
     Fl_Window config_flwin {
       label {Configure the Item} open
-      xywh {738 156 275 130} type Double
-      code0 {startup(o);} xclass {jsm-panel} visible
+      xywh {738 156 275 130} type Double hide
+      code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Input prog_icon {
         label Icon
@@ -361,8 +367,8 @@ change_include();}
     code {load();} {}
     Fl_Window menu_window {
       label {Menu properties} open
-      xywh {197 461 435 150} type Double color 31 resizable
-      code0 {startup(o);} xclass {jsm-panel} visible
+      xywh {197 461 435 150} type Double color 31 hide resizable
+      code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Scroll {} {open
         xywh {0 -330 1015 580} color 31
@@ -448,8 +454,8 @@ else{std::cerr<<"Problem getting this menu"<<std::endl;}}
   Function {submenu_window()} {} {
     Fl_Window {} {
       label Submenu open
-      xywh {790 291 255 200} type Double
-      code0 {startup(o);} visible
+      xywh {790 291 255 200} type Double hide
+      code0 {startup(o);}
     } {
       Fl_Browser submenu_items_browser {
         xywh {5 5 245 160} type Hold box FLAT_BOX
@@ -557,8 +563,7 @@ switch (whichOne){
 }
 item_display->value(result.c_str());} {}
   }
-  Function {change_include()} {open
-  } {
+  Function {change_include()} {} {
     code {const char* old = old_include_input->value();
 if(old==NULL){return;}
 const char* new_include = include_input->value();
@@ -735,7 +740,6 @@ if(tot>0){
     const char* txt=root_menu->text(i);
     if((txt!=NULL)&&(thatMenu.compare(txt)==0)){root_menu->select(i);}
   }
-}} {selected
-    }
+}} {}
   }
 } 

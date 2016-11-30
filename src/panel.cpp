@@ -96,6 +96,7 @@ bool addApp(std::string element){return addSubElement(currentPanel(),"Tray",elem
 bool addApp(std::string element, std::string attribute,std::string value,std::string text){return addSubElementWithTextandAttribute(currentPanel(),"Tray",element,text,attribute,value);}
 bool addApp(std::string element,std::string attribute,std::string value){return addSubElementWithAttribute(currentPanel(),"Tray",element,attribute,value);}
 bool addButton(std::string icon,std::string execLine,std::string popup,int border){
+	if(execLine.compare("")==0){errorOUT("Exec line is empty");return false;}
 	if(execLine.find("exec:")>execLine.length()){execLine="exec:"+execLine;}
 	debug_out("void addButton(std::string "+icon+",std::string "+execLine+",std::string "+popup+",int border)");
 	if(!addSubElementWithText(currentPanel(),"Tray","TrayButton",execLine)){

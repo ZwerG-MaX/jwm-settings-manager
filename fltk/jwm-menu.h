@@ -41,6 +41,7 @@
 #include <FL/Fl_Slider.H>
 #include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Value_Input.H>
 #include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Scroll.H>
@@ -52,10 +53,19 @@ public:
   Fl_Browser *list_browser;
   Fl_Input *new_menu_label;
   Fl_Slider *menu_height;
+private:
+  inline void cb_menu_height_i(Fl_Slider*, void*);
+  static void cb_menu_height(Fl_Slider*, void*);
+public:
   Fl_Check_Button *islabeled_button;
 private:
   inline void cb_OK_i(Fl_Button*, void*);
   static void cb_OK(Fl_Button*, void*);
+public:
+  Fl_Value_Input *height_input;
+private:
+  inline void cb_height_input_i(Fl_Value_Input*, void*);
+  static void cb_height_input(Fl_Value_Input*, void*);
 public:
   Fl_Double_Window* add_window();
   Fl_Double_Window *adding_win;
