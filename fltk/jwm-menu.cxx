@@ -342,11 +342,11 @@ void MenuUI::cb_(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->parent()->user_data()))->cb__i(o,v);
 }
 
-void MenuUI::cb_1_i(Fl_Button*, void*) {
+void MenuUI::cb_minus_root_i(Fl_Button*, void*) {
   remove_a_menu();
 }
-void MenuUI::cb_1(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_1_i(o,v);
+void MenuUI::cb_minus_root(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_minus_root_i(o,v);
 }
 
 #include <FL/Fl_Bitmap.H>
@@ -355,26 +355,25 @@ static const unsigned char idata_minus[] =
 0,0,0};
 static Fl_Bitmap image_minus(idata_minus, 16, 16);
 
-void MenuUI::cb_menuElement_i(Fl_Browser* o, void*) {
-  int linenum = o->value();
-menuElementText->select(linenum);
+void MenuUI::cb_menuElement_i(Fl_Browser*, void*) {
+  menuElementText->deselect();
 }
 void MenuUI::cb_menuElement(Fl_Browser* o, void* v) {
   ((MenuUI*)(o->parent()->parent()->user_data()))->cb_menuElement_i(o,v);
 }
 
-void MenuUI::cb_2_i(Fl_Button*, void*) {
+void MenuUI::cb_1_i(Fl_Button*, void*) {
   add_an_item();
 }
-void MenuUI::cb_2(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_2_i(o,v);
+void MenuUI::cb_1(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_1_i(o,v);
 }
 
-void MenuUI::cb_3_i(Fl_Button*, void*) {
+void MenuUI::cb_minus_element_i(Fl_Button*, void*) {
   remove_an_item();
 }
-void MenuUI::cb_3(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_3_i(o,v);
+void MenuUI::cb_minus_element(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_minus_element_i(o,v);
 }
 
 void MenuUI::cb_menuElementText_i(Fl_Browser* o, void*) {
@@ -385,15 +384,28 @@ void MenuUI::cb_menuElementText(Fl_Browser* o, void* v) {
   ((MenuUI*)(o->parent()->parent()->user_data()))->cb_menuElementText_i(o,v);
 }
 
-void MenuUI::cb_4_i(Fl_Button*, void*) {
-  if(checkFlBrowserItem(menuElementText)){edit_an_item();}
-else{
-  if(checkFlBrowserItem(menuElement)){edit_a_menu();}
-  else if(checkFlBrowserItem(root_menu)){submenu_window()->show();}
-};
+void MenuUI::cb_root_menu_i(Fl_Browser* o, void*) {
+  int line = o->value();
+const char* menu = o->text(line);
+if(menu != NULL){
+  std::string MENU=menu;
+  choose_menu(MENU);
 }
-void MenuUI::cb_4(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_4_i(o,v);
+else{std::cerr<<"Problem getting this menu"<<std::endl;}
+menuElement->deselect();
+menuElementText->deselect();
+}
+void MenuUI::cb_root_menu(Fl_Browser* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_root_menu_i(o,v);
+}
+
+void MenuUI::cb_config_something_i(Fl_Button*, void*) {
+  if(checkFlBrowserItem(menuElementText)){edit_an_item();}
+else if(checkFlBrowserItem(menuElement)){edit_a_menu();}
+else if(checkFlBrowserItem(root_menu)){submenu_window()->show();};
+}
+void MenuUI::cb_config_something(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_config_something_i(o,v);
 }
 
 void MenuUI::cb_Cancel_i(Fl_Button*, void*) {
@@ -409,19 +421,6 @@ void MenuUI::cb_save_button_i(Fl_Button*, void*) {
 }
 void MenuUI::cb_save_button(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->parent()->user_data()))->cb_save_button_i(o,v);
-}
-
-void MenuUI::cb_root_menu_i(Fl_Browser* o, void*) {
-  int line = o->value();
-const char* menu = o->text(line);
-if(menu != NULL){
-  std::string MENU=menu;
-  choose_menu(MENU);
-}
-else{std::cerr<<"Problem getting this menu"<<std::endl;};
-}
-void MenuUI::cb_root_menu(Fl_Browser* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_root_menu_i(o,v);
 }
 
 void MenuUI::cb_nada_win_i(Fl_Double_Window* o, void*) {
@@ -440,7 +439,7 @@ void MenuUI::cb_Nothing(Fl_Button* o, void* v) {
 
 Fl_Double_Window* MenuUI::add_a_menu() {
   Fl_Double_Window* w;
-  { Fl_Double_Window* o = new Fl_Double_Window(310, 110, gettext("Add a Menu"));
+  { Fl_Double_Window* o = new Fl_Double_Window(305, 110, gettext("Add a Menu"));
     w = o;
     o->user_data((void*)(this));
     { Fl_Browser* o = list_browser = new Fl_Browser(5, 5, 95, 100);
@@ -457,12 +456,12 @@ eel. Therefore, accessing root menus that are assigned to buttons 0, 6, 7, 8, \
       list_browser->align(Fl_Align(130));
       listMenus(o);
     } // Fl_Browser* list_browser
-    { new_menu_label = new Fl_Input(135, 5, 120, 30, gettext("Label"));
+    { new_menu_label = new Fl_Input(130, 5, 120, 25, gettext("Label"));
       new_menu_label->tooltip(gettext("The label to display at the top of the menu, normally this is NOT shown"));
       new_menu_label->box(FL_FLAT_BOX);
       new_menu_label->align(Fl_Align(FL_ALIGN_RIGHT));
     } // Fl_Input* new_menu_label
-    { menu_height = new Fl_Slider(135, 40, 120, 30, gettext("Height"));
+    { menu_height = new Fl_Slider(130, 40, 120, 25, gettext("Height"));
       menu_height->tooltip(gettext("The height of each menu item in pixels 0 indicates that the height of the fon\
 t will determine the height. The default is 0."));
       menu_height->type(1);
@@ -478,13 +477,13 @@ t if the label is not set"));
       islabeled_button->box(FL_FLAT_BOX);
       islabeled_button->down_box(FL_GTK_DOWN_BOX);
     } // Fl_Check_Button* islabeled_button
-    { Fl_Button* o = new Fl_Button(220, 75, 60, 25, gettext("OK"));
+    { Fl_Button* o = new Fl_Button(240, 75, 60, 25, gettext("OK"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK);
     } // Fl_Button* o
-    { height_input = new Fl_Value_Input(105, 40, 25, 25);
+    { height_input = new Fl_Value_Input(105, 40, 20, 25);
       height_input->box(FL_FLAT_BOX);
       height_input->callback((Fl_Callback*)cb_height_input);
     } // Fl_Value_Input* height_input
@@ -670,14 +669,14 @@ Fl_Double_Window* MenuUI::make_window(std::string INPUTmenu) {
         o->selection_color(FL_DARK1);
         o->callback((Fl_Callback*)cb_);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(40, 115, 30, 30);
-        o->tooltip(gettext("remove a menu"));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)23);
-        o->image(image_minus);
-        o->callback((Fl_Callback*)cb_1);
-        o->align(Fl_Align(256));
-      } // Fl_Button* o
+      { minus_root = new Fl_Button(40, 115, 30, 30);
+        minus_root->tooltip(gettext("remove a menu"));
+        minus_root->box(FL_FLAT_BOX);
+        minus_root->color((Fl_Color)23);
+        minus_root->image(image_minus);
+        minus_root->callback((Fl_Callback*)cb_minus_root);
+        minus_root->align(Fl_Align(256));
+      } // Fl_Button* minus_root
       { menuElement = new Fl_Browser(80, 5, 90, 105);
         menuElement->tooltip(gettext("Options: Menu, Dynamic, Include, Program, Separator, Desktops, SendTo, Stick,\
  Maximize, Minimize, Shade, Move, Resize, Kill, Close, Restart, Exit"));
@@ -691,16 +690,16 @@ Fl_Double_Window* MenuUI::make_window(std::string INPUTmenu) {
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->selection_color(FL_DARK1);
-        o->callback((Fl_Callback*)cb_2);
+        o->callback((Fl_Callback*)cb_1);
       } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(115, 115, 30, 30);
-        o->tooltip(gettext("remove a menu item"));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)23);
-        o->image(image_minus);
-        o->callback((Fl_Callback*)cb_3);
-        o->align(Fl_Align(256));
-      } // Fl_Button* o
+      { minus_element = new Fl_Button(115, 115, 30, 30);
+        minus_element->tooltip(gettext("remove a menu item"));
+        minus_element->box(FL_FLAT_BOX);
+        minus_element->color((Fl_Color)23);
+        minus_element->image(image_minus);
+        minus_element->callback((Fl_Callback*)cb_minus_element);
+        minus_element->align(Fl_Align(256));
+      } // Fl_Button* minus_element
       { menuElementText = new Fl_Browser(175, 5, 255, 105);
         menuElementText->tooltip(gettext("These options correspond to specific Root Menu items"));
         menuElementText->type(2);
@@ -710,15 +709,26 @@ Fl_Double_Window* MenuUI::make_window(std::string INPUTmenu) {
         menuElementText->callback((Fl_Callback*)cb_menuElementText);
         menuElementText->align(Fl_Align(FL_ALIGN_TOP));
       } // Fl_Browser* menuElementText
-      { Fl_Button* o = new Fl_Button(175, 115, 30, 30);
-        o->tooltip(gettext("Configure"));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)23);
-        o->image(image_gear16);
-        o->labelfont(1);
-        o->callback((Fl_Callback*)cb_4);
-        o->align(Fl_Align(FL_ALIGN_WRAP));
-      } // Fl_Button* o
+      { Fl_Browser* o = root_menu = new Fl_Browser(5, 5, 65, 105, gettext(" "));
+        root_menu->tooltip(gettext("The range of possible values is 0 to 9 inclusive as  well\n                  \
+   as  a to z inclusive, providing for up to 36 menus.  Note\n                \
+     that only the numeric values map to mouse buttons."));
+        root_menu->type(2);
+        root_menu->box(FL_FLAT_BOX);
+        root_menu->selection_color((Fl_Color)80);
+        root_menu->callback((Fl_Callback*)cb_root_menu);
+        getMenus(o);
+        if(INPUTmenu.compare("")!=0){select_sent_in(INPUTmenu);}
+      } // Fl_Browser* root_menu
+      { config_something = new Fl_Button(175, 115, 30, 30);
+        config_something->tooltip(gettext("Configure"));
+        config_something->box(FL_FLAT_BOX);
+        config_something->color((Fl_Color)23);
+        config_something->image(image_gear16);
+        config_something->labelfont(1);
+        config_something->callback((Fl_Callback*)cb_config_something);
+        config_something->align(Fl_Align(FL_ALIGN_WRAP));
+      } // Fl_Button* config_something
       { Fl_Button* o = new Fl_Button(315, 120, 57, 25, gettext("Cancel"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)80);
@@ -734,17 +744,6 @@ Fl_Double_Window* MenuUI::make_window(std::string INPUTmenu) {
         save_button->labelcolor((Fl_Color)55);
         save_button->callback((Fl_Callback*)cb_save_button);
       } // Fl_Button* save_button
-      { Fl_Browser* o = root_menu = new Fl_Browser(5, 5, 65, 105, gettext(" "));
-        root_menu->tooltip(gettext("The range of possible values is 0 to 9 inclusive as  well\n                  \
-   as  a to z inclusive, providing for up to 36 menus.  Note\n                \
-     that only the numeric values map to mouse buttons."));
-        root_menu->type(2);
-        root_menu->box(FL_FLAT_BOX);
-        root_menu->selection_color((Fl_Color)80);
-        root_menu->callback((Fl_Callback*)cb_root_menu);
-        getMenus(o);
-        if(INPUTmenu.compare("")!=0){select_sent_in(INPUTmenu);}
-      } // Fl_Browser* root_menu
       o->end();
     } // Fl_Scroll* o
     startup(o);

@@ -454,6 +454,31 @@ void deleteVolume(){
 	if(checkExec("yad")&&checkExec(TORI)){deleteSomeIndicator(TORI);}
 	else if(checkExec(VOL)){deleteSomeIndicator(VOL);}
 }
+//////E
+void editButton(int whichbutton, std::string MENU,std::string PROG,std::string ICON,std::string LABEL,std::string MASK){
+	debug_out("void editButton(std::string "+MENU+",std::string "+PROG+",std::string "+ICON+",std::string "+LABEL+",std::string "+MASK+")");
+	unsigned int whichpanel=currentPanel();
+	if(MASK.compare("")!=0){
+		if((PROG.compare("")!=0)&&(MENU.compare("")!=0)){errorOUT("Both program and Menu are together on the same mask.... This will default to MENU");}
+	  //edit the current mouse button mask
+		std::string RES;
+		if(PROG.compare("")!=0){RES=PROG;}
+		if(MENU.compare("")!=0){RES=MENU;}
+		if(RES.compare("")!=0){
+			if(!setNodeText(getMenuButtonByMask(MASK,whichbutton),RES)){errorOUT("Could not set the button text correctly");}
+		}
+	}
+	if(ICON.compare("")!=0){
+		if(!setAttribute(getTraySubElement(whichbutton),"icon",ICON)){
+			debug_out("Didn't set the icon "+ICON+" for the Menu");
+		}
+	}
+	if(LABEL.compare("")!=0){
+		if(!setAttribute(getTraySubElement(whichbutton),"label",LABEL)){
+			debug_out("Didn't set the label "+LABEL+" for the Menu");
+		}
+	}
+}
 //////G
 void getColorFromItem(bool active, std::string element,std::string subelement,Fl_Button* o){
 	debug_out("void getColorFromItem(bool active, std::string "+element+",std::string "+subelement+")");

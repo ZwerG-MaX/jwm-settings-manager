@@ -50,6 +50,7 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Input.H>
+#include <FL/Fl_Value_Output.H>
 
 class PanelUI {
 public:
@@ -497,5 +498,40 @@ public:
   void remove_indicator();
   void save_user_clock();
   void change_panel_position(std::string position);
+  Fl_Double_Window* config_button_window(int input_num);
+  Fl_Double_Window *conf_button_window;
+  Fl_Input *button_label;
+  Fl_Input *button_icon_name;
+  Fl_Button *button_icon_view;
+private:
+  inline void cb_button_icon_view_i(Fl_Button*, void*);
+  static void cb_button_icon_view(Fl_Button*, void*);
+  static unsigned char menu_Mouse_i18n_done;
+  static Fl_Menu_Item menu_Mouse[];
+  inline void cb_11_i(Fl_Menu_*, void*);
+  static void cb_11(Fl_Menu_*, void*);
+  inline void cb_21_i(Fl_Menu_*, void*);
+  static void cb_21(Fl_Menu_*, void*);
+  inline void cb_31_i(Fl_Menu_*, void*);
+  static void cb_31(Fl_Menu_*, void*);
+public:
+  Fl_Value_Output *button_val;
+  Fl_Input *button_prog;
+  Fl_Button *prog_conf_gear;
+private:
+  inline void cb_prog_conf_gear_i(Fl_Button*, void*);
+  static void cb_prog_conf_gear(Fl_Button*, void*);
+public:
+  Fl_Output *button_menu;
+  Fl_Button *menu_conf_gear;
+private:
+  inline void cb_menu_conf_gear_i(Fl_Button*, void*);
+  static void cb_menu_conf_gear(Fl_Button*, void*);
+  inline void cb_OKb_i(Fl_Button*, void*);
+  static void cb_OKb(Fl_Button*, void*);
+public:
+  void get_button_stuff(int button);
+  void get_tray_element_attrib(Fl_Input *o, std::string attribute,int num);
+  void save_traybutton();
 };
 #endif

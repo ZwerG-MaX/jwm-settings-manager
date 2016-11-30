@@ -82,7 +82,7 @@ makeWidgetIcon(filename,icon_view,48);} {}
     code {load();} {}
     Fl_Window panel_window {
       label {Panel Settings} open
-      xywh {372 232 285 450} type Double color 47 align 80 resizable
+      xywh {838 172 285 450} type Double color 47 align 80 resizable
       code1 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
     } {
       Fl_Scroll {} {open
@@ -152,7 +152,7 @@ Menu_CB(a);}
         } {
           Fl_Group apps_tab {
             label Apps open
-            xywh {5 60 280 350} selection_color 45 hide
+            xywh {5 60 280 350} selection_color 45
             code0 {const char* text=gettext("Apps");o->label(text);}
           } {
             Fl_Button {} {
@@ -281,7 +281,7 @@ showMenu();}
           }
           Fl_Group {} {
             label {Size And Position} open
-            xywh {5 65 280 350} selection_color 45
+            xywh {5 65 280 350} selection_color 45 hide
             code0 {const char* text=gettext("Size And Position");o->label(text);}
           } {
             Fl_Menu_Button {} {
@@ -323,7 +323,7 @@ if(val.compare("off")==0){
   if(autohide!=0){errorOUT("Something went wrong with autohide");}
 }
 setElementAttribute(currentPanel(),"Tray","autohide",val);
-autohide_position(val,autohide_pos);} selected
+autohide_position(val,autohide_pos);}
               tooltip {This will make the Panel hide when you aren't using it.} xywh {160 80 95 25} down_box GTK_DOWN_BOX selection_color 59 when 1
               code0 {const char* text=gettext("Autohide?");o->label(text);}
             }
@@ -371,7 +371,7 @@ from the screen height. 0 is the default.} xywh {200 170 40 25} box FLAT_BOX col
               code0 {const char* text=gettext("Advanced Options");o->label(text);}
             }
             Fl_Value_Input {} {
-              label {X position}
+              label {X coordinate}
               callback {coordinate("x",o,2);}
               tooltip {The x-coordinate of the tray. This may be  negative
 to indicate an offset from the right of the screen.} xywh {10 230 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum 2000
@@ -379,7 +379,7 @@ to indicate an offset from the right of the screen.} xywh {10 230 25 25} box FLA
               code1 {const char* text=gettext("X position of panel");o->label(text);}
             }
             Fl_Value_Input {} {
-              label {Y position}
+              label {Y coordinate}
               callback {coordinate("y",o,2);}
               tooltip {The  y-coordinate of the tray. This may be negative
 to indicate  an  offset  from  the  bottom  of  the
@@ -925,7 +925,7 @@ if(iconFILE.compare("")!=0){
   } {
     Fl_Window conf_menu_window {
       label {Configure Menu} open
-      xywh {512 271 235 120} type Double labelfont 14 hide
+      xywh {810 232 285 150} type Double labelfont 14 hide
       code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
     } {
       Fl_Button {} {
@@ -939,31 +939,31 @@ if(newLabel==NULL){newLabel=gettext("Menu");}
 labelMenu(testNum,newLabel);
 setImageMenu(testNum,icon);
 conf_menu_window->hide();}
-        xywh {170 90 60 25} box FLAT_BOX color 69 labelfont 1 labelcolor 7
+        xywh {220 120 60 25} box FLAT_BOX color 69 labelfont 1 labelcolor 7
       }
       Fl_Input app_menu {
-        label {Button Text}
-        tooltip {Text for the Button that shows the menu} xywh {95 5 130 25} box FLAT_BOX color 55 selection_color 72 when 1
+        label Label
+        tooltip {Text for the Button that shows the menu} xywh {45 5 155 25} box FLAT_BOX color 55 selection_color 72 when 1
       }
       Fl_Button icon_view {
-        label Icon
         callback {std::string iconFILE=choose_an_icon();
 if(iconFILE.compare("")!=0)makeWidgetIcon(iconFILE,o,48);}
-        tooltip {Choose an Icon} xywh {45 35 50 50} box FLAT_BOX color 23 align 644
+        tooltip {Choose an Icon} xywh {210 10 50 50} box FLAT_BOX color 23 align 644
         code2 {if(file.compare("")!=0)makeWidgetIcon(file,o,48);}
       }
       Fl_Input hidden_icon_name {
-        tooltip {The icon file name} xywh {5 90 155 25} box FLAT_BOX color 23
+        label Icon
+        tooltip {The icon file name} xywh {45 35 155 25} box FLAT_BOX color 23
       }
       Fl_Output tester {
         label Menu
-        tooltip {The root menu the button is tied to} xywh {150 40 25 25} box FLAT_BOX color 55
+        tooltip {The root menu the button is tied to} xywh {45 70 25 25} box FLAT_BOX color 55
       }
       Fl_Button {} {
         callback {const char* tmpTST =tester->value();
 if(tmpTST!=NULL){showMenu(tmpTST);}
 else{showMenu();}}
-        tooltip {Configure the menu items} image {custom_buttons/gear16.png} xywh {180 35 30 30} box FLAT_BOX color 23
+        tooltip {Configure the menu items} image {custom_buttons/gear16.png} xywh {75 65 30 30} box FLAT_BOX color 23
       }
     }
   }
@@ -1273,18 +1273,25 @@ std::string MENU=gettext("Menu");
 std::string DESKSWITCH=gettext("Desktop Switcher");
 std::string LAUNCHER=gettext("Launcher");
 std::string rootMenu="root:";
+int vernum=JWMversion();
+int whatone=app_browser->value();
 unsigned found = whichItem.find(MENU);
 if(found<whichItem.length()){
-  std::string temp=whichItem;
-  if(temp.length()>MENU.length()+1){temp=temp.erase(0,MENU.length()+1);}
-  std::string icon = getImageMenu(temp);
-  config_menu_window(icon)->show();
-  std::string temptest=temp;
-  if(temptest.length()>rootMenu.length()){temptest=temptest.erase(0,rootMenu.length());}
-  tester->value(temptest.c_str());
-  std::string l= getLabelMenu(temp);
-  hidden_icon_name->value(icon.c_str());
-  app_menu->value(l.c_str());
+  if(vernum<230){
+    std::string temp=whichItem;
+    if(temp.length()>MENU.length()+1){temp=temp.erase(0,MENU.length()+1);}
+    std::string icon = getImageMenu(temp);
+    config_menu_window(icon)->show();
+    std::string temptest=temp;
+    if(temptest.length()>rootMenu.length()){temptest=temptest.erase(0,rootMenu.length());}
+    tester->value(temptest.c_str());
+    std::string l= getLabelMenu(temp);
+    hidden_icon_name->value(icon.c_str());
+    app_menu->value(l.c_str());
+  }
+  else{
+    config_button_window(whatone)->show();
+  }
 }
 else{
   if(whichItem.compare(DESKSWITCH)==0){config_switcher_window()->show();}
@@ -1295,13 +1302,18 @@ else{
   else if(whichItem.compare(INDICATORS)==0){config_indicator_window()->show();}
   else if(whichItem.compare(CLOCK)==0){config_clock_window()->show();}
   else if(whichItem.find(LAUNCHER)<whichItem.length()){
-    std::string temp=whichItem;
-    if(temp.length()>LAUNCHER.length()+1){temp=temp.erase(0,LAUNCHER.length()+1);}
-    std::string icon = getImageMenu(temp);
-    configure_manually_window(icon)->show();
-    icon_file->value(icon.c_str());
-    std::string l= getLabelMenu(temp);
-    manually_in->value(temp.c_str());
+    if(vernum<230){
+      std::string temp=whichItem;
+      if(temp.length()>LAUNCHER.length()+1){temp=temp.erase(0,LAUNCHER.length()+1);}
+      std::string icon = getImageMenu(temp);
+      configure_manually_window(icon)->show();
+      icon_file->value(icon.c_str());
+      std::string l= getLabelMenu(temp);
+      manually_in->value(temp.c_str());
+    }
+    else{
+      config_button_window(whatone)->show();
+    }
   }
   else if(whichItem.compare("")==0){no_config()->show();}
   else if(whichItem.find(SWALLOW)<whichItem.length()){config_swallow_window()->show();}
@@ -1381,5 +1393,139 @@ if(hval.compare("")!=0){
   halign->value(hval.c_str());
   halign->redraw();
 }} {}
+  }
+  Function {config_button_window(int input_num)} {open
+  } {
+    code {int BUTTON_NUM=input_num;} {}
+    Fl_Window conf_button_window {
+      label {Configure Button} open
+      xywh {744 92 285 150} type Double labelfont 14
+      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
+    } {
+      Fl_Input button_label {
+        label Label
+        tooltip {Text for the Panel Button} xywh {70 0 155 25} box FLAT_BOX color 55 selection_color 72 when 1
+        code0 {get_tray_element_attrib(o,"label",BUTTON_NUM);}
+      }
+      Fl_Input button_icon_name {
+        label Icon
+        tooltip {The icon file name} xywh {70 30 155 25} box FLAT_BOX color 23 selection_color 80
+        code0 {get_tray_element_attrib(o,"icon",BUTTON_NUM);}
+      }
+      Fl_Button button_icon_view {
+        callback {std::string iconFILE=choose_an_icon();
+if(iconFILE.compare("")!=0)makeWidgetIcon(iconFILE,o,48);}
+        tooltip {Choose an Icon} xywh {230 5 50 50} box FLAT_BOX color 23 align 644
+        code1 {const char *file=button_icon_name->value();}
+        code2 {if(file!=NULL)makeWidgetIcon(file,o,48);}
+      }
+      Fl_Menu_Button {} {
+        label {Mouse Button}
+        xywh {70 60 125 25} box FLAT_BOX color 23 selection_color 80
+      } {
+        MenuItem {} {
+          label 1
+          callback {get_button_stuff(1);}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label 2
+          callback {get_button_stuff(2);}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label 3
+          callback {get_button_stuff(3);}
+          xywh {0 0 100 20}
+        }
+      }
+      Fl_Value_Output button_val {
+        xywh {205 60 40 25} box FLAT_BOX color 23 selection_color 80
+      }
+      Fl_Input button_prog {
+        label Program
+        tooltip {Text for the Panel Button} xywh {70 90 155 25} box FLAT_BOX color 55 selection_color 72 when 1 deactivate
+      }
+      Fl_Button prog_conf_gear {
+        callback {std::string program=choose_a_program();
+if(program.compare("")==0){
+  button_prog->activate();
+  std::string result="exec:"+program;
+  button_prog->value(result.c_str());
+  button_prog->redraw();
+}}
+        tooltip {Configure the program} image {custom_buttons/gear16.png} xywh {230 90 25 25} box FLAT_BOX color 23
+      }
+      Fl_Output button_menu {
+        label Menu
+        tooltip {The root menu the button is tied to} xywh {70 120 25 25} box FLAT_BOX color 55 deactivate
+      }
+      Fl_Button menu_conf_gear {
+        callback {const char* tmpTST =button_menu->value();
+button_menu->activate();
+if(tmpTST!=NULL){showMenu(tmpTST);}
+else{showMenu();}} selected
+        tooltip {Configure the menu} image {custom_buttons/gear16.png} xywh {100 120 25 25} box FLAT_BOX color 23
+      }
+      Fl_Button {} {
+        label OK
+        callback {save_traybutton();}
+        xywh {220 120 60 25} box FLAT_BOX color 69 labelfont 1 labelcolor 7
+      }
+    }
+  }
+  Function {get_button_stuff(int button)} {open
+  } {
+    code {std::string num;
+button_val->value(button);
+switch(button){
+ case 1:
+   num="1";break;
+ case 2:
+   num="2";break;
+ case 3:
+   num="3";break;
+ default:return;
+}
+int whichbutton=app_browser->value();
+std::string text = menuButtonText(getMenuButtonByMask(num,whichbutton));
+if(text.compare("")==0)return;
+Fl_Input *o=NULL;
+if(text.find("exec:")==0){
+  o=button_prog;
+  button_menu->deactivate();
+}
+if(text.find("root:")==0){
+  o=button_menu;
+  button_prog->deactivate();
+  text=text.substr(5,std::string::npos);
+}
+
+if(o!=NULL){
+  o->value(text.c_str());
+  o->activate();
+}} {}
+  }
+  Function {get_tray_element_attrib(Fl_Input *o, std::string attribute,int num)} {open
+  } {
+    code {std::string val=getAttribute(getTraySubElement(num),attribute);
+o->value(val.c_str());
+o->redraw();} {}
+  }
+  Function {save_traybutton()} {open
+  } {
+    code {std::string MENU,PROG,ICON,LABEL,MASK;
+const char* testMenu = button_menu->value();
+if(testMenu!=NULL){MENU=testMenu;}
+const char* testProg = button_prog->value();
+if(testProg!=NULL){PROG=testProg;}
+const char* icon = button_icon_name->value();
+if(icon!=NULL){ICON=icon;}
+const char* newLabel = button_label->value();
+if(newLabel!=NULL){LABEL=newLabel;}
+int masker=button_val->value();
+if(masker>0){MASK=linuxcommon::convert_num_to_string(masker);}
+int whichbutton=app_browser->value();
+editButton(whichbutton,MENU,PROG,ICON,LABEL,MASK);} {}
   }
 } 

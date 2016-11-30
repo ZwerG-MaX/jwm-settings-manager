@@ -572,8 +572,6 @@ bool getMenuItems(Fl_Browser* menuElement,std::string menu,Fl_Browser* menuEleme
 		debug_out("The menu text sent in was empty");
 		return false;
 	}
-	menuElement->clear();
-	menuElementText->clear();
 	std::string element="RootMenu";
 	pugi::xml_node node;
 	std::string attributevalue;
@@ -1512,6 +1510,11 @@ std::string makeTempName(std::string filename){
 	return filename;
 }
 std::string makeNOTtemp(std::string filename){return linuxcommon::remove_cruft(filename,"~");}
+std::string menuButtonText(pugi::xml_node node){
+	debug_out("std::string menuButtonText(pugi::xml_node node)");
+	if(!node){errorOUT("Button node was not found");return "";}
+	return node.text().as_string();
+}
 const char* convert(double num){
 	return linuxcommon::convert_num_to_string(num);
 }
@@ -1665,6 +1668,16 @@ int newStyle(){
     }
     debug_out("OLD Version Support");
     return not23;
+}
+int JWMversion(){
+	std::string command="jwm -v |grep v[0-9] | sed 's/.* v//'|sed 's/ .*//'";
+	std::string result=linuxcommon::term_out(command);
+	if(result.compare("")==0){result="2.2.0";}
+	result=linuxcommon::sed_i(result,".","");
+	debug_out("RESULT="+result);
+	unsigned int retval =linuxcommon::convert_string_to_number(result.c_str());
+	int tmpret=retval;
+	return tmpret;
 }
 unsigned int numPanels(){return elementCounter("Tray");}
 int whichAlign(std::string align){
@@ -1975,36 +1988,49 @@ void removeElementCompare2Attr(std::string element, std::string attribute, std::
 void populateDesc(Fl_Browser *b){
   //see BELOW function to see how I generated this code
     //these are all the descriptions of the options above
-    b->add(gettext("Enables the border on windows in this group."));
-    b->add(gettext("Center windows in this group upon initial placement instead of using cascaded placement."));
-    b->add(gettext("Prevent clients in this group from moving off-screen."));
-    b->add(gettext("The desktop on which windows in this group will be started."));
-    b->add(gettext("Make windows in this group maximize horizontally by default."));
-    b->add(gettext("The icon to be used for windows in this group."));
-    b->add(gettext("Ignore the increment size hint when maximizing windows in this group."));
-    b->add(gettext("The layer on which windows in this group will be started. Valid options are below, normal, and above."));
-    b->add(gettext("Make windows in this group maximized."));
-    b->add(gettext("Make windows in this group minimized."));
-    b->add(gettext("Disables the border for windows in this group."));
-    b->add(gettext("Prevents windows in this group from grabbing the focus when mapped."));
-    b->add(gettext("Causes the tray to ignore windows in this group."));
-    b->add(gettext("Causes the pager to ignore windows in this group."));
-    b->add(gettext("Disallows shading for windows in this group."));
-    b->add(gettext("Disallows maximization for windows in this group."));
-    b->add(gettext("Disallows minimization for windows in this group."));
-    b->add(gettext("Hides the close button for windows in this group."));
-    b->add(gettext("Prevents windows in this group from being moved."));
-    b->add(gettext("Prevents windows in this group from being resized."));
-    b->add(gettext("Prevents windows in this group from being fullscreen."));
-    b->add(gettext("Disables the title bar for windows in this group."));
-    b->add(gettext("Ignore the urgent hint for windows in this group. Without this option set, JWM will flash the border of urgent windows."));
-    b->add(gettext("Set the opacity for windows in this group. The value is a number between 0.0 and 1.0 inclusive."));
-    b->add(gettext("Ignore program-specified initial position."));
-    b->add(gettext("Make windows in this group shaded."));
-    b->add(gettext("Make windows in this group sticky."));
-    b->add(gettext("Attempt to tile windows in this group upon initial placement. If tiled placement fails, windows will fall back to cascaded (the default) or centered if specified."));
-    b->add(gettext("Enables the title bar for windows in this group."));
-    b->add(gettext("Make windows in this group maximize vertically by default."));
+    int vernum=JWMversion();
+    if(vernum>=236){
+    	b->add("Enable auto-maximization. New in v2.3.6.");
+	}
+    b->add("Enables the border on windows in this group.");
+    b->add("Center windows in this group upon initial placement instead of using cascaded placement.");
+    b->add("Prevent clients in this group from moving off-screen.");
+    b->add("The desktop on which windows in this group will be started.");
+    if(vernum>=234){
+    	b->add("Do not pass mouse events to the window. Instead, use the mouse to move/resize the window. New in v2.3.4.");
+    }
+    if(vernum>=235){
+        b->add("Fix the windows in this group to the current desktop. This will cause the desktop to change when the window is raised rather than the default behavior of moving the window to the current desktop. New in v2.3.5.");
+    }
+	b->add("Make windows in this group maximize horizontally by default.");
+    b->add("The icon to be used for windows in this group.");
+    b->add("Ignore the increment size hint when maximizing windows in this group.");
+    b->add("The layer on which windows in this group will be started. Valid ooptions are below, normal, and above.");
+    b->add("Make windows in this group maximized.");
+    b->add("Make windows in this group minimized.");
+    b->add("Disables the border for windows in this group.");
+    b->add("Hides the close button for windows in this group.");
+    if(vernum>=236){
+    	b->add("Disable mod1+drag for moving/resizing windows in this group. New in v2.3.6.");
+	}
+    b->add("Prevents windows in this group from grabbing the focus when mapped.");
+    b->add("Prevents windows in this group from being fullscreen.");
+    b->add("Causes the tray to ignore windows in this group.");
+    b->add("Disallows maximization for windows in this group.");
+    b->add("Disallows minimization for windows in this group.");
+    b->add("Prevents windows in this group from being moved.");
+    b->add("Causes the pager to ignore windows in this group.");
+    b->add("Prevents windows in this group from being resized.");
+    b->add("Disallows shading for windows in this group.");
+    b->add("Disables the title bar for windows in this group.");
+    b->add("Ignore the urgent hint for windows in this group. Without this option set, JWM will flash the border of urgent windows.");
+    b->add("Set the opacity for windows in this group. The value is a number between 0.0 and 1.0 inclusive.");
+    b->add("Ignore program-specified initial position.");
+    b->add("Make windows in this group shaded.");
+    b->add("Make windows in this group sticky.");
+    b->add("Attempt to tile windows in this group upon initial placement. If tiled placement fails, windows will fall back to cascaded (the default) or centered if specified.");
+    b->add("Enables the title bar for windows in this group.");
+    b->add("Make windows in this group maximize vertically by default.");
 }
 void populateOptions(Fl_Browser *o){
       /*I generated this using
@@ -2025,11 +2051,22 @@ void populateOptions(Fl_Browser *o){
     //  sed -i '/^b->add/{H;$!d;s/.*//};$G;s/\n*//' filename
 
     // I DID delete things after : manually
+    // I also added the vernum>=23X portions where the description says New in 2.3.X
     //these are all the options
-    o->add("border");
+    int vernum=JWMversion();
+    if(vernum>=236){
+    	o->add("aerosnap");
+    }
+	o->add("border");
     o->add("centered");
     o->add("constrain");
     o->add("desktop:");
+    if(vernum>=234){
+    	o->add("drag");
+    }
+    if(vernum>=235){
+    	o->add("fixed");
+	}
     o->add("hmax");
     o->add("icon:");
     o->add("iignore");
@@ -2037,16 +2074,19 @@ void populateOptions(Fl_Browser *o){
     o->add("maximized");
     o->add("minimized");
     o->add("noborder");
-    o->add("nofocus");
+    o->add("noclose");
+    if(vernum>=236){
+    	o->add("nodrag");
+    }
+	o->add("nofocus");
+    o->add("nofullscreen");
     o->add("nolist");
-    o->add("nopager");
-    o->add("noshade");
     o->add("nomax");
     o->add("nomin");
-    o->add("noclose");
     o->add("nomove");
+    o->add("nopager");
     o->add("noresize");
-    o->add("nofullscreen");
+    o->add("noshade");
     o->add("notitle");
     o->add("noturgent");
     o->add("opacity:");
@@ -2056,6 +2096,7 @@ void populateOptions(Fl_Browser *o){
     o->add("tiled");
     o->add("title");
     o->add("vmax");
+
 }
 void populateApps(Fl_Browser*o){
 	debug_out("void populateApps(Fl_Browser*o)");
@@ -2530,6 +2571,19 @@ debug_out("std::string checkIncludes(std::string "+element+","+subelement+","+SU
 	}
 	return node;
 }
+pugi::xml_node getTraySubElement(unsigned int whichNODE){
+	unsigned int i=1;
+	pugi::xml_node node=getCurrentTrayNode();
+    node=node.first_child();
+    i=1;
+    if(whichNODE!=i){
+		while(node.next_sibling() && i!=whichNODE){
+            node=node.next_sibling();
+            i++;
+        }
+    }
+    return node;
+}
 pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned int whichNODE, std::string subelement){
 	unsigned int i=1;
 	pugi::xml_node node;
@@ -2582,6 +2636,19 @@ pugi::xml_node getMenu(std::string text){
 		node=node.next_sibling(subelement.c_str());
 	}
     return node;
+}
+pugi::xml_node getMenuButtonByMask(std::string text,int item){
+	debug_out("pugi::xml_node getMenuButton(std::string "+text+")");
+	std::string button="Button";
+	pugi::xml_node node=getTraySubElement(item);
+	pugi::xml_node buttonnode=node.child(button.c_str());
+	if(buttonnode){
+		for(buttonnode=node.child(button.c_str());buttonnode;buttonnode=buttonnode.next_sibling(button.c_str())){
+			std::string temp2=buttonnode.attribute("mask").as_string();
+			if(temp2.find(text)<temp2.length()){return buttonnode;}
+		}
+	}
+	return node;
 }
 pugi::xml_node getRootMenu(std::string text){
 	debug_out("pugi::xml_node getRootMenu(std::string "+text+")");

@@ -170,24 +170,38 @@ public:
 private:
   inline void cb__i(Fl_Button*, void*);
   static void cb_(Fl_Button*, void*);
-  inline void cb_1_i(Fl_Button*, void*);
-  static void cb_1(Fl_Button*, void*);
+public:
+  Fl_Button *minus_root;
+private:
+  inline void cb_minus_root_i(Fl_Button*, void*);
+  static void cb_minus_root(Fl_Button*, void*);
 public:
   Fl_Browser *menuElement;
 private:
   inline void cb_menuElement_i(Fl_Browser*, void*);
   static void cb_menuElement(Fl_Browser*, void*);
-  inline void cb_2_i(Fl_Button*, void*);
-  static void cb_2(Fl_Button*, void*);
-  inline void cb_3_i(Fl_Button*, void*);
-  static void cb_3(Fl_Button*, void*);
+  inline void cb_1_i(Fl_Button*, void*);
+  static void cb_1(Fl_Button*, void*);
+public:
+  Fl_Button *minus_element;
+private:
+  inline void cb_minus_element_i(Fl_Button*, void*);
+  static void cb_minus_element(Fl_Button*, void*);
 public:
   Fl_Browser *menuElementText;
 private:
   inline void cb_menuElementText_i(Fl_Browser*, void*);
   static void cb_menuElementText(Fl_Browser*, void*);
-  inline void cb_4_i(Fl_Button*, void*);
-  static void cb_4(Fl_Button*, void*);
+public:
+  Fl_Browser *root_menu;
+private:
+  inline void cb_root_menu_i(Fl_Browser*, void*);
+  static void cb_root_menu(Fl_Browser*, void*);
+public:
+  Fl_Button *config_something;
+private:
+  inline void cb_config_something_i(Fl_Button*, void*);
+  static void cb_config_something(Fl_Button*, void*);
   inline void cb_Cancel_i(Fl_Button*, void*);
   static void cb_Cancel(Fl_Button*, void*);
 public:
@@ -195,11 +209,6 @@ public:
 private:
   inline void cb_save_button_i(Fl_Button*, void*);
   static void cb_save_button(Fl_Button*, void*);
-public:
-  Fl_Browser *root_menu;
-private:
-  inline void cb_root_menu_i(Fl_Browser*, void*);
-  static void cb_root_menu(Fl_Browser*, void*);
 public:
   Fl_Double_Window* nada_window();
   Fl_Double_Window *nada_win;

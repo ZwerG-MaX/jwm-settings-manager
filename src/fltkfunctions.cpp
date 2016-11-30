@@ -255,8 +255,14 @@ void makeWidgetIcon(std::string icon_file, Fl_Widget * widget, int w, int h){
 	}
 	//unsigned int found=icon_file.find("/");
 	if(!linuxcommon::test_file(icon_file)){  //((found> icon_file.length())||(!linuxcommon::test_file(icon_file))){
-		icon_file=linuxcommon::look_for_icon_file(icon_file);
-		if(icon_file.compare("")!=0){debug_out("RESULT="+icon_file);}
+		std::vector<std::string> tmpV=IconPaths();
+		std::string tmp=icon_file;
+		tmp=linuxcommon::test_file_in_vector_path(icon_file,tmpV);
+		if(tmp.compare("")==0){tmp=linuxcommon::look_for_icon_file(icon_file);}
+		if(tmp.compare("")!=0){
+			icon_file=tmp;
+			debug_out("RESULT="+tmp);
+		}
 	}
 	else{debug_out(icon_file+" is an Image!");}
 	if(icon_file.compare("")==0){

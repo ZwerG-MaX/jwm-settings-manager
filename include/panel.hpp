@@ -105,6 +105,8 @@ void deletePanelItem(std::string item);
 void deleteSomeIndicator(std::string indicator);
 void deleteTrayButton(std::string text_to_find);
 void deleteVolume();
+//         E
+void editButton(int whichbutton, std::string MENU,std::string PROG,std::string ICON,std::string LABEL,std::string MASK);
 //         G
 void getColorFromItem(bool active, std::string element,std::string subelement,Fl_Button* o);
 void getIndicators(Fl_Browser* o);

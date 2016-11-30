@@ -102,7 +102,7 @@ if (menuLabel!=NULL){
   else{setRootMenuAttribute(val,"labeled","true");}
 }
 int height = menu_height->value();
-setRootMenuHeight(val,height);} selected
+setRootMenuHeight(val,height);}
         xywh {240 75 60 25} box FLAT_BOX color 61 labelcolor 7
       }
       Fl_Value_Input height_input {
@@ -367,8 +367,8 @@ change_include();}
     code {load();} {}
     Fl_Window menu_window {
       label {Menu properties} open
-      xywh {197 461 435 150} type Double color 31 hide resizable
-      code0 {startup(o);} xclass {jsm-panel}
+      xywh {754 305 435 150} type Double color 31 resizable
+      code0 {startup(o);} xclass {jsm-panel} visible
     } {
       Fl_Scroll {} {open
         xywh {0 -330 1015 580} color 31
@@ -378,13 +378,12 @@ change_include();}
           callback {add_a_menu()->show();}
           tooltip {Add a menu} xywh {5 115 30 30} box FLAT_BOX color 23 selection_color 47
         }
-        Fl_Button {} {
+        Fl_Button minus_root {
           callback {remove_a_menu();}
           tooltip {remove a menu} image {custom_buttons/minus} xywh {40 115 30 30} box FLAT_BOX color 23 align 256
         }
         Fl_Browser menuElement {
-          callback {int linenum = o->value();
-menuElementText->select(linenum);}
+          callback {menuElementText->deselect();}
           tooltip {Options: Menu, Dynamic, Include, Program, Separator, Desktops, SendTo, Stick, Maximize, Minimize, Shade, Move, Resize, Kill, Close, Restart, Exit} xywh {80 5 90 105} type Hold box FLAT_BOX selection_color 80
         }
         Fl_Button {} {
@@ -392,7 +391,7 @@ menuElementText->select(linenum);}
           callback {add_an_item();}
           tooltip {Add a menu item} xywh {80 115 30 30} box FLAT_BOX color 23 selection_color 47
         }
-        Fl_Button {} {
+        Fl_Button minus_element {
           callback {remove_an_item();}
           tooltip {remove a menu item} image {custom_buttons/minus} xywh {115 115 30 30} box FLAT_BOX color 23 align 256
         }
@@ -401,12 +400,27 @@ menuElementText->select(linenum);}
 menuElement->select(linenum);}
           tooltip {These options correspond to specific Root Menu items} xywh {175 5 255 105} type Hold box FLAT_BOX selection_color 80 labeltype NO_LABEL align 1
         }
-        Fl_Button {} {
+        Fl_Browser root_menu {
+          label { }
+          callback {int line = o->value();
+const char* menu = o->text(line);
+if(menu != NULL){
+  std::string MENU=menu;
+  choose_menu(MENU);
+}
+else{std::cerr<<"Problem getting this menu"<<std::endl;}
+menuElement->deselect();
+menuElementText->deselect();} selected
+          tooltip {The range of possible values is 0 to 9 inclusive as  well
+                     as  a to z inclusive, providing for up to 36 menus.  Note
+                     that only the numeric values map to mouse buttons.} xywh {5 5 65 105} type Hold box FLAT_BOX selection_color 80
+          code1 {getMenus(o);}
+          code2 {if(INPUTmenu.compare("")!=0){select_sent_in(INPUTmenu);}}
+        }
+        Fl_Button config_something {
           callback {if(checkFlBrowserItem(menuElementText)){edit_an_item();}
-else{
-  if(checkFlBrowserItem(menuElement)){edit_a_menu();}
-  else if(checkFlBrowserItem(root_menu)){submenu_window()->show();}
-}}
+else if(checkFlBrowserItem(menuElement)){edit_a_menu();}
+else if(checkFlBrowserItem(root_menu)){submenu_window()->show();}}
           tooltip Configure image {custom_buttons/gear16.png} xywh {175 115 30 30} box FLAT_BOX color 23 labelfont 1 align 128
         }
         Fl_Button {} {
@@ -419,21 +433,6 @@ else{
           callback {saveChanges();
 //showSettings();}
           tooltip {Write to configuration file} xywh {381 120 49 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
-        }
-        Fl_Browser root_menu {
-          label { }
-          callback {int line = o->value();
-const char* menu = o->text(line);
-if(menu != NULL){
-  std::string MENU=menu;
-  choose_menu(MENU);
-}
-else{std::cerr<<"Problem getting this menu"<<std::endl;}}
-          tooltip {The range of possible values is 0 to 9 inclusive as  well
-                     as  a to z inclusive, providing for up to 36 menus.  Note
-                     that only the numeric values map to mouse buttons.} xywh {5 5 65 105} type Hold box FLAT_BOX selection_color 80
-          code1 {getMenus(o);}
-          code2 {if(INPUTmenu.compare("")!=0){select_sent_in(INPUTmenu);}}
         }
       }
     }

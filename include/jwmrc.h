@@ -183,6 +183,7 @@ std::string getJSMItem(std::string item);
 std::string getMenuAttribute(std::string MENU, std::string attribute);
 std::string makeTempName(std::string filename);
 std::string makeNOTtemp(std::string filename);
+std::string menuButtonText(pugi::xml_node node);
 const char* convert(double num);
 //int////////////////////////////////////////////////////////////////
 unsigned int convert(const char* num);
@@ -199,6 +200,7 @@ int addMenuItem(Fl_Browser* menuElement, Fl_Browser* menuElementText, Fl_Input* 
 int getIntAttribute(std::string element, std::string attribute);
 int getIntAttribute(std::string element, std::string subelement, std::string attribute);
 int newStyle();
+int JWMversion();
 int whichAlign(std::string align);
 //float/////////////////////////////////////////////////////////////////
 float getElementFloat(std::string element);
@@ -243,8 +245,10 @@ pugi::xml_node checkIncludes(std::string element,std::string subelement);
 pugi::xml_node checkIncludes(std::string element,std::string subelement,std::string SUBsubelement);
 pugi::xml_node parseNodes(unsigned int whichElement,std::string element);
 pugi::xml_node addNode(unsigned int whichElement,std::string element, std::string subelement);
+pugi::xml_node getTraySubElement(unsigned int whichElement);
 pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned int whichNODE, std::string subelement);
 pugi::xml_node getMenu(std::string text);
+pugi::xml_node getMenuButtonByMask(std::string text,int item);
 pugi::xml_node getRootMenu(std::string text);
 pugi::xml_node getSubNode(unsigned int whichElement,std::string element,unsigned int whichSubElement, std::string subelement);
 pugi::xml_node getLastSubNode(unsigned int whichElement,std::string element, std::string subelement);
