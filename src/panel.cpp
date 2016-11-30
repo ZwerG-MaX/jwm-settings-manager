@@ -310,12 +310,13 @@ void app_command_CB(Fl_Input* o, Fl_Input* app_command){
 		app_command->value(exec.c_str());
 	}
 }
-void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide){
+void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide, Fl_Output *autohide_pos){
 	debug_out("void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide)");
 	std::string a = getElementAttribute("Tray","autohide");
 	if(!newStyle()){
 		autohide_check->show();
 		choose_autohide->hide();
+		autohide_pos->hide();
 		if(a=="true"){autohide_check->value(1);}
 		else{autohide_check->value(0);}
 	}
@@ -339,6 +340,15 @@ void changeClock(std::string style){
     else if(style.compare(YEAR)==0){format="%F %H:%M";}
     else{format=style;}
     setElementAttribute(currentPanel(),"Tray","Clock","format",format);
+}
+void change_layer(std::string position,Fl_Output * layer){
+	if(!setElementAttribute(currentPanel(),"Tray","layer",position)){
+		errorOUT("Could not set layer to "+position);
+	}
+	else{
+		layer->value(position.c_str());
+		layer->redraw();
+	}
 }
 void changePanel(int number){
 	debug_out("void changePanel(int number)");
@@ -497,6 +507,15 @@ void labelMenu(std::string testNum,std::string newLabel){
 		debug_out("Didn't set the label "+newLabel+" for the Menu");
 	}
 }
+void layout(std::string position,Fl_Output *layOut){
+	if(!setElementAttribute(currentPanel(),"Tray","layout",position)){
+		errorOUT("Could not set layout to "+position);
+	}
+	else{
+		layOut->value(position.c_str());
+		layOut->redraw();
+	}
+}
 void listIndicators(Fl_Browser *o){
 	std::string filename=linuxcommon::test_file_in_vector_path("jwm-settings-manager/indicators.list",linuxcommon::desktop_dirs());
 	std::vector<std::string> myVec;
@@ -602,6 +621,40 @@ void panel_label(Fl_Menu_Button *o){
 	std::string l = PANEL + " " + x;
 	o->copy_label(l.c_str());
 	o->redraw();
+}
+void panel_h(int num, Fl_Output * align){panel_hv("halign",num,align);}
+void panel_v(int num, Fl_Output * align){panel_hv("valign",num,align);}
+void panel_hv(std::string attrib, int num, Fl_Output * align){
+	std::string item;
+	switch(num){
+		case 1:
+			item="fixed";
+			break;
+		case 2:
+			item="top";
+			if(attrib.compare("halign")==0)
+				item="left";
+			break;
+		case 3:
+			item="center";
+			break;
+		case 4:
+			item="bottom";
+			if(attrib.compare("halign")==0)
+				item="right";
+			break;
+		default:
+			std::string tmp=linuxcommon::convert_num_to_string(num);
+			errorOUT("Invalid choice:"+tmp);
+			return;
+	}
+	if(!setElementAttribute(currentPanel(),"Tray",attrib,item)){
+		errorOUT("Could not set "+attrib+" to "+item);
+	}
+	else{
+		align->value(item.c_str());
+		align->redraw();
+	}
 }
 void panel_menu_button_label(Fl_Menu_Button* o){
 	debug_out("void panel_menu_button_label(Fl_Menu_Button* o)");

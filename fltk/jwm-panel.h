@@ -48,8 +48,8 @@
 #include <FL/Fl_Value_Input.H>
 #include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Box.H>
-#include <FL/Fl_Input.H>
 #include <FL/Fl_Output.H>
+#include <FL/Fl_Input.H>
 
 class PanelUI {
 public:
@@ -207,6 +207,51 @@ public:
 private:
   inline void cb_border_input_i(Fl_Value_Input*, void*);
   static void cb_border_input(Fl_Value_Input*, void*);
+public:
+  Fl_Output *halign;
+  Fl_Output *autohide_pos;
+  Fl_Output *valign;
+  static unsigned char menu_halign_i18n_done;
+  static Fl_Menu_Item menu_halign[];
+private:
+  inline void cb_fixed_i(Fl_Menu_*, void*);
+  static void cb_fixed(Fl_Menu_*, void*);
+  inline void cb_left2_i(Fl_Menu_*, void*);
+  static void cb_left2(Fl_Menu_*, void*);
+  inline void cb_center_i(Fl_Menu_*, void*);
+  static void cb_center(Fl_Menu_*, void*);
+  inline void cb_right2_i(Fl_Menu_*, void*);
+  static void cb_right2(Fl_Menu_*, void*);
+  static unsigned char menu_valign_i18n_done;
+  static Fl_Menu_Item menu_valign[];
+  inline void cb_fixed1_i(Fl_Menu_*, void*);
+  static void cb_fixed1(Fl_Menu_*, void*);
+  inline void cb_top2_i(Fl_Menu_*, void*);
+  static void cb_top2(Fl_Menu_*, void*);
+  inline void cb_center1_i(Fl_Menu_*, void*);
+  static void cb_center1(Fl_Menu_*, void*);
+  inline void cb_bottom2_i(Fl_Menu_*, void*);
+  static void cb_bottom2(Fl_Menu_*, void*);
+  static unsigned char menu_layout_i18n_done;
+  static Fl_Menu_Item menu_layout[];
+  inline void cb_horizontal_i(Fl_Menu_*, void*);
+  static void cb_horizontal(Fl_Menu_*, void*);
+  inline void cb_vertical_i(Fl_Menu_*, void*);
+  static void cb_vertical(Fl_Menu_*, void*);
+public:
+  Fl_Output *layOut;
+  static unsigned char menu_layer_i18n_done;
+  static Fl_Menu_Item menu_layer[];
+private:
+  inline void cb_below_i(Fl_Menu_*, void*);
+  static void cb_below(Fl_Menu_*, void*);
+  inline void cb_normal_i(Fl_Menu_*, void*);
+  static void cb_normal(Fl_Menu_*, void*);
+  inline void cb_above_i(Fl_Menu_*, void*);
+  static void cb_above(Fl_Menu_*, void*);
+public:
+  Fl_Output *layer;
+private:
   inline void cb_Cancel_i(Fl_Button*, void*);
   static void cb_Cancel(Fl_Button*, void*);
 public:
@@ -451,5 +496,6 @@ public:
   void ok();
   void remove_indicator();
   void save_user_clock();
+  void change_panel_position(std::string position);
 };
 #endif

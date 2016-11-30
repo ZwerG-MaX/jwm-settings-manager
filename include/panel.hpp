@@ -88,10 +88,11 @@ void addPanel();
 void addTaskList();
 void addVolume();
 void app_command_CB(Fl_Input* o, Fl_Input* app_command);
-void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide);
+void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide, Fl_Output *autohide_pos);
 void autohide_position(const char* where);
 //         C
 void changeClock(std::string style);
+void change_layer(std::string position,Fl_Output * layer);
 void changePanel(int number);
 void checkDock();
 //         D
@@ -113,6 +114,7 @@ void icon_for_desktop(Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Box*
 void input_width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension);
 //         L
 void labelMenu(std::string testNum,std::string newLabel);
+void layout(std::string position,Fl_Output *layOut);
 void listIndicators(Fl_Browser *o);
 //         N
 void new_panel_items(Fl_Browser *o);
@@ -123,6 +125,9 @@ void one_color_active(Fl_Widget *o, std::string whichElement);
 void one_color_Font(Fl_Widget *o, std::string whichElement);
 void opacity(Fl_Value_Input *o, Fl_Slider *slider, std::string whichElement);
 //         P
+void panel_v(int num, Fl_Output * valign);
+void panel_h(int num, Fl_Output * valign);
+void panel_hv(std::string attrib, int num, Fl_Output * valign);
 void panel_label(Fl_Menu_Button *o);
 void panel_menu_button_label(Fl_Menu_Button* o);
 void panel_position(std::string position);

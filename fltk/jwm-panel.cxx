@@ -262,28 +262,28 @@ void PanelUI::cb_Edit(Fl_Button* o, void* v) {
 }
 
 void PanelUI::cb_top_i(Fl_Menu_*, void*) {
-  panel_position("top");
+  change_panel_position("top");
 }
 void PanelUI::cb_top(Fl_Menu_* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_top_i(o,v);
 }
 
 void PanelUI::cb_bottom_i(Fl_Menu_*, void*) {
-  panel_position("bottom");
+  change_panel_position("bottom");
 }
 void PanelUI::cb_bottom(Fl_Menu_* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_bottom_i(o,v);
 }
 
 void PanelUI::cb_right_i(Fl_Menu_*, void*) {
-  panel_position("right");
+  change_panel_position("right");
 }
 void PanelUI::cb_right(Fl_Menu_* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_right_i(o,v);
 }
 
 void PanelUI::cb_left_i(Fl_Menu_*, void*) {
-  panel_position("left");
+  change_panel_position("left");
 }
 void PanelUI::cb_left(Fl_Menu_* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_left_i(o,v);
@@ -411,6 +411,130 @@ void PanelUI::cb_border_input_i(Fl_Value_Input* o, void*) {
 void PanelUI::cb_border_input(Fl_Value_Input* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_border_input_i(o,v);
 }
+
+void PanelUI::cb_fixed_i(Fl_Menu_*, void*) {
+  panel_h(1,halign);
+}
+void PanelUI::cb_fixed(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_fixed_i(o,v);
+}
+
+void PanelUI::cb_left2_i(Fl_Menu_*, void*) {
+  panel_h(2,halign);
+}
+void PanelUI::cb_left2(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_left2_i(o,v);
+}
+
+void PanelUI::cb_center_i(Fl_Menu_*, void*) {
+  panel_h(3,halign);
+}
+void PanelUI::cb_center(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_center_i(o,v);
+}
+
+void PanelUI::cb_right2_i(Fl_Menu_*, void*) {
+  panel_h(4,halign);
+}
+void PanelUI::cb_right2(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_right2_i(o,v);
+}
+
+unsigned char PanelUI::menu_halign_i18n_done = 0;
+Fl_Menu_Item PanelUI::menu_halign[] = {
+ {"fixed", 0,  (Fl_Callback*)PanelUI::cb_fixed, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"left", 0,  (Fl_Callback*)PanelUI::cb_left2, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"center", 0,  (Fl_Callback*)PanelUI::cb_center, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"right", 0,  (Fl_Callback*)PanelUI::cb_right2, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void PanelUI::cb_fixed1_i(Fl_Menu_*, void*) {
+  panel_v(1,valign);
+}
+void PanelUI::cb_fixed1(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_fixed1_i(o,v);
+}
+
+void PanelUI::cb_top2_i(Fl_Menu_*, void*) {
+  panel_v(2,valign);
+}
+void PanelUI::cb_top2(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_top2_i(o,v);
+}
+
+void PanelUI::cb_center1_i(Fl_Menu_*, void*) {
+  panel_v(3,valign);
+}
+void PanelUI::cb_center1(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_center1_i(o,v);
+}
+
+void PanelUI::cb_bottom2_i(Fl_Menu_*, void*) {
+  panel_v(4,valign);
+}
+void PanelUI::cb_bottom2(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_bottom2_i(o,v);
+}
+
+unsigned char PanelUI::menu_valign_i18n_done = 0;
+Fl_Menu_Item PanelUI::menu_valign[] = {
+ {"fixed", 0,  (Fl_Callback*)PanelUI::cb_fixed1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"top", 0,  (Fl_Callback*)PanelUI::cb_top2, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"center", 0,  (Fl_Callback*)PanelUI::cb_center1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"bottom", 0,  (Fl_Callback*)PanelUI::cb_bottom2, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void PanelUI::cb_horizontal_i(Fl_Menu_*, void*) {
+  layout("horizontal",layOut);
+}
+void PanelUI::cb_horizontal(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_horizontal_i(o,v);
+}
+
+void PanelUI::cb_vertical_i(Fl_Menu_*, void*) {
+  layout("vertical",layOut);
+}
+void PanelUI::cb_vertical(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_vertical_i(o,v);
+}
+
+unsigned char PanelUI::menu_layout_i18n_done = 0;
+Fl_Menu_Item PanelUI::menu_layout[] = {
+ {"horizontal", 0,  (Fl_Callback*)PanelUI::cb_horizontal, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"vertical", 0,  (Fl_Callback*)PanelUI::cb_vertical, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void PanelUI::cb_below_i(Fl_Menu_*, void*) {
+  change_layer("below",layer);
+}
+void PanelUI::cb_below(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_below_i(o,v);
+}
+
+void PanelUI::cb_normal_i(Fl_Menu_*, void*) {
+  change_layer("normal",layer);
+}
+void PanelUI::cb_normal(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_normal_i(o,v);
+}
+
+void PanelUI::cb_above_i(Fl_Menu_*, void*) {
+  change_layer("above",layer);
+}
+void PanelUI::cb_above(Fl_Menu_* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_above_i(o,v);
+}
+
+unsigned char PanelUI::menu_layer_i18n_done = 0;
+Fl_Menu_Item PanelUI::menu_layer[] = {
+ {"below", 0,  (Fl_Callback*)PanelUI::cb_below, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"normal", 0,  (Fl_Callback*)PanelUI::cb_normal, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"above", 0,  (Fl_Callback*)PanelUI::cb_above, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
 
 void PanelUI::cb_Cancel_i(Fl_Button*, void*) {
   cancel_button();
@@ -1078,10 +1202,11 @@ Fl_Double_Window* PanelUI::make_window() {
           const char* text=gettext("Appearance");o->label(text);
           o->end();
         } // Fl_Group* o
-        { Fl_Group* o = new Fl_Group(5, 70, 280, 345, gettext("Size And Position"));
+        { Fl_Group* o = new Fl_Group(5, 65, 280, 350, gettext("Size And Position"));
           o->selection_color(FL_DARK2);
           o->hide();
-          { Fl_Menu_Button* o = new Fl_Menu_Button(10, 70, 125, 25, gettext("Panel Position"));
+          { Fl_Menu_Button* o = new Fl_Menu_Button(10, 80, 125, 25, gettext("Panel Position"));
+            o->tooltip(gettext("Move the current panel to a new position"));
             o->box(FL_FLAT_BOX);
             o->color((Fl_Color)23);
             o->selection_color((Fl_Color)51);
@@ -1095,7 +1220,7 @@ Fl_Double_Window* PanelUI::make_window() {
               const char* text=gettext("right");o->label(text);
             }
             { Fl_Menu_Item* o = &menu_Panel[3];
-              const char* text=gettext("right");o->label(text);
+              const char* text=gettext("left");o->label(text);
             }
             if (!menu_Panel_i18n_done) {
               int i=0;
@@ -1107,7 +1232,10 @@ Fl_Double_Window* PanelUI::make_window() {
             o->menu(menu_Panel);
             const char* text=gettext("Panel Position");o->label(text);
           } // Fl_Menu_Button* o
-          { Fl_Menu_Button* o = choose_autohide = new Fl_Menu_Button(10, 105, 150, 25, gettext("Autohide Position"));
+          { Fl_Menu_Button* o = choose_autohide = new Fl_Menu_Button(10, 110, 150, 25, gettext("Autohide Position"));
+            choose_autohide->tooltip(gettext("Specifies  the  location  to hide the tray when not\nactivated. Default  is  \
+\"off\"  to  disable  hiding.\nPossible  values  are \"left\", \"right\", \"to\
+p\", \"bottom\", and \"off\"."));
             choose_autohide->box(FL_FLAT_BOX);
             choose_autohide->color((Fl_Color)23);
             choose_autohide->selection_color((Fl_Color)23);
@@ -1134,10 +1262,10 @@ Fl_Double_Window* PanelUI::make_window() {
               menu_choose_autohide_i18n_done = 1;
             }
             choose_autohide->menu(menu_choose_autohide);
-            autohide(autohide_check,choose_autohide);
+            autohide(autohide_check,choose_autohide,autohide_pos);
             const char* text=gettext("Autohide Position");o->label(text);
           } // Fl_Menu_Button* choose_autohide
-          { Fl_Check_Button* o = autohide_check = new Fl_Check_Button(165, 105, 95, 25, gettext("Autohide?"));
+          { Fl_Check_Button* o = autohide_check = new Fl_Check_Button(165, 110, 95, 25, gettext("Autohide?"));
             autohide_check->tooltip(gettext("This will make the Panel hide when you aren\'t using it."));
             autohide_check->down_box(FL_GTK_DOWN_BOX);
             autohide_check->selection_color((Fl_Color)59);
@@ -1146,7 +1274,7 @@ Fl_Double_Window* PanelUI::make_window() {
             autohide_check->hide();
             const char* text=gettext("Autohide?");o->label(text);
           } // Fl_Check_Button* autohide_check
-          { Fl_Slider* o = w_slider = new Fl_Slider(10, 150, 180, 25, gettext("Width of Panel  "));
+          { Fl_Slider* o = w_slider = new Fl_Slider(10, 155, 180, 25, gettext("Width of Panel  "));
             w_slider->tooltip(gettext("0 is Full Length"));
             w_slider->type(1);
             w_slider->box(FL_GTK_DOWN_BOX);
@@ -1162,7 +1290,7 @@ Fl_Double_Window* PanelUI::make_window() {
             int h = getWidth();
             o->value(h);
           } // Fl_Slider* w_slider
-          { Fl_Value_Input* o = width_input = new Fl_Value_Input(200, 160, 40, 25, gettext("pixels"));
+          { Fl_Value_Input* o = width_input = new Fl_Value_Input(200, 155, 40, 25, gettext("pixels"));
             width_input->tooltip(gettext("The  width  of  the tray. 0 indicates that the tray\nshould compute an optima\
 l width depending  on  what\nit  contains  and the layout. A negative value su\
 btracts\nfrom with screen width. 0 is the default."));
@@ -1176,7 +1304,7 @@ btracts\nfrom with screen width. 0 is the default."));
             o->value(v);
             const char* text=gettext("pixels");o->label(text);
           } // Fl_Value_Input* width_input
-          { Fl_Slider* o = h_slider = new Fl_Slider(10, 205, 180, 25, gettext("Height of Panel  "));
+          { Fl_Slider* o = h_slider = new Fl_Slider(10, 200, 180, 25, gettext("Height of Panel  "));
             h_slider->tooltip(gettext("0 will base size from the current items in the panel"));
             h_slider->type(1);
             h_slider->box(FL_GTK_DOWN_BOX);
@@ -1192,7 +1320,7 @@ btracts\nfrom with screen width. 0 is the default."));
             int h = getHeight();
             o->value(h);
           } // Fl_Slider* h_slider
-          { Fl_Value_Input* o = height_input = new Fl_Value_Input(200, 205, 40, 25, gettext("pixels"));
+          { Fl_Value_Input* o = height_input = new Fl_Value_Input(200, 200, 40, 25, gettext("pixels"));
             height_input->tooltip(gettext("The height of the tray. 0 indicates that  the  tray\nshould  compute an optim\
 al height depending on what\nit contains and the layout. A negative  value  su\
 btracts\nfrom the screen height. 0 is the default."));
@@ -1206,12 +1334,12 @@ btracts\nfrom the screen height. 0 is the default."));
             o->value(v);
             const char* text=gettext("pixels");o->label(text);
           } // Fl_Value_Input* height_input
-          { Fl_Box* o = new Fl_Box(10, 235, 185, 30, gettext("Advanced Options"));
+          { Fl_Box* o = new Fl_Box(5, 235, 185, 30, gettext("Advanced Options"));
             o->labelfont(1);
             o->labelsize(18);
             const char* text=gettext("Advanced Options");o->label(text);
           } // Fl_Box* o
-          { Fl_Value_Input* o = new Fl_Value_Input(10, 270, 25, 25, gettext("X position of panel"));
+          { Fl_Value_Input* o = new Fl_Value_Input(10, 265, 25, 25, gettext("X position"));
             o->tooltip(gettext("The x-coordinate of the tray. This may be  negative\nto indicate an offset fr\
 om the right of the screen."));
             o->box(FL_FLAT_BOX);
@@ -1223,7 +1351,7 @@ om the right of the screen."));
             coordinate("x",o,1);
             const char* text=gettext("X position of panel");o->label(text);
           } // Fl_Value_Input* o
-          { Fl_Value_Input* o = new Fl_Value_Input(10, 300, 25, 25, gettext("Y position of panel"));
+          { Fl_Value_Input* o = new Fl_Value_Input(155, 265, 25, 25, gettext("Y position"));
             o->tooltip(gettext("The  y-coordinate of the tray. This may be negative\nto indicate  an  offset \
  from  the  bottom  of  the\nscreen."));
             o->box(FL_FLAT_BOX);
@@ -1235,7 +1363,7 @@ om the right of the screen."));
             coordinate("y",o,1);
             const char* text=gettext("Y position of panel");o->label(text);
           } // Fl_Value_Input* o
-          { Fl_Slider* o = border_slider = new Fl_Slider(10, 350, 180, 25, gettext("Width of Panel Border"));
+          { Fl_Slider* o = border_slider = new Fl_Slider(10, 380, 180, 25, gettext("Width of Panel Border"));
             border_slider->type(1);
             border_slider->box(FL_GTK_DOWN_BOX);
             border_slider->color((Fl_Color)42);
@@ -1249,7 +1377,7 @@ om the right of the screen."));
             int border =getBorder();
             o->value(border);
           } // Fl_Slider* border_slider
-          { Fl_Value_Input* o = border_input = new Fl_Value_Input(200, 350, 40, 25, gettext("pixels"));
+          { Fl_Value_Input* o = border_input = new Fl_Value_Input(200, 380, 40, 25, gettext("pixels"));
             border_input->box(FL_FLAT_BOX);
             border_input->color((Fl_Color)23);
             border_input->labelsize(10);
@@ -1260,6 +1388,92 @@ om the right of the screen."));
             o->value(v);
             const char* text=gettext("pixels");o->label(text);
           } // Fl_Value_Input* border_input
+          { Fl_Output* o = halign = new Fl_Output(155, 330, 60, 25);
+            halign->tooltip(gettext("The horizontal alignment of the Panel"));
+            halign->box(FL_FLAT_BOX);
+            halign->align(Fl_Align(FL_ALIGN_TOP));
+            std::string val=getElementAttribute(currentPanel(),"Tray","halign");
+            if(val.compare("")!=0){o->value(val.c_str());}
+          } // Fl_Output* halign
+          { Fl_Output* o = autohide_pos = new Fl_Output(165, 110, 105, 25);
+            autohide_pos->tooltip(gettext("current autohide position (if any)"));
+            autohide_pos->box(FL_FLAT_BOX);
+            std::string val=getElementAttribute(currentPanel(),"Tray","autohide");
+            if(val.compare("")!=0){o->value(val.c_str());}
+          } // Fl_Output* autohide_pos
+          { Fl_Output* o = valign = new Fl_Output(220, 330, 60, 25);
+            valign->tooltip(gettext("The vertical alignment of the Panel"));
+            valign->box(FL_FLAT_BOX);
+            valign->align(Fl_Align(FL_ALIGN_TOP));
+            std::string val=getElementAttribute(currentPanel(),"Tray","valign");
+            if(val.compare("")!=0){o->value(val.c_str());}
+          } // Fl_Output* valign
+          { Fl_Menu_Button* o = new Fl_Menu_Button(155, 295, 60, 25, gettext("halign"));
+            o->tooltip(gettext("Use \'Panel Position\' for easy configuration"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            if (!menu_halign_i18n_done) {
+              int i=0;
+              for ( ; i<4; i++)
+                if (menu_halign[i].label())
+                  menu_halign[i].label(gettext(menu_halign[i].label()));
+              menu_halign_i18n_done = 1;
+            }
+            o->menu(menu_halign);
+          } // Fl_Menu_Button* o
+          { Fl_Menu_Button* o = new Fl_Menu_Button(220, 295, 60, 25, gettext("valign"));
+            o->tooltip(gettext("Use \'Panel Position\' for easy configuration"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            if (!menu_valign_i18n_done) {
+              int i=0;
+              for ( ; i<4; i++)
+                if (menu_valign[i].label())
+                  menu_valign[i].label(gettext(menu_valign[i].label()));
+              menu_valign_i18n_done = 1;
+            }
+            o->menu(menu_valign);
+          } // Fl_Menu_Button* o
+          { Fl_Menu_Button* o = new Fl_Menu_Button(80, 295, 60, 25, gettext("layout"));
+            o->tooltip(gettext("Use \'Panel Position\' for easy configuration"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            if (!menu_layout_i18n_done) {
+              int i=0;
+              for ( ; i<2; i++)
+                if (menu_layout[i].label())
+                  menu_layout[i].label(gettext(menu_layout[i].label()));
+              menu_layout_i18n_done = 1;
+            }
+            o->menu(menu_layout);
+          } // Fl_Menu_Button* o
+          { Fl_Output* o = layOut = new Fl_Output(80, 330, 60, 25);
+            layOut->tooltip(gettext("The layout of the tray. The default is horizontal."));
+            layOut->box(FL_FLAT_BOX);
+            layOut->align(Fl_Align(FL_ALIGN_TOP));
+            std::string val=getElementAttribute(currentPanel(),"Tray","layout");
+            if(val.compare("")!=0){o->value(val.c_str());}
+          } // Fl_Output* layOut
+          { Fl_Menu_Button* o = new Fl_Menu_Button(10, 295, 60, 25, gettext("layer"));
+            o->tooltip(gettext("Use \'Panel Position\' for easy configuration"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            if (!menu_layer_i18n_done) {
+              int i=0;
+              for ( ; i<3; i++)
+                if (menu_layer[i].label())
+                  menu_layer[i].label(gettext(menu_layer[i].label()));
+              menu_layer_i18n_done = 1;
+            }
+            o->menu(menu_layer);
+          } // Fl_Menu_Button* o
+          { Fl_Output* o = layer = new Fl_Output(10, 330, 60, 25);
+            layer->tooltip(gettext("The layer of the tray. The default is above."));
+            layer->box(FL_FLAT_BOX);
+            layer->align(Fl_Align(FL_ALIGN_TOP));
+            std::string val=getElementAttribute(currentPanel(),"Tray","layer");
+            if(val.compare("")!=0){o->value(val.c_str());}
+          } // Fl_Output* layer
           const char* text=gettext("Size And Position");o->label(text);
           o->end();
         } // Fl_Group* o
@@ -2137,4 +2351,18 @@ void PanelUI::save_user_clock() {
   if(result==NULL){return;}
   changeClock(result);
   clock_config_window->hide();
+}
+
+void PanelUI::change_panel_position(std::string position) {
+  panel_position(position);
+  std::string vval=getElementAttribute(currentPanel(),"Tray","valign");
+  if(vval.compare("")!=0){
+    valign->value(vval.c_str());
+    halign->redraw();
+  }
+  std::string hval=getElementAttribute(currentPanel(),"Tray","halign");
+  if(hval.compare("")!=0){
+    halign->value(hval.c_str());
+    halign->redraw();
+  }
 }
