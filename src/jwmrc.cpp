@@ -2257,6 +2257,7 @@ void deletePanelItem(int whichElement){
 	pugi::xml_node node=getCurrentTrayNode();
 	if(!node){debug_out("Tray does not exist");}
 	node=node.first_child();
+	
 	int i=1;
 	if(whichElement!=i){
 		while(node.next_sibling() && i!=whichElement){
@@ -2268,7 +2269,13 @@ void deletePanelItem(int whichElement){
 		debug_out("The selected node is at the top, and cannot be moved up");
 		return;
 	}
-	if(node){doc.remove_child(node);}
+	if(node){
+		pugi::xml_node basenode=node.parent();
+		std::string msg="Remove Node=";
+		msg+=node.name();
+		debug_out(msg);
+		basenode.remove_child(node);
+	}
 	else{debug_out("Node not found...");}
 	saveChangesTemp();
 }
