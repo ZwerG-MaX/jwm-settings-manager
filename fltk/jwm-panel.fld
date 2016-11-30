@@ -82,7 +82,7 @@ makeWidgetIcon(filename,icon_view,48);} {}
     code {load();} {}
     Fl_Window panel_window {
       label {Panel Settings} open
-      xywh {738 314 285 450} type Double color 47 align 80 resizable
+      xywh {372 232 285 450} type Double color 47 align 80 resizable
       code1 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
     } {
       Fl_Scroll {} {open
@@ -151,8 +151,8 @@ Menu_CB(a);}
           xywh {0 35 285 380} box FLAT_BOX color 47
         } {
           Fl_Group apps_tab {
-            label Apps open selected
-            xywh {5 60 280 350} selection_color 45
+            label Apps open
+            xywh {5 60 280 350} selection_color 45 hide
             code0 {const char* text=gettext("Apps");o->label(text);}
           } {
             Fl_Button {} {
@@ -281,7 +281,7 @@ showMenu();}
           }
           Fl_Group {} {
             label {Size And Position} open
-            xywh {5 65 280 350} selection_color 45 hide
+            xywh {5 65 280 350} selection_color 45
             code0 {const char* text=gettext("Size And Position");o->label(text);}
           } {
             Fl_Menu_Button {} {
@@ -314,61 +314,23 @@ showMenu();}
                 code0 {const char* text=gettext("left");o->label(text);}
               }
             }
-            Fl_Menu_Button choose_autohide {
-              label {Autohide Position}
-              tooltip {Specifies  the  location  to hide the tray when not
-activated. Default  is  "off"  to  disable  hiding.
-Possible  values  are "left", "right", "top", "bottom", and "off".} xywh {10 110 150 25} box FLAT_BOX color 23 selection_color 23
-              code0 {autohide(autohide_check,choose_autohide,autohide_pos);}
-              code1 {const char* text=gettext("Autohide Position");o->label(text);}
-            } {
-              MenuItem {} {
-                label top
-                callback {autohide_position("top");}
-                xywh {40 40 100 20}
-                code0 {const char* text=gettext("top");o->label(text);}
-              }
-              MenuItem {} {
-                label bottom
-                callback {autohide_position("bottom");}
-                xywh {50 50 100 20}
-                code0 {const char* text=gettext("bottom");o->label(text);}
-              }
-              MenuItem {} {
-                label right
-                callback {autohide_position("right");}
-                xywh {60 60 100 20}
-                code0 {const char* text=gettext("right");o->label(text);}
-              }
-              MenuItem {} {
-                label left
-                callback {autohide_position("left");}
-                xywh {70 70 100 20}
-                code0 {const char* text=gettext("left");o->label(text);}
-              }
-              MenuItem {} {
-                label off
-                callback {autohide_position("off");}
-                xywh {50 50 100 20}
-                code0 {const char* text=gettext("off");o->label(text);}
-              }
-            }
             Fl_Check_Button autohide_check {
-              label {Autohide?}
+              label Autohide
               callback {int autohide=o->value();
-if(autohide==0){
-  setElementAttribute(currentPanel(),"Tray","autohide","false");
+std::string val = getAutoHide(autohide);
+if(val.compare("off")==0){
+  o->value(0);
+  if(autohide!=0){errorOUT("Something went wrong with autohide");}
 }
-else{
-  setElementAttribute(currentPanel(),"Tray","autohide","true");
-}}
-              tooltip {This will make the Panel hide when you aren't using it.} xywh {165 110 95 25} down_box GTK_DOWN_BOX selection_color 59 when 1 hide
+setElementAttribute(currentPanel(),"Tray","autohide",val);
+autohide_position(val,autohide_pos);} selected
+              tooltip {This will make the Panel hide when you aren't using it.} xywh {160 80 95 25} down_box GTK_DOWN_BOX selection_color 59 when 1
               code0 {const char* text=gettext("Autohide?");o->label(text);}
             }
             Fl_Slider w_slider {
               label {Width of Panel  }
               callback {width_height_border(o,width_input,"width");}
-              tooltip {0 is Full Length} xywh {10 155 180 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 1 when 3 maximum 3000 step 1 value 32
+              tooltip {0 is Full Length} xywh {10 125 180 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 1 when 3 maximum 3000 step 1 value 32
               code0 {const char* text=gettext("Width of Panel");o->label(text);}
               code1 {int h = getWidth();}
               code2 {o->value(h);}
@@ -379,7 +341,7 @@ else{
               tooltip {The  width  of  the tray. 0 indicates that the tray
 should compute an optimal width depending  on  what
 it  contains  and the layout. A negative value subtracts
-from with screen width. 0 is the default.} xywh {200 155 40 25} box FLAT_BOX color 23 labelsize 10 align 8 maximum 3000
+from with screen width. 0 is the default.} xywh {200 125 40 25} box FLAT_BOX color 23 labelsize 10 align 8 maximum 3000
               code0 {int v = w_slider->value();}
               code1 {o->value(v);}
               code2 {const char* text=gettext("pixels");o->label(text);}
@@ -387,7 +349,7 @@ from with screen width. 0 is the default.} xywh {200 155 40 25} box FLAT_BOX col
             Fl_Slider h_slider {
               label {Height of Panel  }
               callback {width_height_border(o,height_input,"height");}
-              tooltip {0 will base size from the current items in the panel} xywh {10 200 180 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 1 when 6 maximum 3000 step 1 value 32
+              tooltip {0 will base size from the current items in the panel} xywh {10 170 180 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 1 when 6 maximum 3000 step 1 value 32
               code0 {const char* text=gettext("Height of Panel");o->label(text);}
               code1 {int h = getHeight();}
               code2 {o->value(h);}
@@ -398,21 +360,21 @@ from with screen width. 0 is the default.} xywh {200 155 40 25} box FLAT_BOX col
               tooltip {The height of the tray. 0 indicates that  the  tray
 should  compute an optimal height depending on what
 it contains and the layout. A negative  value  subtracts
-from the screen height. 0 is the default.} xywh {200 200 40 25} box FLAT_BOX color 23 labelsize 10 align 8 maximum 3000
+from the screen height. 0 is the default.} xywh {200 170 40 25} box FLAT_BOX color 23 labelsize 10 align 8 maximum 3000
               code0 {int v = h_slider->value();}
               code1 {o->value(v);}
               code2 {const char* text=gettext("pixels");o->label(text);}
             }
             Fl_Box {} {
               label {Advanced Options}
-              xywh {5 235 185 30} labelfont 1 labelsize 18
+              xywh {5 200 185 30} labelfont 1 labelsize 18
               code0 {const char* text=gettext("Advanced Options");o->label(text);}
             }
             Fl_Value_Input {} {
               label {X position}
               callback {coordinate("x",o,2);}
               tooltip {The x-coordinate of the tray. This may be  negative
-to indicate an offset from the right of the screen.} xywh {10 265 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum 2000
+to indicate an offset from the right of the screen.} xywh {10 230 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum 2000
               code0 {coordinate("x",o,1);}
               code1 {const char* text=gettext("X position of panel");o->label(text);}
             }
@@ -421,14 +383,24 @@ to indicate an offset from the right of the screen.} xywh {10 265 25 25} box FLA
               callback {coordinate("y",o,2);}
               tooltip {The  y-coordinate of the tray. This may be negative
 to indicate  an  offset  from  the  bottom  of  the
-screen.} xywh {155 265 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum 2000
+screen.} xywh {155 230 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum 2000
               code0 {coordinate("y",o,1);}
               code1 {const char* text=gettext("Y position of panel");o->label(text);}
+            }
+            Fl_Output halign {
+              tooltip {The horizontal alignment of the Panel} xywh {155 295 60 25} box FLAT_BOX align 1
+              code0 {std::string val=getElementAttribute(currentPanel(),"Tray","halign");}
+              code1 {if(val.compare("")!=0){o->value(val.c_str());}}
+            }
+            Fl_Output valign {
+              tooltip {The vertical alignment of the Panel} xywh {220 295 60 25} box FLAT_BOX align 1
+              code0 {std::string val=getElementAttribute(currentPanel(),"Tray","valign");}
+              code1 {if(val.compare("")!=0){o->value(val.c_str());}}
             }
             Fl_Slider border_slider {
               label {Width of Panel Border}
               callback {width_height_border(o,border_input,"border");}
-              xywh {10 380 180 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 1 when 6 maximum 32 step 1
+              xywh {10 345 180 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 29 align 1 when 6 maximum 32 step 1
               code0 {const char* text=gettext("Width of Panel Border");o->label(text);}
               code1 {int border =getBorder();}
               code2 {o->value(border);}
@@ -436,29 +408,58 @@ screen.} xywh {155 265 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum
             Fl_Value_Input border_input {
               label pixels
               callback {input_width_height_border(border_slider,o,"border");}
-              xywh {200 380 40 25} box FLAT_BOX color 23 labelsize 10 align 8 maximum 3000
+              xywh {200 345 40 25} box FLAT_BOX color 23 labelsize 10 align 8 maximum 3000
               code0 {int v = border_slider->value();}
               code1 {o->value(v);}
               code2 {const char* text=gettext("pixels");o->label(text);}
             }
-            Fl_Output halign {
-              tooltip {The horizontal alignment of the Panel} xywh {155 330 60 25} box FLAT_BOX align 1
-              code0 {std::string val=getElementAttribute(currentPanel(),"Tray","halign");}
-              code1 {if(val.compare("")!=0){o->value(val.c_str());}}
+            Fl_Menu_Button choose_autohide {
+              label {Autohide Position} open
+              tooltip {Specifies  the  location  to hide the tray when not
+activated. Default  is  "off"  to  disable  hiding.
+Possible  values  are "left", "right", "top", "bottom", and "off".} xywh {10 380 150 25} box FLAT_BOX color 23 selection_color 23
+              code0 {autohide(autohide_check,choose_autohide);}
+              code1 {const char* text=gettext("Autohide Position");o->label(text);}
+            } {
+              MenuItem {} {
+                label top
+                callback {autohide_position("top",autohide_pos);}
+                xywh {40 40 100 20}
+                code0 {const char* text=gettext("top");o->label(text);}
+              }
+              MenuItem {} {
+                label bottom
+                callback {autohide_position("bottom",autohide_pos);}
+                xywh {50 50 100 20}
+                code0 {const char* text=gettext("bottom");o->label(text);}
+              }
+              MenuItem {} {
+                label right
+                callback {autohide_position("right",autohide_pos);}
+                xywh {60 60 100 20}
+                code0 {const char* text=gettext("right");o->label(text);}
+              }
+              MenuItem {} {
+                label left
+                callback {autohide_position("left",autohide_pos);}
+                xywh {70 70 100 20}
+                code0 {const char* text=gettext("left");o->label(text);}
+              }
+              MenuItem {} {
+                label off
+                callback {autohide_position("off",autohide_pos);}
+                xywh {50 50 100 20}
+                code0 {const char* text=gettext("off");o->label(text);}
+              }
             }
             Fl_Output autohide_pos {
-              tooltip {current autohide position (if any)} xywh {165 110 105 25} box FLAT_BOX
+              tooltip {current autohide position (if any)} xywh {165 380 105 25} box FLAT_BOX
               code0 {std::string val=getElementAttribute(currentPanel(),"Tray","autohide");}
-              code1 {if(val.compare("")!=0){o->value(val.c_str());}}
-            }
-            Fl_Output valign {
-              tooltip {The vertical alignment of the Panel} xywh {220 330 60 25} box FLAT_BOX align 1
-              code0 {std::string val=getElementAttribute(currentPanel(),"Tray","valign");}
               code1 {if(val.compare("")!=0){o->value(val.c_str());}}
             }
             Fl_Menu_Button {} {
               label halign open
-              tooltip {Use 'Panel Position' for easy configuration} xywh {155 295 60 25} box FLAT_BOX color 23
+              tooltip {Use 'Panel Position' for easy configuration} xywh {155 260 60 25} box FLAT_BOX color 23
             } {
               MenuItem {} {
                 label fixed
@@ -483,7 +484,7 @@ screen.} xywh {155 265 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum
             }
             Fl_Menu_Button {} {
               label valign open
-              tooltip {Use 'Panel Position' for easy configuration} xywh {220 295 60 25} box FLAT_BOX color 23
+              tooltip {Use 'Panel Position' for easy configuration} xywh {220 260 60 25} box FLAT_BOX color 23
             } {
               MenuItem {} {
                 label fixed
@@ -508,7 +509,7 @@ screen.} xywh {155 265 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum
             }
             Fl_Menu_Button {} {
               label layout open
-              tooltip {Use 'Panel Position' for easy configuration} xywh {80 295 60 25} box FLAT_BOX color 23
+              tooltip {Use 'Panel Position' for easy configuration} xywh {80 260 60 25} box FLAT_BOX color 23
             } {
               MenuItem {} {
                 label horizontal
@@ -522,13 +523,13 @@ screen.} xywh {155 265 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum
               }
             }
             Fl_Output layOut {
-              tooltip {The layout of the tray. The default is horizontal.} xywh {80 330 60 25} box FLAT_BOX align 1
+              tooltip {The layout of the tray. The default is horizontal.} xywh {80 295 60 25} box FLAT_BOX align 1
               code0 {std::string val=getElementAttribute(currentPanel(),"Tray","layout");}
               code1 {if(val.compare("")!=0){o->value(val.c_str());}}
             }
             Fl_Menu_Button {} {
               label layer open
-              tooltip {Use 'Panel Position' for easy configuration} xywh {10 295 60 25} box FLAT_BOX color 23
+              tooltip {Use 'Panel Position' for easy configuration} xywh {10 260 60 25} box FLAT_BOX color 23
             } {
               MenuItem {} {
                 label below
@@ -547,7 +548,7 @@ screen.} xywh {155 265 25 25} box FLAT_BOX color 23 align 8 minimum -100 maximum
               }
             }
             Fl_Output layer {
-              tooltip {The layer of the tray. The default is above.} xywh {10 330 60 25} box FLAT_BOX align 1
+              tooltip {The layer of the tray. The default is above.} xywh {10 295 60 25} box FLAT_BOX align 1
               code0 {std::string val=getElementAttribute(currentPanel(),"Tray","layer");}
               code1 {if(val.compare("")!=0){o->value(val.c_str());}}
             }

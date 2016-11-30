@@ -24,6 +24,36 @@
 #include <libintl.h>
 #include "../include/panel.hpp"
 //String////////////////////////////////////////////////////////////////
+std::string getAutoHide(int num){
+	debug_out("std::string getAutoHide(int num)");
+	std::string retval;
+	if(newStyle()){
+		if(num==0){retval="off";}
+		else{
+			std::string layout=getElementAttribute(currentPanel(),"Tray","layout");
+			std::string halign=getElementAttribute(currentPanel(),"Tray","halign");
+			std::string valign=getElementAttribute(currentPanel(),"Tray","valign");
+			if(layout.compare("vertical")==0){
+				if((halign.compare("right")==0)||(halign.compare("left")==0)){
+					retval=halign;
+				}
+				else{retval="off";}
+			}
+			else{
+				if((valign.compare("top")==0)||(valign.compare("bottom")==0)){
+					retval=valign;
+				}
+				else{retval="off";}
+			}
+		}
+		
+	}
+	else{
+		if(num==0){retval="false";}
+		else{retval="true";}
+	}
+	return retval;
+}
 std::string getClock(std::string timeString){
 	debug_out("std::string getClock(std::string timeString)");
 	time_t rawtime;
@@ -310,20 +340,23 @@ void app_command_CB(Fl_Input* o, Fl_Input* app_command){
 		app_command->value(exec.c_str());
 	}
 }
-void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide, Fl_Output *autohide_pos){
-	debug_out("void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide)");
+void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide){
+	debug_out("void autohide(Fl_Check_Button* autohide_check,Fl_Check_Button* choose_autohide)");
 	std::string a = getElementAttribute("Tray","autohide");
+	autohide_check->value(0);
 	if(!newStyle()){
-		autohide_check->show();
 		choose_autohide->hide();
-		autohide_pos->hide();
 		if(a=="true"){autohide_check->value(1);}
-		else{autohide_check->value(0);}
 	}
+	else{
+		if((a.compare("")!=0)&&(a.compare("off")!=0)){autohide_check->value(1);}
+	}		
 }
-void autohide_position(const char* where){
-	if(where==NULL){return;}
-	debug_out("void autohide_position(const char* where)");
+void autohide_position(std::string where,Fl_Output *autohide_pos){
+	debug_out("void autohide_position(std::string "+where+")");
+	if(where.compare("")==0){return;}
+	autohide_pos->value(where.c_str());
+	autohide_pos->redraw();
 	setElementAttribute(currentPanel(),"Tray","autohide",where);
 }
 //////C

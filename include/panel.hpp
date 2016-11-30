@@ -47,11 +47,13 @@
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Output.H>
 //string
+std::string getAutoHide(int num);
 std::string getClock(std::string timeString);
 std::string getClock();
 std::string getImageMenu(std::string item);
 std::string getLabelMenu(std::string item);
 std::string getNextPanelPosition();
+std::string getThisPanelPosition();
 std::string Menu_Label(int num);
 //unsigned int
 unsigned int getActiveBackground(unsigned int c,std::string element);
@@ -88,8 +90,8 @@ void addPanel();
 void addTaskList();
 void addVolume();
 void app_command_CB(Fl_Input* o, Fl_Input* app_command);
-void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide, Fl_Output *autohide_pos);
-void autohide_position(const char* where);
+void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide);
+void autohide_position(std::string where,Fl_Output *autohide_pos);
 //         C
 void changeClock(std::string style);
 void change_layer(std::string position,Fl_Output * layer);

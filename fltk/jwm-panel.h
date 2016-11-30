@@ -154,21 +154,6 @@ private:
   inline void cb_left_i(Fl_Menu_*, void*);
   static void cb_left(Fl_Menu_*, void*);
 public:
-  Fl_Menu_Button *choose_autohide;
-  static unsigned char menu_choose_autohide_i18n_done;
-  static Fl_Menu_Item menu_choose_autohide[];
-private:
-  inline void cb_top1_i(Fl_Menu_*, void*);
-  static void cb_top1(Fl_Menu_*, void*);
-  inline void cb_bottom1_i(Fl_Menu_*, void*);
-  static void cb_bottom1(Fl_Menu_*, void*);
-  inline void cb_right1_i(Fl_Menu_*, void*);
-  static void cb_right1(Fl_Menu_*, void*);
-  inline void cb_left1_i(Fl_Menu_*, void*);
-  static void cb_left1(Fl_Menu_*, void*);
-  inline void cb_off_i(Fl_Menu_*, void*);
-  static void cb_off(Fl_Menu_*, void*);
-public:
   Fl_Check_Button *autohide_check;
 private:
   inline void cb_autohide_check_i(Fl_Check_Button*, void*);
@@ -198,6 +183,8 @@ private:
   inline void cb_Y_i(Fl_Value_Input*, void*);
   static void cb_Y(Fl_Value_Input*, void*);
 public:
+  Fl_Output *halign;
+  Fl_Output *valign;
   Fl_Slider *border_slider;
 private:
   inline void cb_border_slider_i(Fl_Slider*, void*);
@@ -208,9 +195,22 @@ private:
   inline void cb_border_input_i(Fl_Value_Input*, void*);
   static void cb_border_input(Fl_Value_Input*, void*);
 public:
-  Fl_Output *halign;
+  Fl_Menu_Button *choose_autohide;
+  static unsigned char menu_choose_autohide_i18n_done;
+  static Fl_Menu_Item menu_choose_autohide[];
+private:
+  inline void cb_top1_i(Fl_Menu_*, void*);
+  static void cb_top1(Fl_Menu_*, void*);
+  inline void cb_bottom1_i(Fl_Menu_*, void*);
+  static void cb_bottom1(Fl_Menu_*, void*);
+  inline void cb_right1_i(Fl_Menu_*, void*);
+  static void cb_right1(Fl_Menu_*, void*);
+  inline void cb_left1_i(Fl_Menu_*, void*);
+  static void cb_left1(Fl_Menu_*, void*);
+  inline void cb_off_i(Fl_Menu_*, void*);
+  static void cb_off(Fl_Menu_*, void*);
+public:
   Fl_Output *autohide_pos;
-  Fl_Output *valign;
   static unsigned char menu_halign_i18n_done;
   static Fl_Menu_Item menu_halign[];
 private:
