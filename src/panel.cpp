@@ -80,6 +80,10 @@ std::string getButtonTooltip(std::string item){
 	debug_out("Label="+tmp);
 	return tmp;
 }
+std::string getItemVal(int position, std::string attribute){
+	debug_out("std::string getItemVal(int position, std::string "+attribute+")");
+	return getAttribute(getTraySubElement(position),attribute);
+}
 std::string Menu_Label(int num){
 	debug_out("std::string Menu_Label(int num)");
 	changePanel(num);
@@ -89,6 +93,16 @@ std::string Menu_Label(int num){
 	LABEL +=" ";
 	LABEL +=numero;
 	return LABEL;
+}
+//double////////////////////////////////////////////////////////////////
+double getItemH(int position){return getItemWH(position,"height");}
+double getItemW(int position){return getItemWH(position,"width");}
+double getTaskW(int position){return getItemWH(position,"maxwidth");}
+double getItemWH(int position, std::string attribute){
+	debug_out("std::string getItemWH(int position, std::string "+attribute+")");
+	std::string tmp=getItemVal(position, attribute);
+	double val=linuxcommon::convert_string_to_double(tmp);
+	return val;
 }
 //Unsigned Integer//////////////////////////////////////////////////////
 unsigned int getActiveBackground(unsigned int c,std::string element){
@@ -119,6 +133,12 @@ int getBorder(){return linuxcommon::convert_string_to_number(getElementAttribute
 int getCoordinate(std::string xy){return linuxcommon::convert_string_to_number(getElementAttribute("Tray",xy).c_str());}
 int getHeight(){return linuxcommon::convert_string_to_number(getElementAttribute(currentPanel(),"Tray","height").c_str());}
 int getWidth(){return linuxcommon::convert_string_to_number(getElementAttribute(currentPanel(),"Tray","width").c_str());}
+int taskLabeled(int position){
+  std::string tmp=getItemVal(position,"labeled");
+  if(tmp.compare("")==0){return 1;}
+  if(TRUEorFALSE(tmp)){return 1;}
+  return 0;
+}
 //Float/////////////////////////////////////////////////////////////////
 float getOpacity(std::string element){return getElementFloat(element);}
 //Boolean///////////////////////////////////////////////////////////////
@@ -193,6 +213,22 @@ bool addShortcut(std::string icon,std::string execLine,std::string popup,int bor
 bool style_gone(){
 	debug_out("bool style_gone()");
 	if(newStyle() ==1){return true;}
+	return false;
+}
+bool setItemH(int value,int position){return setItemWH("height",value,position);}
+bool setItemW(int value,int position){return setItemWH("width",value,position);}
+bool setTaskW(int value, int position){return setItemWH("maxwidth",value,position);}
+bool setItemWH(std::string attribute, int value,int position){
+	debug_out("bool setItemWH(std::string "+attribute+", int value,int position)");
+	std::string val=linuxcommon::convert_num_to_string(value);
+	return setItemWH(attribute,val,position);
+}
+bool setItemWH(std::string attribute, std::string value,int position){
+	debug_out("bool setItemWH(std::string "+attribute+", std::string "+value+",int position)");
+	return setAttribute(getTraySubElement(position),attribute,value);
+}
+bool TRUEorFALSE(std::string boolean){
+	if(boolean.compare("true")==0){return true;}
 	return false;
 }
 bool toomanypanels(){
@@ -313,6 +349,20 @@ void addPanel(){
     if(!setAttribute(parseNodes(panels,"Tray"),"valign",valign)){errorOUT("FAILED to set valign");}
     if(!setAttribute(parseNodes(panels,"Tray"),"halign",halign)){errorOUT("FAILED to set halign");}
     if(!setAttribute(parseNodes(panels,"Tray"),"border","false")){errorOUT("FAILED to set border");}
+}
+void addSpacer(double w, double h, int position){
+	std::string width=linuxcommon::convert_num_to_string(w);
+	std::string height=linuxcommon::convert_num_to_string(h);
+	debug_out("void addSpacer(double "+width+", double "+height+")");
+	addSubElement(currentPanel(),"Tray","Spacer");
+	if(w>0.0){
+		setAttribute(getTraySubElement(position),"width",width);
+		//add width
+	}
+	if(h>0.0){
+		//add height
+		setAttribute(getTraySubElement(position),"height",height);
+	}
 }
 void addTaskList(){
 	debug_out("void addTaskList()");
@@ -604,6 +654,7 @@ void new_panel_items(Fl_Browser *o){
 	std::string MENU=gettext("Menu");
 	std::string DESKSWITCH=gettext("Desktop Switcher");
 	std::string LAUNCHER=gettext("Launcher");
+	std::string SPACER=gettext("Spacer");
 	o->add(MENU.c_str());
 	o->add(CLOCK.c_str());
 	o->add(DESKSWITCH.c_str());
@@ -611,6 +662,7 @@ void new_panel_items(Fl_Browser *o){
 	o->add(RUNNINGAPPLIST.c_str());
 	o->add(LAUNCHER.c_str());
 	o->add(SWALLOW.c_str());
+	o->add(SPACER.c_str());
 }
 void num_desktop_wh_CB(std::string whichone, int value,Fl_Value_Input* num_desktop_w, Fl_Value_Input* num_desktop_h){
 	debug_out("void num_desktop_wh_cb(std::string "+whichone+", int value)");

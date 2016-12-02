@@ -55,6 +55,13 @@ std::string getLabelMenu(std::string item);
 std::string getNextPanelPosition();
 std::string getThisPanelPosition();
 std::string Menu_Label(int num);
+std::string getItemVal(int position, std::string attribute);
+//double
+double getItemWH(int position, std::string attribute);
+double setTaskW(int position);
+double getItemW(int position);
+double getTaskW(int position);
+double getItemH(int position);
 //unsigned int
 unsigned int getActiveBackground(unsigned int c,std::string element);
 unsigned int getBackground(unsigned int c,std::string element);
@@ -67,6 +74,7 @@ int getBorder();
 int getCoordinate(std::string xy);
 int getHeight();
 int getWidth();
+int taskLabeled(int position);
 //float
 float getOpacity(std::string element);
 //bool
@@ -77,6 +85,12 @@ bool addButton(std::string icon,std::string execLine,std::string popup,int borde
 bool add_new_shortcut(Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Input* tooltip,Fl_Box* icon_name,int border);
 bool addShortcut(std::string icon,std::string execLine,std::string popup,int border);
 bool style_gone();
+bool setTaskW(int value, int position);
+bool setItemH(int value,int position);
+bool setItemW(int value,int position);
+bool setItemWH(std::string attribute, int value,int position);
+bool setItemWH(std::string attribute, std::string value,int position);
+bool TRUEorFALSE(std::string boolean);
 bool toomanypanels();
 //void
 //         A
@@ -87,6 +101,7 @@ void addNetworkMonitor();
 void add_new_menu();
 void addPager();
 void addPanel();
+void addSpacer(double w, double h, int position);
 void addTaskList();
 void addVolume();
 void app_command_CB(Fl_Input* o, Fl_Input* app_command);

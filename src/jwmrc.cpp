@@ -2119,6 +2119,7 @@ void populateApps(Fl_Browser*o){
 	std::string MENU=gettext("Menu");
 	std::string DESKSWITCH=gettext("Desktop Switcher");
 	std::string LAUNCHER=gettext("Launcher");
+	std::string SPACER=gettext("Spacer");
     for (node=node.first_child();node;node=node.next_sibling()){
 		std::string text=node.name();
 		std::string add_text;
@@ -2165,6 +2166,7 @@ void populateApps(Fl_Browser*o){
 			add_text+=temp;
 		}
 		else if(text.compare("Clock")==0){add_text=CLOCK;}
+		else if (text.compare("Spacer")==0){add_text=SPACER;}
 		else{add_text=text;}
 		if(add_text.compare("")!=0){o->add(add_text.c_str());}
 		add_text="";

@@ -53,6 +53,7 @@
 #include <FL/Fl_Value_Output.H>
 
 class PanelUI {
+  int BUTTON_NUM; 
 public:
   void clear_shortcuts();
   void display(std::string filename);
@@ -336,6 +337,44 @@ public:
 private:
   inline void cb_task_fg_color_i(Fl_Button*, void*);
   static void cb_task_fg_color(Fl_Button*, void*);
+  inline void cb_Max_i(Fl_Value_Input*, void*);
+  static void cb_Max(Fl_Value_Input*, void*);
+  inline void cb_Height_i(Fl_Value_Input*, void*);
+  static void cb_Height(Fl_Value_Input*, void*);
+  inline void cb_Labeled_i(Fl_Check_Button*, void*);
+  static void cb_Labeled(Fl_Check_Button*, void*);
+public:
+  Fl_Double_Window* config_button_window(int input_num);
+  Fl_Double_Window *conf_button_window;
+  Fl_Input *button_label;
+  Fl_Input *button_icon_name;
+  Fl_Button *button_icon_view;
+private:
+  inline void cb_button_icon_view_i(Fl_Button*, void*);
+  static void cb_button_icon_view(Fl_Button*, void*);
+  static unsigned char menu_Mouse_i18n_done;
+  static Fl_Menu_Item menu_Mouse[];
+  inline void cb_11_i(Fl_Menu_*, void*);
+  static void cb_11(Fl_Menu_*, void*);
+  inline void cb_21_i(Fl_Menu_*, void*);
+  static void cb_21(Fl_Menu_*, void*);
+  inline void cb_31_i(Fl_Menu_*, void*);
+  static void cb_31(Fl_Menu_*, void*);
+public:
+  Fl_Value_Output *button_val;
+  Fl_Input *button_prog;
+  Fl_Button *prog_conf_gear;
+private:
+  inline void cb_prog_conf_gear_i(Fl_Button*, void*);
+  static void cb_prog_conf_gear(Fl_Button*, void*);
+public:
+  Fl_Output *button_menu;
+  Fl_Button *menu_conf_gear;
+private:
+  inline void cb_menu_conf_gear_i(Fl_Button*, void*);
+  static void cb_menu_conf_gear(Fl_Button*, void*);
+  inline void cb_OK4_i(Fl_Button*, void*);
+  static void cb_OK4(Fl_Button*, void*);
 public:
   Fl_Double_Window* config_clock_window();
   Fl_Double_Window *conf_clock_window;
@@ -353,15 +392,15 @@ private:
   static void cb_Year(Fl_Menu_*, void*);
   inline void cb_Advanced_i(Fl_Menu_*, void*);
   static void cb_Advanced(Fl_Menu_*, void*);
-  inline void cb_OK4_i(Fl_Button*, void*);
-  static void cb_OK4(Fl_Button*, void*);
+  inline void cb_OK5_i(Fl_Button*, void*);
+  static void cb_OK5(Fl_Button*, void*);
 public:
   Fl_Output *clock_displayer;
   Fl_Double_Window* config_indicator_window();
   Fl_Double_Window *conf_indicator_window;
 private:
-  inline void cb_OK5_i(Fl_Button*, void*);
-  static void cb_OK5(Fl_Button*, void*);
+  inline void cb_OK6_i(Fl_Button*, void*);
+  static void cb_OK6(Fl_Button*, void*);
 public:
   Fl_Browser *indicator_browser;
 private:
@@ -374,8 +413,8 @@ public:
   Fl_Double_Window *conf_manual_window;
   Fl_Input *manually_in;
 private:
-  inline void cb_OK6_i(Fl_Button*, void*);
-  static void cb_OK6(Fl_Button*, void*);
+  inline void cb_OK7_i(Fl_Button*, void*);
+  static void cb_OK7(Fl_Button*, void*);
 public:
   Fl_Input *label_input;
 private:
@@ -388,8 +427,8 @@ public:
   Fl_Double_Window* config_menu_window(std::string file);
   Fl_Double_Window *conf_menu_window;
 private:
-  inline void cb_OK7_i(Fl_Button*, void*);
-  static void cb_OK7(Fl_Button*, void*);
+  inline void cb_OK8_i(Fl_Button*, void*);
+  static void cb_OK8(Fl_Button*, void*);
 public:
   Fl_Input *app_menu;
   Fl_Button *icon_view;
@@ -403,11 +442,11 @@ private:
   inline void cb_8_i(Fl_Button*, void*);
   static void cb_8(Fl_Button*, void*);
 public:
-  Fl_Double_Window* config_swallow_window();
+  Fl_Double_Window* config_swallow_window(int input_num);
   Fl_Double_Window *conf_swallow_window;
 private:
-  inline void cb_OK8_i(Fl_Button*, void*);
-  static void cb_OK8(Fl_Button*, void*);
+  inline void cb_OK9_i(Fl_Button*, void*);
+  static void cb_OK9(Fl_Button*, void*);
 public:
   Fl_Input *swallow_name;
 private:
@@ -418,12 +457,16 @@ public:
 private:
   inline void cb_swallow_config_i(Fl_Input*, void*);
   static void cb_swallow_config(Fl_Input*, void*);
+  inline void cb_Width_i(Fl_Value_Input*, void*);
+  static void cb_Width(Fl_Value_Input*, void*);
+  inline void cb_Height1_i(Fl_Value_Input*, void*);
+  static void cb_Height1(Fl_Value_Input*, void*);
 public:
   Fl_Double_Window* config_switcher_window();
   Fl_Double_Window *conf_switcher;
 private:
-  inline void cb_OK9_i(Fl_Button*, void*);
-  static void cb_OK9(Fl_Button*, void*);
+  inline void cb_OKa_i(Fl_Button*, void*);
+  static void cb_OKa(Fl_Button*, void*);
   inline void cb_Active_i(Fl_Button*, void*);
   static void cb_Active(Fl_Button*, void*);
   inline void cb_Active1_i(Fl_Button*, void*);
@@ -481,8 +524,8 @@ public:
   Fl_Double_Window* new_panel_window();
   Fl_Double_Window *new_panel;
 private:
-  inline void cb_OKa_i(Fl_Button*, void*);
-  static void cb_OKa(Fl_Button*, void*);
+  inline void cb_OKb_i(Fl_Button*, void*);
+  static void cb_OKb(Fl_Button*, void*);
 public:
   Fl_Double_Window* no_config();
   void add_item();
@@ -498,40 +541,26 @@ public:
   void remove_indicator();
   void save_user_clock();
   void change_panel_position(std::string position);
-  Fl_Double_Window* config_button_window(int input_num);
-  Fl_Double_Window *conf_button_window;
-  Fl_Input *button_label;
-  Fl_Input *button_icon_name;
-  Fl_Button *button_icon_view;
-private:
-  inline void cb_button_icon_view_i(Fl_Button*, void*);
-  static void cb_button_icon_view(Fl_Button*, void*);
-  static unsigned char menu_Mouse_i18n_done;
-  static Fl_Menu_Item menu_Mouse[];
-  inline void cb_11_i(Fl_Menu_*, void*);
-  static void cb_11(Fl_Menu_*, void*);
-  inline void cb_21_i(Fl_Menu_*, void*);
-  static void cb_21(Fl_Menu_*, void*);
-  inline void cb_31_i(Fl_Menu_*, void*);
-  static void cb_31(Fl_Menu_*, void*);
-public:
-  Fl_Value_Output *button_val;
-  Fl_Input *button_prog;
-  Fl_Button *prog_conf_gear;
-private:
-  inline void cb_prog_conf_gear_i(Fl_Button*, void*);
-  static void cb_prog_conf_gear(Fl_Button*, void*);
-public:
-  Fl_Output *button_menu;
-  Fl_Button *menu_conf_gear;
-private:
-  inline void cb_menu_conf_gear_i(Fl_Button*, void*);
-  static void cb_menu_conf_gear(Fl_Button*, void*);
-  inline void cb_OKb_i(Fl_Button*, void*);
-  static void cb_OKb(Fl_Button*, void*);
-public:
   void get_button_stuff(int button);
   void get_tray_element_attrib(Fl_Input *o, std::string attribute,int num);
   void save_traybutton();
+  Fl_Double_Window* spacer_config();
+  Fl_Double_Window *conf_spacer_win;
+private:
+  inline void cb_OKc_i(Fl_Button*, void*);
+  static void cb_OKc(Fl_Button*, void*);
+  inline void cb_Width1_i(Fl_Value_Input*, void*);
+  static void cb_Width1(Fl_Value_Input*, void*);
+  inline void cb_Height2_i(Fl_Value_Input*, void*);
+  static void cb_Height2(Fl_Value_Input*, void*);
+public:
+  Fl_Double_Window* add_spacer();
+  Fl_Double_Window *add_spacer_win;
+private:
+  inline void cb_OKd_i(Fl_Button*, void*);
+  static void cb_OKd(Fl_Button*, void*);
+public:
+  Fl_Value_Input *spacer_w;
+  Fl_Value_Input *spacer_h;
 };
 #endif

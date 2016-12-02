@@ -1133,6 +1133,15 @@ LINUX_COMMON__NS_BEGIN
 		return false;
 		
 	}
+	//DOUBLE FUNCTION
+	double convert_string_to_double(std::string num){
+		if(num.compare("")==0){return 0.0;}
+		std::stringstream out;
+		out << num;
+		double integer;
+		out >> integer;
+		return integer;
+	}
 	//INTEGER FUNCTIONS
 	unsigned int convert_string_to_number(const char* num){
 		if(num==NULL){return 0;}

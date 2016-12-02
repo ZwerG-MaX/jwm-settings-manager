@@ -65,6 +65,8 @@ decl {//\#include "jwm-menu.h"} {public global
 
 class PanelUI {open
 } {
+  decl {int BUTTON_NUM;} {private local
+  }
   Function {clear_shortcuts()} {} {
     code {app_command->value("");
 app_command->redraw();
@@ -77,8 +79,7 @@ icon_name->redraw();} {}
     code {if(filename.compare("")==0){return;}
 makeWidgetIcon(filename,icon_view,48);} {}
   }
-  Function {make_window()} {open
-  } {
+  Function {make_window()} {} {
     code {load();} {}
     Fl_Window panel_window {
       label {Panel Settings} open
@@ -569,8 +570,7 @@ Possible  values  are "left", "right", "top", "bottom", and "off".} xywh {10 380
       }
     }
   }
-  Function {add_indicator()} {open
-  } {
+  Function {add_indicator()} {} {
     Fl_Window indicator_win {
       label {Add Indicator} open
       xywh {552 213 155 185} type Double hide
@@ -601,8 +601,7 @@ Possible  values  are "left", "right", "top", "bottom", and "off".} xywh {10 380
       }
     }
   }
-  Function {add_to_panel()} {open
-  } {
+  Function {add_to_panel()} {} {
     Fl_Window add_2_panel {
       label {Add to Panel} open
       xywh {281 231 175 265} type Double hide
@@ -633,8 +632,7 @@ refresh_app_browser(app_browser);}
       }
     }
   }
-  Function {clock_window()} {open
-  } {
+  Function {clock_window()} {} {
     Fl_Window clock_config_window {
       label {Configure Clock} open
       xywh {749 116 460 540} type Double hide resizable
@@ -689,8 +687,7 @@ clock_style->insert(item.c_str());
       }
     }
   }
-  Function {clock_notes_window()} {open
-  } {
+  Function {clock_notes_window()} {} {
     Fl_Window clock_info {
       label Notes open
       xywh {691 194 350 435} type Double hide resizable
@@ -743,25 +740,133 @@ if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;}}
   } {
     Fl_Window conf_applist_window {
       label {Running App List} open
-      xywh {739 651 235 70} type Double hide
+      xywh {808 259 350 65} type Double hide
       code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
     } {
       Fl_Button {} {
         label OK
         callback {conf_applist_window->hide();}
-        xywh {165 35 60 25} box FLAT_BOX color 61 selection_color 59 labelcolor 7
+        xywh {285 35 60 25} box FLAT_BOX color 61 selection_color 59 labelcolor 7
       }
       Fl_Button task_bg_color {
         label {Open Apps}
         callback {one_color(o,"TaskListStyle");}
         xywh {95 35 60 25} box FLAT_BOX color 23 align 4
-        code0 {getColorFromItem(true,"TaskListStyle","Background",o);}
+        code0 {if(!style_gone()){getColorFromItem(true,"TaskListStyle","Background",o);}}
+        code1 {else{o->deactivate();}}
       }
       Fl_Button task_fg_color {
         label {Current App}
         callback {one_color_active(o,"TaskListStyle");}
         xywh {95 5 60 25} box FLAT_BOX color 23 align 4
-        code0 {getColorFromItem(true,"TaskListStyle","Foreground",o);}
+        code0 {if(!style_gone()){getColorFromItem(true,"TaskListStyle","Foreground",o);}}
+        code1 {else{o->deactivate();}}
+      }
+      Fl_Value_Input {} {
+        label {Max Width}
+        callback {if(!setTaskW(BUTTON_NUM,o->value())){
+  errorOUT("Did not set max width correctly");
+}}
+        tooltip {The  maximum  width  of  an item in the task list. 0 indicates no maximum.   The  default is 0} xywh {240 5 25 25} box FLAT_BOX
+        code0 {o->value(getTaskW(BUTTON_NUM));}
+      }
+      Fl_Value_Input {} {
+        label Height
+        callback {if(!setItemH(BUTTON_NUM,o->value())){
+  errorOUT("Did not set height correctly");
+}}
+        tooltip {The height of an item in the  task  list.  0 indicates  that  the  height should be taken from the tray.  The default is 0.} xywh {320 5 25 25} box FLAT_BOX selection_color 72
+        code0 {o->value(getItemH(BUTTON_NUM));}
+      }
+      Fl_Check_Button {} {
+        label Labeled
+        callback {int val=o->value();
+std::string retval="true";
+if(val==0){retval="false";}
+if(!setItemWH("labeled",retval,BUTTON_NUM)){
+  errorOUT("Labeled Not set...");
+}}
+        tooltip {Determines if a label is shown for items  in the task list.  The default is true.} xywh {170 35 85 25} down_box GTK_DOWN_BOX value 1 color 7 selection_color 63
+        code0 {o->value(taskLabeled(BUTTON_NUM));}
+      }
+    }
+  }
+  Function {config_button_window(int input_num)} {} {
+    code {BUTTON_NUM=input_num;} {}
+    Fl_Window conf_button_window {
+      label {Configure Button} open
+      xywh {744 92 285 150} type Double labelfont 14 hide
+      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
+    } {
+      Fl_Input button_label {
+        label Label
+        tooltip {Text for the Panel Button} xywh {70 0 155 25} box FLAT_BOX color 55 selection_color 72 when 1
+        code0 {get_tray_element_attrib(o,"label",BUTTON_NUM);}
+      }
+      Fl_Input button_icon_name {
+        label Icon
+        tooltip {The icon file name} xywh {70 30 155 25} box FLAT_BOX color 23 selection_color 80
+        code0 {get_tray_element_attrib(o,"icon",BUTTON_NUM);}
+      }
+      Fl_Button button_icon_view {
+        callback {std::string iconFILE=choose_an_icon();
+if(iconFILE.compare("")!=0)makeWidgetIcon(iconFILE,o,48);}
+        tooltip {Choose an Icon} xywh {230 5 50 50} box FLAT_BOX color 23 align 644
+        code1 {const char *file=button_icon_name->value();}
+        code2 {if(file!=NULL)makeWidgetIcon(file,o,48);}
+      }
+      Fl_Menu_Button {} {
+        label {Mouse Button}
+        xywh {70 60 125 25} box FLAT_BOX color 23 selection_color 80
+      } {
+        MenuItem {} {
+          label 1
+          callback {get_button_stuff(1);}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label 2
+          callback {get_button_stuff(2);}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label 3
+          callback {get_button_stuff(3);}
+          xywh {0 0 100 20}
+        }
+      }
+      Fl_Value_Output button_val {
+        xywh {205 60 40 25} box FLAT_BOX color 23 selection_color 80
+      }
+      Fl_Input button_prog {
+        label Program
+        tooltip {Text for the Panel Button} xywh {70 90 155 25} box FLAT_BOX color 55 selection_color 72 when 1 deactivate
+      }
+      Fl_Button prog_conf_gear {
+        callback {std::string program=choose_a_program();
+if(program.compare("")==0){
+  button_prog->activate();
+  std::string result="exec:"+program;
+  button_prog->value(result.c_str());
+  button_prog->redraw();
+}}
+        tooltip {Configure the program} image {custom_buttons/gear16.png} xywh {230 90 25 25} box FLAT_BOX color 23
+      }
+      Fl_Output button_menu {
+        label Menu
+        tooltip {The root menu the button is tied to} xywh {70 120 25 25} box FLAT_BOX color 55 deactivate
+      }
+      Fl_Button menu_conf_gear {
+        callback {const char* tmpTST =button_menu->value();
+button_menu->activate();
+if(tmpTST!=NULL){showMenu(tmpTST);}
+else{showMenu();}}
+        tooltip {Configure the menu} image {custom_buttons/gear16.png} xywh {100 120 25 25} box FLAT_BOX color 23
+      }
+      Fl_Button {} {
+        label OK
+        callback {save_traybutton();}
+        xywh {220 120 60 25} box FLAT_BOX color 69 labelfont 1 labelcolor 7
       }
     }
   }
@@ -845,8 +950,7 @@ clock_displayer->redraw();}
       }
     }
   }
-  Function {config_indicator_window()} {open
-  } {
+  Function {config_indicator_window()} {} {
     Fl_Window conf_indicator_window {
       label {Configure Indicators} open
       xywh {743 256 260 215} type Double hide
@@ -921,8 +1025,7 @@ if(iconFILE.compare("")!=0){
       }
     }
   }
-  Function {config_menu_window(std::string file)} {open
-  } {
+  Function {config_menu_window(std::string file)} {} {
     Fl_Window conf_menu_window {
       label {Configure Menu} open
       xywh {810 232 285 150} type Double labelfont 14 hide
@@ -967,8 +1070,9 @@ else{showMenu();}}
       }
     }
   }
-  Function {config_swallow_window()} {open
+  Function {config_swallow_window(int input_num)} {open
   } {
+    code {BUTTON_NUM=input_num;} {}
     Fl_Window conf_swallow_window {
       label {Configure Swallowed Application} open
       xywh {68 244 465 70} type Double hide
@@ -999,17 +1103,25 @@ setElementText(currentPanel(),"Tray","Swallow",name)}
       }
       Fl_Value_Input {} {
         label Width
+        callback {if(!setItemH(BUTTON_NUM,o->value())){
+  errorOUT("Did not set width correctly");
+}}
         tooltip {The  width of the swallowed program. 0 indicates
 that the width  should  be  determined
 from  the  tray  and size requested from the
-program. 0 is the default.} xywh {285 40 25 25} box FLAT_BOX selection_color 72 deactivate
+program. 0 is the default.} xywh {285 40 25 25} box FLAT_BOX selection_color 72
+        code0 {o->value(getItemW(BUTTON_NUM));}
       }
       Fl_Value_Input {} {
         label Height
+        callback {if(!setItemW(BUTTON_NUM,o->value())){
+  errorOUT("Did not set height correctly");
+}}
         tooltip {The  height of the swallowed program. 0 indicates
 that the height  should  be  determined
 from  the  tray  and size requested from the
-program. 0 is the default.} xywh {365 40 25 25} box FLAT_BOX selection_color 72 deactivate
+program. 0 is the default.} xywh {365 40 25 25} box FLAT_BOX selection_color 72
+        code0 {o->value(getItemH(BUTTON_NUM));}
       }
     }
   }
@@ -1078,8 +1190,7 @@ num_desktop_wh_CB("height",height,num_desktop_w,num_desktop_h);}
       }
     }
   }
-  Function {make_shortcut_window()} {open
-  } {
+  Function {make_shortcut_window()} {} {
     Fl_Window shortcut_window {
       label {Choose an application to add} open
       xywh {682 72 305 335} type Double hide resizable
@@ -1159,8 +1270,7 @@ if(iconFILE.compare("")!=0){
       }
     }
   }
-  Function {new_panel_window()} {open
-  } {
+  Function {new_panel_window()} {} {
     Fl_Window new_panel {
       label {Add a Panel} open
       xywh {738 525 235 85} type Double hide
@@ -1192,6 +1302,7 @@ if(iconFILE.compare("")!=0){
   Function {add_item()} {open
   } {
     code {unsigned int line = panel_items_browser->value();
+BUTTON_NUM=app_browser->value();
 switch (line){
   case 1:
     //Menu
@@ -1226,11 +1337,15 @@ switch (line){
     //app.
     std::cout<<"swallow"<<std::endl;
     break;
+  case 8:
+    add_spacer()->show();
+    //Spacer
+    break;
 }
-populateApps(app_browser);} {}
+populateApps(app_browser);} {selected
+    }
   }
-  Function {cancel_button()} {open
-  } {
+  Function {cancel_button()} {} {
     code {setJSMItem("panel","1");
 cancel();
 panel_window->hide();
@@ -1273,8 +1388,10 @@ std::string MENU=gettext("Menu");
 std::string DESKSWITCH=gettext("Desktop Switcher");
 std::string LAUNCHER=gettext("Launcher");
 std::string rootMenu="root:";
+std::string SPACER=gettext("Spacer");
 int vernum=JWMversion();
 int whatone=app_browser->value();
+BUTTON_NUM=app_browser->value();
 unsigned found = whichItem.find(MENU);
 if(found<whichItem.length()){
   if(vernum<230){
@@ -1295,10 +1412,7 @@ if(found<whichItem.length()){
 }
 else{
   if(whichItem.compare(DESKSWITCH)==0){config_switcher_window()->show();}
-  else if(whichItem.compare(RUNNINGAPPLIST)==0){
-    if(!style_gone()){config_applist_window()->show();}
-    else{no_config()->show();}
-  }
+  else if(whichItem.compare(RUNNINGAPPLIST)==0){config_applist_window()->show();}
   else if(whichItem.compare(INDICATORS)==0){config_indicator_window()->show();}
   else if(whichItem.compare(CLOCK)==0){config_clock_window()->show();}
   else if(whichItem.find(LAUNCHER)<whichItem.length()){
@@ -1315,8 +1429,9 @@ else{
       config_button_window(whatone)->show();
     }
   }
+  else if(whichItem.compare(SPACER)==0){spacer_config()->show();}
   else if(whichItem.compare("")==0){no_config()->show();}
-  else if(whichItem.find(SWALLOW)<whichItem.length()){config_swallow_window()->show();}
+  else if(whichItem.find(SWALLOW)<whichItem.length()){config_swallow_window(whatone)->show();}
   else{
     configure_manually_window("")->show();
     manually_in->value(whichItem.c_str());
@@ -1394,86 +1509,6 @@ if(hval.compare("")!=0){
   halign->redraw();
 }} {}
   }
-  Function {config_button_window(int input_num)} {open
-  } {
-    code {int BUTTON_NUM=input_num;} {}
-    Fl_Window conf_button_window {
-      label {Configure Button} open
-      xywh {744 92 285 150} type Double labelfont 14
-      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
-    } {
-      Fl_Input button_label {
-        label Label
-        tooltip {Text for the Panel Button} xywh {70 0 155 25} box FLAT_BOX color 55 selection_color 72 when 1
-        code0 {get_tray_element_attrib(o,"label",BUTTON_NUM);}
-      }
-      Fl_Input button_icon_name {
-        label Icon
-        tooltip {The icon file name} xywh {70 30 155 25} box FLAT_BOX color 23 selection_color 80
-        code0 {get_tray_element_attrib(o,"icon",BUTTON_NUM);}
-      }
-      Fl_Button button_icon_view {
-        callback {std::string iconFILE=choose_an_icon();
-if(iconFILE.compare("")!=0)makeWidgetIcon(iconFILE,o,48);}
-        tooltip {Choose an Icon} xywh {230 5 50 50} box FLAT_BOX color 23 align 644
-        code1 {const char *file=button_icon_name->value();}
-        code2 {if(file!=NULL)makeWidgetIcon(file,o,48);}
-      }
-      Fl_Menu_Button {} {
-        label {Mouse Button}
-        xywh {70 60 125 25} box FLAT_BOX color 23 selection_color 80
-      } {
-        MenuItem {} {
-          label 1
-          callback {get_button_stuff(1);}
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label 2
-          callback {get_button_stuff(2);}
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label 3
-          callback {get_button_stuff(3);}
-          xywh {0 0 100 20}
-        }
-      }
-      Fl_Value_Output button_val {
-        xywh {205 60 40 25} box FLAT_BOX color 23 selection_color 80
-      }
-      Fl_Input button_prog {
-        label Program
-        tooltip {Text for the Panel Button} xywh {70 90 155 25} box FLAT_BOX color 55 selection_color 72 when 1 deactivate
-      }
-      Fl_Button prog_conf_gear {
-        callback {std::string program=choose_a_program();
-if(program.compare("")==0){
-  button_prog->activate();
-  std::string result="exec:"+program;
-  button_prog->value(result.c_str());
-  button_prog->redraw();
-}}
-        tooltip {Configure the program} image {custom_buttons/gear16.png} xywh {230 90 25 25} box FLAT_BOX color 23
-      }
-      Fl_Output button_menu {
-        label Menu
-        tooltip {The root menu the button is tied to} xywh {70 120 25 25} box FLAT_BOX color 55 deactivate
-      }
-      Fl_Button menu_conf_gear {
-        callback {const char* tmpTST =button_menu->value();
-button_menu->activate();
-if(tmpTST!=NULL){showMenu(tmpTST);}
-else{showMenu();}} selected
-        tooltip {Configure the menu} image {custom_buttons/gear16.png} xywh {100 120 25 25} box FLAT_BOX color 23
-      }
-      Fl_Button {} {
-        label OK
-        callback {save_traybutton();}
-        xywh {220 120 60 25} box FLAT_BOX color 69 labelfont 1 labelcolor 7
-      }
-    }
-  }
   Function {get_button_stuff(int button)} {open
   } {
     code {std::string num;
@@ -1527,5 +1562,56 @@ int masker=button_val->value();
 if(masker>0){MASK=linuxcommon::convert_num_to_string(masker);}
 int whichbutton=app_browser->value();
 editButton(whichbutton,MENU,PROG,ICON,LABEL,MASK);} {}
+  }
+  Function {spacer_config()} {open
+  } {
+    Fl_Window conf_spacer_win {
+      label Spacer open
+      xywh {548 301 245 50} type Double hide
+    } {
+      Fl_Button {} {
+        label OK
+        callback {conf_spacer_win->hide();}
+        xywh {175 10 60 25} box FLAT_BOX color 61 selection_color 59 labelcolor 7
+      }
+      Fl_Value_Input {} {
+        label Width
+        callback {if(!setItemW(BUTTON_NUM,o->value())){
+  errorOUT("Did not set max width correctly");
+}}
+        tooltip {The width of the spacer (0 to fill all available space).  0 is the default.} xywh {55 10 25 25} box FLAT_BOX
+        code0 {o->value(getItemW(BUTTON_NUM));}
+      }
+      Fl_Value_Input {} {
+        label Height
+        callback {if(!setItemH(BUTTON_NUM,o->value())){
+  errorOUT("Did not set height correctly");
+}}
+        tooltip {The height of the spacer (0 to fill all available space).  0 is the default.} xywh {135 10 25 25} box FLAT_BOX selection_color 72
+        code0 {o->value(getItemH(BUTTON_NUM));}
+      }
+    }
+  }
+  Function {add_spacer()} {open
+  } {
+    Fl_Window add_spacer_win {
+      label Spacer open
+      xywh {558 311 245 50} type Double hide
+    } {
+      Fl_Button {} {
+        label OK
+        callback {addSpacer(spacer_w->value(),spacer_h->value(),BUTTON_NUM);
+add_spacer_win->hide();}
+        xywh {175 10 60 25} box FLAT_BOX color 61 selection_color 59 labelcolor 7
+      }
+      Fl_Value_Input spacer_w {
+        label Width
+        tooltip {The width of the spacer (0 to fill all available space).  0 is the default.} xywh {55 10 25 25} box FLAT_BOX
+      }
+      Fl_Value_Input spacer_h {
+        label Height
+        tooltip {The height of the spacer (0 to fill all available space).  0 is the default.} xywh {135 10 25 25} box FLAT_BOX selection_color 72
+      }
+    }
   }
 } 

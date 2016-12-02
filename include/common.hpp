@@ -120,6 +120,8 @@ namespace linuxcommon{
 	int getProcIdByName(std::string procName);
 	int run_a_program(std::string program);
 	int run_a_program_in_background(std::string program);
+	//double
+	double convert_string_to_double(std::string num);
 	//unsigned int
 	unsigned int convert_string_to_number(const char* num);
 	unsigned int items_in_path();
