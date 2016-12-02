@@ -67,6 +67,27 @@ class PanelUI {open
 } {
   decl {int BUTTON_NUM;} {private local
   }
+  Function {add_spacer()} {} {
+    Fl_Window add_spacer_win {
+      label Spacer open
+      xywh {558 311 245 50} type Double hide
+    } {
+      Fl_Button {} {
+        label OK
+        callback {addSpacer(spacer_w->value(),spacer_h->value(),BUTTON_NUM);
+add_spacer_win->hide();}
+        xywh {175 10 60 25} box FLAT_BOX color 61 selection_color 59 labelcolor 7
+      }
+      Fl_Value_Input spacer_w {
+        label Width
+        tooltip {The width of the spacer (0 to fill all available space).  0 is the default.} xywh {55 10 25 25} box FLAT_BOX
+      }
+      Fl_Value_Input spacer_h {
+        label Height
+        tooltip {The height of the spacer (0 to fill all available space).  0 is the default.} xywh {135 10 25 25} box FLAT_BOX selection_color 72
+      }
+    }
+  }
   Function {clear_shortcuts()} {} {
     code {app_command->value("");
 app_command->redraw();
@@ -736,8 +757,7 @@ if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;}}
       }
     }
   }
-  Function {config_applist_window()} {open
-  } {
+  Function {config_applist_window()} {} {
     Fl_Window conf_applist_window {
       label {Running App List} open
       xywh {808 259 350 65} type Double hide
@@ -781,21 +801,18 @@ if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;}}
       Fl_Check_Button {} {
         label Labeled
         callback {int val=o->value();
-std::string retval="true";
-if(val==0){retval="false";}
-if(!setItemWH("labeled",retval,BUTTON_NUM)){
-  errorOUT("Labeled Not set...");
-}}
+setItemBool(val,BUTTON_NUM);}
         tooltip {Determines if a label is shown for items  in the task list.  The default is true.} xywh {170 35 85 25} down_box GTK_DOWN_BOX value 1 color 7 selection_color 63
         code0 {o->value(taskLabeled(BUTTON_NUM));}
       }
     }
   }
-  Function {config_button_window(int input_num)} {} {
+  Function {config_button_window(int input_num)} {open
+  } {
     code {BUTTON_NUM=input_num;} {}
     Fl_Window conf_button_window {
       label {Configure Button} open
-      xywh {744 92 285 150} type Double labelfont 14 hide
+      xywh {234 294 285 150} type Double labelfont 14 hide
       code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
     } {
       Fl_Input button_label {
@@ -870,56 +887,41 @@ else{showMenu();}}
       }
     }
   }
-  Function {config_clock_window()} {} {
+  Function {config_clock_window()} {open
+  } {
     Fl_Window conf_clock_window {
       label {Configure Clock} open
-      xywh {720 88 305 70} type Double hide
-      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
+      xywh {720 88 340 125} type Double
+      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
     } {
       Fl_Menu_Button clock_menu {
         label {Clock Format} open
-        xywh {5 5 130 25} box FLAT_BOX color 23 selection_color 23
+        xywh {5 5 110 25} box FLAT_BOX color 23 selection_color 23
       } {
         MenuItem {} {
           label {Day name Month Day 12 Hour}
-          callback {changeClock("Day");
-std::string result = getClock();
-clock_displayer->redraw_label();
-clock_displayer->copy_label(result.c_str());
-clock_displayer->redraw();}
+          callback {change_clock("Day");}
           tooltip {%a, %e %b %l:%M %p} xywh {35 35 100 20}
           code0 {const char* text=gettext("Day name Month Day 12 Hour");}
           code1 {o->label(text);}
         }
         MenuItem {} {
           label {24 Hour Clock}
-          callback {changeClock("24");
-std::string result = getClock();
-clock_displayer->redraw_label();
-clock_displayer->copy_label(result.c_str());
-clock_displayer->redraw();}
+          callback {change_clock("24");}
           tooltip {%H:%M} xywh {35 35 100 20}
           code0 {const char* text=gettext("24 Hour Clock");}
           code1 {o->label(text);}
         }
         MenuItem {} {
           label {12 Hour Clock}
-          callback {changeClock("12");
-std::string result = getClock();
-clock_displayer->redraw_label();
-clock_displayer->copy_label(result.c_str());
-clock_displayer->redraw();}
+          callback {change_clock("12");}
           tooltip {%l:%M %p} xywh {35 35 100 20}
           code0 {const char* text=gettext("12 Hour Clock");}
           code1 {o->label(text);}
         }
         MenuItem {} {
           label {Year Month Day 24 Hour clock}
-          callback {changeClock("Year");
-std::string result = getClock();
-clock_displayer->redraw_label();
-clock_displayer->copy_label(result.c_str());
-clock_displayer->redraw();}
+          callback {change_clock("Year");}
           tooltip {%F %H:%M %p} xywh {35 35 100 20}
           code0 {const char* text=gettext("Year Month Day 24 Hour clock");}
           code1 {o->label(text);}
@@ -932,21 +934,90 @@ clock_displayer->redraw();}
           code1 {o->label(text);}
         }
       }
+      Fl_Output clock_displayer {
+        xywh {120 5 120 25} box FLAT_BOX align 1
+        code1 {std::string clock_text = getClock();}
+        code2 {o->value(clock_text.c_str());//copy_label(clock_text.c_str());}
+        code3 {o->redraw();//_label();}
+      }
+      Fl_Menu_Button {} {
+        label {Time Zone} open
+        tooltip {Optional. The time zone of the clock.} xywh {5 35 110 25} box FLAT_BOX color 23 deactivate
+      } {}
+      Fl_Output {} {
+        xywh {120 35 120 25} box FLAT_BOX deactivate
+      }
+      Fl_Value_Input {} {
+        label Width
+        callback {if(!setItemH(BUTTON_NUM,o->value())){
+  errorOUT("Did not set width correctly");
+}}
+        tooltip {The width of the clock. 0 indicates that the width should be determined from the length of the text to be displayed.} xywh {305 5 25 25} box FLAT_BOX selection_color 72
+        code0 {o->value(getItemW(BUTTON_NUM));}
+      }
+      Fl_Value_Input {} {
+        label Height
+        callback {if(!setItemW(BUTTON_NUM,o->value())){
+  errorOUT("Did not set height correctly");
+}}
+        tooltip {The height of the clock. 0 indicates that the height should be determined from the font used.} xywh {305 35 25 25} box FLAT_BOX selection_color 72
+        code0 {o->value(getItemH(BUTTON_NUM));}
+      }
+      Fl_Menu_Button {} {
+        label {Mouse Button} open
+        xywh {5 65 110 25} box FLAT_BOX color 23 selection_color 80
+        code0 {if(JWMversion()<230)o->hide();}
+      } {
+        MenuItem {} {
+          label 1
+          callback {get_clock_button_stuff(1);}
+          xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label 2
+          callback {get_clock_button_stuff(2);}
+          xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label 3
+          callback {get_clock_button_stuff(3);}
+          xywh {10 10 100 20}
+        }
+      }
+      Fl_Value_Output output_button_val {selected
+        xywh {120 65 40 25} box FLAT_BOX color 23 selection_color 80
+        code0 {if(JWMversion()<230)o->hide();}
+      }
+      Fl_Output clock_button_menu {
+        label Menu
+        tooltip {The root menu the Clock is tied to} xywh {215 65 25 25} box FLAT_BOX color 55 deactivate
+      }
+      Fl_Button clock_menu_conf_gear {
+        callback {const char* tmpTST =clock_button_menu->value();
+clock_button_menu->activate();
+if(tmpTST!=NULL){showMenu(tmpTST);}
+else{showMenu();}}
+        tooltip {Configure the menu} image {custom_buttons/gear16.png} xywh {245 65 25 25} box FLAT_BOX color 23
+      }
+      Fl_Input clock_prog {
+        label Program
+        tooltip {Execute a command.} xywh {120 95 120 25} box FLAT_BOX color 55 selection_color 72 when 1 deactivate
+        code0 {current_clock_text();}
+      }
+      Fl_Button clock_prog_conf_gear {
+        callback {std::string program=choose_a_program();
+if(program.compare("")==0){
+  clock_prog->activate();
+  std::string result="exec:"+program;
+  clock_prog->value(result.c_str());
+  clock_prog->redraw();
+}}
+        tooltip {Configure the program} image {custom_buttons/gear16.png} xywh {245 95 25 25} box FLAT_BOX color 23
+      }
       Fl_Button {} {
         label OK
         callback {conf_clock_window->hide();}
-        xywh {235 35 60 30} box FLAT_BOX color 61 labelcolor 7
-      }
-      Fl_Output clock_displayer {
-        xywh {140 30 160 30} box NO_BOX align 1
-        code1 {std::string clock_text = getClock();}
-        code2 {o->copy_label(clock_text.c_str());}
-        code3 {o->redraw_label();}
-      }
-      Fl_Input {} {
-        label {Program to Launch}
-        tooltip {Usually used for a calendar or analog clock} xywh {155 55 185 25} box FLAT_BOX color 23 selection_color 72 hide deactivate
-        code0 {o->value("xclock");}
+        xywh {280 95 55 25} box FLAT_BOX color 61 labelcolor 7
       }
     }
   }
@@ -974,6 +1045,14 @@ clock_displayer->redraw();}
         label {@+}
         callback {add_indicator()->show();}
         xywh {5 180 30 30} box FLAT_BOX color 23
+      }
+      Fl_Value_Input {} {
+        label Width
+        callback {if(!setItemH(BUTTON_NUM,o->value())){
+  errorOUT("Did not set width correctly");
+}}
+        tooltip {The maximum width of an item contained in the dock. This defaults to the width or height of the tray (whichever is smaller).} xywh {150 180 25 25} box FLAT_BOX selection_color 72
+        code0 {o->value(getItemW(BUTTON_NUM));}
       }
     }
   }
@@ -1070,8 +1149,7 @@ else{showMenu();}}
       }
     }
   }
-  Function {config_swallow_window(int input_num)} {open
-  } {
+  Function {config_swallow_window(int input_num)} {} {
     code {BUTTON_NUM=input_num;} {}
     Fl_Window conf_swallow_window {
       label {Configure Swallowed Application} open
@@ -1128,8 +1206,8 @@ program. 0 is the default.} xywh {365 40 25 25} box FLAT_BOX selection_color 72
   Function {config_switcher_window()} {} {
     Fl_Window conf_switcher {
       label {Configure Switcher} open
-      xywh {813 265 215 200} type Double hide
-      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
+      xywh {813 265 215 200} type Double
+      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
     } {
       Fl_Button {} {
         label OK
@@ -1146,27 +1224,27 @@ program. 0 is the default.} xywh {365 40 25 25} box FLAT_BOX selection_color 72
         xywh {90 100 90 30} box FLAT_BOX
         code0 {if(style_gone()){o->hide();}}
       }
-      Fl_Button {} {
+      Fl_Button a_fg {
         label Active
         callback {one_color_Font(o,"PagerStyle");}
         xywh {55 75 75 30} box FLAT_BOX color 23 align 4
         code1 {if(style_gone()){o->hide();}}
         code2 {else{getColorFromItem(true,"PagerStyle","Foreground",o);}}
       }
-      Fl_Button {} {
+      Fl_Button a_bg {
         label Active
         callback {one_color_active(o,"PagerStyle");}
         xywh {55 125 75 30} box FLAT_BOX color 23 align 4
         code1 {if(style_gone()){o->hide();}}
         code2 {else{getColorFromItem(true,"PagerStyle","Background",o);}}
       }
-      Fl_Button {} {
+      Fl_Button t_fg {
         callback {one_color_Font(o,"PagerStyle");}
         xywh {135 75 75 30} box FLAT_BOX color 23
         code1 {if(style_gone()){o->hide();}}
         code2 {else{getColorFromItem(false,"PagerStyle","Foreground",o);}}
       }
-      Fl_Button {} {
+      Fl_Button t_bg {
         callback {one_color(o,"PagerStyle");}
         xywh {135 125 75 30} box FLAT_BOX color 23
         code1 {if(style_gone()){o->hide();}}
@@ -1187,6 +1265,13 @@ num_desktop_wh_CB("height",height,num_desktop_w,num_desktop_h);}
         xywh {190 30 20 25} box FLAT_BOX color 53
         code1 {int height = getIntAttribute("Desktops","height");}
         code2 {o->value(height);}
+      }
+      Fl_Check_Button {} {
+        label Labled
+        callback {int val=o->value();
+setItemBool(val,BUTTON_NUM);}
+        tooltip {Determines if the pager has text labels. Default is false.} xywh {35 165 75 30} down_box GTK_DOWN_BOX color 7 selection_color 63
+        code0 {o->value(taskLabeled(BUTTON_NUM));}
       }
     }
   }
@@ -1299,8 +1384,7 @@ if(iconFILE.compare("")!=0){
       }
     }
   }
-  Function {add_item()} {open
-  } {
+  Function {add_item()} {} {
     code {unsigned int line = panel_items_browser->value();
 BUTTON_NUM=app_browser->value();
 switch (line){
@@ -1342,8 +1426,7 @@ switch (line){
     //Spacer
     break;
 }
-populateApps(app_browser);} {selected
-    }
+populateApps(app_browser);} {}
   }
   Function {cancel_button()} {} {
     code {setJSMItem("panel","1");
@@ -1351,8 +1434,7 @@ cancel();
 panel_window->hide();
 //UI ux;ux.showSettings();} {}
   }
-  Function {change_manual_item(std::string input, std::string old_input)} {open
-  } {
+  Function {change_manual_item(std::string input, std::string old_input)} {} {
     code {std::string tooltip;
 const char* TT=tooltip_label->value();
 if(TT!=NULL)tooltip=TT;
@@ -1364,8 +1446,27 @@ const char* LBL=label_input->value();
 if(LBL!=NULL)label=LBL;
 switchButton(old_input,input,tooltip,icon,label);} {}
   }
-  Function {coordinate(const char* xy, Fl_Value_Input *o, int get1_set2)} {open
-  } {
+  Function {change_panel_position(std::string position)} {} {
+    code {panel_position(position);
+std::string vval=getElementAttribute(currentPanel(),"Tray","valign");
+if(vval.compare("")!=0){
+  valign->value(vval.c_str());
+  halign->redraw();
+}
+std::string hval=getElementAttribute(currentPanel(),"Tray","halign");
+if(hval.compare("")!=0){
+  halign->value(hval.c_str());
+  halign->redraw();
+}} {}
+  }
+  Function {change_clock(std::string clockFMT)} {} {
+    code {changeClock(clockFMT);
+std::string result = getClock();
+//clock_displayer->redraw_label();
+clock_displayer->value(result.c_str());//copy_label(result.c_str());
+clock_displayer->redraw();} {}
+  }
+  Function {coordinate(const char* xy, Fl_Value_Input *o, int get1_set2)} {} {
     code {if(get1_set2 == 1){
   int x = getCoordinate(xy);
   o->value(x);
@@ -1378,8 +1479,7 @@ else{
 std::cerr<<"coordinate() function called incorrectly"<<std::endl;
 }} {}
   }
-  Function {config_Item(std::string whichItem)} {open
-  } {
+  Function {config_Item(std::string whichItem)} {} {
     code {std::string RUNNINGAPPLIST=gettext("Running App List");
 std::string INDICATORS=gettext("Indicators");
 std::string CLOCK=gettext("Clock");
@@ -1438,81 +1538,40 @@ else{
    }
 }} {}
   }
+  Function {current_clock_text()} {open
+  } {
+    code {if(JWMversion()>230)return;
+std::string val = getClockText(BUTTON_NUM);
+if(val.find("exec:")<val.length()){
+  //TODO erase it
+  clock_prog->value(val.c_str());
+  clock_button_menu->value("");
+}
+else if(val.find("root:")<val.length()){
+  
+  clock_prog->value("");
+  val=val.substr(5,std::string::npos);
+  clock_button_menu->value(val.c_str());
+}
+clock_prog->redraw();
+clock_button_menu->redraw();} {}
+  }
   Function {displayAPPicon(std::string filename,Fl_Widget* widget)} {} {
     code {makeWidgetIcon(filename,widget,48);
 //widget->redraw();} {}
   }
-  Function {Menu_CB(int num)} {open
+  Function {get_clock_button_stuff(int button)} {open
   } {
-    code {std::string LABEL = Menu_Label(num);
-panel_chooser->copy_label(LABEL.c_str());
-panel_chooser->redraw();
-populateApps(app_browser);
-//panel_window->hide();} {}
-  }
-  Function {move_up()} {open
-  } {
-    code {unsigned int appLine=app_browser->value();
-unsigned int size =app_browser->size();
-if(appLine <= size && appLine !=0){
-  moveUp(appLine);
-  populateApps(app_browser);
-}
-if(appLine-1 != 0 )app_browser->select(appLine-1);
-else app_browser->select(1);} {}
-  }
-  Function {move_down()} {open
-  } {
-    code {unsigned int appLine=app_browser->value();
-unsigned int size =app_browser->size();
-if(appLine <= size && appLine !=0){
-  moveDown(appLine);
-  populateApps(app_browser);
-}
-size =app_browser->size();
-if(appLine+1 < size )app_browser->select(appLine+1);
-else app_browser->select(size);} {}
-  }
-  Function {ok()} {open
-  } {
-    code {saveChanges();
-exit(0);
-/*panel_window->hide();
-UI ux;ux.showSettings();*/} {}
-  }
-  Function {remove_indicator()} {open
-  } {
-    code {unsigned int line_item = indicator_browser->value();
-std::string item = indicator_browser->text(line_item);
-//std::cout<<item<<std::endl;
-if(item.compare("Network")==0){deleteNetworkMonitor();}
-else if(item.compare("Battery")==0){deleteBattery();}
-else if(item.compare("Volume")==0){deleteVolume();}} {}
-  }
-  Function {save_user_clock()} {} {
-    code {const char* result = clock_style->value();
-if(result==NULL){return;}
-changeClock(result);
-clock_config_window->hide();} {}
-  }
-  Function {change_panel_position(std::string position)} {open
-  } {
-    code {panel_position(position);
-std::string vval=getElementAttribute(currentPanel(),"Tray","valign");
-if(vval.compare("")!=0){
-  valign->value(vval.c_str());
-  halign->redraw();
-}
-std::string hval=getElementAttribute(currentPanel(),"Tray","halign");
-if(hval.compare("")!=0){
-  halign->value(hval.c_str());
-  halign->redraw();
-}} {}
+    code {get_button_stuff(button,clock_prog,clock_button_menu,output_button_val);} {}
   }
   Function {get_button_stuff(int button)} {open
   } {
+    code {get_button_stuff(button,button_prog,button_menu,button_val);} {}
+  }
+  Function {get_button_stuff(int button,Fl_Input *input_prog,Fl_Input *input_menu,Fl_Value_Output *mouse_button_current)} {open
+  } {
     code {std::string num;
-button_val->value(button);
+mouse_button_current->value(button);
 switch(button){
  case 1:
    num="1";break;
@@ -1527,12 +1586,12 @@ std::string text = menuButtonText(getMenuButtonByMask(num,whichbutton));
 if(text.compare("")==0)return;
 Fl_Input *o=NULL;
 if(text.find("exec:")==0){
-  o=button_prog;
-  button_menu->deactivate();
+  o=input_prog;
+  input_menu->deactivate();
 }
 if(text.find("root:")==0){
-  o=button_menu;
-  button_prog->deactivate();
+  o=input_menu;
+  input_prog->deactivate();
   text=text.substr(5,std::string::npos);
 }
 
@@ -1541,14 +1600,60 @@ if(o!=NULL){
   o->activate();
 }} {}
   }
-  Function {get_tray_element_attrib(Fl_Input *o, std::string attribute,int num)} {open
-  } {
+  Function {get_tray_element_attrib(Fl_Input *o, std::string attribute,int num)} {} {
     code {std::string val=getAttribute(getTraySubElement(num),attribute);
 o->value(val.c_str());
 o->redraw();} {}
   }
-  Function {save_traybutton()} {open
-  } {
+  Function {Menu_CB(int num)} {} {
+    code {std::string LABEL = Menu_Label(num);
+panel_chooser->copy_label(LABEL.c_str());
+panel_chooser->redraw();
+populateApps(app_browser);
+//panel_window->hide();} {}
+  }
+  Function {move_up()} {} {
+    code {unsigned int appLine=app_browser->value();
+unsigned int size =app_browser->size();
+if(appLine <= size && appLine !=0){
+  moveUp(appLine);
+  populateApps(app_browser);
+}
+if(appLine-1 != 0 )app_browser->select(appLine-1);
+else app_browser->select(1);} {}
+  }
+  Function {move_down()} {} {
+    code {unsigned int appLine=app_browser->value();
+unsigned int size =app_browser->size();
+if(appLine <= size && appLine !=0){
+  moveDown(appLine);
+  populateApps(app_browser);
+}
+size =app_browser->size();
+if(appLine+1 < size )app_browser->select(appLine+1);
+else app_browser->select(size);} {}
+  }
+  Function {ok()} {} {
+    code {saveChanges();
+exit(0);
+/*panel_window->hide();
+UI ux;ux.showSettings();*/} {}
+  }
+  Function {remove_indicator()} {} {
+    code {unsigned int line_item = indicator_browser->value();
+std::string item = indicator_browser->text(line_item);
+//std::cout<<item<<std::endl;
+if(item.compare("Network")==0){deleteNetworkMonitor();}
+else if(item.compare("Battery")==0){deleteBattery();}
+else if(item.compare("Volume")==0){deleteVolume();}} {}
+  }
+  Function {save_user_clock()} {} {
+    code {const char* result = clock_style->value();
+if(result==NULL){return;}
+changeClock(result);
+clock_config_window->hide();} {}
+  }
+  Function {save_traybutton()} {} {
     code {std::string MENU,PROG,ICON,LABEL,MASK;
 const char* testMenu = button_menu->value();
 if(testMenu!=NULL){MENU=testMenu;}
@@ -1563,8 +1668,7 @@ if(masker>0){MASK=linuxcommon::convert_num_to_string(masker);}
 int whichbutton=app_browser->value();
 editButton(whichbutton,MENU,PROG,ICON,LABEL,MASK);} {}
   }
-  Function {spacer_config()} {open
-  } {
+  Function {spacer_config()} {} {
     Fl_Window conf_spacer_win {
       label Spacer open
       xywh {548 301 245 50} type Double hide
@@ -1589,28 +1693,6 @@ editButton(whichbutton,MENU,PROG,ICON,LABEL,MASK);} {}
 }}
         tooltip {The height of the spacer (0 to fill all available space).  0 is the default.} xywh {135 10 25 25} box FLAT_BOX selection_color 72
         code0 {o->value(getItemH(BUTTON_NUM));}
-      }
-    }
-  }
-  Function {add_spacer()} {open
-  } {
-    Fl_Window add_spacer_win {
-      label Spacer open
-      xywh {558 311 245 50} type Double hide
-    } {
-      Fl_Button {} {
-        label OK
-        callback {addSpacer(spacer_w->value(),spacer_h->value(),BUTTON_NUM);
-add_spacer_win->hide();}
-        xywh {175 10 60 25} box FLAT_BOX color 61 selection_color 59 labelcolor 7
-      }
-      Fl_Value_Input spacer_w {
-        label Width
-        tooltip {The width of the spacer (0 to fill all available space).  0 is the default.} xywh {55 10 25 25} box FLAT_BOX
-      }
-      Fl_Value_Input spacer_h {
-        label Height
-        tooltip {The height of the spacer (0 to fill all available space).  0 is the default.} xywh {135 10 25 25} box FLAT_BOX selection_color 72
       }
     }
   }

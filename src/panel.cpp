@@ -66,6 +66,7 @@ std::string getClock(std::string timeString){
     return stringBuffer;
 }
 std::string getClock(){return getElementAttribute(currentPanel(),"Tray","Clock","format");}
+std::string getClockText(int position){return getItemText(getTraySubElement(position));}
 std::string getImageMenu(std::string item){return getAttribute(getMenu(item),"icon");}
 std::string getLabelMenu(std::string item){
 	debug_out("std::string getLabelMenu(std::string "+item+")");
@@ -215,6 +216,10 @@ bool style_gone(){
 	if(newStyle() ==1){return true;}
 	return false;
 }
+bool setClockText(int position,std::string text, std::string mask){
+	if(JWMversion()<230){return setItemText(position,text);}
+	return setNodeButtonTextByMask(getTraySubElement(position),text,mask);
+}
 bool setItemH(int value,int position){return setItemWH("height",value,position);}
 bool setItemW(int value,int position){return setItemWH("width",value,position);}
 bool setTaskW(int value, int position){return setItemWH("maxwidth",value,position);}
@@ -226,6 +231,10 @@ bool setItemWH(std::string attribute, int value,int position){
 bool setItemWH(std::string attribute, std::string value,int position){
 	debug_out("bool setItemWH(std::string "+attribute+", std::string "+value+",int position)");
 	return setAttribute(getTraySubElement(position),attribute,value);
+}
+bool setItemText(int position, std::string text){
+	debug_out("bool setItemText(int position, std::string "+text+")");
+	return setNodeText(getTraySubElement(position),text);
 }
 bool TRUEorFALSE(std::string boolean){
 	if(boolean.compare("true")==0){return true;}
@@ -257,11 +266,18 @@ void addClock(){
 	if(defaultclock.compare("")==0){defaultclock=linuxcommon::term_out("which xclock");}
 	//TODO more??
 	if(defaultclock.compare("")==0){
-		debug_out("FAILED to find clock program...");
-		return;
+		debug_out("FAILED to find clock program... using 'showdesktop' instead ");
+		defaultclock="showdesktop";
 	}
-	setAttribute(addNode(currentPanel(),"Tray", "Clock"),"format",defaultFormat);
-	addSubNodewithAttributeAndText(getLastSubNode(currentPanel(),"Tray", "Clock"),"Button","mask","123",defaultclock);
+	else{defaultclock="exec:"+defaultclock;}
+	int curr_panel=currentPanel();
+	setAttribute(addNode(curr_panel,"Tray", "Clock"),"format",defaultFormat);
+	if(JWMversion()>230){
+		addSubNodewithAttributeAndText(getLastSubNode(curr_panel,"Tray", "Clock"),"Button","mask","123",defaultclock);
+	}
+	else{
+		setNodeText(getLastSubNode(curr_panel,"Tray", "Clock"),defaultclock);
+	}
 }
 void addIndicator(std::string indicator){
 	if(!linuxcommon::look_for_string_in_vector(AnythingVector("StartupCommand"),indicator)){
@@ -861,6 +877,11 @@ void setValue(std::string attribute, std::string value){
 	unsigned int panel = currentPanel();
 	setElementAttribute(panel,"Tray",attribute,value);
 	saveChangesTemp();
+}
+void setItemBool(int position, int value){
+	std::string retval="true";
+	if(value==0){retval="false";}
+	if(!setItemWH("labeled",retval,position)){errorOUT("Labeled Not set...");}
 }
 void switchButton(std::string OLD,std::string NEW,std::string tooltip,std::string icon,std::string label){
 	debug_out("void switchButton(std::string "+OLD+",std::string "+NEW+",std::string "+tooltip+",std::string "+icon+",std::string "+label+")");

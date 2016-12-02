@@ -146,6 +146,7 @@ bool setElementColor(std::string element, std::string subelement, const double* 
 bool setElementColor(std::string element, std::string subelement, std::string SUBsubsubelement, const double* rgb);
 bool setJSMItem(std::string item, std::string value);
 bool setNodeText(pugi::xml_node node,std::string text);
+bool setNodeButtonTextByMask(pugi::xml_node node,std::string text,std::string attribute);
 bool setRootMenuHeight(std::string val, int height);
 //T
 bool testExec(std::string command); //linuxcommon wrapper
@@ -172,7 +173,7 @@ std::string getSmartHoriz(std::string layout);
 std::string getSmartVert(std::string layout);
 std::string getSmartLayout();
 std::string horizontalORvertical(int horizontalValue, int verticalValue);
-
+std::string getItemText(pugi::xml_node node);
 std::string terminal(std::string terminal);//linuxcommon wrapper
 std::string colorToString(const double *rgb);
 std::string joinColors(const double* rgb, const double* rgb2);

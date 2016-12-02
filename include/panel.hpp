@@ -50,6 +50,7 @@
 std::string getAutoHide(int num);
 std::string getClock(std::string timeString);
 std::string getClock();
+std::string getClockText(int position);
 std::string getImageMenu(std::string item);
 std::string getLabelMenu(std::string item);
 std::string getNextPanelPosition();
@@ -85,6 +86,8 @@ bool addButton(std::string icon,std::string execLine,std::string popup,int borde
 bool add_new_shortcut(Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Input* tooltip,Fl_Box* icon_name,int border);
 bool addShortcut(std::string icon,std::string execLine,std::string popup,int border);
 bool style_gone();
+bool setClockText(int position,std::string text, std::string mask);
+bool setItemText(int position, std::string text);
 bool setTaskW(int value, int position);
 bool setItemH(int value,int position);
 bool setItemW(int value,int position);
@@ -158,6 +161,7 @@ void removeAutostart(std::string exec);
 void removeIndicator(Fl_Browser* o);
 //         S
 void setImageMenu(std::string testNum,std::string icon);
+void setItemBool(int position, int value);
 void setCoordinate(std::string xy, int value);
 void setValue(std::string attribute, std::string value);
 void switchButton(std::string OLD,std::string NEW,std::string tooltip,std::string icon,std::string label);

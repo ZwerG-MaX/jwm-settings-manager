@@ -451,6 +451,19 @@ bool setNodeText(pugi::xml_node node,std::string text){
 	node.text().set(text.c_str());
 	return saveChangesTemp();
 }
+bool setNodeButtonTextByMask(pugi::xml_node node,std::string text,std::string attribute){
+	if(!node){return false;}
+	std::string name=node.name();
+	if(name.compare("")==0){name="node";}
+	debug_out("bool setNodeText(pugi::xml_node "+name+",std::string "+text+")");
+	if(text.compare("")==0){return false;}
+	//TODO figure out how to either add a button node, or add just the text..
+	if(!node.child("Button")){return false;}
+	node=node.find_child_by_attribute("Button","mask",attribute.c_str());
+	if(!node)node=node.child("Button");
+	node.text().set(text.c_str());
+	return saveChangesTemp();
+}
 bool addSubNodewithText(pugi::xml_node node,std::string element,std::string text){
 	if(!node){return false;}
 	std::string name=node.name();
@@ -1428,6 +1441,7 @@ std::string horizontalORvertical(int horizontalValue, int verticalValue){
     else if((verticalValue==1) && (horizontalValue == 2)){return vertical;}
     else {return "center";}
 }
+std::string getItemText(pugi::xml_node node){return node.text().as_string();}
 std::string terminal(std::string terminal){
   return linuxcommon::term_out(terminal);
 }

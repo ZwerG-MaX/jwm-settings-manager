@@ -38,14 +38,14 @@
 #include "../include/fltkfunctions.hpp"
 //#include "jwm-menu.h"
 #include <FL/Fl_Double_Window.H>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Value_Input.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Tabs.H>
 #include <FL/Fl_Group.H>
-#include <FL/Fl_Button.H>
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Slider.H>
-#include <FL/Fl_Value_Input.H>
 #include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Output.H>
@@ -55,6 +55,14 @@
 class PanelUI {
   int BUTTON_NUM; 
 public:
+  Fl_Double_Window* add_spacer();
+  Fl_Double_Window *add_spacer_win;
+private:
+  inline void cb_OK_i(Fl_Button*, void*);
+  static void cb_OK(Fl_Button*, void*);
+public:
+  Fl_Value_Input *spacer_w;
+  Fl_Value_Input *spacer_h;
   void clear_shortcuts();
   void display(std::string filename);
   Fl_Double_Window* make_window();
@@ -265,8 +273,8 @@ public:
   Fl_Double_Window* add_indicator();
   Fl_Double_Window *indicator_win;
 private:
-  inline void cb_OK_i(Fl_Button*, void*);
-  static void cb_OK(Fl_Button*, void*);
+  inline void cb_OK1_i(Fl_Button*, void*);
+  static void cb_OK1(Fl_Button*, void*);
   inline void cb_CLOSE_i(Fl_Button*, void*);
   static void cb_CLOSE(Fl_Button*, void*);
 public:
@@ -278,8 +286,8 @@ public:
   Fl_Double_Window* add_to_panel();
   Fl_Double_Window *add_2_panel;
 private:
-  inline void cb_OK1_i(Fl_Button*, void*);
-  static void cb_OK1(Fl_Button*, void*);
+  inline void cb_OK2_i(Fl_Button*, void*);
+  static void cb_OK2(Fl_Button*, void*);
 public:
   Fl_Browser *panel_items_browser;
 private:
@@ -291,8 +299,8 @@ public:
   Fl_Double_Window* clock_window();
   Fl_Double_Window *clock_config_window;
 private:
-  inline void cb_OK2_i(Fl_Button*, void*);
-  static void cb_OK2(Fl_Button*, void*);
+  inline void cb_OK3_i(Fl_Button*, void*);
+  static void cb_OK3(Fl_Button*, void*);
 public:
   Fl_Input *clock_style;
 private:
@@ -325,8 +333,8 @@ public:
   Fl_Double_Window* config_applist_window();
   Fl_Double_Window *conf_applist_window;
 private:
-  inline void cb_OK3_i(Fl_Button*, void*);
-  static void cb_OK3(Fl_Button*, void*);
+  inline void cb_OK4_i(Fl_Button*, void*);
+  static void cb_OK4(Fl_Button*, void*);
 public:
   Fl_Button *task_bg_color;
 private:
@@ -373,8 +381,8 @@ public:
 private:
   inline void cb_menu_conf_gear_i(Fl_Button*, void*);
   static void cb_menu_conf_gear(Fl_Button*, void*);
-  inline void cb_OK4_i(Fl_Button*, void*);
-  static void cb_OK4(Fl_Button*, void*);
+  inline void cb_OK5_i(Fl_Button*, void*);
+  static void cb_OK5(Fl_Button*, void*);
 public:
   Fl_Double_Window* config_clock_window();
   Fl_Double_Window *conf_clock_window;
@@ -392,15 +400,42 @@ private:
   static void cb_Year(Fl_Menu_*, void*);
   inline void cb_Advanced_i(Fl_Menu_*, void*);
   static void cb_Advanced(Fl_Menu_*, void*);
-  inline void cb_OK5_i(Fl_Button*, void*);
-  static void cb_OK5(Fl_Button*, void*);
 public:
   Fl_Output *clock_displayer;
+private:
+  inline void cb_Width_i(Fl_Value_Input*, void*);
+  static void cb_Width(Fl_Value_Input*, void*);
+  inline void cb_Height1_i(Fl_Value_Input*, void*);
+  static void cb_Height1(Fl_Value_Input*, void*);
+  static unsigned char menu_Mouse1_i18n_done;
+  static Fl_Menu_Item menu_Mouse1[];
+  inline void cb_13_i(Fl_Menu_*, void*);
+  static void cb_13(Fl_Menu_*, void*);
+  inline void cb_22_i(Fl_Menu_*, void*);
+  static void cb_22(Fl_Menu_*, void*);
+  inline void cb_32_i(Fl_Menu_*, void*);
+  static void cb_32(Fl_Menu_*, void*);
+public:
+  Fl_Value_Output *output_button_val;
+  Fl_Output *clock_button_menu;
+  Fl_Button *clock_menu_conf_gear;
+private:
+  inline void cb_clock_menu_conf_gear_i(Fl_Button*, void*);
+  static void cb_clock_menu_conf_gear(Fl_Button*, void*);
+public:
+  Fl_Input *clock_prog;
+  Fl_Button *clock_prog_conf_gear;
+private:
+  inline void cb_clock_prog_conf_gear_i(Fl_Button*, void*);
+  static void cb_clock_prog_conf_gear(Fl_Button*, void*);
+  inline void cb_OK6_i(Fl_Button*, void*);
+  static void cb_OK6(Fl_Button*, void*);
+public:
   Fl_Double_Window* config_indicator_window();
   Fl_Double_Window *conf_indicator_window;
 private:
-  inline void cb_OK6_i(Fl_Button*, void*);
-  static void cb_OK6(Fl_Button*, void*);
+  inline void cb_OK7_i(Fl_Button*, void*);
+  static void cb_OK7(Fl_Button*, void*);
 public:
   Fl_Browser *indicator_browser;
 private:
@@ -408,13 +443,15 @@ private:
   static void cb_5(Fl_Button*, void*);
   inline void cb_6_i(Fl_Button*, void*);
   static void cb_6(Fl_Button*, void*);
+  inline void cb_Width1_i(Fl_Value_Input*, void*);
+  static void cb_Width1(Fl_Value_Input*, void*);
 public:
   Fl_Double_Window* configure_manually_window(std::string icon);
   Fl_Double_Window *conf_manual_window;
   Fl_Input *manually_in;
 private:
-  inline void cb_OK7_i(Fl_Button*, void*);
-  static void cb_OK7(Fl_Button*, void*);
+  inline void cb_OK8_i(Fl_Button*, void*);
+  static void cb_OK8(Fl_Button*, void*);
 public:
   Fl_Input *label_input;
 private:
@@ -427,8 +464,8 @@ public:
   Fl_Double_Window* config_menu_window(std::string file);
   Fl_Double_Window *conf_menu_window;
 private:
-  inline void cb_OK8_i(Fl_Button*, void*);
-  static void cb_OK8(Fl_Button*, void*);
+  inline void cb_OK9_i(Fl_Button*, void*);
+  static void cb_OK9(Fl_Button*, void*);
 public:
   Fl_Input *app_menu;
   Fl_Button *icon_view;
@@ -445,8 +482,8 @@ public:
   Fl_Double_Window* config_swallow_window(int input_num);
   Fl_Double_Window *conf_swallow_window;
 private:
-  inline void cb_OK9_i(Fl_Button*, void*);
-  static void cb_OK9(Fl_Button*, void*);
+  inline void cb_OKa_i(Fl_Button*, void*);
+  static void cb_OKa(Fl_Button*, void*);
 public:
   Fl_Input *swallow_name;
 private:
@@ -457,24 +494,36 @@ public:
 private:
   inline void cb_swallow_config_i(Fl_Input*, void*);
   static void cb_swallow_config(Fl_Input*, void*);
-  inline void cb_Width_i(Fl_Value_Input*, void*);
-  static void cb_Width(Fl_Value_Input*, void*);
-  inline void cb_Height1_i(Fl_Value_Input*, void*);
-  static void cb_Height1(Fl_Value_Input*, void*);
+  inline void cb_Width2_i(Fl_Value_Input*, void*);
+  static void cb_Width2(Fl_Value_Input*, void*);
+  inline void cb_Height2_i(Fl_Value_Input*, void*);
+  static void cb_Height2(Fl_Value_Input*, void*);
 public:
   Fl_Double_Window* config_switcher_window();
   Fl_Double_Window *conf_switcher;
 private:
-  inline void cb_OKa_i(Fl_Button*, void*);
-  static void cb_OKa(Fl_Button*, void*);
-  inline void cb_Active_i(Fl_Button*, void*);
-  static void cb_Active(Fl_Button*, void*);
-  inline void cb_Active1_i(Fl_Button*, void*);
-  static void cb_Active1(Fl_Button*, void*);
-  inline void cb_9_i(Fl_Button*, void*);
-  static void cb_9(Fl_Button*, void*);
-  inline void cb_a_i(Fl_Button*, void*);
-  static void cb_a(Fl_Button*, void*);
+  inline void cb_OKb_i(Fl_Button*, void*);
+  static void cb_OKb(Fl_Button*, void*);
+public:
+  Fl_Button *a_fg;
+private:
+  inline void cb_a_fg_i(Fl_Button*, void*);
+  static void cb_a_fg(Fl_Button*, void*);
+public:
+  Fl_Button *a_bg;
+private:
+  inline void cb_a_bg_i(Fl_Button*, void*);
+  static void cb_a_bg(Fl_Button*, void*);
+public:
+  Fl_Button *t_fg;
+private:
+  inline void cb_t_fg_i(Fl_Button*, void*);
+  static void cb_t_fg(Fl_Button*, void*);
+public:
+  Fl_Button *t_bg;
+private:
+  inline void cb_t_bg_i(Fl_Button*, void*);
+  static void cb_t_bg(Fl_Button*, void*);
 public:
   Fl_Value_Input *num_desktop_w;
 private:
@@ -485,6 +534,8 @@ public:
 private:
   inline void cb_num_desktop_h_i(Fl_Value_Input*, void*);
   static void cb_num_desktop_h(Fl_Value_Input*, void*);
+  inline void cb_Labled_i(Fl_Check_Button*, void*);
+  static void cb_Labled(Fl_Check_Button*, void*);
 public:
   Fl_Double_Window* make_shortcut_window();
   Fl_Double_Window *shortcut_window;
@@ -499,8 +550,8 @@ private:
 public:
   Fl_Input *tooltip;
 private:
-  inline void cb_b_i(Fl_Button*, void*);
-  static void cb_b(Fl_Button*, void*);
+  inline void cb_9_i(Fl_Button*, void*);
+  static void cb_9(Fl_Button*, void*);
 public:
   Fl_Button *ok_button;
 private:
@@ -510,8 +561,8 @@ public:
   Fl_Check_Button *shortcut_border;
   Fl_Browser *shortcut_browser;
 private:
-  inline void cb_c_i(Fl_Button*, void*);
-  static void cb_c(Fl_Button*, void*);
+  inline void cb_a_i(Fl_Button*, void*);
+  static void cb_a(Fl_Button*, void*);
 public:
   Fl_Box *icon_name;
   Fl_Button *app_icon_box;
@@ -524,43 +575,38 @@ public:
   Fl_Double_Window* new_panel_window();
   Fl_Double_Window *new_panel;
 private:
-  inline void cb_OKb_i(Fl_Button*, void*);
-  static void cb_OKb(Fl_Button*, void*);
+  inline void cb_OKc_i(Fl_Button*, void*);
+  static void cb_OKc(Fl_Button*, void*);
 public:
   Fl_Double_Window* no_config();
   void add_item();
   void cancel_button();
   void change_manual_item(std::string input, std::string old_input);
+  void change_panel_position(std::string position);
+  void change_clock(std::string clockFMT);
   void coordinate(const char* xy, Fl_Value_Input *o, int get1_set2);
   void config_Item(std::string whichItem);
+  void current_clock_text();
   void displayAPPicon(std::string filename,Fl_Widget* widget);
+  void get_clock_button_stuff(int button);
+  void get_button_stuff(int button);
+  void get_button_stuff(int button,Fl_Input *input_prog,Fl_Input *input_menu,Fl_Value_Output *mouse_button_current);
+  void get_tray_element_attrib(Fl_Input *o, std::string attribute,int num);
   void Menu_CB(int num);
   void move_up();
   void move_down();
   void ok();
   void remove_indicator();
   void save_user_clock();
-  void change_panel_position(std::string position);
-  void get_button_stuff(int button);
-  void get_tray_element_attrib(Fl_Input *o, std::string attribute,int num);
   void save_traybutton();
   Fl_Double_Window* spacer_config();
   Fl_Double_Window *conf_spacer_win;
 private:
-  inline void cb_OKc_i(Fl_Button*, void*);
-  static void cb_OKc(Fl_Button*, void*);
-  inline void cb_Width1_i(Fl_Value_Input*, void*);
-  static void cb_Width1(Fl_Value_Input*, void*);
-  inline void cb_Height2_i(Fl_Value_Input*, void*);
-  static void cb_Height2(Fl_Value_Input*, void*);
-public:
-  Fl_Double_Window* add_spacer();
-  Fl_Double_Window *add_spacer_win;
-private:
   inline void cb_OKd_i(Fl_Button*, void*);
   static void cb_OKd(Fl_Button*, void*);
-public:
-  Fl_Value_Input *spacer_w;
-  Fl_Value_Input *spacer_h;
+  inline void cb_Width3_i(Fl_Value_Input*, void*);
+  static void cb_Width3(Fl_Value_Input*, void*);
+  inline void cb_Height3_i(Fl_Value_Input*, void*);
+  static void cb_Height3(Fl_Value_Input*, void*);
 };
 #endif
