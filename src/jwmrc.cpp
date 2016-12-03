@@ -933,7 +933,15 @@ bool setElementFloat(std::string element, std::string subelement, double* text){
 	if(subelement.compare("")==0){return false;}
     pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str());
     if(!node){node=checkIncludes(element,subelement);}
-    if(!node){node = doc.child("JWM").child(element.c_str()).append_child(subelement.c_str());}
+    if(!node){
+		node = doc.child("JWM").child(element.c_str());
+		if(!node){node=checkIncludes(element);}
+		if(!node){
+			node = doc.child("JWM");
+			node=node.append_child(element.c_str());
+		}
+		node=node.append_child(subelement.c_str());
+	}
     node.text().set(textr.c_str());
     return saveChangesTemp();
 }
@@ -1517,6 +1525,31 @@ std::string getEQUALvalue(std::string INTERNAL_LINE){
 		return subString;
 	}
 	return "";
+}
+std::string getJSMItem(std::string item){
+	//debug_out("std::string getJSMItem(std::string "+item+")");
+	if(item.compare("")==0){return "";}
+	std::string filename=linuxcommon::home_path();
+	if(filename.compare("")==0){return "";}
+	filename+=".jsm";
+	//debug_out("Filename="+filename);
+	if(!linuxcommon::test_file(filename)){
+		std::string defaultFile="panel=1\ndebug=false\nfile="+homePath()+"\n";
+		//debug_out(filename+" does not seem to be a file");
+		if(!linuxcommon::save_string_to_file(defaultFile,filename)){
+			//debug_out("could not write default config file:"+filename);
+			return "";
+		}
+	}
+	//debug_out("item="+item);
+	item+="=";
+	std::string result = linuxcommon::get_line_with_equal(filename,item);
+	if(result.compare("")==0){
+		errorOUT("Could not get "+item+" from "+filename);
+		return "";
+	}
+	std::transform(result.begin(), result.end(), result.begin(), ::tolower);
+	return result;
 }
 std::string makeTempName(std::string filename){
 	if(filename.find("~")<filename.length()){return filename;}
@@ -2336,32 +2369,6 @@ void deletePanelItem(int whichElement){
 	else{debug_out("Node not found...");}
 	saveChangesTemp();
 }
-std::string getJSMItem(std::string item){
-	//debug_out("std::string getJSMItem(std::string "+item+")");
-	if(item.compare("")==0){return "";}
-	std::string filename=linuxcommon::home_path();
-	if(filename.compare("")==0){return "";}
-	filename+=".jsm";
-	//debug_out("Filename="+filename);
-	if(!linuxcommon::test_file(filename)){
-		std::string defaultFile="panel=1\ndebug=false\nfile="+homePath()+"\n";
-		//debug_out(filename+" does not seem to be a file");
-		if(!linuxcommon::save_string_to_file(defaultFile,filename)){
-			//debug_out("could not write default config file:"+filename);
-			return "";
-		}
-	}
-	//debug_out("item="+item);
-	item+="=";
-	std::string result = linuxcommon::get_line_with_equal(filename,item);
-	if(result.compare("")==0){
-		errorOUT("Could not get "+item+" from "+filename);
-		return "";
-	}
-	std::transform(result.begin(), result.end(), result.begin(), ::tolower);
-	return result;
-}
-
 void listAutostartXDG(Fl_Browser *o){
 	debug_out("void listAutostartXDG(Fl_Browser *o)");
 	std::vector<std::string> myVec=XDGautostart();
@@ -2723,6 +2730,7 @@ pugi::xml_node addNode(unsigned int whichElement,std::string element, std::strin
     saveChangesTemp();
     return node;
 }
+pugi::xml_node getTraySubNodeOrMakeIt(std::string element){}
 pugi::xml_node getCurrentTrayNode(){
 	debug_out("pugi::xml_node getCurrentTrayNode()");
 	unsigned int whichElement=currentPanel();

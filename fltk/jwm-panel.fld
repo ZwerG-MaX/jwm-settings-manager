@@ -106,7 +106,7 @@ makeWidgetIcon(filename,icon_view,48);} {}
 JWM_VERSION=JWMversion();} {}
     Fl_Window panel_window {
       label {Panel Settings} open
-      xywh {838 172 285 450} type Double color 47 align 80 resizable
+      xywh {812 37 285 450} type Double color 47 align 80 resizable
       code1 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
     } {
       Fl_Scroll {} {open
@@ -222,7 +222,7 @@ if(appLine <= size && appLine !=0){
           }
           Fl_Group {} {
             label Appearance open
-            xywh {0 60 280 340} selection_color 45
+            xywh {0 60 280 350} selection_color 45
             code0 {const char* text=gettext("Appearance");o->label(text);}
           } {
             Fl_Box {} {
@@ -240,22 +240,22 @@ if(appLine <= size && appLine !=0){
             }
             Fl_Box {} {
               label Active
-              xywh {10 110 135 35} box FLAT_BOX color 53 selection_color 39 align 1
+              xywh {10 100 135 35} box FLAT_BOX color 53 selection_color 39 align 1
             }
             Fl_Box {} {
               label Inactive
-              xywh {10 160 135 35} box FLAT_BOX color 43 selection_color 39 align 1
+              xywh {10 150 135 35} box FLAT_BOX color 43 selection_color 39 align 1
             }
             Fl_Button menu_bg_color {
               callback {one_color(o,"MenuStyle");}
-              tooltip {Menu Inactive Background Color} xywh {80 165 60 25} box FLAT_BOX color 23 align 8
+              tooltip {Menu Inactive Background Color} xywh {80 155 60 25} box FLAT_BOX color 23 align 8
               code0 {unsigned int c=0;}
               code1 {unsigned int color = getBackground(c,"MenuStyle");}
               code2 {o->color(color);}
             }
             Fl_Button menu_bg_color_a {
               callback {one_color_active(o,"MenuStyle");}
-              tooltip {Menu Active Background Color} xywh {80 115 60 25} box FLAT_BOX color 23 align 8
+              tooltip {Menu Active Background Color} xywh {80 105 60 25} box FLAT_BOX color 23 align 8
               code0 {unsigned int c=0;}
               code1 {unsigned int color=getActiveBackground(c,"MenuStyle");}
               code2 {o->color(color);}
@@ -267,15 +267,15 @@ if(appLine <= size && appLine !=0){
             }
             Fl_Button menu_font_color {
               callback {one_color_Font(o,"MenuStyle");}
-              tooltip {Menu Inactive Text Color} xywh {15 165 60 25} box FLAT_BOX color 23 align 8
+              tooltip {Menu Inactive Text Color} xywh {15 155 60 25} box FLAT_BOX color 23 align 8
               code0 {unsigned int c=0;}
               code1 {unsigned int color = getFontColor(c,"MenuStyle");}
               code2 {o->color(color);}
             }
             Fl_Slider o_menu_slider {
-              label {Opacity of Menu }
+              label {Opacity of Menu}
               callback {opacity(o_menu_slider_v,o,"MenuStyle");}
-              tooltip {A compositor (like xcompmgr) must be installed} xywh {10 200 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 6 step 0.02 value 1
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {10 190 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 6 step 0.02 value 1
               code0 {const char* text=gettext("Opacity of Menu");o->label(text);}
               code1 {float h=getOpacity("MenuStyle");}
               code2 {o->value(h);}
@@ -283,7 +283,7 @@ if(appLine <= size && appLine !=0){
             Fl_Value_Input o_menu_slider_v {
               label {%}
               callback {opacity(o,o_menu_slider,"MenuStyle");}
-              xywh {225 200 40 25} box FLAT_BOX color 23 labelsize 10 align 8
+              xywh {225 190 40 25} box FLAT_BOX color 23 labelsize 10 align 8
               code0 {float v = o_menu_slider->value();}
               code1 {o->value(v*100.0f);}
             }
@@ -296,7 +296,7 @@ if(appLine <= size && appLine !=0){
             }
             Fl_Button button_color_font_a {
               callback {if((JWM_VERSION<232)&&(JWM_VERSION>236)){o->hide();}
-else{one_color_Font_active(o,"TrayButtonStyle");}} selected
+else{one_color_Font_active(o,"TrayButtonStyle");}}
               tooltip {Panel Button Active Text Color} xywh {150 270 60 25} box FLAT_BOX color 23 align 1
               code0 {unsigned int c=0;}
               code1 {if((JWM_VERSION>232)&&(JWM_VERSION<236)){o->hide();}}
@@ -305,7 +305,7 @@ else{one_color_Font_active(o,"TrayButtonStyle");}} selected
             Fl_Slider o_slider {
               label {Opacity of Panel  }
               callback {opacity(o_slider_v,o_slider,"TrayStyle");}
-              tooltip {A compositor (like xcompmgr) must be installed} xywh {10 375 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 6 step 0.02 value 1
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {10 385 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 6 step 0.02 value 1
               code0 {const char* text=gettext("Opacity of Panel");o->label(text);}
               code1 {float h = getOpacity("TrayStyle");}
               code2 {o->value(h);}
@@ -313,16 +313,9 @@ else{one_color_Font_active(o,"TrayButtonStyle");}} selected
             Fl_Value_Input o_slider_v {
               label {%}
               callback {opacity(o_slider_v,o_slider,"TrayStyle");}
-              xywh {225 375 40 25} box FLAT_BOX color 23 labelsize 10 align 8
+              xywh {225 385 40 25} box FLAT_BOX color 23 labelsize 10 align 8
               code0 {float v = o_slider->value();}
               code1 {o->value(v*100.0f);}
-            }
-            Fl_Button {} {
-              label {Edit Menus}
-              callback {panel_window->hide();
-showMenu();}
-              xywh {165 85 110 25} box FLAT_BOX color 23
-              code0 {const char* text=gettext("Edit Menus");o->label(text);}
             }
             Fl_Button button_color {
               callback {if((JWM_VERSION<232)&&(JWM_VERSION>236)){o->hide();}
@@ -377,33 +370,58 @@ else{one_color_Font(o,"TrayButtonStyle");}}
             }
             Fl_Box {} {
               label Menu
-              xywh {40 75 75 20}
+              xywh {40 65 75 20}
             }
             Fl_Button menu_font_a {
               callback {one_color_Font_active(o,"MenuStyle");}
-              tooltip {Menu Active Text Color} xywh {15 115 60 25} box FLAT_BOX color 23 align 1
+              tooltip {Menu Active Text Color} xywh {15 105 60 25} box FLAT_BOX color 23 align 1
               code0 {unsigned int c=0;}
               code2 {unsigned int color = getActiveForeground(c,"MenuStyle");o->color(color);}
             }
             Fl_Menu_Button {} {
               label decorations open
-              xywh {165 120 110 25} box FLAT_BOX color 23 deactivate
+              tooltip {Flat or Motif style decorations} xywh {155 70 110 25} box FLAT_BOX color 23
               code0 {if(JWM_VERSION<232){o->hide();}}
             } {
               MenuItem {} {
                 label flat
+                callback {setDecorations(panel_deco,"MenuStyle","flat");}
                 xywh {0 0 100 20}
               }
               MenuItem {} {
                 label motif
+                callback {setDecorations(panel_deco,"MenuStyle","motif");}
                 xywh {0 0 100 20}
               }
             }
             Fl_Button menu_outline {
               label Outline
-              callback {//one_color_Font(o,"MenuStyle");}
-              xywh {175 165 60 25} box FLAT_BOX color 23 align 1 deactivate
-              code1 {//unsigned int c=0;unsigned int color = getFontColor(c,"MenuStyle");o->color(color);}
+              callback {outline_color(o,"MenuStyle");}
+              xywh {175 145 60 25} box FLAT_BOX color 23 align 1 deactivate
+            }
+            Fl_Output menu_deco {
+              tooltip {Flat or Motif style decorations (flat is default)} xywh {155 100 110 25} box FLAT_BOX selection_color 80
+              code1 {getDecorations(o,"MenuStyle");}
+            }
+            Fl_Menu_Button {} {
+              label decorations open
+              tooltip {Flat or Motif style decorations} xywh {20 355 110 25} box FLAT_BOX color 23
+              code0 {if(JWM_VERSION<232){o->hide();}}
+            } {
+              MenuItem {} {
+                label flat
+                callback {setDecorations(panel_deco,"TrayStyle","flat");}
+                xywh {10 10 100 20}
+              }
+              MenuItem {} {
+                label motif
+                callback {setDecorations(panel_deco,"TrayStyle","motif");}
+                xywh {10 10 100 20}
+              }
+            }
+            Fl_Output panel_deco {selected
+              tooltip {Flat or Motif style decorations (flat is default)} xywh {150 355 110 25} box FLAT_BOX selection_color 80
+              code1 {getDecorations(o,"TrayStyle");}
             }
           }
           Fl_Group {} {
@@ -692,6 +710,13 @@ Possible  values  are "left", "right", "top", "bottom", and "off".} xywh {10 380
           callback {ok();}
           tooltip {Write to configuration file} xywh {231 420 45 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
           code0 {const char* text=gettext("OK");o->label(text);}
+        }
+        Fl_Button {} {
+          label {Edit Menus}
+          callback {panel_window->hide();
+showMenu();}
+          xywh {15 420 110 25} box FLAT_BOX color 23
+          code0 {const char* text=gettext("Edit Menus");o->label(text);}
         }
       }
     }
@@ -993,8 +1018,7 @@ else{showMenu();}}
       }
     }
   }
-  Function {config_clock_window()} {open
-  } {
+  Function {config_clock_window()} {} {
     Fl_Window conf_clock_window {
       label {Configure Clock} open
       xywh {428 151 340 185} type Double hide
@@ -1323,8 +1347,7 @@ program. 0 is the default.} xywh {365 40 25 25} box FLAT_BOX selection_color 72
       }
     }
   }
-  Function {config_switcher_window()} {open
-  } {
+  Function {config_switcher_window()} {} {
     Fl_Window conf_switcher {
       label {Configure Switcher} open
       xywh {813 265 215 200} type Double hide

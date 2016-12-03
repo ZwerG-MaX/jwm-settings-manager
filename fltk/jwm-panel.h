@@ -47,8 +47,8 @@
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Slider.H>
-#include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Output.H>
+#include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Value_Output.H>
 
@@ -151,8 +151,6 @@ public:
 private:
   inline void cb_o_slider_v_i(Fl_Value_Input*, void*);
   static void cb_o_slider_v(Fl_Value_Input*, void*);
-  inline void cb_Edit_i(Fl_Button*, void*);
-  static void cb_Edit(Fl_Button*, void*);
 public:
   Fl_Button *button_color;
 private:
@@ -190,13 +188,29 @@ private:
   static void cb_menu_font_a(Fl_Button*, void*);
   static unsigned char menu_decorations_i18n_done;
   static Fl_Menu_Item menu_decorations[];
+  inline void cb_flat_i(Fl_Menu_*, void*);
+  static void cb_flat(Fl_Menu_*, void*);
+  inline void cb_motif_i(Fl_Menu_*, void*);
+  static void cb_motif(Fl_Menu_*, void*);
 public:
   Fl_Button *menu_outline;
 private:
   inline void cb_menu_outline_i(Fl_Button*, void*);
   static void cb_menu_outline(Fl_Button*, void*);
+public:
+  Fl_Output *menu_deco;
+  static unsigned char menu_decorations1_i18n_done;
+  static Fl_Menu_Item menu_decorations1[];
+private:
+  inline void cb_flat1_i(Fl_Menu_*, void*);
+  static void cb_flat1(Fl_Menu_*, void*);
+  inline void cb_motif1_i(Fl_Menu_*, void*);
+  static void cb_motif1(Fl_Menu_*, void*);
+public:
+  Fl_Output *panel_deco;
   static unsigned char menu_Panel_i18n_done;
   static Fl_Menu_Item menu_Panel[];
+private:
   inline void cb_top_i(Fl_Menu_*, void*);
   static void cb_top(Fl_Menu_*, void*);
   inline void cb_bottom_i(Fl_Menu_*, void*);
@@ -311,6 +325,8 @@ public:
 private:
   inline void cb_save_button_i(Fl_Button*, void*);
   static void cb_save_button(Fl_Button*, void*);
+  inline void cb_Edit_i(Fl_Button*, void*);
+  static void cb_Edit(Fl_Button*, void*);
 public:
   Fl_Double_Window* add_indicator();
   Fl_Double_Window *indicator_win;
