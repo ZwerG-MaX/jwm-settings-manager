@@ -341,7 +341,7 @@ void KeyboardUI::cb_showtray(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxtop_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "maxtop";
   menu_cb(action);
 }
@@ -354,7 +354,7 @@ void KeyboardUI::cb_maxtop(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxbottom_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "maxbottom";
   menu_cb(action);
 }
@@ -367,7 +367,7 @@ void KeyboardUI::cb_maxbottom(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxleft_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "maxleft";
   menu_cb(action);
 }
@@ -380,7 +380,7 @@ void KeyboardUI::cb_maxleft(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxright_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "maxright";
   menu_cb(action);
 }
@@ -393,7 +393,7 @@ void KeyboardUI::cb_maxright(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxv_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "maxv";
   menu_cb(action);
 }
@@ -406,7 +406,7 @@ void KeyboardUI::cb_maxv(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxh_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "maxh";
   menu_cb(action);
 }
@@ -419,7 +419,7 @@ void KeyboardUI::cb_maxh(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_sendu_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "sendu";
   menu_cb(action);
 }
@@ -432,7 +432,7 @@ void KeyboardUI::cb_sendu(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_sendd_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "sendd";
   menu_cb(action);
 }
@@ -445,7 +445,7 @@ void KeyboardUI::cb_sendd(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_sendr_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "sendr";
   menu_cb(action);
 }
@@ -458,7 +458,7 @@ void KeyboardUI::cb_sendr(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_sendl_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "sendl";
   menu_cb(action);
 }
@@ -468,6 +468,19 @@ else{
 }
 void KeyboardUI::cb_sendl(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_sendl_i(o,v);
+}
+
+void KeyboardUI::cb_restore_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=233){
+  const char * action = "restore";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_restore(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_restore_i(o,v);
 }
 
 unsigned char KeyboardUI::menu_Action_i18n_done = 0;
@@ -504,6 +517,7 @@ Fl_Menu_Item KeyboardUI::menu_Action[] = {
  {"Send Window Down a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendd, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Send Window Right a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendr, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Send Window Left a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendl, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Restore a minimized window", 0,  (Fl_Callback*)KeyboardUI::cb_restore, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
 Fl_Menu_Item* KeyboardUI::next = KeyboardUI::menu_Action + 0;
@@ -538,6 +552,7 @@ Fl_Menu_Item* KeyboardUI::sendu = KeyboardUI::menu_Action + 28;
 Fl_Menu_Item* KeyboardUI::sendd = KeyboardUI::menu_Action + 29;
 Fl_Menu_Item* KeyboardUI::sendr = KeyboardUI::menu_Action + 30;
 Fl_Menu_Item* KeyboardUI::sendl = KeyboardUI::menu_Action + 31;
+Fl_Menu_Item* KeyboardUI::restore = KeyboardUI::menu_Action + 32;
 
 void KeyboardUI::cb_Choose_i(Fl_Button*, void*) {
   Choose_Action(action_name);
@@ -885,7 +900,7 @@ void KeyboardUI::cb_showtray1(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxtop1_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "maxtop";
   menu_cb(action);
 }
@@ -898,7 +913,7 @@ void KeyboardUI::cb_maxtop1(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxbottom1_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "maxbottom";
   menu_cb(action);
 }
@@ -911,7 +926,7 @@ void KeyboardUI::cb_maxbottom1(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxleft1_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "maxleft";
   menu_cb(action);
 }
@@ -924,7 +939,7 @@ void KeyboardUI::cb_maxleft1(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxright1_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "maxright";
   menu_cb(action);
 }
@@ -937,7 +952,7 @@ void KeyboardUI::cb_maxright1(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxv1_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "maxv";
   menu_cb(action);
 }
@@ -950,7 +965,7 @@ void KeyboardUI::cb_maxv1(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_maxh1_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "maxh";
   menu_cb(action);
 }
@@ -963,7 +978,7 @@ void KeyboardUI::cb_maxh1(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_sendu1_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "sendu";
   menu_cb(action);
 }
@@ -976,7 +991,7 @@ void KeyboardUI::cb_sendu1(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_sendd1_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "sendd";
   menu_cb(action);
 }
@@ -989,7 +1004,7 @@ void KeyboardUI::cb_sendd1(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_sendr1_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "sendr";
   menu_cb(action);
 }
@@ -1002,7 +1017,7 @@ void KeyboardUI::cb_sendr1(Fl_Menu_* o, void* v) {
 }
 
 void KeyboardUI::cb_sendl1_i(Fl_Menu_* o, void*) {
-  if(newpanel()){
+  if(JWMVERSION>=230){
   const char * action = "sendl";
   menu_cb(action);
 }
@@ -1012,6 +1027,19 @@ else{
 }
 void KeyboardUI::cb_sendl1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_sendl1_i(o,v);
+}
+
+void KeyboardUI::cb_restore1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=233){
+  const char * action = "restore";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_restore1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_restore1_i(o,v);
 }
 
 unsigned char KeyboardUI::menu_Action1_i18n_done = 0;
@@ -1048,6 +1076,7 @@ Fl_Menu_Item KeyboardUI::menu_Action1[] = {
  {"Send Window Down a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendd1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Send Window Right a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendr1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Send Window Left a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendl1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Restore a minimized window", 0,  (Fl_Callback*)KeyboardUI::cb_restore1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
 Fl_Menu_Item* KeyboardUI::next1 = KeyboardUI::menu_Action1 + 0;
@@ -1082,6 +1111,7 @@ Fl_Menu_Item* KeyboardUI::sendu1 = KeyboardUI::menu_Action1 + 28;
 Fl_Menu_Item* KeyboardUI::sendd1 = KeyboardUI::menu_Action1 + 29;
 Fl_Menu_Item* KeyboardUI::sendr1 = KeyboardUI::menu_Action1 + 30;
 Fl_Menu_Item* KeyboardUI::sendl1 = KeyboardUI::menu_Action1 + 31;
+Fl_Menu_Item* KeyboardUI::restore1 = KeyboardUI::menu_Action1 + 32;
 
 void KeyboardUI::cb_Choose1_i(Fl_Button*, void*) {
   Choose_Action(action_name1);
@@ -1240,6 +1270,7 @@ Fl_Menu_Item KeyboardUI::menu_Special1[] = {
 
 Fl_Double_Window* KeyboardUI::make_window() {
   load();
+  JWMVERSION=JWMversion();
   //Fl::add_handler(handle);
   { Fl_Double_Window* o = keyboard_window = new Fl_Double_Window(480, 295, gettext("Keyboard Settings"));
     keyboard_window->color((Fl_Color)31);
@@ -1316,7 +1347,7 @@ Fl_Double_Window* KeyboardUI::grabber_window() {
       o->selection_color((Fl_Color)80);
       if (!menu_Action_i18n_done) {
         int i=0;
-        for ( ; i<32; i++)
+        for ( ; i<33; i++)
           if (menu_Action[i].label())
             menu_Action[i].label(gettext(menu_Action[i].label()));
         menu_Action_i18n_done = 1;
@@ -1408,7 +1439,7 @@ Fl_Double_Window* KeyboardUI::config_key_win() {
       o->selection_color((Fl_Color)80);
       if (!menu_Action1_i18n_done) {
         int i=0;
-        for ( ; i<32; i++)
+        for ( ; i<33; i++)
           if (menu_Action1[i].label())
             menu_Action1[i].label(gettext(menu_Action1[i].label()));
         menu_Action1_i18n_done = 1;

@@ -474,6 +474,65 @@ void WindowUI::cb_a_t_slider(Fl_Slider* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_a_t_slider_i(o,v);
 }
 
+void WindowUI::cb_default_icon_button_i(Fl_Button* o, void*) {
+  std::string icon=choose_an_icon();
+if(icon.compare("")!=0){
+  default_icon->value(icon.c_str());
+  makeWidgetIcon(icon,o,48);
+  if(!setElementText("ButtonMenu",icon)){
+    errorOUT("Could not set default icon");
+  }
+};
+}
+void WindowUI::cb_default_icon_button(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_default_icon_button_i(o,v);
+}
+
+void WindowUI::cb_default_icon_button_win_i(Fl_Button* o, void*) {
+  std::string icon=choose_an_icon();
+if(icon.compare("")!=0){
+  default_icon->value(icon.c_str());
+  makeWidgetIcon(icon,o,48);
+  if(!setElementText("DefaultIcon",icon)){
+    errorOUT("Could not set default icon");
+  }
+};
+}
+void WindowUI::cb_default_icon_button_win(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_default_icon_button_win_i(o,v);
+}
+
+void WindowUI::cb_motif_i(Fl_Menu_*, void*) {
+  std::string decor="motif";
+if(!setElementAttribute("WindowStyle","decorations",decor)){
+  errorOUT("Could not set window decorations");
+}
+decorations->value(decor.c_str());decorations->redraw();
+}
+void WindowUI::cb_motif(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_motif_i(o,v);
+}
+
+void WindowUI::cb_flat_i(Fl_Menu_*, void*) {
+  std::string decor="flat";
+if(!setElementAttribute("WindowStyle","decorations",decor)){
+  errorOUT("Could not set window decorations");
+}
+decorations->value(decor.c_str());decorations->redraw();
+}
+void WindowUI::cb_flat(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_flat_i(o,v);
+}
+
+unsigned char WindowUI::menu_decorations_i18n_done = 0;
+Fl_Menu_Item WindowUI::menu_decorations[] = {
+ {"motif", 0,  (Fl_Callback*)WindowUI::cb_motif, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"flat", 0,  (Fl_Callback*)WindowUI::cb_flat, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+Fl_Menu_Item* WindowUI::motif = WindowUI::menu_decorations + 0;
+Fl_Menu_Item* WindowUI::flat = WindowUI::menu_decorations + 1;
+
 void WindowUI::cb_Cancel1_i(Fl_Button*, void*) {
   window_window->hide();
 cancel();
@@ -658,7 +717,7 @@ Fl_Double_Window* WindowUI::add_program_window() {
 
 Fl_Double_Window* WindowUI::make_window() {
   if(!load()){debug_out("DIDN'T LOAD in jwm-window");}
-  else{debug_out("LOADED doc in jwm-window");}
+  JWMVERSION=JWMversion();
   { Fl_Double_Window* o = window_window = new Fl_Double_Window(510, 315, gettext("Window Settings"));
     window_window->color(FL_DARK1);
     window_window->user_data((void*)(this));
@@ -1093,10 +1152,10 @@ s many program groups can be created as desired."));
           } // Fl_Button* rm_class
           o->end();
         } // Fl_Group* o
-        { Fl_Group* o = new Fl_Group(5, 45, 460, 205, gettext("Advanced"));
+        { Fl_Group* o = new Fl_Group(5, 45, 465, 235, gettext("Advanced"));
           o->selection_color(FL_DARK2);
           o->hide();
-          { Fl_Slider* o = a_b_slider = new Fl_Slider(190, 150, 125, 25, gettext("Window Border Size"));
+          { Fl_Slider* o = a_b_slider = new Fl_Slider(190, 95, 125, 25, gettext("Window Border Size"));
             a_b_slider->tooltip(gettext("Width of the window borders"));
             a_b_slider->type(1);
             a_b_slider->box(FL_GTK_DOWN_BOX);
@@ -1112,7 +1171,7 @@ s many program groups can be created as desired."));
             int x = getBorderWidth();
             o->value(x);
           } // Fl_Slider* a_b_slider
-          { Fl_Value_Output* o = a_b_slider_v = new Fl_Value_Output(320, 150, 35, 25, gettext("pixels"));
+          { Fl_Value_Output* o = a_b_slider_v = new Fl_Value_Output(320, 95, 35, 25, gettext("pixels"));
             a_b_slider_v->tooltip(gettext("Width of the window borders"));
             a_b_slider_v->box(FL_FLAT_BOX);
             a_b_slider_v->color(FL_LIGHT3);
@@ -1122,7 +1181,7 @@ s many program groups can be created as desired."));
             int v = a_b_slider->value();
             o->value(v);
           } // Fl_Value_Output* a_b_slider_v
-          { Fl_Slider* o = a_t_slider = new Fl_Slider(190, 190, 125, 25, gettext("Window Title Bar Size"));
+          { Fl_Slider* o = a_t_slider = new Fl_Slider(190, 125, 125, 25, gettext("Window Title Bar Size"));
             a_t_slider->tooltip(gettext("Height of the Window\'s Title Bar"));
             a_t_slider->type(1);
             a_t_slider->box(FL_GTK_DOWN_BOX);
@@ -1138,7 +1197,7 @@ s many program groups can be created as desired."));
             int y = getBorderHeight();
             o->value(y);
           } // Fl_Slider* a_t_slider
-          { Fl_Value_Output* o = a_t_slider_v = new Fl_Value_Output(320, 190, 35, 25, gettext("pixels"));
+          { Fl_Value_Output* o = a_t_slider_v = new Fl_Value_Output(320, 125, 35, 25, gettext("pixels"));
             a_t_slider_v->tooltip(gettext("Height of the Window\'s Title Bar"));
             a_t_slider_v->box(FL_FLAT_BOX);
             a_t_slider_v->color(FL_LIGHT3);
@@ -1148,12 +1207,53 @@ s many program groups can be created as desired."));
             int v = a_t_slider->value();
             o->value(v);
           } // Fl_Value_Output* a_t_slider_v
-          { new Fl_Box(80, 55, 375, 15, gettext("This can make your window borders and Title bar"));
+          { new Fl_Box(80, 45, 375, 15, gettext("This can make your window borders and Title bar"));
           } // Fl_Box* o
-          { Fl_Box* o = new Fl_Box(145, 70, 250, 50, gettext("REALLY HUGE!"));
+          { Fl_Box* o = new Fl_Box(145, 65, 250, 30, gettext("REALLY HUGE!"));
             o->labelfont(1);
             o->labelsize(24);
           } // Fl_Box* o
+          { Fl_Input* o = default_icon = new Fl_Input(190, 240, 125, 25, gettext("Default Menu Button Icon"));
+            default_icon->box(FL_FLAT_BOX);
+            if(JWMVERSION<235){o->hide();}
+            else{std::string tmp=getElementText("ButtonMenu");if(tmp.compare("")!=0){o->value(tmp.c_str());}}
+          } // Fl_Input* default_icon
+          { Fl_Button* o = default_icon_button = new Fl_Button(320, 230, 50, 50);
+            default_icon_button->box(FL_FLAT_BOX);
+            default_icon_button->color((Fl_Color)23);
+            default_icon_button->callback((Fl_Callback*)cb_default_icon_button);
+            if(JWMVERSION<235){o->hide();}
+          } // Fl_Button* default_icon_button
+          { Fl_Input* o = default_icon_win = new Fl_Input(190, 190, 125, 25, gettext("Default Window Icon"));
+            default_icon_win->box(FL_FLAT_BOX);
+            if(JWMVERSION<236){o->hide();}
+            else{std::string tmp=getElementText("DefaultIcon");if(tmp.compare("")!=0){o->value(tmp.c_str());}}
+          } // Fl_Input* default_icon_win
+          { Fl_Button* o = default_icon_button_win = new Fl_Button(320, 175, 50, 50);
+            default_icon_button_win->box(FL_FLAT_BOX);
+            default_icon_button_win->color((Fl_Color)23);
+            default_icon_button_win->callback((Fl_Callback*)cb_default_icon_button_win);
+            if(JWMVERSION<236){o->hide();}
+          } // Fl_Button* default_icon_button_win
+          { Fl_Menu_Button* o = new Fl_Menu_Button(70, 155, 110, 25, gettext("decorations"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            if (!menu_decorations_i18n_done) {
+              int i=0;
+              for ( ; i<2; i++)
+                if (menu_decorations[i].label())
+                  menu_decorations[i].label(gettext(menu_decorations[i].label()));
+              menu_decorations_i18n_done = 1;
+            }
+            o->menu(menu_decorations);
+            if(JWMVERSION<236){o->hide();}
+          } // Fl_Menu_Button* o
+          { Fl_Output* o = decorations = new Fl_Output(190, 155, 125, 25);
+            decorations->box(FL_FLAT_BOX);
+            decorations->selection_color((Fl_Color)80);
+            std::string decor=getElementAttribute("WindowStyle","decorations");
+            if(decor.compare("")!=0){o->value(decor.c_str());o->redraw();}
+          } // Fl_Output* decorations
           o->end();
         } // Fl_Group* o
         o->end();

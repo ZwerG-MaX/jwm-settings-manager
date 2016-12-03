@@ -45,6 +45,7 @@
 #include <FL/Fl_Output.H>
 
 class KeyboardUI {
+  int JWMVERSION; 
 public:
   Fl_Double_Window* make_window();
   Fl_Double_Window *keyboard_window;
@@ -228,6 +229,11 @@ public:
 private:
   inline void cb_sendl_i(Fl_Menu_*, void*);
   static void cb_sendl(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *restore;
+private:
+  inline void cb_restore_i(Fl_Menu_*, void*);
+  static void cb_restore(Fl_Menu_*, void*);
   inline void cb_Choose_i(Fl_Button*, void*);
   static void cb_Choose(Fl_Button*, void*);
 public:
@@ -447,6 +453,11 @@ public:
 private:
   inline void cb_sendl1_i(Fl_Menu_*, void*);
   static void cb_sendl1(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *restore1;
+private:
+  inline void cb_restore1_i(Fl_Menu_*, void*);
+  static void cb_restore1(Fl_Menu_*, void*);
   inline void cb_Choose1_i(Fl_Button*, void*);
   static void cb_Choose1(Fl_Button*, void*);
 public:

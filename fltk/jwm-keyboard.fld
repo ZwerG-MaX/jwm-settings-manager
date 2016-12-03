@@ -108,9 +108,12 @@ decl {struct keycode_table{int n; const char* text;} table[] = {
 
 class KeyboardUI {open
 } {
+  decl {int JWMVERSION;} {selected private local
+  }
   Function {make_window()} {open
   } {
     code {load();
+JWMVERSION=JWMversion();
 //Fl::add_handler(handle);} {}
     Fl_Window keyboard_window {
       label {Keyboard Settings} open
@@ -173,7 +176,7 @@ grabber_window()->show();}
         xywh {280 115 65 30} box FLAT_BOX color 61 selection_color 58 labelcolor 7
       }
       Fl_Menu_Button {} {
-        label Action
+        label Action open
         xywh {210 80 135 30} box FLAT_BOX color 23 selection_color 80
       } {
         MenuItem next {
@@ -310,7 +313,7 @@ menu_cb(action);}
         }
         MenuItem maxtop {
           label {Maximize to the Top of the screen}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "maxtop";
   menu_cb(action);
 }
@@ -321,7 +324,7 @@ else{
         }
         MenuItem maxbottom {
           label {Maximize to the Bottom of the screen}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "maxbottom";
   menu_cb(action);
 }
@@ -332,7 +335,7 @@ else{
         }
         MenuItem maxleft {
           label {Maximize to the Left of the screen}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "maxleft";
   menu_cb(action);
 }
@@ -343,7 +346,7 @@ else{
         }
         MenuItem maxright {
           label {Maximize to the Right of the screen}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "maxright";
   menu_cb(action);
 }
@@ -354,7 +357,7 @@ else{
         }
         MenuItem maxv {
           label {Maximize Vertical}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "maxv";
   menu_cb(action);
 }
@@ -365,7 +368,7 @@ else{
         }
         MenuItem maxh {
           label {Maximize Horizontal}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "maxh";
   menu_cb(action);
 }
@@ -376,7 +379,7 @@ else{
         }
         MenuItem sendu {
           label {Send Window Up a Desktop}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "sendu";
   menu_cb(action);
 }
@@ -387,7 +390,7 @@ else{
         }
         MenuItem sendd {
           label {Send Window Down a Desktop}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "sendd";
   menu_cb(action);
 }
@@ -398,7 +401,7 @@ else{
         }
         MenuItem sendr {
           label {Send Window Right a Desktop}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "sendr";
   menu_cb(action);
 }
@@ -409,7 +412,7 @@ else{
         }
         MenuItem sendl {
           label {Send Window Left a Desktop}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "sendl";
   menu_cb(action);
 }
@@ -417,6 +420,17 @@ else{
   o->hide();
 }}
           xywh {200 200 100 20}
+        }
+        MenuItem restore {
+          label {Restore a minimized window}
+          callback {if(JWMVERSION>=233){
+  const char * action = "restore";
+  menu_cb(action);
+}
+else{
+  o->hide();
+}}
+          xywh {10 10 100 20}
         }
       }
       Fl_Button {} {
@@ -547,7 +561,7 @@ o->deactivate();}
   } {
     Fl_Window conf_key_win {
       label {Configure Keyboard Shortcut} open
-      xywh {866 433 355 180} type Double
+      xywh {594 344 355 180} type Double
       code0 {debug_out("config_key_win()->show()");}
       code1 {startup(o,jsm_keyboard_xpm);}
       code2 {if(!Configure(key_browser,action_name1,current_key,current_mod1,current_mod2,current_mod3,old_action)){debug_out("Configure failed");}} xclass {jsm-keyboard} visible
@@ -702,7 +716,7 @@ menu_cb(action);}
         }
         MenuItem maxtop1 {
           label {Maximize to the Top of the screen}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "maxtop";
   menu_cb(action);
 }
@@ -713,7 +727,7 @@ else{
         }
         MenuItem maxbottom1 {
           label {Maximize to the Bottom of the screen}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "maxbottom";
   menu_cb(action);
 }
@@ -724,7 +738,7 @@ else{
         }
         MenuItem maxleft1 {
           label {Maximize to the Left of the screen}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "maxleft";
   menu_cb(action);
 }
@@ -735,7 +749,7 @@ else{
         }
         MenuItem maxright1 {
           label {Maximize to the Right of the screen}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "maxright";
   menu_cb(action);
 }
@@ -746,7 +760,7 @@ else{
         }
         MenuItem maxv1 {
           label {Maximize Vertical}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "maxv";
   menu_cb(action);
 }
@@ -757,7 +771,7 @@ else{
         }
         MenuItem maxh1 {
           label {Maximize Horizontal}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "maxh";
   menu_cb(action);
 }
@@ -768,7 +782,7 @@ else{
         }
         MenuItem sendu1 {
           label {Send Window Up a Desktop}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "sendu";
   menu_cb(action);
 }
@@ -779,7 +793,7 @@ else{
         }
         MenuItem sendd1 {
           label {Send Window Down a Desktop}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "sendd";
   menu_cb(action);
 }
@@ -790,7 +804,7 @@ else{
         }
         MenuItem sendr1 {
           label {Send Window Right a Desktop}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "sendr";
   menu_cb(action);
 }
@@ -801,7 +815,7 @@ else{
         }
         MenuItem sendl1 {
           label {Send Window Left a Desktop}
-          callback {if(newpanel()){
+          callback {if(JWMVERSION>=230){
   const char * action = "sendl";
   menu_cb(action);
 }
@@ -809,6 +823,17 @@ else{
   o->hide();
 }}
           xywh {210 210 100 20}
+        }
+        MenuItem restore1 {
+          label {Restore a minimized window}
+          callback {if(JWMVERSION>=233){
+  const char * action = "restore";
+  menu_cb(action);
+}
+else{
+  o->hide();
+}}
+          xywh {0 0 100 20}
         }
       }
       Fl_Button {} {
@@ -866,7 +891,7 @@ o->deactivate();}
         xywh {140 20 50 20} box FLAT_BOX color 45 textcolor 55 hide
       }
       Fl_Menu_Button {} {
-        label {Special Keys} open selected
+        label {Special Keys} open
         tooltip {Picture button keys on the keyboard} xywh {220 75 130 30} box FLAT_BOX color 23 selection_color 80
       } {
         MenuItem {} {

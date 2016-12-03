@@ -59,7 +59,7 @@ decl {\#include "../include/menu.hpp"} {public global
 
 class MenuUI {open
 } {
-  decl {int menuItemLineNumber;} {public local
+  decl {int menuItemLineNumber;int JWMVERSION;} {public local
   }
   Function {add_a_menu()} {open
   } {
@@ -364,14 +364,15 @@ change_include();}
   }
   Function {make_window(std::string INPUTmenu)} {open
   } {
-    code {load();} {}
+    code {load();
+JWMVERSION=JWMversion();} {}
     Fl_Window menu_window {
       label {Menu properties} open
-      xywh {754 305 435 150} type Double color 31 resizable
+      xywh {676 441 435 155} type Double color 31 resizable
       code0 {startup(o);} xclass {jsm-panel} visible
     } {
-      Fl_Scroll {} {open
-        xywh {0 -330 1015 580} color 31
+      Fl_Scroll {} {open selected
+        xywh {0 0 435 156} color 31
       } {
         Fl_Button {} {
           label {@+}
@@ -410,7 +411,7 @@ if(menu != NULL){
 }
 else{std::cerr<<"Problem getting this menu"<<std::endl;}
 menuElement->deselect();
-menuElementText->deselect();} selected
+menuElementText->deselect();}
           tooltip {The range of possible values is 0 to 9 inclusive as  well
                      as  a to z inclusive, providing for up to 36 menus.  Note
                      that only the numeric values map to mouse buttons.} xywh {5 5 65 105} type Hold box FLAT_BOX selection_color 80

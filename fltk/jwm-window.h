@@ -48,6 +48,7 @@
 #include <FL/Fl_Value_Output.H>
 
 class WindowUI {
+  int JWMVERSION; 
 public:
   Fl_Double_Window* add_option_window();
   Fl_Double_Window *add_opt_window;
@@ -308,6 +309,31 @@ private:
   static void cb_a_t_slider(Fl_Slider*, void*);
 public:
   Fl_Value_Output *a_t_slider_v;
+  Fl_Input *default_icon;
+  Fl_Button *default_icon_button;
+private:
+  inline void cb_default_icon_button_i(Fl_Button*, void*);
+  static void cb_default_icon_button(Fl_Button*, void*);
+public:
+  Fl_Input *default_icon_win;
+  Fl_Button *default_icon_button_win;
+private:
+  inline void cb_default_icon_button_win_i(Fl_Button*, void*);
+  static void cb_default_icon_button_win(Fl_Button*, void*);
+  static unsigned char menu_decorations_i18n_done;
+  static Fl_Menu_Item menu_decorations[];
+public:
+  static Fl_Menu_Item *motif;
+private:
+  inline void cb_motif_i(Fl_Menu_*, void*);
+  static void cb_motif(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *flat;
+private:
+  inline void cb_flat_i(Fl_Menu_*, void*);
+  static void cb_flat(Fl_Menu_*, void*);
+public:
+  Fl_Output *decorations;
 private:
   inline void cb_Cancel1_i(Fl_Button*, void*);
   static void cb_Cancel1(Fl_Button*, void*);

@@ -529,7 +529,6 @@ void deleteVolume(){
 //////E
 void editButton(int whichbutton, std::string MENU,std::string PROG,std::string ICON,std::string LABEL,std::string MASK){
 	debug_out("void editButton(std::string "+MENU+",std::string "+PROG+",std::string "+ICON+",std::string "+LABEL+",std::string "+MASK+")");
-	unsigned int whichpanel=currentPanel();
 	if(MASK.compare("")!=0){
 		if((PROG.compare("")!=0)&&(MENU.compare("")!=0)){errorOUT("Both program and Menu are together on the same mask.... This will default to MENU");}
 	  //edit the current mouse button mask

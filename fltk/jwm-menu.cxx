@@ -657,10 +657,11 @@ Fl_Double_Window* MenuUI::configure_include() {
 
 Fl_Double_Window* MenuUI::make_window(std::string INPUTmenu) {
   load();
-  { Fl_Double_Window* o = menu_window = new Fl_Double_Window(435, 150, gettext("Menu properties"));
+  JWMVERSION=JWMversion();
+  { Fl_Double_Window* o = menu_window = new Fl_Double_Window(435, 155, gettext("Menu properties"));
     menu_window->color((Fl_Color)31);
     menu_window->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(0, -330, 1015, 580);
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 435, 156);
       o->color((Fl_Color)31);
       { Fl_Button* o = new Fl_Button(5, 115, 30, 30, gettext("@+"));
         o->tooltip(gettext("Add a menu"));

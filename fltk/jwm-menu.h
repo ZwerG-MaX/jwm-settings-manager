@@ -48,7 +48,7 @@
 
 class MenuUI {
 public:
-  int menuItemLineNumber; 
+  int menuItemLineNumber;int JWMVERSION; 
   Fl_Double_Window* add_a_menu();
   Fl_Browser *list_browser;
   Fl_Input *new_menu_label;
