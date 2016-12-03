@@ -112,6 +112,12 @@ unsigned int getActiveBackground(unsigned int c,std::string element){
 	unsigned int retval=flCOLOR(color,c);
 	return retval;
 }
+unsigned int getActiveForeground(unsigned int c,std::string element){
+	debug_out("unsigned int getActiveBackground(unsigned int c,std::string "+element+")");
+	std::string color=getElementText(element,"Active","Foreground");
+	unsigned int retval=flCOLOR(color,c);
+	return retval;
+}
 unsigned int getBackground(unsigned int c,std::string element){
 	debug_out("unsigned int getBackground(unsigned int c,std::string "+element+")");
 	std::string color=getElementText(element,"Background");
@@ -725,6 +731,19 @@ void one_color_Font(Fl_Widget *o, std::string whichElement){
   	///FIXME flPanel function
 		setElementFloat(whichElement,"Foreground",colors);
 		std::string colorString=getElementText(whichElement,"Foreground");
+		unsigned int unusedColor;
+		unsigned int colorSet = flCOLOR(colorString,unusedColor);
+		o->color(colorSet);
+		o->redraw();
+	}
+}
+void one_color_Font_active(Fl_Widget *o, std::string whichElement){
+	debug_out("void one_color_Font_active(Fl_Widget *o, std::string "+whichElement+")");
+	int c;
+	double* colors = choose_a_color(c,o);
+	if(c!=0){
+		setElementFloat(whichElement,"Active","Foreground",colors);
+		std::string colorString=getElementText(whichElement,"Active","Foreground");
 		unsigned int unusedColor;
 		unsigned int colorSet = flCOLOR(colorString,unusedColor);
 		o->color(colorSet);

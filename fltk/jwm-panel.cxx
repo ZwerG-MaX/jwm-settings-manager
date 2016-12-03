@@ -205,11 +205,11 @@ void PanelUI::cb_menu_bg_color(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menu_bg_color_i(o,v);
 }
 
-void PanelUI::cb_menu_fg_color_i(Fl_Button* o, void*) {
+void PanelUI::cb_menu_bg_color_a_i(Fl_Button* o, void*) {
   one_color_active(o,"MenuStyle");
 }
-void PanelUI::cb_menu_fg_color(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menu_fg_color_i(o,v);
+void PanelUI::cb_menu_bg_color_a(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menu_bg_color_a_i(o,v);
 }
 
 void PanelUI::cb_menu_font_color_i(Fl_Button* o, void*) {
@@ -240,11 +240,12 @@ void PanelUI::cb_b_color(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_b_color_i(o,v);
 }
 
-void PanelUI::cb_button_color_i(Fl_Button* o, void*) {
-  if(!style_gone()){one_color(o,"TrayButtonStyle");};
+void PanelUI::cb_button_color_font_a_i(Fl_Button* o, void*) {
+  if((JWM_VERSION<232)&&(JWM_VERSION>236)){o->hide();}
+else{one_color_Font_active(o,"TrayButtonStyle");};
 }
-void PanelUI::cb_button_color(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_button_color_i(o,v);
+void PanelUI::cb_button_color_font_a(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_button_color_font_a_i(o,v);
 }
 
 void PanelUI::cb_o_slider_i(Fl_Slider*, void*) {
@@ -267,6 +268,72 @@ showMenu();
 }
 void PanelUI::cb_Edit(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Edit_i(o,v);
+}
+
+void PanelUI::cb_button_color_i(Fl_Button* o, void*) {
+  if((JWM_VERSION<232)&&(JWM_VERSION>236)){o->hide();}
+else{one_color(o,"TrayButtonStyle");};
+}
+void PanelUI::cb_button_color(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_button_color_i(o,v);
+}
+
+void PanelUI::cb_button_color_active_i(Fl_Button* o, void*) {
+  if((JWM_VERSION<232)&&(JWM_VERSION>236)){o->hide();}
+else{one_color_active(o,"TrayButtonStyle");};
+}
+void PanelUI::cb_button_color_active(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_button_color_active_i(o,v);
+}
+
+void PanelUI::cb_button_color_font_i(Fl_Button* o, void*) {
+  if((JWM_VERSION<232)&&(JWM_VERSION>236)){o->hide();}
+else{one_color_Font(o,"TrayButtonStyle");};
+}
+void PanelUI::cb_button_color_font(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_button_color_font_i(o,v);
+}
+
+void PanelUI::cb_panel_font_a_i(Fl_Button* o, void*) {
+  one_color_Font_active(o,"TrayStyle");
+}
+void PanelUI::cb_panel_font_a(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_panel_font_a_i(o,v);
+}
+
+void PanelUI::cb_panel_color_a_i(Fl_Button* o, void*) {
+  one_color_active(o,"TrayStyle");
+}
+void PanelUI::cb_panel_color_a(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_panel_color_a_i(o,v);
+}
+
+void PanelUI::cb_panel_font_i(Fl_Button* o, void*) {
+  one_color_Font(o,"TrayStyle");
+}
+void PanelUI::cb_panel_font(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_panel_font_i(o,v);
+}
+
+void PanelUI::cb_menu_font_a_i(Fl_Button* o, void*) {
+  one_color_Font_active(o,"MenuStyle");
+}
+void PanelUI::cb_menu_font_a(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menu_font_a_i(o,v);
+}
+
+unsigned char PanelUI::menu_decorations_i18n_done = 0;
+Fl_Menu_Item PanelUI::menu_decorations[] = {
+ {"flat", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"motif", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void PanelUI::cb_menu_outline_i(Fl_Button* o, void*) {
+  //one_color_Font(o,"MenuStyle");
+}
+void PanelUI::cb_menu_outline(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menu_outline_i(o,v);
 }
 
 void PanelUI::cb_top_i(Fl_Menu_*, void*) {
@@ -910,6 +977,20 @@ void PanelUI::cb_OK6(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_OK6_i(o,v);
 }
 
+void PanelUI::cb_clock_fg_i(Fl_Button* o, void*) {
+  one_color_Font(o,"ClockStyle");
+}
+void PanelUI::cb_clock_fg(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_clock_fg_i(o,v);
+}
+
+void PanelUI::cb_Background_i(Fl_Button* o, void*) {
+  one_color(o,"ClockStyle");
+}
+void PanelUI::cb_Background(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_Background_i(o,v);
+}
+
 void PanelUI::cb_OK7_i(Fl_Button*, void*) {
   conf_indicator_window->hide();
 }
@@ -1242,6 +1323,7 @@ void PanelUI::display(std::string filename) {
 
 Fl_Double_Window* PanelUI::make_window() {
   load();
+  JWM_VERSION=JWMversion();
   { Fl_Double_Window* o = panel_window = new Fl_Double_Window(285, 450, gettext("Panel Settings"));
     panel_window->color(FL_DARK1);
     panel_window->user_data((void*)(this));
@@ -1297,6 +1379,7 @@ Fl_Double_Window* PanelUI::make_window() {
         o->color(FL_DARK1);
         { Fl_Group* o = apps_tab = new Fl_Group(5, 60, 280, 350, gettext("Apps"));
           apps_tab->selection_color(FL_DARK2);
+          apps_tab->hide();
           { Fl_Button* o = new Fl_Button(50, 380, 30, 30, gettext("-"));
             o->box(FL_FLAT_BOX);
             o->color((Fl_Color)23);
@@ -1337,10 +1420,41 @@ Fl_Double_Window* PanelUI::make_window() {
           const char* text=gettext("Apps");o->label(text);
           apps_tab->end();
         } // Fl_Group* apps_tab
-        { Fl_Group* o = new Fl_Group(0, 60, 275, 335, gettext("Appearance"));
+        { Fl_Group* o = new Fl_Group(0, 60, 280, 340, gettext("Appearance"));
           o->selection_color(FL_DARK2);
-          o->hide();
-          { Fl_Button* o = menu_bg_color = new Fl_Button(10, 102, 60, 25, gettext("Menu Background"));
+          { Fl_Box* o = new Fl_Box(5, 265, 135, 35, gettext("Active"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)53);
+            o->selection_color(FL_DARK3);
+            o->align(Fl_Align(FL_ALIGN_TOP));
+          } // Fl_Box* o
+          { Fl_Box* o = new Fl_Box(5, 315, 135, 35, gettext("Inactive"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)43);
+            o->selection_color(FL_DARK3);
+            o->align(Fl_Align(FL_ALIGN_TOP));
+          } // Fl_Box* o
+          { Fl_Box* o = new Fl_Box(145, 265, 135, 35, gettext("Active"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)53);
+            o->selection_color(FL_DARK3);
+            o->align(Fl_Align(FL_ALIGN_TOP));
+            if((JWM_VERSION>232)&&(JWM_VERSION<236)){o->hide();}
+          } // Fl_Box* o
+          { Fl_Box* o = new Fl_Box(10, 110, 135, 35, gettext("Active"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)53);
+            o->selection_color(FL_DARK3);
+            o->align(Fl_Align(FL_ALIGN_TOP));
+          } // Fl_Box* o
+          { Fl_Box* o = new Fl_Box(10, 160, 135, 35, gettext("Inactive"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)43);
+            o->selection_color(FL_DARK3);
+            o->align(Fl_Align(FL_ALIGN_TOP));
+          } // Fl_Box* o
+          { Fl_Button* o = menu_bg_color = new Fl_Button(80, 165, 60, 25);
+            menu_bg_color->tooltip(gettext("Menu Inactive Background Color"));
             menu_bg_color->box(FL_FLAT_BOX);
             menu_bg_color->color((Fl_Color)23);
             menu_bg_color->callback((Fl_Callback*)cb_menu_bg_color);
@@ -1349,16 +1463,25 @@ Fl_Double_Window* PanelUI::make_window() {
             unsigned int color = getBackground(c,"MenuStyle");
             o->color(color);
           } // Fl_Button* menu_bg_color
-          { Fl_Button* o = menu_fg_color = new Fl_Button(10, 144, 60, 25, gettext("Menu Selection"));
-            menu_fg_color->box(FL_FLAT_BOX);
-            menu_fg_color->color((Fl_Color)23);
-            menu_fg_color->callback((Fl_Callback*)cb_menu_fg_color);
-            menu_fg_color->align(Fl_Align(FL_ALIGN_RIGHT));
+          { Fl_Button* o = menu_bg_color_a = new Fl_Button(80, 115, 60, 25);
+            menu_bg_color_a->tooltip(gettext("Menu Active Background Color"));
+            menu_bg_color_a->box(FL_FLAT_BOX);
+            menu_bg_color_a->color((Fl_Color)23);
+            menu_bg_color_a->callback((Fl_Callback*)cb_menu_bg_color_a);
+            menu_bg_color_a->align(Fl_Align(FL_ALIGN_RIGHT));
             unsigned int c=0;
             unsigned int color=getActiveBackground(c,"MenuStyle");
             o->color(color);
-          } // Fl_Button* menu_fg_color
-          { Fl_Button* o = menu_font_color = new Fl_Button(10, 187, 60, 25, gettext("Menu Font Color"));
+          } // Fl_Button* menu_bg_color_a
+          { Fl_Box* o = new Fl_Box(145, 315, 135, 35, gettext("Inactive"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)43);
+            o->selection_color(FL_DARK3);
+            o->align(Fl_Align(FL_ALIGN_TOP));
+            if((JWM_VERSION>232)&&(JWM_VERSION<236)){o->hide();}
+          } // Fl_Box* o
+          { Fl_Button* o = menu_font_color = new Fl_Button(15, 165, 60, 25);
+            menu_font_color->tooltip(gettext("Menu Inactive Text Color"));
             menu_font_color->box(FL_FLAT_BOX);
             menu_font_color->color((Fl_Color)23);
             menu_font_color->callback((Fl_Callback*)cb_menu_font_color);
@@ -1367,7 +1490,7 @@ Fl_Double_Window* PanelUI::make_window() {
             unsigned int color = getFontColor(c,"MenuStyle");
             o->color(color);
           } // Fl_Button* menu_font_color
-          { Fl_Slider* o = o_menu_slider = new Fl_Slider(10, 227, 90, 25, gettext("Opacity of Menu "));
+          { Fl_Slider* o = o_menu_slider = new Fl_Slider(10, 200, 90, 25, gettext("Opacity of Menu "));
             o_menu_slider->tooltip(gettext("A compositor (like xcompmgr) must be installed"));
             o_menu_slider->type(1);
             o_menu_slider->box(FL_GTK_DOWN_BOX);
@@ -1382,7 +1505,7 @@ Fl_Double_Window* PanelUI::make_window() {
             float h=getOpacity("MenuStyle");
             o->value(h);
           } // Fl_Slider* o_menu_slider
-          { Fl_Value_Input* o = o_menu_slider_v = new Fl_Value_Input(225, 227, 40, 25, gettext("%"));
+          { Fl_Value_Input* o = o_menu_slider_v = new Fl_Value_Input(225, 200, 40, 25, gettext("%"));
             o_menu_slider_v->box(FL_FLAT_BOX);
             o_menu_slider_v->color((Fl_Color)23);
             o_menu_slider_v->labelsize(10);
@@ -1391,25 +1514,27 @@ Fl_Double_Window* PanelUI::make_window() {
             float v = o_menu_slider->value();
             o->value(v*100.0f);
           } // Fl_Value_Input* o_menu_slider_v
-          { Fl_Button* o = b_color = new Fl_Button(10, 272, 60, 25, gettext("Panel Color"));
+          { Fl_Button* o = b_color = new Fl_Button(75, 320, 60, 25);
+            b_color->tooltip(gettext("Panel Inactive Background Color"));
             b_color->box(FL_FLAT_BOX);
             b_color->color((Fl_Color)23);
             b_color->callback((Fl_Callback*)cb_b_color);
-            b_color->align(Fl_Align(FL_ALIGN_RIGHT));
+            b_color->align(Fl_Align(FL_ALIGN_TOP));
             unsigned int c=0;
             unsigned int color = getBackground(c, "TrayStyle");
             o->color(color);
           } // Fl_Button* b_color
-          { Fl_Button* o = button_color = new Fl_Button(10, 315, 60, 25, gettext("Panel Button Color"));
-            button_color->box(FL_FLAT_BOX);
-            button_color->color((Fl_Color)23);
-            button_color->callback((Fl_Callback*)cb_button_color);
-            button_color->align(Fl_Align(FL_ALIGN_RIGHT));
+          { Fl_Button* o = button_color_font_a = new Fl_Button(150, 270, 60, 25);
+            button_color_font_a->tooltip(gettext("Panel Button Active Text Color"));
+            button_color_font_a->box(FL_FLAT_BOX);
+            button_color_font_a->color((Fl_Color)23);
+            button_color_font_a->callback((Fl_Callback*)cb_button_color_font_a);
+            button_color_font_a->align(Fl_Align(FL_ALIGN_TOP));
             unsigned int c=0;
-            if(style_gone()){o->hide();}
-            else{unsigned int color = getBackground(c,"TrayButtonStyle");o->color(color);}
-          } // Fl_Button* button_color
-          { Fl_Slider* o = o_slider = new Fl_Slider(10, 355, 90, 25, gettext("Opacity of Panel  "));
+            if((JWM_VERSION>232)&&(JWM_VERSION<236)){o->hide();}
+            else{unsigned int color = getActiveForeground(c,"TrayButtonStyle");o->color(color);}
+          } // Fl_Button* button_color_font_a
+          { Fl_Slider* o = o_slider = new Fl_Slider(10, 375, 90, 25, gettext("Opacity of Panel  "));
             o_slider->tooltip(gettext("A compositor (like xcompmgr) must be installed"));
             o_slider->type(1);
             o_slider->box(FL_GTK_DOWN_BOX);
@@ -1424,7 +1549,7 @@ Fl_Double_Window* PanelUI::make_window() {
             float h = getOpacity("TrayStyle");
             o->value(h);
           } // Fl_Slider* o_slider
-          { Fl_Value_Input* o = o_slider_v = new Fl_Value_Input(225, 355, 40, 25, gettext("%"));
+          { Fl_Value_Input* o = o_slider_v = new Fl_Value_Input(225, 375, 40, 25, gettext("%"));
             o_slider_v->box(FL_FLAT_BOX);
             o_slider_v->color((Fl_Color)23);
             o_slider_v->labelsize(10);
@@ -1433,12 +1558,107 @@ Fl_Double_Window* PanelUI::make_window() {
             float v = o_slider->value();
             o->value(v*100.0f);
           } // Fl_Value_Input* o_slider_v
-          { Fl_Button* o = new Fl_Button(10, 70, 105, 25, gettext("Edit Menus"));
+          { Fl_Button* o = new Fl_Button(165, 85, 110, 25, gettext("Edit Menus"));
             o->box(FL_FLAT_BOX);
             o->color((Fl_Color)23);
             o->callback((Fl_Callback*)cb_Edit);
             const char* text=gettext("Edit Menus");o->label(text);
           } // Fl_Button* o
+          { Fl_Button* o = button_color = new Fl_Button(215, 320, 60, 25);
+            button_color->tooltip(gettext("Panel Button Inactive Background Color"));
+            button_color->box(FL_FLAT_BOX);
+            button_color->color((Fl_Color)23);
+            button_color->callback((Fl_Callback*)cb_button_color);
+            button_color->align(Fl_Align(FL_ALIGN_TOP));
+            unsigned int c=0;
+            if((JWM_VERSION>232)&&(JWM_VERSION<236)){o->hide();}
+            else{unsigned int color = getBackground(c,"TrayButtonStyle");o->color(color);}
+          } // Fl_Button* button_color
+          { Fl_Button* o = button_color_active = new Fl_Button(215, 270, 60, 25);
+            button_color_active->tooltip(gettext("Panel Button Active Background Color"));
+            button_color_active->box(FL_FLAT_BOX);
+            button_color_active->color((Fl_Color)23);
+            button_color_active->callback((Fl_Callback*)cb_button_color_active);
+            button_color_active->align(Fl_Align(FL_ALIGN_TOP));
+            unsigned int c=0;
+            if((JWM_VERSION>232)&&(JWM_VERSION<236)){o->hide();}
+            else{unsigned int color = getActiveBackground(c,"TrayButtonStyle");o->color(color);}
+          } // Fl_Button* button_color_active
+          { Fl_Button* o = button_color_font = new Fl_Button(150, 320, 60, 25);
+            button_color_font->tooltip(gettext("Panel Button Inactive Text Color"));
+            button_color_font->box(FL_FLAT_BOX);
+            button_color_font->color((Fl_Color)23);
+            button_color_font->callback((Fl_Callback*)cb_button_color_font);
+            button_color_font->align(Fl_Align(FL_ALIGN_TOP));
+            unsigned int c=0;
+            if((JWM_VERSION>232)&&(JWM_VERSION<236)){o->hide();}
+            else{unsigned int color = getFontColor(c,"TrayButtonStyle");o->color(color);}
+          } // Fl_Button* button_color_font
+          { Fl_Button* o = panel_font_a = new Fl_Button(10, 270, 60, 25);
+            panel_font_a->tooltip(gettext("Panel Active Text Color"));
+            panel_font_a->box(FL_FLAT_BOX);
+            panel_font_a->color((Fl_Color)23);
+            panel_font_a->callback((Fl_Callback*)cb_panel_font_a);
+            panel_font_a->align(Fl_Align(FL_ALIGN_TOP));
+            unsigned int c=0;
+            unsigned int color = getActiveForeground(c,"TrayStyle");o->color(color);
+          } // Fl_Button* panel_font_a
+          { Fl_Button* o = panel_color_a = new Fl_Button(75, 270, 60, 25);
+            panel_color_a->tooltip(gettext("Panel Active Background Color"));
+            panel_color_a->box(FL_FLAT_BOX);
+            panel_color_a->color((Fl_Color)23);
+            panel_color_a->callback((Fl_Callback*)cb_panel_color_a);
+            panel_color_a->align(Fl_Align(FL_ALIGN_TOP));
+            unsigned int c=0;
+            unsigned int color = getActiveBackground(c,"TrayStyle");o->color(color);
+          } // Fl_Button* panel_color_a
+          { Fl_Button* o = panel_font = new Fl_Button(10, 320, 60, 25);
+            panel_font->tooltip(gettext("Panel Inactive Text Color"));
+            panel_font->box(FL_FLAT_BOX);
+            panel_font->color((Fl_Color)23);
+            panel_font->callback((Fl_Callback*)cb_panel_font);
+            panel_font->align(Fl_Align(FL_ALIGN_TOP));
+            unsigned int c=0;
+            unsigned int color = getFontColor(c,"TrayStyle");o->color(color);
+          } // Fl_Button* panel_font
+          { new Fl_Box(35, 230, 75, 20, gettext("Panel"));
+          } // Fl_Box* o
+          { Fl_Box* o = new Fl_Box(155, 230, 105, 25, gettext("Panel Buttons"));
+            if((JWM_VERSION>232)&&(JWM_VERSION<236)){o->hide();}
+          } // Fl_Box* o
+          { new Fl_Box(40, 75, 75, 20, gettext("Menu"));
+          } // Fl_Box* o
+          { Fl_Button* o = menu_font_a = new Fl_Button(15, 115, 60, 25);
+            menu_font_a->tooltip(gettext("Menu Active Text Color"));
+            menu_font_a->box(FL_FLAT_BOX);
+            menu_font_a->color((Fl_Color)23);
+            menu_font_a->callback((Fl_Callback*)cb_menu_font_a);
+            menu_font_a->align(Fl_Align(FL_ALIGN_TOP));
+            unsigned int c=0;
+            unsigned int color = getActiveForeground(c,"MenuStyle");o->color(color);
+          } // Fl_Button* menu_font_a
+          { Fl_Menu_Button* o = new Fl_Menu_Button(165, 120, 110, 25, gettext("decorations"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            o->deactivate();
+            if (!menu_decorations_i18n_done) {
+              int i=0;
+              for ( ; i<2; i++)
+                if (menu_decorations[i].label())
+                  menu_decorations[i].label(gettext(menu_decorations[i].label()));
+              menu_decorations_i18n_done = 1;
+            }
+            o->menu(menu_decorations);
+            if(JWM_VERSION<232){o->hide();}
+          } // Fl_Menu_Button* o
+          { Fl_Button* o = menu_outline = new Fl_Button(175, 165, 60, 25, gettext("Outline"));
+            menu_outline->box(FL_FLAT_BOX);
+            menu_outline->color((Fl_Color)23);
+            menu_outline->callback((Fl_Callback*)cb_menu_outline);
+            menu_outline->align(Fl_Align(FL_ALIGN_TOP));
+            menu_outline->deactivate();
+            //unsigned int c=0;unsigned int color = getFontColor(c,"MenuStyle");o->color(color);
+          } // Fl_Button* menu_outline
           const char* text=gettext("Appearance");o->label(text);
           o->end();
         } // Fl_Group* o
@@ -1989,6 +2209,7 @@ uld be taken from the tray.  The default is 0."));
       o->selection_color(FL_DARK_RED);
       o->callback((Fl_Callback*)cb_Height);
       o->value(getItemH(BUTTON_NUM));
+      if(JWM_VERSION<233)o->hide();
     } // Fl_Value_Input* o
     { Fl_Check_Button* o = new Fl_Check_Button(170, 35, 85, 25, gettext("Labeled"));
       o->tooltip(gettext("Determines if a label is shown for items  in the task list.  The default is t\
@@ -2097,7 +2318,7 @@ Fl_Double_Window* PanelUI::config_button_window(int input_num) {
 }
 
 Fl_Double_Window* PanelUI::config_clock_window() {
-  { Fl_Double_Window* o = conf_clock_window = new Fl_Double_Window(340, 125, gettext("Configure Clock"));
+  { Fl_Double_Window* o = conf_clock_window = new Fl_Double_Window(340, 185, gettext("Configure Clock"));
     conf_clock_window->user_data((void*)(this));
     { clock_menu = new Fl_Menu_Button(5, 5, 110, 25, gettext("Clock Format"));
       clock_menu->box(FL_FLAT_BOX);
@@ -2177,13 +2398,13 @@ m the font used."));
         menu_Mouse1_i18n_done = 1;
       }
       o->menu(menu_Mouse1);
-      if(JWMversion()<230)o->hide();
+      if(JWM_VERSION<230)o->hide();
     } // Fl_Menu_Button* o
     { Fl_Value_Output* o = output_button_val = new Fl_Value_Output(120, 65, 40, 25);
       output_button_val->box(FL_FLAT_BOX);
       output_button_val->color((Fl_Color)23);
       output_button_val->selection_color((Fl_Color)80);
-      if(JWMversion()<230)o->hide();
+      if(JWM_VERSION<230)o->hide();
     } // Fl_Value_Output* output_button_val
     { clock_button_menu = new Fl_Output(215, 65, 25, 25, gettext("Menu"));
       clock_button_menu->tooltip(gettext("The root menu the Clock is tied to"));
@@ -2214,11 +2435,27 @@ m the font used."));
       clock_prog_conf_gear->image(image_gear16);
       clock_prog_conf_gear->callback((Fl_Callback*)cb_clock_prog_conf_gear);
     } // Fl_Button* clock_prog_conf_gear
-    { Fl_Button* o = new Fl_Button(280, 95, 55, 25, gettext("OK"));
+    { Fl_Button* o = new Fl_Button(280, 140, 55, 25, gettext("OK"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK6);
+    } // Fl_Button* o
+    { Fl_Button* o = clock_fg = new Fl_Button(35, 140, 75, 30, gettext("Foreground"));
+      clock_fg->box(FL_FLAT_BOX);
+      clock_fg->color((Fl_Color)23);
+      clock_fg->callback((Fl_Callback*)cb_clock_fg);
+      clock_fg->align(Fl_Align(FL_ALIGN_TOP));
+      if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}
+      else{getColorFromItem(false,"ClockStyle","Foreground",o);}
+    } // Fl_Button* clock_fg
+    { Fl_Button* o = new Fl_Button(160, 140, 75, 30, gettext("Background"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->callback((Fl_Callback*)cb_Background);
+      o->align(Fl_Align(FL_ALIGN_TOP));
+      if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}
+      else{getColorFromItem(false,"ClockStyle","Background",o);}
     } // Fl_Button* o
     startup(o,jsm_panel_xpm);
     conf_clock_window->xclass("jsm-panel");
@@ -2440,7 +2677,7 @@ Fl_Double_Window* PanelUI::config_switcher_window() {
       a_fg->color((Fl_Color)23);
       a_fg->callback((Fl_Callback*)cb_a_fg);
       a_fg->align(Fl_Align(FL_ALIGN_LEFT));
-      if(style_gone()){o->hide();}
+      if((JWM_VERSION>232)||(JWM_VERSION<236)){o->hide();}
       else{getColorFromItem(true,"PagerStyle","Foreground",o);}
     } // Fl_Button* a_fg
     { Fl_Button* o = a_bg = new Fl_Button(55, 125, 75, 30, gettext("Active"));
@@ -2448,21 +2685,21 @@ Fl_Double_Window* PanelUI::config_switcher_window() {
       a_bg->color((Fl_Color)23);
       a_bg->callback((Fl_Callback*)cb_a_bg);
       a_bg->align(Fl_Align(FL_ALIGN_LEFT));
-      if(style_gone()){o->hide();}
+      if((JWM_VERSION>232)||(JWM_VERSION<236)){o->hide();}
       else{getColorFromItem(true,"PagerStyle","Background",o);}
     } // Fl_Button* a_bg
     { Fl_Button* o = t_fg = new Fl_Button(135, 75, 75, 30);
       t_fg->box(FL_FLAT_BOX);
       t_fg->color((Fl_Color)23);
       t_fg->callback((Fl_Callback*)cb_t_fg);
-      if(style_gone()){o->hide();}
+      if((JWM_VERSION>232)||(JWM_VERSION<236)){o->hide();}
       else{getColorFromItem(false,"PagerStyle","Foreground",o);}
     } // Fl_Button* t_fg
     { Fl_Button* o = t_bg = new Fl_Button(135, 125, 75, 30);
       t_bg->box(FL_FLAT_BOX);
       t_bg->color((Fl_Color)23);
       t_bg->callback((Fl_Callback*)cb_t_bg);
-      if(style_gone()){o->hide();}
+      if((JWM_VERSION>232)||(JWM_VERSION<236)){o->hide();}
       else{getColorFromItem(false,"PagerStyle","Background",o);}
     } // Fl_Button* t_bg
     { Fl_Value_Input* o = num_desktop_w = new Fl_Value_Input(190, 1, 20, 24, gettext("Number of Desktops Wide"));
@@ -2485,7 +2722,8 @@ Fl_Double_Window* PanelUI::config_switcher_window() {
       o->color(FL_BACKGROUND2_COLOR);
       o->selection_color(FL_GREEN);
       o->callback((Fl_Callback*)cb_Labled);
-      o->value(taskLabeled(BUTTON_NUM));
+      if((JWM_VERSION<236)){o->hide();}
+      else{o->value(taskLabeled(BUTTON_NUM));}
     } // Fl_Check_Button* o
     startup(o,jsm_panel_xpm);
     conf_switcher->xclass("jsm-panel");

@@ -65,6 +65,7 @@ double getTaskW(int position);
 double getItemH(int position);
 //unsigned int
 unsigned int getActiveBackground(unsigned int c,std::string element);
+unsigned int getActiveForeground(unsigned int c,std::string element);
 unsigned int getBackground(unsigned int c,std::string element);
 unsigned int getFontColor(unsigned int c,std::string element);
 unsigned int getFontColor(unsigned int c,std::string element);
@@ -145,6 +146,7 @@ void num_desktop_wh_CB(std::string whichone, int value,Fl_Value_Input* num_deskt
 void one_color(Fl_Widget *o, std::string whichElement);
 void one_color_active(Fl_Widget *o, std::string whichElement);
 void one_color_Font(Fl_Widget *o, std::string whichElement);
+void one_color_Font_active(Fl_Widget *o, std::string whichElement);
 void opacity(Fl_Value_Input *o, Fl_Slider *slider, std::string whichElement);
 //         P
 void panel_v(int num, Fl_Output * valign);

@@ -45,15 +45,15 @@
 #include <FL/Fl_Tabs.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Browser.H>
+#include <FL/Fl_Box.H>
 #include <FL/Fl_Slider.H>
 #include <FL/Fl_Check_Button.H>
-#include <FL/Fl_Box.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Value_Output.H>
 
 class PanelUI {
-  int BUTTON_NUM; 
+  int BUTTON_NUM;int JWM_VERSION; 
 public:
   Fl_Double_Window* add_spacer();
   Fl_Double_Window *add_spacer_win;
@@ -112,10 +112,10 @@ private:
   inline void cb_menu_bg_color_i(Fl_Button*, void*);
   static void cb_menu_bg_color(Fl_Button*, void*);
 public:
-  Fl_Button *menu_fg_color;
+  Fl_Button *menu_bg_color_a;
 private:
-  inline void cb_menu_fg_color_i(Fl_Button*, void*);
-  static void cb_menu_fg_color(Fl_Button*, void*);
+  inline void cb_menu_bg_color_a_i(Fl_Button*, void*);
+  static void cb_menu_bg_color_a(Fl_Button*, void*);
 public:
   Fl_Button *menu_font_color;
 private:
@@ -137,10 +137,10 @@ private:
   inline void cb_b_color_i(Fl_Button*, void*);
   static void cb_b_color(Fl_Button*, void*);
 public:
-  Fl_Button *button_color;
+  Fl_Button *button_color_font_a;
 private:
-  inline void cb_button_color_i(Fl_Button*, void*);
-  static void cb_button_color(Fl_Button*, void*);
+  inline void cb_button_color_font_a_i(Fl_Button*, void*);
+  static void cb_button_color_font_a(Fl_Button*, void*);
 public:
   Fl_Slider *o_slider;
 private:
@@ -153,6 +153,48 @@ private:
   static void cb_o_slider_v(Fl_Value_Input*, void*);
   inline void cb_Edit_i(Fl_Button*, void*);
   static void cb_Edit(Fl_Button*, void*);
+public:
+  Fl_Button *button_color;
+private:
+  inline void cb_button_color_i(Fl_Button*, void*);
+  static void cb_button_color(Fl_Button*, void*);
+public:
+  Fl_Button *button_color_active;
+private:
+  inline void cb_button_color_active_i(Fl_Button*, void*);
+  static void cb_button_color_active(Fl_Button*, void*);
+public:
+  Fl_Button *button_color_font;
+private:
+  inline void cb_button_color_font_i(Fl_Button*, void*);
+  static void cb_button_color_font(Fl_Button*, void*);
+public:
+  Fl_Button *panel_font_a;
+private:
+  inline void cb_panel_font_a_i(Fl_Button*, void*);
+  static void cb_panel_font_a(Fl_Button*, void*);
+public:
+  Fl_Button *panel_color_a;
+private:
+  inline void cb_panel_color_a_i(Fl_Button*, void*);
+  static void cb_panel_color_a(Fl_Button*, void*);
+public:
+  Fl_Button *panel_font;
+private:
+  inline void cb_panel_font_i(Fl_Button*, void*);
+  static void cb_panel_font(Fl_Button*, void*);
+public:
+  Fl_Button *menu_font_a;
+private:
+  inline void cb_menu_font_a_i(Fl_Button*, void*);
+  static void cb_menu_font_a(Fl_Button*, void*);
+  static unsigned char menu_decorations_i18n_done;
+  static Fl_Menu_Item menu_decorations[];
+public:
+  Fl_Button *menu_outline;
+private:
+  inline void cb_menu_outline_i(Fl_Button*, void*);
+  static void cb_menu_outline(Fl_Button*, void*);
   static unsigned char menu_Panel_i18n_done;
   static Fl_Menu_Item menu_Panel[];
   inline void cb_top_i(Fl_Menu_*, void*);
@@ -430,6 +472,13 @@ private:
   static void cb_clock_prog_conf_gear(Fl_Button*, void*);
   inline void cb_OK6_i(Fl_Button*, void*);
   static void cb_OK6(Fl_Button*, void*);
+public:
+  Fl_Button *clock_fg;
+private:
+  inline void cb_clock_fg_i(Fl_Button*, void*);
+  static void cb_clock_fg(Fl_Button*, void*);
+  inline void cb_Background_i(Fl_Button*, void*);
+  static void cb_Background(Fl_Button*, void*);
 public:
   Fl_Double_Window* config_indicator_window();
   Fl_Double_Window *conf_indicator_window;

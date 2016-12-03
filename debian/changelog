@@ -1,3 +1,40 @@
+jwm-settings-manager (2.0.1ubuntu1) UNRELEASED; urgency=medium
+  * General Changes
+    - general UI overhaul... many things have been reposition and resized to fit smaller resolution screens
+    - all XML functions are localized to the jwmrc.cpp/h files
+    - common.cpp/hpp contain all my linuxcommon namespace functions used in many programs
+    - Icon drawing works well even with SVG support (nano SVG), relative filenames are looked for by a few methods
+    - made JWMVersion() to finely control which things show up in which version
+  * Icons
+    - added Icon theme browser, as well as manual directory chooser
+  * Font
+    - resizing font now changes while moving the slider
+  * Autostart
+    - created desktop-file-editor
+    - XDG autostart items now are listed and can be edited (added pkexec config for system files)
+  * Keyboard
+    - XF86 key drop-down chooser to handle special keys FLTK does not
+    - Key grabber works for all other keys
+  * Touchpad/Mouse
+    - JWM items are on a separate tab
+    - If touchpad does not exist, a small window with JWM options is shown instead
+  * Themes
+    - added ability to browse subdirectories and return to root directory
+  * Panel
+    - Clock  added ClockStyle, width/height, Text editing (also through Buttons and masks) begun adding timezone support
+    - Pager added labeled item
+    - Swallow added w/h
+    - added Spacer as well as w/h configurations
+    - TaskList added h for 2.3.3++ and labeled and max width options
+    - TrayButton added Button mask options for exec/root/etc...
+    - re-add Styles if JWM version >235
+  * Desktop
+    - Icons on desktop and number of desktops actually work now
+  * Window
+    - Groups now actually work
+
+ -- Israel Dahl <israeldahl@gmail.com>  Fri, 2 Dec 2016 19:24:25 -0600
+
 jwm-settings-manager (2.0.0ubuntu1) UNRELEASED; urgency=medium
   * migrated jwm-settings-manager to pguixml
   * control/usage/man page now configured via cmake

@@ -1,12 +1,12 @@
 set precompiler defines in cmake project
 (specifically LINUX_COMMON_HAS_X=true) when Xlibs are found
 
+If CheckIncludes Fails... create the Element
+
 missing functions:
 
 panel:
-//config_swallow_window Swallow w/h
-add_new_menu
-deleteShortcut?
+
 deleteTrayButton?
 
 node adding functions do not return the correct node... find out why???
