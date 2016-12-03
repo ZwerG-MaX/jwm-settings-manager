@@ -243,8 +243,7 @@ if(icon.compare("")!=0){
       }
     }
   }
-  Function {conf_item_window()} {open
-  } {
+  Function {conf_item_window()} {} {
     Fl_Window config_item_win {
       label {Configure the Item} open
       xywh {706 308 280 125} type Double hide
@@ -290,8 +289,7 @@ if(icon.compare("")!=0){
       }
     }
   }
-  Function {conf_window()} {open
-  } {
+  Function {conf_window()} {} {
     Fl_Window config_flwin {
       label {Configure the Item} open
       xywh {738 156 275 130} type Double hide
@@ -337,8 +335,7 @@ if(icon.compare("")!=0){
       }
     }
   }
-  Function {configure_include()} {open
-  } {
+  Function {configure_include()} {} {
     Fl_Window include_win {
       label {Edit Include Item} open
       xywh {666 457 390 45} type Double hide
@@ -367,43 +364,50 @@ change_include();}
     code {load();
 JWMVERSION=JWMversion();} {}
     Fl_Window menu_window {
-      label {Menu properties} open
-      xywh {676 441 435 155} type Double color 31 resizable
+      label {Menu properties} open selected
+      xywh {615 218 440 230} type Double color 31 resizable
       code0 {startup(o);} xclass {jsm-panel} visible
     } {
-      Fl_Scroll {} {open selected
-        xywh {0 0 435 156} color 31
+      Fl_Scroll {} {open
+        xywh {0 0 435 230} color 31
       } {
-        Fl_Button {} {
-          label {@+}
-          callback {add_a_menu()->show();}
-          tooltip {Add a menu} xywh {5 115 30 30} box FLAT_BOX color 23 selection_color 47
-        }
-        Fl_Button minus_root {
-          callback {remove_a_menu();}
-          tooltip {remove a menu} image {custom_buttons/minus} xywh {40 115 30 30} box FLAT_BOX color 23 align 256
-        }
-        Fl_Browser menuElement {
-          callback {menuElementText->deselect();}
-          tooltip {Options: Menu, Dynamic, Include, Program, Separator, Desktops, SendTo, Stick, Maximize, Minimize, Shade, Move, Resize, Kill, Close, Restart, Exit} xywh {80 5 90 105} type Hold box FLAT_BOX selection_color 80
-        }
-        Fl_Button {} {
-          label {@+}
-          callback {add_an_item();}
-          tooltip {Add a menu item} xywh {80 115 30 30} box FLAT_BOX color 23 selection_color 47
-        }
-        Fl_Button minus_element {
-          callback {remove_an_item();}
-          tooltip {remove a menu item} image {custom_buttons/minus} xywh {115 115 30 30} box FLAT_BOX color 23 align 256
-        }
-        Fl_Browser menuElementText {
-          callback {int linenum = o->value();
+        Fl_Tabs {} {open
+          xywh {0 0 435 195} box FLAT_BOX selection_color 23
+        } {
+          Fl_Group {} {
+            label Menus open
+            xywh {0 25 435 170} box FLAT_BOX color 50 selection_color 45
+          } {
+            Fl_Button {} {
+              label {@+}
+              callback {add_a_menu()->show();}
+              tooltip {Add a menu} xywh {5 160 30 30} box FLAT_BOX color 23 selection_color 47
+            }
+            Fl_Button minus_root {
+              callback {remove_a_menu();}
+              tooltip {remove a menu} image {custom_buttons/minus} xywh {40 160 30 30} box FLAT_BOX color 23 align 256
+            }
+            Fl_Browser menuElement {
+              callback {menuElementText->deselect();}
+              tooltip {Options: Menu, Dynamic, Include, Program, Separator, Desktops, SendTo, Stick, Maximize, Minimize, Shade, Move, Resize, Kill, Close, Restart, Exit} xywh {80 50 90 105} type Hold box FLAT_BOX selection_color 80
+            }
+            Fl_Button {} {
+              label {@+}
+              callback {add_an_item();}
+              tooltip {Add a menu item} xywh {80 160 30 30} box FLAT_BOX color 23 selection_color 47
+            }
+            Fl_Button minus_element {
+              callback {remove_an_item();}
+              tooltip {remove a menu item} image {custom_buttons/minus} xywh {115 160 30 30} box FLAT_BOX color 23 align 256
+            }
+            Fl_Browser menuElementText {
+              callback {int linenum = o->value();
 menuElement->select(linenum);}
-          tooltip {These options correspond to specific Root Menu items} xywh {175 5 255 105} type Hold box FLAT_BOX selection_color 80 labeltype NO_LABEL align 1
-        }
-        Fl_Browser root_menu {
-          label { }
-          callback {int line = o->value();
+              tooltip {These options correspond to specific Root Menu items} xywh {175 50 255 105} type Hold box FLAT_BOX selection_color 80 labeltype NO_LABEL align 1
+            }
+            Fl_Browser root_menu {
+              label { }
+              callback {int line = o->value();
 const char* menu = o->text(line);
 if(menu != NULL){
   std::string MENU=menu;
@@ -412,29 +416,111 @@ if(menu != NULL){
 else{std::cerr<<"Problem getting this menu"<<std::endl;}
 menuElement->deselect();
 menuElementText->deselect();}
-          tooltip {The range of possible values is 0 to 9 inclusive as  well
+              tooltip {The range of possible values is 0 to 9 inclusive as  well
                      as  a to z inclusive, providing for up to 36 menus.  Note
-                     that only the numeric values map to mouse buttons.} xywh {5 5 65 105} type Hold box FLAT_BOX selection_color 80
-          code1 {getMenus(o);}
-          code2 {if(INPUTmenu.compare("")!=0){select_sent_in(INPUTmenu);}}
-        }
-        Fl_Button config_something {
-          callback {if(checkFlBrowserItem(menuElementText)){edit_an_item();}
+                     that only the numeric values map to mouse buttons.} xywh {5 50 65 105} type Hold box FLAT_BOX selection_color 80
+              code1 {getMenus(o);}
+              code2 {if(INPUTmenu.compare("")!=0){select_sent_in(INPUTmenu);}}
+            }
+            Fl_Button config_something {
+              callback {if(checkFlBrowserItem(menuElementText)){edit_an_item();}
 else if(checkFlBrowserItem(menuElement)){edit_a_menu();}
 else if(checkFlBrowserItem(root_menu)){submenu_window()->show();}}
-          tooltip Configure image {custom_buttons/gear16.png} xywh {175 115 30 30} box FLAT_BOX color 23 labelfont 1 align 128
+              tooltip Configure image {custom_buttons/gear16.png} xywh {175 160 30 30} box FLAT_BOX color 23 labelfont 1 align 128
+            }
+          }
+          Fl_Group {} {
+            label Appearance open
+            xywh {0 25 435 160} color 50 selection_color 45 hide
+          } {
+            Fl_Box {} {
+              label Active
+              xywh {10 55 135 35} box FLAT_BOX color 53 selection_color 39 align 1
+            }
+            Fl_Box {} {
+              label Inactive
+              xywh {10 105 135 35} box FLAT_BOX color 43 selection_color 39 align 1
+            }
+            Fl_Button menu_bg_color {
+              callback {one_color(o,"MenuStyle");}
+              tooltip {Menu Inactive Background Color} xywh {80 110 60 25} box FLAT_BOX color 23 align 8
+              code0 {unsigned int c=0;}
+              code1 {unsigned int color = getBackground(c,"MenuStyle");}
+              code2 {o->color(color);}
+            }
+            Fl_Button menu_bg_color_a {
+              callback {one_color_active(o,"MenuStyle");}
+              tooltip {Menu Active Background Color} xywh {80 60 60 25} box FLAT_BOX color 23 align 8
+              code0 {unsigned int c=0;}
+              code1 {unsigned int color=getActiveBackground(c,"MenuStyle");}
+              code2 {o->color(color);}
+            }
+            Fl_Button menu_font_color {
+              callback {one_color_Font(o,"MenuStyle");}
+              tooltip {Menu Inactive Text Color} xywh {15 110 60 25} box FLAT_BOX color 23 align 8
+              code0 {unsigned int c=0;}
+              code1 {unsigned int color = getFontColor(c,"MenuStyle");}
+              code2 {o->color(color);}
+            }
+            Fl_Slider o_menu_slider {
+              label {Opacity of Menu}
+              callback {opacity(o_menu_slider_v,o,"MenuStyle");}
+              tooltip {A compositor (like xcompmgr) must be installed} xywh {15 150 90 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 8 when 6 step 0.02 value 1
+              code0 {const char* text=gettext("Opacity of Menu");o->label(text);}
+              code1 {float h=getOpacity("MenuStyle");}
+              code2 {o->value(h);}
+            }
+            Fl_Value_Input o_menu_slider_v {
+              label {%}
+              callback {opacity(o,o_menu_slider,"MenuStyle");}
+              xywh {230 150 40 25} box FLAT_BOX color 23 labelsize 10 align 8
+              code0 {float v = o_menu_slider->value();}
+              code1 {o->value(v*100.0f);}
+            }
+            Fl_Button menu_font_a {
+              callback {one_color_Font_active(o,"MenuStyle");}
+              tooltip {Menu Active Text Color} xywh {15 60 60 25} box FLAT_BOX color 23 align 1
+              code0 {unsigned int c=0;}
+              code2 {unsigned int color = getActiveForeground(c,"MenuStyle");o->color(color);}
+            }
+            Fl_Menu_Button {} {
+              label decorations open
+              tooltip {Flat or Motif style decorations} xywh {160 55 110 25} box FLAT_BOX color 23
+              code0 {if(JWMVERSION<232){o->hide();}}
+            } {
+              MenuItem {} {
+                label flat
+                callback {setDecorations(menu_deco,"MenuStyle","flat");}
+                xywh {10 10 100 20}
+              }
+              MenuItem {} {
+                label motif
+                callback {setDecorations(menu_deco,"MenuStyle","motif");}
+                xywh {10 10 100 20}
+              }
+            }
+            Fl_Button menu_outline {
+              label Outline
+              callback {outline_color(o,"MenuStyle");}
+              xywh {175 110 60 25} box FLAT_BOX color 23 align 1 deactivate
+            }
+            Fl_Output menu_deco {
+              tooltip {Flat or Motif style decorations (flat is default)} xywh {280 55 110 25} box FLAT_BOX selection_color 80
+              code1 {getDecorations(o,"MenuStyle");}
+            }
+          }
         }
-        Fl_Button {} {
-          label Cancel
-          callback {cancel();}
-          xywh {315 120 57 25} box FLAT_BOX color 80 selection_color 81 labelcolor 7
-        }
-        Fl_Button save_button {
-          label OK
-          callback {saveChanges();
+      }
+      Fl_Button {} {
+        label Cancel
+        callback {cancel();}
+        xywh {315 200 57 25} box FLAT_BOX color 80 selection_color 81 labelcolor 7
+      }
+      Fl_Button save_button {
+        label OK
+        callback {saveChanges();
 //showSettings();}
-          tooltip {Write to configuration file} xywh {381 120 49 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
-        }
+        tooltip {Write to configuration file} xywh {381 200 49 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
       }
     }
   }

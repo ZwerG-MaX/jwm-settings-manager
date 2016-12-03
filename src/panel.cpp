@@ -105,36 +105,6 @@ double getItemWH(int position, std::string attribute){
 	double val=linuxcommon::convert_string_to_double(tmp);
 	return val;
 }
-//Unsigned Integer//////////////////////////////////////////////////////
-unsigned int getActiveBackground(unsigned int c,std::string element){
-	debug_out("unsigned int getActiveBackground(unsigned int c,std::string "+element+")");
-	std::string color=getElementText(element,"Active","Background");
-	unsigned int retval=flCOLOR(color,c);
-	return retval;
-}
-unsigned int getActiveForeground(unsigned int c,std::string element){
-	debug_out("unsigned int getActiveBackground(unsigned int c,std::string "+element+")");
-	std::string color=getElementText(element,"Active","Foreground");
-	unsigned int retval=flCOLOR(color,c);
-	return retval;
-}
-unsigned int getBackground(unsigned int c,std::string element){
-	debug_out("unsigned int getBackground(unsigned int c,std::string "+element+")");
-	std::string color=getElementText(element,"Background");
-	unsigned int retval=flCOLOR(color,c);
-	return retval;
-}
-unsigned int getFontColor(unsigned int c,std::string element){
-	debug_out("unsigned int getFontColor(unsigned int c,std::string "+element+")");
-	std::string color=getElementText(element,"Foreground");
-	unsigned int retval=flCOLOR(color,c);
-	return retval;
-}
-unsigned int switch_panel(Fl_Menu_Item *o){
-	debug_out("unsigned int switch_panel(Fl_Menu_Item *o)");
-	unsigned int whichPanel = o->value();
-	return whichPanel;
-}
 //Integer///////////////////////////////////////////////////////////////
 int getBorder(){return linuxcommon::convert_string_to_number(getElementAttribute(currentPanel(),"Tray","border").c_str());}
 int getCoordinate(std::string xy){return linuxcommon::convert_string_to_number(getElementAttribute("Tray",xy).c_str());}
@@ -146,8 +116,6 @@ int taskLabeled(int position){
   if(TRUEorFALSE(tmp)){return 1;}
   return 0;
 }
-//Float/////////////////////////////////////////////////////////////////
-float getOpacity(std::string element){return getElementFloat(element);}
 //Boolean///////////////////////////////////////////////////////////////
 bool addApp(std::string element){return addSubElement(currentPanel(),"Tray",element);}
 bool addApp(std::string element, std::string attribute,std::string value,std::string text){return addSubElementWithTextandAttribute(currentPanel(),"Tray",element,text,attribute,value);}
@@ -558,18 +526,6 @@ void getColorFromItem(bool active, std::string element,std::string subelement,Fl
 	if(active)COLOR=getElementText(element,"Active",subelement);
 	o->color(color);
 }
-void getDecorations(Fl_Output *o,std::string element){
-	if(JWMversion()<232){
-		o->hide();
-		return;
-	}
-	std::string tmp=getElementAttribute(element,"decorations");
-	if(tmp.compare("")!=0){
-		o->value(tmp.c_str());
-	}
-	else{o->value("flat");}
-	o->redraw();
-}
 void getIndicators(Fl_Browser* o){
 	debug_out("void getIndicators(Fl_Browser* o)");
 	o->clear();
@@ -707,91 +663,6 @@ void num_desktop_wh_CB(std::string whichone, int value,Fl_Value_Input* num_deskt
 	if(w==0){setElementAttribute("Desktops","width",defaultValue);}
 	if(h==0){setElementAttribute("Desktops","height",defaultValue);}
 }
-//////O
-void one_color(Fl_Widget *o, std::string whichElement){
-	debug_out("void one_color(Fl_Widget *o, std::string "+whichElement+")");
-	int c;
-	double* colors = choose_a_color(c,o);
-	if(c!=0){
-		if(!setElementFloat(whichElement,colors)){errorOUT("Could not set the color");}
-		std::string colorString=getElementText(whichElement);
-		unsigned int unusedColor;
-		unsigned int colorSet = flCOLOR(colorString,unusedColor);
-		o->color(colorSet);
-		o->redraw();
-	}
-}
-void one_color_active(Fl_Widget *o, std::string whichElement){
-	debug_out("void one_color_active(Fl_Widget *o, std::string "+whichElement+")");
-	int c;
-	double* colors = choose_a_color(c,o);
-	if(c!=0){ //If color chooser isn't canceled... do stuff
-		setElementFloat(whichElement,"Active",colors);
-		std::string colorString=getElementText(whichElement,"Active");
-		unsigned int unusedColor;
-		unsigned int colorSet = flCOLOR(colorString,unusedColor);
-		o->color(colorSet);
-		o->redraw();
-	}
-}
-void one_color_Font(Fl_Widget *o, std::string whichElement){
-	debug_out("void one_color_Font(Fl_Widget *o, std::string "+whichElement+")");
-	int c;
-	double* colors = choose_a_color(c,o);
-	if(c!=0){ //If color chooser isn't canceled... do stuff
-  	///FIXME flPanel function
-		setElementFloat(whichElement,"Foreground",colors);
-		std::string colorString=getElementText(whichElement,"Foreground");
-		unsigned int unusedColor;
-		unsigned int colorSet = flCOLOR(colorString,unusedColor);
-		o->color(colorSet);
-		o->redraw();
-	}
-}
-void one_color_Font_active(Fl_Widget *o, std::string whichElement){
-	debug_out("void one_color_Font_active(Fl_Widget *o, std::string "+whichElement+")");
-	int c;
-	double* colors = choose_a_color(c,o);
-	if(c!=0){
-		std::string colorString;
-		if(JWMversion()>230){
-			setElementFloat(whichElement,"Active","Foreground",colors);
-			colorString=getElementText(whichElement,"Active","Foreground");
-		}
-		else{
-			setElementFloat(whichElement,"ActiveForeground",colors);
-			colorString=getElementText(whichElement,"ActiveForeground");
-		}
-		unsigned int unusedColor;
-		unsigned int colorSet = flCOLOR(colorString,unusedColor);
-		o->color(colorSet);
-		o->redraw();
-	}
-}
-void outline_color(Fl_Widget *o, std::string whichElement){
-	debug_out("void outline_color(Fl_Widget *o, std::string "+whichElement+")");
-	int c;
-	double* colors = choose_a_color(c,o);
-	if(c!=0){
-		std::string colorString;
-		setElementFloat(whichElement,"Outline",colors);
-		colorString=getElementText(whichElement,"Outline");
-		unsigned int unusedColor;
-		unsigned int colorSet = flCOLOR(colorString,unusedColor);
-		o->color(colorSet);
-		o->redraw();
-	}
-}
-void outline_two_color(Fl_Widget *a, Fl_Widget *b, std::string whichElement){
-	two_colors(a,b,whichElement,"Outline");
-}
-void opacity(Fl_Value_Input *o, Fl_Slider *slider, std::string whichElement){
-	debug_out("void opacity(Fl_Value_Input *o, Fl_Slider *slider, std::string "+whichElement+")");
-	double opac=slider->value();
-	double* opacity =&opac;
-	setElementFloat(whichElement,"Opacity",opacity);
-	o->value(opac*100);
-}
 //////P
 void panel_label(Fl_Menu_Button *o){
 	debug_out("void panel_label(Fl_Menu_Button *o)");
@@ -926,16 +797,6 @@ void setImageMenu(std::string testNum,std::string icon){
 	
 }
 void setCoordinate(std::string xy, int value){if(!setElementAttribute(currentPanel(),"Tray",xy,convert(value))){debug_out("Couldn't set value of "+xy);}}
-void setDecorations(Fl_Output *o,std::string element,std::string value){
-	debug_out("void setDecorations(Fl_Output *o,std::string "+element+",std::string "+value+")");
-	if(JWMversion()<232){
-		return;
-	}
-	if(value.compare("")==0){value="flat";}
-	if(!setElementAttribute(element,"decorations",value)){errorOUT("could not add decoration to "+element);}
-	o->value(value.c_str());
-	o->redraw();
-}
 void setValue(std::string attribute, std::string value){
 	debug_out("void setValue(std::string "+attribute+", std::string "+value+")");
 	unsigned int panel = currentPanel();
@@ -960,30 +821,6 @@ void switchButton(std::string OLD,std::string NEW,std::string tooltip,std::strin
 	}
 	if(OLD.compare(NEW)!=0){
 		if(!setNodeText(getMenu(OLD),NEW)){debug_out("Did not set text="+NEW+" for Item");}
-	}
-}
-//////T
-void two_colors(Fl_Widget *a, Fl_Widget *b, std::string whichElement,std::string subelement){
-	debug_out("void two_colors(Fl_Widget *a, Fl_Widget *b, std::string "+whichElement+",std::string "+subelement+")");
-	int c,c2;
-	double* colors = choose_a_color(c,a);
-	if(c!=0){
-		std::string colorString=colorToString(colors);
-		double* colors2 = choose_a_color(c2,a);
-		if(c2!=0){
-			std::string colorString2=colorToString(colors2);
-			std::string res=colorString+":"+colorString2;
-			if(setElementText(whichElement,subelement,res)){
-				res=getElementText(whichElement,subelement);
-				unsigned int Color;
-				unsigned int colorSet = flCOLOR(res,Color);
-				a->color(colorSet);
-				a->redraw();
-				b->color(colorSet);
-				b->redraw();
-			}
-			else{errorOUT("failed to set 2 colors");}
-		}
 	}
 }
 //////W

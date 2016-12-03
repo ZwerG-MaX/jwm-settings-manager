@@ -63,13 +63,6 @@ double setTaskW(int position);
 double getItemW(int position);
 double getTaskW(int position);
 double getItemH(int position);
-//unsigned int
-unsigned int getActiveBackground(unsigned int c,std::string element);
-unsigned int getActiveForeground(unsigned int c,std::string element);
-unsigned int getBackground(unsigned int c,std::string element);
-unsigned int getFontColor(unsigned int c,std::string element);
-unsigned int getFontColor(unsigned int c,std::string element);
-// in jwmrc.h unsigned int numPanels();
 unsigned int switch_panel(Fl_Menu_Item *o);
 //int
 int getBorder();
@@ -77,8 +70,6 @@ int getCoordinate(std::string xy);
 int getHeight();
 int getWidth();
 int taskLabeled(int position);
-//float
-float getOpacity(std::string element);
 //bool
 bool addApp(std::string element);
 bool addApp(std::string element, std::string attribute,std::string value,std::string text);
@@ -128,7 +119,6 @@ void deleteVolume();
 void editButton(int whichbutton, std::string MENU,std::string PROG,std::string ICON,std::string LABEL,std::string MASK);
 //         G
 void getColorFromItem(bool active, std::string element,std::string subelement,Fl_Button* o);
-void getDecorations(Fl_Output *o,std::string element);
 void getIndicators(Fl_Browser* o);
 void getIndicatorsPopulate(Fl_Browser* o,std::vector<std::string> list);
 //         H
@@ -143,14 +133,6 @@ void listIndicators(Fl_Browser *o);
 //         N
 void new_panel_items(Fl_Browser *o);
 void num_desktop_wh_CB(std::string whichone, int value,Fl_Value_Input* num_desktop_w, Fl_Value_Input* num_desktop_h);
-//         O
-void one_color(Fl_Widget *o, std::string whichElement);
-void one_color_active(Fl_Widget *o, std::string whichElement);
-void one_color_Font(Fl_Widget *o, std::string whichElement);
-void one_color_Font_active(Fl_Widget *o, std::string whichElement);
-void outline_color(Fl_Widget *o, std::string whichElement);
-void outline_two_color(Fl_Widget *a, Fl_Widget *b, std::string whichElement);
-void opacity(Fl_Value_Input *o, Fl_Slider *slider, std::string whichElement);
 //         P
 void panel_v(int num, Fl_Output * valign);
 void panel_h(int num, Fl_Output * valign);
@@ -167,12 +149,9 @@ void removeIndicator(Fl_Browser* o);
 //         S
 void setImageMenu(std::string testNum,std::string icon);
 void setItemBool(int position, int value);
-void setDecorations(Fl_Output *o,std::string element,std::string value);
 void setCoordinate(std::string xy, int value);
 void setValue(std::string attribute, std::string value);
 void switchButton(std::string OLD,std::string NEW,std::string tooltip,std::string icon,std::string label);
-//T
-void two_colors(Fl_Widget *a, Fl_Widget *b, std::string whichElement,std::string subelement);
 //         W
 void width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension);
 #endif

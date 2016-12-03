@@ -181,7 +181,7 @@ void corner_change(Fl_Slider *o){
 }
 void corner_load(Fl_Slider *o){
 	debug_out("void corner_load(Fl_Slider *o)");
-	if(newStyle() == -1){o->hide();}
+	if(JWMversion() < 230){o->hide();}
 	else{
 		unsigned int corner=0;
 		std::string C = getElementText("WindowStyle","Corner");

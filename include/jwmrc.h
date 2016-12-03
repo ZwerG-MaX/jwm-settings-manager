@@ -150,11 +150,13 @@ bool setNodeButtonTextByMask(pugi::xml_node node,std::string text,std::string at
 bool setRootMenuHeight(std::string val, int height);
 //T
 bool testExec(std::string command); //linuxcommon wrapper
-
 //String////////////////////////////////////////////////////////////////
+//c
 std::string checkListofExec(std::vector<std::string> list);
-std::string homePath();
+std::string colorToString(const double *rgb);
+//f
 std::string fixHomieInclude(std::string includeLine);
+//g
 std::string getAttribute(pugi::xml_node node,std::string attribute);
 std::string getElementText(std::string element);
 std::string getElementText(std::string element, std::string subelement);
@@ -168,35 +170,54 @@ std::string getElementAttributeFromElementWithAttributeAndValueAndText(std::stri
 std::string getElementAttribute(unsigned int whichElement,std::string element, std::string subelement, std::string attribute);
 std::string getElementAttribute(unsigned int whichElement,std::string element, std::string attribute);
 std::string getElementAttribute(unsigned int whichElement,std::string element,unsigned int whichItem, std::string subelement, std::string attribute);
+std::string getEQUALvalue(std::string INTERNAL_LINE);
+std::string getItemText(pugi::xml_node node);
+std::string getJSMItem(std::string item);
+std::string getMenuAttribute(std::string MENU, std::string attribute);
 std::string getLayoutThing(std::string attribute,std::string vaule1,std::string value2,std::string value3,std::string layout);
+std::string getPanelButtonIcon();
 std::string getSmartHoriz(std::string layout);
 std::string getSmartVert(std::string layout);
 std::string getSmartLayout();
+//h
+std::string homePath();
 std::string horizontalORvertical(int horizontalValue, int verticalValue);
-std::string getItemText(pugi::xml_node node);
-std::string terminal(std::string terminal);//linuxcommon wrapper
-std::string colorToString(const double *rgb);
+//j
 std::string joinColors(const double* rgb, const double* rgb2);
-std::string getPanelButtonIcon();
-std::string splitColor(unsigned int first_or_second, std::string HTMLcolor);
-std::string getEQUALvalue(std::string INTERNAL_LINE);
-std::string getJSMItem(std::string item);
-std::string getMenuAttribute(std::string MENU, std::string attribute);
+//m
 std::string makeTempName(std::string filename);
 std::string makeNOTtemp(std::string filename);
 std::string menuButtonText(pugi::xml_node node);
+//s
+std::string splitColor(unsigned int first_or_second, std::string HTMLcolor);
+//t
+std::string terminal(std::string terminal);//linuxcommon wrapper
+//const char*///////////////////////////////////////////////////////////
 const char* convert(double num);
-//int////////////////////////////////////////////////////////////////
+//unsigned int//////////////////////////////////////////////////////////
+//c
 unsigned int convert(const char* num);
 unsigned int currentPanel();
+//e
+unsigned int elementCounter(std::string element);
+//f
 unsigned int flCOLOR(std::string color, unsigned int &c);//linuxcommon wrapper
 unsigned int flCOLOR(std::string color);//linuxcommon wrapper
-unsigned int splitColor(std::string color, int one_or_two);
+//g
+unsigned int getActiveBackground(unsigned int c,std::string element);
+unsigned int getActiveForeground(unsigned int c,std::string element);
+unsigned int getBackground(unsigned int c,std::string element);
+unsigned int getFontColor(unsigned int c,std::string element);
+unsigned int getFontColor(unsigned int c,std::string element);
 unsigned int getElementInt(std::string element);
 unsigned int getElementInt(std::string element, std::string subelement);
 unsigned int getElementInt(std::string element, std::string subelement, std::string SUBsubsubelement);
-unsigned int elementCounter(std::string element);
+//n
 unsigned int numPanels();
+//s
+unsigned int splitColor(std::string color, int one_or_two);
+unsigned int switch_panel(Fl_Menu_Item *o);
+//int///////////////////////////////////////////////////////////////////
 int addMenuItem(Fl_Browser* menuElement, Fl_Browser* menuElementText, Fl_Input* add_label, Fl_Input* add_icon, Fl_Input* add_input, Fl_Check_Button* add_button, std::string result);
 int getIntAttribute(std::string element, std::string attribute);
 int getIntAttribute(std::string element, std::string subelement, std::string attribute);
@@ -207,6 +228,7 @@ int whichAlign(std::string align);
 float getElementFloat(std::string element);
 float getElementFloat(std::string element, std::string subelement);
 float getElementFloat(std::string element, std::string subelement, std::string SUBsubsubelement);
+float getOpacity(std::string element);
 //const double* getBoxColor(Fl_Box*o);
 //Vector////////////////////////////////////////////////////////////////
 std::vector<std::string> AnythingVector(std::string element);
@@ -214,30 +236,42 @@ std::vector<std::string> IconPaths();
 std::vector<std::string> Includes();
 std::vector<std::string> XDGautostart();
 //void//////////////////////////////////////////////////////////////////
-void debug_out(std::string msg);
-void errorOUT(std::string msg);
-void cancel();
-void quit();
-void under_mouse(Fl_Window *o);
+//A
 void addCursorsToBrowser(Fl_Browser *o);
+//C
+void cancel();
 void createElement(std::string element,std::string text);
 void changeElementText(std::string element,std::string text,std::string NEWTEXT);
+//D
+void debug_out(std::string msg);
 void deletePanelItem(int whichElement);
 void deleteShortcut(std::string program);
-void getShortcuts(Fl_Browser*o);
+//E
+void errorOUT(std::string msg);
+//G
+void getShortcuts(Fl_Browser *o);
+//L
 void listAutostartXDG(Fl_Browser *o);
+//M
 void moveUp(int whichone);
 void moveDown(int whichone);
+//P
+void populateDesc(Fl_Browser *o);
+void populateOptions(Fl_Browser *o);
+void populateApps(Fl_Browser *o);
+//Q
+void quit();
+//R
 void removeElement(unsigned int whichMainElement, std::string element,std::string subelement,std::string text);
 void removeElement(unsigned int whichMainElement, std::string element,std::string subelement);
 void removeElement(unsigned int whichMainElement, std::string element);
 void removeElement(std::string element,std::string text);
 void removeElementCompare2Attr(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text);
 void removeXDGautostart(bool NOT, bool ONLY, bool DE, std::string filename, std::string env);
-void populateDesc(Fl_Browser *o);
-void populateOptions(Fl_Browser *o);
-void populateApps(Fl_Browser*o);
+//S
 void setRootMenuAttribute(std::string menustring ,std::string attribute,std::string value);
+//U
+void under_mouse(Fl_Window *o);
 //pugixml/////////////////////////////////////////////////////////////
 pugi::xml_node addNextSubelement(std::string element);
 pugi::xml_node checkIncludes(unsigned int whichOne,std::string element);

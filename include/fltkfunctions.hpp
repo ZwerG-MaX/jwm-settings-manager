@@ -34,6 +34,8 @@
 #include <FL/Fl_XBM_Image.H>
 #include <FL/Fl_XPM_Image.H>
 #include <FL/Fl_GIF_Image.H>
+#include <FL/Fl_Slider.H>
+#include <FL/Fl_Value_Input.H>
 #include "jwmrc.h"
 std::string choose_a_directory(std::string directory, std::string label);
 std::string choose_a_directory_to_save(std::string directory, std::string label);
@@ -44,19 +46,36 @@ std::string choose_a_program();
 std::string choose_an_icon();
 std::string choose_an_icon(std::string directory);
 std::string nativeFileDialog(std::string title,std::string path,std::string filters);
-//char*
+///char*
 char* Get_Fl_Icon(const char** pIcon);
-//double*
+///double*
 double* choose_a_color(int &c,Fl_Widget *o);
-//void
+///void
+//c
 void choose_a_program(Fl_Input *o);
 void clearOutput(Fl_Output* o);
+//g
+void getDecorations(Fl_Output *o,std::string element);
+//m
 void makeWidgetIcon(std::string icon_file,Fl_Widget * widget,int wh);
 void makeWidgetIcon(std::string icon_file,Fl_Widget * widget,int w,int h);
+//o
+void one_color(Fl_Widget *o, std::string whichElement);
+void one_color_active(Fl_Widget *o, std::string whichElement);
+void one_color_Font(Fl_Widget *o, std::string whichElement);
+void one_color_Font_active(Fl_Widget *o, std::string whichElement);
+void opacity(Fl_Value_Input *o, Fl_Slider *slider, std::string whichElement);
+void outline_color(Fl_Widget *o, std::string whichElement);
+void outline_two_color(Fl_Widget *a, Fl_Widget *b, std::string whichElement);
+//p
 void populateBrowserWithTextFile(Fl_Browser *o, std::string filename);
 void populateBrowserWithString(Fl_Browser *o, std::string STRING);
+//s
+void setDecorations(Fl_Output *o,std::string element,std::string value);
 void startup(Fl_Window *o);
 void startup(Fl_Window *o ,const char** windowIcon);
-//bool
+//t
+void two_colors(Fl_Widget *a, Fl_Widget *b, std::string whichElement,std::string subelement);
+///bool
 bool OutputIsEmpty(Fl_Output* o);
 #endif

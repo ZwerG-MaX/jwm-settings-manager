@@ -339,14 +339,14 @@ void MenuUI::cb__i(Fl_Button*, void*) {
   add_a_menu()->show();
 }
 void MenuUI::cb_(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb__i(o,v);
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb__i(o,v);
 }
 
 void MenuUI::cb_minus_root_i(Fl_Button*, void*) {
   remove_a_menu();
 }
 void MenuUI::cb_minus_root(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_minus_root_i(o,v);
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_minus_root_i(o,v);
 }
 
 #include <FL/Fl_Bitmap.H>
@@ -359,21 +359,21 @@ void MenuUI::cb_menuElement_i(Fl_Browser*, void*) {
   menuElementText->deselect();
 }
 void MenuUI::cb_menuElement(Fl_Browser* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_menuElement_i(o,v);
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menuElement_i(o,v);
 }
 
 void MenuUI::cb_1_i(Fl_Button*, void*) {
   add_an_item();
 }
 void MenuUI::cb_1(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_1_i(o,v);
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_1_i(o,v);
 }
 
 void MenuUI::cb_minus_element_i(Fl_Button*, void*) {
   remove_an_item();
 }
 void MenuUI::cb_minus_element(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_minus_element_i(o,v);
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_minus_element_i(o,v);
 }
 
 void MenuUI::cb_menuElementText_i(Fl_Browser* o, void*) {
@@ -381,7 +381,7 @@ void MenuUI::cb_menuElementText_i(Fl_Browser* o, void*) {
 menuElement->select(linenum);
 }
 void MenuUI::cb_menuElementText(Fl_Browser* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_menuElementText_i(o,v);
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menuElementText_i(o,v);
 }
 
 void MenuUI::cb_root_menu_i(Fl_Browser* o, void*) {
@@ -396,7 +396,7 @@ menuElement->deselect();
 menuElementText->deselect();
 }
 void MenuUI::cb_root_menu(Fl_Browser* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_root_menu_i(o,v);
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_root_menu_i(o,v);
 }
 
 void MenuUI::cb_config_something_i(Fl_Button*, void*) {
@@ -405,14 +405,84 @@ else if(checkFlBrowserItem(menuElement)){edit_a_menu();}
 else if(checkFlBrowserItem(root_menu)){submenu_window()->show();};
 }
 void MenuUI::cb_config_something(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_config_something_i(o,v);
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_config_something_i(o,v);
+}
+
+void MenuUI::cb_menu_bg_color_i(Fl_Button* o, void*) {
+  one_color(o,"MenuStyle");
+}
+void MenuUI::cb_menu_bg_color(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menu_bg_color_i(o,v);
+}
+
+void MenuUI::cb_menu_bg_color_a_i(Fl_Button* o, void*) {
+  one_color_active(o,"MenuStyle");
+}
+void MenuUI::cb_menu_bg_color_a(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menu_bg_color_a_i(o,v);
+}
+
+void MenuUI::cb_menu_font_color_i(Fl_Button* o, void*) {
+  one_color_Font(o,"MenuStyle");
+}
+void MenuUI::cb_menu_font_color(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menu_font_color_i(o,v);
+}
+
+void MenuUI::cb_o_menu_slider_i(Fl_Slider* o, void*) {
+  opacity(o_menu_slider_v,o,"MenuStyle");
+}
+void MenuUI::cb_o_menu_slider(Fl_Slider* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_o_menu_slider_i(o,v);
+}
+
+void MenuUI::cb_o_menu_slider_v_i(Fl_Value_Input* o, void*) {
+  opacity(o,o_menu_slider,"MenuStyle");
+}
+void MenuUI::cb_o_menu_slider_v(Fl_Value_Input* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_o_menu_slider_v_i(o,v);
+}
+
+void MenuUI::cb_menu_font_a_i(Fl_Button* o, void*) {
+  one_color_Font_active(o,"MenuStyle");
+}
+void MenuUI::cb_menu_font_a(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menu_font_a_i(o,v);
+}
+
+void MenuUI::cb_flat_i(Fl_Menu_*, void*) {
+  setDecorations(menu_deco,"MenuStyle","flat");
+}
+void MenuUI::cb_flat(Fl_Menu_* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_flat_i(o,v);
+}
+
+void MenuUI::cb_motif_i(Fl_Menu_*, void*) {
+  setDecorations(menu_deco,"MenuStyle","motif");
+}
+void MenuUI::cb_motif(Fl_Menu_* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_motif_i(o,v);
+}
+
+unsigned char MenuUI::menu_decorations_i18n_done = 0;
+Fl_Menu_Item MenuUI::menu_decorations[] = {
+ {"flat", 0,  (Fl_Callback*)MenuUI::cb_flat, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"motif", 0,  (Fl_Callback*)MenuUI::cb_motif, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void MenuUI::cb_menu_outline_i(Fl_Button* o, void*) {
+  outline_color(o,"MenuStyle");
+}
+void MenuUI::cb_menu_outline(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menu_outline_i(o,v);
 }
 
 void MenuUI::cb_Cancel_i(Fl_Button*, void*) {
   cancel();
 }
 void MenuUI::cb_Cancel(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_Cancel_i(o,v);
+  ((MenuUI*)(o->parent()->user_data()))->cb_Cancel_i(o,v);
 }
 
 void MenuUI::cb_save_button_i(Fl_Button*, void*) {
@@ -420,7 +490,7 @@ void MenuUI::cb_save_button_i(Fl_Button*, void*) {
 //showSettings();
 }
 void MenuUI::cb_save_button(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->parent()->user_data()))->cb_save_button_i(o,v);
+  ((MenuUI*)(o->parent()->user_data()))->cb_save_button_i(o,v);
 }
 
 void MenuUI::cb_nada_win_i(Fl_Double_Window* o, void*) {
@@ -658,95 +728,214 @@ Fl_Double_Window* MenuUI::configure_include() {
 Fl_Double_Window* MenuUI::make_window(std::string INPUTmenu) {
   load();
   JWMVERSION=JWMversion();
-  { Fl_Double_Window* o = menu_window = new Fl_Double_Window(435, 155, gettext("Menu properties"));
+  { Fl_Double_Window* o = menu_window = new Fl_Double_Window(440, 230, gettext("Menu properties"));
     menu_window->color((Fl_Color)31);
     menu_window->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(0, 0, 435, 156);
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 435, 230);
       o->color((Fl_Color)31);
-      { Fl_Button* o = new Fl_Button(5, 115, 30, 30, gettext("@+"));
-        o->tooltip(gettext("Add a menu"));
+      { Fl_Tabs* o = new Fl_Tabs(0, 0, 435, 195);
         o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)23);
-        o->selection_color(FL_DARK1);
-        o->callback((Fl_Callback*)cb_);
-      } // Fl_Button* o
-      { minus_root = new Fl_Button(40, 115, 30, 30);
-        minus_root->tooltip(gettext("remove a menu"));
-        minus_root->box(FL_FLAT_BOX);
-        minus_root->color((Fl_Color)23);
-        minus_root->image(image_minus);
-        minus_root->callback((Fl_Callback*)cb_minus_root);
-        minus_root->align(Fl_Align(256));
-      } // Fl_Button* minus_root
-      { menuElement = new Fl_Browser(80, 5, 90, 105);
-        menuElement->tooltip(gettext("Options: Menu, Dynamic, Include, Program, Separator, Desktops, SendTo, Stick,\
+        o->selection_color((Fl_Color)23);
+        { Fl_Group* o = new Fl_Group(0, 25, 435, 170, gettext("Menus"));
+          o->box(FL_FLAT_BOX);
+          o->color(FL_LIGHT1);
+          o->selection_color(FL_DARK2);
+          { Fl_Button* o = new Fl_Button(5, 160, 30, 30, gettext("@+"));
+            o->tooltip(gettext("Add a menu"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            o->selection_color(FL_DARK1);
+            o->callback((Fl_Callback*)cb_);
+          } // Fl_Button* o
+          { minus_root = new Fl_Button(40, 160, 30, 30);
+            minus_root->tooltip(gettext("remove a menu"));
+            minus_root->box(FL_FLAT_BOX);
+            minus_root->color((Fl_Color)23);
+            minus_root->image(image_minus);
+            minus_root->callback((Fl_Callback*)cb_minus_root);
+            minus_root->align(Fl_Align(256));
+          } // Fl_Button* minus_root
+          { menuElement = new Fl_Browser(80, 50, 90, 105);
+            menuElement->tooltip(gettext("Options: Menu, Dynamic, Include, Program, Separator, Desktops, SendTo, Stick,\
  Maximize, Minimize, Shade, Move, Resize, Kill, Close, Restart, Exit"));
-        menuElement->type(2);
-        menuElement->box(FL_FLAT_BOX);
-        menuElement->selection_color((Fl_Color)80);
-        menuElement->callback((Fl_Callback*)cb_menuElement);
-      } // Fl_Browser* menuElement
-      { Fl_Button* o = new Fl_Button(80, 115, 30, 30, gettext("@+"));
-        o->tooltip(gettext("Add a menu item"));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)23);
-        o->selection_color(FL_DARK1);
-        o->callback((Fl_Callback*)cb_1);
-      } // Fl_Button* o
-      { minus_element = new Fl_Button(115, 115, 30, 30);
-        minus_element->tooltip(gettext("remove a menu item"));
-        minus_element->box(FL_FLAT_BOX);
-        minus_element->color((Fl_Color)23);
-        minus_element->image(image_minus);
-        minus_element->callback((Fl_Callback*)cb_minus_element);
-        minus_element->align(Fl_Align(256));
-      } // Fl_Button* minus_element
-      { menuElementText = new Fl_Browser(175, 5, 255, 105);
-        menuElementText->tooltip(gettext("These options correspond to specific Root Menu items"));
-        menuElementText->type(2);
-        menuElementText->box(FL_FLAT_BOX);
-        menuElementText->selection_color((Fl_Color)80);
-        menuElementText->labeltype(FL_NO_LABEL);
-        menuElementText->callback((Fl_Callback*)cb_menuElementText);
-        menuElementText->align(Fl_Align(FL_ALIGN_TOP));
-      } // Fl_Browser* menuElementText
-      { Fl_Browser* o = root_menu = new Fl_Browser(5, 5, 65, 105, gettext(" "));
-        root_menu->tooltip(gettext("The range of possible values is 0 to 9 inclusive as  well\n                  \
+            menuElement->type(2);
+            menuElement->box(FL_FLAT_BOX);
+            menuElement->selection_color((Fl_Color)80);
+            menuElement->callback((Fl_Callback*)cb_menuElement);
+          } // Fl_Browser* menuElement
+          { Fl_Button* o = new Fl_Button(80, 160, 30, 30, gettext("@+"));
+            o->tooltip(gettext("Add a menu item"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            o->selection_color(FL_DARK1);
+            o->callback((Fl_Callback*)cb_1);
+          } // Fl_Button* o
+          { minus_element = new Fl_Button(115, 160, 30, 30);
+            minus_element->tooltip(gettext("remove a menu item"));
+            minus_element->box(FL_FLAT_BOX);
+            minus_element->color((Fl_Color)23);
+            minus_element->image(image_minus);
+            minus_element->callback((Fl_Callback*)cb_minus_element);
+            minus_element->align(Fl_Align(256));
+          } // Fl_Button* minus_element
+          { menuElementText = new Fl_Browser(175, 50, 255, 105);
+            menuElementText->tooltip(gettext("These options correspond to specific Root Menu items"));
+            menuElementText->type(2);
+            menuElementText->box(FL_FLAT_BOX);
+            menuElementText->selection_color((Fl_Color)80);
+            menuElementText->labeltype(FL_NO_LABEL);
+            menuElementText->callback((Fl_Callback*)cb_menuElementText);
+            menuElementText->align(Fl_Align(FL_ALIGN_TOP));
+          } // Fl_Browser* menuElementText
+          { Fl_Browser* o = root_menu = new Fl_Browser(5, 50, 65, 105, gettext(" "));
+            root_menu->tooltip(gettext("The range of possible values is 0 to 9 inclusive as  well\n                  \
    as  a to z inclusive, providing for up to 36 menus.  Note\n                \
      that only the numeric values map to mouse buttons."));
-        root_menu->type(2);
-        root_menu->box(FL_FLAT_BOX);
-        root_menu->selection_color((Fl_Color)80);
-        root_menu->callback((Fl_Callback*)cb_root_menu);
-        getMenus(o);
-        if(INPUTmenu.compare("")!=0){select_sent_in(INPUTmenu);}
-      } // Fl_Browser* root_menu
-      { config_something = new Fl_Button(175, 115, 30, 30);
-        config_something->tooltip(gettext("Configure"));
-        config_something->box(FL_FLAT_BOX);
-        config_something->color((Fl_Color)23);
-        config_something->image(image_gear16);
-        config_something->labelfont(1);
-        config_something->callback((Fl_Callback*)cb_config_something);
-        config_something->align(Fl_Align(FL_ALIGN_WRAP));
-      } // Fl_Button* config_something
-      { Fl_Button* o = new Fl_Button(315, 120, 57, 25, gettext("Cancel"));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)80);
-        o->selection_color((Fl_Color)81);
-        o->labelcolor(FL_BACKGROUND2_COLOR);
-        o->callback((Fl_Callback*)cb_Cancel);
-      } // Fl_Button* o
-      { save_button = new Fl_Button(381, 120, 49, 25, gettext("OK"));
-        save_button->tooltip(gettext("Write to configuration file"));
-        save_button->box(FL_FLAT_BOX);
-        save_button->color((Fl_Color)61);
-        save_button->selection_color((Fl_Color)59);
-        save_button->labelcolor((Fl_Color)55);
-        save_button->callback((Fl_Callback*)cb_save_button);
-      } // Fl_Button* save_button
+            root_menu->type(2);
+            root_menu->box(FL_FLAT_BOX);
+            root_menu->selection_color((Fl_Color)80);
+            root_menu->callback((Fl_Callback*)cb_root_menu);
+            getMenus(o);
+            if(INPUTmenu.compare("")!=0){select_sent_in(INPUTmenu);}
+          } // Fl_Browser* root_menu
+          { config_something = new Fl_Button(175, 160, 30, 30);
+            config_something->tooltip(gettext("Configure"));
+            config_something->box(FL_FLAT_BOX);
+            config_something->color((Fl_Color)23);
+            config_something->image(image_gear16);
+            config_something->labelfont(1);
+            config_something->callback((Fl_Callback*)cb_config_something);
+            config_something->align(Fl_Align(FL_ALIGN_WRAP));
+          } // Fl_Button* config_something
+          o->end();
+        } // Fl_Group* o
+        { Fl_Group* o = new Fl_Group(0, 25, 435, 160, gettext("Appearance"));
+          o->color(FL_LIGHT1);
+          o->selection_color(FL_DARK2);
+          o->hide();
+          { Fl_Box* o = new Fl_Box(10, 55, 135, 35, gettext("Active"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)53);
+            o->selection_color(FL_DARK3);
+            o->align(Fl_Align(FL_ALIGN_TOP));
+          } // Fl_Box* o
+          { Fl_Box* o = new Fl_Box(10, 105, 135, 35, gettext("Inactive"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)43);
+            o->selection_color(FL_DARK3);
+            o->align(Fl_Align(FL_ALIGN_TOP));
+          } // Fl_Box* o
+          { Fl_Button* o = menu_bg_color = new Fl_Button(80, 110, 60, 25);
+            menu_bg_color->tooltip(gettext("Menu Inactive Background Color"));
+            menu_bg_color->box(FL_FLAT_BOX);
+            menu_bg_color->color((Fl_Color)23);
+            menu_bg_color->callback((Fl_Callback*)cb_menu_bg_color);
+            menu_bg_color->align(Fl_Align(FL_ALIGN_RIGHT));
+            unsigned int c=0;
+            unsigned int color = getBackground(c,"MenuStyle");
+            o->color(color);
+          } // Fl_Button* menu_bg_color
+          { Fl_Button* o = menu_bg_color_a = new Fl_Button(80, 60, 60, 25);
+            menu_bg_color_a->tooltip(gettext("Menu Active Background Color"));
+            menu_bg_color_a->box(FL_FLAT_BOX);
+            menu_bg_color_a->color((Fl_Color)23);
+            menu_bg_color_a->callback((Fl_Callback*)cb_menu_bg_color_a);
+            menu_bg_color_a->align(Fl_Align(FL_ALIGN_RIGHT));
+            unsigned int c=0;
+            unsigned int color=getActiveBackground(c,"MenuStyle");
+            o->color(color);
+          } // Fl_Button* menu_bg_color_a
+          { Fl_Button* o = menu_font_color = new Fl_Button(15, 110, 60, 25);
+            menu_font_color->tooltip(gettext("Menu Inactive Text Color"));
+            menu_font_color->box(FL_FLAT_BOX);
+            menu_font_color->color((Fl_Color)23);
+            menu_font_color->callback((Fl_Callback*)cb_menu_font_color);
+            menu_font_color->align(Fl_Align(FL_ALIGN_RIGHT));
+            unsigned int c=0;
+            unsigned int color = getFontColor(c,"MenuStyle");
+            o->color(color);
+          } // Fl_Button* menu_font_color
+          { Fl_Slider* o = o_menu_slider = new Fl_Slider(15, 150, 90, 25, gettext("Opacity of Menu"));
+            o_menu_slider->tooltip(gettext("A compositor (like xcompmgr) must be installed"));
+            o_menu_slider->type(1);
+            o_menu_slider->box(FL_GTK_DOWN_BOX);
+            o_menu_slider->color((Fl_Color)42);
+            o_menu_slider->selection_color(FL_LIGHT1);
+            o_menu_slider->step(0.02);
+            o_menu_slider->value(1);
+            o_menu_slider->callback((Fl_Callback*)cb_o_menu_slider);
+            o_menu_slider->align(Fl_Align(FL_ALIGN_RIGHT));
+            o_menu_slider->when(FL_WHEN_RELEASE_ALWAYS);
+            const char* text=gettext("Opacity of Menu");o->label(text);
+            float h=getOpacity("MenuStyle");
+            o->value(h);
+          } // Fl_Slider* o_menu_slider
+          { Fl_Value_Input* o = o_menu_slider_v = new Fl_Value_Input(230, 150, 40, 25, gettext("%"));
+            o_menu_slider_v->box(FL_FLAT_BOX);
+            o_menu_slider_v->color((Fl_Color)23);
+            o_menu_slider_v->labelsize(10);
+            o_menu_slider_v->callback((Fl_Callback*)cb_o_menu_slider_v);
+            o_menu_slider_v->align(Fl_Align(FL_ALIGN_RIGHT));
+            float v = o_menu_slider->value();
+            o->value(v*100.0f);
+          } // Fl_Value_Input* o_menu_slider_v
+          { Fl_Button* o = menu_font_a = new Fl_Button(15, 60, 60, 25);
+            menu_font_a->tooltip(gettext("Menu Active Text Color"));
+            menu_font_a->box(FL_FLAT_BOX);
+            menu_font_a->color((Fl_Color)23);
+            menu_font_a->callback((Fl_Callback*)cb_menu_font_a);
+            menu_font_a->align(Fl_Align(FL_ALIGN_TOP));
+            unsigned int c=0;
+            unsigned int color = getActiveForeground(c,"MenuStyle");o->color(color);
+          } // Fl_Button* menu_font_a
+          { Fl_Menu_Button* o = new Fl_Menu_Button(160, 55, 110, 25, gettext("decorations"));
+            o->tooltip(gettext("Flat or Motif style decorations"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            if (!menu_decorations_i18n_done) {
+              int i=0;
+              for ( ; i<2; i++)
+                if (menu_decorations[i].label())
+                  menu_decorations[i].label(gettext(menu_decorations[i].label()));
+              menu_decorations_i18n_done = 1;
+            }
+            o->menu(menu_decorations);
+            if(JWMVERSION<232){o->hide();}
+          } // Fl_Menu_Button* o
+          { menu_outline = new Fl_Button(175, 110, 60, 25, gettext("Outline"));
+            menu_outline->box(FL_FLAT_BOX);
+            menu_outline->color((Fl_Color)23);
+            menu_outline->callback((Fl_Callback*)cb_menu_outline);
+            menu_outline->align(Fl_Align(FL_ALIGN_TOP));
+            menu_outline->deactivate();
+          } // Fl_Button* menu_outline
+          { Fl_Output* o = menu_deco = new Fl_Output(280, 55, 110, 25);
+            menu_deco->tooltip(gettext("Flat or Motif style decorations (flat is default)"));
+            menu_deco->box(FL_FLAT_BOX);
+            menu_deco->selection_color((Fl_Color)80);
+            getDecorations(o,"MenuStyle");
+          } // Fl_Output* menu_deco
+          o->end();
+        } // Fl_Group* o
+        o->end();
+      } // Fl_Tabs* o
       o->end();
     } // Fl_Scroll* o
+    { Fl_Button* o = new Fl_Button(315, 200, 57, 25, gettext("Cancel"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)80);
+      o->selection_color((Fl_Color)81);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_Cancel);
+    } // Fl_Button* o
+    { save_button = new Fl_Button(381, 200, 49, 25, gettext("OK"));
+      save_button->tooltip(gettext("Write to configuration file"));
+      save_button->box(FL_FLAT_BOX);
+      save_button->color((Fl_Color)61);
+      save_button->selection_color((Fl_Color)59);
+      save_button->labelcolor((Fl_Color)55);
+      save_button->callback((Fl_Callback*)cb_save_button);
+    } // Fl_Button* save_button
     startup(o);
     menu_window->xclass("jsm-panel");
     menu_window->end();

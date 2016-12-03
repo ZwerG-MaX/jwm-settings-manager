@@ -45,6 +45,9 @@
 #include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Scroll.H>
+#include <FL/Fl_Tabs.H>
+#include <FL/Fl_Group.H>
+#include <FL/Fl_Box.H>
 
 class MenuUI {
 public:
@@ -202,6 +205,50 @@ public:
 private:
   inline void cb_config_something_i(Fl_Button*, void*);
   static void cb_config_something(Fl_Button*, void*);
+public:
+  Fl_Button *menu_bg_color;
+private:
+  inline void cb_menu_bg_color_i(Fl_Button*, void*);
+  static void cb_menu_bg_color(Fl_Button*, void*);
+public:
+  Fl_Button *menu_bg_color_a;
+private:
+  inline void cb_menu_bg_color_a_i(Fl_Button*, void*);
+  static void cb_menu_bg_color_a(Fl_Button*, void*);
+public:
+  Fl_Button *menu_font_color;
+private:
+  inline void cb_menu_font_color_i(Fl_Button*, void*);
+  static void cb_menu_font_color(Fl_Button*, void*);
+public:
+  Fl_Slider *o_menu_slider;
+private:
+  inline void cb_o_menu_slider_i(Fl_Slider*, void*);
+  static void cb_o_menu_slider(Fl_Slider*, void*);
+public:
+  Fl_Value_Input *o_menu_slider_v;
+private:
+  inline void cb_o_menu_slider_v_i(Fl_Value_Input*, void*);
+  static void cb_o_menu_slider_v(Fl_Value_Input*, void*);
+public:
+  Fl_Button *menu_font_a;
+private:
+  inline void cb_menu_font_a_i(Fl_Button*, void*);
+  static void cb_menu_font_a(Fl_Button*, void*);
+  static unsigned char menu_decorations_i18n_done;
+  static Fl_Menu_Item menu_decorations[];
+  inline void cb_flat_i(Fl_Menu_*, void*);
+  static void cb_flat(Fl_Menu_*, void*);
+  inline void cb_motif_i(Fl_Menu_*, void*);
+  static void cb_motif(Fl_Menu_*, void*);
+public:
+  Fl_Button *menu_outline;
+private:
+  inline void cb_menu_outline_i(Fl_Button*, void*);
+  static void cb_menu_outline(Fl_Button*, void*);
+public:
+  Fl_Output *menu_deco;
+private:
   inline void cb_Cancel_i(Fl_Button*, void*);
   static void cb_Cancel(Fl_Button*, void*);
 public:

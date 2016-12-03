@@ -210,6 +210,7 @@ double* choose_a_color(int &c,Fl_Widget *o){
 	return colors;
 }
 //Void//////////////////////////////////////////////////////////////////
+//C
 void choose_a_program(Fl_Input *o){
 	debug_out("void choose_a_program(Fl_Input *o)");
 	std::string chooseName=gettext("Choose a program");
@@ -243,6 +244,20 @@ void clearOutput(Fl_Output* o){
 	int retval=o->value(NULL);
 	if(retval!=0){debug_out("Different value set");}
 }
+//G
+void getDecorations(Fl_Output *o,std::string element){
+	if(JWMversion()<232){
+		o->hide();
+		return;
+	}
+	std::string tmp=getElementAttribute(element,"decorations");
+	if(tmp.compare("")!=0){
+		o->value(tmp.c_str());
+	}
+	else{o->value("flat");}
+	o->redraw();
+}
+//M
 void makeWidgetIcon(std::string icon_file, Fl_Widget * widget,int wh){
 	makeWidgetIcon(icon_file,widget,wh,wh);
 }
@@ -323,6 +338,90 @@ void makeWidgetIcon(std::string icon_file, Fl_Widget * widget, int w, int h){
 	else{return;}
 	widget->image(image2);
 }
+//O
+void one_color(Fl_Widget *o, std::string whichElement){
+	debug_out("void one_color(Fl_Widget *o, std::string "+whichElement+")");
+	int c;
+	double* colors = choose_a_color(c,o);
+	if(c!=0){
+		if(!setElementFloat(whichElement,colors)){errorOUT("Could not set the color");}
+		std::string colorString=getElementText(whichElement);
+		unsigned int unusedColor;
+		unsigned int colorSet = flCOLOR(colorString,unusedColor);
+		o->color(colorSet);
+		o->redraw();
+	}
+}
+void one_color_active(Fl_Widget *o, std::string whichElement){
+	debug_out("void one_color_active(Fl_Widget *o, std::string "+whichElement+")");
+	int c;
+	double* colors = choose_a_color(c,o);
+	if(c!=0){//If color chooser isn't canceled... do stuff
+		setElementFloat(whichElement,"Active",colors);
+		std::string colorString=getElementText(whichElement,"Active");
+		unsigned int unusedColor;
+		unsigned int colorSet = flCOLOR(colorString,unusedColor);
+		o->color(colorSet);
+		o->redraw();
+	}
+}
+void one_color_Font(Fl_Widget *o, std::string whichElement){
+	debug_out("void one_color_Font(Fl_Widget *o, std::string "+whichElement+")");
+	int c;
+	double* colors = choose_a_color(c,o);
+	if(c!=0){ //If color chooser isn't canceled... do stuff
+  	///FIXME flPanel function
+		setElementFloat(whichElement,"Foreground",colors);
+		std::string colorString=getElementText(whichElement,"Foreground");
+		unsigned int unusedColor;
+		unsigned int colorSet = flCOLOR(colorString,unusedColor);
+		o->color(colorSet);
+		o->redraw();
+	}
+}
+void one_color_Font_active(Fl_Widget *o, std::string whichElement){
+	debug_out("void one_color_Font_active(Fl_Widget *o, std::string "+whichElement+")");
+	int c;
+	double* colors = choose_a_color(c,o);
+	if(c!=0){
+		std::string colorString;
+		if(JWMversion()>230){
+			setElementFloat(whichElement,"Active","Foreground",colors);
+			colorString=getElementText(whichElement,"Active","Foreground");
+		}
+		else{
+			setElementFloat(whichElement,"ActiveForeground",colors);
+			colorString=getElementText(whichElement,"ActiveForeground");
+		}
+		unsigned int unusedColor;
+		unsigned int colorSet = flCOLOR(colorString,unusedColor);
+		o->color(colorSet);
+		o->redraw();
+	}
+}
+void outline_color(Fl_Widget *o, std::string whichElement){
+	debug_out("void outline_color(Fl_Widget *o, std::string "+whichElement+")");
+	int c;
+	double* colors = choose_a_color(c,o);
+	if(c!=0){
+		std::string colorString;
+		setElementFloat(whichElement,"Outline",colors);
+		colorString=getElementText(whichElement,"Outline");
+		unsigned int unusedColor;
+		unsigned int colorSet = flCOLOR(colorString,unusedColor);
+		o->color(colorSet);
+		o->redraw();
+	}
+}
+void outline_two_color(Fl_Widget *a, Fl_Widget *b, std::string whichElement){two_colors(a,b,whichElement,"Outline");}
+void opacity(Fl_Value_Input *o, Fl_Slider *slider, std::string whichElement){
+	debug_out("void opacity(Fl_Value_Input *o, Fl_Slider *slider, std::string "+whichElement+")");
+	double opac=slider->value();
+	double* opacity =&opac;
+	setElementFloat(whichElement,"Opacity",opacity);
+	o->value(opac*100);
+}
+//P
 void populateBrowserWithTextFile(Fl_Browser *o, std::string filename){
 	if(filename.compare("")==0)return;
 	std::vector<std::string> myfile=linuxcommon::file_to_vector(filename);
@@ -352,10 +451,45 @@ void populateBrowserWithString(Fl_Browser *o, std::string STRING){
 		if(finder>=length){o->add(STRING.c_str());}
 	}
 }
+//S
+void setDecorations(Fl_Output *o,std::string element,std::string value){
+	debug_out("void setDecorations(Fl_Output *o,std::string "+element+",std::string "+value+")");
+	if(JWMversion()<232){
+		return;
+	}
+	if(value.compare("")==0){value="flat";}
+	if(!setElementAttribute(element,"decorations",value)){errorOUT("could not add decoration to "+element);}
+	o->value(value.c_str());
+	o->redraw();
+}
 void startup(Fl_Window *o){under_mouse(o);}
 void startup(Fl_Window *o ,const char** windowIcon){
   under_mouse(o);
   o->icon(Get_Fl_Icon(windowIcon));
+}
+//T
+void two_colors(Fl_Widget *a, Fl_Widget *b, std::string whichElement,std::string subelement){
+	debug_out("void two_colors(Fl_Widget *a, Fl_Widget *b, std::string "+whichElement+",std::string "+subelement+")");
+	int c,c2;
+	double* colors = choose_a_color(c,a);
+	if(c!=0){
+		std::string colorString=colorToString(colors);
+		double* colors2 = choose_a_color(c2,a);
+		if(c2!=0){
+			std::string colorString2=colorToString(colors2);
+			std::string res=colorString+":"+colorString2;
+			if(setElementText(whichElement,subelement,res)){
+				res=getElementText(whichElement,subelement);
+				unsigned int Color;
+				unsigned int colorSet = flCOLOR(res,Color);
+				a->color(colorSet);
+				a->redraw();
+				b->color(colorSet);
+				b->redraw();
+			}
+			else{errorOUT("failed to set 2 colors");}
+		}
+	}
 }
 //Boolean///////////////////////////////////////////////////////////////
 bool OutputIsEmpty(Fl_Output* o){
