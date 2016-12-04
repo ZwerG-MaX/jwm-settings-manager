@@ -51,7 +51,7 @@
 
 class MenuUI {
 public:
-  int menuItemLineNumber;int JWMVERSION; 
+  int menuItemLineNumber;int JWMVERSION;int ROOTMENU; 
   Fl_Double_Window* add_a_menu();
   Fl_Browser *list_browser;
   Fl_Input *new_menu_label;
@@ -121,8 +121,11 @@ private:
   static void cb_Close(Fl_Menu_*, void*);
   inline void cb_Menu_i(Fl_Menu_*, void*);
   static void cb_Menu(Fl_Menu_*, void*);
+  inline void cb_Dynamic_i(Fl_Menu_*, void*);
+  static void cb_Dynamic(Fl_Menu_*, void*);
 public:
   Fl_Output *item_display;
+  Fl_Input *add_tooltip;
   Fl_Double_Window* conf_item_window();
   Fl_Double_Window *config_item_win;
   Fl_Input *item_prog_icon;

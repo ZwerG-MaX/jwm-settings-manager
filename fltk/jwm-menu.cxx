@@ -246,6 +246,13 @@ void MenuUI::cb_Menu(Fl_Menu_* o, void* v) {
   ((MenuUI*)(o->parent()->user_data()))->cb_Menu_i(o,v);
 }
 
+void MenuUI::cb_Dynamic_i(Fl_Menu_*, void*) {
+  add_cb(16);
+}
+void MenuUI::cb_Dynamic(Fl_Menu_* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_Dynamic_i(o,v);
+}
+
 unsigned char MenuUI::menu_Item_i18n_done = 0;
 Fl_Menu_Item MenuUI::menu_Item[] = {
  {"Program", 0,  (Fl_Callback*)MenuUI::cb_Program, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -264,6 +271,7 @@ Fl_Menu_Item MenuUI::menu_Item[] = {
  {"Kill", 0,  (Fl_Callback*)MenuUI::cb_Kill, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Close", 0,  (Fl_Callback*)MenuUI::cb_Close, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Menu", 0,  (Fl_Callback*)MenuUI::cb_Menu, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Dynamic", 0,  (Fl_Callback*)MenuUI::cb_Dynamic, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
 
@@ -280,7 +288,7 @@ void MenuUI::cb_item_prog_button(Fl_Button* o, void* v) {
 
 void MenuUI::cb_OK2_i(Fl_Button*, void*) {
   configure_item();
-config_flwin->hide();
+config_item_win->hide();
 }
 void MenuUI::cb_OK2(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->user_data()))->cb_OK2_i(o,v);
@@ -355,8 +363,8 @@ static const unsigned char idata_minus[] =
 0,0,0};
 static Fl_Bitmap image_minus(idata_minus, 16, 16);
 
-void MenuUI::cb_menuElement_i(Fl_Browser*, void*) {
-  menuElementText->deselect();
+void MenuUI::cb_menuElement_i(Fl_Browser* o, void*) {
+  menuElementText->select(o->value());
 }
 void MenuUI::cb_menuElement(Fl_Browser* o, void* v) {
   ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_menuElement_i(o,v);
@@ -386,9 +394,12 @@ void MenuUI::cb_menuElementText(Fl_Browser* o, void* v) {
 
 void MenuUI::cb_root_menu_i(Fl_Browser* o, void*) {
   int line = o->value();
+ROOTMENU=line;
 const char* menu = o->text(line);
 if(menu != NULL){
   std::string MENU=menu;
+  menuElement->clear();
+  menuElementText->clear();
   choose_menu(MENU);
 }
 else{std::cerr<<"Problem getting this menu"<<std::endl;}
@@ -400,9 +411,8 @@ void MenuUI::cb_root_menu(Fl_Browser* o, void* v) {
 }
 
 void MenuUI::cb_config_something_i(Fl_Button*, void*) {
-  if(checkFlBrowserItem(menuElementText)){edit_an_item();}
-else if(checkFlBrowserItem(menuElement)){edit_a_menu();}
-else if(checkFlBrowserItem(root_menu)){submenu_window()->show();};
+  if((checkFlBrowserItem(menuElementText))||(checkFlBrowserItem(menuElement))){edit_an_item();}
+else if(checkFlBrowserItem(root_menu)){edit_a_menu();};
 }
 void MenuUI::cb_config_something(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_config_something_i(o,v);
@@ -565,34 +575,39 @@ t if the label is not set"));
 }
 
 Fl_Double_Window* MenuUI::add_window() {
-  { Fl_Double_Window* o = adding_win = new Fl_Double_Window(295, 160, gettext("Add an Item"));
+  { Fl_Double_Window* o = adding_win = new Fl_Double_Window(295, 185, gettext("Add an Item"));
     adding_win->user_data((void*)(this));
     { add_label = new Fl_Input(130, 65, 160, 25, gettext("Label"));
+      add_label->tooltip(gettext("The label to display for this item"));
       add_label->box(FL_FLAT_BOX);
     } // Fl_Input* add_label
     { add_icon = new Fl_Input(130, 35, 160, 25, gettext("Icon"));
+      add_icon->tooltip(gettext("The icon to display for this item"));
       add_icon->box(FL_FLAT_BOX);
     } // Fl_Input* add_icon
     { add_input = new Fl_Input(130, 95, 160, 25, gettext("Program"));
+      add_input->tooltip(gettext("The program to run"));
       add_input->box(FL_FLAT_BOX);
     } // Fl_Input* add_input
-    { add_button = new Fl_Check_Button(5, 125, 90, 25, gettext("Confirm"));
+    { add_button = new Fl_Check_Button(5, 155, 90, 25, gettext("Confirm"));
       add_button->box(FL_FLAT_BOX);
       add_button->down_box(FL_GTK_DOWN_BOX);
     } // Fl_Check_Button* add_button
     { add_prog_button = new Fl_Button(5, 90, 30, 30);
+      add_prog_button->tooltip(gettext("Choose a program"));
       add_prog_button->box(FL_FLAT_BOX);
       add_prog_button->color((Fl_Color)23);
       add_prog_button->image(image_gear16);
       add_prog_button->callback((Fl_Callback*)cb_add_prog_button);
     } // Fl_Button* add_prog_button
-    { Fl_Button* o = new Fl_Button(230, 130, 60, 25, gettext("OK"));
+    { Fl_Button* o = new Fl_Button(225, 155, 60, 25, gettext("OK"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK1);
     } // Fl_Button* o
     { add_icon_button = new Fl_Button(5, 35, 50, 50);
+      add_icon_button->tooltip(gettext("Choose an icon"));
       add_icon_button->box(FL_FLAT_BOX);
       add_icon_button->color((Fl_Color)23);
       add_icon_button->callback((Fl_Callback*)cb_add_icon_button);
@@ -600,9 +615,12 @@ Fl_Double_Window* MenuUI::add_window() {
     { Fl_Menu_Button* o = new Fl_Menu_Button(5, 5, 115, 25, gettext("Item to add"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
+      { Fl_Menu_Item* o = &menu_Item[16];
+        if(JWMVERSION<231){o->hide();}
+      }
       if (!menu_Item_i18n_done) {
         int i=0;
-        for ( ; i<16; i++)
+        for ( ; i<17; i++)
           if (menu_Item[i].label())
             menu_Item[i].label(gettext(menu_Item[i].label()));
         menu_Item_i18n_done = 1;
@@ -610,8 +628,13 @@ Fl_Double_Window* MenuUI::add_window() {
       o->menu(menu_Item);
     } // Fl_Menu_Button* o
     { item_display = new Fl_Output(130, 5, 160, 25);
+      item_display->tooltip(gettext("The JWM Menu item to add"));
       item_display->box(FL_FLAT_BOX);
     } // Fl_Output* item_display
+    { add_tooltip = new Fl_Input(130, 125, 160, 25, gettext("Tooltip"));
+      add_tooltip->tooltip(gettext("The popup tooltip"));
+      add_tooltip->box(FL_FLAT_BOX);
+    } // Fl_Input* add_tooltip
     startup(o);
     adding_win->xclass("jsm-panel");
     adding_win->end();
@@ -788,9 +811,9 @@ Fl_Double_Window* MenuUI::make_window(std::string INPUTmenu) {
             menuElementText->align(Fl_Align(FL_ALIGN_TOP));
           } // Fl_Browser* menuElementText
           { Fl_Browser* o = root_menu = new Fl_Browser(5, 50, 65, 105, gettext(" "));
-            root_menu->tooltip(gettext("The range of possible values is 0 to 9 inclusive as  well\n                  \
-   as  a to z inclusive, providing for up to 36 menus.  Note\n                \
-     that only the numeric values map to mouse buttons."));
+            root_menu->tooltip(gettext("The range of possible values is 0 to 9 inclusive as  well as  a to z inclusiv\
+e, providing for up to 36 menus.  Note that only the numeric values map to mou\
+se buttons."));
             root_menu->type(2);
             root_menu->box(FL_FLAT_BOX);
             root_menu->selection_color((Fl_Color)80);
@@ -1009,6 +1032,10 @@ void MenuUI::add_cb(int whichOne) {
   add_icon->show();
   add_icon_button->show();
   std::string result;
+  std::string CONFIRM=gettext("Confirm");
+  std::string LABELED=gettext("Labeled");
+  std::string LBL_TT=gettext("Determines  if a label appears at the top of the menu. Default is false.");
+  std::string CONF_TT=gettext("Determine if a confirm dialog appears before exiting. Default is true.");
   switch (whichOne){
     case 0:
       result="Program";
@@ -1021,7 +1048,8 @@ void MenuUI::add_cb(int whichOne) {
     case 2:
       result="Exit";
       add_button->show();
-      add_button->copy_label("Confirm");
+      add_button->tooltip(CONF_TT.c_str());
+      add_button->copy_label(CONFIRM.c_str());
       break;
     case 3:
       result="Separator";
@@ -1069,8 +1097,18 @@ void MenuUI::add_cb(int whichOne) {
     case 15:
       result="Menu";
       add_button->show();
-      add_button->copy_label("Labeled");
+      add_button->tooltip(LBL_TT.c_str());
+      add_button->copy_label(LABELED.c_str());
       break;
+    case 16:
+      result="Dynamic";
+      add_input->show();
+      add_button->show();
+      add_button->tooltip(LBL_TT.c_str());
+      add_button->copy_label(LABELED.c_str());
+      break;
+    default: 
+      return;
   }
   item_display->value(result.c_str());
 }
@@ -1099,11 +1137,21 @@ void MenuUI::choose_menu(std::string menu) {
 }
 
 void MenuUI::configure_item() {
-  if(!checkFlBrowserItem(menuElementText)){return;}
-  const char* menu = menuElementText->label();
-  if(ConfigMenuItem(menuElement,menuElementText,prog_label,prog_icon,prog_input,conf_button)){
-    choose_menu(menu);
+  if(!checkFlBrowserItem(root_menu)){
+    errorOUT("No root menu is still selected");
+    return;
   }
+  if(!checkFlBrowserItem(menuElement)){
+    errorOUT("No menu item is still selected");
+    return;
+  }
+  const char* MENU=root_menu->text(ROOTMENU);
+  if(ConfigMenuItem(ROOTMENU,menuItemLineNumber,item_prog_label,item_prog_icon,item_prog_input,item_conf_button)){
+    menuElement->clear();
+    menuElementText->clear();
+    if(MENU!=NULL)choose_menu(MENU);
+  }
+  //config_flwin->hide();
 }
 
 void MenuUI::confirm_check() {
@@ -1132,6 +1180,9 @@ void MenuUI::edit_an_item() {
   const char* text = menuElement->text(line);
   int menuNum = root_menu->value();
   const char* menu = root_menu->text(menuNum);
+  menuItemLineNumber=line;
+  ROOTMENU=menuNum;
+  
   std::string EXIT="Exit";
   std::string RESTART="Restart";
   std::string iconattrib = "icon"; 
@@ -1141,43 +1192,51 @@ void MenuUI::edit_an_item() {
   debug_out("edit Item: "+ITEM);
   int line2 = menuElementText->value();
   const char* text2 = menuElementText->text(line2);
-  std::string ICON,LABEL;
-  if(ITEM.compare("Program")==0){
-    conf_item_window()->show();
-    item_prog_input->value(text2);
-    item_conf_button->hide();
-    ICON = getItemIcon(text2,menu);
-    LABEL = getItemLabel(text2,menu);
+  std::string ICON,LABEL,PROG;
+  ICON = getItemIcon(menuNum,line,ITEM);
+  LABEL= getItemLabel(menuNum,line,ITEM);
+  if(ITEM.compare("Separator")==0){
+    nada_window()->show();
+    return;
   }
-  else if(ITEM.compare("Include")==0){
+  if(ITEM.compare("Include")==0){
     std::string exec ="exec:";
     unsigned int exec_len = exec.length();
-    std::string INCLUDE = text2;
+    std::string INCLUDE;
+    if(text2!=NULL)
+      INCLUDE = text2;
+    else return;
+    configure_include()->show();
     unsigned int found = INCLUDE.find(exec);
     if(found<INCLUDE.length()){
       INCLUDE=INCLUDE.erase(0,exec_len);
-      std::cout<<"Include: "<<INCLUDE<<std::endl;
-      configure_include()->show();
-      include_input->value(INCLUDE.c_str());
-      include_input_menu->value(menu);
-      old_include_input->value(INCLUDE.c_str());
-      
     }
+    include_input->value(INCLUDE.c_str());
+    include_input_menu->value(menu);
+    old_include_input->value(INCLUDE.c_str());
+    return;
+  }
+  else if(ITEM.compare("Dynamic")==0){
+    debug_out("Dyanmic Menu!");
+    //TODO
+    return;
   }
   else if(ITEM.compare("Menu")==0){
     submenu_window()->show();
     submenu_menu->value(menu);
+    return;
   }
-  else if(ITEM.compare("Dynamic")==0){
-    debug_out("Dyanmic Menu!");
+  conf_item_window()->show();
+  if(ITEM.compare("Program")==0){
+    item_prog_input->value(text2);
+    item_conf_button->hide();
   }
   else if(ITEM.compare(EXIT)==0){
     conf_item_window()->show();
     item_prog_input->hide();
     item_prog_button->hide();
-    ICON = getItemAttribute(EXIT,menu,iconattrib);
-    LABEL = getItemAttribute(EXIT,menu,labelattrib);
-    std::string confirm = getItemAttribute(EXIT,menu,confirmattrib); 
+    
+    std::string confirm = getItemAttribute(menuNum,line,ITEM,confirmattrib); 
     if(confirm.compare("true")){item_conf_button->value(0);}
     else{item_conf_button->value(1);}
   }
@@ -1185,18 +1244,17 @@ void MenuUI::edit_an_item() {
     conf_item_window()->show();
     item_prog_input->hide();
     item_prog_button->hide();
-    ICON = getItemAttribute(RESTART,menu,iconattrib);
-    LABEL = getItemAttribute(RESTART,menu,labelattrib);
     item_conf_button->hide();
   }
-  else{
-    nada_window()->show();
-  }
+  
   if(ICON.compare("")!=0){
     item_prog_icon->value(ICON.c_str());
     makeWidgetIcon(ICON,item_icon_button,48);
   }
-  if(LABEL.compare("")!=0){item_prog_label->value(LABEL.c_str());}
+  if(LABEL.compare("")!=0){
+    item_prog_label->value(LABEL.c_str());
+    item_prog_label->redraw();
+  }
 }
 
 void MenuUI::program_check() {
@@ -1231,16 +1289,9 @@ void MenuUI::remove_a_menu() {
 
 int MenuUI::save_cb() {
   //save
-  const char* label = add_label->value();
-  if(label ==NULL){return 42;}
-  const char* icon = add_icon->value();
-  if(icon ==NULL){return 42;}
-  const char* input = add_input->value();
-  if(input ==NULL){return 42;}
   const char* result = item_display->value();
   if(result ==NULL){return 42;}
-  std::cout<<"everything exists??"<<std::endl;
-  return addMenuItem(menuElement, menuElementText, add_label, add_icon, add_input, add_button, result);
+  return addMenuItem(root_menu, add_label, add_icon, add_input, add_tooltip, add_button, result);
 }
 
 void MenuUI::select_sent_in(std::string thatMenu) {

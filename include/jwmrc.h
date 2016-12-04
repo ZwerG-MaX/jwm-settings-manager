@@ -72,6 +72,7 @@ bool addElementWithAttribute(std::string element, std::string attribute, std::st
 bool addElementWithTextAndAttribute(std::string element, std::string attribute, std::string value,std::string text);
 bool addElementWithTextAndAttribute(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text);
 bool addElementWithSubAndText(std::string element, std::string subelement, std::string text);
+bool addMenuElement(unsigned int whichMenu,std::string element);
 bool addSubElement(unsigned int whichElement,std::string element, std::string subelelemnt);
 bool addSubElementWithText(unsigned int whichElement,std::string element, std::string subelelemnt, std::string text);
 bool addSubElementWithTextandAttribute(unsigned int whichElement,std::string element, std::string subelelemnt, std::string text,std::string attribute, std::string value);
@@ -86,6 +87,9 @@ bool checkFlBrowserItem(Fl_Browser* o);
 bool checkVector(std::vector<std::string> myVec,std::string item);
 //D
 bool deleteElements(std::string element);
+//E
+bool editMenuItem(int menu, int item, std::string text);
+bool editMenuItem(int menu, int item, std::string attribute,std::string value);
 //G
 bool getIcons(Fl_Browser *o);
 bool getMenuItems(Fl_Browser* menuElement,std::string menu,Fl_Browser* menuElementText);
@@ -174,6 +178,7 @@ std::string getEQUALvalue(std::string INTERNAL_LINE);
 std::string getItemText(pugi::xml_node node);
 std::string getJSMItem(std::string item);
 std::string getMenuAttribute(std::string MENU, std::string attribute);
+std::string getMenuAttribute(int MENU, int subitem, std::string element, std::string attribute);
 std::string getLayoutThing(std::string attribute,std::string vaule1,std::string value2,std::string value3,std::string layout);
 std::string getPanelButtonIcon();
 std::string getSmartHoriz(std::string layout);
@@ -218,7 +223,8 @@ unsigned int numPanels();
 unsigned int splitColor(std::string color, int one_or_two);
 unsigned int switch_panel(Fl_Menu_Item *o);
 //int///////////////////////////////////////////////////////////////////
-int addMenuItem(Fl_Browser* menuElement, Fl_Browser* menuElementText, Fl_Input* add_label, Fl_Input* add_icon, Fl_Input* add_input, Fl_Check_Button* add_button, std::string result);
+int addMenuItem(Fl_Browser* root_menu, Fl_Input* add_label, Fl_Input* add_icon, Fl_Input* add_input, Fl_Input* add_tooltip, Fl_Check_Button* add_button, std::string result);
+int addMenuAttrib(int whichMenu,std::string element,std::string attribute,const char *value);
 int getIntAttribute(std::string element, std::string attribute);
 int getIntAttribute(std::string element, std::string subelement, std::string attribute);
 int newStyle();
@@ -273,21 +279,27 @@ void setRootMenuAttribute(std::string menustring ,std::string attribute,std::str
 //U
 void under_mouse(Fl_Window *o);
 //pugixml/////////////////////////////////////////////////////////////
+//a
 pugi::xml_node addNextSubelement(std::string element);
+pugi::xml_node addNode(unsigned int whichElement,std::string element, std::string subelement);
+//c
 pugi::xml_node checkIncludes(unsigned int whichOne,std::string element);
 pugi::xml_node checkIncludes(std::string element);
 pugi::xml_node checkIncludes(std::string element,std::string subelement);
 pugi::xml_node checkIncludes(std::string element,std::string subelement,std::string SUBsubelement);
-pugi::xml_node parseNodes(unsigned int whichElement,std::string element);
-pugi::xml_node addNode(unsigned int whichElement,std::string element, std::string subelement);
-pugi::xml_node getTraySubElement(unsigned int whichElement);
-pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned int whichNODE, std::string subelement);
+pugi::xml_node compareNode(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text);
+//g
+pugi::xml_node getCurrentTrayNode();
+pugi::xml_node getLastSubNode(unsigned int whichElement,std::string element, std::string subelement);
 pugi::xml_node getMenu(std::string text);
+pugi::xml_node getMenu(int whichMenu);
 pugi::xml_node getMenuButtonByMask(std::string text,int item);
+pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned int whichNODE);
+pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned int whichNODE, std::string subelement);
 pugi::xml_node getRootMenu(std::string text);
 pugi::xml_node getSubNode(unsigned int whichElement,std::string element,unsigned int whichSubElement, std::string subelement);
-pugi::xml_node getLastSubNode(unsigned int whichElement,std::string element, std::string subelement);
-pugi::xml_node compareNode(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text);
-pugi::xml_node getCurrentTrayNode();
+pugi::xml_node getTraySubElement(unsigned int whichElement);
+//p
+pugi::xml_node parseNodes(unsigned int whichElement,std::string element);
 //variables/////////////////////////////////////////////////////////////
 #endif

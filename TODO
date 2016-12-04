@@ -9,4 +9,5 @@ panel:
 
 deleteTrayButton?
 
-node adding functions do not return the correct node... find out why???
+menu:
+Configure Dynamic

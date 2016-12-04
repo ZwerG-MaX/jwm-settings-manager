@@ -103,6 +103,17 @@ bool addElementWithTextAfter(std::string element, std::string text){
 	node.text().set(text.c_str());
     return saveChangesTemp();
 }
+bool addMenuElement(unsigned int whichMenu,std::string element){
+	debug_out("bool addMenuElement(unsigned int whichMenu,std::string "+element+")");
+	if(element.compare("")==0){return false;}
+	pugi::xml_node node =parseNodes(whichMenu,"RootMenu");
+	if(!node){
+		errorOUT("The root menu does not exist!!");
+		return false;
+	}
+	node.append_child(element.c_str());
+	return saveChangesTemp();	
+}
 bool addSubElement(unsigned int whichElement,std::string element, std::string subelement){
 //	if(!loadTemp()){return false;}
 	debug_out("addSubElementWithText(unsigned int whichElement,std::string "+ element+", std::string "+ subelement+ ")");
@@ -332,8 +343,10 @@ bool checkExec(std::string exec){
 	return false;
 }
 bool checkFlBrowserItem(Fl_Browser* o){
-	if(o->value()>o->size()){return false;}
-	const char* one=o->text(o->value());
+	/// Simple check to see if the Fl_Browser has something selected
+	int line=o->value();
+	if(line>o->size()){return false;}
+	const char* one=o->text(line);
 	if(one==NULL){return false;}
 	return true;
 }
@@ -356,6 +369,17 @@ bool deleteElements(std::string element){
 		testnode=baseNode.child(element.c_str());
 	}
 	return saveChangesTemp();
+}
+//E
+bool editMenuItem(int menu, int item, std::string text){
+	debug_out("bool editMenuItem(int menu, int item, std::string "+text+")");
+	pugi::xml_node node = getNode(menu,"RootMenu",item);
+	return setNodeText(node, text);
+}
+bool editMenuItem(int menu, int item, std::string attribute,std::string value){
+	debug_out("bool editMenuItem(int menu, int item, std::string "+attribute+",std::string "+value+")");
+	pugi::xml_node node = getNode(menu,"RootMenu",item);
+	return setAttribute(node, attribute,value);
 }
 //G
 bool getIcons(Fl_Browser *o){return populateFLBrowser(o,"IconPath");}
@@ -1438,6 +1462,11 @@ std::string getMenuAttribute(std::string MENU, std::string attribute){
 	std::string thisATTRIB=thisNODE.attribute(attribute.c_str()).as_string();
 	return thisATTRIB;
 }
+std::string getMenuAttribute(int MENU, int subitem, std::string element, std::string attribute){
+	pugi::xml_node node=getNode(MENU,"RootMenu",subitem,element);
+	std::string thisATTRIB=node.attribute(attribute.c_str()).as_string();
+	return thisATTRIB;
+}
 std::string getPanelButtonIcon(){
 	//TODO make this look at ALL of them.
 	debug_out("std::string getPanelButtonIcon()");
@@ -1690,9 +1719,62 @@ unsigned int switch_panel(Fl_Menu_Item *o){
 	return whichPanel;
 }
 //int///////////////////////////////////////////////////////////////////
-int addMenuItem(Fl_Browser* menuElement, Fl_Browser* menuElementText, Fl_Input* add_label, Fl_Input* add_icon, Fl_Input* add_input, Fl_Check_Button* add_button, std::string result){
-	debug_out("int addMenuItem(Fl_Browser* menuElement, Fl_Browser* menuElementText, Fl_Input* add_label, Fl_Input* add_icon, Fl_Input* add_input, Fl_Check_Button* add_button, std::string "+result+")");
+int addMenuItem(Fl_Browser* root_menu, Fl_Input* add_label, Fl_Input* add_icon, Fl_Input* add_input, Fl_Input* add_tooltip, Fl_Check_Button* add_button, std::string result){
+	debug_out("int addMenuItem(Fl_Browser* root_menu, Fl_Input* add_label, Fl_Input* add_icon, Fl_Input* add_input, Fl_Input* add_tooltip, Fl_Check_Button* add_button, std::string "+result+")");
+	if(result.compare("")==0){
+		errorOUT("Nothing to add..");
+		return -1;
+	}
+	int whichMenu=root_menu->value();
+	if((whichMenu>root_menu->size())||whichMenu<0){
+		errorOUT("No root menu item chosen");
+		return -1;
+	}
+	if(result.compare("Separator")==0){
+		if(!addMenuElement(whichMenu,result)){return 1;}
+		return 0;
+	}
+	const char* lbl = add_label->value();
+	const char* icon = add_icon->value();
+	const char* input = add_input->value();
+	const char* tooltip = add_tooltip->value();
+	if(!addMenuElement(whichMenu,result)){return 1;}
+	if(result.compare("Include")==0){
+		if(input!=NULL){
+			if(!setNodeText(getLastSubNode(whichMenu,"RootMenu",result),input)){
+				errorOUT("Could not set the text");
+			}
+			else{return 0;}
+		}
+		return -1;		
+	}
+	int retval = addMenuAttrib(whichMenu,result,"label",lbl);
+	if(retval==-1){errorOUT("Couldn't set label");}
+	retval = addMenuAttrib(whichMenu,result,"icon",icon);
+	if(retval==-1){errorOUT("Couldn't set icon");}
+	retval = addMenuAttrib(whichMenu,result,"tooltip",tooltip);
+	if(retval==-1){errorOUT("Couldn't set tooltip");}
+	int button = add_button->value();
+	std::string labled="false";
+	if(button==1){labled="true";}
+	std::string attrib;
+	if(result.compare("Exit")==0){attrib="confirm";}
+	if((result.compare("Menu")==0)||(result.compare("Dynamic")==0)){attrib="labeled";}
+	if(attrib.compare("")!=0){
+		retval = addMenuAttrib(whichMenu,result,attrib,labled.c_str());
+	}
 	return -1;
+}
+int addMenuAttrib(int whichMenu,std::string element,std::string attribute,const char *value){
+	debug_out("int addMenuAttrib(int whichMenu,std::string "+element+",std::string "+attribute+",const char *value)");
+	if(value==NULL){
+		debug_out("attribute value was non existant");
+		return 1;
+	}
+	if(!setAttribute(getLastSubNode(whichMenu,"RootMenu",element),attribute,value)){
+		return -1;
+	}
+	return 0;
 }
 int getIntAttribute(std::string element, std::string attribute){
 	if(element.compare("")==0){return 0;}
@@ -2747,6 +2829,10 @@ pugi::xml_node getLastSubNode(unsigned int whichElement,std::string element, std
 	}
     return node;
 }
+pugi::xml_node getMenu(int menu){
+	debug_out("pugi::xml_node getMenu(int menu)");
+	return parseNodes(menu, "RootMenu");
+}
 pugi::xml_node getMenu(std::string text){
 	debug_out("pugi::xml_node getMenu(std::string "+text+")");
 	unsigned int whichElement=currentPanel();
@@ -2788,6 +2874,28 @@ pugi::xml_node getMenuButtonByMask(std::string text,int item){
 		}
 	}
 	return node;
+}
+pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned int whichNODE){
+	unsigned int i=1;
+	pugi::xml_node node;
+	if(element.compare("")==0){return node;}
+	node =doc.child("JWM").child(element.c_str());
+	if(!node){node=checkIncludes(element);}
+    if(whichElement!=i){
+		while(node.next_sibling(element.c_str()) && i!=whichElement){
+            node=node.next_sibling(element.c_str());
+            i++;
+        }
+    }
+    node=node.first_child();
+    i=1;
+    if(whichNODE!=i){
+		while(node.next_sibling() && i!=whichNODE){
+            node=node.next_sibling();
+            i++;
+        }
+    }
+    return node;
 }
 pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned int whichNODE, std::string subelement){
 	unsigned int i=1;

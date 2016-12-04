@@ -47,12 +47,16 @@
 #include "fltkfunctions.hpp"
 //string
 std::string getLabel(std::string MENU);
+std::string getItemIcon(int menu, int itemline,std::string element);
 std::string getItemIcon(std::string text2, std::string menu);
+std::string getItemLabel(int menu, int itemline,std::string element);
 std::string getItemLabel(std::string text2, std::string menu);
+std::string getItemAttribute(int menu, int itemline,std::string element,std::string attrib);
 std::string getItemAttribute(std::string EXIT,std::string menu,std::string attrib);
 //bool
 bool addRoot(std::string rootmenu);
 bool ConfigMenuItem(Fl_Browser* menuElement,Fl_Browser* menuElementText,Fl_Input* prog_label,Fl_Input* prog_icon,Fl_Input* prog_input,Fl_Check_Button* conf_button);
+bool ConfigMenuItem(int menu,int item,Fl_Input* prog_label,Fl_Input* prog_icon,Fl_Input* prog_input,Fl_Check_Button* conf_button);
 bool checkMenuItems(Fl_Browser* menuElement,std::string menu,Fl_Browser* menuElementText);
 bool checkMenuItems(Fl_Browser* menuElement,Fl_Browser* menuElementText);
 //void

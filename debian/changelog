@@ -1,3 +1,9 @@
+jwm-settings-manager (2.0.2ubuntu2) UNRELEASED; urgency=medium
+  * Added decorations options
+  * moved menu style into menu window 
+
+ -- Israel Dahl <israeldahl@gmail.com>  Sat, 03 Dec 2016 11:52:26 -0600
+
 jwm-settings-manager (2.0.1ubuntu1) UNRELEASED; urgency=medium
   * General Changes
     - general UI overhaul... many things have been reposition and resized to fit smaller resolution screens
