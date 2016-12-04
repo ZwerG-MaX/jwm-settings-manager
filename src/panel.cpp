@@ -85,6 +85,15 @@ std::string getItemVal(int position, std::string attribute){
 	debug_out("std::string getItemVal(int position, std::string "+attribute+")");
 	return getAttribute(getTraySubElement(position),attribute);
 }
+std::string getTrayStyleattribute(std::string item){
+	std::string value=getAttribute(parseNodes(1,"TrayStyle"),item);
+	std::string defaultval;
+	if(item.compare("list")==0)defaultval="desktop";
+	if(item.compare("group")==0)defaultval="false";
+	if(item.compare("decorations")==0)defaultval="flat";
+	if(value.compare("")==0){value=defaultval;}
+	return value;
+}
 std::string Menu_Label(int num){
 	debug_out("std::string Menu_Label(int num)");
 	changePanel(num);
@@ -519,12 +528,25 @@ void editButton(int whichbutton, std::string MENU,std::string PROG,std::string I
 	}
 }
 //////G
+void get_attribute(std::string item,Fl_Output* list_out){
+	std::string value=getTrayStyleattribute(item);
+	list_out->value(value.c_str());
+	list_out->redraw();
+}
 void getColorFromItem(bool active, std::string element,std::string subelement,Fl_Button* o){
 	debug_out("void getColorFromItem(bool active, std::string "+element+",std::string "+subelement+")");
 	unsigned int color=0;
 	std::string COLOR=getElementText(element,subelement);
 	if(active)COLOR=getElementText(element,"Active",subelement);
 	o->color(color);
+}
+void getGroupWin(Fl_Check_Button *o){
+	std::string val=getTrayStyleattribute("group");
+	if(val.compare("true")==0){
+		o->value(1);
+	}
+	else{o->value(0);}
+	
 }
 void getIndicators(Fl_Browser* o){
 	debug_out("void getIndicators(Fl_Browser* o)");
@@ -797,6 +819,11 @@ void setImageMenu(std::string testNum,std::string icon){
 	
 }
 void setCoordinate(std::string xy, int value){if(!setElementAttribute(currentPanel(),"Tray",xy,convert(value))){debug_out("Couldn't set value of "+xy);}}
+void setTaskListValue(std::string attribute, std::string value){
+	if(!setElementAttribute("TrayStyle",attribute,value)){
+		errorOUT("Could not set "+attribute+" to "+value+" for the TrayStyle");
+	}
+}
 void setValue(std::string attribute, std::string value){
 	debug_out("void setValue(std::string "+attribute+", std::string "+value+")");
 	unsigned int panel = currentPanel();

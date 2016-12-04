@@ -55,6 +55,7 @@ std::string getImageMenu(std::string item);
 std::string getLabelMenu(std::string item);
 std::string getNextPanelPosition();
 std::string getThisPanelPosition();
+std::string getTrayStyleattribute(std::string item);
 std::string Menu_Label(int num);
 std::string getItemVal(int position, std::string attribute);
 //double
@@ -118,7 +119,9 @@ void deleteVolume();
 //         E
 void editButton(int whichbutton, std::string MENU,std::string PROG,std::string ICON,std::string LABEL,std::string MASK);
 //         G
+void getTrayStyleattribute(std::string item,Fl_Output* list_out);
 void getColorFromItem(bool active, std::string element,std::string subelement,Fl_Button* o);
+void getGroupWin(Fl_Check_Button *o);
 void getIndicators(Fl_Browser* o);
 void getIndicatorsPopulate(Fl_Browser* o,std::vector<std::string> list);
 //         H
@@ -150,6 +153,7 @@ void removeIndicator(Fl_Browser* o);
 void setImageMenu(std::string testNum,std::string icon);
 void setItemBool(int position, int value);
 void setCoordinate(std::string xy, int value);
+void setTaskListValue(std::string attribute, std::string value);
 void setValue(std::string attribute, std::string value);
 void switchButton(std::string OLD,std::string NEW,std::string tooltip,std::string icon,std::string label);
 //         W

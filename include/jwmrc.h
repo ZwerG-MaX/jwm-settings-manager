@@ -175,12 +175,14 @@ std::string getElementAttribute(unsigned int whichElement,std::string element, s
 std::string getElementAttribute(unsigned int whichElement,std::string element, std::string attribute);
 std::string getElementAttribute(unsigned int whichElement,std::string element,unsigned int whichItem, std::string subelement, std::string attribute);
 std::string getEQUALvalue(std::string INTERNAL_LINE);
+std::string getFirstColor(std::string element, std::string subelement);
 std::string getItemText(pugi::xml_node node);
 std::string getJSMItem(std::string item);
 std::string getMenuAttribute(std::string MENU, std::string attribute);
 std::string getMenuAttribute(int MENU, int subitem, std::string element, std::string attribute);
 std::string getLayoutThing(std::string attribute,std::string vaule1,std::string value2,std::string value3,std::string layout);
 std::string getPanelButtonIcon();
+std::string getSecondColor(std::string element, std::string subelement);
 std::string getSmartHoriz(std::string layout);
 std::string getSmartVert(std::string layout);
 std::string getSmartLayout();

@@ -106,7 +106,7 @@ makeWidgetIcon(filename,icon_view,48);} {}
 JWM_VERSION=JWMversion();} {}
     Fl_Window panel_window {
       label {Panel Settings} open
-      xywh {327 157 285 450} type Double color 47 align 80 resizable
+      xywh {620 136 285 450} type Double color 47 align 80 resizable
       code1 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
     } {
       Fl_Scroll {} {open
@@ -175,8 +175,8 @@ Menu_CB(a);}
           xywh {0 35 285 380} box FLAT_BOX color 47
         } {
           Fl_Group apps_tab {
-            label Apps open
-            xywh {5 60 280 350} selection_color 45 hide
+            label Apps open selected
+            xywh {5 60 280 350} selection_color 45
             code0 {const char* text=gettext("Apps");o->label(text);}
           } {
             Fl_Button {} {
@@ -222,7 +222,7 @@ if(appLine <= size && appLine !=0){
           }
           Fl_Group {} {
             label Appearance open
-            xywh {0 60 280 350} selection_color 45
+            xywh {0 60 280 350} selection_color 45 hide
             code0 {const char* text=gettext("Appearance");o->label(text);}
           } {
             Fl_Box {} {
@@ -331,23 +331,34 @@ else{one_color_Font(o,"TrayButtonStyle");}}
             } {
               MenuItem {} {
                 label flat
-                callback {setDecorations(panel_deco,"TrayStyle","flat");}
+                callback {tray_outline2->hide();
+setDecorations(panel_deco,"TrayStyle","flat");}
                 xywh {10 10 100 20}
               }
               MenuItem {} {
                 label motif
-                callback {setDecorations(panel_deco,"TrayStyle","motif");}
+                callback {tray_outline2->show();
+setDecorations(panel_deco,"TrayStyle","motif");}
                 xywh {10 10 100 20}
               }
             }
             Fl_Output panel_deco {
               tooltip {Flat or Motif style decorations (flat is default)} xywh {145 265 110 25} box FLAT_BOX selection_color 80
+              code0 {if(JWM_VERSION<232){o->hide();}}
               code1 {getDecorations(o,"TrayStyle");}
             }
             Fl_Button tray_outline {
               label Outline
-              callback {outline_color(o,"TrayStyle");} selected
-              xywh {20 320 60 25} box FLAT_BOX color 23 align 1 deactivate
+              callback {outline_color(o,"TrayStyle");}
+              xywh {70 320 60 25} box FLAT_BOX color 23 align 4
+              code0 {outline1(o,"TrayStyle");}
+            }
+            Fl_Button tray_outline2 {
+              callback {color_two(o,"TrayStyle","Outline");
+tray_outline->redraw();}
+              xywh {135 320 60 25} box FLAT_BOX color 23 align 1
+              code0 {if(JWM_VERSION<232){o->hide();}}
+              code1 {else{outline2(o,panel_deco,"TrayStyle");}}
             }
           }
           Fl_Group {} {
@@ -817,26 +828,34 @@ if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;}}
   } {
     Fl_Window conf_applist_window {
       label {Running App List} open
-      xywh {808 259 350 65} type Double hide
+      xywh {262 54 350 155} type Double hide
       code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
     } {
+      Fl_Box {} {
+        label Active
+        xywh {5 20 135 35} box FLAT_BOX color 53 selection_color 39 align 1
+        code0 {if((JWM_VERSION<236)&&(JWM_VERSION>232)){o->deactivate();}}
+      }
+      Fl_Box {} {
+        label Inactive
+        xywh {5 70 135 35} box FLAT_BOX color 43 selection_color 39 align 1
+        code0 {if((JWM_VERSION<236)&&(JWM_VERSION>232)){o->deactivate();}}
+      }
       Fl_Button {} {
         label OK
         callback {conf_applist_window->hide();}
-        xywh {285 35 60 25} box FLAT_BOX color 61 selection_color 59 labelcolor 7
+        xywh {285 125 60 25} box FLAT_BOX color 61 selection_color 59 labelcolor 7
       }
       Fl_Button task_bg_color {
-        label {Open Apps}
-        callback {one_color(o,"TaskListStyle");}
-        xywh {95 35 60 25} box FLAT_BOX color 23 align 4
-        code0 {if(!style_gone()){getColorFromItem(true,"TaskListStyle","Background",o);}}
+        callback {one_color_active(o,"TaskListStyle");}
+        xywh {75 25 60 25} box FLAT_BOX color 23 align 4
+        code0 {if((JWM_VERSION<236)&&(JWM_VERSION>232)){getColorFromItem(true,"TaskListStyle","Background",o);}}
         code1 {else{o->deactivate();}}
       }
       Fl_Button task_fg_color {
-        label {Current App}
-        callback {one_color_active(o,"TaskListStyle");}
-        xywh {95 5 60 25} box FLAT_BOX color 23 align 4
-        code0 {if(!style_gone()){getColorFromItem(true,"TaskListStyle","Foreground",o);}}
+        callback {one_color_Font_active(o,"TaskListStyle",);}
+        xywh {10 25 60 25} box FLAT_BOX color 23 align 4
+        code0 {if((JWM_VERSION<236)&&(JWM_VERSION>232)){getColorFromItem(true,"TaskListStyle","Foreground",o);}}
         code1 {else{o->deactivate();}}
       }
       Fl_Value_Input {} {
@@ -860,8 +879,94 @@ if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;}}
         label Labeled
         callback {int val=o->value();
 setItemBool(val,BUTTON_NUM);}
-        tooltip {Determines if a label is shown for items  in the task list.  The default is true.} xywh {170 35 85 25} down_box GTK_DOWN_BOX value 1 color 7 selection_color 63
+        tooltip {Determines if a label is shown for items  in the task list.  The default is true.} xywh {25 130 90 20} down_box GTK_DOWN_BOX value 1 color 7 selection_color 63
         code0 {o->value(taskLabeled(BUTTON_NUM));}
+      }
+      Fl_Check_Button {} {
+        label Group
+        callback {int val=o->value();
+std::string value="false";
+if(val==1)value="true";
+setTaskListValue("group",value);}
+        tooltip {Determines if windows are  grouped  by  class  when shown  in  task bars.  Possible values are true and false. The default is false.} xywh {150 130 70 20} down_box GTK_DOWN_BOX color 7 selection_color 63
+        code1 {if(JWMVERSION<231){o->hide();}}
+        code2 {else{getGroupWin(o);}}
+      }
+      Fl_Menu_Button {} {
+        label List open
+        tooltip {Determines which windows are shown  in  task  bars. Possible values are desktop and all. The default is desktop.} xywh {150 95 100 25} box FLAT_BOX color 23 selection_color 72
+        code0 {if(JWMVERSION<234){o->hide();}}
+        code1 {else{}}
+      } {
+        MenuItem {} {
+          label {This Desktop Only}
+          callback {std::string value="desktop";
+setTaskListValue("list",value);
+list_out->value(value.c_str());
+list_out->redraw();}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label {All windows}
+          callback {std::string value="all";
+setTaskListValue("list",value);
+list_out->value(value.c_str());
+list_out->redraw();}
+          xywh {0 0 100 20}
+        }
+      }
+      Fl_Output list_out {
+        xywh {255 95 90 25} box FLAT_BOX selection_color 72
+        code0 {if(JWMVERSION<234){o->hide();}}
+        code1 {else{getTrayStyleattribute("list",o);}}
+      }
+      Fl_Menu_Button {} {
+        label decorations open
+        tooltip {Flat or Motif style decorations} xywh {150 65 100 25} box FLAT_BOX color 23
+        code0 {if(JWM_VERSION<232){o->hide();}}
+      } {
+        MenuItem {} {
+          label flat
+          callback {task_outline2->hide();
+setDecorations(tasklist_deco,"TaskListStyle","flat");}
+          xywh {30 30 100 20}
+        }
+        MenuItem {} {
+          label motif
+          callback {task_outline2->show();
+setDecorations(tasklist_deco,"TaskListStyle","motif");}
+          xywh {30 30 100 20}
+        }
+      }
+      Fl_Output tasklist_deco {
+        tooltip {Flat or Motif style decorations (flat is default)} xywh {255 65 90 25} box FLAT_BOX selection_color 80
+        code0 {if(JWM_VERSION<232){o->hide();}}
+        code1 {getDecorations(o,"TaskListStyle");}
+      }
+      Fl_Button task_outline2 {
+        label Outline
+        callback {outline_color(o,"TaskListStyle");}
+        xywh {220 35 60 25} box FLAT_BOX color 23 align 4
+        code0 {outline1(o,"TaskListStyle");}
+      }
+      Fl_Button task_outline2 {
+        callback {color_two(o,"TaskListStyle","Outline");
+task_outline->redraw();}
+        xywh {285 35 60 25} box FLAT_BOX color 23 align 4
+        code0 {if(JWMVERSION>=236){outline2(o,"TaskListStyle",tasklist_deco);}}
+        code1 {else{o->hide();}}
+      }
+      Fl_Button i_task_bg_color {
+        callback {one_color(o,"TaskListStyle");}
+        xywh {75 75 60 25} box FLAT_BOX color 23 align 4
+        code0 {if((JWM_VERSION<236)&&(JWM_VERSION>232)){getColorFromItem(false,"TaskListStyle","Background",o);}}
+        code1 {else{o->deactivate();}}
+      }
+      Fl_Button i_task_fg_color {
+        callback {one_color_Font(o,"TaskListStyle");}
+        xywh {10 75 60 25} box FLAT_BOX color 23 align 4
+        code0 {if((JWM_VERSION<236)&&(JWM_VERSION>232)){getColorFromItem(false,"TaskListStyle","Foreground",o);}}
+        code1 {else{o->deactivate();}}
       }
     }
   }

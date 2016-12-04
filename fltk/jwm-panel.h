@@ -107,31 +107,6 @@ private:
   inline void cb_92_i(Fl_Button*, void*);
   static void cb_92(Fl_Button*, void*);
 public:
-  Fl_Button *menu_bg_color;
-private:
-  inline void cb_menu_bg_color_i(Fl_Button*, void*);
-  static void cb_menu_bg_color(Fl_Button*, void*);
-public:
-  Fl_Button *menu_bg_color_a;
-private:
-  inline void cb_menu_bg_color_a_i(Fl_Button*, void*);
-  static void cb_menu_bg_color_a(Fl_Button*, void*);
-public:
-  Fl_Button *menu_font_color;
-private:
-  inline void cb_menu_font_color_i(Fl_Button*, void*);
-  static void cb_menu_font_color(Fl_Button*, void*);
-public:
-  Fl_Slider *o_menu_slider;
-private:
-  inline void cb_o_menu_slider_i(Fl_Slider*, void*);
-  static void cb_o_menu_slider(Fl_Slider*, void*);
-public:
-  Fl_Value_Input *o_menu_slider_v;
-private:
-  inline void cb_o_menu_slider_v_i(Fl_Value_Input*, void*);
-  static void cb_o_menu_slider_v(Fl_Value_Input*, void*);
-public:
   Fl_Button *b_color;
 private:
   inline void cb_b_color_i(Fl_Button*, void*);
@@ -181,11 +156,6 @@ public:
 private:
   inline void cb_panel_font_i(Fl_Button*, void*);
   static void cb_panel_font(Fl_Button*, void*);
-public:
-  Fl_Button *menu_font_a;
-private:
-  inline void cb_menu_font_a_i(Fl_Button*, void*);
-  static void cb_menu_font_a(Fl_Button*, void*);
   static unsigned char menu_decorations_i18n_done;
   static Fl_Menu_Item menu_decorations[];
   inline void cb_flat_i(Fl_Menu_*, void*);
@@ -193,24 +163,18 @@ private:
   inline void cb_motif_i(Fl_Menu_*, void*);
   static void cb_motif(Fl_Menu_*, void*);
 public:
-  Fl_Button *menu_outline;
-private:
-  inline void cb_menu_outline_i(Fl_Button*, void*);
-  static void cb_menu_outline(Fl_Button*, void*);
-public:
-  Fl_Output *menu_deco;
-  static unsigned char menu_decorations1_i18n_done;
-  static Fl_Menu_Item menu_decorations1[];
-private:
-  inline void cb_flat1_i(Fl_Menu_*, void*);
-  static void cb_flat1(Fl_Menu_*, void*);
-  inline void cb_motif1_i(Fl_Menu_*, void*);
-  static void cb_motif1(Fl_Menu_*, void*);
-public:
   Fl_Output *panel_deco;
+  Fl_Button *tray_outline;
+private:
+  inline void cb_tray_outline_i(Fl_Button*, void*);
+  static void cb_tray_outline(Fl_Button*, void*);
+public:
+  Fl_Button *tray_outline2;
+private:
+  inline void cb_tray_outline2_i(Fl_Button*, void*);
+  static void cb_tray_outline2(Fl_Button*, void*);
   static unsigned char menu_Panel_i18n_done;
   static Fl_Menu_Item menu_Panel[];
-private:
   inline void cb_top_i(Fl_Menu_*, void*);
   static void cb_top(Fl_Menu_*, void*);
   inline void cb_bottom_i(Fl_Menu_*, void*);
@@ -409,6 +373,44 @@ private:
   static void cb_Height(Fl_Value_Input*, void*);
   inline void cb_Labeled_i(Fl_Check_Button*, void*);
   static void cb_Labeled(Fl_Check_Button*, void*);
+  inline void cb_Group_i(Fl_Check_Button*, void*);
+  static void cb_Group(Fl_Check_Button*, void*);
+  static unsigned char menu_List_i18n_done;
+  static Fl_Menu_Item menu_List[];
+  inline void cb_This_i(Fl_Menu_*, void*);
+  static void cb_This(Fl_Menu_*, void*);
+  inline void cb_All_i(Fl_Menu_*, void*);
+  static void cb_All(Fl_Menu_*, void*);
+public:
+  Fl_Output *list_out;
+  static unsigned char menu_decorations1_i18n_done;
+  static Fl_Menu_Item menu_decorations1[];
+private:
+  inline void cb_flat1_i(Fl_Menu_*, void*);
+  static void cb_flat1(Fl_Menu_*, void*);
+  inline void cb_motif1_i(Fl_Menu_*, void*);
+  static void cb_motif1(Fl_Menu_*, void*);
+public:
+  Fl_Output *tasklist_deco;
+  Fl_Button *task_outline2;
+private:
+  inline void cb_task_outline2_i(Fl_Button*, void*);
+  static void cb_task_outline2(Fl_Button*, void*);
+public:
+  Fl_Button *task_outline2;
+private:
+  inline void cb_task_outline21_i(Fl_Button*, void*);
+  static void cb_task_outline21(Fl_Button*, void*);
+public:
+  Fl_Button *i_task_bg_color;
+private:
+  inline void cb_i_task_bg_color_i(Fl_Button*, void*);
+  static void cb_i_task_bg_color(Fl_Button*, void*);
+public:
+  Fl_Button *i_task_fg_color;
+private:
+  inline void cb_i_task_fg_color_i(Fl_Button*, void*);
+  static void cb_i_task_fg_color(Fl_Button*, void*);
 public:
   Fl_Double_Window* config_button_window(int input_num);
   Fl_Double_Window *conf_button_window;

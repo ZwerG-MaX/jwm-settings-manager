@@ -1374,6 +1374,10 @@ std::string getEQUALvalue(std::string INTERNAL_LINE){
 	}
 	return "";
 }
+std::string getFirstColor(std::string element, std::string subelement){
+	std::string val=getElementText(element,subelement);
+	return splitColor(1,val);
+}
 std::string getItemText(pugi::xml_node node){return node.text().as_string();}
 std::string getJSMItem(std::string item){
 	//debug_out("std::string getJSMItem(std::string "+item+")");
@@ -1477,6 +1481,10 @@ std::string getPanelButtonIcon(){
 		result=linuxcommon::test_file_in_vector_path(result,iconity);
 	}
 	return result;
+}
+std::string getSecondColor(std::string element, std::string subelement){
+	std::string val=getElementText(element,subelement);
+	return splitColor(2,val);
 }
 std::string getSmartHoriz(std::string layout){return getLayoutThing("halign","fixed","left","right",layout);}
 std::string getSmartVert(std::string layout){return getLayoutThing("valign","fixed","top","bottom",layout);}
