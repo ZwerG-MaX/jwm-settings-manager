@@ -378,7 +378,7 @@ void one_color_active(Fl_Widget *o, std::string whichElement){
 	int c;
 	double* colors = choose_a_color(c,o);
 	if(c!=0){//If color chooser isn't canceled... do stuff
-		std::string colorString
+		std::string colorString;
 		if(JWMversion()<230){
 			setElementFloat(whichElement,"ActiveBackground",colors);
 			colorString=getElementText(whichElement,"ActiveBackground");

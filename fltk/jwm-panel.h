@@ -392,15 +392,15 @@ private:
   static void cb_motif1(Fl_Menu_*, void*);
 public:
   Fl_Output *tasklist_deco;
+  Fl_Button *task_outline;
+private:
+  inline void cb_task_outline_i(Fl_Button*, void*);
+  static void cb_task_outline(Fl_Button*, void*);
+public:
   Fl_Button *task_outline2;
 private:
   inline void cb_task_outline2_i(Fl_Button*, void*);
   static void cb_task_outline2(Fl_Button*, void*);
-public:
-  Fl_Button *task_outline2;
-private:
-  inline void cb_task_outline21_i(Fl_Button*, void*);
-  static void cb_task_outline21(Fl_Button*, void*);
 public:
   Fl_Button *i_task_bg_color;
 private:
@@ -462,7 +462,10 @@ private:
   static void cb_Advanced(Fl_Menu_*, void*);
 public:
   Fl_Output *clock_displayer;
+  Fl_Output *tz_out;
 private:
+  inline void cb_Time_i(Fl_Menu_Button*, void*);
+  static void cb_Time(Fl_Menu_Button*, void*);
   inline void cb_Width_i(Fl_Value_Input*, void*);
   static void cb_Width(Fl_Value_Input*, void*);
   inline void cb_Height1_i(Fl_Value_Input*, void*);
@@ -675,5 +678,11 @@ private:
   static void cb_Width3(Fl_Value_Input*, void*);
   inline void cb_Height3_i(Fl_Value_Input*, void*);
   static void cb_Height3(Fl_Value_Input*, void*);
+  inline void zone_cb(Fl_Menu_*o, void* v);
+public:
+  void zone_check(Fl_Menu_* o);
+  void zoneMenu(Fl_Menu_Button *o);
+private:
+  static void cb_zone(Fl_Menu_* o,void* v);
 };
 #endif

@@ -100,14 +100,13 @@ icon_name->redraw();} {}
     code {if(filename.compare("")==0){return;}
 makeWidgetIcon(filename,icon_view,48);} {}
   }
-  Function {make_window()} {open
-  } {
+  Function {make_window()} {} {
     code {load();
 JWM_VERSION=JWMversion();} {}
     Fl_Window panel_window {
       label {Panel Settings} open
-      xywh {620 136 285 450} type Double color 47 align 80 resizable
-      code1 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
+      xywh {130 111 285 450} type Double color 47 align 80 hide resizable
+      code1 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
     } {
       Fl_Scroll {} {open
         xywh {0 0 355 665} color 31
@@ -175,7 +174,7 @@ Menu_CB(a);}
           xywh {0 35 285 380} box FLAT_BOX color 47
         } {
           Fl_Group apps_tab {
-            label Apps open selected
+            label Apps open
             xywh {5 60 280 350} selection_color 45
             code0 {const char* text=gettext("Apps");o->label(text);}
           } {
@@ -824,11 +823,10 @@ if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;}}
       }
     }
   }
-  Function {config_applist_window()} {open
-  } {
+  Function {config_applist_window()} {} {
     Fl_Window conf_applist_window {
       label {Running App List} open
-      xywh {262 54 350 155} type Double hide
+      xywh {718 166 350 155} type Double hide
       code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
     } {
       Fl_Box {} {
@@ -853,7 +851,7 @@ if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;}}
         code1 {else{o->deactivate();}}
       }
       Fl_Button task_fg_color {
-        callback {one_color_Font_active(o,"TaskListStyle",);}
+        callback {one_color_Font_active(o,"TaskListStyle");}
         xywh {10 25 60 25} box FLAT_BOX color 23 align 4
         code0 {if((JWM_VERSION<236)&&(JWM_VERSION>232)){getColorFromItem(true,"TaskListStyle","Foreground",o);}}
         code1 {else{o->deactivate();}}
@@ -889,13 +887,13 @@ std::string value="false";
 if(val==1)value="true";
 setTaskListValue("group",value);}
         tooltip {Determines if windows are  grouped  by  class  when shown  in  task bars.  Possible values are true and false. The default is false.} xywh {150 130 70 20} down_box GTK_DOWN_BOX color 7 selection_color 63
-        code1 {if(JWMVERSION<231){o->hide();}}
+        code1 {if(JWM_VERSION<231){o->hide();}}
         code2 {else{getGroupWin(o);}}
       }
       Fl_Menu_Button {} {
         label List open
         tooltip {Determines which windows are shown  in  task  bars. Possible values are desktop and all. The default is desktop.} xywh {150 95 100 25} box FLAT_BOX color 23 selection_color 72
-        code0 {if(JWMVERSION<234){o->hide();}}
+        code0 {if(JWM_VERSION<234){o->hide();}}
         code1 {else{}}
       } {
         MenuItem {} {
@@ -917,7 +915,7 @@ list_out->redraw();}
       }
       Fl_Output list_out {
         xywh {255 95 90 25} box FLAT_BOX selection_color 72
-        code0 {if(JWMVERSION<234){o->hide();}}
+        code0 {if(JWM_VERSION<234){o->hide();}}
         code1 {else{getTrayStyleattribute("list",o);}}
       }
       Fl_Menu_Button {} {
@@ -943,7 +941,7 @@ setDecorations(tasklist_deco,"TaskListStyle","motif");}
         code0 {if(JWM_VERSION<232){o->hide();}}
         code1 {getDecorations(o,"TaskListStyle");}
       }
-      Fl_Button task_outline2 {
+      Fl_Button task_outline {
         label Outline
         callback {outline_color(o,"TaskListStyle");}
         xywh {220 35 60 25} box FLAT_BOX color 23 align 4
@@ -953,7 +951,7 @@ setDecorations(tasklist_deco,"TaskListStyle","motif");}
         callback {color_two(o,"TaskListStyle","Outline");
 task_outline->redraw();}
         xywh {285 35 60 25} box FLAT_BOX color 23 align 4
-        code0 {if(JWMVERSION>=236){outline2(o,"TaskListStyle",tasklist_deco);}}
+        code0 {if(JWM_VERSION>=236){outline2(o,tasklist_deco,"TaskListStyle");}}
         code1 {else{o->hide();}}
       }
       Fl_Button i_task_bg_color {
@@ -1049,11 +1047,12 @@ else{showMenu();}}
       }
     }
   }
-  Function {config_clock_window()} {} {
+  Function {config_clock_window()} {open
+  } {
     Fl_Window conf_clock_window {
       label {Configure Clock} open
-      xywh {428 151 340 185} type Double hide
-      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
+      xywh {143 272 360 155} type Double
+      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
     } {
       Fl_Menu_Button clock_menu {
         label {Clock Format} open
@@ -1101,19 +1100,21 @@ else{showMenu();}}
         code2 {o->value(clock_text.c_str());//copy_label(clock_text.c_str());}
         code3 {o->redraw();//_label();}
       }
-      Fl_Menu_Button {} {
-        label {Time Zone} open
-        tooltip {Optional. The time zone of the clock.} xywh {5 35 110 25} box FLAT_BOX color 23 deactivate
-      } {}
-      Fl_Output {} {
-        xywh {120 35 120 25} box FLAT_BOX deactivate
+      Fl_Output tz_out {
+        xywh {120 35 120 25} box FLAT_BOX
       }
+      Fl_Menu_Button {} {
+        label {Time Zone}
+        callback {std::cout<<"hi"<<std::endl;} open
+        tooltip {Optional. The time zone of the clock.} xywh {5 35 110 25} box FLAT_BOX color 23
+        code0 {zoneMenu(o);}
+      } {}
       Fl_Value_Input {} {
         label Width
         callback {if(!setItemH(BUTTON_NUM,o->value())){
   errorOUT("Did not set width correctly");
 }}
-        tooltip {The width of the clock. 0 indicates that the width should be determined from the length of the text to be displayed.} xywh {305 5 25 25} box FLAT_BOX selection_color 72
+        tooltip {The width of the clock. 0 indicates that the width should be determined from the length of the text to be displayed.} xywh {50 125 25 25} box FLAT_BOX selection_color 72
         code0 {o->value(getItemW(BUTTON_NUM));}
       }
       Fl_Value_Input {} {
@@ -1121,7 +1122,7 @@ else{showMenu();}}
         callback {if(!setItemW(BUTTON_NUM,o->value())){
   errorOUT("Did not set height correctly");
 }}
-        tooltip {The height of the clock. 0 indicates that the height should be determined from the font used.} xywh {305 35 25 25} box FLAT_BOX selection_color 72
+        tooltip {The height of the clock. 0 indicates that the height should be determined from the font used.} xywh {135 125 25 25} box FLAT_BOX selection_color 72
         code0 {o->value(getItemH(BUTTON_NUM));}
       }
       Fl_Menu_Button {} {
@@ -1178,19 +1179,19 @@ if(program.compare("")==0){
       Fl_Button {} {
         label OK
         callback {conf_clock_window->hide();}
-        xywh {280 140 55 25} box FLAT_BOX color 61 labelcolor 7
+        xywh {295 125 55 25} box FLAT_BOX color 61 labelcolor 7
       }
       Fl_Button clock_fg {
         label Foreground
         callback {one_color_Font(o,"ClockStyle");}
-        xywh {35 140 75 30} box FLAT_BOX color 23 align 1
+        tooltip {Optional, this will use the Panel colors if not specified} xywh {275 20 75 30} box FLAT_BOX color 23 align 1
         code1 {if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}}
         code2 {else{getColorFromItem(false,"ClockStyle","Foreground",o);}}
       }
       Fl_Button {} {
         label Background
         callback {one_color(o,"ClockStyle");}
-        xywh {160 140 75 30} box FLAT_BOX color 23 align 1
+        tooltip {Optional, this will use the Panel colors if not specified} xywh {275 70 75 30} box FLAT_BOX color 23 align 1
         code1 {if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}}
         code2 {else{getColorFromItem(false,"ClockStyle","Background",o);}}
       }
@@ -1714,8 +1715,7 @@ else{
    }
 }} {}
   }
-  Function {current_clock_text()} {open
-  } {
+  Function {current_clock_text()} {} {
     code {if(JWMversion()>230)return;
 std::string val = getClockText(BUTTON_NUM);
 if(val.find("exec:")<val.length()){
@@ -1736,16 +1736,13 @@ clock_button_menu->redraw();} {}
     code {makeWidgetIcon(filename,widget,48);
 //widget->redraw();} {}
   }
-  Function {get_clock_button_stuff(int button)} {open
-  } {
+  Function {get_clock_button_stuff(int button)} {} {
     code {get_button_stuff(button,clock_prog,clock_button_menu,output_button_val);} {}
   }
-  Function {get_button_stuff(int button)} {open
-  } {
+  Function {get_button_stuff(int button)} {} {
     code {get_button_stuff(button,button_prog,button_menu,button_val);} {}
   }
-  Function {get_button_stuff(int button,Fl_Input *input_prog,Fl_Input *input_menu,Fl_Value_Output *mouse_button_current)} {open
-  } {
+  Function {get_button_stuff(int button,Fl_Input *input_prog,Fl_Input *input_menu,Fl_Value_Output *mouse_button_current)} {} {
     code {std::string num;
 mouse_button_current->value(button);
 switch(button){
@@ -1871,5 +1868,35 @@ editButton(whichbutton,MENU,PROG,ICON,LABEL,MASK);} {}
         code0 {o->value(getItemH(BUTTON_NUM));}
       }
     }
+  }
+  Function {zone_cb(Fl_Menu_*o, void* v)} {open private return_type {inline void}
+  } {
+    code {zone_check(o);} {}
+  }
+  Function {zone_check(Fl_Menu_* o)} {open
+  } {
+    code {debug_out("zone_check");
+std::string timeZone;
+timeZone+=o->text();
+tz_out->value(timeZone.c_str());
+if(!setElementAttribute(currentPanel(),"Tray","Clock","zone",timeZone)){
+  errorOUT("Could not change JWM time zone");
+}} {selected
+    }
+  }
+  Function {zoneMenu(Fl_Menu_Button *o)} {open
+  } {
+    code {std::vector<std::string> zoneVec=zoneVector();
+for( std::vector<std::string>::iterator it = zoneVec.begin();
+it!=zoneVec.end();
+++it){
+  std::string tmp=*it;
+  o->add(tmp.c_str(), 0,(Fl_Callback*)PanelUI::cb_zone);
+}} {}
+  }
+  Function {cb_zone(Fl_Menu_* o,void* v)} {open private return_type {static void}
+  } {
+    code {debug_out("cb_zone()");
+((PanelUI*)(o->parent()->user_data()))->zone_cb(o,v);} {}
   }
 } 

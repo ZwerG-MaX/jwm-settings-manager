@@ -738,7 +738,7 @@ void PanelUI::cb_task_bg_color(Fl_Button* o, void* v) {
 }
 
 void PanelUI::cb_task_fg_color_i(Fl_Button* o, void*) {
-  one_color_Font_active(o,"TaskListStyle",);
+  one_color_Font_active(o,"TaskListStyle");
 }
 void PanelUI::cb_task_fg_color(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_task_fg_color_i(o,v);
@@ -830,19 +830,19 @@ Fl_Menu_Item PanelUI::menu_decorations1[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
-void PanelUI::cb_task_outline2_i(Fl_Button* o, void*) {
+void PanelUI::cb_task_outline_i(Fl_Button* o, void*) {
   outline_color(o,"TaskListStyle");
 }
-void PanelUI::cb_task_outline2(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_task_outline2_i(o,v);
+void PanelUI::cb_task_outline(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_task_outline_i(o,v);
 }
 
-void PanelUI::cb_task_outline21_i(Fl_Button* o, void*) {
+void PanelUI::cb_task_outline2_i(Fl_Button* o, void*) {
   color_two(o,"TaskListStyle","Outline");
 task_outline->redraw();
 }
-void PanelUI::cb_task_outline21(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_task_outline21_i(o,v);
+void PanelUI::cb_task_outline2(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_task_outline2_i(o,v);
 }
 
 void PanelUI::cb_i_task_bg_color_i(Fl_Button* o, void*) {
@@ -970,6 +970,13 @@ Fl_Menu_Item PanelUI::menu_clock_menu[] = {
  {"(Advanced) User Defined", 0,  (Fl_Callback*)PanelUI::cb_Advanced, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
+
+void PanelUI::cb_Time_i(Fl_Menu_Button*, void*) {
+  std::cout<<"hi"<<std::endl;
+}
+void PanelUI::cb_Time(Fl_Menu_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_Time_i(o,v);
+}
 
 void PanelUI::cb_Width_i(Fl_Value_Input* o, void*) {
   if(!setItemH(BUTTON_NUM,o->value())){
@@ -2250,7 +2257,7 @@ ssible values are true and false. The default is false."));
       o->color(FL_BACKGROUND2_COLOR);
       o->selection_color(FL_GREEN);
       o->callback((Fl_Callback*)cb_Group);
-      if(JWMVERSION<231){o->hide();}
+      if(JWM_VERSION<231){o->hide();}
       else{getGroupWin(o);}
     } // Fl_Check_Button* o
     { Fl_Menu_Button* o = new Fl_Menu_Button(150, 95, 100, 25, gettext("List"));
@@ -2267,13 +2274,13 @@ op and all. The default is desktop."));
         menu_List_i18n_done = 1;
       }
       o->menu(menu_List);
-      if(JWMVERSION<234){o->hide();}
+      if(JWM_VERSION<234){o->hide();}
       else{}
     } // Fl_Menu_Button* o
     { Fl_Output* o = list_out = new Fl_Output(255, 95, 90, 25);
       list_out->box(FL_FLAT_BOX);
       list_out->selection_color(FL_DARK_RED);
-      if(JWMVERSION<234){o->hide();}
+      if(JWM_VERSION<234){o->hide();}
       else{getTrayStyleattribute("list",o);}
     } // Fl_Output* list_out
     { Fl_Menu_Button* o = new Fl_Menu_Button(150, 65, 100, 25, gettext("decorations"));
@@ -2297,19 +2304,19 @@ op and all. The default is desktop."));
       if(JWM_VERSION<232){o->hide();}
       getDecorations(o,"TaskListStyle");
     } // Fl_Output* tasklist_deco
-    { Fl_Button* o = task_outline2 = new Fl_Button(220, 35, 60, 25, gettext("Outline"));
+    { Fl_Button* o = task_outline = new Fl_Button(220, 35, 60, 25, gettext("Outline"));
+      task_outline->box(FL_FLAT_BOX);
+      task_outline->color((Fl_Color)23);
+      task_outline->callback((Fl_Callback*)cb_task_outline);
+      task_outline->align(Fl_Align(FL_ALIGN_LEFT));
+      outline1(o,"TaskListStyle");
+    } // Fl_Button* task_outline
+    { Fl_Button* o = task_outline2 = new Fl_Button(285, 35, 60, 25);
       task_outline2->box(FL_FLAT_BOX);
       task_outline2->color((Fl_Color)23);
       task_outline2->callback((Fl_Callback*)cb_task_outline2);
       task_outline2->align(Fl_Align(FL_ALIGN_LEFT));
-      outline1(o,"TaskListStyle");
-    } // Fl_Button* task_outline2
-    { Fl_Button* o = task_outline2 = new Fl_Button(285, 35, 60, 25);
-      task_outline2->box(FL_FLAT_BOX);
-      task_outline2->color((Fl_Color)23);
-      task_outline2->callback((Fl_Callback*)cb_task_outline21);
-      task_outline2->align(Fl_Align(FL_ALIGN_LEFT));
-      if(JWMVERSION>=236){outline2(o,"TaskListStyle",tasklist_deco);}
+      if(JWM_VERSION>=236){outline2(o,tasklist_deco,"TaskListStyle");}
       else{o->hide();}
     } // Fl_Button* task_outline2
     { Fl_Button* o = i_task_bg_color = new Fl_Button(75, 75, 60, 25);
@@ -2425,7 +2432,7 @@ Fl_Double_Window* PanelUI::config_button_window(int input_num) {
 }
 
 Fl_Double_Window* PanelUI::config_clock_window() {
-  { Fl_Double_Window* o = conf_clock_window = new Fl_Double_Window(340, 185, gettext("Configure Clock"));
+  { Fl_Double_Window* o = conf_clock_window = new Fl_Double_Window(360, 155, gettext("Configure Clock"));
     conf_clock_window->user_data((void*)(this));
     { clock_menu = new Fl_Menu_Button(5, 5, 110, 25, gettext("Clock Format"));
       clock_menu->box(FL_FLAT_BOX);
@@ -2467,17 +2474,17 @@ Fl_Double_Window* PanelUI::config_clock_window() {
       o->value(clock_text.c_str());//copy_label(clock_text.c_str());
       o->redraw();//_label();
     } // Fl_Output* clock_displayer
+    { tz_out = new Fl_Output(120, 35, 120, 25);
+      tz_out->box(FL_FLAT_BOX);
+    } // Fl_Output* tz_out
     { Fl_Menu_Button* o = new Fl_Menu_Button(5, 35, 110, 25, gettext("Time Zone"));
       o->tooltip(gettext("Optional. The time zone of the clock."));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
-      o->deactivate();
+      o->callback((Fl_Callback*)cb_Time);
+      zoneMenu(o);
     } // Fl_Menu_Button* o
-    { Fl_Output* o = new Fl_Output(120, 35, 120, 25);
-      o->box(FL_FLAT_BOX);
-      o->deactivate();
-    } // Fl_Output* o
-    { Fl_Value_Input* o = new Fl_Value_Input(305, 5, 25, 25, gettext("Width"));
+    { Fl_Value_Input* o = new Fl_Value_Input(50, 125, 25, 25, gettext("Width"));
       o->tooltip(gettext("The width of the clock. 0 indicates that the width should be determined from \
 the length of the text to be displayed."));
       o->box(FL_FLAT_BOX);
@@ -2485,7 +2492,7 @@ the length of the text to be displayed."));
       o->callback((Fl_Callback*)cb_Width);
       o->value(getItemW(BUTTON_NUM));
     } // Fl_Value_Input* o
-    { Fl_Value_Input* o = new Fl_Value_Input(305, 35, 25, 25, gettext("Height"));
+    { Fl_Value_Input* o = new Fl_Value_Input(135, 125, 25, 25, gettext("Height"));
       o->tooltip(gettext("The height of the clock. 0 indicates that the height should be determined fro\
 m the font used."));
       o->box(FL_FLAT_BOX);
@@ -2542,13 +2549,14 @@ m the font used."));
       clock_prog_conf_gear->image(image_gear16);
       clock_prog_conf_gear->callback((Fl_Callback*)cb_clock_prog_conf_gear);
     } // Fl_Button* clock_prog_conf_gear
-    { Fl_Button* o = new Fl_Button(280, 140, 55, 25, gettext("OK"));
+    { Fl_Button* o = new Fl_Button(295, 125, 55, 25, gettext("OK"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK6);
     } // Fl_Button* o
-    { Fl_Button* o = clock_fg = new Fl_Button(35, 140, 75, 30, gettext("Foreground"));
+    { Fl_Button* o = clock_fg = new Fl_Button(275, 20, 75, 30, gettext("Foreground"));
+      clock_fg->tooltip(gettext("Optional, this will use the Panel colors if not specified"));
       clock_fg->box(FL_FLAT_BOX);
       clock_fg->color((Fl_Color)23);
       clock_fg->callback((Fl_Callback*)cb_clock_fg);
@@ -2556,7 +2564,8 @@ m the font used."));
       if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}
       else{getColorFromItem(false,"ClockStyle","Foreground",o);}
     } // Fl_Button* clock_fg
-    { Fl_Button* o = new Fl_Button(160, 140, 75, 30, gettext("Background"));
+    { Fl_Button* o = new Fl_Button(275, 70, 75, 30, gettext("Background"));
+      o->tooltip(gettext("Optional, this will use the Panel colors if not specified"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_Background);
@@ -3283,4 +3292,33 @@ Fl_Double_Window* PanelUI::spacer_config() {
     conf_spacer_win->end();
   } // Fl_Double_Window* conf_spacer_win
   return conf_spacer_win;
+}
+
+inline void PanelUI::zone_cb(Fl_Menu_*o, void* v) {
+  zone_check(o);
+}
+
+void PanelUI::zone_check(Fl_Menu_* o) {
+  debug_out("zone_check");
+  std::string timeZone;
+  timeZone+=o->text();
+  tz_out->value(timeZone.c_str());
+  if(!setElementAttribute(currentPanel(),"Tray","Clock","zone",timeZone)){
+    errorOUT("Could not change JWM time zone");
+  }
+}
+
+void PanelUI::zoneMenu(Fl_Menu_Button *o) {
+  std::vector<std::string> zoneVec=zoneVector();
+  for( std::vector<std::string>::iterator it = zoneVec.begin();
+  it!=zoneVec.end();
+  ++it){
+    std::string tmp=*it;
+    o->add(tmp.c_str(), 0,(Fl_Callback*)PanelUI::cb_zone);
+  }
+}
+
+void PanelUI::cb_zone(Fl_Menu_* o,void* v) {
+  debug_out("cb_zone()");
+  ((PanelUI*)(o->parent()->user_data()))->zone_cb(o,v);
 }

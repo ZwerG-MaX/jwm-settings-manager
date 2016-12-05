@@ -36,6 +36,7 @@
 #include <FL/Fl_GIF_Image.H>
 #include <FL/Fl_Slider.H>
 #include <FL/Fl_Value_Input.H>
+#include <FL/Fl_Menu_Button.H>
 #include "jwmrc.h"
 std::string choose_a_directory(std::string directory, std::string label);
 std::string choose_a_directory_to_save(std::string directory, std::string label);

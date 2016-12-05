@@ -1964,6 +1964,64 @@ std::vector<std::string> XDGautostart(){
 	}
 	return totalVector;
 }
+std::vector<std::string> zoneSubdir(std::string thisDIR){
+	debug_out("std::vector<std::string> zoneSubdir(std::string "+thisDIR+")");
+	DIR *dir = NULL;
+    struct dirent *entryPointer = NULL;
+    std::vector<std::string> returnVec;
+	dir = opendir(thisDIR.c_str());
+	std::string SUBDIRNAME=thisDIR;
+	unsigned int finder =SUBDIRNAME.rfind("/");
+	if(finder<SUBDIRNAME.length()){SUBDIRNAME=SUBDIRNAME.erase(0,finder+1);}
+	SUBDIRNAME+="\\/";
+	if (dir!=NULL){
+		while ((entryPointer=readdir(dir)) != NULL){
+			if ((entryPointer->d_type == DT_DIR)
+			&&(entryPointer->d_name[0] != '.')){
+				std::string msg="found subdir.. in subdir:";
+				msg+=entryPointer->d_name;
+				debug_out(msg);
+			}//if DIR
+			else if((entryPointer->d_type == DT_REG)
+			&&(entryPointer->d_name[0] != '.')){
+				std::string tmp=SUBDIRNAME;
+				tmp+=entryPointer->d_name;
+				returnVec.push_back(tmp);
+			}
+		}
+		closedir(dir);
+	}
+	else{errorOUT("Could not open time zone sub-directory:"+thisDIR);}
+	return returnVec;
+}
+std::vector<std::string> zoneVector(){
+	debug_out("std::vector<std::string> zoneVector()");
+	DIR *dir = NULL;
+	std::vector<std::string> returnVec;
+    struct dirent *entryPointer = NULL;
+	std::string dirToOpen="/usr/share/zoneinfo/";
+	dir = opendir(dirToOpen.c_str());
+	if (dir!=NULL){
+		while ((entryPointer=readdir(dir)) != NULL){
+			if ((entryPointer->d_type == DT_DIR)
+			&&(entryPointer->d_name[0] != '.')){
+				std::string tmp=dirToOpen;
+				tmp+=entryPointer->d_name;
+				std::vector<std::string> tmpVec=zoneSubdir(tmp);
+				returnVec=linuxcommon::join_string_vectors(returnVec,tmpVec);
+			}//if DIR
+			else if((entryPointer->d_type == DT_REG)
+			&&(entryPointer->d_name[0] != '.')){
+				std::string tmp=entryPointer->d_name;
+				returnVec.push_back(tmp);
+			}
+		}
+		closedir(dir);
+	}
+	else{errorOUT("Could not open time zone directory");}
+	returnVec=linuxcommon::sort_array(returnVec);
+	return returnVec;
+}
 //void//////////////////////////////////////////////////////////////////
 //A
 void addCursorsToBrowser(Fl_Browser *o){

@@ -243,6 +243,8 @@ std::vector<std::string> AnythingVector(std::string element);
 std::vector<std::string> IconPaths();
 std::vector<std::string> Includes();
 std::vector<std::string> XDGautostart();
+std::vector<std::string> zoneSubdir(std::string thisDIR);
+std::vector<std::string> zoneVector();
 //void//////////////////////////////////////////////////////////////////
 //A
 void addCursorsToBrowser(Fl_Browser *o);

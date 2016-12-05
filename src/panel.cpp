@@ -528,7 +528,7 @@ void editButton(int whichbutton, std::string MENU,std::string PROG,std::string I
 	}
 }
 //////G
-void get_attribute(std::string item,Fl_Output* list_out){
+void getTrayStyleattribute(std::string item,Fl_Output* list_out){
 	std::string value=getTrayStyleattribute(item);
 	list_out->value(value.c_str());
 	list_out->redraw();
