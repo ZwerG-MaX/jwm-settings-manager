@@ -290,10 +290,19 @@ void makeWidgetIcon(std::string icon_file, Fl_Widget * widget, int w, int h){
 		return;
 	}
 	//unsigned int found=icon_file.find("/");
-	if(!linuxcommon::test_file(icon_file)){  //((found> icon_file.length())||(!linuxcommon::test_file(icon_file))){
+	if(!linuxcommon::test_file(icon_file)){  
 		std::vector<std::string> tmpV=IconPaths();
 		std::string tmp=icon_file;
-		tmp=linuxcommon::test_file_in_vector_path(icon_file,tmpV);
+		unsigned int ext=icon_file.rfind(".");
+		if(ext>icon_file.length()){
+			tmp=icon_file+".svg";
+			tmp=linuxcommon::test_file_in_vector_path(tmp,tmpV);
+			if(tmp.compare("")==0){
+				tmp=icon_file+".png";
+				tmp=linuxcommon::test_file_in_vector_path(tmp,tmpV);
+			}
+		}
+		else{tmp=linuxcommon::test_file_in_vector_path(tmp,tmpV);}
 		if(tmp.compare("")==0){tmp=linuxcommon::look_for_icon_file(icon_file);}
 		if(tmp.compare("")!=0){
 			icon_file=tmp;
@@ -484,22 +493,27 @@ void populateBrowserWithTextFile(Fl_Browser *o, std::string filename){
 	}
 }
 void populateBrowserWithString(Fl_Browser *o, std::string STRING){
+	debug_out("void populateBrowserWithString(Fl_Browser *o, std::string "+STRING+")");
 	if(STRING.compare("")==0)return;
 	std::string sep="\n";
 	unsigned int finder=STRING.find(sep);
 	unsigned int length=STRING.length();
 	if(finder>length){
+		debug_out("No Newline found");
 		o->add(STRING.c_str());
 		return;
 	}
 	while(finder<length){
-		std::string tmp1=STRING;
-		std::string tmp2=tmp1.erase(finder,std::string::npos);	
-		o->add(tmp2.c_str());
-		STRING=tmp1.substr(finder+1,std::string::npos);
 		finder=STRING.find(sep);
 		length=STRING.length();
-		if(finder>=length){o->add(STRING.c_str());}
+		std::string tmp1=STRING;
+		if(finder<length+1){
+			std::string tmp2=tmp1.erase(finder,std::string::npos);	
+			o->add(tmp2.c_str());
+			tmp1=STRING;
+			finder=tmp1.find(sep);
+			STRING=tmp1.substr(finder+1,std::string::npos);
+		}
 	}
 }
 //S

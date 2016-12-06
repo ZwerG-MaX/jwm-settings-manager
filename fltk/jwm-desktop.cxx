@@ -50,7 +50,8 @@ void DesktopUI::cb_Choose2(Fl_Button* o, void* v) {
 void DesktopUI::cb_icons_check_i(Fl_Check_Button* o, void*) {
   bool useful=use_icons_on_desktop(background_displayer_thingie,thisBG);
 o->value(0);
-if(useful){o->value(1);};
+fm_pref->hide();
+if(useful){o->value(1);fm_pref->show();};
 }
 void DesktopUI::cb_icons_check(Fl_Check_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_icons_check_i(o,v);
@@ -97,6 +98,7 @@ void DesktopUI::cb_OK(Fl_Button* o, void* v) {
 Fl_Double_Window* DesktopUI::make_window() {
   load();
   thisBG=getBackground();
+  FILEMANAGER=whichFileManagerRunning();
   { Fl_Double_Window* o = desktop_window = new Fl_Double_Window(360, 420, gettext("Desktop Settings"));
     desktop_window->color((Fl_Color)31);
     desktop_window->user_data((void*)(this));
@@ -145,7 +147,8 @@ Fl_Double_Window* DesktopUI::make_window() {
         icons_check->callback((Fl_Callback*)cb_icons_check);
         icons_check->align(Fl_Align(FL_ALIGN_RIGHT|FL_ALIGN_INSIDE));
         icons_check->when(FL_WHEN_CHANGED);
-        if(isIconsOnDesktop())o->value(1);
+        if(isIconsOnDesktop()){o->value(1);fm_pref->show();}
+        else{fm_pref->hide();}
       } // Fl_Check_Button* icons_check
       { Fl_Output* o = current_bg = new Fl_Output(8, 280, 345, 30);
         current_bg->box(FL_FLAT_BOX);
@@ -155,7 +158,7 @@ Fl_Double_Window* DesktopUI::make_window() {
         current_bg->align(Fl_Align(33));
         bg_name(o,thisBG);
       } // Fl_Output* current_bg
-      { Fl_Check_Button* o = check_desktops = new Fl_Check_Button(5, 370, 142, 25, gettext("Multiple Desktops"));
+      { Fl_Check_Button* o = check_desktops = new Fl_Check_Button(5, 365, 142, 25, gettext("Multiple Desktops"));
         check_desktops->tooltip(gettext("This allows you to have multiple screens to work on from one Display"));
         check_desktops->box(FL_FLAT_BOX);
         check_desktops->down_box(FL_GTK_DOWN_BOX);
@@ -167,7 +170,8 @@ Fl_Double_Window* DesktopUI::make_window() {
         bool m = multipleDesktops();o->value(0);
         if(m){o->value(1);}
       } // Fl_Check_Button* check_desktops
-      { Fl_Value_Input* o = num_desktop_w = new Fl_Value_Input(149, 345, 20, 20, gettext("Number of Desktops Wide"));
+      { Fl_Value_Input* o = num_desktop_w = new Fl_Value_Input(150, 345, 20, 20, gettext("Workspaces Wide"));
+        num_desktop_w->tooltip(gettext("Number of workspaces to the left and right"));
         num_desktop_w->box(FL_FLAT_BOX);
         num_desktop_w->color((Fl_Color)53);
         num_desktop_w->callback((Fl_Callback*)cb_num_desktop_w);
@@ -175,7 +179,8 @@ Fl_Double_Window* DesktopUI::make_window() {
         int width = getIntAttribute("Desktops","width");
         o->value(width);
       } // Fl_Value_Input* num_desktop_w
-      { Fl_Value_Input* o = num_desktop_h = new Fl_Value_Input(149, 370, 20, 20, gettext("Number of Desktops High "));
+      { Fl_Value_Input* o = num_desktop_h = new Fl_Value_Input(150, 370, 20, 20, gettext("Workspaces High "));
+        num_desktop_h->tooltip(gettext("Number of workspaces up and down"));
         num_desktop_h->box(FL_FLAT_BOX);
         num_desktop_h->color((Fl_Color)53);
         num_desktop_h->callback((Fl_Callback*)cb_num_desktop_h);
@@ -197,6 +202,18 @@ Fl_Double_Window* DesktopUI::make_window() {
         o->selection_color((Fl_Color)59);
         o->labelcolor((Fl_Color)55);
         o->callback((Fl_Callback*)cb_OK);
+      } // Fl_Button* o
+      { fm_pref = new Fl_Button(5, 390, 105, 25, gettext("Filemanager"));
+        fm_pref->tooltip(gettext("Open the filemanager to change preferences"));
+        fm_pref->box(FL_FLAT_BOX);
+        fm_pref->color((Fl_Color)23);
+      } // Fl_Button* fm_pref
+      { Fl_Button* o = new Fl_Button(300, 355, 55, 25, gettext("Names"));
+        o->tooltip(gettext("Name your workspaces"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->hide();
+        o->deactivate();
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o

@@ -73,87 +73,564 @@ struct keycode_table{int n; const char* text;} table[] = {
   {FL_Favorites,"XF86Favorites"}
 }; 
 
-void KeyboardUI::cb__i(Fl_Button*, void*) {
-  remove_key(key_browser);
+void KeyboardUI::cb_OK_i(Fl_Button*, void*) {
+  std::string oldval=oldvalue(old_action,
+                            current_key,
+                            current_mod1,
+                            current_mod2,
+                            current_mod3);
+if(Configure_CB(mod1_output,mod2_output,mod3_output,keyshortcut,action_name1,oldval)){
+  conf_key_win->hide();
+};
 }
-void KeyboardUI::cb_(Fl_Button* o, void* v) {
-  ((KeyboardUI*)(o->parent()->parent()->user_data()))->cb__i(o,v);
+void KeyboardUI::cb_OK(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_OK_i(o,v);
+}
+
+void KeyboardUI::cb_next1_i(Fl_Menu_*, void*) {
+  const char * action = "next";
+menu_cb(action);
+}
+void KeyboardUI::cb_next1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_next1_i(o,v);
+}
+
+void KeyboardUI::cb_nextstacked1_i(Fl_Menu_*, void*) {
+  const char * action = "nextstacked";
+menu_cb(action);
+}
+void KeyboardUI::cb_nextstacked1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_nextstacked1_i(o,v);
+}
+
+void KeyboardUI::cb_prev1_i(Fl_Menu_*, void*) {
+  const char * action = "prev";
+menu_cb(action);
+}
+void KeyboardUI::cb_prev1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_prev1_i(o,v);
+}
+
+void KeyboardUI::cb_prevstacked1_i(Fl_Menu_*, void*) {
+  const char * action = "prevstacked";
+menu_cb(action);
+}
+void KeyboardUI::cb_prevstacked1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_prevstacked1_i(o,v);
+}
+
+void KeyboardUI::cb_close1_i(Fl_Menu_*, void*) {
+  const char * action = "close";
+menu_cb(action);
+}
+void KeyboardUI::cb_close1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_close1_i(o,v);
+}
+
+void KeyboardUI::cb_fullscreen1_i(Fl_Menu_*, void*) {
+  const char * action = "fullscreen";
+menu_cb(action);
+}
+void KeyboardUI::cb_fullscreen1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_fullscreen1_i(o,v);
+}
+
+void KeyboardUI::cb_minimize1_i(Fl_Menu_*, void*) {
+  const char * action = "minimize";
+menu_cb(action);
+}
+void KeyboardUI::cb_minimize1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_minimize1_i(o,v);
+}
+
+void KeyboardUI::cb_maximize1_i(Fl_Menu_*, void*) {
+  const char * action = "maximize";
+menu_cb(action);
+}
+void KeyboardUI::cb_maximize1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_maximize1_i(o,v);
+}
+
+void KeyboardUI::cb_shade1_i(Fl_Menu_*, void*) {
+  const char * action = "shade";
+menu_cb(action);
+}
+void KeyboardUI::cb_shade1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_shade1_i(o,v);
+}
+
+void KeyboardUI::cb_move1_i(Fl_Menu_*, void*) {
+  const char * action = "move";
+menu_cb(action);
+}
+void KeyboardUI::cb_move1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_move1_i(o,v);
+}
+
+void KeyboardUI::cb_resize1_i(Fl_Menu_*, void*) {
+  const char * action = "resize";
+menu_cb(action);
+}
+void KeyboardUI::cb_resize1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_resize1_i(o,v);
+}
+
+void KeyboardUI::cb_window1_i(Fl_Menu_*, void*) {
+  const char * action = "window";
+menu_cb(action);
+}
+void KeyboardUI::cb_window1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_window1_i(o,v);
+}
+
+void KeyboardUI::cb_root_menu_apps1_i(Fl_Menu_*, void*) {
+  const char * action = "root:5";
+menu_cb(action);
+}
+void KeyboardUI::cb_root_menu_apps1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_root_menu_apps1_i(o,v);
+}
+
+void KeyboardUI::cb_root_menu_places1_i(Fl_Menu_*, void*) {
+  const char * action = "root:7";
+menu_cb(action);
+}
+void KeyboardUI::cb_root_menu_places1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_root_menu_places1_i(o,v);
+}
+
+void KeyboardUI::cb_root_menu_shutdown1_i(Fl_Menu_*, void*) {
+  const char * action = "root:9";
+menu_cb(action);
+}
+void KeyboardUI::cb_root_menu_shutdown1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_root_menu_shutdown1_i(o,v);
+}
+
+void KeyboardUI::cb_rdesktop1_i(Fl_Menu_*, void*) {
+  const char * action = "rdesktop";
+menu_cb(action);
+}
+void KeyboardUI::cb_rdesktop1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_rdesktop1_i(o,v);
+}
+
+void KeyboardUI::cb_ldesktop1_i(Fl_Menu_*, void*) {
+  const char * action = "ldesktop";
+menu_cb(action);
+}
+void KeyboardUI::cb_ldesktop1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_ldesktop1_i(o,v);
+}
+
+void KeyboardUI::cb_udesktop1_i(Fl_Menu_*, void*) {
+  const char * action = "udesktop";
+menu_cb(action);
+}
+void KeyboardUI::cb_udesktop1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_udesktop1_i(o,v);
+}
+
+void KeyboardUI::cb_ddesktop1_i(Fl_Menu_*, void*) {
+  const char * action = "ddesktop";
+menu_cb(action);
+}
+void KeyboardUI::cb_ddesktop1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_ddesktop1_i(o,v);
+}
+
+void KeyboardUI::cb_restart1_i(Fl_Menu_*, void*) {
+  const char * action = "restart";
+menu_cb(action);
+}
+void KeyboardUI::cb_restart1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_restart1_i(o,v);
+}
+
+void KeyboardUI::cb_exit1_i(Fl_Menu_*, void*) {
+  const char * action = "exit";
+menu_cb(action);
+}
+void KeyboardUI::cb_exit1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_exit1_i(o,v);
+}
+
+void KeyboardUI::cb_showtray1_i(Fl_Menu_*, void*) {
+  const char * action = "showtray";
+menu_cb(action);
+}
+void KeyboardUI::cb_showtray1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_showtray1_i(o,v);
+}
+
+void KeyboardUI::cb_maxtop1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "maxtop";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_maxtop1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_maxtop1_i(o,v);
+}
+
+void KeyboardUI::cb_maxbottom1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "maxbottom";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_maxbottom1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_maxbottom1_i(o,v);
+}
+
+void KeyboardUI::cb_maxleft1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "maxleft";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_maxleft1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_maxleft1_i(o,v);
+}
+
+void KeyboardUI::cb_maxright1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "maxright";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_maxright1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_maxright1_i(o,v);
+}
+
+void KeyboardUI::cb_maxv1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "maxv";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_maxv1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_maxv1_i(o,v);
+}
+
+void KeyboardUI::cb_maxh1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "maxh";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_maxh1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_maxh1_i(o,v);
+}
+
+void KeyboardUI::cb_sendu1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "sendu";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_sendu1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_sendu1_i(o,v);
+}
+
+void KeyboardUI::cb_sendd1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "sendd";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_sendd1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_sendd1_i(o,v);
+}
+
+void KeyboardUI::cb_sendr1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "sendr";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_sendr1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_sendr1_i(o,v);
+}
+
+void KeyboardUI::cb_sendl1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "sendl";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_sendl1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_sendl1_i(o,v);
+}
+
+void KeyboardUI::cb_restore1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=233){
+  const char * action = "restore";
+  menu_cb(action);
+}
+else{
+  o->hide();
+};
+}
+void KeyboardUI::cb_restore1(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_restore1_i(o,v);
+}
+
+unsigned char KeyboardUI::menu_Action_i18n_done = 0;
+Fl_Menu_Item KeyboardUI::menu_Action[] = {
+ {"move to the next window in the task list", 0,  (Fl_Callback*)KeyboardUI::cb_next1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move to the next window in the stacking order", 0,  (Fl_Callback*)KeyboardUI::cb_nextstacked1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move to the previous window in the task list", 0,  (Fl_Callback*)KeyboardUI::cb_prev1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move to the previous window in the stacking order", 0,  (Fl_Callback*)KeyboardUI::cb_prevstacked1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"close window", 0,  (Fl_Callback*)KeyboardUI::cb_close1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"fullscreen window", 0,  (Fl_Callback*)KeyboardUI::cb_fullscreen1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"minimize window", 0,  (Fl_Callback*)KeyboardUI::cb_minimize1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"maximize window", 0,  (Fl_Callback*)KeyboardUI::cb_maximize1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"roll up window", 0,  (Fl_Callback*)KeyboardUI::cb_shade1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move window", 0,  (Fl_Callback*)KeyboardUI::cb_move1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"resize window", 0,  (Fl_Callback*)KeyboardUI::cb_resize1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"show window menu", 0,  (Fl_Callback*)KeyboardUI::cb_window1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Show Application menu", 0,  (Fl_Callback*)KeyboardUI::cb_root_menu_apps1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Show Places Menu", 0,  (Fl_Callback*)KeyboardUI::cb_root_menu_places1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Show Shutdown menu", 0,  (Fl_Callback*)KeyboardUI::cb_root_menu_shutdown1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move one desktop to the right", 0,  (Fl_Callback*)KeyboardUI::cb_rdesktop1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move one desktop to the left", 0,  (Fl_Callback*)KeyboardUI::cb_ldesktop1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move one desktop up", 0,  (Fl_Callback*)KeyboardUI::cb_udesktop1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move one desktop down", 0,  (Fl_Callback*)KeyboardUI::cb_ddesktop1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"restart the Window Manager", 0,  (Fl_Callback*)KeyboardUI::cb_restart1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"exit the Window Manager", 0,  (Fl_Callback*)KeyboardUI::cb_exit1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Show any hidden Panels", 0,  (Fl_Callback*)KeyboardUI::cb_showtray1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize to the Top of the screen", 0,  (Fl_Callback*)KeyboardUI::cb_maxtop1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize to the Bottom of the screen", 0,  (Fl_Callback*)KeyboardUI::cb_maxbottom1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize to the Left of the screen", 0,  (Fl_Callback*)KeyboardUI::cb_maxleft1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize to the Right of the screen", 0,  (Fl_Callback*)KeyboardUI::cb_maxright1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize Vertical", 0,  (Fl_Callback*)KeyboardUI::cb_maxv1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize Horizontal", 0,  (Fl_Callback*)KeyboardUI::cb_maxh1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Send Window Up a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendu1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Send Window Down a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendd1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Send Window Right a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendr1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Send Window Left a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendl1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Restore a minimized window", 0,  (Fl_Callback*)KeyboardUI::cb_restore1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+Fl_Menu_Item* KeyboardUI::next1 = KeyboardUI::menu_Action + 0;
+Fl_Menu_Item* KeyboardUI::nextstacked1 = KeyboardUI::menu_Action + 1;
+Fl_Menu_Item* KeyboardUI::prev1 = KeyboardUI::menu_Action + 2;
+Fl_Menu_Item* KeyboardUI::prevstacked1 = KeyboardUI::menu_Action + 3;
+Fl_Menu_Item* KeyboardUI::close1 = KeyboardUI::menu_Action + 4;
+Fl_Menu_Item* KeyboardUI::fullscreen1 = KeyboardUI::menu_Action + 5;
+Fl_Menu_Item* KeyboardUI::minimize1 = KeyboardUI::menu_Action + 6;
+Fl_Menu_Item* KeyboardUI::maximize1 = KeyboardUI::menu_Action + 7;
+Fl_Menu_Item* KeyboardUI::shade1 = KeyboardUI::menu_Action + 8;
+Fl_Menu_Item* KeyboardUI::move1 = KeyboardUI::menu_Action + 9;
+Fl_Menu_Item* KeyboardUI::resize1 = KeyboardUI::menu_Action + 10;
+Fl_Menu_Item* KeyboardUI::window1 = KeyboardUI::menu_Action + 11;
+Fl_Menu_Item* KeyboardUI::root_menu_apps1 = KeyboardUI::menu_Action + 12;
+Fl_Menu_Item* KeyboardUI::root_menu_places1 = KeyboardUI::menu_Action + 13;
+Fl_Menu_Item* KeyboardUI::root_menu_shutdown1 = KeyboardUI::menu_Action + 14;
+Fl_Menu_Item* KeyboardUI::rdesktop1 = KeyboardUI::menu_Action + 15;
+Fl_Menu_Item* KeyboardUI::ldesktop1 = KeyboardUI::menu_Action + 16;
+Fl_Menu_Item* KeyboardUI::udesktop1 = KeyboardUI::menu_Action + 17;
+Fl_Menu_Item* KeyboardUI::ddesktop1 = KeyboardUI::menu_Action + 18;
+Fl_Menu_Item* KeyboardUI::restart1 = KeyboardUI::menu_Action + 19;
+Fl_Menu_Item* KeyboardUI::exit1 = KeyboardUI::menu_Action + 20;
+Fl_Menu_Item* KeyboardUI::showtray1 = KeyboardUI::menu_Action + 21;
+Fl_Menu_Item* KeyboardUI::maxtop1 = KeyboardUI::menu_Action + 22;
+Fl_Menu_Item* KeyboardUI::maxbottom1 = KeyboardUI::menu_Action + 23;
+Fl_Menu_Item* KeyboardUI::maxleft1 = KeyboardUI::menu_Action + 24;
+Fl_Menu_Item* KeyboardUI::maxright1 = KeyboardUI::menu_Action + 25;
+Fl_Menu_Item* KeyboardUI::maxv1 = KeyboardUI::menu_Action + 26;
+Fl_Menu_Item* KeyboardUI::maxh1 = KeyboardUI::menu_Action + 27;
+Fl_Menu_Item* KeyboardUI::sendu1 = KeyboardUI::menu_Action + 28;
+Fl_Menu_Item* KeyboardUI::sendd1 = KeyboardUI::menu_Action + 29;
+Fl_Menu_Item* KeyboardUI::sendr1 = KeyboardUI::menu_Action + 30;
+Fl_Menu_Item* KeyboardUI::sendl1 = KeyboardUI::menu_Action + 31;
+Fl_Menu_Item* KeyboardUI::restore1 = KeyboardUI::menu_Action + 32;
+
+void KeyboardUI::cb_Choose_i(Fl_Button*, void*) {
+  Choose_Action(action_name1);
+}
+void KeyboardUI::cb_Choose(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_Choose_i(o,v);
 }
 
 void KeyboardUI::cb_Cancel_i(Fl_Button*, void*) {
-  cancel();
+  conf_key_win->hide();
 }
 void KeyboardUI::cb_Cancel(Fl_Button* o, void* v) {
-  ((KeyboardUI*)(o->parent()->parent()->user_data()))->cb_Cancel_i(o,v);
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_Cancel_i(o,v);
 }
 
-void KeyboardUI::cb_OK_i(Fl_Button*, void*) {
-  saveChanges();
+void KeyboardUI::cb_GRAB_i(Fl_Button* o, void*) {
+  key_wait(mod1_output,mod2_output,mod3_output,keyshortcut);
+o->deactivate();
 }
-void KeyboardUI::cb_OK(Fl_Button* o, void* v) {
-  ((KeyboardUI*)(o->parent()->parent()->user_data()))->cb_OK_i(o,v);
-}
-
-void KeyboardUI::cb_1_i(Fl_Button*, void*) {
-  debug_out("+ callback");
-grabber_window()->show();
-}
-void KeyboardUI::cb_1(Fl_Button* o, void* v) {
-  ((KeyboardUI*)(o->parent()->parent()->user_data()))->cb_1_i(o,v);
+void KeyboardUI::cb_GRAB(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_GRAB_i(o,v);
 }
 
-void KeyboardUI::cb_2_i(Fl_Button*, void*) {
-  if(checkFlBrowserItem(key_browser)){
-  debug_out("Configure callback");
-  config_key_win()->show();
+void KeyboardUI::cb_XF86Tools_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86Tools(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Tools_i(o,v);
+}
+
+void KeyboardUI::cb_XF86Search_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86Search(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Search_i(o,v);
+}
+
+void KeyboardUI::cb_XF86LaunchA_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86LaunchA(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86LaunchA_i(o,v);
+}
+
+void KeyboardUI::cb_XF86Explorer_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86Explorer(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Explorer_i(o,v);
+}
+
+void KeyboardUI::cb_XF86Display_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86Display(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Display_i(o,v);
+}
+
+void KeyboardUI::cb_XF86PowerOff_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86PowerOff(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86PowerOff_i(o,v);
+}
+
+void KeyboardUI::cb_XF86AudioMute_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86AudioMute(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioMute_i(o,v);
+}
+
+void KeyboardUI::cb_XF86AudioRaiseVolume_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86AudioRaiseVolume(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioRaiseVolume_i(o,v);
+}
+
+void KeyboardUI::cb_XF86AudioLowerVolume_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86AudioLowerVolume(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioLowerVolume_i(o,v);
+}
+
+void KeyboardUI::cb_XF86MonBrightnessDown_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86MonBrightnessDown(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MonBrightnessDown_i(o,v);
+}
+
+void KeyboardUI::cb_XF86MonBrightnessUp_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86MonBrightnessUp(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MonBrightnessUp_i(o,v);
+}
+
+void KeyboardUI::cb_XF86Calculator_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86Calculator(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Calculator_i(o,v);
+}
+
+void KeyboardUI::cb_XF86AudioMicMute_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86AudioMicMute(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioMicMute_i(o,v);
+}
+
+void KeyboardUI::cb_XF86HomePage_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86HomePage(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86HomePage_i(o,v);
+}
+
+void KeyboardUI::cb_XF86MyComputer_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86MyComputer(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MyComputer_i(o,v);
+}
+
+void KeyboardUI::cb_XF86WWW_i(Fl_Menu_* o, void*) {
+  special_cb(o->text(),keyshortcut);
+}
+void KeyboardUI::cb_XF86WWW(Fl_Menu_* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86WWW_i(o,v);
+}
+
+unsigned char KeyboardUI::menu_Special_i18n_done = 0;
+Fl_Menu_Item KeyboardUI::menu_Special[] = {
+ {"XF86Tools", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Tools, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86Search", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Search, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86LaunchA", 0,  (Fl_Callback*)KeyboardUI::cb_XF86LaunchA, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86Explorer", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Explorer, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86Display", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Display, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86PowerOff", 0,  (Fl_Callback*)KeyboardUI::cb_XF86PowerOff, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86AudioMute", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioMute, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86AudioRaiseVolume", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioRaiseVolume, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86AudioLowerVolume", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioLowerVolume, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86MonBrightnessDown", 0,  (Fl_Callback*)KeyboardUI::cb_XF86MonBrightnessDown, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86MonBrightnessUp", 0,  (Fl_Callback*)KeyboardUI::cb_XF86MonBrightnessUp, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86Calculator", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Calculator, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86AudioMicMute", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioMicMute, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86HomePage", 0,  (Fl_Callback*)KeyboardUI::cb_XF86HomePage, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86MyComputer", 0,  (Fl_Callback*)KeyboardUI::cb_XF86MyComputer, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"XF86WWW", 0,  (Fl_Callback*)KeyboardUI::cb_XF86WWW, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
 };
-}
-void KeyboardUI::cb_2(Fl_Button* o, void* v) {
-  ((KeyboardUI*)(o->parent()->parent()->user_data()))->cb_2_i(o,v);
-}
-
-#include <FL/Fl_Image.H>
-static const unsigned char idata_gear16[] =
-{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,148,0,255,0,252,0,252,0,255,0,146,0,
-2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,0,48,0,3,0,0,0,2,0,149,
-0,255,0,255,0,255,0,255,0,147,0,2,0,0,0,2,0,24,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,20,0,151,0,218,0,79,0,0,0,2,0,149,0,255,0,255,0,255,0,255,0,147,0,1,0,0,0,
-69,0,193,0,96,0,2,0,0,0,0,0,0,0,0,0,0,0,22,0,156,0,251,0,255,0,221,0,75,0,22,0,
-169,0,255,0,255,0,255,0,255,0,167,0,22,0,73,0,217,0,255,0,231,0,89,0,2,0,0,0,0,
-0,0,0,24,0,162,0,252,0,255,0,255,0,255,0,224,0,199,0,245,0,255,0,255,0,255,0,
-255,0,245,0,200,0,225,0,255,0,255,0,255,0,228,0,85,0,2,0,0,0,0,0,46,0,212,0,255,
-0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,
-0,255,0,255,0,255,0,255,0,196,0,25,0,0,0,0,0,0,0,71,0,219,0,255,0,255,0,255,0,
-255,0,255,0,246,0,209,0,172,0,172,0,209,0,246,0,255,0,255,0,255,0,255,0,255,0,
-223,0,83,0,3,0,0,0,0,0,0,0,0,0,76,0,227,0,255,0,255,0,255,0,210,0,95,0,25,0,9,0,
-10,0,25,0,95,0,210,0,255,0,255,0,255,0,225,0,77,0,1,0,0,0,0,0,2,0,2,0,0,0,23,0,
-203,0,255,0,255,0,210,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,210,0,255,0,255,0,202,
-0,23,0,0,0,2,0,2,0,147,0,149,0,148,0,169,0,246,0,255,0,246,0,94,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,94,0,246,0,255,0,246,0,169,0,148,0,149,0,147,0,254,0,255,
-0,255,0,255,0,255,0,255,0,207,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,207,
-0,255,0,255,0,255,0,255,0,255,0,254,0,252,0,255,0,255,0,255,0,255,0,255,0,170,
-0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,170,0,255,0,255,0,255,0,255,0,255,0,
-252,0,252,0,255,0,255,0,255,0,255,0,255,0,170,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,9,0,170,0,255,0,255,0,255,0,255,0,255,0,252,0,254,0,255,0,255,0,255,0,255,
-0,255,0,207,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,207,0,255,0,255,0,255,
-0,255,0,255,0,254,0,144,0,146,0,144,0,166,0,245,0,255,0,246,0,94,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,94,0,246,0,255,0,246,0,167,0,144,0,146,0,144,0,1,0,1,0,
-0,0,36,0,220,0,255,0,255,0,210,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,210,0,255,
-0,255,0,193,0,20,0,0,0,1,0,1,0,0,0,0,0,19,0,148,0,249,0,255,0,255,0,255,0,210,
-0,95,0,25,0,9,0,10,0,25,0,95,0,210,0,255,0,255,0,255,0,187,0,26,0,0,0,0,0,0,0,
-0,0,24,0,156,0,250,0,255,0,255,0,255,0,255,0,255,0,246,0,209,0,172,0,172,0,
-209,0,246,0,255,0,255,0,255,0,255,0,253,0,162,0,23,0,0,0,0,0,0,0,96,0,246,0,255,
-0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,
-0,255,0,255,0,255,0,253,0,142,0,6,0,0,0,0,0,22,0,158,0,252,0,255,0,255,0,250,
-0,183,0,191,0,246,0,255,0,255,0,255,0,255,0,244,0,218,0,247,0,255,0,255,0,255,
-0,229,0,90,0,2,0,0,0,0,0,0,0,23,0,163,0,253,0,251,0,156,0,22,0,20,0,169,0,255,
-0,255,0,255,0,255,0,166,0,33,0,142,0,249,0,255,0,225,0,85,0,2,0,0,0,0,0,0,0,0,
-0,0,0,26,0,164,0,149,0,20,0,0,0,2,0,149,0,255,0,255,0,255,0,255,0,147,0,0,0,
-16,0,149,0,216,0,80,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,0,13,0,0,0,0,0,2,0,
-149,0,255,0,255,0,255,0,255,0,147,0,2,0,0,0,20,0,46,0,2,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,148,0,255,0,252,0,252,0,255,0,146,0,2,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0};
-static Fl_RGB_Image image_gear16(idata_gear16, 24, 24, 2, 0);
 
 void KeyboardUI::cb_OK1_i(Fl_Button*, void*) {
   if(add_cb(action_name,key,mod_output,modder_output,modder3_output,key_browser)){
@@ -483,8 +960,8 @@ void KeyboardUI::cb_restore(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_restore_i(o,v);
 }
 
-unsigned char KeyboardUI::menu_Action_i18n_done = 0;
-Fl_Menu_Item KeyboardUI::menu_Action[] = {
+unsigned char KeyboardUI::menu_Action1_i18n_done = 0;
+Fl_Menu_Item KeyboardUI::menu_Action1[] = {
  {"move to the next window in the task list", 0,  (Fl_Callback*)KeyboardUI::cb_next, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"move to the next window in the stacking order", 0,  (Fl_Callback*)KeyboardUI::cb_nextstacked, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"move to the previous window in the task list", 0,  (Fl_Callback*)KeyboardUI::cb_prev, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -520,45 +997,45 @@ Fl_Menu_Item KeyboardUI::menu_Action[] = {
  {"Restore a minimized window", 0,  (Fl_Callback*)KeyboardUI::cb_restore, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
-Fl_Menu_Item* KeyboardUI::next = KeyboardUI::menu_Action + 0;
-Fl_Menu_Item* KeyboardUI::nextstacked = KeyboardUI::menu_Action + 1;
-Fl_Menu_Item* KeyboardUI::prev = KeyboardUI::menu_Action + 2;
-Fl_Menu_Item* KeyboardUI::prevstacked = KeyboardUI::menu_Action + 3;
-Fl_Menu_Item* KeyboardUI::close = KeyboardUI::menu_Action + 4;
-Fl_Menu_Item* KeyboardUI::fullscreen = KeyboardUI::menu_Action + 5;
-Fl_Menu_Item* KeyboardUI::minimize = KeyboardUI::menu_Action + 6;
-Fl_Menu_Item* KeyboardUI::maximize = KeyboardUI::menu_Action + 7;
-Fl_Menu_Item* KeyboardUI::shade = KeyboardUI::menu_Action + 8;
-Fl_Menu_Item* KeyboardUI::move = KeyboardUI::menu_Action + 9;
-Fl_Menu_Item* KeyboardUI::resize = KeyboardUI::menu_Action + 10;
-Fl_Menu_Item* KeyboardUI::window = KeyboardUI::menu_Action + 11;
-Fl_Menu_Item* KeyboardUI::root_menu_apps = KeyboardUI::menu_Action + 12;
-Fl_Menu_Item* KeyboardUI::root_menu_places = KeyboardUI::menu_Action + 13;
-Fl_Menu_Item* KeyboardUI::root_menu_shutdown = KeyboardUI::menu_Action + 14;
-Fl_Menu_Item* KeyboardUI::rdesktop = KeyboardUI::menu_Action + 15;
-Fl_Menu_Item* KeyboardUI::ldesktop = KeyboardUI::menu_Action + 16;
-Fl_Menu_Item* KeyboardUI::udesktop = KeyboardUI::menu_Action + 17;
-Fl_Menu_Item* KeyboardUI::ddesktop = KeyboardUI::menu_Action + 18;
-Fl_Menu_Item* KeyboardUI::restart = KeyboardUI::menu_Action + 19;
-Fl_Menu_Item* KeyboardUI::exit = KeyboardUI::menu_Action + 20;
-Fl_Menu_Item* KeyboardUI::showtray = KeyboardUI::menu_Action + 21;
-Fl_Menu_Item* KeyboardUI::maxtop = KeyboardUI::menu_Action + 22;
-Fl_Menu_Item* KeyboardUI::maxbottom = KeyboardUI::menu_Action + 23;
-Fl_Menu_Item* KeyboardUI::maxleft = KeyboardUI::menu_Action + 24;
-Fl_Menu_Item* KeyboardUI::maxright = KeyboardUI::menu_Action + 25;
-Fl_Menu_Item* KeyboardUI::maxv = KeyboardUI::menu_Action + 26;
-Fl_Menu_Item* KeyboardUI::maxh = KeyboardUI::menu_Action + 27;
-Fl_Menu_Item* KeyboardUI::sendu = KeyboardUI::menu_Action + 28;
-Fl_Menu_Item* KeyboardUI::sendd = KeyboardUI::menu_Action + 29;
-Fl_Menu_Item* KeyboardUI::sendr = KeyboardUI::menu_Action + 30;
-Fl_Menu_Item* KeyboardUI::sendl = KeyboardUI::menu_Action + 31;
-Fl_Menu_Item* KeyboardUI::restore = KeyboardUI::menu_Action + 32;
+Fl_Menu_Item* KeyboardUI::next = KeyboardUI::menu_Action1 + 0;
+Fl_Menu_Item* KeyboardUI::nextstacked = KeyboardUI::menu_Action1 + 1;
+Fl_Menu_Item* KeyboardUI::prev = KeyboardUI::menu_Action1 + 2;
+Fl_Menu_Item* KeyboardUI::prevstacked = KeyboardUI::menu_Action1 + 3;
+Fl_Menu_Item* KeyboardUI::close = KeyboardUI::menu_Action1 + 4;
+Fl_Menu_Item* KeyboardUI::fullscreen = KeyboardUI::menu_Action1 + 5;
+Fl_Menu_Item* KeyboardUI::minimize = KeyboardUI::menu_Action1 + 6;
+Fl_Menu_Item* KeyboardUI::maximize = KeyboardUI::menu_Action1 + 7;
+Fl_Menu_Item* KeyboardUI::shade = KeyboardUI::menu_Action1 + 8;
+Fl_Menu_Item* KeyboardUI::move = KeyboardUI::menu_Action1 + 9;
+Fl_Menu_Item* KeyboardUI::resize = KeyboardUI::menu_Action1 + 10;
+Fl_Menu_Item* KeyboardUI::window = KeyboardUI::menu_Action1 + 11;
+Fl_Menu_Item* KeyboardUI::root_menu_apps = KeyboardUI::menu_Action1 + 12;
+Fl_Menu_Item* KeyboardUI::root_menu_places = KeyboardUI::menu_Action1 + 13;
+Fl_Menu_Item* KeyboardUI::root_menu_shutdown = KeyboardUI::menu_Action1 + 14;
+Fl_Menu_Item* KeyboardUI::rdesktop = KeyboardUI::menu_Action1 + 15;
+Fl_Menu_Item* KeyboardUI::ldesktop = KeyboardUI::menu_Action1 + 16;
+Fl_Menu_Item* KeyboardUI::udesktop = KeyboardUI::menu_Action1 + 17;
+Fl_Menu_Item* KeyboardUI::ddesktop = KeyboardUI::menu_Action1 + 18;
+Fl_Menu_Item* KeyboardUI::restart = KeyboardUI::menu_Action1 + 19;
+Fl_Menu_Item* KeyboardUI::exit = KeyboardUI::menu_Action1 + 20;
+Fl_Menu_Item* KeyboardUI::showtray = KeyboardUI::menu_Action1 + 21;
+Fl_Menu_Item* KeyboardUI::maxtop = KeyboardUI::menu_Action1 + 22;
+Fl_Menu_Item* KeyboardUI::maxbottom = KeyboardUI::menu_Action1 + 23;
+Fl_Menu_Item* KeyboardUI::maxleft = KeyboardUI::menu_Action1 + 24;
+Fl_Menu_Item* KeyboardUI::maxright = KeyboardUI::menu_Action1 + 25;
+Fl_Menu_Item* KeyboardUI::maxv = KeyboardUI::menu_Action1 + 26;
+Fl_Menu_Item* KeyboardUI::maxh = KeyboardUI::menu_Action1 + 27;
+Fl_Menu_Item* KeyboardUI::sendu = KeyboardUI::menu_Action1 + 28;
+Fl_Menu_Item* KeyboardUI::sendd = KeyboardUI::menu_Action1 + 29;
+Fl_Menu_Item* KeyboardUI::sendr = KeyboardUI::menu_Action1 + 30;
+Fl_Menu_Item* KeyboardUI::sendl = KeyboardUI::menu_Action1 + 31;
+Fl_Menu_Item* KeyboardUI::restore = KeyboardUI::menu_Action1 + 32;
 
-void KeyboardUI::cb_Choose_i(Fl_Button*, void*) {
+void KeyboardUI::cb_Choose1_i(Fl_Button*, void*) {
   Choose_Action(action_name);
 }
-void KeyboardUI::cb_Choose(Fl_Button* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_Choose_i(o,v);
+void KeyboardUI::cb_Choose1(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_Choose1_i(o,v);
 }
 
 void KeyboardUI::cb_Cancel1_i(Fl_Button*, void*) {
@@ -568,567 +1045,8 @@ void KeyboardUI::cb_Cancel1(Fl_Button* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_Cancel1_i(o,v);
 }
 
-void KeyboardUI::cb_GRAB_i(Fl_Button* o, void*) {
-  key_wait(mod_output,modder_output,modder3_output,key);
-o->deactivate();
-}
-void KeyboardUI::cb_GRAB(Fl_Button* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_GRAB_i(o,v);
-}
-
-void KeyboardUI::cb_XF86Tools_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86Tools(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Tools_i(o,v);
-}
-
-void KeyboardUI::cb_XF86Search_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86Search(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Search_i(o,v);
-}
-
-void KeyboardUI::cb_XF86LaunchA_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86LaunchA(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86LaunchA_i(o,v);
-}
-
-void KeyboardUI::cb_XF86Explorer_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86Explorer(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Explorer_i(o,v);
-}
-
-void KeyboardUI::cb_XF86Display_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86Display(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Display_i(o,v);
-}
-
-void KeyboardUI::cb_XF86PowerOff_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86PowerOff(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86PowerOff_i(o,v);
-}
-
-void KeyboardUI::cb_XF86AudioMute_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86AudioMute(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioMute_i(o,v);
-}
-
-void KeyboardUI::cb_XF86AudioRaiseVolume_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86AudioRaiseVolume(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioRaiseVolume_i(o,v);
-}
-
-void KeyboardUI::cb_XF86AudioLowerVolume_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86AudioLowerVolume(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioLowerVolume_i(o,v);
-}
-
-void KeyboardUI::cb_XF86MonBrightnessDown_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86MonBrightnessDown(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MonBrightnessDown_i(o,v);
-}
-
-void KeyboardUI::cb_XF86MonBrightnessUp_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86MonBrightnessUp(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MonBrightnessUp_i(o,v);
-}
-
-void KeyboardUI::cb_XF86Calculator_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86Calculator(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Calculator_i(o,v);
-}
-
-void KeyboardUI::cb_XF86AudioMicMute_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86AudioMicMute(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioMicMute_i(o,v);
-}
-
-void KeyboardUI::cb_XF86HomePage_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86HomePage(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86HomePage_i(o,v);
-}
-
-void KeyboardUI::cb_XF86MyComputer_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86MyComputer(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MyComputer_i(o,v);
-}
-
-void KeyboardUI::cb_XF86WWW_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),key);
-}
-void KeyboardUI::cb_XF86WWW(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86WWW_i(o,v);
-}
-
-unsigned char KeyboardUI::menu_Special_i18n_done = 0;
-Fl_Menu_Item KeyboardUI::menu_Special[] = {
- {"XF86Tools", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Tools, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86Search", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Search, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86LaunchA", 0,  (Fl_Callback*)KeyboardUI::cb_XF86LaunchA, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86Explorer", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Explorer, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86Display", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Display, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86PowerOff", 0,  (Fl_Callback*)KeyboardUI::cb_XF86PowerOff, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86AudioMute", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioMute, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86AudioRaiseVolume", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioRaiseVolume, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86AudioLowerVolume", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioLowerVolume, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86MonBrightnessDown", 0,  (Fl_Callback*)KeyboardUI::cb_XF86MonBrightnessDown, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86MonBrightnessUp", 0,  (Fl_Callback*)KeyboardUI::cb_XF86MonBrightnessUp, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86Calculator", 0,  (Fl_Callback*)KeyboardUI::cb_XF86Calculator, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86AudioMicMute", 0,  (Fl_Callback*)KeyboardUI::cb_XF86AudioMicMute, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86HomePage", 0,  (Fl_Callback*)KeyboardUI::cb_XF86HomePage, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86MyComputer", 0,  (Fl_Callback*)KeyboardUI::cb_XF86MyComputer, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"XF86WWW", 0,  (Fl_Callback*)KeyboardUI::cb_XF86WWW, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {0,0,0,0,0,0,0,0,0}
-};
-
-void KeyboardUI::cb_OK2_i(Fl_Button*, void*) {
-  std::string oldval=oldvalue(old_action,
-                            current_key,
-                            current_mod1,
-                            current_mod2,
-                            current_mod3);
-if(Configure_CB(mod1_output,mod2_output,mod3_output,keyshortcut,action_name1,oldval)){
-  conf_key_win->hide();
-};
-}
-void KeyboardUI::cb_OK2(Fl_Button* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_OK2_i(o,v);
-}
-
-void KeyboardUI::cb_next1_i(Fl_Menu_*, void*) {
-  const char * action = "next";
-menu_cb(action);
-}
-void KeyboardUI::cb_next1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_next1_i(o,v);
-}
-
-void KeyboardUI::cb_nextstacked1_i(Fl_Menu_*, void*) {
-  const char * action = "nextstacked";
-menu_cb(action);
-}
-void KeyboardUI::cb_nextstacked1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_nextstacked1_i(o,v);
-}
-
-void KeyboardUI::cb_prev1_i(Fl_Menu_*, void*) {
-  const char * action = "prev";
-menu_cb(action);
-}
-void KeyboardUI::cb_prev1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_prev1_i(o,v);
-}
-
-void KeyboardUI::cb_prevstacked1_i(Fl_Menu_*, void*) {
-  const char * action = "prevstacked";
-menu_cb(action);
-}
-void KeyboardUI::cb_prevstacked1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_prevstacked1_i(o,v);
-}
-
-void KeyboardUI::cb_close1_i(Fl_Menu_*, void*) {
-  const char * action = "close";
-menu_cb(action);
-}
-void KeyboardUI::cb_close1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_close1_i(o,v);
-}
-
-void KeyboardUI::cb_fullscreen1_i(Fl_Menu_*, void*) {
-  const char * action = "fullscreen";
-menu_cb(action);
-}
-void KeyboardUI::cb_fullscreen1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_fullscreen1_i(o,v);
-}
-
-void KeyboardUI::cb_minimize1_i(Fl_Menu_*, void*) {
-  const char * action = "minimize";
-menu_cb(action);
-}
-void KeyboardUI::cb_minimize1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_minimize1_i(o,v);
-}
-
-void KeyboardUI::cb_maximize1_i(Fl_Menu_*, void*) {
-  const char * action = "maximize";
-menu_cb(action);
-}
-void KeyboardUI::cb_maximize1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_maximize1_i(o,v);
-}
-
-void KeyboardUI::cb_shade1_i(Fl_Menu_*, void*) {
-  const char * action = "shade";
-menu_cb(action);
-}
-void KeyboardUI::cb_shade1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_shade1_i(o,v);
-}
-
-void KeyboardUI::cb_move1_i(Fl_Menu_*, void*) {
-  const char * action = "move";
-menu_cb(action);
-}
-void KeyboardUI::cb_move1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_move1_i(o,v);
-}
-
-void KeyboardUI::cb_resize1_i(Fl_Menu_*, void*) {
-  const char * action = "resize";
-menu_cb(action);
-}
-void KeyboardUI::cb_resize1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_resize1_i(o,v);
-}
-
-void KeyboardUI::cb_window1_i(Fl_Menu_*, void*) {
-  const char * action = "window";
-menu_cb(action);
-}
-void KeyboardUI::cb_window1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_window1_i(o,v);
-}
-
-void KeyboardUI::cb_root_menu_apps1_i(Fl_Menu_*, void*) {
-  const char * action = "root:5";
-menu_cb(action);
-}
-void KeyboardUI::cb_root_menu_apps1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_root_menu_apps1_i(o,v);
-}
-
-void KeyboardUI::cb_root_menu_places1_i(Fl_Menu_*, void*) {
-  const char * action = "root:7";
-menu_cb(action);
-}
-void KeyboardUI::cb_root_menu_places1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_root_menu_places1_i(o,v);
-}
-
-void KeyboardUI::cb_root_menu_shutdown1_i(Fl_Menu_*, void*) {
-  const char * action = "root:9";
-menu_cb(action);
-}
-void KeyboardUI::cb_root_menu_shutdown1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_root_menu_shutdown1_i(o,v);
-}
-
-void KeyboardUI::cb_rdesktop1_i(Fl_Menu_*, void*) {
-  const char * action = "rdesktop";
-menu_cb(action);
-}
-void KeyboardUI::cb_rdesktop1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_rdesktop1_i(o,v);
-}
-
-void KeyboardUI::cb_ldesktop1_i(Fl_Menu_*, void*) {
-  const char * action = "ldesktop";
-menu_cb(action);
-}
-void KeyboardUI::cb_ldesktop1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_ldesktop1_i(o,v);
-}
-
-void KeyboardUI::cb_udesktop1_i(Fl_Menu_*, void*) {
-  const char * action = "udesktop";
-menu_cb(action);
-}
-void KeyboardUI::cb_udesktop1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_udesktop1_i(o,v);
-}
-
-void KeyboardUI::cb_ddesktop1_i(Fl_Menu_*, void*) {
-  const char * action = "ddesktop";
-menu_cb(action);
-}
-void KeyboardUI::cb_ddesktop1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_ddesktop1_i(o,v);
-}
-
-void KeyboardUI::cb_restart1_i(Fl_Menu_*, void*) {
-  const char * action = "restart";
-menu_cb(action);
-}
-void KeyboardUI::cb_restart1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_restart1_i(o,v);
-}
-
-void KeyboardUI::cb_exit1_i(Fl_Menu_*, void*) {
-  const char * action = "exit";
-menu_cb(action);
-}
-void KeyboardUI::cb_exit1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_exit1_i(o,v);
-}
-
-void KeyboardUI::cb_showtray1_i(Fl_Menu_*, void*) {
-  const char * action = "showtray";
-menu_cb(action);
-}
-void KeyboardUI::cb_showtray1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_showtray1_i(o,v);
-}
-
-void KeyboardUI::cb_maxtop1_i(Fl_Menu_* o, void*) {
-  if(JWMVERSION>=230){
-  const char * action = "maxtop";
-  menu_cb(action);
-}
-else{
-  o->hide();
-};
-}
-void KeyboardUI::cb_maxtop1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_maxtop1_i(o,v);
-}
-
-void KeyboardUI::cb_maxbottom1_i(Fl_Menu_* o, void*) {
-  if(JWMVERSION>=230){
-  const char * action = "maxbottom";
-  menu_cb(action);
-}
-else{
-  o->hide();
-};
-}
-void KeyboardUI::cb_maxbottom1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_maxbottom1_i(o,v);
-}
-
-void KeyboardUI::cb_maxleft1_i(Fl_Menu_* o, void*) {
-  if(JWMVERSION>=230){
-  const char * action = "maxleft";
-  menu_cb(action);
-}
-else{
-  o->hide();
-};
-}
-void KeyboardUI::cb_maxleft1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_maxleft1_i(o,v);
-}
-
-void KeyboardUI::cb_maxright1_i(Fl_Menu_* o, void*) {
-  if(JWMVERSION>=230){
-  const char * action = "maxright";
-  menu_cb(action);
-}
-else{
-  o->hide();
-};
-}
-void KeyboardUI::cb_maxright1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_maxright1_i(o,v);
-}
-
-void KeyboardUI::cb_maxv1_i(Fl_Menu_* o, void*) {
-  if(JWMVERSION>=230){
-  const char * action = "maxv";
-  menu_cb(action);
-}
-else{
-  o->hide();
-};
-}
-void KeyboardUI::cb_maxv1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_maxv1_i(o,v);
-}
-
-void KeyboardUI::cb_maxh1_i(Fl_Menu_* o, void*) {
-  if(JWMVERSION>=230){
-  const char * action = "maxh";
-  menu_cb(action);
-}
-else{
-  o->hide();
-};
-}
-void KeyboardUI::cb_maxh1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_maxh1_i(o,v);
-}
-
-void KeyboardUI::cb_sendu1_i(Fl_Menu_* o, void*) {
-  if(JWMVERSION>=230){
-  const char * action = "sendu";
-  menu_cb(action);
-}
-else{
-  o->hide();
-};
-}
-void KeyboardUI::cb_sendu1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_sendu1_i(o,v);
-}
-
-void KeyboardUI::cb_sendd1_i(Fl_Menu_* o, void*) {
-  if(JWMVERSION>=230){
-  const char * action = "sendd";
-  menu_cb(action);
-}
-else{
-  o->hide();
-};
-}
-void KeyboardUI::cb_sendd1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_sendd1_i(o,v);
-}
-
-void KeyboardUI::cb_sendr1_i(Fl_Menu_* o, void*) {
-  if(JWMVERSION>=230){
-  const char * action = "sendr";
-  menu_cb(action);
-}
-else{
-  o->hide();
-};
-}
-void KeyboardUI::cb_sendr1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_sendr1_i(o,v);
-}
-
-void KeyboardUI::cb_sendl1_i(Fl_Menu_* o, void*) {
-  if(JWMVERSION>=230){
-  const char * action = "sendl";
-  menu_cb(action);
-}
-else{
-  o->hide();
-};
-}
-void KeyboardUI::cb_sendl1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_sendl1_i(o,v);
-}
-
-void KeyboardUI::cb_restore1_i(Fl_Menu_* o, void*) {
-  if(JWMVERSION>=233){
-  const char * action = "restore";
-  menu_cb(action);
-}
-else{
-  o->hide();
-};
-}
-void KeyboardUI::cb_restore1(Fl_Menu_* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_restore1_i(o,v);
-}
-
-unsigned char KeyboardUI::menu_Action1_i18n_done = 0;
-Fl_Menu_Item KeyboardUI::menu_Action1[] = {
- {"move to the next window in the task list", 0,  (Fl_Callback*)KeyboardUI::cb_next1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"move to the next window in the stacking order", 0,  (Fl_Callback*)KeyboardUI::cb_nextstacked1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"move to the previous window in the task list", 0,  (Fl_Callback*)KeyboardUI::cb_prev1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"move to the previous window in the stacking order", 0,  (Fl_Callback*)KeyboardUI::cb_prevstacked1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"close window", 0,  (Fl_Callback*)KeyboardUI::cb_close1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"fullscreen window", 0,  (Fl_Callback*)KeyboardUI::cb_fullscreen1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"minimize window", 0,  (Fl_Callback*)KeyboardUI::cb_minimize1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"maximize window", 0,  (Fl_Callback*)KeyboardUI::cb_maximize1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"roll up window", 0,  (Fl_Callback*)KeyboardUI::cb_shade1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"move window", 0,  (Fl_Callback*)KeyboardUI::cb_move1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"resize window", 0,  (Fl_Callback*)KeyboardUI::cb_resize1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"show window menu", 0,  (Fl_Callback*)KeyboardUI::cb_window1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Show Application menu", 0,  (Fl_Callback*)KeyboardUI::cb_root_menu_apps1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Show Places Menu", 0,  (Fl_Callback*)KeyboardUI::cb_root_menu_places1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Show Shutdown menu", 0,  (Fl_Callback*)KeyboardUI::cb_root_menu_shutdown1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"move one desktop to the right", 0,  (Fl_Callback*)KeyboardUI::cb_rdesktop1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"move one desktop to the left", 0,  (Fl_Callback*)KeyboardUI::cb_ldesktop1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"move one desktop up", 0,  (Fl_Callback*)KeyboardUI::cb_udesktop1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"move one desktop down", 0,  (Fl_Callback*)KeyboardUI::cb_ddesktop1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"restart the Window Manager", 0,  (Fl_Callback*)KeyboardUI::cb_restart1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"exit the Window Manager", 0,  (Fl_Callback*)KeyboardUI::cb_exit1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Show any hidden Panels", 0,  (Fl_Callback*)KeyboardUI::cb_showtray1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Maximize to the Top of the screen", 0,  (Fl_Callback*)KeyboardUI::cb_maxtop1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Maximize to the Bottom of the screen", 0,  (Fl_Callback*)KeyboardUI::cb_maxbottom1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Maximize to the Left of the screen", 0,  (Fl_Callback*)KeyboardUI::cb_maxleft1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Maximize to the Right of the screen", 0,  (Fl_Callback*)KeyboardUI::cb_maxright1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Maximize Vertical", 0,  (Fl_Callback*)KeyboardUI::cb_maxv1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Maximize Horizontal", 0,  (Fl_Callback*)KeyboardUI::cb_maxh1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Send Window Up a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendu1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Send Window Down a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendd1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Send Window Right a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendr1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Send Window Left a Desktop", 0,  (Fl_Callback*)KeyboardUI::cb_sendl1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Restore a minimized window", 0,  (Fl_Callback*)KeyboardUI::cb_restore1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {0,0,0,0,0,0,0,0,0}
-};
-Fl_Menu_Item* KeyboardUI::next1 = KeyboardUI::menu_Action1 + 0;
-Fl_Menu_Item* KeyboardUI::nextstacked1 = KeyboardUI::menu_Action1 + 1;
-Fl_Menu_Item* KeyboardUI::prev1 = KeyboardUI::menu_Action1 + 2;
-Fl_Menu_Item* KeyboardUI::prevstacked1 = KeyboardUI::menu_Action1 + 3;
-Fl_Menu_Item* KeyboardUI::close1 = KeyboardUI::menu_Action1 + 4;
-Fl_Menu_Item* KeyboardUI::fullscreen1 = KeyboardUI::menu_Action1 + 5;
-Fl_Menu_Item* KeyboardUI::minimize1 = KeyboardUI::menu_Action1 + 6;
-Fl_Menu_Item* KeyboardUI::maximize1 = KeyboardUI::menu_Action1 + 7;
-Fl_Menu_Item* KeyboardUI::shade1 = KeyboardUI::menu_Action1 + 8;
-Fl_Menu_Item* KeyboardUI::move1 = KeyboardUI::menu_Action1 + 9;
-Fl_Menu_Item* KeyboardUI::resize1 = KeyboardUI::menu_Action1 + 10;
-Fl_Menu_Item* KeyboardUI::window1 = KeyboardUI::menu_Action1 + 11;
-Fl_Menu_Item* KeyboardUI::root_menu_apps1 = KeyboardUI::menu_Action1 + 12;
-Fl_Menu_Item* KeyboardUI::root_menu_places1 = KeyboardUI::menu_Action1 + 13;
-Fl_Menu_Item* KeyboardUI::root_menu_shutdown1 = KeyboardUI::menu_Action1 + 14;
-Fl_Menu_Item* KeyboardUI::rdesktop1 = KeyboardUI::menu_Action1 + 15;
-Fl_Menu_Item* KeyboardUI::ldesktop1 = KeyboardUI::menu_Action1 + 16;
-Fl_Menu_Item* KeyboardUI::udesktop1 = KeyboardUI::menu_Action1 + 17;
-Fl_Menu_Item* KeyboardUI::ddesktop1 = KeyboardUI::menu_Action1 + 18;
-Fl_Menu_Item* KeyboardUI::restart1 = KeyboardUI::menu_Action1 + 19;
-Fl_Menu_Item* KeyboardUI::exit1 = KeyboardUI::menu_Action1 + 20;
-Fl_Menu_Item* KeyboardUI::showtray1 = KeyboardUI::menu_Action1 + 21;
-Fl_Menu_Item* KeyboardUI::maxtop1 = KeyboardUI::menu_Action1 + 22;
-Fl_Menu_Item* KeyboardUI::maxbottom1 = KeyboardUI::menu_Action1 + 23;
-Fl_Menu_Item* KeyboardUI::maxleft1 = KeyboardUI::menu_Action1 + 24;
-Fl_Menu_Item* KeyboardUI::maxright1 = KeyboardUI::menu_Action1 + 25;
-Fl_Menu_Item* KeyboardUI::maxv1 = KeyboardUI::menu_Action1 + 26;
-Fl_Menu_Item* KeyboardUI::maxh1 = KeyboardUI::menu_Action1 + 27;
-Fl_Menu_Item* KeyboardUI::sendu1 = KeyboardUI::menu_Action1 + 28;
-Fl_Menu_Item* KeyboardUI::sendd1 = KeyboardUI::menu_Action1 + 29;
-Fl_Menu_Item* KeyboardUI::sendr1 = KeyboardUI::menu_Action1 + 30;
-Fl_Menu_Item* KeyboardUI::sendl1 = KeyboardUI::menu_Action1 + 31;
-Fl_Menu_Item* KeyboardUI::restore1 = KeyboardUI::menu_Action1 + 32;
-
-void KeyboardUI::cb_Choose1_i(Fl_Button*, void*) {
-  Choose_Action(action_name1);
-}
-void KeyboardUI::cb_Choose1(Fl_Button* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_Choose1_i(o,v);
-}
-
-void KeyboardUI::cb_Cancel2_i(Fl_Button*, void*) {
-  conf_key_win->hide();
-}
-void KeyboardUI::cb_Cancel2(Fl_Button* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_Cancel2_i(o,v);
-}
-
 void KeyboardUI::cb_GRAB1_i(Fl_Button* o, void*) {
-  key_wait(mod1_output,mod2_output,mod3_output,keyshortcut);
+  key_wait(mod_output,modder_output,modder3_output,key);
 o->deactivate();
 }
 void KeyboardUI::cb_GRAB1(Fl_Button* o, void* v) {
@@ -1136,112 +1054,112 @@ void KeyboardUI::cb_GRAB1(Fl_Button* o, void* v) {
 }
 
 void KeyboardUI::cb_XF86Tools1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86Tools1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Tools1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86Search1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86Search1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Search1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86LaunchA1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86LaunchA1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86LaunchA1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86Explorer1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86Explorer1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Explorer1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86Display1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86Display1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Display1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86PowerOff1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86PowerOff1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86PowerOff1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86AudioMute1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86AudioMute1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioMute1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86AudioRaiseVolume1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86AudioRaiseVolume1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioRaiseVolume1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86AudioLowerVolume1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86AudioLowerVolume1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioLowerVolume1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86MonBrightnessDown1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86MonBrightnessDown1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MonBrightnessDown1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86MonBrightnessUp1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86MonBrightnessUp1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MonBrightnessUp1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86Calculator1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86Calculator1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86Calculator1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86AudioMicMute1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86AudioMicMute1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86AudioMicMute1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86HomePage1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86HomePage1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86HomePage1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86MyComputer1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86MyComputer1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86MyComputer1_i(o,v);
 }
 
 void KeyboardUI::cb_XF86WWW1_i(Fl_Menu_* o, void*) {
-  special_cb(o->text(),keyshortcut);
+  special_cb(o->text(),key);
 }
 void KeyboardUI::cb_XF86WWW1(Fl_Menu_* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_XF86WWW1_i(o,v);
@@ -1268,80 +1186,147 @@ Fl_Menu_Item KeyboardUI::menu_Special1[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
-Fl_Double_Window* KeyboardUI::make_window() {
-  load();
-  JWMVERSION=JWMversion();
-  //Fl::add_handler(handle);
-  { Fl_Double_Window* o = keyboard_window = new Fl_Double_Window(480, 295, gettext("Keyboard Settings"));
-    keyboard_window->color((Fl_Color)31);
-    keyboard_window->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(0, 0, 490, 310);
-      o->color((Fl_Color)31);
-      { Fl_Browser* o = key_browser = new Fl_Browser(5, 20, 470, 235, gettext("Keyboard Shortcuts"));
-        key_browser->type(2);
-        key_browser->box(FL_FLAT_BOX);
-        key_browser->selection_color((Fl_Color)80);
-        key_browser->labelfont(1);
-        key_browser->align(Fl_Align(FL_ALIGN_TOP));
-        static int widths[] = {35,175,105,0};o->column_widths(widths);
-        populateFLBrowser2Attr(key_browser,"Key","mask","key");
-      } // Fl_Browser* key_browser
-      { Fl_Button* o = new Fl_Button(50, 260, 35, 30, gettext("-"));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)23);
-        o->labelfont(1);
-        o->labelsize(34);
-        o->callback((Fl_Callback*)cb_);
-      } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(355, 260, 65, 30, gettext("Cancel"));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)80);
-        o->selection_color((Fl_Color)81);
-        o->labelcolor(FL_BACKGROUND2_COLOR);
-        o->callback((Fl_Callback*)cb_Cancel);
-      } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(430, 260, 45, 30, gettext("OK"));
-        o->tooltip(gettext("Write to configuration file"));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)61);
-        o->selection_color((Fl_Color)59);
-        o->labelcolor((Fl_Color)55);
-        o->callback((Fl_Callback*)cb_OK);
-      } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(5, 260, 40, 30, gettext("@+"));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)23);
-        o->callback((Fl_Callback*)cb_1);
-      } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(100, 260, 30, 30);
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)23);
-        o->image(image_gear16);
-        o->labelfont(1);
-        o->callback((Fl_Callback*)cb_2);
-      } // Fl_Button* o
-      o->end();
-      Fl_Group::current()->resizable(o);
-    } // Fl_Scroll* o
-    startup(o,jsm_keyboard_xpm);
-    keyboard_window->xclass("jsm-keyboard");
-    keyboard_window->end();
-  } // Fl_Double_Window* keyboard_window
-  return keyboard_window;
+void KeyboardUI::cb_Layout_i(Fl_Browser* o, void*) {
+  std::string val =fixLayoutString(o);
+layoutput->value(val.c_str());
+layoutput->redraw();
+}
+void KeyboardUI::cb_Layout(Fl_Browser* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_Layout_i(o,v);
 }
 
-Fl_Double_Window* KeyboardUI::grabber_window() {
-  { Fl_Double_Window* o = grab_win = new Fl_Double_Window(350, 150, gettext("Create Keyboard Shortcut"));
-    grab_win->user_data((void*)(this));
-    grab_win->when(FL_WHEN_RELEASE_ALWAYS);
-    { Fl_Button* o = new Fl_Button(280, 115, 65, 30, gettext("OK"));
+void KeyboardUI::cb_OK2_i(Fl_Button*, void*) {
+  saveChanges();
+}
+void KeyboardUI::cb_OK2(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_OK2_i(o,v);
+}
+
+void KeyboardUI::cb_Cancel2_i(Fl_Button*, void*) {
+  layout_win->hide();
+}
+void KeyboardUI::cb_Cancel2(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_Cancel2_i(o,v);
+}
+
+void KeyboardUI::cb_Model_i(Fl_Browser* o, void*) {
+  std::string val =fixLayoutString(o);
+modeloutput->value(val.c_str());
+modeloutput->redraw();
+}
+void KeyboardUI::cb_Model(Fl_Browser* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_Model_i(o,v);
+}
+
+void KeyboardUI::cb_Option_i(Fl_Browser* o, void*) {
+  std::string val =fixLayoutString(o);
+optionoutput->value(val.c_str());
+optionoutput->redraw();
+}
+void KeyboardUI::cb_Option(Fl_Browser* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_Option_i(o,v);
+}
+
+void KeyboardUI::cb__i(Fl_Button*, void*) {
+  remove_key(key_browser);
+}
+void KeyboardUI::cb_(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->parent()->user_data()))->cb__i(o,v);
+}
+
+void KeyboardUI::cb_Cancel3_i(Fl_Button*, void*) {
+  cancel();
+}
+void KeyboardUI::cb_Cancel3(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->parent()->user_data()))->cb_Cancel3_i(o,v);
+}
+
+void KeyboardUI::cb_OK3_i(Fl_Button*, void*) {
+  saveChanges();
+}
+void KeyboardUI::cb_OK3(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->parent()->user_data()))->cb_OK3_i(o,v);
+}
+
+void KeyboardUI::cb_1_i(Fl_Button*, void*) {
+  debug_out("+ callback");
+grabber_window()->show();
+}
+void KeyboardUI::cb_1(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->parent()->user_data()))->cb_1_i(o,v);
+}
+
+void KeyboardUI::cb_2_i(Fl_Button*, void*) {
+  if(checkFlBrowserItem(key_browser)){
+  debug_out("Configure callback");
+  config_key_win()->show();
+};
+}
+void KeyboardUI::cb_2(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->parent()->user_data()))->cb_2_i(o,v);
+}
+
+#include <FL/Fl_Image.H>
+static const unsigned char idata_gear16[] =
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,148,0,255,0,252,0,252,0,255,0,146,0,
+2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,0,48,0,3,0,0,0,2,0,149,
+0,255,0,255,0,255,0,255,0,147,0,2,0,0,0,2,0,24,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,20,0,151,0,218,0,79,0,0,0,2,0,149,0,255,0,255,0,255,0,255,0,147,0,1,0,0,0,
+69,0,193,0,96,0,2,0,0,0,0,0,0,0,0,0,0,0,22,0,156,0,251,0,255,0,221,0,75,0,22,0,
+169,0,255,0,255,0,255,0,255,0,167,0,22,0,73,0,217,0,255,0,231,0,89,0,2,0,0,0,0,
+0,0,0,24,0,162,0,252,0,255,0,255,0,255,0,224,0,199,0,245,0,255,0,255,0,255,0,
+255,0,245,0,200,0,225,0,255,0,255,0,255,0,228,0,85,0,2,0,0,0,0,0,46,0,212,0,255,
+0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,
+0,255,0,255,0,255,0,255,0,196,0,25,0,0,0,0,0,0,0,71,0,219,0,255,0,255,0,255,0,
+255,0,255,0,246,0,209,0,172,0,172,0,209,0,246,0,255,0,255,0,255,0,255,0,255,0,
+223,0,83,0,3,0,0,0,0,0,0,0,0,0,76,0,227,0,255,0,255,0,255,0,210,0,95,0,25,0,9,0,
+10,0,25,0,95,0,210,0,255,0,255,0,255,0,225,0,77,0,1,0,0,0,0,0,2,0,2,0,0,0,23,0,
+203,0,255,0,255,0,210,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,210,0,255,0,255,0,202,
+0,23,0,0,0,2,0,2,0,147,0,149,0,148,0,169,0,246,0,255,0,246,0,94,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,94,0,246,0,255,0,246,0,169,0,148,0,149,0,147,0,254,0,255,
+0,255,0,255,0,255,0,255,0,207,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,207,
+0,255,0,255,0,255,0,255,0,255,0,254,0,252,0,255,0,255,0,255,0,255,0,255,0,170,
+0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,170,0,255,0,255,0,255,0,255,0,255,0,
+252,0,252,0,255,0,255,0,255,0,255,0,255,0,170,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,9,0,170,0,255,0,255,0,255,0,255,0,255,0,252,0,254,0,255,0,255,0,255,0,255,
+0,255,0,207,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,207,0,255,0,255,0,255,
+0,255,0,255,0,254,0,144,0,146,0,144,0,166,0,245,0,255,0,246,0,94,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,94,0,246,0,255,0,246,0,167,0,144,0,146,0,144,0,1,0,1,0,
+0,0,36,0,220,0,255,0,255,0,210,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,210,0,255,
+0,255,0,193,0,20,0,0,0,1,0,1,0,0,0,0,0,19,0,148,0,249,0,255,0,255,0,255,0,210,
+0,95,0,25,0,9,0,10,0,25,0,95,0,210,0,255,0,255,0,255,0,187,0,26,0,0,0,0,0,0,0,
+0,0,24,0,156,0,250,0,255,0,255,0,255,0,255,0,255,0,246,0,209,0,172,0,172,0,
+209,0,246,0,255,0,255,0,255,0,255,0,253,0,162,0,23,0,0,0,0,0,0,0,96,0,246,0,255,
+0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,
+0,255,0,255,0,255,0,253,0,142,0,6,0,0,0,0,0,22,0,158,0,252,0,255,0,255,0,250,
+0,183,0,191,0,246,0,255,0,255,0,255,0,255,0,244,0,218,0,247,0,255,0,255,0,255,
+0,229,0,90,0,2,0,0,0,0,0,0,0,23,0,163,0,253,0,251,0,156,0,22,0,20,0,169,0,255,
+0,255,0,255,0,255,0,166,0,33,0,142,0,249,0,255,0,225,0,85,0,2,0,0,0,0,0,0,0,0,
+0,0,0,26,0,164,0,149,0,20,0,0,0,2,0,149,0,255,0,255,0,255,0,255,0,147,0,0,0,
+16,0,149,0,216,0,80,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,0,13,0,0,0,0,0,2,0,
+149,0,255,0,255,0,255,0,255,0,147,0,2,0,0,0,20,0,46,0,2,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,148,0,255,0,252,0,252,0,255,0,146,0,2,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0};
+static Fl_RGB_Image image_gear16(idata_gear16, 24, 24, 2, 0);
+
+void KeyboardUI::cb_Layout1_i(Fl_Button*, void*) {
+  layout_window()->show();
+}
+void KeyboardUI::cb_Layout1(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->parent()->user_data()))->cb_Layout1_i(o,v);
+}
+
+Fl_Double_Window* KeyboardUI::config_key_win() {
+  { Fl_Double_Window* o = conf_key_win = new Fl_Double_Window(355, 180, gettext("Configure Keyboard Shortcut"));
+    conf_key_win->user_data((void*)(this));
+    { Fl_Button* o = new Fl_Button(285, 145, 65, 30, gettext("OK"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->selection_color((Fl_Color)58);
       o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_OK1);
+      o->callback((Fl_Callback*)cb_OK);
     } // Fl_Button* o
-    { Fl_Menu_Button* o = new Fl_Menu_Button(210, 80, 135, 30, gettext("Action"));
+    { Fl_Menu_Button* o = new Fl_Menu_Button(220, 110, 130, 30, gettext("Action"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->selection_color((Fl_Color)80);
@@ -1354,103 +1339,11 @@ Fl_Double_Window* KeyboardUI::grabber_window() {
       }
       o->menu(menu_Action);
     } // Fl_Menu_Button* o
-    { Fl_Button* o = new Fl_Button(5, 80, 145, 30, gettext("Choose Program"));
-      o->tooltip(gettext("Choose a program to add"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_Choose);
-    } // Fl_Button* o
-    { action_name = new Fl_Input(5, 115, 200, 30);
-      action_name->box(FL_FLAT_BOX);
-      action_name->align(Fl_Align(129));
-    } // Fl_Input* action_name
-    { Fl_Box* o = new Fl_Box(170, 85, 25, 25, gettext("OR"));
-      o->labelfont(1);
-    } // Fl_Box* o
-    { Fl_Button* o = new Fl_Button(210, 115, 65, 30, gettext("Cancel"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)80);
-      o->selection_color((Fl_Color)64);
-      o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_Cancel1);
-    } // Fl_Button* o
-    { mod_output = new Fl_Output(75, 5, 50, 30, gettext("Modifiers"));
-      mod_output->tooltip(gettext("First keyboard modifier"));
-      mod_output->box(FL_FLAT_BOX);
-      mod_output->color((Fl_Color)53);
-    } // Fl_Output* mod_output
-    { modder_output = new Fl_Output(130, 5, 50, 30);
-      modder_output->tooltip(gettext("Second keyboard modifier"));
-      modder_output->box(FL_FLAT_BOX);
-      modder_output->color((Fl_Color)53);
-    } // Fl_Output* modder_output
-    { Fl_Button* o = new Fl_Button(5, 40, 200, 30, gettext("GRAB KEY"));
-      o->tooltip(gettext("This will grab a new key combo"));
-      o->box(FL_FLAT_BOX);
-      o->color(FL_YELLOW);
-      o->selection_color((Fl_Color)31);
-      o->callback((Fl_Callback*)cb_GRAB);
-    } // Fl_Button* o
-    { modder3_output = new Fl_Output(185, 5, 50, 30);
-      modder3_output->tooltip(gettext("Second keyboard modifier"));
-      modder3_output->box(FL_FLAT_BOX);
-      modder3_output->color((Fl_Color)53);
-    } // Fl_Output* modder3_output
-    { key = new Fl_Output(270, 5, 75, 30, gettext("Key"));
-      key->tooltip(gettext("Second keyboard modifier"));
-      key->box(FL_FLAT_BOX);
-      key->color((Fl_Color)53);
-    } // Fl_Output* key
-    { Fl_Menu_Button* o = new Fl_Menu_Button(210, 40, 135, 30, gettext("Special Keys"));
-      o->tooltip(gettext("Picture button keys on the keyboard"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->selection_color((Fl_Color)80);
-      if (!menu_Special_i18n_done) {
-        int i=0;
-        for ( ; i<16; i++)
-          if (menu_Special[i].label())
-            menu_Special[i].label(gettext(menu_Special[i].label()));
-        menu_Special_i18n_done = 1;
-      }
-      o->menu(menu_Special);
-    } // Fl_Menu_Button* o
-    startup(o,jsm_keyboard_xpm);
-    debug_out("grabber_window()->show()");
-    grab_win->xclass("jsm-keyboard");
-    grab_win->end();
-  } // Fl_Double_Window* grab_win
-  return grab_win;
-}
-
-Fl_Double_Window* KeyboardUI::config_key_win() {
-  { Fl_Double_Window* o = conf_key_win = new Fl_Double_Window(355, 180, gettext("Configure Keyboard Shortcut"));
-    conf_key_win->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(285, 145, 65, 30, gettext("OK"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)61);
-      o->selection_color((Fl_Color)58);
-      o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_OK2);
-    } // Fl_Button* o
-    { Fl_Menu_Button* o = new Fl_Menu_Button(220, 110, 130, 30, gettext("Action"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->selection_color((Fl_Color)80);
-      if (!menu_Action1_i18n_done) {
-        int i=0;
-        for ( ; i<33; i++)
-          if (menu_Action1[i].label())
-            menu_Action1[i].label(gettext(menu_Action1[i].label()));
-        menu_Action1_i18n_done = 1;
-      }
-      o->menu(menu_Action1);
-    } // Fl_Menu_Button* o
     { Fl_Button* o = new Fl_Button(5, 110, 155, 30, gettext("Choose Program"));
       o->tooltip(gettext("Choose a program to add"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_Choose1);
+      o->callback((Fl_Callback*)cb_Choose);
     } // Fl_Button* o
     { action_name1 = new Fl_Input(5, 145, 200, 30);
       action_name1->box(FL_FLAT_BOX);
@@ -1464,7 +1357,7 @@ Fl_Double_Window* KeyboardUI::config_key_win() {
       o->color((Fl_Color)80);
       o->selection_color((Fl_Color)64);
       o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_Cancel2);
+      o->callback((Fl_Callback*)cb_Cancel);
     } // Fl_Button* o
     { mod1_output = new Fl_Output(70, 40, 50, 30, gettext("Modifiers"));
       mod1_output->box(FL_FLAT_BOX);
@@ -1489,7 +1382,7 @@ Fl_Double_Window* KeyboardUI::config_key_win() {
       o->box(FL_FLAT_BOX);
       o->color(FL_YELLOW);
       o->selection_color((Fl_Color)31);
-      o->callback((Fl_Callback*)cb_GRAB1);
+      o->callback((Fl_Callback*)cb_GRAB);
     } // Fl_Button* o
     { keyshortcut = new Fl_Output(260, 40, 90, 30, gettext("Key"));
       keyshortcut->box(FL_FLAT_BOX);
@@ -1524,6 +1417,100 @@ Fl_Double_Window* KeyboardUI::config_key_win() {
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->selection_color((Fl_Color)80);
+      if (!menu_Special_i18n_done) {
+        int i=0;
+        for ( ; i<16; i++)
+          if (menu_Special[i].label())
+            menu_Special[i].label(gettext(menu_Special[i].label()));
+        menu_Special_i18n_done = 1;
+      }
+      o->menu(menu_Special);
+    } // Fl_Menu_Button* o
+    debug_out("config_key_win()->show()");
+    startup(o,jsm_keyboard_xpm);
+    if(!Configure(key_browser,action_name1,current_key,current_mod1,current_mod2,current_mod3,old_action)){debug_out("Configure failed");}
+    conf_key_win->xclass("jsm-keyboard");
+    conf_key_win->end();
+  } // Fl_Double_Window* conf_key_win
+  return conf_key_win;
+}
+
+Fl_Double_Window* KeyboardUI::grabber_window() {
+  { Fl_Double_Window* o = grab_win = new Fl_Double_Window(350, 150, gettext("Create Keyboard Shortcut"));
+    grab_win->user_data((void*)(this));
+    grab_win->when(FL_WHEN_RELEASE_ALWAYS);
+    { Fl_Button* o = new Fl_Button(280, 115, 65, 30, gettext("OK"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)61);
+      o->selection_color((Fl_Color)58);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_OK1);
+    } // Fl_Button* o
+    { Fl_Menu_Button* o = new Fl_Menu_Button(210, 80, 135, 30, gettext("Action"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->selection_color((Fl_Color)80);
+      if (!menu_Action1_i18n_done) {
+        int i=0;
+        for ( ; i<33; i++)
+          if (menu_Action1[i].label())
+            menu_Action1[i].label(gettext(menu_Action1[i].label()));
+        menu_Action1_i18n_done = 1;
+      }
+      o->menu(menu_Action1);
+    } // Fl_Menu_Button* o
+    { Fl_Button* o = new Fl_Button(5, 80, 145, 30, gettext("Choose Program"));
+      o->tooltip(gettext("Choose a program to add"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->callback((Fl_Callback*)cb_Choose1);
+    } // Fl_Button* o
+    { action_name = new Fl_Input(5, 115, 200, 30);
+      action_name->box(FL_FLAT_BOX);
+      action_name->align(Fl_Align(129));
+    } // Fl_Input* action_name
+    { Fl_Box* o = new Fl_Box(170, 85, 25, 25, gettext("OR"));
+      o->labelfont(1);
+    } // Fl_Box* o
+    { Fl_Button* o = new Fl_Button(210, 115, 65, 30, gettext("Cancel"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)80);
+      o->selection_color((Fl_Color)64);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_Cancel1);
+    } // Fl_Button* o
+    { mod_output = new Fl_Output(75, 5, 50, 30, gettext("Modifiers"));
+      mod_output->tooltip(gettext("First keyboard modifier"));
+      mod_output->box(FL_FLAT_BOX);
+      mod_output->color((Fl_Color)53);
+    } // Fl_Output* mod_output
+    { modder_output = new Fl_Output(130, 5, 50, 30);
+      modder_output->tooltip(gettext("Second keyboard modifier"));
+      modder_output->box(FL_FLAT_BOX);
+      modder_output->color((Fl_Color)53);
+    } // Fl_Output* modder_output
+    { Fl_Button* o = new Fl_Button(5, 40, 200, 30, gettext("GRAB KEY"));
+      o->tooltip(gettext("This will grab a new key combo"));
+      o->box(FL_FLAT_BOX);
+      o->color(FL_YELLOW);
+      o->selection_color((Fl_Color)31);
+      o->callback((Fl_Callback*)cb_GRAB1);
+    } // Fl_Button* o
+    { modder3_output = new Fl_Output(185, 5, 50, 30);
+      modder3_output->tooltip(gettext("Second keyboard modifier"));
+      modder3_output->box(FL_FLAT_BOX);
+      modder3_output->color((Fl_Color)53);
+    } // Fl_Output* modder3_output
+    { key = new Fl_Output(270, 5, 75, 30, gettext("Key"));
+      key->tooltip(gettext("Second keyboard modifier"));
+      key->box(FL_FLAT_BOX);
+      key->color((Fl_Color)53);
+    } // Fl_Output* key
+    { Fl_Menu_Button* o = new Fl_Menu_Button(210, 40, 135, 30, gettext("Special Keys"));
+      o->tooltip(gettext("Picture button keys on the keyboard"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->selection_color((Fl_Color)80);
       if (!menu_Special1_i18n_done) {
         int i=0;
         for ( ; i<16; i++)
@@ -1533,13 +1520,143 @@ Fl_Double_Window* KeyboardUI::config_key_win() {
       }
       o->menu(menu_Special1);
     } // Fl_Menu_Button* o
-    debug_out("config_key_win()->show()");
     startup(o,jsm_keyboard_xpm);
-    if(!Configure(key_browser,action_name1,current_key,current_mod1,current_mod2,current_mod3,old_action)){debug_out("Configure failed");}
-    conf_key_win->xclass("jsm-keyboard");
-    conf_key_win->end();
-  } // Fl_Double_Window* conf_key_win
-  return conf_key_win;
+    debug_out("grabber_window()->show()");
+    grab_win->xclass("jsm-keyboard");
+    grab_win->end();
+  } // Fl_Double_Window* grab_win
+  return grab_win;
+}
+
+Fl_Double_Window* KeyboardUI::layout_window() {
+  { layout_win = new Fl_Double_Window(490, 310, gettext("Layout"));
+    layout_win->user_data((void*)(this));
+    { Fl_Browser* o = new Fl_Browser(5, 5, 150, 225, gettext("Layout"));
+      o->type(2);
+      o->box(FL_FLAT_BOX);
+      o->selection_color((Fl_Color)80);
+      o->callback((Fl_Callback*)cb_Layout);
+      keyLayoutPopulate(o);
+    } // Fl_Browser* o
+    { Fl_Input* o = layoutput = new Fl_Input(5, 245, 150, 25);
+      layoutput->box(FL_FLAT_BOX);
+      o->value(getLayout().c_str());
+    } // Fl_Input* layoutput
+    { Fl_Button* o = new Fl_Button(440, 275, 45, 30, gettext("OK"));
+      o->tooltip(gettext("Write to configuration file"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)61);
+      o->selection_color((Fl_Color)59);
+      o->labelcolor((Fl_Color)55);
+      o->callback((Fl_Callback*)cb_OK2);
+    } // Fl_Button* o
+    { Fl_Button* o = new Fl_Button(170, 275, 45, 30, gettext("TEST"));
+      o->tooltip(gettext("Write to configuration file"));
+      o->box(FL_FLAT_BOX);
+      o->color(FL_YELLOW);
+      o->selection_color((Fl_Color)134);
+      o->labelcolor(FL_GRAY0);
+    } // Fl_Button* o
+    { Fl_Button* o = new Fl_Button(360, 275, 65, 30, gettext("Cancel"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)80);
+      o->selection_color((Fl_Color)81);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_Cancel2);
+    } // Fl_Button* o
+    { Fl_Browser* o = new Fl_Browser(165, 5, 145, 225, gettext("Model"));
+      o->type(2);
+      o->box(FL_FLAT_BOX);
+      o->selection_color((Fl_Color)80);
+      o->callback((Fl_Callback*)cb_Model);
+      keyModelPopulate(o);
+    } // Fl_Browser* o
+    { Fl_Browser* o = new Fl_Browser(320, 5, 165, 220, gettext("Option"));
+      o->type(2);
+      o->box(FL_FLAT_BOX);
+      o->selection_color((Fl_Color)80);
+      o->callback((Fl_Callback*)cb_Option);
+      keyOptionPopulate(o);
+    } // Fl_Browser* o
+    { modeloutput = new Fl_Input(165, 245, 150, 25);
+      modeloutput->box(FL_FLAT_BOX);
+    } // Fl_Input* modeloutput
+    { optionoutput = new Fl_Input(320, 245, 165, 25);
+      optionoutput->box(FL_FLAT_BOX);
+    } // Fl_Input* optionoutput
+    layout_win->end();
+  } // Fl_Double_Window* layout_win
+  return layout_win;
+}
+
+Fl_Double_Window* KeyboardUI::make_window() {
+  load();
+  JWMVERSION=JWMversion();
+  //Fl::add_handler(handle);
+  { Fl_Double_Window* o = keyboard_window = new Fl_Double_Window(480, 295, gettext("Keyboard Settings"));
+    keyboard_window->color((Fl_Color)31);
+    keyboard_window->user_data((void*)(this));
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 490, 310);
+      o->color((Fl_Color)31);
+      { Fl_Browser* o = key_browser = new Fl_Browser(5, 20, 470, 235, gettext("Keyboard Shortcuts"));
+        key_browser->type(2);
+        key_browser->box(FL_FLAT_BOX);
+        key_browser->selection_color((Fl_Color)80);
+        key_browser->labelfont(1);
+        key_browser->align(Fl_Align(FL_ALIGN_TOP));
+        static int widths[] = {35,175,105,0};o->column_widths(widths);
+        populateFLBrowser2Attr(key_browser,"Key","mask","key");
+      } // Fl_Browser* key_browser
+      { Fl_Button* o = new Fl_Button(50, 260, 35, 30, gettext("-"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->labelfont(1);
+        o->labelsize(34);
+        o->callback((Fl_Callback*)cb_);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(355, 260, 65, 30, gettext("Cancel"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)80);
+        o->selection_color((Fl_Color)81);
+        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->callback((Fl_Callback*)cb_Cancel3);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(430, 260, 45, 30, gettext("OK"));
+        o->tooltip(gettext("Write to configuration file"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)61);
+        o->selection_color((Fl_Color)59);
+        o->labelcolor((Fl_Color)55);
+        o->callback((Fl_Callback*)cb_OK3);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(5, 260, 40, 30, gettext("@+"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->callback((Fl_Callback*)cb_1);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(100, 260, 30, 30);
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->image(image_gear16);
+        o->labelfont(1);
+        o->callback((Fl_Callback*)cb_2);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(185, 260, 100, 30, gettext("Layout"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->image(image_gear16);
+        o->labelfont(1);
+        o->callback((Fl_Callback*)cb_Layout1);
+        o->align(Fl_Align(256));
+      } // Fl_Button* o
+      o->end();
+      Fl_Group::current()->resizable(o);
+    } // Fl_Scroll* o
+    startup(o,jsm_keyboard_xpm);
+    keyboard_window->xclass("jsm-keyboard");
+    keyboard_window->end();
+  } // Fl_Double_Window* keyboard_window
+  return keyboard_window;
 }
 
 void KeyboardUI::menu_cb(const char* action) {

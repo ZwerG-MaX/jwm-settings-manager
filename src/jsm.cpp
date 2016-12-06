@@ -214,7 +214,6 @@ std::cout<<"int showDEBUG()"<<std::endl;
 }
 int Shutdown(){
     shutdown ui;
-    ui.make_window()->xclass("JSM");
     ui.make_window()->show();
     return Fl::run();
 }

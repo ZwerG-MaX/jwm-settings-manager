@@ -1,13 +1,27 @@
-set precompiler defines in cmake project
-(specifically LINUX_COMMON_HAS_X=true) when Xlibs are found
-
 If CheckIncludes Fails... create the Element
 
-missing functions:
-
-panel:
-
-deleteTrayButton?
+NEXT features:
+keyboard
+GET
+setxkbmap -query
+SET
+setxkbmap -model $model -layout $layout -variant $options
+GET
+localectl status
+SET
+localectl set-x11-keymap layout $model $variant $options
 
 menu:
 Configure Dynamic
+Desktop names
+windows->decorations/outline decorations
+ShutdownCommand
+RestartCommand
+PopupStyle
+    delay (int)
+    enabled (true,false,button,clocks,menu,pager,task)
+  Font
+  Outline
+  Foreground
+  Background
+  

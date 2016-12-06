@@ -39,6 +39,9 @@ decl {\#include "../include/ui.h"} {public global
 decl {\#include "../include/jwmrc.h"} {public global
 } 
 
+decl {\#include "../include/common.hpp"} {public global
+} 
+
 decl {\#include "../include/fltkfunctions.hpp"} {public global
 } 
 
@@ -51,92 +54,96 @@ class SettingsUI {open
   } {
     Fl_Window settings_window {
       label {Settings Manager} open
-      xywh {628 249 295 290} type Double color 45 labelcolor 7 hide
+      xywh {623 115 260 345} type Double color 45 labelcolor 7 hide
       code1 {startup(o,jwm_settings_manager);} xclass {jwm-settings-manager}
     } {
       Fl_Button {} {
         label Panel
         callback {settings_window->hide();
 showPanel();}
-        image {../data/img/jsm-panel.png} xywh {10 5 80 80} box FLAT_BOX color 23
+        image {../data/img/jsm-panel.png} xywh {5 5 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Keyboard
         callback {settings_window->hide();
 showKeyboard();}
-        image {../data/img/jsm-keyboard.png} xywh {105 5 80 80} box FLAT_BOX color 23
+        image {../data/img/jsm-keyboard.png} xywh {90 5 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Icons
         callback {settings_window->hide();
 showIcons();}
-        image {../data/img/jsm-icons.png} xywh {200 5 80 80} box FLAT_BOX color 23
+        image {../data/img/jsm-icons.png} xywh {175 5 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Desktop
         callback {settings_window->hide();
 showDesktop();}
-        image {../data/img/jsm-desktop.png} xywh {10 100 80 80} box FLAT_BOX color 23
+        image {../data/img/jsm-desktop.png} xywh {5 90 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Touchpad
         callback {settings_window->hide();
-showMouse();} selected
-        image {../data/img/jsm-mouse.png} xywh {105 100 80 80} box FLAT_BOX color 23
+showMouse();}
+        image {../data/img/jsm-mouse.png} xywh {90 90 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Fonts
         callback {settings_window->hide();
 showFonts();}
-        image {../data/img/jsm-fonts.png} xywh {200 100 80 80} box FLAT_BOX color 23
+        image {../data/img/jsm-fonts.png} xywh {175 90 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Windows
         callback {settings_window->hide();
 showWindow();}
-        image {../data/img/jsm-windows.png} xywh {10 195 80 80} box FLAT_BOX color 23
+        image {../data/img/jsm-windows.png} xywh {5 175 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Themes
         callback {settings_window->hide();
 showThemes();}
-        tooltip {This is for Predefined Thems} image {../data/img/jsm-theme.png} xywh {105 195 80 80} box FLAT_BOX color 23
+        tooltip {This is for Predefined Thems} image {../data/img/jsm-theme.png} xywh {90 175 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Autostart
         callback {settings_window->hide();
 showAutostart();}
-        image {../data/img/jsm-autostart.png} xywh {200 195 80 80} box FLAT_BOX color 23
+        image {../data/img/jsm-autostart.png} xywh {175 175 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label {Users and Groups}
         callback {adduser();}
-        image {../data/img/flAdduser.xpm} xywh {55 295 80 65} box FLAT_BOX color 23 align 128 hide deactivate
-        code0 {//isAdduser(o);}
+        xywh {5 260 80 80} box FLAT_BOX color 23 align 128
+        code0 {isAdduser(o);}
+        code1 {makeWidgetIcon("system-config-users",o,48);}
       }
       Fl_Button {} {
         label {System Details}
-        image {../data/img/jsm-theme.png} xywh {150 295 80 65} box FLAT_BOX color 23 align 128 hide deactivate
+        callback {addinfo();}
+        xywh {90 260 80 80} box FLAT_BOX color 23 align 128
+        code0 {makeWidgetIcon("system-info",o,48);}
+      }
+      Fl_Button {} {
+        label Popups
+        callback {settings_window->hide();
+showPopus();}
+        xywh {175 260 80 80} box FLAT_BOX color 23 align 128 deactivate
+        code0 {makeWidgetIcon("preferences-system-notifications",o,48);}
       }
     }
   }
   Function {isAdduser(Fl_Button *o)} {open
   } {
     code {bool isfladduser = testExec("fladduser");
-
-if(isfladduser){
-  o->show();
-}
-else{
-  o->hide();
-}} {}
+if(isfladduser){o->show();}
+else{o->hide();}} {}
   }
   Function {adduser()} {open
   } {
-    code {int retval = system("bash -c 'fladduser &disown'");
-if(retval !=0){
-  std::cerr<<"system(\\"bash -c 'fladduser &disown'\\") did not return 0"<<std::endl;
-}} {}
+    code {settings_window->hide();
+int retval = linuxcommon::run_a_program_in_background("fladduser");
+if(retval !=0){errorOUT("Could not run the user adding program");}} {}
   }
   Function {isInfo(Fl_Button *o)} {open
   } {
@@ -150,9 +157,11 @@ else{
   }
   Function {addinfo()} {open
   } {
-    code {int retval = system("bash -c 'torios-info &disown'");
+    code {settings_window->hide();
+int retval = linuxcommon::run_a_program_in_background("torios-info");
 if(retval !=0){
   std::cerr<<"system(\\"bash -c 'torios-info &disown'\\") did not return 0"<<std::endl;
-}} {}
+}} {selected
+    }
   }
 } 

@@ -29,6 +29,7 @@
 #include <libintl.h>
 #include "../include/ui.h"
 #include "../include/jwmrc.h"
+#include "../include/common.hpp"
 #include "../include/fltkfunctions.hpp"
 #include "../data/icons/jwm-settings-manager.xpm"
 #include <FL/Fl_Double_Window.H>
@@ -59,6 +60,10 @@ private:
   static void cb_Autostart(Fl_Button*, void*);
   inline void cb_Users_i(Fl_Button*, void*);
   static void cb_Users(Fl_Button*, void*);
+  inline void cb_System_i(Fl_Button*, void*);
+  static void cb_System(Fl_Button*, void*);
+  inline void cb_Popups_i(Fl_Button*, void*);
+  static void cb_Popups(Fl_Button*, void*);
 public:
   void isAdduser(Fl_Button *o);
   void adduser();

@@ -8,6 +8,17 @@ void addKey(std::string keyMod, std::string key, std::string shortcut){
 	debug_out("void addKey(std::string "+keyMod+", std::string "+key+", std::string "+shortcut=")");
     if(!addElementWithTextAndAttribute("Key","key",key,"mask",keyMod,shortcut)){debug_out("Add Key Failed");}
 }
+void changemod(std::string mod,Fl_Output* Aout,Fl_Output* Bout){
+	if(OutputIsEmpty(Aout)){Aout->value(mod.c_str());}
+	else if(OutputIsEmpty(Bout)){Bout->value(mod.c_str());}
+	else{debug_out("All Mods are filled");}
+}
+void changemod(std::string mod,Fl_Output* Aout,Fl_Output* Bout,Fl_Output* Cout){
+	if(OutputIsEmpty(Aout)){Aout->value(mod.c_str());}
+	else if(OutputIsEmpty(Bout)){Bout->value(mod.c_str());}
+	else if(OutputIsEmpty(Cout)){Cout->value(mod.c_str());}
+	else{debug_out("All Mods are filled");}
+}
 void configureKey(std::string keyShortcut, std::string newmod1, std::string newmod2, std::string newmod3, std::string newkey, std::string newaction){
 	debug_out("void configureKey(std::string "+keyShortcut+", std::string "+newmod1+", std::string "+newmod2+", std::string "+newmod3+", std::string "+newkey+", std::string "+newaction+")");
     if(keyShortcut.compare("")==0){return;}
@@ -69,17 +80,6 @@ void deleteKey(std::string keyShortcut){
     actionFromProg=getAction(keyShortcut);
     removeElementCompare2Attr("Key","key",keyFromProg,"mask",totalMod,actionFromProg);
 }
-void changemod(std::string mod,Fl_Output* Aout,Fl_Output* Bout){
-	if(OutputIsEmpty(Aout)){Aout->value(mod.c_str());}
-	else if(OutputIsEmpty(Bout)){Bout->value(mod.c_str());}
-	else{debug_out("All Mods are filled");}
-}
-void changemod(std::string mod,Fl_Output* Aout,Fl_Output* Bout,Fl_Output* Cout){
-	if(OutputIsEmpty(Aout)){Aout->value(mod.c_str());}
-	else if(OutputIsEmpty(Bout)){Bout->value(mod.c_str());}
-	else if(OutputIsEmpty(Cout)){Cout->value(mod.c_str());}
-	else{debug_out("All Mods are filled");}
-}
 void key_event(Fl_Input* o, Fl_Output* out, Fl_Output* modder){
 	debug_out("void key_event(Fl_Input* o, Fl_Output* out)");
 	int k = Fl::event_key();
@@ -132,6 +132,37 @@ void key_event(Fl_Input* o, Fl_Output* out, Fl_Output* modder){
 		o->value(key_display.c_str());
 	}
 }
+void keyLayoutPopulate(Fl_Browser *o){keyPopulate(o,"layout");}
+void keyModelPopulate(Fl_Browser *o){keyPopulate(o,"model");}
+void keyOptionPopulate(Fl_Browser *o){keyPopulate(o,"option");}
+void keyPopulate(Fl_Browser *o,std::string thingToGet){
+	debug_out("void keyPopulate(Fl_Browser *o,std::string "+thingToGet+")");
+	std::string list=linuxcommon::term_out("plocalectl list-x11-keymap-"+thingToGet+"s");
+	if(list.compare("")==0){
+		std::string file="/usr/share/X11/xkb/rules/base.lst";
+		if(!linuxcommon::test_file(file)){
+			errorOUT("Cannot create the list for "+thingToGet);
+			return;
+		}
+		std::vector<std::string> vector_to_check=linuxcommon::file_to_vector(file);
+		bool start=false;
+		std::string fileItem="! "+thingToGet;
+		for( std::vector<std::string>::iterator it = vector_to_check.begin();
+		it!=vector_to_check.end();
+		++it){
+			std::string tmp=*it;
+			unsigned int founder=tmp.find(fileItem);
+			unsigned int flounder=tmp.find("! ");
+			if(flounder<tmp.length()){start=false;}
+			if(start){
+				if(list.compare("")==0){if(tmp.compare("")!=0)list=tmp;}
+				else{if(tmp.compare("")!=0)list=list+"\n"+tmp;}
+			}
+			if(founder<tmp.length()){start=true;}
+		}
+	}
+	populateBrowserWithString(o,list);
+}
 void mod_cb(std::string mod, Fl_Output *o){
   if(mod.compare("")!=0){
     o->value(mod.c_str());
@@ -159,6 +190,21 @@ void remove_key(Fl_Browser* o){
 	}
 }
 //String////////////////////////////////////////////////////////////////
+std::string fixLayoutString(Fl_Browser *o){
+	debug_out("std::string fixLayoutString(Fl_Browser *o)");
+	std::string retval;
+	if(checkFlBrowserItem(o)){
+	  const char* val =o->text(o->value());
+	  retval=val;
+	  unsigned int exclaim=retval.find("!");
+	  if(exclaim==0){return "";}
+	  unsigned int finder=retval.find("  ");
+	  if(finder<retval.length()){retval=retval.erase(finder,2);}
+	  finder=retval.find(" ");
+	  if(finder<retval.length()){retval=retval.erase(finder,std::string::npos);}
+	}
+	return retval;
+}
 std::string getAction(std::string keyShortcut){
 	debug_out("std::string getAction(std::string "+keyShortcut+")");
     if(keyShortcut.compare("")==0){return "";}
@@ -195,6 +241,28 @@ std::string getKey(std::string keyShortcut){
         }
     }
     return "";
+}
+std::string getLayout(){
+	debug_out("std::string getLayout()");
+	std::string test_command=linuxcommon::term_out("which localectl");
+	std::string command="localectl";
+	if(test_command.compare("")==0){
+		test_command=linuxcommon::term_out("which setxkbmap");
+		command="setxkbmap";
+	}
+	if(test_command.compare("")==0){return "";}
+	std::string layout;
+	if(command.compare("setxkbmap")==0){
+		command+=" -query";
+		layout=linuxcommon::term_out(command);
+	}
+	else{
+		command+=" status";
+		layout=linuxcommon::term_out(command);
+		std::transform(layout.begin(),layout.end(),layout.begin(), ::tolower);
+	}
+	//std::vector<std::string> stringVec=linuxcommon::
+	return layout;
 }
 std::string getMod(std::string keyShortcut){
 	debug_out("std::string getMod(std::string "+keyShortcut+")");

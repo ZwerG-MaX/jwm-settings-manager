@@ -52,19 +52,25 @@
 //void
 void addKey(std::string key, std::string shortcut);
 void addKey(std::string keyMod, std::string key, std::string shortcut);
+void changemod(std::string mod,Fl_Output* Aout,Fl_Output* Bout);
+void changemod(std::string mod,Fl_Output* Aout,Fl_Output* Bout,Fl_Output* Cout);
 void configureKey(std::string keyShortcut, std::string newmod1, std::string newmod2, std::string newmod3, std::string newkey, std::string newaction);
 bool Configure_CB(Fl_Output* mod1_output, Fl_Output* mod2_output,Fl_Output* mod3_output, Fl_Input * keyshortcut,Fl_Input * action_name1,std::string CURRENT);
 void Choose_Action(Fl_Input* action_name);
 void deleteKey(std::string keyShortcut);
-void changemod(std::string mod,Fl_Output* Aout,Fl_Output* Bout);
-void changemod(std::string mod,Fl_Output* Aout,Fl_Output* Bout,Fl_Output* Cout);
 void key_event(Fl_Input* o, Fl_Output* out, Fl_Output* modder);
+void keyPopulate(Fl_Browser *o, std::string itemToGet);
+void keyLayoutPopulate(Fl_Browser *o);
+void keyModelPopulate(Fl_Browser *o);
+void keyOptionPopulate(Fl_Browser *o);
 void mod_cb(std::string mod, Fl_Output *o);
 void mod2_cb(std::string mod, Fl_Output *o);
 void remove_key(Fl_Browser* o);
 //string
+std::string fixLayoutString(Fl_Browser *o);
 std::string getAction(std::string keyShortcut);
 std::string getKey(std::string keyShortcut);
+std::string getLayout();
 std::string getMod(std::string keyShortcut);
 std::string getMod1(std::string keyShortcut);
 std::string getMod2(std::string keyShortcut);

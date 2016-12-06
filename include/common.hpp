@@ -60,79 +60,88 @@
 
 
 namespace linuxcommon{
-	//string functions
-	std::string find_xdg_data_dir_subdir(std::string subdir);
-	std::string grep(std::string args, std::string filename);
-	std::string quote_xml(std::string input);
-	std::string get_cache_dir();
-	std::string get_symlinkpath(std::string symlink);
-	std::string term_out(std::string terminal_Command_You_Want_Output_From);
-	std::string sed_i(std::string input, std::string remove, std::string replace);
+	///const char*
+	const char* convert_num_to_string(double num);
+	///string functions
+	//c
+	std::string color_double_to_string(const double *rgb);
+	std::string convert_num_to_string(int num);
 	std::string current_path(int whichPath);
 	std::string current_directory();
+	//f
+	std::string file_to_string(std::string fileWithPath);
+	std::string find_xdg_config_dir_subdir(std::string subdir);
+	std::string find_xdg_data_dir_subdir(std::string subdir);
+	std::string fix_file_path_for_command_line(std::string filepath);
+	//g
+	std::string get_cache_dir();
+	std::string get_directory_from_filename(std::string filename);
 	std::string get_gtk_icon_theme();
 	std::string get_gtk_widget_theme();
 	std::string get_gtk_item(std::string itemToGet, std::string defaultTheme);
-	std::string remove_cruft(std::string StringInput, std::string CruftToRemove);
-	std::string convert_num_to_string(int num);
 	std::string get_line_with_equal(std::string filename, std::string line);
-	std::string home_path();
-	std::string fix_file_path_for_command_line(std::string filepath);
 	std::string get_shell_for_C();
-	const char* convert_num_to_string(double num);
+	std::string get_symlinkpath(std::string symlink);
+	std::string grep(std::string args, std::string filename);
+	//h
+	std::string home_path();
+	//l
 	std::string look_for_file_in_subdirs(std::string fileWITHOUTpath,std::string dir);
 	std::string look_for_first_file_in_subdirs(std::string fileWITHOUTpath,std::string dir);
 	std::string look_for_icon_file(std::string fileWITHOUTpath);
-	std::string file_to_string(std::string fileWithPath);
+	//s
+	std::string sed_i(std::string input, std::string remove, std::string replace);
+	//r
+	std::string remove_cruft(std::string StringInput, std::string CruftToRemove);
+	std::string remove_percentage(std::string line);
+	//t
+	std::string test_file_in_vector_path(std::string fileWithNOPATH,std::vector<std::string> directories_to_check);
+	std::string term_out(std::string terminal_Command_You_Want_Output_From);
+	//q
+	std::string quote_xml(std::string input);
 	///COLOR functions
 	#ifdef LINUX_COMMON_HAS_X
 	std::string x_color_from_name(const char *colorName);
 	#endif
-	std::string color_double_to_string(const double *rgb);
-	std::string remove_percentage(std::string line);
-	std::string test_file_in_vector_path(std::string fileWithNOPATH,std::vector<std::string> directories_to_check);
-	std::string get_directory_from_filename(std::string filename);
-	
-	//vector functions
-	std::vector<std::string> get_file_vector(std::string DIRECTORY,std::string file);
-	std::vector<std::string> grep_lines(std::string args, std::string filename);
+	///vector
 	std::vector<std::string> comma_vector(std::string LINE,std::vector<std::string> Vector);
 	std::vector<std::string> desktop_dirs();
-	std::vector<std::string> xdg_conf_dirs();
-	std::string find_xdg_config_dir_subdir(std::string subdir);
 	std::vector<std::string> desktop_paths();
-	std::vector<std::string> split_paths(const char* envVar, const char* incasenothingexists);
 	std::vector<std::string> file_to_vector(std::string filename);
-	std::vector<std::string> sort_array(std::vector<std::string> thisPath);
+	std::vector<std::string> get_file_vector(std::string DIRECTORY,std::string file);
+	std::vector<std::string> grep_lines(std::string args, std::string filename);
 	std::vector<std::string> join_string_vectors(std::vector<std::string> vectorA,std::vector<std::string> vectorB);
-	//boolean
+	std::vector<std::string> sort_array(std::vector<std::string> thisPath);
+	std::vector<std::string> split_paths(const char* envVar, const char* incasenothingexists);
+	std::vector<std::string> xdg_conf_dirs();
+	///boolean
+	bool has_file_extention_at_end(std::string filename,std::string extention);
+	bool pkill(std::string programname);
+	bool program_is_running(std::string program_line);
+	bool save_string_to_file(std::string MSG,std::string filename);/**This should make the directory recursively if it does not exist*/
+	bool switch_gtk_item(std::string item, std::string value);
 	bool look_for_string_in_vector(std::vector<std::string> vector_to_check,std::string item_to_find);
 	bool test_file(std::string fileWithFullPATH);
 	bool test_dir(std::string fullpath);
 	bool test_exec(std::string stringEXEC);
-	bool save_string_to_file(std::string MSG,std::string filename);/***This should make the directory recursively if it does not exist***/
-	bool switch_gtk_item(std::string item, std::string value);
-	bool has_file_extention_at_end(std::string filename,std::string extention);
-	bool program_is_running(std::string program_line);
-	bool pkill(std::string programname);
-	//int
-	int mkdir_p(std::string dirToMake);
+	///int
 	int getProcIdByName(std::string procName);
+	int mkdir_p(std::string dirToMake);
 	int run_a_program(std::string program);
 	int run_a_program_in_background(std::string program);
-	//double
+	///double
 	double convert_string_to_double(std::string num);
-	//unsigned int
+	///unsigned int
 	unsigned int convert_string_to_number(const char* num);
-	unsigned int items_in_path();
 	#ifdef LINUX_COMMON_HAS_X
 	unsigned int get_fl_color(std::string color);
 	unsigned int get_fl_color(std::string color, unsigned int &color2);
     #endif
+    unsigned int items_in_path();
 	//void
-	void print_file_to_stdout(std::string fileNameWithFullPath);
 	void echo(std::string msg);
 	void echo_error(std::string msg);
+	void print_file_to_stdout(std::string fileNameWithFullPath);
 	void processDirEnt(struct dirent* ent);
 }
 #endif

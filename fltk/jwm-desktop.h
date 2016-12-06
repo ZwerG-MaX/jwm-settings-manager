@@ -45,7 +45,7 @@
 
 class DesktopUI {
 public:
-  std::string thisBG; 
+  std::string thisBG;std::string FILEMANAGER; 
   Fl_Double_Window* make_window();
   Fl_Double_Window *desktop_window;
   Fl_Box *background_displayer_thingie;
@@ -83,5 +83,7 @@ private:
   static void cb_Cancel(Fl_Button*, void*);
   inline void cb_OK_i(Fl_Button*, void*);
   static void cb_OK(Fl_Button*, void*);
+public:
+  Fl_Button *fm_pref;
 };
 #endif

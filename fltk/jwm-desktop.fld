@@ -59,12 +59,13 @@ decl {\#include "../data/icons/jsm-desktop.xpm"} {public global
 
 class DesktopUI {open
 } {
-  decl {std::string thisBG;} {public local
+  decl {std::string thisBG;std::string FILEMANAGER;} {public local
   }
   Function {make_window()} {open
   } {
     code {load();
-thisBG=getBackground();} {}
+thisBG=getBackground();
+FILEMANAGER=whichFileManagerRunning();} {}
     Fl_Window desktop_window {
       label {Desktop Settings} open
       xywh {752 123 360 420} type Double color 31 resizable
@@ -104,9 +105,11 @@ thisBG=getBackground();} {}
           label {Icons on Desktop}
           callback {bool useful=use_icons_on_desktop(background_displayer_thingie,thisBG);
 o->value(0);
-if(useful){o->value(1);}}
+fm_pref->hide();
+if(useful){o->value(1);fm_pref->show();}}
           xywh {5 345 140 25} box FLAT_BOX down_box GTK_DOWN_BOX color 31 selection_color 59 align 24 when 1
-          code0 {if(isIconsOnDesktop())o->value(1);}
+          code0 {if(isIconsOnDesktop()){o->value(1);fm_pref->show();}}
+          code1 {else{fm_pref->hide();}}
         }
         Fl_Output current_bg {
           xywh {8 280 345 30} box FLAT_BOX color 50 selection_color 72 labelfont 1 align 33
@@ -115,23 +118,23 @@ if(useful){o->value(1);}}
         Fl_Check_Button check_desktops {
           label {Multiple Desktops}
           callback {useMultipleDesktops(num_desktop_w,num_desktop_h);}
-          tooltip {This allows you to have multiple screens to work on from one Display} xywh {5 370 142 25} box FLAT_BOX down_box GTK_DOWN_BOX color 31 selection_color 59 align 24 when 1
+          tooltip {This allows you to have multiple screens to work on from one Display} xywh {5 365 142 25} box FLAT_BOX down_box GTK_DOWN_BOX color 31 selection_color 59 align 24 when 1
           code1 {bool m = multipleDesktops();o->value(0);}
           code2 {if(m){o->value(1);}}
         }
         Fl_Value_Input num_desktop_w {
-          label {Number of Desktops Wide}
+          label {Workspaces Wide}
           callback {int width = int((o->value()));
 num_desktop_wh_cb("width",width,num_desktop_w,num_desktop_h,check_desktops);}
-          xywh {149 345 20 20} box FLAT_BOX color 53 align 8
+          tooltip {Number of workspaces to the left and right} xywh {150 345 20 20} box FLAT_BOX color 53 align 8
           code0 {int width = getIntAttribute("Desktops","width");}
           code1 {o->value(width);}
         }
         Fl_Value_Input num_desktop_h {
-          label {Number of Desktops High }
+          label {Workspaces High }
           callback {int height = int((o->value()));
-num_desktop_wh_cb("height",height,num_desktop_w,num_desktop_h,check_desktops);} selected
-          xywh {149 370 20 20} box FLAT_BOX color 53 align 8
+num_desktop_wh_cb("height",height,num_desktop_w,num_desktop_h,check_desktops);}
+          tooltip {Number of workspaces up and down} xywh {150 370 20 20} box FLAT_BOX color 53 align 8
           code0 {int height = getIntAttribute("Desktops","height");}
           code1 {o->value(height);}
         }
@@ -145,6 +148,14 @@ num_desktop_wh_cb("height",height,num_desktop_w,num_desktop_h,check_desktops);} 
           callback {saveChanges();
 desktop_window->hide();}
           tooltip {Write to configuration file} xywh {308 390 45 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
+        }
+        Fl_Button fm_pref {
+          label Filemanager
+          tooltip {Open the filemanager to change preferences} xywh {5 390 105 25} box FLAT_BOX color 23
+        }
+        Fl_Button {} {
+          label Names selected
+          tooltip {Name your workspaces} xywh {300 355 55 25} box FLAT_BOX color 23 hide deactivate
         }
       }
     }

@@ -4060,226 +4060,103 @@ void SettingsUI::cb_Users(Fl_Button* o, void* v) {
   ((SettingsUI*)(o->parent()->user_data()))->cb_Users_i(o,v);
 }
 
-#include <FL/Fl_Pixmap.H>
-static const char *idata_flAdduser[] = {
-"45 48 88 1 ",
-"  c #4E1616",
-". c #511717",
-"X c #551818",
-"o c #5B1A1A",
-"O c #631C1C",
-"+ c #6B1E1E",
-"@ c #701F1F",
-"# c #5D2020",
-"$ c #642020",
-"% c #6A2222",
-"& c #652F2F",
-"* c #732121",
-"= c #7B2323",
-"- c #7C2828",
-"; c #785656",
-": c #832525",
-"> c #8A2727",
-", c #832A2A",
-"< c #8D2929",
-"1 c #942A2A",
-"2 c #9C2C2C",
-"3 c #9B3232",
-"4 c #A32E2E",
-"5 c #A82F2F",
-"6 c #A33434",
-"7 c #AC3131",
-"8 c #AE3E3E",
-"9 c #B23232",
-"0 c #B43A3A",
-"q c #B74040",
-"w c #B94444",
-"e c #BA4B4B",
-"r c #A55252",
-"t c #B45555",
-"y c #BE5353",
-"u c #BD5858",
-"i c #967676",
-"p c #B06565",
-"a c #BF6161",
-"s c #B86D6D",
-"d c #C05656",
-"f c #C25C5C",
-"g c #C46363",
-"h c #C56A6A",
-"j c #C86D6D",
-"k c #C57272",
-"l c #CA7373",
-"z c #C77C7C",
-"x c #CE7C7C",
-"c c #8D8D8D",
-"v c #9C9999",
-"b c #A19E9E",
-"n c #A4A2A2",
-"m c #A8A5A5",
-"M c #AEACAC",
-"N c #B5B3B3",
-"B c #BAB7B7",
-"V c #BDBBBB",
-"C c #CA8282",
-"Z c #CC8C8C",
-"A c #D18484",
-"S c #D38C8C",
-"D c #CD9191",
-"F c #D69393",
-"G c #D89797",
-"H c #D49A9A",
-"J c #DA9C9C",
-"K c #CAACAC",
-"L c #D5A4A4",
-"P c #DCA4A4",
-"I c #D6ABAB",
-"U c #C7B5B5",
-"Y c #C8B2B2",
-"T c #C8B9B9",
-"R c #D7B3B3",
-"E c #D8B7B7",
-"W c #DABDBD",
-"Q c #C4C2C2",
-"! c #CFCDCD",
-"~ c #DCC3C3",
-"^ c #DDCACA",
-"/ c #D5D5D5",
-"( c #DDDDDD",
-") c #E0CDCD",
-"_ c #E1D5D5",
-"` c #E2DCDC",
-"\' c #E5E5E5",
-"] c None",
-"]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]",
-"]]]]GPPPPJJJGGFSSAAAxxxllljgjgggfddyeeew]]]]]",
-"]]]PPPPPJJJGFSSSAAAxxlljjjjgggddddyeeeqw0]]]]",
-"]]PPPPPPJGFFSSSAAxxxlljjjgggffdddeeewwq009]]]",
-"]JPPPJJJGFJJGSAxAxxlljjjggffdlxAheeqq000099]]",
-"]PPPPJGJ~`\'\'\'\'~FxllljhjgggfJ_\'\'\'\'_Hwq009999]]",
-"]PJJJGP`\'\'\'\'\'\'\'\'Lkjhhgggfg^\'\'\'\'\'\'\'\')e099999]]",
-"]JJJGJ\'\'\'\'\'\'\'\'\'\'\'Gjhgggff~\'\'\'\'\'\'\'\'\'\'~079999]]",
-"]JGGF)\'\'\'\'\'\'\'\'\'\'\'`kggffdS\'\'\'\'\'\'\'\'\'\'\'\'C99999]]",
-"]JFFG\'\'\'\'\'\'\'\'\'\'\'\'\'Fgffdd~\'\'\'\'\'\'\'\'\'\'\'\'~99994]]",
-"]GSSL\'\'\'\'\'\'\'\'\'\'\'\'\'Iffddd_\'\'\'\'\'\'\'\'\'\'\'\'\'99554]]",
-"]SSSP\'\'\'\'\'\'\'\'\'\'\'\'\'Pdddee_\'\'\'\'\'\'\'\'\'\'\'\'\'99944]]",
-"]SAAG\'\'\'\'\'\'\'\'\'\'\'\'\'SydeeeE\'\'\'\'\'\'\'\'\'\'\'\'~99444]]",
-"]AAxx_\'\'\'\'\'\'\'\'\'\'\'\'gyeeewz\'\'\'\'\'\'\'\'\'\'\'\'z57442]]",
-"]AAxxS\'\'\'\'\'\'\'\'\'\'\'Heeewww0E\'\'\'\'\'\'\'\'\'\'W994442]]",
-"]xxxxjH\'\'\'\'\'\'\'\'\'Lyeeww000qR\'\'\'\'\'\'\'\'Wq754221]]",
-"]xxlkjlK!\'\'\'\'\'/Ugewwq00090CB/\'\'\'\'/TZ9544221]]",
-"]xjkjZ`(vnNBBmv!\'Dwq0009e~\'NvnMMnvB\'^t42211]]",
-"]ljjJ\'\'\'VvvvvvN\'\'\'Rw099u`\'\'`nvvvvn(\'\'\'s111<]]",
-"]jhL\'\'\'\'\'QbvvV\'\'\'\'\'W09u`\'\'\'\'(NbbN(\'\'\'\'\'p11>]]",
-"]hg`\'\'\'\'\'\'\'(\'\'\'\'\'\'\'\'a9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'K<<>]]",
-"]gg\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'a9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'K<<:]\
-]",
-"]gf`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'g9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'K>::]]",
-"]ff`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'a9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'K>::]]",
-"]fd`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'g9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'K::=]]",
-"]dd`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'a9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'K:==*]",
-"]de`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'h9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'Y:=*@]",
-"]ee`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'s9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'K==*@]",
-"]ee`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'s9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'Y*@@@]",
-"]e0`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'h9S\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'K=@@+]",
-"]w0`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'h9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'Y*@+O]",
-"]00`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'j9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'Y*@OO]",
-"]09`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'s9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'U@+OO]",
-"]99`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'j9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'U+OOO]",
-"]99`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'h9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'U+Ooo]",
-"]99`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'k9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'UOOoo]",
-"]99`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'k9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'TOooX]",
-"]99`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'k9D\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'TOoXo]",
-"]99`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'k7Z\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'TooXX]",
-"]99`\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'k7Z\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'\'ToX.]]",
-"]99weeeeeeeeweeeeeee8442211<>>:==*%@+OOoX. ]]",
-"]]9979999999999999975442211>>:===@@+OooXX .]]",
-"]]999799999999999999542211<>:==*@@+OOooX. ]]]",
-"]]]9999999999999997744221<>:::=*@@+OOoX..]]]]",
-"]]ccir8098909900076663331<,,,--*%%%$O#&;ccc]]",
-"]ccccccccccccccccccccccccccccccccccccccccccc]",
-"]]ccccccccccccccccccccccccccccccccccccccccc]]",
-"]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]"
-};
-static Fl_Pixmap image_flAdduser(idata_flAdduser);
+void SettingsUI::cb_System_i(Fl_Button*, void*) {
+  addinfo();
+}
+void SettingsUI::cb_System(Fl_Button* o, void* v) {
+  ((SettingsUI*)(o->parent()->user_data()))->cb_System_i(o,v);
+}
+
+void SettingsUI::cb_Popups_i(Fl_Button*, void*) {
+  settings_window->hide();
+showPopus();
+}
+void SettingsUI::cb_Popups(Fl_Button* o, void* v) {
+  ((SettingsUI*)(o->parent()->user_data()))->cb_Popups_i(o,v);
+}
 
 Fl_Double_Window* SettingsUI::make_window() {
-  { Fl_Double_Window* o = settings_window = new Fl_Double_Window(295, 290, gettext("Settings Manager"));
+  { Fl_Double_Window* o = settings_window = new Fl_Double_Window(260, 345, gettext("Settings Manager"));
     settings_window->color(FL_DARK2);
     settings_window->labelcolor(FL_BACKGROUND2_COLOR);
     settings_window->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(10, 5, 80, 80, gettext("Panel"));
+    { Fl_Button* o = new Fl_Button(5, 5, 80, 80, gettext("Panel"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->image(image_jsm);
       o->callback((Fl_Callback*)cb_Panel);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(105, 5, 80, 80, gettext("Keyboard"));
+    { Fl_Button* o = new Fl_Button(90, 5, 80, 80, gettext("Keyboard"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->image(image_jsm1);
       o->callback((Fl_Callback*)cb_Keyboard);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(200, 5, 80, 80, gettext("Icons"));
+    { Fl_Button* o = new Fl_Button(175, 5, 80, 80, gettext("Icons"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->image(image_jsm2);
       o->callback((Fl_Callback*)cb_Icons);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(10, 100, 80, 80, gettext("Desktop"));
+    { Fl_Button* o = new Fl_Button(5, 90, 80, 80, gettext("Desktop"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->image(image_jsm3);
       o->callback((Fl_Callback*)cb_Desktop);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(105, 100, 80, 80, gettext("Touchpad"));
+    { Fl_Button* o = new Fl_Button(90, 90, 80, 80, gettext("Touchpad"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->image(image_jsm4);
       o->callback((Fl_Callback*)cb_Touchpad);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(200, 100, 80, 80, gettext("Fonts"));
+    { Fl_Button* o = new Fl_Button(175, 90, 80, 80, gettext("Fonts"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->image(image_jsm5);
       o->callback((Fl_Callback*)cb_Fonts);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(10, 195, 80, 80, gettext("Windows"));
+    { Fl_Button* o = new Fl_Button(5, 175, 80, 80, gettext("Windows"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->image(image_jsm6);
       o->callback((Fl_Callback*)cb_Windows);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(105, 195, 80, 80, gettext("Themes"));
+    { Fl_Button* o = new Fl_Button(90, 175, 80, 80, gettext("Themes"));
       o->tooltip(gettext("This is for Predefined Thems"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->image(image_jsm7);
       o->callback((Fl_Callback*)cb_Themes);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(200, 195, 80, 80, gettext("Autostart"));
+    { Fl_Button* o = new Fl_Button(175, 175, 80, 80, gettext("Autostart"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->image(image_jsm8);
       o->callback((Fl_Callback*)cb_Autostart);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(55, 295, 80, 65, gettext("Users and Groups"));
+    { Fl_Button* o = new Fl_Button(5, 260, 80, 80, gettext("Users and Groups"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
-      o->image(image_flAdduser);
       o->callback((Fl_Callback*)cb_Users);
       o->align(Fl_Align(FL_ALIGN_WRAP));
-      o->hide();
-      o->deactivate();
-      //isAdduser(o);
+      isAdduser(o);
+      makeWidgetIcon("system-config-users",o,48);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(150, 295, 80, 65, gettext("System Details"));
+    { Fl_Button* o = new Fl_Button(90, 260, 80, 80, gettext("System Details"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
-      o->image(image_jsm7);
+      o->callback((Fl_Callback*)cb_System);
       o->align(Fl_Align(FL_ALIGN_WRAP));
-      o->hide();
+      makeWidgetIcon("system-info",o,48);
+    } // Fl_Button* o
+    { Fl_Button* o = new Fl_Button(175, 260, 80, 80, gettext("Popups"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->callback((Fl_Callback*)cb_Popups);
+      o->align(Fl_Align(FL_ALIGN_WRAP));
       o->deactivate();
+      makeWidgetIcon("preferences-system-notifications",o,48);
     } // Fl_Button* o
     startup(o,jwm_settings_manager);
     settings_window->xclass("jwm-settings-manager");
@@ -4290,20 +4167,14 @@ Fl_Double_Window* SettingsUI::make_window() {
 
 void SettingsUI::isAdduser(Fl_Button *o) {
   bool isfladduser = testExec("fladduser");
-  
-  if(isfladduser){
-    o->show();
-  }
-  else{
-    o->hide();
-  }
+  if(isfladduser){o->show();}
+  else{o->hide();}
 }
 
 void SettingsUI::adduser() {
-  int retval = system("bash -c 'fladduser &disown'");
-  if(retval !=0){
-    std::cerr<<"system(\"bash -c 'fladduser &disown'\") did not return 0"<<std::endl;
-  }
+  settings_window->hide();
+  int retval = linuxcommon::run_a_program_in_background("fladduser");
+  if(retval !=0){errorOUT("Could not run the user adding program");}
 }
 
 void SettingsUI::isInfo(Fl_Button *o) {
@@ -4317,7 +4188,8 @@ void SettingsUI::isInfo(Fl_Button *o) {
 }
 
 void SettingsUI::addinfo() {
-  int retval = system("bash -c 'torios-info &disown'");
+  settings_window->hide();
+  int retval = linuxcommon::run_a_program_in_background("torios-info");
   if(retval !=0){
     std::cerr<<"system(\"bash -c 'torios-info &disown'\") did not return 0"<<std::endl;
   }

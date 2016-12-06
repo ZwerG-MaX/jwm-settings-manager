@@ -28,8 +28,90 @@
 #define LINUX_COMMON__NS_END }
 #include "../include/common.hpp"
 LINUX_COMMON__NS_BEGIN
-
-	///STRING FUNCTIONS
+	///const char* functions////////////////////////////////////////////
+	/**
+	 * @param
+	 */
+	const char* convert_num_to_string(double num){
+		std::string number;
+		std::stringstream out;
+		out << num;
+		number = out.str();
+		if(number.compare("")==0){return NULL;}
+		return number.c_str();
+	}
+	///STRING FUNCTIONS/////////////////////////////////////////////////
+	//C
+	/** turn a double red green blue value into an HTML string
+	 * @param rgb the double to convert
+	 */
+	std::string color_double_to_string(const double *rgb){
+		char tmp[8];
+		std::snprintf(tmp, sizeof(tmp), "#%02x%02x%02x", int(rgb[0]), int(rgb[1]), int(rgb[2]));
+		return tmp;
+	}
+	/** convert an integer number to a string
+	 * @param num the number to convert
+	 */
+	std::string convert_num_to_string(int num){
+		std::string number;
+		std::stringstream out;
+		out << num;
+		number = out.str();
+		return number;
+	}
+	/** return the current working directory */
+	std::string current_directory(){
+		char buff [ PATH_MAX ];
+		/** use getcwd and handle errors */
+		if(getcwd(buff,PATH_MAX)==0){
+			int error = errno;
+			switch ( error ){
+				case EACCES:
+				throw std::runtime_error("Access denied");
+				case ENOMEM:
+					throw std::runtime_error("Insufficient storage"); 
+				default: {
+					std::ostringstream str;
+					str << "Unrecognised error" << error;
+					throw std::runtime_error(str.str());
+					
+				}
+			}
+		}
+		if(buff==NULL){return "";}
+		/** conver the buffer into a string */
+		std::string dirToOpen=(buff);
+		unsigned int finder=dirToOpen.rfind('/');
+		/** append a / to the end */
+		if(finder+1!=dirToOpen.length()){
+			dirToOpen+="/";
+		}
+		return dirToOpen;
+	}
+	/** pick a path from the $PATH variable
+	 *  these are separated by :
+	 * @param whichPath specify which path to get
+	 */
+	std::string current_path(int whichPath){
+		unsigned int lastPath = 0;
+		std::string result;
+		if (whichPath >=1){lastPath = whichPath - 1;}
+		else {lastPath = 0;}
+		const char* path =getenv("PATH");
+		std::string stringPATH;
+		if(path == NULL){stringPATH = "/usr/bin";}
+		else{stringPATH = path;}
+		std::string::size_type firstPosition = stringPATH.find(':');
+		if(firstPosition>stringPATH.length()){return stringPATH.c_str();}   
+		std::string::size_type position = firstPosition;
+		for (int i=1;i<=whichPath;i++){position = stringPATH.find(':',position+1);}
+		for (unsigned int j=1;j<=lastPath;j++){firstPosition = stringPATH.find(':',firstPosition+1);}
+		result = stringPATH.substr (firstPosition+1,((position-firstPosition)-1));
+		return result;
+	}
+	//G
+	/**get the XDG_CACHE_HOME variable OR $HOME/.cache*/
 	std::string get_cache_dir(){
 		std::string cacheFile;
 		const char* xdgcache =  getenv("XDG_CACHE_HOME");
@@ -49,6 +131,123 @@ LINUX_COMMON__NS_BEGIN
 		if(!test_dir(cacheFile)){mkdir_p(cacheFile.c_str());}
 		return 	cacheFile;
 	}
+	/** return the directory portion of a filename
+	 * @param filename the filename get the directory from
+	 */
+	std::string get_directory_from_filename(std::string filename){
+		unsigned int finder=filename.rfind("/");
+		if(finder<filename.length()){
+			filename=filename.erase(finder,std::string::npos);
+		}
+		else{return "";} /**return empty if there is no directory*/
+		return filename;
+	}
+	/** This function is used for files like *.desktop files to get a value
+	 * @param filename the filename to look in
+	 * @param line the line to look for
+	 */
+	std::string get_line_with_equal(std::string filename, std::string line){
+		if(line.compare("")==0){return "";}
+		if(filename.compare("")==0){return "";}
+		if(!test_file(filename)){echo_error("No file sent in\n"+filename+","+line);}
+		std::string thisLine;
+		std::string subString;
+		std::ifstream inputFileStream(filename.c_str(), std::ifstream::in);
+		if(inputFileStream.is_open()){
+			while (getline(inputFileStream,thisLine)){
+				//echo_error(thisLine);
+				if(thisLine.find(line)<thisLine.length()){
+					unsigned int found =thisLine.find("=");
+					if(found < thisLine.length()){
+						subString=thisLine.substr(found+1,std::string::npos);
+						return subString;
+					}
+				}
+			}
+		}
+		else{echo_error("Could not open filestream for "+filename);}
+		return "";
+	}
+	/** use the get_gtk_item function to get an icon theme, or use hicolor if nothing is found*/	
+	std::string get_gtk_icon_theme(){return get_gtk_item("icon","hicolor");}
+	/** get the gtk theme using the get_gtk_item function, or return Raleigh if nothing is found*/
+	std::string get_gtk_widget_theme(){return get_gtk_item("gtk","Raleigh");}
+	/** get something from org.gnome.desktop.interface *-theme
+	 * @param itemToGet this will be icon OR gtk only
+	 * @param defaultTheme the default theme to return
+	 */
+	std::string get_gtk_item(std::string itemToGet, std::string defaultTheme){
+		std::string gtkrc2_result, gtkrc3_result,gtk2;
+		if((itemToGet.compare("icon")!=0)&&(itemToGet.compare("")!=0)){
+			itemToGet="";
+		}
+		std::string item=itemToGet;
+		std::string GSETTINGS=term_out("which gsettings");
+		std::string GCONF2=term_out("which gconftool-2");
+		if(GSETTINGS.find("gsettings")<GSETTINGS.length()){
+			std::string temp=item;
+			if(item.compare("")==0)temp="gtk";
+			gtkrc3_result=term_out(GSETTINGS+" get org.gnome.desktop.interface "+temp+"-theme");
+			//gtkrc3_result=remove_cruft(gtkrc3_result,"gtk-icon-theme-name=");
+			gtkrc3_result=remove_cruft(gtkrc3_result,"\'");
+			gtkrc3_result=remove_cruft(gtkrc3_result,"\'");
+			return gtkrc3_result;
+		}
+		if(GCONF2.find("gconftool-2")<GCONF2.length()){
+			std::string temp="gtk";
+			if(item.compare("")!=0)temp=item;
+			gtk2=term_out(GCONF2+" --get /desktop/gnome/interface/"+temp+"_theme");
+			return gtk2;
+		}
+		const char* home = getenv("HOME");
+		if(home==NULL){return defaultTheme;}
+		std::string HOME=home;
+		//CHECK/SET GTKRC FILES
+		std::string GTKRC2=HOME + "/.gtkrc-2.0";
+		const char* xdg_config_home=getenv("XDG_CONFIG_HOME");
+		std::string XDG_CONFIG_HOME;
+		if (xdg_config_home!=NULL){
+			XDG_CONFIG_HOME=xdg_config_home;
+		}
+		else{
+			XDG_CONFIG_HOME=HOME +"/.config";
+		}
+		std::string GTKRC3=XDG_CONFIG_HOME + "/gtk-3.0/settings.ini";
+		if(test_file(GTKRC3.c_str())){
+			std::string temp;
+			if(item.compare("")!=0)temp=item+"-";
+			temp="gtk"+temp+"-theme-name=";
+			gtkrc3_result=get_line_with_equal(GTKRC3,temp);
+			gtkrc3_result=remove_cruft(gtkrc3_result,temp);
+			gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
+			gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
+			return gtkrc3_result;
+		}
+		if(test_file(GTKRC2.c_str())){
+			std::string temp;
+			if(item.compare("")!=0)temp=item+"-";
+			temp="gtk"+temp+"-theme-name=";
+			gtkrc2_result=get_line_with_equal(GTKRC2,temp);
+			gtkrc2_result=remove_cruft(gtkrc2_result,"\"");
+			gtkrc2_result=remove_cruft(gtkrc2_result,"\"");
+			return gtkrc2_result;
+		}
+		return defaultTheme;
+	}
+	/** This is a specialized internal function to return something akin to "bash -c '"*/
+	std::string get_shell_for_C(){
+		std::string shell=term_out("which bash");
+		if(shell.compare("")==0){
+			if(!test_exec(shell)){
+				shell=term_out("which sh");
+				if(!test_exec(shell)){return "";}
+				//TODO make this work for others
+			}
+		}
+		shell=shell+" -c '";
+		return shell;
+	}
+	/** This function dereferences a symlink to the actual file*/
 	std::string get_symlinkpath(std::string symlink){
 		std::vector<char> buf(400);
 		size_t len;
@@ -64,21 +263,476 @@ LINUX_COMMON__NS_BEGIN
 		echo_error("Error with symlink");
 		return "";
 	}
+    /** Return the FIRST match of the 'args' from a file
+     * this is like  line=`grep -m 1 $args $filename`
+	 * @param args the string to 'grep'
+	 * @param filename the file to 'grep' from
+	 */
     std::string grep(std::string args, std::string filename) {
-  ///Return the FIRST match of the 'args' from a file
-  // this is like  line=`grep $args $filename` that only returns one line
       std::string line;
       int lengthofARGS = args.length();
       std::string subString;
       std::ifstream inputFileStrem (filename.c_str(), std::ifstream::in);
+      /** check if the input file stream is open */
       if(inputFileStrem.is_open()){
           while (getline(inputFileStrem,line)){
               subString=line.substr(0,lengthofARGS);
+              /** if found return it immediately */
               if(subString.compare(args)==0){return line;}
           }
       }
       return "";
 	}
+	//H
+	/** get the enviroment variable $HOME returned with an appended '/'*/
+	std::string home_path(){
+		const char* homer=getenv("HOME");
+		if(homer==NULL){return "";}
+		std::string homePath=homer;
+		homePath+="/";
+		return homePath;
+	}
+	//F
+	/** turn a file into a newline separated string
+	 * @param filename the file to read
+	 */
+	std::string file_to_string(std::string filename){
+		if(filename.compare("")==0){return "";}
+		/** make sure it is actually a file */
+		if(!test_file(filename)){echo_error("No file sent in: "+filename);}
+		std::string thisLine;
+		std::string fullString;
+		std::ifstream inputFileStream(filename.c_str(), std::ifstream::in);
+		if(inputFileStream.is_open()){
+			while (getline(inputFileStream,thisLine)){
+				if(fullString.compare("")==0){fullString=thisLine;}
+				else{fullString=fullString+"\n"+thisLine;}
+			}
+		}
+		return fullString;
+	}
+	/** find a sub directory in the $XDG_DATA_DIRS paths
+	 * @param subdir the sub directory to find
+	 */
+	std::string find_xdg_data_dir_subdir(std::string subdir){
+		/** use the desktop_dirs() function to get a vector of the XDG_DATA_DIRS */
+		std::vector<std::string> xdgDataDirs = desktop_dirs();
+		std::string dirToOpen;
+		for( std::vector<std::string>::iterator it = xdgDataDirs.begin();
+		it!=xdgDataDirs.end();
+		++it){
+			dirToOpen=*it;
+			unsigned int finder=dirToOpen.rfind('/');
+			if(finder+1==dirToOpen.length()){
+				dirToOpen+=subdir;
+			}
+			else{
+				dirToOpen+="/";
+				dirToOpen+=subdir;
+			}
+			if(test_dir(dirToOpen)){
+				if(finder+1==dirToOpen.length()){
+					return dirToOpen;
+				}
+				else{
+					dirToOpen+="/";
+					return dirToOpen;
+				}
+			}
+			else{echo_error(dirToOpen+" does not exist");}
+		}
+		return "";
+	}
+	/** find a directory in the XDG_CONFIG_DIRS paths
+	 * @param subdir the subdirectory to look for
+	 */
+	std::string find_xdg_config_dir_subdir(std::string subdir){
+		/** use the xdg_conf_dirs() function to get a vector of the XDG_CONFIG_DIRS paths*/
+		std::vector<std::string> xdgDataDirs = xdg_conf_dirs();
+		std::string dirToOpen;
+		for( std::vector<std::string>::iterator it = xdgDataDirs.begin();
+		it!=xdgDataDirs.end();
+		++it){
+			dirToOpen=*it;
+			unsigned int finder=dirToOpen.rfind('/');
+			if(finder+1==dirToOpen.length()){
+				dirToOpen+=subdir;
+			}
+			else{
+				dirToOpen+="/";
+				dirToOpen+=subdir;
+			}
+			if(test_dir(dirToOpen)){
+				if(finder+1==dirToOpen.length()){
+					return dirToOpen;
+				}
+				else{
+					dirToOpen+="/";
+					return dirToOpen;
+				}
+			}
+		}
+		return "";
+	}
+	/** This function will escape spaces in filenames for use in terminal commands
+	 * @param filepath the filename to fix up
+	 */
+	std::string fix_file_path_for_command_line(std::string filepath){
+		std::string Filename=filepath;
+		std::string escape = "\\ ";
+		size_t start_pos = 0;
+		while((start_pos = Filename.find(' ', start_pos)) != std::string::npos) {
+			Filename.replace(start_pos, 1, escape);
+			start_pos += escape.length(); // Handles case where 'to' is a substring of 'from'
+			//std::cout<<Filename<<std::endl;
+		}
+		return Filename;
+	}
+	//L	
+	/** look for a NON hidden file in a specific directory
+	 * this will return a comma delimited list of choices
+	 * @param fileWITHOUTpath a filename without a path
+	 * @param dir the directory to recursively check
+	 */
+	std::string look_for_file_in_subdirs(std::string fileWITHOUTpath,std::string dir){
+		if((dir.compare("")==0)||(fileWITHOUTpath.compare("")==0))return "";
+		/** if it is not a directory return empty */
+		if(!test_dir(dir))return "";
+		/** remove the preceding path*/
+		unsigned int found=fileWITHOUTpath.rfind('/');
+		if(found<fileWITHOUTpath.length()){
+			unsigned int len=fileWITHOUTpath.length()-found;
+			fileWITHOUTpath=fileWITHOUTpath.erase(0,len);
+		}
+		std::string ANSWERS;
+		DIR *mydir=NULL;
+		struct dirent *entryPointer=NULL;
+		mydir=opendir(dir.c_str());
+		/** open the directory */
+		if(mydir!=NULL){
+			while ((entryPointer=readdir(mydir))!=NULL){
+				/** find out if it is a symlink or regular file that is not hidden*/
+				if(((entryPointer->d_type == DT_LNK)||(entryPointer->d_type == DT_REG))&&(entryPointer->d_name[0]!='.')){
+					std::string fullpath=entryPointer->d_name;
+					if(dir.rfind('/')!=dir.length()-1){dir+="/";}
+					fullpath=dir+fullpath;
+					unsigned int findIT = fullpath.find(fileWITHOUTpath);
+					if(findIT<=fullpath.length()){
+						/** add a comma at the end if there isn't one already*/
+						if(ANSWERS.rfind(",")!=ANSWERS.length()-1)ANSWERS+=",";
+						ANSWERS+=fullpath;
+					}
+				}
+				/** find out if it is a directory that is not hidden*/
+				if((entryPointer->d_type==DT_DIR)&&(entryPointer->d_name[0]!='.')){
+					std::string fullpath=entryPointer->d_name;
+					if(dir.rfind('/')!=dir.length()-1){dir+="/";}
+					fullpath=dir+fullpath;
+					std::string thisAnswer=look_for_file_in_subdirs(fileWITHOUTpath,fullpath);
+					if(thisAnswer.compare("")!=0){
+						if(ANSWERS.rfind(",")!=ANSWERS.length()-1){
+							ANSWERS+=",";
+						}
+						ANSWERS+=thisAnswer;
+					}
+				}
+				
+			}
+		}
+		closedir(mydir);
+		if(ANSWERS.compare("")!=0){
+			return ANSWERS;
+		}
+		return "";
+	}
+	/** find the first file in a subdirectory ONLY
+	 * @param fileWITHOUTpath A filename without a path behind it (though it will be removed if it exists)
+	 * @param dir the directory to look in
+	 */
+	std::string look_for_first_file_in_subdirs(std::string fileWITHOUTpath,std::string dir){
+		//echo("std::string look_for_first_file_in_subdirs(std::string "+fileWITHOUTpath+",std::string "+dir);//+",std::string "+answer+")");
+		if((dir.compare("")==0)||(fileWITHOUTpath.compare("")==0)){
+			echo_error("std::string look_for_first_file_in_subdirs(std::string fileWITHOUTpath,std::string dir) requires non empty variables to work\nMUST EXIT");
+			return "";
+		}
+		if(!test_dir(dir)){
+			echo_error(dir+" is not a directory\nMUST EXIT");
+			return "";
+		}
+		unsigned int found=fileWITHOUTpath.rfind('/');
+		if(found<fileWITHOUTpath.length()){
+			unsigned int len=fileWITHOUTpath.length()-found;
+			fileWITHOUTpath=fileWITHOUTpath.erase(0,len);
+		}
+		std::string ANSWERS;
+		DIR *mydir=NULL;
+		struct dirent *entryPointer=NULL;
+		mydir=opendir(dir.c_str());
+		std::string finalAnswer;
+		if(mydir!=NULL){
+			while ((entryPointer=readdir(mydir))!=NULL){
+				std::string fullpath=entryPointer->d_name;
+				if(dir.rfind('/')!=dir.length()-1){dir+="/";}
+				fullpath=dir+fullpath;
+				/** if it is a symlink or file check it */
+				if(((entryPointer->d_type == DT_LNK)||(entryPointer->d_type == DT_REG))&&(entryPointer->d_name[0]!='.')){
+					std::string tempFINDER="/"+fileWITHOUTpath;
+					//echo("FINDER:"+tempFINDER+"\nfullpath="+fullpath);
+					unsigned int findIT = fullpath.find(tempFINDER);
+					if(findIT<=fullpath.length()){
+						if(entryPointer->d_type == DT_LNK){
+							/** if it is a symlink get the actual file */
+							std::string temporary=get_symlinkpath(fullpath);
+							//echo("SYMLINK="+fullpath+"\nFile="+temporary);
+							if(temporary.compare("")!=0){
+								closedir(mydir);
+								if(temporary.find("/")>temporary.length()){temporary=dir+temporary;}
+								//echo("Symlink="+temporary);
+								finalAnswer=temporary;
+								return temporary;
+							}
+						}
+						else{
+							closedir(mydir);
+							finalAnswer=fullpath;
+							return fullpath;
+						}
+					}
+				}
+				/** if it is a directory look inside recursively */
+				if((entryPointer->d_type==DT_DIR)&&(entryPointer->d_name[0]!='.')){
+					std::string thisAnswer=look_for_first_file_in_subdirs(fileWITHOUTpath,fullpath);//,thisAnswer);
+					if(thisAnswer.compare("")!=0){
+						if(test_file(thisAnswer)){
+							closedir(mydir);
+							finalAnswer=thisAnswer;
+							return thisAnswer;
+						}
+					}
+				}
+			}
+			closedir(mydir);
+		}
+		else{echo_error(dir+" cannot be opened\nMUST EXIT");}
+		echo("Final Answer="+finalAnswer);
+		return finalAnswer;
+	}
+	/** look for an icon file in the normal XDG DATA DIRS paths, checking the current gtk icon theme first
+	 * @param fileWITHOUTpath the icon filename (does not need an extention)
+	 */
+	std::string look_for_icon_file(std::string fileWITHOUTpath){
+		std::string dir=find_xdg_data_dir_subdir("icons");
+		echo("std::string look_for_icon_file(std::string "+fileWITHOUTpath+")");
+		std::string gtktheme=get_gtk_icon_theme();
+		if(dir.rfind('/')!=dir.length()-1){dir+="/";}
+		std::string testingDIR=dir+gtktheme;
+		if(testingDIR.rfind('/')!=testingDIR.length()-1){testingDIR+="/";}
+		if(test_dir(testingDIR)){dir=testingDIR;}
+		if(fileWITHOUTpath.compare("")==0){
+			echo_error("std::string testingDIR(std::string fileWITHOUTpath) requires non empty variables to work\nMUST EXIT");
+			return "";
+		}
+		//echo("GTKtheme="+gtktheme+"\nDir="+dir);
+		if(!test_dir(dir)){
+			echo_error(dir+" is not a directory\nTrying to look in icons directories");
+			dir=find_xdg_data_dir_subdir("icons");
+			if(!test_dir(dir)){
+				echo_error(dir+" is not a directory\nMUST EXIT");
+				return "";
+			}
+			return look_for_first_file_in_subdirs(fileWITHOUTpath,dir);
+		}
+		std::string ANSWERS;
+		DIR *mydir=NULL;
+		struct dirent *entryPointer=NULL;
+		mydir=opendir(dir.c_str());
+		std::string finalAnswer;
+		if(mydir!=NULL){
+			while ((entryPointer=readdir(mydir))!=NULL){
+				std::string fullpath=entryPointer->d_name;
+				if(dir.rfind('/')!=dir.length()-1){dir+="/";}
+				fullpath=dir+fullpath;
+				if((entryPointer->d_type == DT_REG)&&(entryPointer->d_name[0]!='.')){
+					std::string tempFINDER="/"+fileWITHOUTpath;
+					unsigned int findIT = fullpath.find(tempFINDER);
+					if(findIT<=fullpath.length()){
+						closedir(mydir);
+						finalAnswer=fullpath;
+						return fullpath;
+					}
+				}
+				if((entryPointer->d_type==DT_DIR)&&(entryPointer->d_name[0]!='.')){
+					std::string thisAnswer=look_for_first_file_in_subdirs(fileWITHOUTpath,fullpath);//,thisAnswer);
+					if(thisAnswer.compare("")!=0){
+						if(test_file(thisAnswer)){
+							closedir(mydir);
+							finalAnswer=thisAnswer;
+							return thisAnswer;
+						}
+					}
+				}
+			}
+			closedir(mydir);
+		}
+		else{echo_error(dir+" cannot be opened\nMUST EXIT");}
+		echo("Final Answer="+finalAnswer);
+		return finalAnswer;
+	}
+	//R
+	/** remove something from a string
+	 * @param StringInput the string to process
+	 * @param CruftToRemove the cruft to remove
+	 */
+	std::string remove_cruft(std::string StringInput, std::string CruftToRemove){
+		if((StringInput.compare("")==0)||(CruftToRemove.compare("")==0)){return StringInput;}
+		unsigned int found=0;
+		unsigned int cruftLength=CruftToRemove.length();
+		found=StringInput.find(CruftToRemove);
+		if(found>StringInput.length()){return StringInput;}
+		std::string temp=StringInput;
+		temp=temp.erase(0,found+cruftLength);
+		if(temp.compare("")!=0){return temp;}
+		std::string temp2=StringInput;
+		temp2=temp2.erase(found,std::string::npos);
+		if(temp2.compare("")!=0){return temp2;}
+		echo_error("There was a problem removing the cruft.... Giving you back your string");
+		return StringInput;
+	}
+	/** remove a percentage symbol from the Exec= line in a desktop file
+	 * @param line the line to process
+	 */
+	std::string remove_percentage(std::string line){
+		if(line.compare("")==0){return line;}
+		unsigned int percentfind=0;
+		std::string tempstring;
+		percentfind=line.find_first_of(" %",0);
+		if(percentfind>line.length()){return line;}
+		unsigned int semifind=line.find_first_of(";",percentfind);
+		bool andis=false;
+		bool semiis=false;
+		if(semifind<line.length()){semiis=true;}
+		unsigned int andfind=line.find_first_of("&",percentfind);
+		if(andfind<line.length()){andis=true;}
+		if(andis && semiis){
+			if(andfind<semifind){tempstring=line.erase(percentfind, andfind);}
+			else{tempstring=line.erase(percentfind, semifind);}
+		}
+		else if(andis){tempstring=line.erase(percentfind, andfind);}
+		else if(semiis){tempstring=line.erase(percentfind, semifind);}
+		else{tempstring=line.erase(percentfind, std::string::npos);}
+		return tempstring;
+	}
+	//S
+	/** similar to 'sed' for a string
+	 * @param input the initial string
+	 * @param remove what you want gone
+	 * @param replace what should replace it
+	 */
+	std::string sed_i(std::string input, std::string remove, std::string replace){
+		unsigned int xmlfix=0;
+		unsigned int oldFind=0;
+		unsigned int length=input.length();
+		unsigned int removeLength=remove.length();
+		std::string modinput=input;
+		while(modinput.find(remove,oldFind)<length){
+			xmlfix = modinput.find(remove,oldFind);
+			oldFind=xmlfix+replace.length();
+			std::string tempPRE,tempPOST,temp;
+			if(xmlfix<length){
+				temp=modinput;
+				tempPOST=modinput;
+				tempPRE = temp.erase(xmlfix,std::string::npos);
+				tempPOST = modinput.erase(0,xmlfix+removeLength);
+				modinput = tempPRE + replace + tempPOST;
+				length=modinput.length();
+			}
+		}
+		return modinput;
+	}
+	//T
+	/** return terminal output with the ending newline character removed
+	 * @param terminal_Command_You_Want_Output_From the command to return output from
+	 */
+	std::string term_out(std::string terminal_Command_You_Want_Output_From) {
+		if(terminal_Command_You_Want_Output_From.compare("")==0){return "";}
+		/** set a locale so this works well */
+		const char* LANG=getenv("LANG");
+		std::string LOCALE;
+		if(LANG==NULL){
+			LANG=getenv("LANGUAGE");
+			if(LANG!=NULL){
+				std::string tmp=LANG;
+				unsigned int find=tmp.find(".UTF-8");
+				if(find>tmp.length()){tmp+=".UTF-8";}
+				LOCALE=tmp;
+			}
+		}
+		else{
+			LOCALE=LANG;
+		}
+		if(LOCALE.compare("")!=0){setlocale(LC_ALL, LOCALE.c_str());}
+		std::string result="";
+		const int max_buffer = 1024;
+		char buffer[max_buffer];
+		FILE *command_p = popen(terminal_Command_You_Want_Output_From.c_str(), "r");
+		if (command_p){
+			while( fgets(buffer, sizeof(buffer), command_p) !=NULL){result.append(buffer);}
+			pclose(command_p);
+		}
+		else{ return "";}
+		if (result.compare("")==0){return "";}
+		int end = result.length();
+		if((end-1) == 0){return "";}
+		if((end) == 0){return "";}
+		//std::cout<<result<<"Length="<<result.length();
+		return result.erase(end-1,1);
+	}
+	/** Find a file in a vector of directories
+	 * @param fileWithNOPATH the file with no path (though if it exists it will be removed
+	 * @param directories_to_check the vector of directories to check
+	 */
+	std::string test_file_in_vector_path(std::string fileWithNOPATH,std::vector<std::string> directories_to_check){
+		//echo_error("test_file_in_vector_path... filepath ORIGINAL="+fileWithNOPATH);
+		if(fileWithNOPATH.compare("")==0){return "";}
+		std::string filePathRemoved=fileWithNOPATH;
+		unsigned int found=filePathRemoved.rfind('/');
+		/** remove the path */
+		if(found<filePathRemoved.length()){
+			unsigned int len=filePathRemoved.length()-found;
+			filePathRemoved=filePathRemoved.erase(0,len);
+			//echo_error("test_file_in_vector_path... filepath removed="+filePathRemoved);
+		}
+		for( std::vector<std::string>::iterator it = directories_to_check.begin();
+		it!=directories_to_check.end();
+		++it){
+			std::string dirToOpen=*it;
+			std::string result=dirToOpen;
+			unsigned int finder=dirToOpen.rfind('/');
+			if(finder+1==dirToOpen.length()){
+				result+=filePathRemoved;
+				//echo_error("test_file_in_vector_path... dir to open="+result);
+			}
+			else{
+				result+="/";
+				result+=filePathRemoved;
+				//echo_error("test_file_in_vector_path... dir to open="+result);
+			}
+			//echo_error("looking for "+result);
+			if(test_file(result)){return result;}
+			else{
+				std::string tmp=result;
+				tmp=get_symlinkpath(tmp);
+				//echo_error("symlnik returns:"+tmp);
+				if(tmp.compare("")!=0){return test_file_in_vector_path(tmp,directories_to_check);}
+			}
+		}
+		//echo_error("test_file_in_vector_path... found NO files");
+		return "";
+	}
+	//Q
+	/** change characters XML doesn't like into ones it does
+	 * @param input the string to modify
+	 */
 	std::string quote_xml(std::string input){
 		std::string amp="&#09;";
 		input=sed_i(input,"&",amp);
@@ -146,396 +800,13 @@ LINUX_COMMON__NS_BEGIN
 		input=sed_i(input,"~",tilde);
 		return input;
 	}
-	std::string sed_i(std::string input, std::string remove, std::string replace){
-		unsigned int xmlfix=0;
-		unsigned int oldFind=0;
-		unsigned int length=input.length();
-		unsigned int removeLength=remove.length();
-		std::string modinput=input;
-		while(modinput.find(remove,oldFind)<length){
-			xmlfix = modinput.find(remove,oldFind);
-			oldFind=xmlfix+replace.length();
-			std::string tempPRE,tempPOST,temp;
-			if(xmlfix<length){
-				temp=modinput;
-				tempPOST=modinput;
-				tempPRE = temp.erase(xmlfix,std::string::npos);
-				tempPOST = modinput.erase(0,xmlfix+removeLength);
-				modinput = tempPRE + replace + tempPOST;
-				length=modinput.length();
-			}
-		}
-		return modinput;
-	}
-	std::string term_out(std::string terminal_Command_You_Want_Output_From) {
-		if(terminal_Command_You_Want_Output_From.compare("")==0){return "";}
-		const char* LANG=getenv("LANG");
-		std::string LOCALE;
-		if(LANG==NULL){
-			LANG=getenv("LANGUAGE");
-			if(LANG!=NULL){
-				std::string tmp=LANG;
-				unsigned int find=tmp.find(".UTF-8");
-				if(find>tmp.length()){tmp+=".UTF-8";}
-				LOCALE=tmp;
-			}
-		}
-		else{
-			LOCALE=LANG;
-		}
-		if(LOCALE.compare("")!=0){setlocale(LC_ALL, LOCALE.c_str());}
-		std::string result="";
-		const int max_buffer = 1024;
-		char buffer[max_buffer];
-		FILE *command_p = popen(terminal_Command_You_Want_Output_From.c_str(), "r");
-		if (command_p){
-			while( fgets(buffer, sizeof(buffer), command_p) !=NULL){result.append(buffer);}
-			pclose(command_p);
-		}
-		else{ return "";}
-		if (result.compare("")==0){return "";}
-		int end = result.length();
-		if((end-1) == 0){return "";}
-		if((end) == 0){return "";}
-		//std::cout<<result<<"Length="<<result.length();
-		return result.erase(end-1,1);
-	}
-	std::string current_path(int whichPath){
-		unsigned int lastPath = 0;
-		std::string result;
-		if (whichPath >=1){lastPath = whichPath - 1;}
-		else {lastPath = 0;}
-		const char* path =getenv("PATH");
-		std::string stringPATH;
-		if(path == NULL){stringPATH = "/usr/bin";}
-		else{stringPATH = path;}
-		std::string::size_type firstPosition = stringPATH.find(':');
-		if(firstPosition>stringPATH.length()){return stringPATH.c_str();}   
-		std::string::size_type position = firstPosition;
-		for (int i=1;i<=whichPath;i++){position = stringPATH.find(':',position+1);}
-		for (unsigned int j=1;j<=lastPath;j++){firstPosition = stringPATH.find(':',firstPosition+1);}
-		result = stringPATH.substr (firstPosition+1,((position-firstPosition)-1));
-		return result;
-	}
-	std::string current_directory(){
-		char buff [ PATH_MAX ];
-		if(getcwd(buff,PATH_MAX)==0){
-			int error = errno;
-			switch ( error ){
-				case EACCES:
-				throw std::runtime_error("Access denied");
-				case ENOMEM:
-					throw std::runtime_error("Insufficient storage"); 
-				default: {
-					std::ostringstream str;
-					str << "Unrecognised error" << error;
-					throw std::runtime_error(str.str());
-					
-				}
-			}
-		}
-		if(buff==NULL){return "";}
-		std::string dirToOpen=(buff);
-		unsigned int finder=dirToOpen.rfind('/');
-		if(finder+1!=dirToOpen.length()){
-			dirToOpen+="/";
-		}
-		return dirToOpen;
-	}
-	std::string get_gtk_icon_theme(){return get_gtk_item("icon","hicolor");}
-	std::string get_gtk_widget_theme(){return get_gtk_item("gtk","Raleigh");}
-	std::string get_gtk_item(std::string itemToGet, std::string defaultTheme){
-		std::string gtkrc2_result, gtkrc3_result,gtk2;
-		if((itemToGet.compare("icon")!=0)&&(itemToGet.compare("")!=0)){
-			itemToGet="";
-		}
-		std::string item=itemToGet;
-		std::string GSETTINGS=term_out("which gsettings");
-		std::string GCONF2=term_out("which gconftool-2");
-		if(GSETTINGS.find("gsettings")<GSETTINGS.length()){
-			std::string temp=item;
-			if(item.compare("")==0)temp="gtk";
-			gtkrc3_result=term_out(GSETTINGS+" get org.gnome.desktop.interface "+temp+"-theme");
-			//gtkrc3_result=remove_cruft(gtkrc3_result,"gtk-icon-theme-name=");
-			gtkrc3_result=remove_cruft(gtkrc3_result,"\'");
-			gtkrc3_result=remove_cruft(gtkrc3_result,"\'");
-			return gtkrc3_result;
-		}
-		if(GCONF2.find("gconftool-2")<GCONF2.length()){
-			std::string temp="gtk";
-			if(item.compare("")!=0)temp=item;
-			gtk2=term_out(GCONF2+" --get /desktop/gnome/interface/"+temp+"_theme");
-			return gtk2;
-		}
-		const char* home = getenv("HOME");
-		if(home==NULL){return defaultTheme;}
-		std::string HOME=home;
-		//CHECK/SET GTKRC FILES
-		std::string GTKRC2=HOME + "/.gtkrc-2.0";
-		const char* xdg_config_home=getenv("XDG_CONFIG_HOME");
-		std::string XDG_CONFIG_HOME;
-		if (xdg_config_home!=NULL){
-			XDG_CONFIG_HOME=xdg_config_home;
-		}
-		else{
-			XDG_CONFIG_HOME=HOME +"/.config";
-		}
-		std::string GTKRC3=XDG_CONFIG_HOME + "/gtk-3.0/settings.ini";
-		if(test_file(GTKRC3.c_str())){
-			std::string temp;
-			if(item.compare("")!=0)temp=item+"-";
-			temp="gtk"+temp+"-theme-name=";
-			gtkrc3_result=get_line_with_equal(GTKRC3,temp);
-			gtkrc3_result=remove_cruft(gtkrc3_result,temp);
-			gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
-			gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
-			return gtkrc3_result;
-		}
-		if(test_file(GTKRC2.c_str())){
-			std::string temp;
-			if(item.compare("")!=0)temp=item+"-";
-			temp="gtk"+temp+"-theme-name=";
-			gtkrc2_result=get_line_with_equal(GTKRC2,temp);
-			gtkrc2_result=remove_cruft(gtkrc2_result,"\"");
-			gtkrc2_result=remove_cruft(gtkrc2_result,"\"");
-			return gtkrc2_result;
-		}
-		return defaultTheme;
-	}
-	std::string remove_cruft(std::string StringInput, std::string CruftToRemove){
-		if((StringInput.compare("")==0)||(CruftToRemove.compare("")==0)){return StringInput;}
-		unsigned int found=0;
-		unsigned int cruftLength=CruftToRemove.length();
-		found=StringInput.find(CruftToRemove);
-		if(found>StringInput.length()){return StringInput;}
-		std::string temp=StringInput;
-		temp=temp.erase(0,found+cruftLength);
-		if(temp.compare("")!=0){return temp;}
-		std::string temp2=StringInput;
-		temp2=temp2.erase(found,std::string::npos);
-		if(temp2.compare("")!=0){return temp2;}
-		echo_error("There was a problem removing the cruft.... Giving you back your string");
-		return StringInput;
-	}
-	std::string find_xdg_data_dir_subdir(std::string subdir){
-		std::vector<std::string> xdgDataDirs = desktop_dirs();
-		std::string dirToOpen;
-		for( std::vector<std::string>::iterator it = xdgDataDirs.begin();
-		it!=xdgDataDirs.end();
-		++it){
-			dirToOpen=*it;
-			unsigned int finder=dirToOpen.rfind('/');
-			if(finder+1==dirToOpen.length()){
-				dirToOpen+=subdir;
-			}
-			else{
-				dirToOpen+="/";
-				dirToOpen+=subdir;
-			}
-			if(test_dir(dirToOpen)){
-				if(finder+1==dirToOpen.length()){
-					return dirToOpen;
-				}
-				else{
-					dirToOpen+="/";
-					return dirToOpen;
-				}
-			}
-			else{echo_error(dirToOpen+" does not exist");}
-		}
-		return "";
-	}
-	std::string find_xdg_config_dir_subdir(std::string subdir){
-		std::vector<std::string> xdgDataDirs = xdg_conf_dirs();
-		std::string dirToOpen;
-		for( std::vector<std::string>::iterator it = xdgDataDirs.begin();
-		it!=xdgDataDirs.end();
-		++it){
-			dirToOpen=*it;
-			unsigned int finder=dirToOpen.rfind('/');
-			if(finder+1==dirToOpen.length()){
-				dirToOpen+=subdir;
-			}
-			else{
-				dirToOpen+="/";
-				dirToOpen+=subdir;
-			}
-			if(test_dir(dirToOpen)){
-				if(finder+1==dirToOpen.length()){
-					return dirToOpen;
-				}
-				else{
-					dirToOpen+="/";
-					return dirToOpen;
-				}
-			}
-		}
-		return "";
-	}
-	std::string color_double_to_string(const double *rgb){
-		char tmp[8];
-		std::snprintf(tmp, sizeof(tmp), "#%02x%02x%02x", int(rgb[0]), int(rgb[1]), int(rgb[2]));
-		return tmp;
-	}
-	std::string look_for_file_in_subdirs(std::string fileWITHOUTpath,std::string dir){
-		if((dir.compare("")==0)||(fileWITHOUTpath.compare("")==0))return "";
-		if(!test_dir(dir))return "";
-		std::string ANSWERS;
-		DIR *mydir=NULL;
-		struct dirent *entryPointer=NULL;
-		mydir=opendir(dir.c_str());
-		if(mydir!=NULL){
-			while ((entryPointer=readdir(mydir))!=NULL){
-				if(((entryPointer->d_type == DT_LNK)||(entryPointer->d_type == DT_REG))&&(entryPointer->d_name[0]!='.')){
-					std::string fullpath=entryPointer->d_name;
-					if(dir.rfind('/')!=dir.length()-1){dir+="/";}
-					fullpath=dir+fullpath;
-					unsigned int findIT = fullpath.find(fileWITHOUTpath);
-					if(findIT<=fullpath.length()){
-						if(ANSWERS.rfind(",")!=ANSWERS.length()-1)ANSWERS+=",";
-						ANSWERS+=fullpath;
-					}
-				}
-				if((entryPointer->d_type==DT_DIR)&&(entryPointer->d_name[0]!='.')){
-					std::string fullpath=entryPointer->d_name;
-					if(dir.rfind('/')!=dir.length()-1){dir+="/";}
-					fullpath=dir+fullpath;
-					std::string thisAnswer=look_for_file_in_subdirs(fileWITHOUTpath,fullpath);
-					if(thisAnswer.compare("")!=0){
-						if(ANSWERS.rfind(",")!=ANSWERS.length()-1){
-							ANSWERS+=",";
-						}
-						ANSWERS+=thisAnswer;
-					}
-				}
-				
-			}
-		}
-		closedir(mydir);
-		if(ANSWERS.compare("")!=0){
-			return ANSWERS;
-		}
-		return "";
-	}
-	std::string look_for_first_file_in_subdirs(std::string fileWITHOUTpath,std::string dir){//,std::string answer){
-		//echo("std::string look_for_first_file_in_subdirs(std::string "+fileWITHOUTpath+",std::string "+dir);//+",std::string "+answer+")");
-		if((dir.compare("")==0)||(fileWITHOUTpath.compare("")==0)){
-			echo_error("std::string look_for_first_file_in_subdirs(std::string fileWITHOUTpath,std::string dir) requires non empty variables to work\nMUST EXIT");
-			return "";
-		}
-		if(!test_dir(dir)){
-			echo_error(dir+" is not a directory\nMUST EXIT");
-			return "";
-		}
-		std::string ANSWERS;
-		DIR *mydir=NULL;
-		struct dirent *entryPointer=NULL;
-		mydir=opendir(dir.c_str());
-		std::string finalAnswer;
-		if(mydir!=NULL){
-			while ((entryPointer=readdir(mydir))!=NULL){
-				std::string fullpath=entryPointer->d_name;
-				if(dir.rfind('/')!=dir.length()-1){dir+="/";}
-				fullpath=dir+fullpath;
-				if(((entryPointer->d_type == DT_LNK)||(entryPointer->d_type == DT_REG))&&(entryPointer->d_name[0]!='.')){
-					std::string tempFINDER="/"+fileWITHOUTpath;
-					//echo("FINDER:"+tempFINDER+"\nfullpath="+fullpath);
-					unsigned int findIT = fullpath.find(tempFINDER);
-					if(findIT<=fullpath.length()){
-						if(entryPointer->d_type == DT_LNK){
-							std::string temporary=get_symlinkpath(fullpath);
-							echo("SYMLINK="+fullpath+"\nFile="+temporary);
-							if(temporary.compare("")!=0){
-								closedir(mydir);
-								if(temporary.find("/")>temporary.length()){temporary=dir+temporary;}
-								echo("Symlink="+temporary);
-								finalAnswer=temporary;
-								return temporary;
-							}
-						}
-						else{
-							closedir(mydir);
-							finalAnswer=fullpath;
-							return fullpath;
-						}
-					}
-				}
-				if((entryPointer->d_type==DT_DIR)&&(entryPointer->d_name[0]!='.')){
-					std::string thisAnswer=look_for_first_file_in_subdirs(fileWITHOUTpath,fullpath);//,thisAnswer);
-					if(thisAnswer.compare("")!=0){
-						if(test_file(thisAnswer)){
-							closedir(mydir);
-							finalAnswer=thisAnswer;
-							return thisAnswer;
-						}
-					}
-				}
-			}
-		}
-		else{echo_error(dir+" cannot be opened\nMUST EXIT");}
-		echo("Final Answer="+finalAnswer);
-		return finalAnswer;
-	}
-	std::string look_for_icon_file(std::string fileWITHOUTpath){//,std::string answer){
-		std::string dir=find_xdg_data_dir_subdir("icons");
-		echo("std::string look_for_icon_file(std::string "+fileWITHOUTpath+")");
-		std::string gtktheme=get_gtk_icon_theme();
-		if(dir.rfind('/')!=dir.length()-1){dir+="/";}
-		std::string testingDIR=dir+gtktheme;
-		if(testingDIR.rfind('/')!=testingDIR.length()-1){testingDIR+="/";}
-		if(test_dir(testingDIR)){dir=testingDIR;}
-		if(fileWITHOUTpath.compare("")==0){
-			echo_error("std::string testingDIR(std::string fileWITHOUTpath) requires non empty variables to work\nMUST EXIT");
-			return "";
-		}
-		//echo("GTKtheme="+gtktheme+"\nDir="+dir);
-		if(!test_dir(dir)){
-			echo_error(dir+" is not a directory\nTrying to look in icons directories");
-			dir=find_xdg_data_dir_subdir("icons");
-			if(!test_dir(dir)){
-				echo_error(dir+" is not a directory\nMUST EXIT");
-				return "";
-			}
-			return look_for_first_file_in_subdirs(fileWITHOUTpath,dir);
-		}
-		std::string ANSWERS;
-		DIR *mydir=NULL;
-		struct dirent *entryPointer=NULL;
-		mydir=opendir(dir.c_str());
-		std::string finalAnswer;
-		if(mydir!=NULL){
-			while ((entryPointer=readdir(mydir))!=NULL){
-				std::string fullpath=entryPointer->d_name;
-				if(dir.rfind('/')!=dir.length()-1){dir+="/";}
-				fullpath=dir+fullpath;
-				if((entryPointer->d_type == DT_REG)&&(entryPointer->d_name[0]!='.')){
-					std::string tempFINDER="/"+fileWITHOUTpath;
-					unsigned int findIT = fullpath.find(tempFINDER);
-					if(findIT<=fullpath.length()){
-						closedir(mydir);
-						finalAnswer=fullpath;
-						return fullpath;
-					}
-				}
-				if((entryPointer->d_type==DT_DIR)&&(entryPointer->d_name[0]!='.')){
-					std::string thisAnswer=look_for_first_file_in_subdirs(fileWITHOUTpath,fullpath);//,thisAnswer);
-					if(thisAnswer.compare("")!=0){
-						if(test_file(thisAnswer)){
-							closedir(mydir);
-							finalAnswer=thisAnswer;
-							return thisAnswer;
-						}
-					}
-				}
-			}
-		}
-		else{echo_error(dir+" cannot be opened\nMUST EXIT");}
-		echo("Final Answer="+finalAnswer);
-		return finalAnswer;
-	}
-#ifdef LINUX_COMMON_HAS_X
+	//X
+	#ifdef LINUX_COMMON_HAS_X
+	/** get the HTML color from an X11 name
+	 * @param colorName the name like MistyRose
+	 */
 	std::string x_color_from_name(const char *colorName){
-	/* Paul Sladen, 2014-08-13, Public Domain
+	/** Paul Sladen, 2014-08-13, Public Domain
 	* XLookupColor() -> RGB colour value example, per request on
 	* http://irclogs.ubuntu.com/2014/08/13/%23ubuntu-devel.html#t19:52
 	* grep MistyRose /usr/share/X11/rgb.txt | awk '{printf("%02x%02x%02x\n",$1,$2,$3);}'
@@ -563,148 +834,114 @@ LINUX_COMMON__NS_BEGIN
 		std::string output = tmp;
 		return output;
 	}
-#endif
-	
-	std::string convert_num_to_string(int num){
-		std::string number;
-		std::stringstream out;
-		out << num;
-		number = out.str();
-		return number;
+	#endif
+	///VECTOR FUNCTIONS/////////////////////////////////////////////////
+	/** turn a comma delimited string into vector, and join the current items to the vector sent in
+	 * @param LINE the comma delimited line
+	 * @param Vector the vector to append to (can be empty)
+	 */
+	std::vector<std::string> comma_vector(std::string LINE,std::vector<std::string> Vector){
+		//std::vector<std::string> itemsVector;
+		std::string original,preComma,postComma;
+		original=LINE;
+		unsigned int found,finder;
+		finder=original.length();
+		for(found=original.find(",");found<finder;found=original.find(",")){
+			preComma=original;
+			postComma=original;
+			preComma=preComma.erase(found,std::string::npos);
+			if(preComma.compare("")!=0){Vector.push_back(preComma);}
+			postComma=postComma.erase(0,found+1);
+			original=postComma;
+			finder=original.length();
+		}
+		if(postComma.compare("")!=0){Vector.push_back(postComma);}
+		return Vector;
 	}
-	std::string get_line_with_equal(std::string filename, std::string line){
-		if(line.compare("")==0){return "";}
-		/*std::string tester=filename;
-		if(test_file(line)){
-			echo_error(line+" is actually a file");
-			filename=line;
-			line=tester;
-		}*/
-		if(filename.compare("")==0){return "";}
-		if(!test_file(filename)){echo_error("No file sent in\n"+filename+","+line);}
-		std::string thisLine;
-		std::string subString;
-		std::ifstream inputFileStream(filename.c_str(), std::ifstream::in);
-		if(inputFileStream.is_open()){
-			while (getline(inputFileStream,thisLine)){
-				//echo_error(thisLine);
-				if(thisLine.find(line)<thisLine.length()){
-					unsigned int found =thisLine.find("=");
-					if(found < thisLine.length()){
-						subString=thisLine.substr(found+1,std::string::npos);
-						return subString;
-					}
-				}
+	/** return a vector of the XDG_DATA_DIRS and XDG_DATA_HOME environment variables (or their equivalents) */
+	std::vector<std::string> desktop_paths(){
+		std::vector<std::string> thisPath;
+		std::vector<std::string>::iterator it;
+		std::string thisXDG;
+		/** check the environment variables, or give them decent values*/
+		const char* datadirs=getenv("XDG_DATA_DIRS");
+		if (datadirs == NULL){
+			thisXDG="/usr/local/share/:/usr/share/";
+		}
+		else{
+			thisXDG=datadirs;
+		}
+		const char* datahome = getenv("XDG_DATA_HOME");
+		if (datahome == NULL){
+			datahome = getenv("HOME");
+			if (datahome != NULL){
+				if(thisXDG.compare("")!=0)thisXDG += ":";
+				thisXDG += datahome;
+				thisXDG += "/.local/share/";
 			}
 		}
-		else{echo_error("Could not open filestream for "+filename);}
-		return "";
-	}
-	std::string remove_percentage(std::string line){
-		if(line.compare("")==0){return line;}
-		unsigned int percentfind=0;
-		std::string tempstring;
-		percentfind=line.find_first_of(" %",0);
-		if(percentfind>line.length()){return line;}
-		unsigned int semifind=line.find_first_of(";",percentfind);
-		bool andis=false;
-		bool semiis=false;
-		if(semifind<line.length()){semiis=true;}
-		unsigned int andfind=line.find_first_of("&",percentfind);
-		if(andfind<line.length()){andis=true;}
-		if(andis && semiis){
-			if(andfind<semifind){tempstring=line.erase(percentfind, andfind);}
-			else{tempstring=line.erase(percentfind, semifind);}
+		else{
+			if(thisXDG.compare("")!=0)thisXDG+= ":";
+			thisXDG += datahome;
 		}
-		else if(andis){tempstring=line.erase(percentfind, andfind);}
-		else if(semiis){tempstring=line.erase(percentfind, semifind);}
-		else{tempstring=line.erase(percentfind, std::string::npos);}
-		return tempstring;
-	}
-	std::string get_directory_from_filename(std::string filename){
-		unsigned int finder=filename.rfind("/");
-		if(finder<filename.length()){
-			filename=filename.erase(finder,std::string::npos);
+		unsigned int numberOfPaths;
+		std::string tempXDG = thisXDG;
+		unsigned int tryer;
+		/** count the ':' for the vector creation */
+		for (numberOfPaths=0;numberOfPaths<thisXDG.length();){
+			tryer = tempXDG.find(":");
+			tempXDG=tempXDG.erase(0,tryer+1);
+			numberOfPaths++;
 		}
-		else{return "";} //return empty if there is no directory
-		return filename;
-	}
-	const char* convert_num_to_string(double num){
-		std::string number;
-		std::stringstream out;
-		out << num;
-		number = out.str();
-		if(number.compare("")==0){return NULL;}
-		return number.c_str();
-	}
-
-	std::string test_file_in_vector_path(std::string fileWithNOPATH,std::vector<std::string> directories_to_check){
-		//echo_error("test_file_in_vector_path... filepath ORIGINAL="+fileWithNOPATH);
-		if(fileWithNOPATH.compare("")==0){return "";}
-		std::string filePathRemoved=fileWithNOPATH;
-		unsigned int found=filePathRemoved.rfind('/');
-		if(found<filePathRemoved.length()){
-			unsigned int len=filePathRemoved.length()-found;
-			filePathRemoved=filePathRemoved.erase(0,len);
-			//echo_error("test_file_in_vector_path... filepath removed="+filePathRemoved<);
+		unsigned int lastPath = 0;
+		std::string result;
+		for (unsigned int whichPath=1;whichPath<=numberOfPaths;whichPath++){
+			if (whichPath >=1){lastPath = whichPath - 1;}
+			else {lastPath = 0;}
+			std::string::size_type firstPosition = thisXDG.find_first_of(':');
+			std::string::size_type position = thisXDG.find(':');
+			for (unsigned int i=1;i<=whichPath;i++){position = thisXDG.find(':',position+1);}
+			for (unsigned int j=1;j<=lastPath;j++){firstPosition = thisXDG.find(':',firstPosition+1);}
+			result = thisXDG.substr (firstPosition+1,((position-firstPosition)-1));
+			thisPath.push_back(result);    
 		}
-		for( std::vector<std::string>::iterator it = directories_to_check.begin();
-		it!=directories_to_check.end();
-		++it){
-			std::string dirToOpen=*it;
-			unsigned int finder=dirToOpen.rfind('/');
-			if(finder+1==dirToOpen.length()){
-				dirToOpen+=filePathRemoved;
-				//echo_error("test_file_in_vector_path... dir to open="+dirToOpen);
-			}
-			else{
-				dirToOpen+="/";
-				dirToOpen+=filePathRemoved;
-				//echo_error("test_file_in_vector_path... dir to open="+dirToOpen);
-			}
-			if(test_file(dirToOpen)){return dirToOpen;}
-		}
-		//echo_error("test_file_in_vector_path... found NO files");
-		return "";
+		std::sort (thisPath.begin(), thisPath.end());
+		it = std::unique (thisPath.begin(), thisPath.end());
+		thisPath.resize( std::distance(thisPath.begin(),it) );
+		//for(it=thisPath.begin();it<=thisPath.end();it++){echo(*it);}
+		return thisPath;
 	}
-	std::string fix_file_path_for_command_line(std::string filepath){
-		std::string Filename=filepath;
-		std::string escape = "\\ ";
-		size_t start_pos = 0;
-		while((start_pos = Filename.find(' ', start_pos)) != std::string::npos) {
-			Filename.replace(start_pos, 1, escape);
-			start_pos += escape.length(); // Handles case where 'to' is a substring of 'from'
-			//std::cout<<Filename<<std::endl;
-		}
-		return Filename;
-	}
-	std::string file_to_string(std::string filename){
-		if(filename.compare("")==0){return "";}
+	/** turn a file into a vector of strings
+	 * @param filename the file to read
+	 */
+	std::vector<std::string> file_to_vector(std::string filename){
+		std::vector<std::string> fullString;
+		if(filename.compare("")==0){return fullString;}
 		if(!test_file(filename)){echo_error("No file sent in: "+filename);}
 		std::string thisLine;
-		std::string fullString;
 		std::ifstream inputFileStream(filename.c_str(), std::ifstream::in);
 		if(inputFileStream.is_open()){
-			while (getline(inputFileStream,thisLine)){
-				if(fullString.compare("")==0){fullString=thisLine;}
-				else{fullString=fullString+"\n"+thisLine;}
-			}
+			while (getline(inputFileStream,thisLine)){fullString.push_back(thisLine);}
 		}
 		return fullString;
 	}
-	std::string get_shell_for_C(){
-		std::string shell=term_out("which bash");
-		if(shell.compare("")==0){
-			if(!test_exec(shell)){
-				shell=term_out("which sh");
-				if(!test_exec(shell)){return "";}
-				//TODO make this work for others
-			}
+	/** return a vector of XDG_DATA_DIRS with a sane value if no environment variable is set*/
+	std::vector<std::string> desktop_dirs(){
+		std::vector<std::string> desktop = split_paths("XDG_DATA_DIRS","/usr/local/share/:/usr/share/");
+		#if 0
+		const char *datahome = getenv("HOME");
+		std::string thisXDG;
+		if (datahome != NULL){
+				thisXDG = datahome;
+				thisXDG += "/.local/share/";
 		}
-		shell=shell+" -c '";
-		return shell;
+		#endif
+		//std::vector<std::string> user = split_paths("XDG_DATA_HOME",thisXDG.c_str());
+		return desktop;
 	}
-		///VECTOR FUNCTIONS
+	/**
+	 * @param
+	 */
 	std::vector<std::string> get_file_vector(std::string DIRECTORY,std::string file){
 		std::vector<std::string> myVector;
 		if(!test_dir(DIRECTORY)){return myVector;}
@@ -741,6 +978,10 @@ LINUX_COMMON__NS_BEGIN
 		return myVector;
 		
 	}
+	/** return a vector of lines 'grep'd from a file
+	 * @param args the thing to look for
+	 * @param filename the file to look in
+	 */
 	std::vector<std::string> grep_lines(const char* args, const char* filename){
 		std::vector<std::string> result;
 		std::string line;
@@ -755,78 +996,31 @@ LINUX_COMMON__NS_BEGIN
 		return result;
 	
 	}
-	std::vector<std::string> comma_vector(std::string LINE,std::vector<std::string> Vector){
-		//std::vector<std::string> itemsVector;
-		std::string original,preComma,postComma;
-		original=LINE;
-		unsigned int found,finder;
-		finder=original.length();
-		for(found=original.find(",");found<finder;found=original.find(",")){
-			preComma=original;
-			postComma=original;
-			preComma=preComma.erase(found,std::string::npos);
-			if(preComma.compare("")!=0){Vector.push_back(preComma);}
-			postComma=postComma.erase(0,found+1);
-			original=postComma;
-			finder=original.length();
-		}
-		if(postComma.compare("")!=0){Vector.push_back(postComma);}
-		return Vector;
+	/** join two string vectors
+	 * @param vectorA the first vector
+	 * @param vectorB the second vector
+	 */
+	std::vector<std::string> join_string_vectors(std::vector<std::string> vectorA,std::vector<std::string> vectorB){
+		std::vector<std::string> bothVectors;
+		bothVectors.reserve(vectorA.size()+vectorB.size());
+		bothVectors.insert(bothVectors.end(),vectorA.begin(),vectorA.end());
+		bothVectors.insert(bothVectors.end(),vectorB.begin(),vectorB.end());
+		return bothVectors;
 	}
-	std::vector<std::string> sort_array(std::vector<std::string> thisPath){
+	/** sort a vector for unique items only
+	 * @param vector_to_sort the vector to sort
+	 */
+	std::vector<std::string> sort_array(std::vector<std::string> vector_to_sort){
 		std::vector<std::string>::iterator it;
-		std::sort (thisPath.begin(), thisPath.end());
-		it = std::unique (thisPath.begin(), thisPath.end());
-		thisPath.resize( std::distance(thisPath.begin(),it) );
-		return thisPath;
+		std::sort (vector_to_sort.begin(), vector_to_sort.end());
+		it = std::unique (vector_to_sort.begin(), vector_to_sort.end());
+		vector_to_sort.resize( std::distance(vector_to_sort.begin(),it) );
+		return vector_to_sort;
 	}
-	std::vector<std::string> desktop_paths(){
-		std::vector<std::string> thisPath;
-		std::vector<std::string>::iterator it;
-		std::string thisXDG;
-		const char* datadirs=getenv("XDG_DATA_DIRS");
-		if (datadirs == NULL){
-			thisXDG="/usr/local/share/:/usr/share/";
-		}
-		else{
-			thisXDG=datadirs;
-		}
-		const char* datahome = getenv("XDG_DATA_HOME");
-		if (datahome == NULL){
-			datahome = getenv("HOME");
-			if (datahome != NULL){
-				thisXDG += ":";
-				thisXDG += datahome;
-				thisXDG += "/.local/share/";
-			}
-		}
-		else{thisXDG = thisXDG + ":" + datahome;}
-		unsigned int numberOfPaths;
-		std::string tempXDG = thisXDG;
-		unsigned int tryer;
-		for (numberOfPaths=0;numberOfPaths<thisXDG.length();){
-			tryer = tempXDG.find(":");
-			tempXDG=tempXDG.erase(0,tryer+1);
-			numberOfPaths++;
-		}
-		unsigned int lastPath = 0;
-		std::string result;
-		for (unsigned int whichPath=1;whichPath<=numberOfPaths;whichPath++){
-			if (whichPath >=1){lastPath = whichPath - 1;}
-			else {lastPath = 0;}
-			std::string::size_type firstPosition = thisXDG.find_first_of(':');
-			std::string::size_type position = thisXDG.find(':');
-			for (unsigned int i=1;i<=whichPath;i++){position = thisXDG.find(':',position+1);}
-			for (unsigned int j=1;j<=lastPath;j++){firstPosition = thisXDG.find(':',firstPosition+1);}
-			result = thisXDG.substr (firstPosition+1,((position-firstPosition)-1));
-			thisPath.push_back(result);    
-		}
-		std::sort (thisPath.begin(), thisPath.end());
-		it = std::unique (thisPath.begin(), thisPath.end());
-		thisPath.resize( std::distance(thisPath.begin(),it) );
-		//for(it=thisPath.begin();it<=thisPath.end();it++){echo(*it);}
-		return thisPath;
-	}
+	/** turn a ':' separated environment variable into a vector of strings
+	 * @param envVar the environment variable to check and split into a vector
+	 * @param incasenothingexists your backup plan if the variable proves to be empty
+	 */
 	std::vector<std::string> split_paths(const char* envVar, const char* incasenothingexists){
 		std::vector<std::string> thisPath;
 		std::vector<std::string>::iterator it;
@@ -867,30 +1061,10 @@ LINUX_COMMON__NS_BEGIN
 		//for(it=thisPath.begin();it<=thisPath.end();it++){echo(*it);}
 		return thisPath;
 	}
-	std::vector<std::string> file_to_vector(std::string filename){
-		std::vector<std::string> fullString;
-		if(filename.compare("")==0){return fullString;}
-		if(!test_file(filename)){echo_error("No file sent in: "+filename);}
-		std::string thisLine;
-		std::ifstream inputFileStream(filename.c_str(), std::ifstream::in);
-		if(inputFileStream.is_open()){
-			while (getline(inputFileStream,thisLine)){fullString.push_back(thisLine);}
-		}
-		return fullString;
-	}
-	std::vector<std::string> desktop_dirs(){
-		std::vector<std::string> desktop = split_paths("XDG_DATA_DIRS","/usr/local/share/:/usr/share/");
-		const char *datahome = getenv("HOME");
-		std::string thisXDG;
-		if (datahome != NULL){
-				thisXDG = datahome;
-				thisXDG += "/.local/share/";
-		}
-		//std::vector<std::string> user = split_paths("XDG_DATA_HOME",thisXDG.c_str());
-		return desktop;
-	}
+	/** return a vector of XDG_CONFIG_DIRS*/
 	std::vector<std::string> xdg_conf_dirs(){
 		std::vector<std::string> desktop = split_paths("XDG_CONFIG_DIRS","/etc/xdg/xdg-torios:/etc/xdg");
+		#if 0
 		const char *datahome = getenv("HOME");
 		std::string thisXDG;
 		if (datahome != NULL){
@@ -899,23 +1073,30 @@ LINUX_COMMON__NS_BEGIN
 		}
 		std::vector<std::string> user = split_paths("XDG_CONFIG_HOME",thisXDG.c_str());
 		//std::vector<std::string> dirs = join_string_vectors(user,desktop);
+		#endif
 		return desktop;
 	}
-	std::string home_path(){
-		const char* homer=getenv("HOME");
-		if(homer==NULL){return "";}
-		std::string homePath=homer;
-		homePath+="/";
-		return homePath;
+	///BOOLEAN FUNCTIONS////////////////////////////////////////////////
+	/** see if a file has a certain extention (like .svg)
+	 * @param filename the filename
+	 * @param extention the extention to look for
+	 */
+	bool has_file_extention_at_end(std::string filename,std::string extention){
+		std::string extention_check;
+		std::transform(filename.begin(), filename.end(), filename.begin(), ::tolower);
+		std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
+		unsigned int found=filename.find(extention);
+		unsigned int ext_len=extention.length();
+		unsigned int file_len=filename.length();
+		if(found<file_len){
+			if(found==(file_len-ext_len)){return true;}
+		}
+		return false;
 	}
-	std::vector<std::string> join_string_vectors(std::vector<std::string> vectorA,std::vector<std::string> vectorB){
-		std::vector<std::string> bothVectors;
-		bothVectors.reserve(vectorA.size()+vectorB.size());
-		bothVectors.insert(bothVectors.end(),vectorA.begin(),vectorA.end());
-		bothVectors.insert(bothVectors.end(),vectorB.begin(),vectorB.end());
-		return bothVectors;
-	}
-///BOOLEAN FUNCTIONS
+	/** see if a string exists in a vector
+	 * @param vector_to_check the vector to check
+	 * @param item_to_find the item to find
+	 */
 	bool look_for_string_in_vector(std::vector<std::string> vector_to_check,std::string item_to_find){
 		for( std::vector<std::string>::iterator it = vector_to_check.begin();
 		it!=vector_to_check.end();
@@ -925,6 +1106,93 @@ LINUX_COMMON__NS_BEGIN
 		}
 		return false;
 	}
+	/** works like the 'pkill' command
+	 * @param programname the program name to look for
+	 */
+	bool pkill(std::string programname){
+		/** get the pid (process ID)*/
+		int pid=getProcIdByName(programname);
+		if(pid<=0){
+			echo_error("Invalid process ID for "+programname);
+			return false;
+		}
+		int result=kill(pid,SIGKILL);
+		if(result==0){return true;}
+		else{
+			/** check the errors and display them to stdout */
+			switch (errno){
+				case EINVAL:
+					/**This should not happen normally, since we are sending SIGKILL hard-coded*/
+					echo_error("Invalid SIGNAL sent to kill: "+programname);
+				case EPERM:
+					echo_error("You do not have permission to kill the process: "+programname);
+				case ESRCH:
+					echo_error("Cannot find the PID of: "+programname);
+				default: echo_error("Invalid error inside pkill function");
+			}
+		}
+		return false;
+		
+	}
+	/** check to see if a program is already running
+	 * @param program_line the program to check for
+	 */
+	bool program_is_running(std::string program_line){
+			//std::cout<<"bool program_is_running(std::string "<<program_line<<")"<<std::endl;
+			if(program_line.compare("")==0){return false;}
+			int pid=getProcIdByName(program_line);
+			if(pid>0){return true;}
+			std::string pgrepProg=term_out("which pgrep");
+			if(pgrepProg.compare("")==0){
+				//TODO: make a way for this to still check...
+				return false;
+			}
+			//std::cout<<"pgrep is "+pgrepProg<<std::endl;
+			std::string shell=get_shell_for_C();
+			if(shell.compare("")==0)return false;
+			//std::cout<<"Using shell command="+shell<<std::endl;
+			std::string processline=program_line;
+			std::string pgrep = shell + " "+pgrepProg+" "+program_line+ "'";
+			//std::cout<<"Total command to run:\n"+pgrep<<std::endl;
+			std::string returnVal=term_out(pgrep);
+			if(returnVal.compare("")==0){return false;}
+			return true;
+	}
+	/** save a string to a file
+	 * @param MSG the message to save
+	 * @param filename the filename to save it as
+	 */
+	bool save_string_to_file(std::string MSG,std::string filename){
+		if(MSG.compare("")==0){return false;}
+		if(filename.compare("")==0){return false;}
+		unsigned int last=filename.rfind('/');
+		//cannot be a directory
+		if(last+1==filename.length()){return false;}
+		///must have some path
+		if(last<filename.length()){
+			//generally assume they know what they are doing sending in a filename if it has at least one '/'
+			std::string dircheck=filename;
+			dircheck=dircheck.erase(last,std::string::npos);
+			if(!test_dir(dircheck)){mkdir_p(dircheck);}
+		}
+		else{
+			//lets put it in the user's $HOME if they didn't give a path.
+			std::string temp=home_path();
+			temp+=filename;
+			filename=temp;
+		}
+		std::ofstream dest;
+		dest.open(filename.c_str());
+		if(!dest.is_open()){return false;}
+		dest << MSG;
+		dest.close();
+		//if(dest.is_open()){return false;}
+		return true;
+	}
+	/** change a gtk setting for org.gnome.desktop.interface *-theme
+	 * @param item (icon or gtk)
+	 * @param value the new value
+	 */
 	bool switch_gtk_item(std::string item, std::string value){
 		std::string gtkrc2_result, gtkrc3_result,gtk2;
 		if(value.compare("")==0){return false;}
@@ -993,6 +1261,9 @@ LINUX_COMMON__NS_BEGIN
 		if((retval!=0)&&(!fileFix))return false;
 		return true;
 	}
+	/** test to see if a file exists
+	 * @param fileWithFullPATH the full path and filename to test
+	 */
 	bool test_file(std::string fileWithFullPATH){
 		if(fileWithFullPATH.compare("")==0){
 			echo_error("Empty string sent into bool test_file(std::string fileWithFullPATH)");
@@ -1019,14 +1290,18 @@ LINUX_COMMON__NS_BEGIN
 					}
 				}
 			}
+			closedir(mydir);
 		}
 		else{echo_error("could not open directory to search for "+fileWithFullPATH);}
 		return false;
 	}
+	/** check to see if an executable file exists
+	 * @param execToTest the executable you want to check
+	 */
 	bool test_exec(std::string execToTest){
 		if(execToTest.compare("")==0){return false;}
-		/// my cheat sheet
-		// /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+		/** the list of directories it might check*/
+		/** /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games*/
 		std::string stringEXEC;
 		std:: string testPATH, testExec;
 		bool result = false;
@@ -1050,90 +1325,10 @@ LINUX_COMMON__NS_BEGIN
 		}
 		return false;
 	}
-	bool save_string_to_file(std::string MSG,std::string filename){
-		if(MSG.compare("")==0){return false;}
-		if(filename.compare("")==0){return false;}
-		unsigned int last=filename.rfind('/');
-		//cannot be a directory
-		if(last+1==filename.length()){return false;}
-		///must have some path
-		if(last<filename.length()){
-			//generally assume they know what they are doing sending in a filename if it has at least one '/'
-			std::string dircheck=filename;
-			dircheck=dircheck.erase(last,std::string::npos);
-			if(!test_dir(dircheck)){mkdir_p(dircheck);}
-		}
-		else{
-			//lets put it in the user's $HOME if they didn't give a path.
-			std::string temp=home_path();
-			temp+=filename;
-			filename=temp;
-		}
-		std::ofstream dest;
-		dest.open(filename.c_str());
-		if(!dest.is_open()){return false;}
-		dest << MSG;
-		dest.close();
-		//if(dest.is_open()){return false;}
-		return true;
-	}
-	bool has_file_extention_at_end(std::string filename,std::string extention){
-		std::string extention_check;
-		std::transform(filename.begin(), filename.end(), filename.begin(), ::tolower);
-		std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
-		unsigned int found=filename.find(extention);
-		unsigned int ext_len=extention.length();
-		unsigned int file_len=filename.length();
-		if(found<file_len){
-			if(found==(file_len-ext_len)){return true;}
-		}
-		return false;
-	}
-	bool program_is_running(std::string program_line){
-			//std::cout<<"bool program_is_running(std::string "<<program_line<<")"<<std::endl;
-			if(program_line.compare("")==0){return false;}
-			int pid=getProcIdByName(program_line);
-			if(pid>0){return true;}
-			std::string pgrepProg=term_out("which pgrep");
-			if(pgrepProg.compare("")==0){
-				//TODO: make a way for this to still check...
-				return false;
-			}
-			//std::cout<<"pgrep is "+pgrepProg<<std::endl;
-			std::string shell=get_shell_for_C();
-			if(shell.compare("")==0)return false;
-			//std::cout<<"Using shell command="+shell<<std::endl;
-			std::string processline=program_line;
-			std::string pgrep = shell + " "+pgrepProg+" "+program_line+ "'";
-			//std::cout<<"Total command to run:\n"+pgrep<<std::endl;
-			std::string returnVal=term_out(pgrep);
-			if(returnVal.compare("")==0){return false;}
-			return true;
-	}
-	bool pkill(std::string programname){
-		int pid=getProcIdByName(programname);
-		if(pid<=0){
-			echo_error("Invalid process ID for "+programname);
-			return false;
-		}
-		int result=kill(pid,SIGKILL);
-		if(result==0){return true;}
-		else{
-			switch (errno){
-				case EINVAL:
-					// This should not happen normally....
-					echo_error("Invalid SIGNAL sent to kill: "+programname);
-				case EPERM:
-					echo_error("You do not have permission to kill the process: "+programname);
-				case ESRCH:
-					echo_error("Cannot find the PID of: "+programname);
-				default: echo_error("Invalid error inside pkill function");
-			}
-		}
-		return false;
-		
-	}
-	//DOUBLE FUNCTION
+	//DOUBLE FUNCTION///////////////////////////////////////////////////
+	/** convert string number to a double
+	 * @param num the string to convert
+	 */
 	double convert_string_to_double(std::string num){
 		if(num.compare("")==0){return 0.0;}
 		std::stringstream out;
@@ -1142,7 +1337,10 @@ LINUX_COMMON__NS_BEGIN
 		out >> integer;
 		return integer;
 	}
-	//INTEGER FUNCTIONS
+	//UNSIGNED INTEGER FUNCTIONS////////////////////////////////////////
+	/** convert aa string number to an unsigned integer
+	 * @param num the number to convert
+	 */
 	unsigned int convert_string_to_number(const char* num){
 		if(num==NULL){return 0;}
 		std::string empty="";
@@ -1153,78 +1351,7 @@ LINUX_COMMON__NS_BEGIN
 		out >> integer;
 		return integer;
 	}
-	int getProcIdByName(std::string procName){
-		int pid = -1;
-		if(procName.compare("")==0){return -1;}
-		// Open the /proc directory
-		DIR *dp = opendir("/proc");
-		if (dp != NULL){
-			// Enumerate all entries in directory until process found
-			struct dirent *dirp;
-			while (pid < 0 && (dirp = readdir(dp))){
-				// Skip non-numeric entries
-				int id = atoi(dirp->d_name);
-				if (id > 0){
-					// Read contents of virtual /proc/{pid}/cmdline file
-					std::string cmdPath = std::string("/proc/") + dirp->d_name + "/cmdline";
-					std::ifstream cmdFile(cmdPath.c_str());
-					std::string cmdLine;
-					getline(cmdFile, cmdLine);
-					if (!cmdLine.empty()){
-						// Keep first cmdline item which contains the program path
-						size_t pos = cmdLine.find('\0');
-						if (pos != std::string::npos){cmdLine = cmdLine.substr(0, pos);}
-						// Keep program name only, removing the path
-						pos = cmdLine.rfind('/');
-						if (pos != std::string::npos){cmdLine = cmdLine.substr(pos + 1);}
-						// Compare against requested process name
-						if (procName == cmdLine){pid = id;}
-					}
-				}
-			}
-		}
-		closedir(dp);
-		std::cout<<"Process Name="<<procName<<" pid="<<pid<<std::endl;
-		return pid;
-	}
-	int mkdir_p(std::string dirToMake){
-		if(test_dir(dirToMake.c_str())){return 0;}
-		std::string temporaryDir=dirToMake;
-		unsigned int last=dirToMake.rfind('/');
-		if(last+1!=dirToMake.length()){dirToMake+="/";}
-		//std::cout<<dirToMake<<std::endl;
-		unsigned int found=dirToMake.find_first_of('/');
-		while(found<dirToMake.length()){
-			found++;
-			temporaryDir=dirToMake;
-			std::string testing=temporaryDir.erase(found,std::string::npos);
-			found=dirToMake.find_first_of('/',found);
-			if(!test_dir(testing.c_str())){
-				if(mkdir(testing.c_str(), 0700)>0){return 1;}
-				else{echo("Made: "+testing);}
-			}
-		}
-		return 0;
-	}
-	int run_a_program(std::string program){
-		std::string shell=get_shell_for_C();
-		if(shell.compare("")!=0){
-			shell+=program;
-			shell+="'";
-		}
-		else{shell=program;}
-		return system(shell.c_str());
-	}
-	int run_a_program_in_background(std::string program){
-		std::string shell=get_shell_for_C();
-		program += " &disown";
-		if(shell.compare("")!=0){
-			shell+=program;
-			shell+="'";
-		}
-		else{shell=program;}
-		return system(shell.c_str());
-	}
+	/** count the items in the PATH environment variable*/
 	unsigned int items_in_path(){
 		const char* path =getenv("PATH");
 		std::string::size_type pathPosition =0;
@@ -1236,11 +1363,19 @@ LINUX_COMMON__NS_BEGIN
 		}
 		return howmany;
 	}
+	/** IF X11 is found, these functions will work */
 	#ifdef LINUX_COMMON_HAS_X
+	/** get the integer FLTK uses for colors from a string
+	 * @param color the color to r=convert
+	 */
 	unsigned int get_fl_color(std::string color){
 		unsigned int c=0;
 		return get_fl_color(color,c);
 	}
+	/** get 2 integer colors from a string
+	 * @param color the color string to check
+	 * @param &color2 the dereferenced integer to hold the second color
+	 */
 	unsigned int get_fl_color(std::string color, unsigned int &color2){
 		//std::cout<<"Color string="<<color<<std::endl;
 		if(color.compare("")==0){color="#000000";}
@@ -1278,13 +1413,131 @@ LINUX_COMMON__NS_BEGIN
 			}
 		}
 		else{
+			if(color.compare("")==0){return 0;}
 			std::string value= x_color_from_name(input);
 			return get_fl_color(value, color2);
 		}
 	}
 	#endif
-	///VOID FUNCTIONS
+	//INTEGER FUNCTIONS/////////////////////////////////////////////////
+	/** get a process ID from a name like 'pgrep'
+	 * @param  procName the process name to look for
+	 */
+	int getProcIdByName(std::string procName){
+		int pid = -1;
+		if(procName.compare("")==0){return -1;}
+		// Open the /proc directory
+		DIR *dp = opendir("/proc");
+		if (dp != NULL){
+			// Enumerate all entries in directory until process found
+			struct dirent *dirp;
+			while (pid < 0 && (dirp = readdir(dp))){
+				// Skip non-numeric entries
+				int id = atoi(dirp->d_name);
+				if (id > 0){
+					// Read contents of virtual /proc/{pid}/cmdline file
+					std::string cmdPath = std::string("/proc/") + dirp->d_name + "/cmdline";
+					std::ifstream cmdFile(cmdPath.c_str());
+					std::string cmdLine;
+					getline(cmdFile, cmdLine);
+					if (!cmdLine.empty()){
+						// Keep first cmdline item which contains the program path
+						size_t pos = cmdLine.find('\0');
+						if (pos != std::string::npos){cmdLine = cmdLine.substr(0, pos);}
+						// Keep program name only, removing the path
+						pos = cmdLine.rfind('/');
+						if (pos != std::string::npos){cmdLine = cmdLine.substr(pos + 1);}
+						// Compare against requested process name
+						if (procName == cmdLine){pid = id;}
+					}
+				}
+			}
+		}
+		closedir(dp);
+		std::cout<<"Process Name="<<procName<<" pid="<<pid<<std::endl;
+		return pid;
+	}
+	/** recursivley make directories similar to 'mkdir -p' command
+	 * @param dirToMake the directory to create
+	 */
+	int mkdir_p(std::string dirToMake){
+		if(test_dir(dirToMake.c_str())){return 0;}
+		std::string temporaryDir=dirToMake;
+		unsigned int last=dirToMake.rfind('/');
+		if(last+1!=dirToMake.length()){dirToMake+="/";}
+		//std::cout<<dirToMake<<std::endl;
+		unsigned int found=dirToMake.find_first_of('/');
+		while(found<dirToMake.length()){
+			found++;
+			temporaryDir=dirToMake;
+			std::string testing=temporaryDir.erase(found,std::string::npos);
+			found=dirToMake.find_first_of('/',found);
+			if(!test_dir(testing.c_str())){
+				if(mkdir(testing.c_str(), 0700)>0){return 1;}
+				else{echo("Made: "+testing);}
+			}
+		}
+		return 0;
+	}
+	/** run a program in a subshell
+	 * @param program the program to run
+	 */
+	int run_a_program(std::string program){
+		std::string shell=get_shell_for_C();
+		if(shell.compare("")!=0){
+			shell+=program;
+			shell+="'";
+		}
+		else{shell=program;}
+		return system(shell.c_str());
+	}
+	/** run a program and disown it
+	 * @param program the program to run
+	 */
+	int run_a_program_in_background(std::string program){
+		std::string shell=get_shell_for_C();
+		program += " &disown";
+		if(shell.compare("")!=0){
+			shell+=program;
+			shell+="'";
+		}
+		else{shell=program;}
+		return system(shell.c_str());
+	}
+	///VOID FUNCTIONS///////////////////////////////////////////////////
+	/** use std::cout to pring a message
+	 * if COMMON_XMLOUT is defined it will wrap in <!-- -->
+	 * if QUIET_ERROR is defined it will not output
+	 * @param msg The string to print
+	 */
+	void echo(std::string msg){
+		#ifdef COMMON_XMLOUT
+			std::cout<<"<!--"<<msg<<"-->"<<std::endl;
+		#elif QUIET_ERROR
+			/**do nothing if QUIET_ERROR is defined*/
+		#else
+			std::cout<<msg<<std::endl;
+		#endif
+	}
+	/** use std::cerr to pring a message
+	 * if COMMON_XMLOUT is defined it will wrap in <!-- -->
+	 * if QUIET_ERROR is defined it will not output
+	 * @param msg The string to print
+	 */
+	void echo_error(std::string msg){
+		#ifdef COMMON_XMLOUT
+			std::cerr<<"<!--"<<msg<<"-->"<<std::endl;
+		#elif QUIET_ERROR
+			/**do nothing if QUIET_ERROR is defined*/
+		#else
+			std::cerr<<msg<<std::endl;
+		#endif
+	}
+	/** print a file to stdout using std::cout
+	 * @param fileNameWithFullPath the file name with the full path
+	 */
 	void print_file_to_stdout(std::string fileNameWithFullPath){
+		/** if nothing is sent in return*/
 		if(fileNameWithFullPath.compare("")==0){return;}
 		std::string line;
 		std::ifstream inputFileStrem (fileNameWithFullPath.c_str(), std::ifstream::in);
@@ -1293,24 +1546,6 @@ LINUX_COMMON__NS_BEGIN
 			  std::cout<<line<<std::endl;
           }
       }
-	}
-	void echo(std::string msg){
-		#ifdef COMMON_XMLOUT
-			std::cout<<"<!--"<<msg<<"-->"<<std::endl;
-		#elif QUIET_ERROR
-			//do nothing
-		#else
-			std::cout<<msg<<std::endl;
-		#endif
-	}
-	void echo_error(std::string msg){
-		#ifdef COMMON_XMLOUT
-			std::cerr<<"<!--"<<msg<<"-->"<<std::endl;
-		#elif QUIET_ERROR
-			//do nothing
-		#else
-			std::cerr<<msg<<std::endl;
-		#endif
 	}
 LINUX_COMMON__NS_END
 

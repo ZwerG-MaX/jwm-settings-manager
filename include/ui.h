@@ -49,4 +49,5 @@ int showMenu(std::string menu);
 int showAutostart();
 int showSettings();
 int showShortcuts();
+int showPopus();
 #endif

@@ -30,11 +30,13 @@
 #include <string>
 #include <stdlib.h>
 #include <iostream>
+#include "../include/fltkfunctions.hpp"
 #include "../include/jwmrc.h"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Button.H>
 
 class shutdown {
+  std::string SUSPEND,LOGOUT,SHUTDOWN,RESTART; 
 public:
   Fl_Double_Window* make_window();
   Fl_Double_Window *shutdown_window;
@@ -48,15 +50,15 @@ private:
   inline void cb_restart_i(Fl_Button*, void*);
   static void cb_restart(Fl_Button*, void*);
 public:
+  Fl_Button *suspend;
+private:
+  inline void cb_suspend_i(Fl_Button*, void*);
+  static void cb_suspend(Fl_Button*, void*);
+public:
   Fl_Button *log;
 private:
   inline void cb_log_i(Fl_Button*, void*);
   static void cb_log(Fl_Button*, void*);
-public:
-  Fl_Button *sus;
-private:
-  inline void cb_sus_i(Fl_Button*, void*);
-  static void cb_sus(Fl_Button*, void*);
 public:
   Fl_Button *can;
 private:
@@ -64,6 +66,5 @@ private:
   static void cb_can(Fl_Button*, void*);
 public:
   void window_bg();
-  void under_mouse(Fl_Window *o);
 };
 #endif

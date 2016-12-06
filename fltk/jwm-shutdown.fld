@@ -42,48 +42,60 @@ decl {\#include <stdlib.h>} {public global
 decl {\#include <iostream>} {public global
 } 
 
+decl {\#include "../include/fltkfunctions.hpp"} {public global
+} 
+
 decl {\#include "../include/jwmrc.h"} {public global
 } 
 
 class shutdown {open
 } {
+  decl {std::string SUSPEND,LOGOUT,SHUTDOWN,RESTART;} {private local
+  }
   Function {make_window()} {open
   } {
-    code {load();} {}
+    code {load();
+SUSPEND="torios-suspend||dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend || systemctl suspend";
+LOGOUT="torios-exit || jwm -exit";
+SHUTDOWN="torios-shutdown || dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop || systemctl poweroff";;
+RESTART="torios-reboot || dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart|| systemctl reboot";} {}
     Fl_Window shutdown_window {
       label Shutdown open
-      xywh {351 113 250 230} type Double color 45
+      xywh {351 113 242 230} type Double color 45
       code0 {window_bg();} noborder xclass {system-shutdown} visible
     } {
       Fl_Button shut {
         label Shutdown
-        callback {int warn =system("torios-shutdown || dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop || systemctl poweroff");
-if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}}
-        image {../data/img/preferences-system-session.png} xywh {10 20 105 65} box FLAT_BOX color 41 labelcolor 55
+        callback {int warn = linuxcommon::run_a_program(SHUTDOWN);;
+if(warn!=0){std::cerr<<"Could not run commang"<<std::endl;}}
+        xywh {10 10 105 75} box FLAT_BOX color 41 labelcolor 55
+        code0 {makeWidgetIcon("preferences-system-session",o,48);}
       }
       Fl_Button restart {
         label Restart
-        callback {int warn =system("torios-reboot || dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart|| systemctl reboot");
-if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}}
-        image {../data/img/system-restart.png} xywh {130 20 105 65} box FLAT_BOX color 41 labelcolor 55
+        callback {int warn = linuxcommon::run_a_program(RESTART);;
+if(warn!=0){std::cerr<<"Could not run commang"<<std::endl;}}
+        xywh {125 10 105 75} box FLAT_BOX color 41 labelcolor 55
+        code0 {makeWidgetIcon("system-restart",o,48);}
+      }
+      Fl_Button suspend {
+        label Suspend
+        callback {int warn = linuxcommon::run_a_program(SUSPEND);;
+if(warn!=0){std::cerr<<"Could not run commang"<<std::endl;}}
+        xywh {10 95 105 75} box FLAT_BOX color 41 labelcolor 55
+        code1 {makeWidgetIcon("system-suspend",o,48);}
       }
       Fl_Button log {
         label Logout
-        callback {int warn =system("torios-exit || jwm -exit");
-if(warn!=0){std::cerr<<"Could not run the exit command normally"<<std::endl;}}
-        image {../data/img/system-switch-user.png} xywh {130 95 105 65} box FLAT_BOX color 41 labelcolor 55
-      }
-      Fl_Button sus {
-        label Suspend
-        callback {int warn = system("dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend || systemctl suspend");
-if(warn!=0){std::cerr<<"Could not run the Shutdown command"<<std::endl;}
-shutdown_window->hide();}
-        tooltip {NOTE: this does not work with all computers} image {../data/img/system-suspend.png} xywh {10 95 105 65} box FLAT_BOX color 41 labelcolor 55
+        callback {int warn = linuxcommon::run_a_program(LOGOUT);;
+if(warn!=0){std::cerr<<"Could not run commang"<<std::endl;}} selected
+        xywh {125 95 105 75} box FLAT_BOX color 41 labelcolor 55
+        code1 {makeWidgetIcon("system-logout",o,48);}
       }
       Fl_Button can {
         label Cancel
         callback {shutdown_window->hide();}
-        xywh {70 175 105 45} box FLAT_BOX color 80 selection_color 72 labelfont 1 labelsize 15 labelcolor 52
+        xywh {65 180 105 45} box FLAT_BOX color 80 selection_color 72 labelfont 1 labelsize 15 labelcolor 52
       }
     }
   }
@@ -105,17 +117,10 @@ restart->color(color3);
 restart->labelcolor(color2);
 log->color(color3);
 log->labelcolor(color2);
-sus->color(color3);
-sus->labelcolor(color2);
+suspend->color(color3);
+suspend->labelcolor(color2);
 //can->color(color3);
 //can->labelcolor(color2);
-under_mouse(shutdown_window);} {selected
-    }
-  }
-  Function {under_mouse(Fl_Window *o)} {open
-  } {
-    code {int mx,my;
-Fl::get_mouse(mx,my);
-o->position(mx,my);} {}
+under_mouse(shutdown_window);} {}
   }
 } 

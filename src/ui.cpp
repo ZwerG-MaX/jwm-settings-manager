@@ -136,5 +136,10 @@ int showShortcuts(){
 	}
 	return linuxcommon::run_a_program(EDITOR);
 }
-
+//Popups
+int showPopus(){
+	debug_out("Popus UI activated");
+	
+	return Fl::run();	
+}
 
