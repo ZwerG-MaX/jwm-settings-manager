@@ -47,19 +47,6 @@ void configureKey(std::string keyShortcut, std::string newmod1, std::string newm
     }
 
 }
-bool Configure_CB(Fl_Output* mod1_output, Fl_Output* mod2_output,Fl_Output* mod3_output, Fl_Input * keyshortcut,Fl_Input * action_name1,std::string CURRENT){
-	debug_out("void Configure_CB(Fl_Output* mod1_output, Fl_Output* mod2_output,Fl_Output* mod3_output, Fl_Input * keyshortcut,Fl_Input * action_name1,std::string "+CURRENT+")");
-	std::string MOD1,MOD2,MOD3,KEY,ACTION;
-	MOD1=getOUTPUT(mod1_output);
-	MOD2=getOUTPUT(mod2_output);
-	MOD3=getOUTPUT(mod3_output);
-	KEY=getINPUT(keyshortcut);
-	ACTION=getINPUT(action_name1);
-	if(ACTION.compare("")==0){return false;}
-	if(CURRENT.compare("")==0){return false;}
-	configureKey(CURRENT,MOD1,MOD2,MOD3,KEY,ACTION);
-	return true;
-}
 void Choose_Action(Fl_Input* action_name){
 	debug_out("void Choose_Action(Fl_Input* action_name)");
 	std::string result = choose_a_program();
@@ -188,6 +175,73 @@ void remove_key(Fl_Browser* o){
 	else{
 		fl_message("Please click on an item to remove!");
 	}
+}
+void setLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput){
+	debug_out("void setLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput)");
+	someLayout(layoutput, modeloutput, optionoutput,true);
+}
+void someLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput, bool save){
+	std::string SAVE="Don't Save";
+	if(save){SAVE="SAVE!";}
+	debug_out("void someLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput, "+SAVE+")");
+	std::string command="localectl";
+	const char* layout=layoutput->value();
+	const char* model=modeloutput->value();
+	const char* option=optionoutput->value();
+	std::string LAYOUT,MODEL,OPTION;
+	if(layout!=NULL){LAYOUT=layout;}
+	if(model!=NULL){MODEL=model;}
+	if(option!=NULL){OPTION=option;}
+	bool thisExec=isExec(command);
+	if(!thisExec){
+		command="setxkbmap";
+		thisExec=isExec(command);
+		if(!thisExec){
+			errorOUT("Did not find an appropriate program to set keyboard maping");
+			return;
+		}
+	}
+	if(save){
+		bool sysd=false;
+		if(command.compare("localectl")==0){
+			sysd=true;
+			command+=" set-x11-keymap";
+			if(LAYOUT.compare("")!=0){command=command+" "+LAYOUT;}
+			if(MODEL.compare("")!=0){command=command+" "+MODEL;}
+			if(OPTION.compare("")!=0){command=command+" "+OPTION;}
+		}
+		else{
+			if(LAYOUT.compare("")!=0){command=command+" -layout "+LAYOUT;}
+			if(MODEL.compare("")!=0){command=command+" -model "+MODEL;}
+			if(OPTION.compare("")!=0){command=command+" -option "+OPTION;}
+			std::string BASHRC=linuxcommon::home_path();
+			if(BASHRC.compare("")!=0){
+				//TODO something better than this
+				BASHRC+=".bashrc";
+				if(!linuxcommon::append_string_to_file(command,BASHRC)){errorOUT("Could not save "+command+" to "+BASHRC);}
+			}
+		}
+	}
+	else{
+		if(command.compare("localectl")==0){
+			command+=" set-x11-keymap";
+			if(LAYOUT.compare("")!=0){command=command+" "+LAYOUT;}
+			if(MODEL.compare("")!=0){command=command+" "+MODEL;}
+			if(OPTION.compare("")!=0){command=command+" "+OPTION;}
+		}
+		else{
+			if(LAYOUT.compare("")!=0){command=command+" -layout "+LAYOUT;}
+			if(MODEL.compare("")!=0){command=command+" -model "+MODEL;}
+			if(OPTION.compare("")!=0){command=command+" -option "+OPTION;}
+		}
+		
+	}
+	int retval=linuxcommon::run_a_program(command);
+	if(retval!=0){errorOUT("Could not run "+command);}
+}
+void testLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput){
+	debug_out("void testLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput)");
+	someLayout(layoutput, modeloutput, optionoutput,false);
 }
 //String////////////////////////////////////////////////////////////////
 std::string fixLayoutString(Fl_Browser *o){
@@ -444,6 +498,19 @@ bool Configure(Fl_Browser *key_browser,
 	}
 	else{fl_message("Please click on an item to remove!");}
 	return false;
+}
+bool Configure_CB(Fl_Output* mod1_output, Fl_Output* mod2_output,Fl_Output* mod3_output, Fl_Input * keyshortcut,Fl_Input * action_name1,std::string CURRENT){
+	debug_out("void Configure_CB(Fl_Output* mod1_output, Fl_Output* mod2_output,Fl_Output* mod3_output, Fl_Input * keyshortcut,Fl_Input * action_name1,std::string "+CURRENT+")");
+	std::string MOD1,MOD2,MOD3,KEY,ACTION;
+	MOD1=getOUTPUT(mod1_output);
+	MOD2=getOUTPUT(mod2_output);
+	MOD3=getOUTPUT(mod3_output);
+	KEY=getINPUT(keyshortcut);
+	ACTION=getINPUT(action_name1);
+	if(ACTION.compare("")==0){return false;}
+	if(CURRENT.compare("")==0){return false;}
+	configureKey(CURRENT,MOD1,MOD2,MOD3,KEY,ACTION);
+	return true;
 }
 bool newpanel(){
 	debug_out("bool newpanel()");

@@ -115,6 +115,7 @@ namespace linuxcommon{
 	std::vector<std::string> split_paths(const char* envVar, const char* incasenothingexists);
 	std::vector<std::string> xdg_conf_dirs();
 	///boolean
+	bool append_string_to_file(std::string STRING, std::string FILENAME);
 	bool has_file_extention_at_end(std::string filename,std::string extention);
 	bool pkill(std::string programname);
 	bool program_is_running(std::string program_line);

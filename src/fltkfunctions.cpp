@@ -32,6 +32,10 @@
 #define NANOSVGRAST_IMPLEMENTATION
 #include "../include/nanosvgrast.h"
 //String////////////////////////////////////////////////////////////////
+/** open a directory chooser
+ * @param directory the directory to start at
+ * @param label the dialog window label
+ */
 std::string choose_a_directory(std::string directory, std::string label){
 	if(directory.compare("")==0){directory=linuxcommon::home_path();}
 	if(label.compare("")==0){label = gettext("Choose Directory");}
@@ -56,6 +60,10 @@ std::string choose_a_directory(std::string directory, std::string label){
 	}
 	return "";
 }
+/** choose a directory for saving in
+ * @param directory the directory to start in
+ * @param label the dialog label
+ */
 std::string choose_a_directory_to_save(std::string directory, std::string label){
 	if(directory.compare("")==0){directory=linuxcommon::home_path();}
 	if(label.compare("")==0){label = gettext("Choose Directory");}
@@ -85,22 +93,31 @@ std::string choose_a_directory_to_save(std::string directory, std::string label)
 	}
 	return String;
 }
+/** Choose a file from the home directory (or wherever else the user navigates)*/
 std::string choose_a_file(){
 	std::string directory=linuxcommon::home_path();
 	std::string chooseName=gettext("Choose a File");
 	std::string String=nativeFileDialog(chooseName,directory,"*");
 	return String;
 }
+/** Choose a file
+ * @param directory the starting directory
+ */
 std::string choose_a_file(std::string directory){
 	std::string chooseName=gettext("Choose a File");
 	std::string String=nativeFileDialog(chooseName,directory,"*");
 	return String;
 }
+/** Choose a file from a directory with an optional filter
+ * @param directory the directory to start in
+ * @param pattern the pattern to look for (ex *.svg)
+ */
 std::string choose_a_file(std::string directory,std::string pattern){
 	std::string chooseName=gettext("Choose a File");
 	std::string String=nativeFileDialog(chooseName,directory,pattern);
 	return String;
 }
+/** choose a desktop file program*/
 std::string choose_a_program(){
 	debug_out("std::string choose_a_program()");
 	std::string chooseName=gettext("Choose a program");
@@ -127,10 +144,12 @@ std::string choose_a_program(){
     }
 	return returnable;
 }
+/** Choose a file from the normal icon directory*/
 std::string choose_an_icon(){
 	std::string directory=linuxcommon::find_xdg_data_dir_subdir("icon");
 	return choose_an_icon(directory);
 }
+/** choose an icon from a specified directory*/
 std::string choose_an_icon(std::string directory){
 	debug_out("std::string choose_an_icon(std::string "+directory+")");
 	std::string chooseName=gettext("Choose an Icon");
@@ -138,7 +157,12 @@ std::string choose_an_icon(std::string directory){
 	std::string String=nativeFileDialog(chooseName,directory,"*.{xbm,XBM,png,PNG,svg,SVG}");
 	return String;
 }
-std::string nativeFileDialog(std::string title,std::string path,std::string filters){
+/** the function used by the 'choose_a_*' functions to actuall open a file chooser
+ * @param title the title to use in the dialog
+ * @param path the path to start looking in
+ * @param filters the file filters to use (ex *.svg)
+ */
+ std::string nativeFileDialog(std::string title,std::string path,std::string filters){
 	debug_out("std::string nativeFileDialog(std::string "+title+",std::string "+path+",std::string "+filters+")");
 	if(title.compare("")==0){title=gettext("Choose");}
 	if(path.compare("")==0){path=linuxcommon::home_path();}
@@ -170,6 +194,9 @@ std::string nativeFileDialog(std::string title,std::string path,std::string filt
 	return "";
 }
 //Char*/////////////////////////////////////////////////////////////////
+/** create data FLTK can use to set a window icon
+ * @param pIcon the data sent in (from an xpm file)
+ */
 char* Get_Fl_Icon(const char** pIcon){
 	debug_out("char* Get_Fl_Icon(const char** pIcon)");
     /* Set icon for Linux:
@@ -179,11 +206,11 @@ char* Get_Fl_Icon(const char** pIcon){
      *
      * Code from Vincent on FLTK forums 2015 Feb 10
      */
-     //std::cout<< "sent in: "<<pIcon<<" to Get_Fl_Icon"<<std::endl;
-	// Set icon for Linux:
-    // This function must be initialised once by assigning an icon with parameter pIcon.
-    // For sequential setting of icon to subwindows, this function can be called several
-    // times without assigning an icon every time.
+	/** Set icon for Linux:
+      * This function must be initialised once by assigning an icon with parameter pIcon.
+      * For sequential setting of icon to subwindows, this function can be called several
+      * times without assigning an icon every time.
+	  */
 	static Pixmap p= 0;                // static store of assigned icon
 	static Pixmap mask;
 	if (!p && pIcon){
@@ -195,6 +222,10 @@ char* Get_Fl_Icon(const char** pIcon){
 	return (char*) p;
 }
 //Double////////////////////////////////////////////////////////////////
+/** the color chooser dialog
+ * @param &c the return value
+ * @param o the Fl_Widget to change the color of
+ */
 double* choose_a_color(int &c,Fl_Widget *o){
 	uchar r;
 	uchar g;
@@ -211,6 +242,9 @@ double* choose_a_color(int &c,Fl_Widget *o){
 }
 //Void//////////////////////////////////////////////////////////////////
 //C
+/** choose a program and put the text into an Fl_Input
+ * @param o the Fl_Input to send the string to
+ */
 void choose_a_program(Fl_Input *o){
 	debug_out("void choose_a_program(Fl_Input *o)");
 	std::string chooseName=gettext("Choose a program");
@@ -239,11 +273,19 @@ void choose_a_program(Fl_Input *o){
     }
 	o->value(returnable.c_str());
 }
+/** clear an Fl_Output
+ * @param o, the output to clear
+ */
 void clearOutput(Fl_Output* o){
 	debug_out("void clearOutput(Fl_Output* o)");
 	int retval=o->value(NULL);
 	if(retval!=0){debug_out("Different value set");}
 }
+/**
+ * @param o
+ * @param whichElement
+ * @param subelement
+ */
 void color_two(Fl_Widget * o, std::string whichElement,std::string subelement){
 	debug_out("void color_two(Fl_Widget * o, std::string "+whichElement+",std::string "+subelement+")");
 	int c,c1;
@@ -266,6 +308,10 @@ void color_two(Fl_Widget * o, std::string whichElement,std::string subelement){
 	}
 }
 //G
+/** get the decorations and send the result to an Fl_Output
+ * @param  o the Fl_Output to send the result to
+ * @param element the element to look in
+ */
 void getDecorations(Fl_Output *o,std::string element){
 	if(JWMversion()<232){
 		o->hide();
@@ -279,9 +325,20 @@ void getDecorations(Fl_Output *o,std::string element){
 	o->redraw();
 }
 //M
+/** make a symetrical image in an Fl_Widget
+ * @param icon_file the filename (or relative name) to turn into the icon
+ * @param widget the widget to draw the icon on
+ * @param wh the width/height
+ */
 void makeWidgetIcon(std::string icon_file, Fl_Widget * widget,int wh){
 	makeWidgetIcon(icon_file,widget,wh,wh);
 }
+/** make a symetrical image in an Fl_Widget
+ * @param icon_file the filename (or relative name) to turn into the icon
+ * @param widget the widget to draw the icon on
+ * @param w the width you want it to be
+ * @param h the height you want it to be
+ */
 void makeWidgetIcon(std::string icon_file, Fl_Widget * widget, int w, int h){
 	debug_out("void makeWidgetIcon(std::string "+icon_file+", Fl_Widget * widget, int w, int h)");
 	//std::string oldfile=icon_file;
@@ -369,6 +426,10 @@ void makeWidgetIcon(std::string icon_file, Fl_Widget * widget, int w, int h){
 	widget->image(image2);
 }
 //O
+/** set one Background element color
+ * @param o the object to color
+ * @param whichElement the element to get the color from, and save to
+ */
 void one_color(Fl_Widget *o, std::string whichElement){
 	debug_out("void one_color(Fl_Widget *o, std::string "+whichElement+")");
 	int c;
@@ -382,6 +443,10 @@ void one_color(Fl_Widget *o, std::string whichElement){
 		o->redraw();
 	}
 }
+/** set one Active Background element color
+ * @param o the object to color
+ * @param whichElement the element to get the color from, and save to
+ */
 void one_color_active(Fl_Widget *o, std::string whichElement){
 	debug_out("void one_color_active(Fl_Widget *o, std::string "+whichElement+")");
 	int c;
@@ -402,6 +467,10 @@ void one_color_active(Fl_Widget *o, std::string whichElement){
 		o->redraw();
 	}
 }
+/** set one Foreground element color
+ * @param o the object to color
+ * @param whichElement the element to get the color from, and save to
+ */
 void one_color_Font(Fl_Widget *o, std::string whichElement){
 	debug_out("void one_color_Font(Fl_Widget *o, std::string "+whichElement+")");
 	int c;
@@ -416,6 +485,10 @@ void one_color_Font(Fl_Widget *o, std::string whichElement){
 		o->redraw();
 	}
 }
+/** set one Active Foreground element color
+ * @param o the object to color
+ * @param whichElement the element to get the color from, and save to
+ */
 void one_color_Font_active(Fl_Widget *o, std::string whichElement){
 	debug_out("void one_color_Font_active(Fl_Widget *o, std::string "+whichElement+")");
 	int c;
@@ -436,6 +509,10 @@ void one_color_Font_active(Fl_Widget *o, std::string whichElement){
 		o->redraw();
 	}
 }
+/** set an elemnets Outline color
+ * @param o the Fl_Widget to color
+ * @param whichElement the element to set and get colors from
+ */
 void outline_color(Fl_Widget *o, std::string whichElement){
 	debug_out("void outline_color(Fl_Widget *o, std::string "+whichElement+")");
 	int c;
@@ -450,7 +527,17 @@ void outline_color(Fl_Widget *o, std::string whichElement){
 		o->redraw();
 	}
 }
+/** set an elements Outline color
+ * @param a the first Fl_Widget to color
+ * @param b the second Fl_Widget to color
+ * @param whichElement the element to set and get colors from
+ */
 void outline_two_color(Fl_Widget *a, Fl_Widget *b, std::string whichElement){two_colors(a,b,whichElement,"Outline");}
+/** set opacity from a silder value, and update an Fl_Value_Input
+ * @param o the input for the result
+ * @param slider the silder to get the value of
+ * @param whichElement
+ */
 void opacity(Fl_Value_Input *o, Fl_Slider *slider, std::string whichElement){
 	debug_out("void opacity(Fl_Value_Input *o, Fl_Slider *slider, std::string "+whichElement+")");
 	double opac=slider->value();
@@ -458,6 +545,10 @@ void opacity(Fl_Value_Input *o, Fl_Slider *slider, std::string whichElement){
 	setElementFloat(whichElement,"Opacity",opacity);
 	o->value(opac*100);
 }
+/** get the first outline color in an element and set it
+ * @param a the widget to color
+ * @param element the element to get the color from
+ */
 void outline1(Fl_Widget *a, std::string element){
 	debug_out("void outline2(Fl_Widget *a, std::string "+element+")");
 	std::string val=getFirstColor(element,"OutLine");
@@ -465,6 +556,11 @@ void outline1(Fl_Widget *a, std::string element){
 	a->color(flCOLOR(val));
 	a->redraw();
 }
+/** get the second outline color in an element and set it
+ * @param a the widget to color
+ * @param b the other widget to color
+ * @param element the element to get the color from
+ */
 void outline2(Fl_Widget *a, Fl_Output *b,std::string element){
 	debug_out("void outline2(Fl_Widget *a, Fl_Output *b, std::string "+element+")");
 	const char* value=b->value();
@@ -482,6 +578,10 @@ void outline2(Fl_Widget *a, Fl_Output *b,std::string element){
 	a->redraw();
 }
 //P
+/** make a text file into lines of an Fl_Browser
+ * @param o the browser to populate
+ * @param filename the file to read
+ */
 void populateBrowserWithTextFile(Fl_Browser *o, std::string filename){
 	if(filename.compare("")==0)return;
 	std::vector<std::string> myfile=linuxcommon::file_to_vector(filename);
@@ -492,21 +592,28 @@ void populateBrowserWithTextFile(Fl_Browser *o, std::string filename){
 		o->add(tmp.c_str());
 	}
 }
+/** populate a Fl_Browser with a string each line separated by a new line, OR the whole string as one line
+ * @param o the browser
+ * @param STRING the string to populate the browser with
+ */
 void populateBrowserWithString(Fl_Browser *o, std::string STRING){
 	debug_out("void populateBrowserWithString(Fl_Browser *o, std::string "+STRING+")");
 	if(STRING.compare("")==0)return;
 	std::string sep="\n";
 	unsigned int finder=STRING.find(sep);
 	unsigned int length=STRING.length();
+	/** If no '\n' is found just add the string and return*/
 	if(finder>length){
 		debug_out("No Newline found");
 		o->add(STRING.c_str());
 		return;
 	}
+	/** while there is a new line keep adding*/
 	while(finder<length){
 		finder=STRING.find(sep);
 		length=STRING.length();
 		std::string tmp1=STRING;
+		/** make sure if no newline is at the end it wont crash*/
 		if(finder<length+1){
 			std::string tmp2=tmp1.erase(finder,std::string::npos);	
 			o->add(tmp2.c_str());
@@ -517,6 +624,11 @@ void populateBrowserWithString(Fl_Browser *o, std::string STRING){
 	}
 }
 //S
+/** Set the decorations attribute for some element
+ * @param o the output to send the value to as user feedback
+ * @param element the element to change JWM->element
+ * @param value the value sent in (flat OR motif)
+ */
 void setDecorations(Fl_Output *o,std::string element,std::string value){
 	debug_out("void setDecorations(Fl_Output *o,std::string "+element+",std::string "+value+")");
 	if(JWMversion()<232){
@@ -527,26 +639,43 @@ void setDecorations(Fl_Output *o,std::string element,std::string value){
 	o->value(value.c_str());
 	o->redraw();
 }
+/** the general startup command to put a new window under the user's mouse
+ * @param o the window to move
+ */
 void startup(Fl_Window *o){under_mouse(o);}
+/** a startup function to set the window icon AND put it under the mouse
+ * @param o the window
+ * @param windowIcon the window Icon in const char** form (needed by FLTK)
+ */
 void startup(Fl_Window *o ,const char** windowIcon){
   under_mouse(o);
   o->icon(Get_Fl_Icon(windowIcon));
 }
 //T
+/** Set a two color string for an element like #000000:#ffffff
+ * @param a the first widget to display the color
+ * @param b the second widget to display the color
+ * @param whichElement the main element containing the style sub element
+ * @param subelement the specific style element (Foreground, Background, Text)
+ */
 void two_colors(Fl_Widget *a, Fl_Widget *b, std::string whichElement,std::string subelement){
 	debug_out("void two_colors(Fl_Widget *a, Fl_Widget *b, std::string "+whichElement+",std::string "+subelement+")");
 	int c,c2;
 	double* colors = choose_a_color(c,a);
 	if(c!=0){
+		/** if the user didn't cancel proceed*/
 		std::string colorString=colorToString(colors);
 		double* colors2 = choose_a_color(c2,a);
 		if(c2!=0){
+			/** if the user didn't cancel proceed by joining the double colors are HTML strings*/
 			std::string colorString2=colorToString(colors2);
 			std::string res=colorString+":"+colorString2;
 			if(setElementText(whichElement,subelement,res)){
 				res=getElementText(whichElement,subelement);
 				unsigned int Color;
+				/** get integer versions of the string colors*/
 				unsigned int colorSet = flCOLOR(res,Color);
+				/** set the widgets with the correct colors*/
 				a->color(colorSet);
 				a->redraw();
 				b->color(colorSet);
@@ -557,15 +686,20 @@ void two_colors(Fl_Widget *a, Fl_Widget *b, std::string whichElement,std::string
 	}
 }
 //Boolean///////////////////////////////////////////////////////////////
+/** Check if an Fl_Output is empty or not even containing "" rather than NULL
+ * @param o the output to check
+ */
 bool OutputIsEmpty(Fl_Output* o){
 	debug_out("bool OutputIsEmpty(Fl_Output* o)");
 	if(o->value()==NULL){return true;}
 	const char* value=o->value();
+	/** is it NULL?*/
 	if(value==NULL){
 		debug_out("Empty");
 		return true;
 	}
 	std::string val=value;
+	/** is it empty?*/
 	if(val.compare("")==0){
 		debug_out("Empty");
 		return true;

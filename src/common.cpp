@@ -939,8 +939,9 @@ LINUX_COMMON__NS_BEGIN
 		//std::vector<std::string> user = split_paths("XDG_DATA_HOME",thisXDG.c_str());
 		return desktop;
 	}
-	/**
-	 * @param
+	/** Get a string vector of files similar to one you are searching for
+	 * @param DIRECTORY the place to look
+	 * @param file the filename to find
 	 */
 	std::vector<std::string> get_file_vector(std::string DIRECTORY,std::string file){
 		std::vector<std::string> myVector;
@@ -1077,6 +1078,17 @@ LINUX_COMMON__NS_BEGIN
 		return desktop;
 	}
 	///BOOLEAN FUNCTIONS////////////////////////////////////////////////
+	/** append a string to a file
+	 * @param STRING the string to append
+	 * @param FILENAME the file to append it to
+	 * this returns save_string_to_file()
+	 */
+	bool append_string_to_file(std::string STRING, std::string FILENAME){
+		std::string tmp=file_to_string(FILENAME);
+		tmp+="\n";
+		tmp+=STRING;
+		return save_string_to_file(tmp,FILENAME);
+	}
 	/** see if a file has a certain extention (like .svg)
 	 * @param filename the filename
 	 * @param extention the extention to look for

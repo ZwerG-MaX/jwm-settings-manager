@@ -1196,10 +1196,17 @@ void KeyboardUI::cb_Layout(Fl_Browser* o, void* v) {
 }
 
 void KeyboardUI::cb_OK2_i(Fl_Button*, void*) {
-  saveChanges();
+  setLayout(layoutput, modeloutput, optionoutput);
 }
 void KeyboardUI::cb_OK2(Fl_Button* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_OK2_i(o,v);
+}
+
+void KeyboardUI::cb_TEST_i(Fl_Button*, void*) {
+  testLayout(layoutput, modeloutput, optionoutput);
+}
+void KeyboardUI::cb_TEST(Fl_Button* o, void* v) {
+  ((KeyboardUI*)(o->parent()->user_data()))->cb_TEST_i(o,v);
 }
 
 void KeyboardUI::cb_Cancel2_i(Fl_Button*, void*) {
@@ -1556,6 +1563,7 @@ Fl_Double_Window* KeyboardUI::layout_window() {
       o->color(FL_YELLOW);
       o->selection_color((Fl_Color)134);
       o->labelcolor(FL_GRAY0);
+      o->callback((Fl_Callback*)cb_TEST);
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(360, 275, 65, 30, gettext("Cancel"));
       o->box(FL_FLAT_BOX);

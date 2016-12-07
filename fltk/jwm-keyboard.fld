@@ -945,11 +945,12 @@ layoutput->redraw();}
       }
       Fl_Button {} {
         label OK
-        callback {std::string tmp="localectl --no-convert set-x11-keymap";}
+        callback {setLayout(layoutput, modeloutput, optionoutput);} selected
         tooltip {Write to configuration file} xywh {440 275 45 30} box FLAT_BOX color 61 selection_color 59 labelcolor 55
       }
       Fl_Button {} {
-        label TEST selected
+        label TEST
+        callback {testLayout(layoutput, modeloutput, optionoutput);}
         tooltip {Write to configuration file} xywh {170 275 45 30} box FLAT_BOX color 95 selection_color 134 labelcolor 32
       }
       Fl_Button {} {
