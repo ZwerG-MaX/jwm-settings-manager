@@ -33,3 +33,49 @@ This can be used to document any issues you encounter.
 For example
 `./jwm-settings-manager --debug > jwm-settings-manager.log`
 will save all the output to a file.
+
+##Panel
+![Alt text](/screenshots/panel.png?raw=true "Panel Window")
+This portion allows you to configure the Menus, Application launchers, indicators, pager, appearance, sizing and position, etc..
+
+##Desktop
+![Alt text](/screenshots/desktop.png?raw=true "Desktop Window")
+This allows you to change the background, and amount of virtual desktops.
+It also supports filemanagers creating the desktop background (pcmanfm and gsettings... i.e. thunar/nautilus/etc..)
+
+##Windows
+![Alt text](/screenshots/windows.png?raw=true "Windows Window")
+This allows you to change the window buttons, appearance, and configure window groups
+You can also change the GTK widget theme
+
+##Keyboard
+![Alt text](/screenshots/keyboard.png?raw=true "Keyboard Window")
+This allows you to change keyboard shortcuts.
+There is a 'key grabber' for combinations, as well as a drop down for XF86 keys
+There is also a preliminary effort to configure keyboard layout.
+
+##Touchpad
+![Alt text](/screenshots/touchpad.png?raw=true "Touchpad Window")
+This allows you to configure your touchpad.
+It also configures the JWM options, and if no touchpad exists only JWM options will be shown
+
+##Themes
+![Alt text](/screenshots/themes.png?raw=true "Themes Window")
+Switch between a few premade themes, with support for user themes in
+~/.themes
+
+##Icons
+![Alt text](/screenshots/icons.png?raw=true "Icons Window")
+Change JWM icons.  You can manually edit the lines, or simply change GTK icon theme
+
+##Fonts
+![Alt text](/screenshots/fonts.png?raw=true "Fonts Window")
+Configure all fonts (and font colors) used in JWM through a graphical font manager
+
+##Autostart
+![Alt text](/screenshots/autostart.png?raw=true "Autostart Window")
+Configure and edit all JWM Startup commands, as well as handle XDG autostart through the desktop-file-editor (via pkexec, for system files)
+
+##Desktop File Editor
+![Alt text](/screenshots/desktop-file-editor.png?raw=true "Desktop File Editor Window")
+A very full featured desktop file editor offering the ability to edit almost everything possible in a desktop file.
