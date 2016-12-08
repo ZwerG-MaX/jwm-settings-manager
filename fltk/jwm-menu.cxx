@@ -411,7 +411,7 @@ void MenuUI::cb_root_menu(Fl_Browser* o, void* v) {
 }
 
 void MenuUI::cb_config_something_i(Fl_Button*, void*) {
-  if((checkFlBrowserItem(menuElementText))||(checkFlBrowserItem(menuElement))){edit_an_item();}
+  if(checkFlBrowserItem(menuElement)){edit_an_item();}
 else if(checkFlBrowserItem(root_menu)){edit_a_menu();};
 }
 void MenuUI::cb_config_something(Fl_Button* o, void* v) {
@@ -1182,11 +1182,12 @@ void MenuUI::edit_an_item() {
   const char* menu = root_menu->text(menuNum);
   menuItemLineNumber=line;
   ROOTMENU=menuNum;
-  
+  std::string LABELED=gettext("Labeled");
   std::string EXIT="Exit";
   std::string RESTART="Restart";
   std::string iconattrib = "icon"; 
   std::string labelattrib = "label";
+  std::string labeledattrib = "labeled";
   std::string confirmattrib = "confirm";
   std::string ITEM = text;
   debug_out("edit Item: "+ITEM);
@@ -1216,32 +1217,33 @@ void MenuUI::edit_an_item() {
     old_include_input->value(INCLUDE.c_str());
     return;
   }
-  else if(ITEM.compare("Dynamic")==0){
-    debug_out("Dyanmic Menu!");
-    //TODO
-    return;
-  }
   else if(ITEM.compare("Menu")==0){
     submenu_window()->show();
     submenu_menu->value(menu);
     return;
   }
+  //Show the configure item window
   conf_item_window()->show();
+  if(ITEM.compare("Dynamic")==0){
+    item_prog_input->value(text2);
+    debug_out("Dynamic");
+    item_conf_button->copy_label(LABELED.c_str());
+    std::string confirm = getItemAttribute(menuNum,line,ITEM,labeledattrib); 
+    if(confirm.compare("true")){item_conf_button->value(0);}
+    else{item_conf_button->value(1);}
+  }
   if(ITEM.compare("Program")==0){
     item_prog_input->value(text2);
     item_conf_button->hide();
   }
   else if(ITEM.compare(EXIT)==0){
-    conf_item_window()->show();
     item_prog_input->hide();
     item_prog_button->hide();
-    
     std::string confirm = getItemAttribute(menuNum,line,ITEM,confirmattrib); 
     if(confirm.compare("true")){item_conf_button->value(0);}
     else{item_conf_button->value(1);}
   }
   else if(ITEM.compare(RESTART)==0){
-    conf_item_window()->show();
     item_prog_input->hide();
     item_prog_button->hide();
     item_conf_button->hide();

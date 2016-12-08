@@ -139,6 +139,12 @@ Fl_Double_Window* DesktopUI::make_window() {
         o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Choose2);
       } // Fl_Button* o
+      { fm_pref = new Fl_Button(5, 390, 105, 25, gettext("Filemanager"));
+        fm_pref->tooltip(gettext("Open the filemanager to change preferences"));
+        fm_pref->box(FL_FLAT_BOX);
+        fm_pref->color((Fl_Color)23);
+        fm_pref->deactivate();
+      } // Fl_Button* fm_pref
       { Fl_Check_Button* o = icons_check = new Fl_Check_Button(5, 345, 140, 25, gettext("Icons on Desktop"));
         icons_check->box(FL_FLAT_BOX);
         icons_check->down_box(FL_GTK_DOWN_BOX);
@@ -203,11 +209,6 @@ Fl_Double_Window* DesktopUI::make_window() {
         o->labelcolor((Fl_Color)55);
         o->callback((Fl_Callback*)cb_OK);
       } // Fl_Button* o
-      { fm_pref = new Fl_Button(5, 390, 105, 25, gettext("Filemanager"));
-        fm_pref->tooltip(gettext("Open the filemanager to change preferences"));
-        fm_pref->box(FL_FLAT_BOX);
-        fm_pref->color((Fl_Color)23);
-      } // Fl_Button* fm_pref
       { Fl_Button* o = new Fl_Button(300, 355, 55, 25, gettext("Names"));
         o->tooltip(gettext("Name your workspaces"));
         o->box(FL_FLAT_BOX);

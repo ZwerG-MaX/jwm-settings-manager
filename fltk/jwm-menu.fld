@@ -61,8 +61,7 @@ class MenuUI {open
 } {
   decl {int menuItemLineNumber;int JWMVERSION;int ROOTMENU;} {public local
   }
-  Function {add_a_menu()} {open
-  } {
+  Function {add_a_menu()} {} {
     Fl_Window {} {
       label {Add a Menu}
       xywh {132 177 305 110} type Double hide
@@ -257,8 +256,8 @@ if(icon.compare("")!=0){
   } {
     Fl_Window config_item_win {
       label {Configure the Item} open
-      xywh {521 216 280 125} type Double
-      code0 {startup(o);} xclass {jsm-panel} visible
+      xywh {521 216 280 125} type Double hide
+      code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Input item_prog_icon {
         label Icon
@@ -287,7 +286,7 @@ if(result.compare("")!=0){
       Fl_Button {} {
         label OK
         callback {configure_item();
-config_item_win->hide();} selected
+config_item_win->hide();}
         xywh {210 95 60 25} box FLAT_BOX color 61 labelcolor 7
       }
       Fl_Button item_icon_button {
@@ -376,7 +375,7 @@ change_include();}
 JWMVERSION=JWMversion();} {}
     Fl_Window menu_window {
       label {Menu properties} open
-      xywh {906 355 440 230} type Double color 31 resizable
+      xywh {528 234 440 230} type Double color 31 resizable
       code0 {startup(o);} xclass {jsm-panel} visible
     } {
       Fl_Scroll {} {open
@@ -435,7 +434,7 @@ menuElementText->deselect();}
               code2 {if(INPUTmenu.compare("")!=0){select_sent_in(INPUTmenu);}}
             }
             Fl_Button config_something {
-              callback {if((checkFlBrowserItem(menuElementText))||(checkFlBrowserItem(menuElement))){edit_an_item();}
+              callback {if(checkFlBrowserItem(menuElement)){edit_an_item();}
 else if(checkFlBrowserItem(root_menu)){edit_a_menu();}}
               tooltip Configure image {custom_buttons/gear16.png} xywh {175 160 30 30} box FLAT_BOX color 23 labelfont 1 align 128
             }
@@ -698,7 +697,7 @@ if(getMenuItems(menuElement,menu,menuElementText)){
  debug_out("Got menu: "+menu);
 }} {}
   }
-  Function {configure_item()} {open
+  Function {configure_item()} {open selected
   } {
     code {if(!checkFlBrowserItem(root_menu)){
   errorOUT("No root menu is still selected");
@@ -745,11 +744,12 @@ int menuNum = root_menu->value();
 const char* menu = root_menu->text(menuNum);
 menuItemLineNumber=line;
 ROOTMENU=menuNum;
-
+std::string LABELED=gettext("Labeled");
 std::string EXIT="Exit";
 std::string RESTART="Restart";
 std::string iconattrib = "icon"; 
 std::string labelattrib = "label";
+std::string labeledattrib = "labeled";
 std::string confirmattrib = "confirm";
 std::string ITEM = text;
 debug_out("edit Item: "+ITEM);
@@ -779,32 +779,33 @@ if(ITEM.compare("Include")==0){
   old_include_input->value(INCLUDE.c_str());
   return;
 }
-else if(ITEM.compare("Dynamic")==0){
-  debug_out("Dyanmic Menu!");
-  //TODO
-  return;
-}
 else if(ITEM.compare("Menu")==0){
   submenu_window()->show();
   submenu_menu->value(menu);
   return;
 }
+//Show the configure item window
 conf_item_window()->show();
+if(ITEM.compare("Dynamic")==0){
+  item_prog_input->value(text2);
+  debug_out("Dynamic");
+  item_conf_button->copy_label(LABELED.c_str());
+  std::string confirm = getItemAttribute(menuNum,line,ITEM,labeledattrib); 
+  if(confirm.compare("true")){item_conf_button->value(0);}
+  else{item_conf_button->value(1);}
+}
 if(ITEM.compare("Program")==0){
   item_prog_input->value(text2);
   item_conf_button->hide();
 }
 else if(ITEM.compare(EXIT)==0){
-  conf_item_window()->show();
   item_prog_input->hide();
   item_prog_button->hide();
-  
   std::string confirm = getItemAttribute(menuNum,line,ITEM,confirmattrib); 
   if(confirm.compare("true")){item_conf_button->value(0);}
   else{item_conf_button->value(1);}
 }
 else if(ITEM.compare(RESTART)==0){
-  conf_item_window()->show();
   item_prog_input->hide();
   item_prog_button->hide();
   item_conf_button->hide();

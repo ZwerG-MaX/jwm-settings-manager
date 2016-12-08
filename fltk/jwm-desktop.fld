@@ -101,6 +101,10 @@ FILEMANAGER=whichFileManagerRunning();} {}
           callback {two_color(color_display1,color_display2,background_displayer_thingie,current_bg);}
           tooltip {This will take icons off the desktop} xywh {228 315 125 25} box FLAT_BOX color 23
         }
+        Fl_Button fm_pref {
+          label Filemanager selected
+          tooltip {Open the filemanager to change preferences} xywh {5 390 105 25} box FLAT_BOX color 23 deactivate
+        }
         Fl_Check_Button icons_check {
           label {Icons on Desktop}
           callback {bool useful=use_icons_on_desktop(background_displayer_thingie,thisBG);
@@ -149,12 +153,8 @@ num_desktop_wh_cb("height",height,num_desktop_w,num_desktop_h,check_desktops);}
 desktop_window->hide();}
           tooltip {Write to configuration file} xywh {308 390 45 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
         }
-        Fl_Button fm_pref {
-          label Filemanager
-          tooltip {Open the filemanager to change preferences} xywh {5 390 105 25} box FLAT_BOX color 23
-        }
         Fl_Button {} {
-          label Names selected
+          label Names
           tooltip {Name your workspaces} xywh {300 355 55 25} box FLAT_BOX color 23 hide deactivate
         }
       }

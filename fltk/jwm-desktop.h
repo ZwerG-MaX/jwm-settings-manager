@@ -59,6 +59,7 @@ private:
   inline void cb_Choose2_i(Fl_Button*, void*);
   static void cb_Choose2(Fl_Button*, void*);
 public:
+  Fl_Button *fm_pref;
   Fl_Check_Button *icons_check;
 private:
   inline void cb_icons_check_i(Fl_Check_Button*, void*);
@@ -83,7 +84,5 @@ private:
   static void cb_Cancel(Fl_Button*, void*);
   inline void cb_OK_i(Fl_Button*, void*);
   static void cb_OK(Fl_Button*, void*);
-public:
-  Fl_Button *fm_pref;
 };
 #endif
