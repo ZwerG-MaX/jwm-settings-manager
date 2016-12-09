@@ -181,6 +181,16 @@ private:
   inline void cb_close_image_i(Fl_Button*, void*);
   static void cb_close_image(Fl_Button*, void*);
 public:
+  Fl_Button *inactive_border_color2;
+private:
+  inline void cb_inactive_border_color2_i(Fl_Button*, void*);
+  static void cb_inactive_border_color2(Fl_Button*, void*);
+public:
+  Fl_Button *a_border_color2;
+private:
+  inline void cb_a_border_color2_i(Fl_Button*, void*);
+  static void cb_a_border_color2(Fl_Button*, void*);
+public:
   Fl_Slider *t_slider;
 private:
   inline void cb_t_slider_i(Fl_Slider*, void*);
@@ -320,8 +330,8 @@ public:
 private:
   inline void cb_default_icon_button_win_i(Fl_Button*, void*);
   static void cb_default_icon_button_win(Fl_Button*, void*);
-  static unsigned char menu_decorations_i18n_done;
-  static Fl_Menu_Item menu_decorations[];
+  static unsigned char menu_title_i18n_done;
+  static Fl_Menu_Item menu_title[];
 public:
   static Fl_Menu_Item *motif;
 private:
@@ -334,6 +344,19 @@ private:
   static void cb_flat(Fl_Menu_*, void*);
 public:
   Fl_Output *decorations;
+  static unsigned char menu_border_i18n_done;
+  static Fl_Menu_Item menu_border[];
+  static Fl_Menu_Item *motif_border;
+private:
+  inline void cb_motif_border_i(Fl_Menu_*, void*);
+  static void cb_motif_border(Fl_Menu_*, void*);
+public:
+  static Fl_Menu_Item *flat_border;
+private:
+  inline void cb_flat_border_i(Fl_Menu_*, void*);
+  static void cb_flat_border(Fl_Menu_*, void*);
+public:
+  Fl_Output *decorations_border;
 private:
   inline void cb_Cancel1_i(Fl_Button*, void*);
   static void cb_Cancel1(Fl_Button*, void*);

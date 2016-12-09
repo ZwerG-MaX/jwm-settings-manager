@@ -106,13 +106,15 @@ void addGroupItem(unsigned int whichone, std::string subelement,std::string valu
 void add_prog(Fl_Browser *groups_browser,std::string input){return add_thingie(groups_browser,input,"Name");}
 void add_class(Fl_Browser *groups_browser,std::string input){return add_thingie(groups_browser,input,"Class");}
 //B
-void border_color_loader(Fl_Widget *o, int Active1_Inactive2){
+void border_color_loader(Fl_Widget *o, int Active1_Inactive2, int first_or_second){
 	debug_out("void border_color_loader(Fl_Widget *o, int Active1_Inactive2)");
-	unsigned int colour=0;
+	std::string colour;
 	std::string OUT="Outline";
-	if (Active1_Inactive2==1){colour= getElementInt("WindowStyle","Active",OUT);}
-	else{colour = getElementInt("WindowStyle",OUT);}
-	o->color(colour);
+	if (Active1_Inactive2==1){colour= getElementText("WindowStyle","Active",OUT);}
+	else{colour = getElementText("WindowStyle",OUT);}
+	colour=splitColor(first_or_second,colour);
+	unsigned int colourInt=flCOLOR(colour);
+	o->color(colourInt);
 }
 void border_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2){
 	debug_out("void border_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2)");
@@ -307,7 +309,7 @@ void populateGTKThemes(Fl_Browser* o){
 void removeGroup(int hidethis){removeElement(hidethis,"Group");}
 void removeGroupTHING(int hidethis, std::string value,std::string THING){removeElement(hidethis,"Group",THING,value);}
 //S
-void set_border_color(Fl_Widget *o, int Active1_Inactive2){
+void set_border_color(Fl_Widget *o, int Active1_Inactive2, int first_or_second){
 	debug_out("void set_border_color(Fl_Widget *o, int Active1_Inactive2)");
 	int c;
 	double* colors = choose_a_color(c,o);
@@ -324,6 +326,7 @@ void set_border_color(Fl_Widget *o, int Active1_Inactive2){
 			setElementText("WindowStyle",OUT,thisCOLOR);
 			current = getElementText("WindowStyle",OUT);
 		}
+		current=splitColor(first_or_second,current);
 		theANS=flCOLOR(current);
 		o->color(theANS);
 		o->redraw();
@@ -516,6 +519,15 @@ std::string XplusO(Fl_Browser *groups_browser){
 	return "";
 }
 //BOOL//////////////////////////////////////////////////////////////////
+bool secondColor(Fl_Widget *o){
+	if(JWMversion()<236){
+		o->hide();
+		return false;
+	}
+	std::string decor=getElementAttribute("WindowStyle","Outline","decorations");
+	if(decor.compare("motif")==0){return true;}
+	return false;
+}
 bool setSnap(int &distance){
 	debug_out("bool setSnap(int &distance)");
 	const char* conversion=convert(distance);

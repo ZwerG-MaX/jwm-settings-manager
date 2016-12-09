@@ -147,8 +147,8 @@ void WindowUI::cb_a_font_color(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_a_font_color_i(o,v);
 }
 
-void WindowUI::cb_a_border_color_i(Fl_Button*, void*) {
-  set_border_color(a_border_color, 1);
+void WindowUI::cb_a_border_color_i(Fl_Button* o, void*) {
+  set_border_color(o,1,1);
 }
 void WindowUI::cb_a_border_color(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_a_border_color_i(o,v);
@@ -189,8 +189,8 @@ void WindowUI::cb_inactive_font_color(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_inactive_font_color_i(o,v);
 }
 
-void WindowUI::cb_inactive_border_color_i(Fl_Button*, void*) {
-  set_border_color(inactive_border_color, 2);
+void WindowUI::cb_inactive_border_color_i(Fl_Button* o, void*) {
+  set_border_color(o,2,1);
 }
 void WindowUI::cb_inactive_border_color(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_inactive_border_color_i(o,v);
@@ -240,6 +240,20 @@ get_button(o,"ButtonClose",a_title_color1);
 }
 void WindowUI::cb_close_image(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_close_image_i(o,v);
+}
+
+void WindowUI::cb_inactive_border_color2_i(Fl_Button* o, void*) {
+  set_border_color(o,2,2);
+}
+void WindowUI::cb_inactive_border_color2(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_inactive_border_color2_i(o,v);
+}
+
+void WindowUI::cb_a_border_color2_i(Fl_Button* o, void*) {
+  set_border_color(o,1,2);
+}
+void WindowUI::cb_a_border_color2(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_a_border_color2_i(o,v);
 }
 
 void WindowUI::cb_t_slider_i(Fl_Slider*, void*) {
@@ -524,14 +538,47 @@ void WindowUI::cb_flat(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_flat_i(o,v);
 }
 
-unsigned char WindowUI::menu_decorations_i18n_done = 0;
-Fl_Menu_Item WindowUI::menu_decorations[] = {
+unsigned char WindowUI::menu_title_i18n_done = 0;
+Fl_Menu_Item WindowUI::menu_title[] = {
  {"motif", 0,  (Fl_Callback*)WindowUI::cb_motif, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"flat", 0,  (Fl_Callback*)WindowUI::cb_flat, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
-Fl_Menu_Item* WindowUI::motif = WindowUI::menu_decorations + 0;
-Fl_Menu_Item* WindowUI::flat = WindowUI::menu_decorations + 1;
+Fl_Menu_Item* WindowUI::motif = WindowUI::menu_title + 0;
+Fl_Menu_Item* WindowUI::flat = WindowUI::menu_title + 1;
+
+void WindowUI::cb_motif_border_i(Fl_Menu_*, void*) {
+  std::string decor="motif";
+if(!setElementAttribute("WindowStyle","Outline","decorations",decor)){
+  errorOUT("Could not set window decorations");
+}
+decorations_border->value(decor.c_str());
+decorations_border->redraw();
+}
+void WindowUI::cb_motif_border(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_motif_border_i(o,v);
+}
+
+void WindowUI::cb_flat_border_i(Fl_Menu_*, void*) {
+  std::string decor="flat";
+if(!setElementAttribute("WindowStyle","Outline","decorations",decor)){
+  errorOUT("Could not set window decorations");
+}
+decorations_border->value(decor.c_str());
+decorations_border->redraw();
+}
+void WindowUI::cb_flat_border(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_flat_border_i(o,v);
+}
+
+unsigned char WindowUI::menu_border_i18n_done = 0;
+Fl_Menu_Item WindowUI::menu_border[] = {
+ {"motif", 0,  (Fl_Callback*)WindowUI::cb_motif_border, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"flat", 0,  (Fl_Callback*)WindowUI::cb_flat_border, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+Fl_Menu_Item* WindowUI::motif_border = WindowUI::menu_border + 0;
+Fl_Menu_Item* WindowUI::flat_border = WindowUI::menu_border + 1;
 
 void WindowUI::cb_Cancel1_i(Fl_Button*, void*) {
   window_window->hide();
@@ -730,6 +777,8 @@ Fl_Double_Window* WindowUI::make_window() {
         { Fl_Group* o = new Fl_Group(0, 30, 510, 250, gettext("Appearance"));
           o->selection_color(FL_DARK2);
           { Fl_Box* o = new Fl_Box(0, 35, 255, 160);
+            o->tooltip(gettext("The  color  of  the  title bar (gradients are supported).  The default is #CC\
+7700:#884400."));
             o->box(FL_FLAT_BOX);
             o->color(FL_DARK1);
           } // Fl_Box* o
@@ -742,6 +791,8 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = a_title_color1 = new Fl_Button(108, 75, 60, 25, gettext("Color 1"));
+            a_title_color1->tooltip(gettext("The  color  of  the  title bar (gradients are supported).  The default is #CC\
+7700:#884400."));
             a_title_color1->box(FL_FLAT_BOX);
             a_title_color1->color((Fl_Color)23);
             a_title_color1->callback((Fl_Callback*)cb_a_title_color1);
@@ -749,6 +800,8 @@ Fl_Double_Window* WindowUI::make_window() {
             active_color_loader(o,1);
           } // Fl_Button* a_title_color1
           { Fl_Button* o = a_title_color2 = new Fl_Button(173, 75, 60, 25, gettext("Color 2"));
+            a_title_color2->tooltip(gettext("The color of the text and  buttons  in  the  title bar.  The default is white\
+."));
             a_title_color2->box(FL_FLAT_BOX);
             a_title_color2->color((Fl_Color)23);
             a_title_color2->callback((Fl_Callback*)cb_a_title_color2);
@@ -759,6 +812,8 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = a_font_color = new Fl_Button(108, 105, 60, 25);
+            a_font_color->tooltip(gettext("The color of the text and  buttons  in  the  title bar.  The default is white\
+."));
             a_font_color->box(FL_FLAT_BOX);
             a_font_color->color((Fl_Color)23);
             a_font_color->callback((Fl_Callback*)cb_a_font_color);
@@ -769,11 +824,13 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = a_border_color = new Fl_Button(108, 135, 60, 25);
+            a_border_color->tooltip(gettext("The color of the window outline.  The default is a darkened version of  the  \
+window  background."));
             a_border_color->box(FL_FLAT_BOX);
             a_border_color->color((Fl_Color)23);
             a_border_color->callback((Fl_Callback*)cb_a_border_color);
             a_border_color->when(FL_WHEN_RELEASE_ALWAYS);
-            border_color_loader(o,1);
+            border_color_loader(o,1,1);
           } // Fl_Button* a_border_color
           { Fl_Slider* o = active_o_slider = new Fl_Slider(108, 165, 90, 25, gettext("Opacity  "));
             active_o_slider->tooltip(gettext("A compositor (like xcompmgr) must be installed"));
@@ -812,6 +869,8 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = inactive_color = new Fl_Button(360, 75, 60, 25, gettext("Color 1"));
+            inactive_color->tooltip(gettext("The color of the title bar (gradients are  supported)  of inactive windows.  \
+The default is #333333:#111111."));
             inactive_color->box(FL_FLAT_BOX);
             inactive_color->color((Fl_Color)23);
             inactive_color->callback((Fl_Callback*)cb_inactive_color);
@@ -820,6 +879,8 @@ Fl_Double_Window* WindowUI::make_window() {
             inactive_color_loader(o,1);
           } // Fl_Button* inactive_color
           { Fl_Button* o = inactive_color2 = new Fl_Button(425, 75, 60, 25, gettext("Color 2"));
+            inactive_color2->tooltip(gettext("The color of the title bar (gradients are  supported)  of inactive windows.  \
+The default is #333333:#111111."));
             inactive_color2->box(FL_FLAT_BOX);
             inactive_color2->color((Fl_Color)23);
             inactive_color2->callback((Fl_Callback*)cb_inactive_color2);
@@ -831,6 +892,8 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = inactive_font_color = new Fl_Button(360, 105, 60, 25);
+            inactive_font_color->tooltip(gettext("The color of the text and  buttons  in  the  title bar of inactive windows.  \
+The default is white."));
             inactive_font_color->box(FL_FLAT_BOX);
             inactive_font_color->color((Fl_Color)23);
             inactive_font_color->callback((Fl_Callback*)cb_inactive_font_color);
@@ -841,11 +904,13 @@ Fl_Double_Window* WindowUI::make_window() {
             o->labelcolor((Fl_Color)35);
           } // Fl_Box* o
           { Fl_Button* o = inactive_border_color = new Fl_Button(360, 135, 60, 25);
+            inactive_border_color->tooltip(gettext("The color of the window  outline  for  inactive  windows. The  default  is  a\
+  darkened version of the window background."));
             inactive_border_color->box(FL_FLAT_BOX);
             inactive_border_color->color((Fl_Color)23);
             inactive_border_color->callback((Fl_Callback*)cb_inactive_border_color);
             inactive_border_color->when(FL_WHEN_RELEASE_ALWAYS);
-            border_color_loader(o,2);
+            border_color_loader(o,2,1);
           } // Fl_Button* inactive_border_color
           { Fl_Slider* o = inactive_o_slider = new Fl_Slider(355, 165, 90, 25, gettext("Opacity "));
             inactive_o_slider->tooltip(gettext("A compositor (like xcompmgr) must be installed"));
@@ -871,52 +936,74 @@ Fl_Double_Window* WindowUI::make_window() {
             float v = inactive_o_slider->value();
             o->value(v*100);
           } // Fl_Value_Input* inactive_o_slider_v
-          { Fl_Box* o = new Fl_Box(15, 200, 115, 80, gettext("Change the Window Button Images"));
+          { Fl_Box* o = new Fl_Box(0, 200, 115, 80, gettext("Change the Window Button Images"));
             o->labelfont(1);
             o->labelcolor((Fl_Color)35);
             o->align(Fl_Align(FL_ALIGN_WRAP));
           } // Fl_Box* o
-          { Fl_Box* o = new Fl_Box(245, 240, 70, 40, gettext(" Maximize (Activated)"));
+          { Fl_Box* o = new Fl_Box(175, 240, 70, 40, gettext(" Maximize (Activated)"));
             o->align(Fl_Align(FL_ALIGN_WRAP));
           } // Fl_Box* o
-          { Fl_Button* o = max_a_image = new Fl_Button(255, 200, 40, 40);
-            max_a_image->tooltip(gettext("Choose an image (XBM) for the Maximized button"));
+          { Fl_Button* o = max_a_image = new Fl_Button(115, 200, 40, 40);
+            max_a_image->tooltip(gettext("Choose an icon to display for the minimize button on client windows instead o\
+f the default."));
             max_a_image->box(FL_FLAT_BOX);
             max_a_image->color((Fl_Color)23);
             max_a_image->callback((Fl_Callback*)cb_max_a_image);
             max_a_image->align(Fl_Align(256));
             get_button(o,"ButtonMaxActive",a_title_color1);
           } // Fl_Button* max_a_image
-          { new Fl_Box(340, 245, 90, 5, gettext(" Maximize"));
+          { new Fl_Box(240, 245, 90, 15, gettext(" Maximize"));
           } // Fl_Box* o
-          { Fl_Button* o = max_image = new Fl_Button(360, 200, 40, 40);
-            max_image->tooltip(gettext("Choose an image (XBM) for the Maximized button"));
+          { Fl_Button* o = max_image = new Fl_Button(186, 200, 40, 40);
+            max_image->tooltip(gettext("Choose an icon to display for the maximize button on maximized client windows\
+ instead of the default."));
             max_image->box(FL_FLAT_BOX);
             max_image->color((Fl_Color)23);
             max_image->callback((Fl_Callback*)cb_max_image);
             max_image->align(Fl_Align(256));
             get_button(o,"ButtonMax",a_title_color1);
           } // Fl_Button* max_image
-          { new Fl_Box(125, 247, 90, 3, gettext(" Minimize"));
+          { new Fl_Box(95, 247, 90, 16, gettext(" Minimize"));
           } // Fl_Box* o
-          { Fl_Button* o = min_image = new Fl_Button(145, 200, 40, 40);
-            min_image->tooltip(gettext("Choose an image (XBM) for the Maximized button"));
+          { Fl_Button* o = min_image = new Fl_Button(258, 200, 40, 40);
+            min_image->tooltip(gettext("Choose an icon to display for the maximize button on client windows instead o\
+f the default."));
             min_image->box(FL_FLAT_BOX);
             min_image->color((Fl_Color)23);
             min_image->callback((Fl_Callback*)cb_min_image);
             min_image->align(Fl_Align(256));
             get_button(o,"ButtonMin",a_title_color1);
           } // Fl_Button* min_image
-          { new Fl_Box(435, 245, 70, 5, gettext(" Close"));
+          { new Fl_Box(315, 243, 70, 17, gettext(" Close"));
           } // Fl_Box* o
-          { Fl_Button* o = close_image = new Fl_Button(450, 200, 40, 40);
-            close_image->tooltip(gettext("Choose an image (XBM) for the Maximized button"));
+          { Fl_Button* o = close_image = new Fl_Button(330, 200, 40, 40);
+            close_image->tooltip(gettext("Choose an icon to display for the close button on client windows instead of t\
+he default."));
             close_image->box(FL_FLAT_BOX);
             close_image->color((Fl_Color)23);
             close_image->callback((Fl_Callback*)cb_close_image);
             close_image->align(Fl_Align(256));
             get_button(o,"ButtonClose",a_title_color1);
           } // Fl_Button* close_image
+          { Fl_Button* o = inactive_border_color2 = new Fl_Button(425, 135, 60, 25);
+            inactive_border_color2->tooltip(gettext("If motif window decorations are  specified,  two colors  may  be  given separ\
+ated by a \':\' to set the down and up colors respetively."));
+            inactive_border_color2->box(FL_FLAT_BOX);
+            inactive_border_color2->color((Fl_Color)23);
+            inactive_border_color2->callback((Fl_Callback*)cb_inactive_border_color2);
+            inactive_border_color2->when(FL_WHEN_RELEASE_ALWAYS);
+            if(secondColor(o)){border_color_loader(o,2,2);}
+          } // Fl_Button* inactive_border_color2
+          { Fl_Button* o = a_border_color2 = new Fl_Button(175, 135, 60, 25);
+            a_border_color2->tooltip(gettext("If motif window decorations are  specified,  two colors  may  be  given separ\
+ated by a \':\' to set the down and up colors respetively."));
+            a_border_color2->box(FL_FLAT_BOX);
+            a_border_color2->color((Fl_Color)23);
+            a_border_color2->callback((Fl_Callback*)cb_a_border_color2);
+            a_border_color2->when(FL_WHEN_RELEASE_ALWAYS);
+            if(secondColor(o)){border_color_loader(o,1,2);}
+          } // Fl_Button* a_border_color2
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(10, 35, 485, 245, gettext("Settings"));
@@ -1054,7 +1141,9 @@ re easily"));
             o->value(value);
           } // Fl_Value_Input* snap_int
           { Fl_Slider* o = corner_slider = new Fl_Slider(205, 95, 60, 25, gettext("Size of Corner"));
-            corner_slider->tooltip(gettext("This changes the curvature of the window\'s corners"));
+            corner_slider->tooltip(gettext("The corner width of the window border for rounded  window borders.   The  def\
+ault is 4, the minimum is 0 (rectangular), and the maximum is 5 (most rounded)\
+."));
             corner_slider->type(1);
             corner_slider->box(FL_GTK_DOWN_BOX);
             corner_slider->color((Fl_Color)41);
@@ -1152,11 +1241,12 @@ s many program groups can be created as desired."));
           } // Fl_Button* rm_class
           o->end();
         } // Fl_Group* o
-        { Fl_Group* o = new Fl_Group(5, 45, 465, 235, gettext("Advanced"));
+        { Fl_Group* o = new Fl_Group(5, 40, 465, 240, gettext("Advanced"));
           o->selection_color(FL_DARK2);
           o->hide();
-          { Fl_Slider* o = a_b_slider = new Fl_Slider(190, 95, 125, 25, gettext("Window Border Size"));
-            a_b_slider->tooltip(gettext("Width of the window borders"));
+          { Fl_Slider* o = a_b_slider = new Fl_Slider(190, 80, 125, 25, gettext("Window Border Size"));
+            a_b_slider->tooltip(gettext("The  width of window borders in pixels. The default is 4, the minimum is 1, a\
+nd the maximum is 128."));
             a_b_slider->type(1);
             a_b_slider->box(FL_GTK_DOWN_BOX);
             a_b_slider->color((Fl_Color)41);
@@ -1171,23 +1261,29 @@ s many program groups can be created as desired."));
             int x = getBorderWidth();
             o->value(x);
           } // Fl_Slider* a_b_slider
-          { Fl_Value_Output* o = a_b_slider_v = new Fl_Value_Output(320, 95, 35, 25, gettext("pixels"));
-            a_b_slider_v->tooltip(gettext("Width of the window borders"));
+          { Fl_Value_Output* o = a_b_slider_v = new Fl_Value_Output(320, 80, 35, 25, gettext("pixels"));
+            a_b_slider_v->tooltip(gettext("The  width of window borders in pixels. The default is 4, the minimum is 1, a\
+nd the maximum is 128."));
             a_b_slider_v->box(FL_FLAT_BOX);
             a_b_slider_v->color(FL_LIGHT3);
             a_b_slider_v->labelsize(10);
+            a_b_slider_v->minimum(1);
+            a_b_slider_v->maximum(128);
+            a_b_slider_v->step(1);
+            a_b_slider_v->value(4);
             a_b_slider_v->align(Fl_Align(FL_ALIGN_RIGHT));
             a_b_slider_v->when(3);
             int v = a_b_slider->value();
             o->value(v);
           } // Fl_Value_Output* a_b_slider_v
-          { Fl_Slider* o = a_t_slider = new Fl_Slider(190, 125, 125, 25, gettext("Window Title Bar Size"));
-            a_t_slider->tooltip(gettext("Height of the Window\'s Title Bar"));
+          { Fl_Slider* o = a_t_slider = new Fl_Slider(190, 110, 125, 25, gettext("Window Title Bar Size"));
+            a_t_slider->tooltip(gettext("The height of window title bars  in  pixels.  By  default this is set to the \
+size of the title font. The minimum is 1, and the maximum is 256."));
             a_t_slider->type(1);
             a_t_slider->box(FL_GTK_DOWN_BOX);
             a_t_slider->color((Fl_Color)41);
             a_t_slider->selection_color(FL_LIGHT1);
-            a_t_slider->minimum(2);
+            a_t_slider->minimum(1);
             a_t_slider->maximum(256);
             a_t_slider->step(1);
             a_t_slider->value(20);
@@ -1197,63 +1293,96 @@ s many program groups can be created as desired."));
             int y = getBorderHeight();
             o->value(y);
           } // Fl_Slider* a_t_slider
-          { Fl_Value_Output* o = a_t_slider_v = new Fl_Value_Output(320, 125, 35, 25, gettext("pixels"));
-            a_t_slider_v->tooltip(gettext("Height of the Window\'s Title Bar"));
+          { Fl_Value_Output* o = a_t_slider_v = new Fl_Value_Output(320, 110, 35, 25, gettext("pixels"));
+            a_t_slider_v->tooltip(gettext("The height of window title bars  in  pixels.  By  default this is set to the \
+size of the title font. The minimum is 1, and the maximum is 256."));
             a_t_slider_v->box(FL_FLAT_BOX);
             a_t_slider_v->color(FL_LIGHT3);
             a_t_slider_v->labelsize(10);
+            a_t_slider_v->minimum(1);
+            a_t_slider_v->maximum(256);
+            a_t_slider_v->value(20);
             a_t_slider_v->align(Fl_Align(FL_ALIGN_RIGHT));
             a_t_slider_v->when(3);
             int v = a_t_slider->value();
             o->value(v);
           } // Fl_Value_Output* a_t_slider_v
-          { new Fl_Box(80, 45, 375, 15, gettext("This can make your window borders and Title bar"));
+          { new Fl_Box(80, 40, 375, 15, gettext("This can make your window borders and Title bar"));
           } // Fl_Box* o
-          { Fl_Box* o = new Fl_Box(145, 65, 250, 30, gettext("REALLY HUGE!"));
+          { Fl_Box* o = new Fl_Box(145, 55, 250, 30, gettext("REALLY HUGE!"));
             o->labelfont(1);
             o->labelsize(24);
           } // Fl_Box* o
-          { Fl_Input* o = default_icon = new Fl_Input(190, 240, 125, 25, gettext("Default Menu Button Icon"));
+          { Fl_Input* o = default_icon = new Fl_Input(190, 230, 125, 25, gettext("Default Menu Button Icon"));
+            default_icon->tooltip(gettext("An  icon to display for the menu button on client windows instead of the defa\
+ult. This is used for  client  windows that do not specify an icon."));
             default_icon->box(FL_FLAT_BOX);
             if(JWMVERSION<235){o->hide();}
             else{std::string tmp=getElementText("ButtonMenu");if(tmp.compare("")!=0){o->value(tmp.c_str());}}
           } // Fl_Input* default_icon
           { Fl_Button* o = default_icon_button = new Fl_Button(320, 230, 50, 50);
+            default_icon_button->tooltip(gettext("Default Menu Button Icon.  An  icon to display for the menu button on client \
+windows instead of the default. This is used for  client  windows that do not \
+specify an icon."));
             default_icon_button->box(FL_FLAT_BOX);
             default_icon_button->color((Fl_Color)23);
             default_icon_button->callback((Fl_Callback*)cb_default_icon_button);
             if(JWMVERSION<235){o->hide();}
           } // Fl_Button* default_icon_button
-          { Fl_Input* o = default_icon_win = new Fl_Input(190, 190, 125, 25, gettext("Default Window Icon"));
+          { Fl_Input* o = default_icon_win = new Fl_Input(190, 200, 125, 25, gettext("Default Window Icon"));
+            default_icon_win->tooltip(gettext("An icon to display for windows that  do  not  specify  an icon."));
             default_icon_win->box(FL_FLAT_BOX);
             if(JWMVERSION<236){o->hide();}
             else{std::string tmp=getElementText("DefaultIcon");if(tmp.compare("")!=0){o->value(tmp.c_str());}}
           } // Fl_Input* default_icon_win
           { Fl_Button* o = default_icon_button_win = new Fl_Button(320, 175, 50, 50);
+            default_icon_button_win->tooltip(gettext("Default Window  Icon.  An icon to display for windows that  do  not  specify \
+ an icon."));
             default_icon_button_win->box(FL_FLAT_BOX);
             default_icon_button_win->color((Fl_Color)23);
             default_icon_button_win->callback((Fl_Callback*)cb_default_icon_button_win);
             if(JWMVERSION<236){o->hide();}
           } // Fl_Button* default_icon_button_win
-          { Fl_Menu_Button* o = new Fl_Menu_Button(70, 155, 110, 25, gettext("decorations"));
+          { Fl_Menu_Button* o = new Fl_Menu_Button(35, 170, 150, 25, gettext("title decorations"));
             o->box(FL_FLAT_BOX);
             o->color((Fl_Color)23);
-            if (!menu_decorations_i18n_done) {
+            if (!menu_title_i18n_done) {
               int i=0;
               for ( ; i<2; i++)
-                if (menu_decorations[i].label())
-                  menu_decorations[i].label(gettext(menu_decorations[i].label()));
-              menu_decorations_i18n_done = 1;
+                if (menu_title[i].label())
+                  menu_title[i].label(gettext(menu_title[i].label()));
+              menu_title_i18n_done = 1;
             }
-            o->menu(menu_decorations);
+            o->menu(menu_title);
             if(JWMVERSION<236){o->hide();}
           } // Fl_Menu_Button* o
-          { Fl_Output* o = decorations = new Fl_Output(190, 155, 125, 25);
+          { Fl_Output* o = decorations = new Fl_Output(190, 170, 125, 25);
             decorations->box(FL_FLAT_BOX);
             decorations->selection_color((Fl_Color)80);
-            std::string decor=getElementAttribute("WindowStyle","decorations");
-            if(decor.compare("")!=0){o->value(decor.c_str());o->redraw();}
+            o->value("flat");o->redraw();
+            if(JWMVERSION<236){o->hide();}
+            else{std::string decor=getElementAttribute("WindowStyle","decorations");if(decor.compare("")!=0){o->value(decor.c_str());o->redraw();}}
           } // Fl_Output* decorations
+          { Fl_Menu_Button* o = new Fl_Menu_Button(35, 140, 150, 25, gettext("border decorations"));
+            o->box(FL_FLAT_BOX);
+            o->color((Fl_Color)23);
+            if (!menu_border_i18n_done) {
+              int i=0;
+              for ( ; i<2; i++)
+                if (menu_border[i].label())
+                  menu_border[i].label(gettext(menu_border[i].label()));
+              menu_border_i18n_done = 1;
+            }
+            o->menu(menu_border);
+            if(JWMVERSION<236){o->hide();}
+          } // Fl_Menu_Button* o
+          { Fl_Output* o = decorations_border = new Fl_Output(190, 140, 125, 25);
+            decorations_border->box(FL_FLAT_BOX);
+            decorations_border->selection_color((Fl_Color)80);
+            o->value("flat");o->redraw();
+            if(JWMVERSION<236){o->hide();}
+            else{std::string decor=getElementAttribute("WindowStyle","Outline","decorations");if(decor.compare("")!=0){o->value(decor.c_str());o->redraw();}}
+          } // Fl_Output* decorations_border
           o->end();
         } // Fl_Group* o
         o->end();

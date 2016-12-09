@@ -56,7 +56,7 @@ void add_prog(Fl_Browser *groups_browser,std::string input);
 void addGroup();
 void addGroupItem(unsigned int whichone, std::string subelement,std::string value);
 //b
-void border_color_loader(Fl_Widget *o, int Active1_Inactive2);
+void border_color_loader(Fl_Widget *o, int Active1_Inactive2, int first_or_second);
 void border_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2);
 void border_modifier(Fl_Slider *o1, Fl_Value_Output *o2);
 //c
@@ -82,7 +82,7 @@ void populateGTKThemes(Fl_Browser* o);
 void removeGroup(int hidethis);
 void removeGroupTHING(int hidethis, std::string value,std::string THING);
 //s
-void set_border_color(Fl_Widget *o, int Active1_Inactive2);
+void set_border_color(Fl_Widget *o, int Active1_Inactive2, int first_or_second);
 void set_font_color(Fl_Widget *o, int Active1_Inactive2);
 void set_one_title_color(Fl_Widget *o, int Active1_Inactive2, Fl_Widget* max_a_image, Fl_Widget* max_image, Fl_Widget* min_image, Fl_Widget* close_image);
 void set_one_title_color(Fl_Widget *o,  int Active1_Inactive2);
@@ -106,6 +106,7 @@ unsigned int set_title_color(Fl_Widget *o, int Active1_Inactive2,int First1_or_S
 std::string buttonPath();
 std::string XplusO(Fl_Browser *groups_browser);
 ///Boolean
+bool secondColor(Fl_Widget *o);
 bool setSnap(int &distance);
 bool switchGTKTheme(Fl_Browser* o);
 bool Xminus(Fl_Browser *groups_browser, Fl_Browser *opt_browser, std::string THING);
