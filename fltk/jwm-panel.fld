@@ -846,13 +846,13 @@ if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;}}
       }
       Fl_Button task_bg_color {
         callback {one_color_active(o,"TaskListStyle");}
-        xywh {75 25 60 25} box FLAT_BOX color 23 align 4
+        tooltip {Optional, Will use Panel colors if not specified.} xywh {75 25 60 25} box FLAT_BOX color 23 align 4
         code0 {if((JWM_VERSION<236)&&(JWM_VERSION>232)){getColorFromItem(true,"TaskListStyle","Background",o);}}
         code1 {else{o->deactivate();}}
       }
       Fl_Button task_fg_color {
         callback {one_color_Font_active(o,"TaskListStyle");}
-        xywh {10 25 60 25} box FLAT_BOX color 23 align 4
+        tooltip {Optional, Will use Panel colors if not specified.} xywh {10 25 60 25} box FLAT_BOX color 23 align 4
         code0 {if((JWM_VERSION<236)&&(JWM_VERSION>232)){getColorFromItem(true,"TaskListStyle","Foreground",o);}}
         code1 {else{o->deactivate();}}
       }
@@ -861,7 +861,7 @@ if(thissys !=0){std::cerr<< "command did not return 0"<<std::endl;}}
         callback {if(!setTaskW(BUTTON_NUM,o->value())){
   errorOUT("Did not set max width correctly");
 }}
-        tooltip {The  maximum  width  of  an item in the task list. 0 indicates no maximum.   The  default is 0} xywh {240 5 25 25} box FLAT_BOX
+        tooltip {The  maximum  width  of  an item in the task list. 0 indicates no maximum.   The  default is 0} xywh {220 5 45 25} box FLAT_BOX
         code0 {o->value(getTaskW(BUTTON_NUM));}
       }
       Fl_Value_Input {} {
@@ -944,36 +944,37 @@ setDecorations(tasklist_deco,"TaskListStyle","motif");}
       Fl_Button task_outline {
         label Outline
         callback {outline_color(o,"TaskListStyle");}
-        xywh {220 35 60 25} box FLAT_BOX color 23 align 4
+        tooltip {Optional, Will use Panel colors if not specified.} xywh {220 35 60 25} box FLAT_BOX color 23 align 4
         code0 {outline1(o,"TaskListStyle");}
       }
       Fl_Button task_outline2 {
         callback {color_two(o,"TaskListStyle","Outline");
 task_outline->redraw();}
-        xywh {285 35 60 25} box FLAT_BOX color 23 align 4
+        tooltip {Optional, Will use Panel colors if not specified.} xywh {285 35 60 25} box FLAT_BOX color 23 align 4
         code0 {if(JWM_VERSION>=236){outline2(o,tasklist_deco,"TaskListStyle");}}
         code1 {else{o->hide();}}
       }
       Fl_Button i_task_bg_color {
         callback {one_color(o,"TaskListStyle");}
-        xywh {75 75 60 25} box FLAT_BOX color 23 align 4
+        tooltip {Optional, Will use Panel colors if not specified.} xywh {75 75 60 25} box FLAT_BOX color 23 align 4
         code0 {if((JWM_VERSION<236)&&(JWM_VERSION>232)){getColorFromItem(false,"TaskListStyle","Background",o);}}
         code1 {else{o->deactivate();}}
       }
       Fl_Button i_task_fg_color {
         callback {one_color_Font(o,"TaskListStyle");}
-        xywh {10 75 60 25} box FLAT_BOX color 23 align 4
+        tooltip {Optional, Will use Panel colors if not specified.} xywh {10 75 60 25} box FLAT_BOX color 23 align 4
         code0 {if((JWM_VERSION<236)&&(JWM_VERSION>232)){getColorFromItem(false,"TaskListStyle","Foreground",o);}}
         code1 {else{o->deactivate();}}
       }
     }
   }
-  Function {config_button_window(int input_num)} {} {
+  Function {config_button_window(int input_num)} {open
+  } {
     code {BUTTON_NUM=input_num;} {}
     Fl_Window conf_button_window {
       label {Configure Button} open
-      xywh {234 294 285 150} type Double labelfont 14 hide
-      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
+      xywh {234 294 285 150} type Double labelfont 14
+      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
     } {
       Fl_Input button_label {
         label Label
@@ -1013,7 +1014,7 @@ if(iconFILE.compare("")!=0)makeWidgetIcon(iconFILE,o,48);}
         }
       }
       Fl_Value_Output button_val {
-        xywh {205 60 40 25} box FLAT_BOX color 23 selection_color 80
+        tooltip {Button 1 is Left, Button 2 is right. Button 3 is middle.} xywh {205 60 40 25} box FLAT_BOX color 23 selection_color 80
       }
       Fl_Input button_prog {
         label Program
@@ -1047,12 +1048,11 @@ else{showMenu();}}
       }
     }
   }
-  Function {config_clock_window()} {open
-  } {
+  Function {config_clock_window()} {} {
     Fl_Window conf_clock_window {
       label {Configure Clock} open
-      xywh {143 272 360 155} type Double
-      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
+      xywh {143 272 360 155} type Double hide
+      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
     } {
       Fl_Menu_Button clock_menu {
         label {Clock Format} open
@@ -1404,27 +1404,23 @@ program. 0 is the default.} xywh {365 40 25 25} box FLAT_BOX selection_color 72
         label Active
         callback {one_color_Font(o,"PagerStyle");}
         xywh {55 75 75 30} box FLAT_BOX color 23 align 4
-        code1 {if((JWM_VERSION>232)||(JWM_VERSION<236)){o->hide();}}
-        code2 {else{getColorFromItem(true,"PagerStyle","Foreground",o);}}
+        code2 {getColorFromItem(true,"PagerStyle","Foreground",o);}
       }
       Fl_Button a_bg {
         label Active
         callback {one_color_active(o,"PagerStyle");}
         xywh {55 125 75 30} box FLAT_BOX color 23 align 4
-        code1 {if((JWM_VERSION>232)||(JWM_VERSION<236)){o->hide();}}
-        code2 {else{getColorFromItem(true,"PagerStyle","Background",o);}}
+        code2 {getColorFromItem(true,"PagerStyle","Background",o);}
       }
       Fl_Button t_fg {
         callback {one_color_Font(o,"PagerStyle");}
         xywh {135 75 75 30} box FLAT_BOX color 23
-        code1 {if((JWM_VERSION>232)||(JWM_VERSION<236)){o->hide();}}
-        code2 {else{getColorFromItem(false,"PagerStyle","Foreground",o);}}
+        code2 {getColorFromItem(false,"PagerStyle","Foreground",o);}
       }
       Fl_Button t_bg {
         callback {one_color(o,"PagerStyle");}
         xywh {135 125 75 30} box FLAT_BOX color 23
-        code1 {if((JWM_VERSION>232)||(JWM_VERSION<236)){o->hide();}}
-        code2 {else{getColorFromItem(false,"PagerStyle","Background",o);}}
+        code2 {getColorFromItem(false,"PagerStyle","Background",o);}
       }
       Fl_Value_Input num_desktop_w {
         label {Number of Desktops Wide}
@@ -1447,8 +1443,7 @@ num_desktop_wh_CB("height",height,num_desktop_w,num_desktop_h);}
         callback {int val=o->value();
 setItemBool(val,BUTTON_NUM);}
         tooltip {Determines if the pager has text labels. Default is false.} xywh {35 165 75 30} down_box GTK_DOWN_BOX color 7 selection_color 63
-        code1 {if((JWM_VERSION<236)){o->hide();}}
-        code2 {else{o->value(taskLabeled(BUTTON_NUM));}}
+        code2 {o->value(taskLabeled(BUTTON_NUM));}
       }
     }
   }
@@ -1739,10 +1734,12 @@ clock_button_menu->redraw();} {}
   Function {get_clock_button_stuff(int button)} {} {
     code {get_button_stuff(button,clock_prog,clock_button_menu,output_button_val);} {}
   }
-  Function {get_button_stuff(int button)} {} {
+  Function {get_button_stuff(int button)} {open
+  } {
     code {get_button_stuff(button,button_prog,button_menu,button_val);} {}
   }
-  Function {get_button_stuff(int button,Fl_Input *input_prog,Fl_Input *input_menu,Fl_Value_Output *mouse_button_current)} {} {
+  Function {get_button_stuff(int button,Fl_Input *input_prog,Fl_Input *input_menu,Fl_Value_Output *mouse_button_current)} {open
+  } {
     code {std::string num;
 mouse_button_current->value(button);
 switch(button){
@@ -1760,18 +1757,23 @@ if(text.compare("")==0)return;
 Fl_Input *o=NULL;
 if(text.find("exec:")==0){
   o=input_prog;
+  input_menu->value("");
+  input_menu->redraw();
   input_menu->deactivate();
 }
 if(text.find("root:")==0){
   o=input_menu;
   input_prog->deactivate();
+  input_prog->value("");
+  input_prog->redraw();
   text=text.substr(5,std::string::npos);
 }
 
 if(o!=NULL){
   o->value(text.c_str());
   o->activate();
-}} {}
+}} {selected
+    }
   }
   Function {get_tray_element_attrib(Fl_Input *o, std::string attribute,int num)} {} {
     code {std::string val=getAttribute(getTraySubElement(num),attribute);
@@ -1839,7 +1841,8 @@ if(newLabel!=NULL){LABEL=newLabel;}
 int masker=button_val->value();
 if(masker>0){MASK=linuxcommon::convert_num_to_string(masker);}
 int whichbutton=app_browser->value();
-editButton(whichbutton,MENU,PROG,ICON,LABEL,MASK);} {}
+editButton(whichbutton,MENU,PROG,ICON,LABEL,MASK);
+conf_button_window->hide();} {}
   }
   Function {spacer_config()} {} {
     Fl_Window conf_spacer_win {
@@ -1869,23 +1872,20 @@ editButton(whichbutton,MENU,PROG,ICON,LABEL,MASK);} {}
       }
     }
   }
-  Function {zone_cb(Fl_Menu_*o, void* v)} {open private return_type {inline void}
+  Function {zone_cb(Fl_Menu_*o, void* v)} {private return_type {inline void}
   } {
     code {zone_check(o);} {}
   }
-  Function {zone_check(Fl_Menu_* o)} {open
-  } {
+  Function {zone_check(Fl_Menu_* o)} {} {
     code {debug_out("zone_check");
 std::string timeZone;
 timeZone+=o->text();
 tz_out->value(timeZone.c_str());
 if(!setElementAttribute(currentPanel(),"Tray","Clock","zone",timeZone)){
   errorOUT("Could not change JWM time zone");
-}} {selected
-    }
+}} {}
   }
-  Function {zoneMenu(Fl_Menu_Button *o)} {open
-  } {
+  Function {zoneMenu(Fl_Menu_Button *o)} {} {
     code {std::vector<std::string> zoneVec=zoneVector();
 for( std::vector<std::string>::iterator it = zoneVec.begin();
 it!=zoneVec.end();
@@ -1894,7 +1894,7 @@ it!=zoneVec.end();
   o->add(tmp.c_str(), 0,(Fl_Callback*)PanelUI::cb_zone);
 }} {}
   }
-  Function {cb_zone(Fl_Menu_* o,void* v)} {open private return_type {static void}
+  Function {cb_zone(Fl_Menu_* o,void* v)} {private return_type {static void}
   } {
     code {debug_out("cb_zone()");
 ((PanelUI*)(o->parent()->user_data()))->zone_cb(o,v);} {}

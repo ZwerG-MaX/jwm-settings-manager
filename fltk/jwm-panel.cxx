@@ -2209,6 +2209,7 @@ Fl_Double_Window* PanelUI::config_applist_window() {
       o->callback((Fl_Callback*)cb_OK4);
     } // Fl_Button* o
     { Fl_Button* o = task_bg_color = new Fl_Button(75, 25, 60, 25);
+      task_bg_color->tooltip(gettext("Optional, Will use Panel colors if not specified."));
       task_bg_color->box(FL_FLAT_BOX);
       task_bg_color->color((Fl_Color)23);
       task_bg_color->callback((Fl_Callback*)cb_task_bg_color);
@@ -2217,6 +2218,7 @@ Fl_Double_Window* PanelUI::config_applist_window() {
       else{o->deactivate();}
     } // Fl_Button* task_bg_color
     { Fl_Button* o = task_fg_color = new Fl_Button(10, 25, 60, 25);
+      task_fg_color->tooltip(gettext("Optional, Will use Panel colors if not specified."));
       task_fg_color->box(FL_FLAT_BOX);
       task_fg_color->color((Fl_Color)23);
       task_fg_color->callback((Fl_Callback*)cb_task_fg_color);
@@ -2224,7 +2226,7 @@ Fl_Double_Window* PanelUI::config_applist_window() {
       if((JWM_VERSION<236)&&(JWM_VERSION>232)){getColorFromItem(true,"TaskListStyle","Foreground",o);}
       else{o->deactivate();}
     } // Fl_Button* task_fg_color
-    { Fl_Value_Input* o = new Fl_Value_Input(240, 5, 25, 25, gettext("Max Width"));
+    { Fl_Value_Input* o = new Fl_Value_Input(220, 5, 45, 25, gettext("Max Width"));
       o->tooltip(gettext("The  maximum  width  of  an item in the task list. 0 indicates no maximum.   \
 The  default is 0"));
       o->box(FL_FLAT_BOX);
@@ -2305,6 +2307,7 @@ op and all. The default is desktop."));
       getDecorations(o,"TaskListStyle");
     } // Fl_Output* tasklist_deco
     { Fl_Button* o = task_outline = new Fl_Button(220, 35, 60, 25, gettext("Outline"));
+      task_outline->tooltip(gettext("Optional, Will use Panel colors if not specified."));
       task_outline->box(FL_FLAT_BOX);
       task_outline->color((Fl_Color)23);
       task_outline->callback((Fl_Callback*)cb_task_outline);
@@ -2312,6 +2315,7 @@ op and all. The default is desktop."));
       outline1(o,"TaskListStyle");
     } // Fl_Button* task_outline
     { Fl_Button* o = task_outline2 = new Fl_Button(285, 35, 60, 25);
+      task_outline2->tooltip(gettext("Optional, Will use Panel colors if not specified."));
       task_outline2->box(FL_FLAT_BOX);
       task_outline2->color((Fl_Color)23);
       task_outline2->callback((Fl_Callback*)cb_task_outline2);
@@ -2320,6 +2324,7 @@ op and all. The default is desktop."));
       else{o->hide();}
     } // Fl_Button* task_outline2
     { Fl_Button* o = i_task_bg_color = new Fl_Button(75, 75, 60, 25);
+      i_task_bg_color->tooltip(gettext("Optional, Will use Panel colors if not specified."));
       i_task_bg_color->box(FL_FLAT_BOX);
       i_task_bg_color->color((Fl_Color)23);
       i_task_bg_color->callback((Fl_Callback*)cb_i_task_bg_color);
@@ -2328,6 +2333,7 @@ op and all. The default is desktop."));
       else{o->deactivate();}
     } // Fl_Button* i_task_bg_color
     { Fl_Button* o = i_task_fg_color = new Fl_Button(10, 75, 60, 25);
+      i_task_fg_color->tooltip(gettext("Optional, Will use Panel colors if not specified."));
       i_task_fg_color->box(FL_FLAT_BOX);
       i_task_fg_color->color((Fl_Color)23);
       i_task_fg_color->callback((Fl_Callback*)cb_i_task_fg_color);
@@ -2385,6 +2391,7 @@ Fl_Double_Window* PanelUI::config_button_window(int input_num) {
       o->menu(menu_Mouse);
     } // Fl_Menu_Button* o
     { button_val = new Fl_Value_Output(205, 60, 40, 25);
+      button_val->tooltip(gettext("Button 1 is Left, Button 2 is right. Button 3 is middle."));
       button_val->box(FL_FLAT_BOX);
       button_val->color((Fl_Color)23);
       button_val->selection_color((Fl_Color)80);
@@ -2793,30 +2800,26 @@ Fl_Double_Window* PanelUI::config_switcher_window() {
       a_fg->color((Fl_Color)23);
       a_fg->callback((Fl_Callback*)cb_a_fg);
       a_fg->align(Fl_Align(FL_ALIGN_LEFT));
-      if((JWM_VERSION>232)||(JWM_VERSION<236)){o->hide();}
-      else{getColorFromItem(true,"PagerStyle","Foreground",o);}
+      getColorFromItem(true,"PagerStyle","Foreground",o);
     } // Fl_Button* a_fg
     { Fl_Button* o = a_bg = new Fl_Button(55, 125, 75, 30, gettext("Active"));
       a_bg->box(FL_FLAT_BOX);
       a_bg->color((Fl_Color)23);
       a_bg->callback((Fl_Callback*)cb_a_bg);
       a_bg->align(Fl_Align(FL_ALIGN_LEFT));
-      if((JWM_VERSION>232)||(JWM_VERSION<236)){o->hide();}
-      else{getColorFromItem(true,"PagerStyle","Background",o);}
+      getColorFromItem(true,"PagerStyle","Background",o);
     } // Fl_Button* a_bg
     { Fl_Button* o = t_fg = new Fl_Button(135, 75, 75, 30);
       t_fg->box(FL_FLAT_BOX);
       t_fg->color((Fl_Color)23);
       t_fg->callback((Fl_Callback*)cb_t_fg);
-      if((JWM_VERSION>232)||(JWM_VERSION<236)){o->hide();}
-      else{getColorFromItem(false,"PagerStyle","Foreground",o);}
+      getColorFromItem(false,"PagerStyle","Foreground",o);
     } // Fl_Button* t_fg
     { Fl_Button* o = t_bg = new Fl_Button(135, 125, 75, 30);
       t_bg->box(FL_FLAT_BOX);
       t_bg->color((Fl_Color)23);
       t_bg->callback((Fl_Callback*)cb_t_bg);
-      if((JWM_VERSION>232)||(JWM_VERSION<236)){o->hide();}
-      else{getColorFromItem(false,"PagerStyle","Background",o);}
+      getColorFromItem(false,"PagerStyle","Background",o);
     } // Fl_Button* t_bg
     { Fl_Value_Input* o = num_desktop_w = new Fl_Value_Input(190, 1, 20, 24, gettext("Number of Desktops Wide"));
       num_desktop_w->box(FL_FLAT_BOX);
@@ -2838,8 +2841,7 @@ Fl_Double_Window* PanelUI::config_switcher_window() {
       o->color(FL_BACKGROUND2_COLOR);
       o->selection_color(FL_GREEN);
       o->callback((Fl_Callback*)cb_Labled);
-      if((JWM_VERSION<236)){o->hide();}
-      else{o->value(taskLabeled(BUTTON_NUM));}
+      o->value(taskLabeled(BUTTON_NUM));
     } // Fl_Check_Button* o
     startup(o,jsm_panel_xpm);
     conf_switcher->xclass("jsm-panel");
@@ -3176,11 +3178,15 @@ void PanelUI::get_button_stuff(int button,Fl_Input *input_prog,Fl_Input *input_m
   Fl_Input *o=NULL;
   if(text.find("exec:")==0){
     o=input_prog;
+    input_menu->value("");
+    input_menu->redraw();
     input_menu->deactivate();
   }
   if(text.find("root:")==0){
     o=input_menu;
     input_prog->deactivate();
+    input_prog->value("");
+    input_prog->redraw();
     text=text.substr(5,std::string::npos);
   }
   
@@ -3264,6 +3270,7 @@ void PanelUI::save_traybutton() {
   if(masker>0){MASK=linuxcommon::convert_num_to_string(masker);}
   int whichbutton=app_browser->value();
   editButton(whichbutton,MENU,PROG,ICON,LABEL,MASK);
+  conf_button_window->hide();
 }
 
 Fl_Double_Window* PanelUI::spacer_config() {

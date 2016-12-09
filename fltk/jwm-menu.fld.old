@@ -57,7 +57,7 @@ decl {\#include "../include/ui.h"} {public global
 decl {\#include "../include/menu.hpp"} {public global
 } 
 
-class MenuUI {open selected
+class MenuUI {open
 } {
   decl {int menuItemLineNumber;int JWMVERSION;int ROOTMENU;} {public local
   }
@@ -256,8 +256,8 @@ if(icon.compare("")!=0){
   } {
     Fl_Window config_item_win {
       label {Configure the Item} open
-      xywh {521 216 280 125} type Double
-      code0 {startup(o);} xclass {jsm-panel} visible
+      xywh {521 216 280 125} type Double hide
+      code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Input item_prog_icon {
         label Icon
@@ -299,17 +299,35 @@ if(icon.compare("")!=0){
       }
     }
   }
-  Function {conf_window()} {open
-  } {
+  Function {conf_window()} {} {
     Fl_Window config_flwin {
       label {Configure the Item} open
-      xywh {513 488 310 130} type Double
-      code0 {startup(o);} xclass {jsm-panel} visible
+      xywh {738 156 275 130} type Double hide
+      code0 {startup(o);} xclass {jsm-panel}
     } {
+      Fl_Input prog_icon {
+        label Icon
+        xywh {105 5 160 25} box FLAT_BOX
+      }
       Fl_Input prog_label {
         label Label
-        xywh {55 5 160 25} box FLAT_BOX
-        code0 {get_root_attrib(o,"label");}
+        xywh {105 35 160 25} box FLAT_BOX
+      }
+      Fl_Input prog_input {
+        label Program
+        xywh {105 65 160 25} box FLAT_BOX
+      }
+      Fl_Check_Button conf_button {
+        label Confirm
+        xywh {5 95 90 25} box FLAT_BOX down_box GTK_DOWN_BOX
+      }
+      Fl_Button prog_button {
+        callback {std::string result =choose_a_program();
+if(result.compare("")!=0){
+  prog_input->value(result.c_str());
+  prog_input->redraw();
+}}
+        image {custom_buttons/gear16.png} xywh {5 60 30 30} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label OK
@@ -317,25 +335,13 @@ if(icon.compare("")!=0){
 config_flwin->hide();}
         xywh {205 100 60 25} box FLAT_BOX color 61 labelcolor 7
       }
-      Fl_Input prog_root {
-        label Root
-        xywh {55 35 40 25} box FLAT_BOX
-        code0 {get_root_attrib(o,"onroot");}
-      }
-      Fl_Check_Button menu_root_labeled {
-        label {Labeled?}
-        tooltip {Display the Label in the Menu} xywh {220 5 25 25} down_box GTK_DOWN_BOX color 7 selection_color 2
-      }
-      Fl_Slider menu_height_slider {
-        callback {menu_height_input->value(o->value());}
-        xywh {90 65 120 25} type Horizontal box GTK_DOWN_BOX color 41 when 3 maximum 256 step 1
-        code0 {get_root_height(o);}
-      }
-      Fl_Value_Input menu_height_input {
-        label Height
-        callback {menu_height_slider->value(o->value());}
-        xywh {55 65 30 25} box FLAT_BOX when 3 maximum 256 step 1
-        code0 {get_root_height(o);}
+      Fl_Button icon_button {
+        callback {std::string icon=choose_an_icon();
+if(icon.compare("")!=0){
+  item_prog_icon->value(icon.c_str());
+  makeWidgetIcon(icon,o,48);
+}}
+        xywh {5 5 50 50} box FLAT_BOX color 23
       }
     }
   }
@@ -363,7 +369,8 @@ change_include();}
       }
     }
   }
-  Function {make_window(std::string INPUTmenu)} {} {
+  Function {make_window(std::string INPUTmenu)} {open
+  } {
     code {load();
 JWMVERSION=JWMversion();} {}
     Fl_Window menu_window {
@@ -527,7 +534,8 @@ else if(checkFlBrowserItem(root_menu)){edit_a_menu();}}
       }
     }
   }
-  Function {nada_window()} {} {
+  Function {nada_window()} {open
+  } {
     Fl_Window nada_win {
       label {Nothing to Configure}
       callback {o->hide();} open
@@ -557,11 +565,13 @@ else if(checkFlBrowserItem(root_menu)){edit_a_menu();}}
       }
     }
   }
-  Function {add_an_item()} {} {
+  Function {add_an_item()} {open
+  } {
     code {if(!checkFlBrowserItem(root_menu)){return;}
 add_window()->show();} {}
   }
-  Function {add_cb(int whichOne)} {} {
+  Function {add_cb(int whichOne)} {open
+  } {
     code {//Program 0
 //Restart 1
 //Exit 2
@@ -687,7 +697,7 @@ if(getMenuItems(menuElement,menu,menuElementText)){
  debug_out("Got menu: "+menu);
 }} {}
   }
-  Function {configure_item()} {open
+  Function {configure_item()} {open selected
   } {
     code {if(!checkFlBrowserItem(root_menu)){
   errorOUT("No root menu is still selected");
@@ -705,11 +715,26 @@ if(ConfigMenuItem(ROOTMENU,menuItemLineNumber,item_prog_label,item_prog_icon,ite
 }
 //config_flwin->hide();} {}
   }
+  Function {confirm_check()} {open
+  } {
+    code {if(!checkFlBrowserItem(menuElement)){return;}
+int LINEposition = menuElement->value();
+std::string NAME = menuElement->text(LINEposition);
+if(NAME.compare("Exit")!=0){conf_button->hide();}} {}
+  }
   Function {edit_a_menu()} {open
   } {
-    code {if(checkFlBrowserItem(root_menu)){conf_window()->show();}} {}
+    code {if(checkFlBrowserItem(root_menu)){
+  int line = root_menu->value();
+  const char* menu = root_menu->text(line);
+  std::string MENU=menu;
+  conf_window()->show();
+  std::string result = getLabel(MENU);
+  prog_label->value(result.c_str());
+}} {}
   }
-  Function {edit_an_item()} {} {
+  Function {edit_an_item()} {open
+  } {
     code {if(!checkFlBrowserItem(menuElement)){return;}
 if(!checkFlBrowserItem(root_menu)){return;}
 if(!checkFlBrowserItem(menuElementText)){return;}
@@ -795,10 +820,28 @@ if(LABEL.compare("")!=0){
   item_prog_label->redraw();
 }} {}
   }
-  Function {remove_an_item()} {} {
+  Function {program_check()} {open
+  } {
+    code {if(!checkFlBrowserItem(menuElement)){return;}
+int LINEposition = menuElement->value();
+const char* nombre = menuElement->text(LINEposition);
+std::string NAME=nombre;
+if(NAME.compare("Program")!=0){
+  prog_button->hide();
+  prog_input->hide();
+}
+else{
+  std::string TEXT = menuElementText->text(LINEposition);
+  //prog_input->value(TEXT.c_str());
+  //how do I do that??
+}} {}
+  }
+  Function {remove_an_item()} {open
+  } {
     code {std::cout<<"Remove"<<std::endl;} {}
   }
-  Function {remove_a_menu()} {} {
+  Function {remove_a_menu()} {open
+  } {
     code {if(!checkFlBrowserItem(root_menu)){return;}
 int line = root_menu->value();
 const char* value = root_menu->text(line);
@@ -807,14 +850,15 @@ getMenus(root_menu);
 menuElement->clear();
 menuElementText->clear();} {}
   }
-  Function {save_cb()} {return_type int
+  Function {save_cb()} {open return_type int
   } {
     code {//save
 const char* result = item_display->value();
 if(result ==NULL){return 42;}
 return addMenuItem(root_menu, add_label, add_icon, add_input, add_tooltip, add_button, result);} {}
   }
-  Function {select_sent_in(std::string thatMenu)} {} {
+  Function {select_sent_in(std::string thatMenu)} {open
+  } {
     code {if(thatMenu.compare("")==0)return;
 choose_menu(thatMenu);
 int tot=root_menu->size();
@@ -824,35 +868,5 @@ if(tot>0){
     if((txt!=NULL)&&(thatMenu.compare(txt)==0)){root_menu->select(i);}
   }
 }} {}
-  }
-  Function {get_root_attrib(Fl_Input *o,std::string attribute)} {open
-  } {
-    code {std::string val=getRootMenuAttribute(ROOTMENU,attribute);
-if(val.compare("")!=0){
-  o->value(val.c_str());
-  o->redraw();
-}} {}
-  }
-  Function {get_root_height(Fl_Valuator *o)} {} {
-    code {std::string val=getRootMenuAttribute(ROOTMENU,"height");
-if(val.compare("")!=0){
-  double num = linuxcommon::convert_string_to_double(val);
-  o->value(num);
-  o->redraw();
-}} {}
-  }
-  Function {mod_root_menu()} {open
-  } {
-    code {const char* lbl=prog_label->value();
-if(lbl!=NULL){setRootMenuAttribute(ROOTMENU,"label",lbl);}
-const char* root=prog_root->value();
-if(root!=NULL){setRootMenuAttribute(ROOTMENU,"onroot",root);}
-double height=menu_height_input->value();
-const char* tmp=linuxcommon::convert_num_to_string(height);
-if(tmp!=NULL){setRootMenuAttribute(ROOTMENU,"height",tmp);}
-int lbled=menu_root_labeled->value();
-std::string TMP="false";
-if(lbled!=0)TMP="true";
-setRootMenuAttribute(ROOTMENU,"labeled",TMP);} {}
   }
 } 

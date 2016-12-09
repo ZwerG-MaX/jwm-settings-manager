@@ -305,17 +305,6 @@ void MenuUI::cb_item_icon_button(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->user_data()))->cb_item_icon_button_i(o,v);
 }
 
-void MenuUI::cb_prog_button_i(Fl_Button*, void*) {
-  std::string result =choose_a_program();
-if(result.compare("")!=0){
-  prog_input->value(result.c_str());
-  prog_input->redraw();
-};
-}
-void MenuUI::cb_prog_button(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->user_data()))->cb_prog_button_i(o,v);
-}
-
 void MenuUI::cb_OK3_i(Fl_Button*, void*) {
   configure_item();
 config_flwin->hide();
@@ -324,15 +313,18 @@ void MenuUI::cb_OK3(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->user_data()))->cb_OK3_i(o,v);
 }
 
-void MenuUI::cb_icon_button_i(Fl_Button* o, void*) {
-  std::string icon=choose_an_icon();
-if(icon.compare("")!=0){
-  item_prog_icon->value(icon.c_str());
-  makeWidgetIcon(icon,o,48);
-};
+void MenuUI::cb_menu_height_slider_i(Fl_Slider* o, void*) {
+  menu_height_input->value(o->value());
 }
-void MenuUI::cb_icon_button(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->user_data()))->cb_icon_button_i(o,v);
+void MenuUI::cb_menu_height_slider(Fl_Slider* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_menu_height_slider_i(o,v);
+}
+
+void MenuUI::cb_menu_height_input_i(Fl_Value_Input* o, void*) {
+  menu_height_slider->value(o->value());
+}
+void MenuUI::cb_menu_height_input(Fl_Value_Input* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_menu_height_input_i(o,v);
 }
 
 void MenuUI::cb_OK4_i(Fl_Button*, void*) {
@@ -683,38 +675,46 @@ Fl_Double_Window* MenuUI::conf_item_window() {
 }
 
 Fl_Double_Window* MenuUI::conf_window() {
-  { Fl_Double_Window* o = config_flwin = new Fl_Double_Window(275, 130, gettext("Configure the Item"));
+  { Fl_Double_Window* o = config_flwin = new Fl_Double_Window(310, 130, gettext("Configure the Item"));
     config_flwin->user_data((void*)(this));
-    { prog_icon = new Fl_Input(105, 5, 160, 25, gettext("Icon"));
-      prog_icon->box(FL_FLAT_BOX);
-    } // Fl_Input* prog_icon
-    { prog_label = new Fl_Input(105, 35, 160, 25, gettext("Label"));
+    { Fl_Input* o = prog_label = new Fl_Input(55, 5, 160, 25, gettext("Label"));
       prog_label->box(FL_FLAT_BOX);
+      get_root_attrib(o,"label");
     } // Fl_Input* prog_label
-    { prog_input = new Fl_Input(105, 65, 160, 25, gettext("Program"));
-      prog_input->box(FL_FLAT_BOX);
-    } // Fl_Input* prog_input
-    { conf_button = new Fl_Check_Button(5, 95, 90, 25, gettext("Confirm"));
-      conf_button->box(FL_FLAT_BOX);
-      conf_button->down_box(FL_GTK_DOWN_BOX);
-    } // Fl_Check_Button* conf_button
-    { prog_button = new Fl_Button(5, 60, 30, 30);
-      prog_button->box(FL_FLAT_BOX);
-      prog_button->color((Fl_Color)23);
-      prog_button->image(image_gear16);
-      prog_button->callback((Fl_Callback*)cb_prog_button);
-    } // Fl_Button* prog_button
     { Fl_Button* o = new Fl_Button(205, 100, 60, 25, gettext("OK"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK3);
     } // Fl_Button* o
-    { icon_button = new Fl_Button(5, 5, 50, 50);
-      icon_button->box(FL_FLAT_BOX);
-      icon_button->color((Fl_Color)23);
-      icon_button->callback((Fl_Callback*)cb_icon_button);
-    } // Fl_Button* icon_button
+    { Fl_Input* o = prog_root = new Fl_Input(55, 35, 40, 25, gettext("Root"));
+      prog_root->box(FL_FLAT_BOX);
+      get_root_attrib(o,"onroot");
+    } // Fl_Input* prog_root
+    { menu_root_labeled = new Fl_Check_Button(220, 5, 25, 25, gettext("Labeled?"));
+      menu_root_labeled->tooltip(gettext("Display the Label in the Menu"));
+      menu_root_labeled->down_box(FL_GTK_DOWN_BOX);
+      menu_root_labeled->color(FL_BACKGROUND2_COLOR);
+      menu_root_labeled->selection_color((Fl_Color)2);
+    } // Fl_Check_Button* menu_root_labeled
+    { Fl_Slider* o = menu_height_slider = new Fl_Slider(90, 65, 120, 25);
+      menu_height_slider->type(1);
+      menu_height_slider->box(FL_GTK_DOWN_BOX);
+      menu_height_slider->color((Fl_Color)41);
+      menu_height_slider->maximum(256);
+      menu_height_slider->step(1);
+      menu_height_slider->callback((Fl_Callback*)cb_menu_height_slider);
+      menu_height_slider->when(3);
+      get_root_height(o);
+    } // Fl_Slider* menu_height_slider
+    { Fl_Value_Input* o = menu_height_input = new Fl_Value_Input(55, 65, 30, 25, gettext("Height"));
+      menu_height_input->box(FL_FLAT_BOX);
+      menu_height_input->maximum(256);
+      menu_height_input->step(1);
+      menu_height_input->callback((Fl_Callback*)cb_menu_height_input);
+      menu_height_input->when(3);
+      get_root_height(o);
+    } // Fl_Value_Input* menu_height_input
     startup(o);
     config_flwin->xclass("jsm-panel");
     config_flwin->end();
@@ -1154,22 +1154,8 @@ void MenuUI::configure_item() {
   //config_flwin->hide();
 }
 
-void MenuUI::confirm_check() {
-  if(!checkFlBrowserItem(menuElement)){return;}
-  int LINEposition = menuElement->value();
-  std::string NAME = menuElement->text(LINEposition);
-  if(NAME.compare("Exit")!=0){conf_button->hide();}
-}
-
 void MenuUI::edit_a_menu() {
-  if(checkFlBrowserItem(root_menu)){
-    int line = root_menu->value();
-    const char* menu = root_menu->text(line);
-    std::string MENU=menu;
-    conf_window()->show();
-    std::string result = getLabel(MENU);
-    prog_label->value(result.c_str());
-  }
+  if(checkFlBrowserItem(root_menu)){conf_window()->show();}
 }
 
 void MenuUI::edit_an_item() {
@@ -1259,22 +1245,6 @@ void MenuUI::edit_an_item() {
   }
 }
 
-void MenuUI::program_check() {
-  if(!checkFlBrowserItem(menuElement)){return;}
-  int LINEposition = menuElement->value();
-  const char* nombre = menuElement->text(LINEposition);
-  std::string NAME=nombre;
-  if(NAME.compare("Program")!=0){
-    prog_button->hide();
-    prog_input->hide();
-  }
-  else{
-    std::string TEXT = menuElementText->text(LINEposition);
-    //prog_input->value(TEXT.c_str());
-    //how do I do that??
-  }
-}
-
 void MenuUI::remove_an_item() {
   std::cout<<"Remove"<<std::endl;
 }
@@ -1306,4 +1276,35 @@ void MenuUI::select_sent_in(std::string thatMenu) {
       if((txt!=NULL)&&(thatMenu.compare(txt)==0)){root_menu->select(i);}
     }
   }
+}
+
+void MenuUI::get_root_attrib(Fl_Input *o,std::string attribute) {
+  std::string val=getRootMenuAttribute(ROOTMENU,attribute);
+  if(val.compare("")!=0){
+    o->value(val.c_str());
+    o->redraw();
+  }
+}
+
+void MenuUI::get_root_height(Fl_Valuator *o) {
+  std::string val=getRootMenuAttribute(ROOTMENU,"height");
+  if(val.compare("")!=0){
+    double num = linuxcommon::convert_string_to_double(val);
+    o->value(num);
+    o->redraw();
+  }
+}
+
+void MenuUI::mod_root_menu() {
+  const char* lbl=prog_label->value();
+  if(lbl!=NULL){setRootMenuAttribute(ROOTMENU,"label",lbl);}
+  const char* root=prog_root->value();
+  if(root!=NULL){setRootMenuAttribute(ROOTMENU,"onroot",root);}
+  double height=menu_height_input->value();
+  const char* tmp=linuxcommon::convert_num_to_string(height);
+  if(tmp!=NULL){setRootMenuAttribute(ROOTMENU,"height",tmp);}
+  int lbled=menu_root_labeled->value();
+  std::string TMP="false";
+  if(lbled!=0)TMP="true";
+  setRootMenuAttribute(ROOTMENU,"labeled",TMP);
 }

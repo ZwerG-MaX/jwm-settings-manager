@@ -151,6 +151,7 @@ bool setElementColor(std::string element, std::string subelement, std::string SU
 bool setJSMItem(std::string item, std::string value);
 bool setNodeText(pugi::xml_node node,std::string text);
 bool setNodeButtonTextByMask(pugi::xml_node node,std::string text,std::string attribute);
+bool setRootMenuAttribute(int MENU, std::string attribute,std::string value);
 bool setRootMenuHeight(std::string val, int height);
 //T
 bool testExec(std::string command); //linuxcommon wrapper
@@ -182,6 +183,7 @@ std::string getMenuAttribute(std::string MENU, std::string attribute);
 std::string getMenuAttribute(int MENU, int subitem, std::string element, std::string attribute);
 std::string getLayoutThing(std::string attribute,std::string vaule1,std::string value2,std::string value3,std::string layout);
 std::string getPanelButtonIcon();
+std::string getRootMenuAttribute(int MENU, std::string attribute);
 std::string getSecondColor(std::string element, std::string subelement);
 std::string getSmartHoriz(std::string layout);
 std::string getSmartVert(std::string layout);

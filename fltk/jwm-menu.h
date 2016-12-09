@@ -146,21 +146,22 @@ private:
 public:
   Fl_Double_Window* conf_window();
   Fl_Double_Window *config_flwin;
-  Fl_Input *prog_icon;
   Fl_Input *prog_label;
-  Fl_Input *prog_input;
-  Fl_Check_Button *conf_button;
-  Fl_Button *prog_button;
 private:
-  inline void cb_prog_button_i(Fl_Button*, void*);
-  static void cb_prog_button(Fl_Button*, void*);
   inline void cb_OK3_i(Fl_Button*, void*);
   static void cb_OK3(Fl_Button*, void*);
 public:
-  Fl_Button *icon_button;
+  Fl_Input *prog_root;
+  Fl_Check_Button *menu_root_labeled;
+  Fl_Slider *menu_height_slider;
 private:
-  inline void cb_icon_button_i(Fl_Button*, void*);
-  static void cb_icon_button(Fl_Button*, void*);
+  inline void cb_menu_height_slider_i(Fl_Slider*, void*);
+  static void cb_menu_height_slider(Fl_Slider*, void*);
+public:
+  Fl_Value_Input *menu_height_input;
+private:
+  inline void cb_menu_height_input_i(Fl_Value_Input*, void*);
+  static void cb_menu_height_input(Fl_Value_Input*, void*);
 public:
   Fl_Double_Window* configure_include();
   Fl_Double_Window *include_win;
@@ -276,13 +277,14 @@ public:
   void change_include();
   void choose_menu(std::string menu);
   void configure_item();
-  void confirm_check();
   void edit_a_menu();
   void edit_an_item();
-  void program_check();
   void remove_an_item();
   void remove_a_menu();
   int save_cb();
   void select_sent_in(std::string thatMenu);
+  void get_root_attrib(Fl_Input *o,std::string attribute);
+  void get_root_height(Fl_Valuator *o);
+  void mod_root_menu();
 };
 #endif

@@ -1140,6 +1140,12 @@ bool setNodeButtonTextByMask(pugi::xml_node node,std::string text,std::string at
 	node.text().set(text.c_str());
 	return saveChangesTemp();
 }
+bool setRootMenuAttribute(int MENU, std::string attribute,std::string value){
+	debug_out("bool setRootMenuAttribute(int MENU, std::string "+attribute+",std::string "+value+")");
+	if(value.compare("")==0){return false;}
+	pugi::xml_node node=getMenu(MENU);
+	return setAttribute(node,attribute,value);
+}
 bool setRootMenuHeight(std::string val, int height){
 	debug_out("bool setRootMenuHeight(std::string "+val+", int height)");
 	if(val.compare("")==0){return false;}
@@ -1461,6 +1467,11 @@ std::string getPanelButtonIcon(){
 		result=linuxcommon::test_file_in_vector_path(result,iconity);
 	}
 	return result;
+}
+std::string getRootMenuAttribute(int MENU, std::string attribute){
+	debug_out("std::string getRootMenuAttribute(int MENU, std::string "+attribute+")");
+	pugi::xml_node node=getMenu(MENU);
+	return getAttribute(node,attribute);
 }
 std::string getSecondColor(std::string element, std::string subelement){
 	std::string val=getElementText(element,subelement);
