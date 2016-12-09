@@ -60,6 +60,16 @@ LINUX_COMMON__NS_BEGIN
 		number = out.str();
 		return number;
 	}
+	/** convert an unsigned integer to a string
+	 * @param num the unsigned int to convert
+	 */
+	std::string convert_unsigned_to_string(unsigned int num){
+		std::string number;
+		std::stringstream out;
+		out << num;
+		number = out.str();
+		return number;
+	}
 	/** return the current working directory */
 	std::string current_directory(){
 		char buff [ PATH_MAX ];

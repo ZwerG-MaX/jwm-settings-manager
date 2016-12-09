@@ -66,6 +66,7 @@ namespace linuxcommon{
 	//c
 	std::string color_double_to_string(const double *rgb);
 	std::string convert_num_to_string(int num);
+	std::string convert_unsigned_to_string(unsigned int num);
 	std::string current_path(int whichPath);
 	std::string current_directory();
 	//f

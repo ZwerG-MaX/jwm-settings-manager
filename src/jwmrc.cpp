@@ -818,176 +818,6 @@ bool setAttribute(pugi::xml_node node,std::string attribute,std::string value){
 	debug_out("Attribute name:"+nodename);
 	return saveChangesTemp();
 }
-bool setLastTrayButtonAttribute(std::string attribute,std::string value){
-	debug_out("bool setLastTrayButtonAttribute(std::string "+attribute+",std::string "+value+")");
-	if(attribute.compare("")==0){return false;}
-	if(value.compare("")==0){return false;}
-	unsigned int whichElement=currentPanel();
-	pugi::xml_node node;
-	std::string element="Tray";
-	std::string subelement="TrayButton";
-	node=parseNodes(whichElement,element);
-	if(!node.child(subelement.c_str())){
-		debug_out("No subelement "+subelement+" found");
-		return false;
-	}
-    node=node.child(subelement.c_str());
-    while(node.next_sibling(subelement.c_str())){
-		std::string noder=node.name();
-		debug_out("getting next "+noder);
-		node=node.next_sibling(subelement.c_str());
-	}
-	node.append_attribute(attribute.c_str())=value.c_str();
-	std::string nodename=doc.child(node.name()).name();
-	debug_out("Node name:"+nodename);
-	return saveChangesTemp();
-}
-bool setNodeText(pugi::xml_node node,std::string text){
-	if(!node){return false;}
-	std::string name=node.name();
-	if(name.compare("")==0){name="node";}
-	debug_out("bool setNodeText(pugi::xml_node "+name+",std::string "+text+")");
-	if(text.compare("")==0){return false;}
-	node.text().set(text.c_str());
-	return saveChangesTemp();
-}
-bool setNodeButtonTextByMask(pugi::xml_node node,std::string text,std::string attribute){
-	if(!node){return false;}
-	std::string name=node.name();
-	if(name.compare("")==0){name="node";}
-	debug_out("bool setNodeText(pugi::xml_node "+name+",std::string "+text+")");
-	if(text.compare("")==0){return false;}
-	//TODO figure out how to either add a button node, or add just the text..
-	if(!node.child("Button")){return false;}
-	node=node.find_child_by_attribute("Button","mask",attribute.c_str());
-	if(!node)node=node.child("Button");
-	node.text().set(text.c_str());
-	return saveChangesTemp();
-}
-bool setElementText(std::string element, std::string text){
-	debug_out("setElementText(std::string "+ element+ ", std::string " +text + ")");
-//	if(!loadTemp()){return false;}
-	if(element.compare("")==0){return false;}
-	if(text.compare("")==0){return false;}
-    pugi::xml_node node = doc.child("JWM").child(element.c_str());
-    if(!node){node=checkIncludes(element);}
-    if(!node){node = doc.child("JWM").append_child(element.c_str());}
-    node.text().set(text.c_str());
-    return saveChangesTemp();
-}
-bool setElementText(unsigned int whichElement, std::string element, std::string subelement, std::string text){
-	pugi::xml_node node = doc.child("JWM").child(element.c_str());
-	unsigned int i=1;
-    if(whichElement!=i){
-		while(node.next_sibling(element.c_str()) && i!=whichElement){
-            node=node.next_sibling(element.c_str());
-            i++;
-        }
-    }
-    if(!node){node=checkIncludes(whichElement,element);}
-    if(!node){node = doc.child("JWM").append_child(element.c_str());}
-    node=node.child(subelement.c_str());
-    node.text().set(text.c_str());
-    return saveChangesTemp();
-}
-bool setElementText(std::string element, std::string subelement, std::string text){
-	debug_out("setElementText(std::string "+ element+ ", std::string "+ subelement+", std::string " +text + ")");
-//	if(!loadTemp()){return false;}
-	if(element.compare("")==0){return false;}
-	if(subelement.compare("")==0){return false;}
-	if(text.compare("")==0){return false;}
-    pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str());
-    if(!node){node=checkIncludes(element,subelement);}
-    if(!node){node = doc.child("JWM").child(element.c_str()).append_child(subelement.c_str());}
-    node.text().set(text.c_str());
-    return saveChangesTemp();
-}
-bool setElementText(std::string element, std::string subelement, std::string SUBsubsubelement, std::string text){
-	debug_out("setElementText(std::string "+ element+ ", std::string "+ subelement+ ", std::string "+ SUBsubsubelement+", std::string " +text + ")");
-//	if(!loadTemp()){return false;}
-	if(element.compare("")==0){return false;}
-	if(subelement.compare("")==0){return false;}
-	if(SUBsubsubelement.compare("")==0){return false;}
-	if(text.compare("")==0){return false;}
-    pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubsubelement.c_str());
-    if(!node){node=checkIncludes(element,subelement,SUBsubsubelement);}
-    if(!node){node = doc.child("JWM").child(element.c_str()).child(subelement.c_str()).append_child(SUBsubsubelement.c_str());}
-    node.text().set(text.c_str());
-    return saveChangesTemp();
-}
-bool setElementInt(std::string element, unsigned int text){
-	debug_out("setElementInt(std::string "+ element+ "unsigned int text)");
-//	if(!loadTemp()){return false;}
-	if(element.compare("")==0){return false;}
-    pugi::xml_node node = doc.child("JWM").child(element.c_str());
-    if(!node){node=checkIncludes(element);}
-    if(!node){node = doc.child("JWM").append_child(element.c_str());}
-    node.text().set(text);
-    return saveChangesTemp();
-}
-bool setElementInt(std::string element, std::string subelement, unsigned int text){
-	debug_out("setElementInt(std::string "+ element+", std::string " +subelement +"unsigned int text)");
-//	if(!loadTemp()){return false;}
-	if(element.compare("")==0){return false;}
-	if(subelement.compare("")==0){return false;}
-    pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str());
-    if(!node){node=checkIncludes(element,subelement);}
-    if(!node){node = doc.child("JWM").child(element.c_str()).append_child(subelement.c_str());}
-    node.text().set(text);
-    return saveChangesTemp();
-}
-bool setElementInt(std::string element, std::string subelement, std::string SUBsubsubelement, unsigned int text){
-	debug_out("setElementInt(std::string "+ element+", std::string " +subelement + ", std::string "+ SUBsubsubelement+"unsigned int text)");
-//	if(!loadTemp()){return false;}
-	if(element.compare("")==0){return false;}
-	if(subelement.compare("")==0){return false;}
-	if(SUBsubsubelement.compare("")==0){return false;}
-    pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubsubelement.c_str());
-    if(!node){node=checkIncludes(element,subelement,SUBsubsubelement);}
-    if(!node){node = doc.child("JWM").child(element.c_str()).child(subelement.c_str()).append_child(SUBsubsubelement.c_str());}
-    node.text().set(text);
-    return saveChangesTemp();
-}
-bool setElementFloat(std::string element, double* text){
-	debug_out("setElementFloat(std::string "+element + ", float text)");
-	std::string textr=colorToString(text);
-	if(element.compare("")==0){return false;}
-    pugi::xml_node node = doc.child("JWM").child(element.c_str());
-    if(!node){node=checkIncludes(element);}
-    if(!node){node = doc.child("JWM").append_child(element.c_str());}
-    node.text().set(textr.c_str());
-    return saveChangesTemp();
-}
-bool setElementFloat(std::string element, std::string subelement, double* text){
-	debug_out("setElementFloat(std::string "+element +", std::string "+ subelement+", float text)");
-	std::string textr=colorToString(text);
-	if(element.compare("")==0){return false;}
-	if(subelement.compare("")==0){return false;}
-    pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str());
-    if(!node){node=checkIncludes(element,subelement);}
-    if(!node){
-		node = doc.child("JWM").child(element.c_str());
-		if(!node){node=checkIncludes(element);}
-		if(!node){
-			node = doc.child("JWM");
-			node=node.append_child(element.c_str());
-		}
-		node=node.append_child(subelement.c_str());
-	}
-    node.text().set(textr.c_str());
-    return saveChangesTemp();
-}
-bool setElementFloat(std::string element, std::string subelement, std::string SUBsubsubelement, double* text){
-	debug_out("setElementFloat(std::string "+element +", std::string "+ subelement+", std::string "+ SUBsubsubelement+", float text)");
-	std::string textr=colorToString(text);
-	if(element.compare("")==0){return false;}
-	if(subelement.compare("")==0){return false;}
-	if(SUBsubsubelement.compare("")==0){return false;}
-    pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubsubelement.c_str());
-    if(!node){node = doc.child("JWM").child(element.c_str()).child(subelement.c_str()).append_child(SUBsubsubelement.c_str());}
-    node.text().set(textr.c_str());
-    return saveChangesTemp();
-}
 bool setElementAttribute(std::string element, std::string attribute, std::string value){
 	debug_out("bool setElementAttribute(std::string "+ element+ ", std::string " + attribute+ ", std::string "+ value+")");
 	if(element.compare("")==0){return false;}
@@ -1136,6 +966,110 @@ bool setElementColor(std::string element, std::string subelement, std::string SU
 	std::string c=colorToString(rgb);
 	return setElementText(element,subelement,SUBsubsubelement,c);
 }
+bool setElementInt(std::string element, unsigned int text){
+	debug_out("setElementInt(std::string "+ element+ "unsigned int text)");
+	std::string textr=linuxcommon::convert_unsigned_to_string(text);
+	return setElementText(element,textr);
+}
+bool setElementInt(std::string element, std::string subelement, unsigned int text){
+	debug_out("setElementInt(std::string "+ element+", std::string " +subelement +"unsigned int text)");
+	std::string textr=linuxcommon::convert_unsigned_to_string(text);
+	if(element.compare("")==0){return false;}
+	if(subelement.compare("")==0){return false;}
+	return setElementText(element,subelement,textr);
+}
+bool setElementInt(std::string element, std::string subelement, std::string SUBsubsubelement, unsigned int text){
+	debug_out("setElementInt(std::string "+ element+", std::string " +subelement + ", std::string "+ SUBsubsubelement+"unsigned int text)");
+	std::string textr=linuxcommon::convert_unsigned_to_string(text);
+	if(element.compare("")==0){return false;}
+	if(subelement.compare("")==0){return false;}
+	if(SUBsubsubelement.compare("")==0){return false;}
+	return setElementText(element,subelement,SUBsubsubelement,textr);
+}
+bool setElementFloat(std::string element, double* text){
+	debug_out("setElementFloat(std::string "+element + ", float text)");
+	std::string textr=colorToString(text);
+	return setElementText(element,textr);
+}
+bool setElementFloat(std::string element, std::string subelement, double* text){
+	debug_out("setElementFloat(std::string "+element +", std::string "+ subelement+", float text)");
+	std::string textr=colorToString(text);
+	if(element.compare("")==0){return false;}
+	if(subelement.compare("")==0){return false;}
+	return setElementText(element,subelement,textr);
+}
+bool setElementFloat(std::string element, std::string subelement, std::string SUBsubsubelement, double* text){
+	debug_out("setElementFloat(std::string "+element +", std::string "+ subelement+", std::string "+ SUBsubsubelement+", float text)");
+	std::string textr=colorToString(text);
+	if(element.compare("")==0){return false;}
+	if(subelement.compare("")==0){return false;}
+	if(SUBsubsubelement.compare("")==0){return false;}
+	return setElementText(element,subelement,SUBsubsubelement,textr);
+}
+bool setElementText(std::string element, std::string text){
+	debug_out("setElementText(std::string "+ element+ ", std::string " +text + ")");
+//	if(!loadTemp()){return false;}
+	if(element.compare("")==0){return false;}
+	if(text.compare("")==0){return false;}
+    pugi::xml_node node = doc.child("JWM").child(element.c_str());
+    if(!node){node=checkIncludes(element);}
+    if(!node){node = doc.child("JWM").append_child(element.c_str());}
+    node.text().set(text.c_str());
+    return saveChangesTemp();
+}
+bool setElementText(unsigned int whichElement, std::string element, std::string subelement, std::string text){
+	pugi::xml_node node = doc.child("JWM").child(element.c_str());
+	unsigned int i=1;
+    if(whichElement!=i){
+		while(node.next_sibling(element.c_str()) && i!=whichElement){
+            node=node.next_sibling(element.c_str());
+            i++;
+        }
+    }
+    if(!node){node=checkIncludes(whichElement,element);}
+    if(!node){node = doc.child("JWM").append_child(element.c_str());}
+    node=node.child(subelement.c_str());
+    node.text().set(text.c_str());
+    return saveChangesTemp();
+}
+bool setElementText(std::string element, std::string subelement, std::string text){
+	debug_out("setElementText(std::string "+ element+ ", std::string "+ subelement+", std::string " +text + ")");
+//	if(!loadTemp()){return false;}
+	if(element.compare("")==0){return false;}
+	if(subelement.compare("")==0){return false;}
+	if(text.compare("")==0){return false;}
+    pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str());
+    if(!node){node=checkIncludes(element,subelement);}
+    if(!node){
+		node = doc.child("JWM").child(element.c_str());
+		if(!node){node=doc.child("JWM").append_child(element.c_str());}
+		node=node.child(subelement.c_str());
+		if(!node){node=doc.child("JWM").child(element.c_str()).append_child(subelement.c_str());}
+	}
+    node.text().set(text.c_str());
+    return saveChangesTemp();
+}
+bool setElementText(std::string element, std::string subelement, std::string SUBsubsubelement, std::string text){
+	debug_out("setElementText(std::string "+ element+ ", std::string "+ subelement+ ", std::string "+ SUBsubsubelement+", std::string " +text + ")");
+//	if(!loadTemp()){return false;}
+	if(element.compare("")==0){return false;}
+	if(subelement.compare("")==0){return false;}
+	if(SUBsubsubelement.compare("")==0){return false;}
+	if(text.compare("")==0){return false;}
+    pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str()).child(SUBsubsubelement.c_str());
+    if(!node){node=checkIncludes(element,subelement,SUBsubsubelement);}
+    if(!node){
+		debug_out("Didn't find "+element+"->"+subelement+"->"+SUBsubsubelement+" in check Includes");
+		node = doc.child("JWM").child(element.c_str());
+		if(!node){node=doc.child("JWM").append_child(element.c_str());}
+		node=node.child(subelement.c_str());
+		if(!node){node=doc.child("JWM").child(element.c_str()).append_child(subelement.c_str());}
+		node=node.child(SUBsubsubelement.c_str());
+		if(!node){node=doc.child("JWM").child(element.c_str()).child(subelement.c_str()).append_child(SUBsubsubelement.c_str());}
+	}
+    node.text().set(text.c_str());
+    return saveChangesTemp();
+}
 bool setJSMItem(std::string item, std::string value){
 	debug_out("bool setJSMItem(std::string "+item+", std::string "+value+")");
 	if(item.compare("")==0){return false;}
@@ -1159,6 +1093,52 @@ bool setJSMItem(std::string item, std::string value){
 	else if(item.compare("file")==0){f=value;}
 	stringfile="panel="+p+"\ndebug="+d+"\nfile="+f+"\n";
 	return linuxcommon::save_string_to_file(stringfile,filename);
+}
+bool setLastTrayButtonAttribute(std::string attribute,std::string value){
+	debug_out("bool setLastTrayButtonAttribute(std::string "+attribute+",std::string "+value+")");
+	if(attribute.compare("")==0){return false;}
+	if(value.compare("")==0){return false;}
+	unsigned int whichElement=currentPanel();
+	pugi::xml_node node;
+	std::string element="Tray";
+	std::string subelement="TrayButton";
+	node=parseNodes(whichElement,element);
+	if(!node.child(subelement.c_str())){
+		debug_out("No subelement "+subelement+" found");
+		return false;
+	}
+    node=node.child(subelement.c_str());
+    while(node.next_sibling(subelement.c_str())){
+		std::string noder=node.name();
+		debug_out("getting next "+noder);
+		node=node.next_sibling(subelement.c_str());
+	}
+	node.append_attribute(attribute.c_str())=value.c_str();
+	std::string nodename=doc.child(node.name()).name();
+	debug_out("Node name:"+nodename);
+	return saveChangesTemp();
+}
+bool setNodeText(pugi::xml_node node,std::string text){
+	if(!node){return false;}
+	std::string name=node.name();
+	if(name.compare("")==0){name="node";}
+	debug_out("bool setNodeText(pugi::xml_node "+name+",std::string "+text+")");
+	if(text.compare("")==0){return false;}
+	node.text().set(text.c_str());
+	return saveChangesTemp();
+}
+bool setNodeButtonTextByMask(pugi::xml_node node,std::string text,std::string attribute){
+	if(!node){return false;}
+	std::string name=node.name();
+	if(name.compare("")==0){name="node";}
+	debug_out("bool setNodeText(pugi::xml_node "+name+",std::string "+text+")");
+	if(text.compare("")==0){return false;}
+	//TODO figure out how to either add a button node, or add just the text..
+	if(!node.child("Button")){return false;}
+	node=node.find_child_by_attribute("Button","mask",attribute.c_str());
+	if(!node)node=node.child("Button");
+	node.text().set(text.c_str());
+	return saveChangesTemp();
 }
 bool setRootMenuHeight(std::string val, int height){
 	debug_out("bool setRootMenuHeight(std::string "+val+", int height)");
@@ -2741,6 +2721,8 @@ pugi::xml_node checkIncludes(std::string element){
 	}
 	if((node)&&(linuxcommon::test_file(currentInclude))){setJSMItem("file",currentInclude);}
 	else{
+		debug_out("checkIncludes didn't find:"+element);
+
 		loadTemp();
 		setJSMItem("file",homePath());
 	}
@@ -2785,14 +2767,17 @@ pugi::xml_node checkIncludes(std::string element,std::string subelement){
 	else{
 		loadTemp();
 		setJSMItem("file",homePath());
+		debug_out("checkIncludes didn't find:"+element+"->"+subelement);
+
 	}
 	return node;
 }
 pugi::xml_node checkIncludes(std::string element,std::string subelement,std::string SUBsubelement){
 debug_out("std::string checkIncludes(std::string "+element+","+subelement+","+SUBsubelement+")");
 	pugi::xml_node node;
-	if(element.compare("")==0){return node;}
-	if(subelement.compare("")==0){return node;}
+	pugi::xml_node nodeEmpty;
+	if(element.compare("")==0){return nodeEmpty;}
+	if(subelement.compare("")==0){return nodeEmpty;}
 	std::vector<std::string> includeVec=Includes();
 	std::string currentInclude ="";
 	for(std::vector<std::string>::iterator it = includeVec.begin();it!=includeVec.end();++it){
@@ -2825,6 +2810,7 @@ debug_out("std::string checkIncludes(std::string "+element+","+subelement+","+SU
 	}
 	if((node)&&(linuxcommon::test_file(currentInclude))){setJSMItem("file",currentInclude);}
 	else{
+		debug_out("checkIncludes didn't find:"+element+"->"+subelement+"->"+SUBsubelement);
 		loadTemp();
 		setJSMItem("file",homePath());
 	}
