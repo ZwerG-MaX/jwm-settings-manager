@@ -155,31 +155,34 @@ void PopupsUI::cb_Font_i(Fl_Button*, void*) {
   std::string attribute ="font";
 }
 void PopupsUI::cb_Font(Fl_Button* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_Font_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_Font_i(o,v);
 }
 
 void PopupsUI::cb_left_i(Fl_Menu_*, void*) {
   std::string value="left";
-std::string attribute ="alignment";
+alignment->value(value.c_str());
+alignment->redraw();
 }
 void PopupsUI::cb_left(Fl_Menu_* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_left_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_left_i(o,v);
 }
 
 void PopupsUI::cb_center_i(Fl_Menu_*, void*) {
   std::string value="center";
-std::string attribute ="alignment";
+alignment->value(value.c_str());
+alignment->redraw();
 }
 void PopupsUI::cb_center(Fl_Menu_* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_center_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_center_i(o,v);
 }
 
 void PopupsUI::cb_right_i(Fl_Menu_*, void*) {
   std::string value="right";
-std::string attribute ="alignment";
+alignment->value(value.c_str());
+alignment->redraw();
 }
 void PopupsUI::cb_right(Fl_Menu_* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_right_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_right_i(o,v);
 }
 
 unsigned char PopupsUI::menu_Alignment_i18n_done = 0;
@@ -192,26 +195,29 @@ Fl_Menu_Item PopupsUI::menu_Alignment[] = {
 
 void PopupsUI::cb_mouse_i(Fl_Menu_*, void*) {
   std::string value="mouse";
-std::string attribute ="follow";
+follow->value(value.c_str());
+follow->redraw();
 }
 void PopupsUI::cb_mouse(Fl_Menu_* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_mouse_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_mouse_i(o,v);
 }
 
 void PopupsUI::cb_keyboard_i(Fl_Menu_*, void*) {
   std::string value="keyboard";
-std::string attribute ="follow";
+follow->value(value.c_str());
+follow->redraw();
 }
 void PopupsUI::cb_keyboard(Fl_Menu_* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_keyboard_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_keyboard_i(o,v);
 }
 
 void PopupsUI::cb_none_i(Fl_Menu_*, void*) {
   std::string value="none";
-std::string attribute ="follow";
+follow->value(value.c_str());
+follow->redraw();
 }
 void PopupsUI::cb_none(Fl_Menu_* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_none_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_none_i(o,v);
 }
 
 unsigned char PopupsUI::menu_Follow_i18n_done = 0;
@@ -224,33 +230,39 @@ Fl_Menu_Item PopupsUI::menu_Follow[] = {
 
 void PopupsUI::cb_auto_i(Fl_Menu_*, void*) {
   std::string value="auto";
-std::string attribute ="separator_color";
+separator_color->value(value.c_str());
+separator_color->redraw();
 }
 void PopupsUI::cb_auto(Fl_Menu_* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_auto_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_auto_i(o,v);
 }
 
 void PopupsUI::cb_foreground_i(Fl_Menu_*, void*) {
   std::string value="foreground";
-std::string attribute ="separator_color";
+separator_color->value(value.c_str());
+separator_color->redraw();
 }
 void PopupsUI::cb_foreground(Fl_Menu_* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_foreground_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_foreground_i(o,v);
 }
 
 void PopupsUI::cb_frame_i(Fl_Menu_*, void*) {
   std::string value="frame";
-std::string attribute ="separator_color";
+separator_color->value(value.c_str());
+separator_color->redraw();
 }
 void PopupsUI::cb_frame(Fl_Menu_* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_frame_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_frame_i(o,v);
 }
 
-void PopupsUI::cb_frame1_i(Fl_Menu_*, void*) {
-  std::string value="color";
+void PopupsUI::cb_color_i(Fl_Menu_*, void*) {
+  color_picker(sep_col_b);
+std::string tmp=widgetColor(sep_col_b);
+separator_color->value(tmp.c_str());
+separator_color->redraw();
 }
-void PopupsUI::cb_frame1(Fl_Menu_* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_frame1_i(o,v);
+void PopupsUI::cb_color(Fl_Menu_* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_color_i(o,v);
 }
 
 unsigned char PopupsUI::menu_Separator_i18n_done = 0;
@@ -258,7 +270,7 @@ Fl_Menu_Item PopupsUI::menu_Separator[] = {
  {"auto", 0,  (Fl_Callback*)PopupsUI::cb_auto, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"foreground", 0,  (Fl_Callback*)PopupsUI::cb_foreground, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"frame", 0,  (Fl_Callback*)PopupsUI::cb_frame, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"frame", 0,  (Fl_Callback*)PopupsUI::cb_frame1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"color", 0,  (Fl_Callback*)PopupsUI::cb_color, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
 
@@ -268,154 +280,164 @@ if(o->value()==1){bounce_freq->deactivate();}
 else{bounce_freq->activate();};
 }
 void PopupsUI::cb_word_wrap(Fl_Check_Button* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_word_wrap_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_word_wrap_i(o,v);
 }
 
 void PopupsUI::cb_allow_markup_i(Fl_Check_Button*, void*) {
   std::string attribute ="allow_markup";
 }
 void PopupsUI::cb_allow_markup(Fl_Check_Button* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_allow_markup_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_allow_markup_i(o,v);
 }
 
-void PopupsUI::cb_Format_i(Fl_Output*, void*) {
+void PopupsUI::cb_format_i(Fl_Output*, void*) {
   std::string attribute ="format";
 }
-void PopupsUI::cb_Format(Fl_Output* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_Format_i(o,v);
+void PopupsUI::cb_format(Fl_Output* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_format_i(o,v);
 }
 
 void PopupsUI::cb_sort_i(Fl_Check_Button*, void*) {
   std::string attribute ="sort";
 }
 void PopupsUI::cb_sort(Fl_Check_Button* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_sort_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_sort_i(o,v);
 }
 
 void PopupsUI::cb_indicate_hidden_i(Fl_Check_Button*, void*) {
   std::string attribute ="indicate_hidden";
 }
 void PopupsUI::cb_indicate_hidden(Fl_Check_Button* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_indicate_hidden_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_indicate_hidden_i(o,v);
 }
 
 void PopupsUI::cb_ignore_newline_i(Fl_Check_Button*, void*) {
   std::string attribute ="ignore_newline";
 }
 void PopupsUI::cb_ignore_newline(Fl_Check_Button* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_ignore_newline_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_ignore_newline_i(o,v);
 }
 
 void PopupsUI::cb_shrink_i(Fl_Check_Button*, void*) {
   std::string attribute ="shrink";
 }
 void PopupsUI::cb_shrink(Fl_Check_Button* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_shrink_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_shrink_i(o,v);
 }
 
 void PopupsUI::cb_sticky_history_i(Fl_Check_Button*, void*) {
   std::string attribute ="sticky_history";
 }
 void PopupsUI::cb_sticky_history(Fl_Check_Button* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_sticky_history_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_sticky_history_i(o,v);
 }
 
 void PopupsUI::cb_idle_threshold_i(Fl_Value_Input*, void*) {
   std::string attribute ="idle_threshold";
 }
 void PopupsUI::cb_idle_threshold(Fl_Value_Input* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_idle_threshold_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_idle_threshold_i(o,v);
 }
 
 void PopupsUI::cb_show_indicators_i(Fl_Check_Button*, void*) {
   std::string attribute ="show_indicators";
 }
 void PopupsUI::cb_show_indicators(Fl_Check_Button* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_show_indicators_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_show_indicators_i(o,v);
 }
 
 void PopupsUI::cb_geometry_i(Fl_Output*, void*) {
   std::string attribute ="geometry";
 }
 void PopupsUI::cb_geometry(Fl_Output* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_geometry_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_geometry_i(o,v);
 }
 
 void PopupsUI::cb_trans_slide_i(Fl_Slider* o, void*) {
   transparency->value(o->value());
 }
 void PopupsUI::cb_trans_slide(Fl_Slider* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_trans_slide_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_trans_slide_i(o,v);
 }
 
 void PopupsUI::cb_transparency_i(Fl_Value_Input* o, void*) {
   trans_slide->value(o->value());
 }
 void PopupsUI::cb_transparency(Fl_Value_Input* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_transparency_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_transparency_i(o,v);
 }
 
 void PopupsUI::cb_show_age_threshold_i(Fl_Value_Input*, void*) {
   std::string attribute = "show_age_threshold";
 }
 void PopupsUI::cb_show_age_threshold(Fl_Value_Input* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_show_age_threshold_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_show_age_threshold_i(o,v);
 }
 
 void PopupsUI::cb_monitor_i(Fl_Value_Input*, void*) {
   std::string attribute ="monitor";
 }
 void PopupsUI::cb_monitor(Fl_Value_Input* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_monitor_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_monitor_i(o,v);
 }
 
 void PopupsUI::cb_history_length_i(Fl_Value_Input*, void*) {
   std::string attribute ="history_length";
 }
 void PopupsUI::cb_history_length(Fl_Value_Input* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_history_length_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_history_length_i(o,v);
 }
 
 void PopupsUI::cb_line_height_i(Fl_Value_Input*, void*) {
   std::string attribute ="line_height";
 }
 void PopupsUI::cb_line_height(Fl_Value_Input* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_line_height_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_line_height_i(o,v);
 }
 
 void PopupsUI::cb_separator_height_i(Fl_Value_Input*, void*) {
   std::string attribute ="separator_height";
 }
 void PopupsUI::cb_separator_height(Fl_Value_Input* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_separator_height_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_separator_height_i(o,v);
 }
 
 void PopupsUI::cb_padding_i(Fl_Value_Input*, void*) {
   std::string attribute ="padding";
 }
 void PopupsUI::cb_padding(Fl_Value_Input* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_padding_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_padding_i(o,v);
 }
 
 void PopupsUI::cb_horizontal_padding_i(Fl_Value_Input*, void*) {
   std::string attribute ="horizontal_padding";
 }
 void PopupsUI::cb_horizontal_padding(Fl_Value_Input* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_horizontal_padding_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_horizontal_padding_i(o,v);
+}
+
+void PopupsUI::cb_sep_col_b_i(Fl_Button* o, void*) {
+  color_picker(o);
+std::string tmp=widgetColor(o);
+separator_color->value(tmp.c_str());
+separator_color->redraw();
+}
+void PopupsUI::cb_sep_col_b(Fl_Button* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_sep_col_b_i(o,v);
 }
 
 void PopupsUI::cb_startup_notification_i(Fl_Check_Button*, void*) {
   std::string attribute ="startup_notification";
 }
 void PopupsUI::cb_startup_notification(Fl_Check_Button* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_startup_notification_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_startup_notification_i(o,v);
 }
 
 void PopupsUI::cb_dmenu_i(Fl_Output*, void*) {
   std::string attribute ="dmenu";
 }
 void PopupsUI::cb_dmenu(Fl_Output* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_dmenu_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_dmenu_i(o,v);
 }
 
 void PopupsUI::cb_Frame_width_i(Fl_Value_Input*, void*) {
@@ -423,15 +445,159 @@ void PopupsUI::cb_Frame_width_i(Fl_Value_Input*, void*) {
 std::string element="frame";
 }
 void PopupsUI::cb_Frame_width(Fl_Value_Input* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_Frame_width_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_Frame_width_i(o,v);
 }
 
-void PopupsUI::cb_Frame_color_i(Fl_Button*, void*) {
-  std::string element="frame";
-std::string attribute="color";
+void PopupsUI::cb_Frame_color_i(Fl_Button* o, void*) {
+  color_picker(o);
 }
 void PopupsUI::cb_Frame_color(Fl_Button* o, void* v) {
-  ((PopupsUI*)(o->parent()->user_data()))->cb_Frame_color_i(o,v);
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_Frame_color_i(o,v);
+}
+
+void PopupsUI::cb_close_i(Fl_Output*, void*) {
+  std::string attribute ="close";
+}
+void PopupsUI::cb_close(Fl_Output* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_close_i(o,v);
+}
+
+void PopupsUI::cb_close_all_i(Fl_Output*, void*) {
+  std::string attribute ="close_all";
+}
+void PopupsUI::cb_close_all(Fl_Output* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_close_all_i(o,v);
+}
+
+void PopupsUI::cb_history_i(Fl_Output*, void*) {
+  std::string attribute ="history";
+}
+void PopupsUI::cb_history(Fl_Output* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_history_i(o,v);
+}
+
+void PopupsUI::cb_context_i(Fl_Output*, void*) {
+  std::string attribute ="context";
+}
+void PopupsUI::cb_context(Fl_Output* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_context_i(o,v);
+}
+
+void PopupsUI::cb_Low_foreground_i(Fl_Button* o, void*) {
+  color_picker(o);
+}
+void PopupsUI::cb_Low_foreground(Fl_Button* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_Low_foreground_i(o,v);
+}
+
+void PopupsUI::cb_Low_background_i(Fl_Button* o, void*) {
+  color_picker(o);
+}
+void PopupsUI::cb_Low_background(Fl_Button* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_Low_background_i(o,v);
+}
+
+void PopupsUI::cb_Norm_foreground_i(Fl_Button* o, void*) {
+  color_picker(o);
+}
+void PopupsUI::cb_Norm_foreground(Fl_Button* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_Norm_foreground_i(o,v);
+}
+
+void PopupsUI::cb_Norm_background_i(Fl_Button* o, void*) {
+  color_picker(o);
+}
+void PopupsUI::cb_Norm_background(Fl_Button* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_Norm_background_i(o,v);
+}
+
+void PopupsUI::cb_Crit_foreground_i(Fl_Button* o, void*) {
+  color_picker(o);
+}
+void PopupsUI::cb_Crit_foreground(Fl_Button* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_Crit_foreground_i(o,v);
+}
+
+void PopupsUI::cb_Crit_background_i(Fl_Button* o, void*) {
+  color_picker(o);
+}
+void PopupsUI::cb_Crit_background(Fl_Button* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_Crit_background_i(o,v);
+}
+
+void PopupsUI::cb_icon_folders_i(Fl_Browser* o, void*) {
+  if(!checkFlBrowserItem(o))return;
+int line=o->value();
+const char* txt=o->text(line);
+icon_folders_input->value(txt);
+icon_folders_input->redraw();
+}
+void PopupsUI::cb_icon_folders(Fl_Browser* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_icon_folders_i(o,v);
+}
+
+void PopupsUI::cb_icon_folders_input_i(Fl_Input* o, void*) {
+  int line=0;
+const char* txt=o->value();
+if(checkFlBrowserItem(icon_folders)){
+  line=icon_folders->value();
+  icon_folders->text(line,txt);
+}
+else{icon_folders->add(txt);}
+icon_folders->redraw();
+}
+void PopupsUI::cb_icon_folders_input(Fl_Input* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_icon_folders_input_i(o,v);
+}
+
+void PopupsUI::cb_left1_i(Fl_Menu_*, void*) {
+  std::string value="left";
+icon_position->value(value.c_str());
+icon_position->redraw();
+}
+void PopupsUI::cb_left1(Fl_Menu_* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_left1_i(o,v);
+}
+
+void PopupsUI::cb_off_i(Fl_Menu_*, void*) {
+  std::string value="off";
+icon_position->value(value.c_str());
+icon_position->redraw();
+}
+void PopupsUI::cb_off(Fl_Menu_* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_off_i(o,v);
+}
+
+void PopupsUI::cb_right1_i(Fl_Menu_*, void*) {
+  std::string value="right";
+icon_position->value(value.c_str());
+icon_position->redraw();
+}
+void PopupsUI::cb_right1(Fl_Menu_* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_right1_i(o,v);
+}
+
+unsigned char PopupsUI::menu_Icon_i18n_done = 0;
+Fl_Menu_Item PopupsUI::menu_Icon[] = {
+ {"left", 0,  (Fl_Callback*)PopupsUI::cb_left1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"off", 0,  (Fl_Callback*)PopupsUI::cb_off, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"right", 0,  (Fl_Callback*)PopupsUI::cb_right1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void PopupsUI::cb_Save_i(Fl_Button*, void*) {
+  make_dunst_conf();
+dunst_win->hide();
+}
+void PopupsUI::cb_Save(Fl_Button* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_Save_i(o,v);
+}
+
+void PopupsUI::cb_Quit_i(Fl_Button*, void*) {
+  dunst_win->hide();
+}
+void PopupsUI::cb_Quit(Fl_Button* o, void* v) {
+  ((PopupsUI*)(o->parent()->parent()->user_data()))->cb_Quit_i(o,v);
 }
 
 Fl_Double_Window* PopupsUI::make_window() {
@@ -450,15 +616,16 @@ its over a panel item."));
         outline->align(Fl_Align(132));
         o->color(get_color("Outline"));
       } // Fl_Button* outline
-      { delay_out = new Fl_Value_Input(185, 10, 25, 25, gettext("milliseconds"));
+      { Fl_Value_Input* o = delay_out = new Fl_Value_Input(185, 10, 25, 25, gettext("milliseconds"));
         delay_out->tooltip(gettext("The  delay  in milliseconds before popups activate. The default is 600."));
         delay_out->box(FL_FLAT_BOX);
         delay_out->selection_color(FL_DARK_RED);
         delay_out->labelsize(8);
         delay_out->callback((Fl_Callback*)cb_delay_out);
         delay_out->align(Fl_Align(FL_ALIGN_RIGHT));
+        get_delay(o);
       } // Fl_Value_Input* delay_out
-      { delay_slider = new Fl_Slider(105, 10, 75, 25, gettext("Delay"));
+      { Fl_Slider* o = delay_slider = new Fl_Slider(105, 10, 75, 25, gettext("Delay"));
         delay_slider->tooltip(gettext("The  delay  in milliseconds before popups activate. The default is 600."));
         delay_slider->type(1);
         delay_slider->box(FL_GTK_DOWN_BOX);
@@ -469,6 +636,7 @@ its over a panel item."));
         delay_slider->value(600);
         delay_slider->callback((Fl_Callback*)cb_delay_slider);
         delay_slider->align(Fl_Align(FL_ALIGN_LEFT));
+        get_delay(o);
       } // Fl_Slider* delay_slider
       { Fl_Menu_Button* o = new Fl_Menu_Button(10, 135, 85, 25, gettext("enabled"));
         o->tooltip(gettext("Determine if popups are shown. This is a comma-sep\342\200\220 arated  list  \
@@ -535,8 +703,7 @@ task (task list items).  The  default is true."));
         o->color((Fl_Color)23);
         o->callback((Fl_Callback*)cb_Notifications);
         o->align(Fl_Align(FL_ALIGN_WRAP));
-        o->hide();
-        o->deactivate();
+        if(!linuxcommon::test_exec("dunst"))o->hide();
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
@@ -547,348 +714,553 @@ task (task list items).  The  default is true."));
 }
 
 Fl_Double_Window* PopupsUI::dunst_window() {
-  { Fl_Double_Window* o = dunst_win = new Fl_Double_Window(515, 580, gettext("System Notifications"));
+  { Fl_Double_Window* o = dunst_win = new Fl_Double_Window(545, 615, gettext("System Notifications"));
     dunst_win->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(10, 5, 125, 25, gettext("Font"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_Font);
-    } // Fl_Button* o
-    { Fl_Output* o = font = new Fl_Output(150, 5, 90, 25);
-      font->box(FL_FLAT_BOX);
-      font->selection_color((Fl_Color)80);
-      std::string attribute ="font";
-      dunst_input(o,attribute);
-    } // Fl_Output* font
-    { Fl_Menu_Button* o = new Fl_Menu_Button(10, 35, 125, 25, gettext("Alignment"));
-      o->tooltip(gettext("Alignment of message text. Possible values are \"left\", \"center\" and \"rig\
+    { Fl_Scroll* o = new Fl_Scroll(5, 0, 555, 610);
+      { Fl_Button* o = new Fl_Button(5, 5, 125, 25, gettext("Font"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->callback((Fl_Callback*)cb_Font);
+      } // Fl_Button* o
+      { Fl_Output* o = font = new Fl_Output(145, 5, 90, 25);
+        font->box(FL_FLAT_BOX);
+        font->selection_color((Fl_Color)80);
+        std::string attribute ="font";
+        dunst_input(o,attribute);
+      } // Fl_Output* font
+      { Fl_Menu_Button* o = new Fl_Menu_Button(5, 33, 125, 25, gettext("Alignment"));
+        o->tooltip(gettext("Alignment of message text. Possible values are \"left\", \"center\" and \"rig\
 ht\"."));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->selection_color(FL_DARK_RED);
-      if (!menu_Alignment_i18n_done) {
-        int i=0;
-        for ( ; i<3; i++)
-          if (menu_Alignment[i].label())
-            menu_Alignment[i].label(gettext(menu_Alignment[i].label()));
-        menu_Alignment_i18n_done = 1;
-      }
-      o->menu(menu_Alignment);
-    } // Fl_Menu_Button* o
-    { Fl_Output* o = alignment = new Fl_Output(150, 35, 90, 25);
-      alignment->tooltip(gettext("Alignment of message text. Possible values are \"left\", \"center\" and \"rig\
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->selection_color(FL_DARK_RED);
+        if (!menu_Alignment_i18n_done) {
+          int i=0;
+          for ( ; i<3; i++)
+            if (menu_Alignment[i].label())
+              menu_Alignment[i].label(gettext(menu_Alignment[i].label()));
+          menu_Alignment_i18n_done = 1;
+        }
+        o->menu(menu_Alignment);
+      } // Fl_Menu_Button* o
+      { Fl_Output* o = alignment = new Fl_Output(145, 33, 90, 25);
+        alignment->tooltip(gettext("Alignment of message text. Possible values are \"left\", \"center\" and \"rig\
 ht\"."));
-      alignment->box(FL_FLAT_BOX);
-      alignment->selection_color((Fl_Color)80);
-      std::string attribute ="alignment";
-      dunst_input(o,attribute);
-    } // Fl_Output* alignment
-    { Fl_Menu_Button* o = new Fl_Menu_Button(10, 65, 125, 25, gettext("Follow"));
-      o->tooltip(gettext("Display notification on focused monitor.  Possible modes are:   mouse: follow\
+        alignment->box(FL_FLAT_BOX);
+        alignment->selection_color((Fl_Color)80);
+        std::string attribute ="alignment";
+        dunst_input(o,attribute);
+      } // Fl_Output* alignment
+      { Fl_Menu_Button* o = new Fl_Menu_Button(5, 60, 125, 25, gettext("Follow"));
+        o->tooltip(gettext("Display notification on focused monitor.  Possible modes are:   mouse: follow\
  mouse pointer   keyboard: follow window with keyboard focus   none: don\'t fo\
 llow anything  \"keyboard\" needs a windowmanager that exports the _NET_ACTIVE\
 _WINDOW property. This should be the case for almost all modern windowmanagers\
 .  If this option is set to mouse or keyboard, the monitor option will be igno\
 red."));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->selection_color(FL_DARK_RED);
-      if (!menu_Follow_i18n_done) {
-        int i=0;
-        for ( ; i<3; i++)
-          if (menu_Follow[i].label())
-            menu_Follow[i].label(gettext(menu_Follow[i].label()));
-        menu_Follow_i18n_done = 1;
-      }
-      o->menu(menu_Follow);
-    } // Fl_Menu_Button* o
-    { Fl_Output* o = follow = new Fl_Output(150, 65, 90, 25);
-      follow->tooltip(gettext("Display notification on focused monitor.  Possible modes are:   mouse: follow\
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->selection_color(FL_DARK_RED);
+        if (!menu_Follow_i18n_done) {
+          int i=0;
+          for ( ; i<3; i++)
+            if (menu_Follow[i].label())
+              menu_Follow[i].label(gettext(menu_Follow[i].label()));
+          menu_Follow_i18n_done = 1;
+        }
+        o->menu(menu_Follow);
+      } // Fl_Menu_Button* o
+      { Fl_Output* o = follow = new Fl_Output(145, 60, 90, 25);
+        follow->tooltip(gettext("Display notification on focused monitor.  Possible modes are:   mouse: follow\
  mouse pointer   keyboard: follow window with keyboard focus   none: don\'t fo\
 llow anything  \"keyboard\" needs a windowmanager that exports the _NET_ACTIVE\
 _WINDOW property. This should be the case for almost all modern windowmanagers\
 .  If this option is set to mouse or keyboard, the monitor option will be igno\
 red."));
-      follow->box(FL_FLAT_BOX);
-      follow->selection_color((Fl_Color)80);
-      std::string attribute ="follow";
-      dunst_input(o,attribute);
-    } // Fl_Output* follow
-    { Fl_Menu_Button* o = new Fl_Menu_Button(10, 95, 125, 25, gettext("Separator Color"));
-      o->tooltip(gettext("Define a color for the separator. possible values are:  * auto: dunst tries t\
+        follow->box(FL_FLAT_BOX);
+        follow->selection_color((Fl_Color)80);
+        std::string attribute ="follow";
+        dunst_input(o,attribute);
+      } // Fl_Output* follow
+      { Fl_Menu_Button* o = new Fl_Menu_Button(5, 114, 125, 25, gettext("Separator Color"));
+        o->tooltip(gettext("Define a color for the separator. possible values are:  * auto: dunst tries t\
 o find a color fitting to the background;  * foreground: use the same color as\
  the foreground;  * frame: use the same color as the frame;  * anything else w\
 ill be interpreted as a X color."));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->selection_color(FL_DARK_RED);
-      if (!menu_Separator_i18n_done) {
-        int i=0;
-        for ( ; i<4; i++)
-          if (menu_Separator[i].label())
-            menu_Separator[i].label(gettext(menu_Separator[i].label()));
-        menu_Separator_i18n_done = 1;
-      }
-      o->menu(menu_Separator);
-    } // Fl_Menu_Button* o
-    { Fl_Output* o = separator_color = new Fl_Output(150, 95, 90, 25);
-      separator_color->tooltip(gettext("Define a color for the separator. possible values are:  * auto: dunst tries t\
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->selection_color(FL_DARK_RED);
+        if (!menu_Separator_i18n_done) {
+          int i=0;
+          for ( ; i<4; i++)
+            if (menu_Separator[i].label())
+              menu_Separator[i].label(gettext(menu_Separator[i].label()));
+          menu_Separator_i18n_done = 1;
+        }
+        o->menu(menu_Separator);
+      } // Fl_Menu_Button* o
+      { Fl_Output* o = separator_color = new Fl_Output(145, 114, 90, 25);
+        separator_color->tooltip(gettext("Define a color for the separator. possible values are:  * auto: dunst tries t\
 o find a color fitting to the background;  * foreground: use the same color as\
  the foreground;  * frame: use the same color as the frame;  * anything else w\
 ill be interpreted as a X color."));
-      separator_color->box(FL_FLAT_BOX);
-      separator_color->selection_color((Fl_Color)80);
-      std::string attribute ="separator_color";
-      dunst_input(o,attribute);
-    } // Fl_Output* separator_color
-    { Fl_Check_Button* o = word_wrap = new Fl_Check_Button(10, 125, 90, 25, gettext("Word wrap"));
-      word_wrap->tooltip(gettext("Split notifications into multiple lines if they don\'t fit into geometery"));
-      word_wrap->down_box(FL_GTK_DOWN_BOX);
-      word_wrap->color(FL_BACKGROUND2_COLOR);
-      word_wrap->selection_color((Fl_Color)2);
-      word_wrap->callback((Fl_Callback*)cb_word_wrap);
-      std::string attribute ="word_wrap";
-      dunst_bool(o,"global",attribute);
-    } // Fl_Check_Button* word_wrap
-    { Fl_Value_Input* o = bounce_freq = new Fl_Value_Input(150, 125, 25, 20, gettext("Bounce Frequency"));
-      bounce_freq->tooltip(gettext("The frequency with wich text that is longer than the notification window allo\
+        separator_color->box(FL_FLAT_BOX);
+        separator_color->selection_color((Fl_Color)80);
+        std::string attribute ="separator_color";
+        dunst_input(o,attribute);
+      } // Fl_Output* separator_color
+      { Fl_Check_Button* o = word_wrap = new Fl_Check_Button(5, 140, 90, 25, gettext("Word wrap"));
+        word_wrap->tooltip(gettext("Split notifications into multiple lines if they don\'t fit into geometery"));
+        word_wrap->down_box(FL_GTK_DOWN_BOX);
+        word_wrap->color(FL_BACKGROUND2_COLOR);
+        word_wrap->selection_color((Fl_Color)2);
+        word_wrap->callback((Fl_Callback*)cb_word_wrap);
+        std::string attribute ="word_wrap";
+        dunst_bool(o,"global",attribute);
+      } // Fl_Check_Button* word_wrap
+      { Fl_Value_Input* o = bounce_freq = new Fl_Value_Input(145, 140, 25, 20, gettext("Bounce Frequency"));
+        bounce_freq->tooltip(gettext("The frequency with wich text that is longer than the notification window allo\
 ws bounces back and forth. This option conflicts with \"word_wrap\". Set to 0 \
 to disable."));
-      bounce_freq->box(FL_FLAT_BOX);
-      bounce_freq->selection_color((Fl_Color)80);
-      bounce_freq->align(Fl_Align(FL_ALIGN_RIGHT));
-      if(word_wrap->value()==1){o->deactivate();}
-      std::string attribute = "bounce_freq";
-      dunst_valuator(o,attribute);
-    } // Fl_Value_Input* bounce_freq
-    { Fl_Check_Button* o = allow_markup = new Fl_Check_Button(10, 150, 90, 25, gettext("Allow Markup"));
-      allow_markup->tooltip(gettext("For a complete reference see <http://developer.gnome.org/pango/stable/PangoMa\
+        bounce_freq->box(FL_FLAT_BOX);
+        bounce_freq->selection_color((Fl_Color)80);
+        bounce_freq->align(Fl_Align(FL_ALIGN_RIGHT));
+        if(word_wrap->value()==1){o->deactivate();}
+        std::string attribute = "bounce_freq";
+        dunst_valuator(o,attribute);
+      } // Fl_Value_Input* bounce_freq
+      { Fl_Check_Button* o = allow_markup = new Fl_Check_Button(5, 165, 90, 25, gettext("Allow Markup"));
+        allow_markup->tooltip(gettext("For a complete reference see <http://developer.gnome.org/pango/stable/PangoMa\
 rkupFormat.html>. If markup is not allowed, those tags will be stripped out of\
  the message."));
-      allow_markup->down_box(FL_GTK_DOWN_BOX);
-      allow_markup->color(FL_BACKGROUND2_COLOR);
-      allow_markup->selection_color((Fl_Color)2);
-      allow_markup->callback((Fl_Callback*)cb_allow_markup);
-      std::string attribute ="allow_markup";
-      dunst_bool(o,"global",attribute);
-    } // Fl_Check_Button* allow_markup
-    { Fl_Output* o = new Fl_Output(150, 150, 150, 25, gettext("Format"));
-      o->tooltip(gettext("The format of the message.  Possible variables are:   %a  appname   %s  summa\
+        allow_markup->down_box(FL_GTK_DOWN_BOX);
+        allow_markup->color(FL_BACKGROUND2_COLOR);
+        allow_markup->selection_color((Fl_Color)2);
+        allow_markup->callback((Fl_Callback*)cb_allow_markup);
+        std::string attribute ="allow_markup";
+        dunst_bool(o,"global",attribute);
+      } // Fl_Check_Button* allow_markup
+      { Fl_Output* o = format = new Fl_Output(145, 165, 150, 25, gettext("Format"));
+        format->tooltip(gettext("The format of the message.  Possible variables are:   %a  appname   %s  summa\
 ry   %b  body   %i  iconname (including its path)   %I  iconname (without its \
 path)   %p  progress value if set ([  0%] to [100%]) or nothing"));
-      o->box(FL_FLAT_BOX);
-      o->selection_color((Fl_Color)80);
-      o->callback((Fl_Callback*)cb_Format);
-      o->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string attribute ="format";
-      dunst_input(o,attribute);
-    } // Fl_Output* o
-    { Fl_Check_Button* o = sort = new Fl_Check_Button(10, 170, 90, 25, gettext("Sort by urgency"));
-      sort->tooltip(gettext("Sort messages by urgency."));
-      sort->down_box(FL_GTK_DOWN_BOX);
-      sort->color(FL_BACKGROUND2_COLOR);
-      sort->selection_color((Fl_Color)2);
-      sort->callback((Fl_Callback*)cb_sort);
-      std::string attribute ="sort";
-      dunst_bool(o,"global",attribute);
-    } // Fl_Check_Button* sort
-    { Fl_Check_Button* o = indicate_hidden = new Fl_Check_Button(10, 194, 90, 25, gettext("Indicate hidden"));
-      indicate_hidden->tooltip(gettext("Show how many messages are currently hidden (because of geometry)."));
-      indicate_hidden->down_box(FL_GTK_DOWN_BOX);
-      indicate_hidden->color(FL_BACKGROUND2_COLOR);
-      indicate_hidden->selection_color((Fl_Color)2);
-      indicate_hidden->callback((Fl_Callback*)cb_indicate_hidden);
-      std::string attribute ="indicate_hidden";
-      dunst_bool(o,"global",attribute);
-    } // Fl_Check_Button* indicate_hidden
-    { Fl_Check_Button* o = ignore_newline = new Fl_Check_Button(10, 217, 140, 25, gettext("Ignore newlines"));
-      ignore_newline->tooltip(gettext("Ignore newlines \'\\n\' in notifications."));
-      ignore_newline->down_box(FL_GTK_DOWN_BOX);
-      ignore_newline->color(FL_BACKGROUND2_COLOR);
-      ignore_newline->selection_color((Fl_Color)2);
-      ignore_newline->callback((Fl_Callback*)cb_ignore_newline);
-      std::string attribute ="ignore_newline";
-      dunst_bool(o,"global",attribute);
-    } // Fl_Check_Button* ignore_newline
-    { Fl_Check_Button* o = shrink = new Fl_Check_Button(10, 240, 140, 25, gettext("Shrink"));
-      shrink->tooltip(gettext("Shrink window if it\'s smaller than the width.  Will be ignored if width is 0\
+        format->box(FL_FLAT_BOX);
+        format->selection_color((Fl_Color)80);
+        format->callback((Fl_Callback*)cb_format);
+        format->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="format";
+        dunst_input(o,attribute);
+      } // Fl_Output* format
+      { Fl_Check_Button* o = sort = new Fl_Check_Button(5, 185, 90, 25, gettext("Sort by urgency"));
+        sort->tooltip(gettext("Sort messages by urgency."));
+        sort->down_box(FL_GTK_DOWN_BOX);
+        sort->color(FL_BACKGROUND2_COLOR);
+        sort->selection_color((Fl_Color)2);
+        sort->callback((Fl_Callback*)cb_sort);
+        std::string attribute ="sort";
+        dunst_bool(o,"global",attribute);
+      } // Fl_Check_Button* sort
+      { Fl_Check_Button* o = indicate_hidden = new Fl_Check_Button(5, 209, 90, 25, gettext("Indicate hidden"));
+        indicate_hidden->tooltip(gettext("Show how many messages are currently hidden (because of geometry)."));
+        indicate_hidden->down_box(FL_GTK_DOWN_BOX);
+        indicate_hidden->color(FL_BACKGROUND2_COLOR);
+        indicate_hidden->selection_color((Fl_Color)2);
+        indicate_hidden->callback((Fl_Callback*)cb_indicate_hidden);
+        std::string attribute ="indicate_hidden";
+        dunst_bool(o,"global",attribute);
+      } // Fl_Check_Button* indicate_hidden
+      { Fl_Check_Button* o = ignore_newline = new Fl_Check_Button(5, 232, 140, 25, gettext("Ignore newlines"));
+        ignore_newline->tooltip(gettext("Ignore newlines \'\\n\' in notifications."));
+        ignore_newline->down_box(FL_GTK_DOWN_BOX);
+        ignore_newline->color(FL_BACKGROUND2_COLOR);
+        ignore_newline->selection_color((Fl_Color)2);
+        ignore_newline->callback((Fl_Callback*)cb_ignore_newline);
+        std::string attribute ="ignore_newline";
+        dunst_bool(o,"global",attribute);
+      } // Fl_Check_Button* ignore_newline
+      { Fl_Check_Button* o = shrink = new Fl_Check_Button(5, 255, 140, 25, gettext("Shrink"));
+        shrink->tooltip(gettext("Shrink window if it\'s smaller than the width.  Will be ignored if width is 0\
 ."));
-      shrink->down_box(FL_GTK_DOWN_BOX);
-      shrink->color(FL_BACKGROUND2_COLOR);
-      shrink->selection_color((Fl_Color)2);
-      shrink->callback((Fl_Callback*)cb_shrink);
-      std::string attribute ="shrink";
-      dunst_bool(o,"global",attribute);
-    } // Fl_Check_Button* shrink
-    { Fl_Check_Button* o = sticky_history = new Fl_Check_Button(10, 264, 140, 25, gettext("Sticky History"));
-      sticky_history->tooltip(gettext("Should a notification popped up from history be sticky or timeout as if it wo\
+        shrink->down_box(FL_GTK_DOWN_BOX);
+        shrink->color(FL_BACKGROUND2_COLOR);
+        shrink->selection_color((Fl_Color)2);
+        shrink->callback((Fl_Callback*)cb_shrink);
+        std::string attribute ="shrink";
+        dunst_bool(o,"global",attribute);
+      } // Fl_Check_Button* shrink
+      { Fl_Check_Button* o = sticky_history = new Fl_Check_Button(145, 204, 140, 25, gettext("Sticky History"));
+        sticky_history->tooltip(gettext("Should a notification popped up from history be sticky or timeout as if it wo\
 uld normally do."));
-      sticky_history->down_box(FL_GTK_DOWN_BOX);
-      sticky_history->color(FL_BACKGROUND2_COLOR);
-      sticky_history->selection_color((Fl_Color)2);
-      sticky_history->callback((Fl_Callback*)cb_sticky_history);
-      std::string attribute ="sticky_history";
-      dunst_bool(o,"global",attribute);
-    } // Fl_Check_Button* sticky_history
-    { Fl_Value_Input* o = idle_threshold = new Fl_Value_Input(10, 370, 40, 20, gettext("idle threshold"));
-      idle_threshold->tooltip(gettext("Don\'t remove messages, if the user is idle (no mouse or keyboard input) for \
+        sticky_history->down_box(FL_GTK_DOWN_BOX);
+        sticky_history->color(FL_BACKGROUND2_COLOR);
+        sticky_history->selection_color((Fl_Color)2);
+        sticky_history->callback((Fl_Callback*)cb_sticky_history);
+        std::string attribute ="sticky_history";
+        dunst_bool(o,"global",attribute);
+      } // Fl_Check_Button* sticky_history
+      { Fl_Value_Input* o = idle_threshold = new Fl_Value_Input(5, 305, 40, 20, gettext("idle threshold"));
+        idle_threshold->tooltip(gettext("Don\'t remove messages, if the user is idle (no mouse or keyboard input) for \
 longer than idle_threshold seconds. Set to 0 to disable."));
-      idle_threshold->box(FL_FLAT_BOX);
-      idle_threshold->selection_color((Fl_Color)80);
-      idle_threshold->callback((Fl_Callback*)cb_idle_threshold);
-      idle_threshold->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string attribute ="idle_threshold";
-      dunst_valuator(o,attribute);
-    } // Fl_Value_Input* idle_threshold
-    { Fl_Check_Button* o = show_indicators = new Fl_Check_Button(10, 287, 140, 25, gettext("Show Indicators"));
-      show_indicators->tooltip(gettext("Display indicators for URLs (U) and actions (A)"));
-      show_indicators->down_box(FL_GTK_DOWN_BOX);
-      show_indicators->color(FL_BACKGROUND2_COLOR);
-      show_indicators->selection_color((Fl_Color)2);
-      show_indicators->callback((Fl_Callback*)cb_show_indicators);
-      std::string attribute ="show_indicators";
-      dunst_bool(o,"global",attribute);
-    } // Fl_Check_Button* show_indicators
-    { Fl_Output* o = geometry = new Fl_Output(10, 480, 175, 25, gettext("Geometery"));
-      geometry->box(FL_FLAT_BOX);
-      geometry->selection_color((Fl_Color)80);
-      geometry->callback((Fl_Callback*)cb_geometry);
-      geometry->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string attribute ="geometry";
-      dunst_input(o,attribute);
-    } // Fl_Output* geometry
-    { trans_slide = new Fl_Slider(10, 510, 90, 25);
-      trans_slide->tooltip(gettext("The transparency of the window.  Range: [0; 100]. This option will only work \
+        idle_threshold->box(FL_FLAT_BOX);
+        idle_threshold->selection_color((Fl_Color)80);
+        idle_threshold->callback((Fl_Callback*)cb_idle_threshold);
+        idle_threshold->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="idle_threshold";
+        dunst_valuator(o,attribute);
+      } // Fl_Value_Input* idle_threshold
+      { Fl_Check_Button* o = show_indicators = new Fl_Check_Button(145, 227, 140, 25, gettext("Show Indicators"));
+        show_indicators->tooltip(gettext("Display indicators for URLs (U) and actions (A)"));
+        show_indicators->down_box(FL_GTK_DOWN_BOX);
+        show_indicators->color(FL_BACKGROUND2_COLOR);
+        show_indicators->selection_color((Fl_Color)2);
+        show_indicators->callback((Fl_Callback*)cb_show_indicators);
+        std::string attribute ="show_indicators";
+        dunst_bool(o,"global",attribute);
+      } // Fl_Check_Button* show_indicators
+      { Fl_Output* o = geometry = new Fl_Output(5, 415, 175, 25, gettext("Geometery"));
+        geometry->box(FL_FLAT_BOX);
+        geometry->selection_color((Fl_Color)80);
+        geometry->callback((Fl_Callback*)cb_geometry);
+        geometry->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="geometry";
+        dunst_input(o,attribute);
+      } // Fl_Output* geometry
+      { trans_slide = new Fl_Slider(395, 440, 90, 25, gettext("Transparency"));
+        trans_slide->tooltip(gettext("The transparency of the window.  Range: [0; 100]. This option will only work \
 if a compositing windowmanager is present (e.g. xcompmgr, compiz, etc.)."));
-      trans_slide->type(1);
-      trans_slide->box(FL_GTK_DOWN_BOX);
-      trans_slide->color((Fl_Color)41);
-      trans_slide->maximum(100);
-      trans_slide->step(1);
-      trans_slide->callback((Fl_Callback*)cb_trans_slide);
-      trans_slide->align(Fl_Align(FL_ALIGN_LEFT));
-    } // Fl_Slider* trans_slide
-    { Fl_Value_Input* o = transparency = new Fl_Value_Input(110, 510, 25, 25, gettext("Transparency"));
-      transparency->tooltip(gettext("The transparency of the window.  Range: [0; 100]. This option will only work \
+        trans_slide->type(1);
+        trans_slide->box(FL_GTK_DOWN_BOX);
+        trans_slide->color((Fl_Color)41);
+        trans_slide->maximum(100);
+        trans_slide->step(1);
+        trans_slide->callback((Fl_Callback*)cb_trans_slide);
+        trans_slide->align(Fl_Align(FL_ALIGN_LEFT));
+      } // Fl_Slider* trans_slide
+      { Fl_Value_Input* o = transparency = new Fl_Value_Input(495, 440, 25, 25);
+        transparency->tooltip(gettext("The transparency of the window.  Range: [0; 100]. This option will only work \
 if a compositing windowmanager is present (e.g. xcompmgr, compiz, etc.)."));
-      transparency->box(FL_FLAT_BOX);
-      transparency->selection_color((Fl_Color)80);
-      transparency->maximum(100);
-      transparency->step(1);
-      transparency->callback((Fl_Callback*)cb_transparency);
-      transparency->align(Fl_Align(FL_ALIGN_RIGHT));
-      transparency->when(3);
-      std::string attribute ="transparency";
-      dunst_valuator(o,attribute);
-      //trans_slide->value(o->value());
-    } // Fl_Value_Input* transparency
-    { Fl_Value_Input* o = show_age_threshold = new Fl_Value_Input(10, 345, 40, 20, gettext("Age threshold"));
-      show_age_threshold->tooltip(gettext("Show age of message if message is older than this ammount in seconds"));
-      show_age_threshold->box(FL_FLAT_BOX);
-      show_age_threshold->selection_color((Fl_Color)80);
-      show_age_threshold->callback((Fl_Callback*)cb_show_age_threshold);
-      show_age_threshold->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string attribute = "show_age_threshold";
-      dunst_valuator(o,attribute);
-    } // Fl_Value_Input* show_age_threshold
-    { Fl_Value_Input* o = monitor = new Fl_Value_Input(10, 395, 40, 20, gettext("Monitor"));
-      monitor->tooltip(gettext("Which monitor should the notifications be displayed on."));
-      monitor->box(FL_FLAT_BOX);
-      monitor->selection_color((Fl_Color)80);
-      monitor->callback((Fl_Callback*)cb_monitor);
-      monitor->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string attribute ="monitor";
-      dunst_valuator(o,attribute);
-    } // Fl_Value_Input* monitor
-    { Fl_Value_Input* o = history_length = new Fl_Value_Input(10, 420, 40, 20, gettext("History Length"));
-      history_length->tooltip(gettext("Maximum amount of notifications kept in history"));
-      history_length->box(FL_FLAT_BOX);
-      history_length->selection_color((Fl_Color)80);
-      history_length->callback((Fl_Callback*)cb_history_length);
-      history_length->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string attribute ="history_length";
-      dunst_valuator(o,attribute);
-    } // Fl_Value_Input* history_length
-    { Fl_Value_Input* o = line_height = new Fl_Value_Input(185, 345, 45, 20, gettext("Line Height"));
-      line_height->tooltip(gettext("The height of a single line.  If the height is smaller than the font height, \
+        transparency->box(FL_FLAT_BOX);
+        transparency->selection_color((Fl_Color)80);
+        transparency->maximum(100);
+        transparency->step(1);
+        transparency->callback((Fl_Callback*)cb_transparency);
+        transparency->align(Fl_Align(FL_ALIGN_RIGHT));
+        transparency->when(3);
+        std::string attribute ="transparency";
+        dunst_valuator(o,attribute);
+        //trans_slide->value(o->value());
+      } // Fl_Value_Input* transparency
+      { Fl_Value_Input* o = show_age_threshold = new Fl_Value_Input(5, 280, 40, 20, gettext("Age threshold"));
+        show_age_threshold->tooltip(gettext("Show age of message if message is older than this ammount in seconds"));
+        show_age_threshold->box(FL_FLAT_BOX);
+        show_age_threshold->selection_color((Fl_Color)80);
+        show_age_threshold->callback((Fl_Callback*)cb_show_age_threshold);
+        show_age_threshold->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute = "show_age_threshold";
+        dunst_valuator(o,attribute);
+      } // Fl_Value_Input* show_age_threshold
+      { Fl_Value_Input* o = monitor = new Fl_Value_Input(5, 330, 40, 20, gettext("Monitor"));
+        monitor->tooltip(gettext("Which monitor should the notifications be displayed on."));
+        monitor->box(FL_FLAT_BOX);
+        monitor->selection_color((Fl_Color)80);
+        monitor->callback((Fl_Callback*)cb_monitor);
+        monitor->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="monitor";
+        dunst_valuator(o,attribute);
+      } // Fl_Value_Input* monitor
+      { Fl_Value_Input* o = history_length = new Fl_Value_Input(5, 355, 40, 20, gettext("History Length"));
+        history_length->tooltip(gettext("Maximum amount of notifications kept in history"));
+        history_length->box(FL_FLAT_BOX);
+        history_length->selection_color((Fl_Color)80);
+        history_length->callback((Fl_Callback*)cb_history_length);
+        history_length->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="history_length";
+        dunst_valuator(o,attribute);
+      } // Fl_Value_Input* history_length
+      { Fl_Value_Input* o = line_height = new Fl_Value_Input(155, 280, 45, 20, gettext("Line Height"));
+        line_height->tooltip(gettext("The height of a single line.  If the height is smaller than the font height, \
 it will get raised to the font height. This adds empty space above and under t\
 he text."));
-      line_height->box(FL_FLAT_BOX);
-      line_height->selection_color((Fl_Color)80);
-      line_height->callback((Fl_Callback*)cb_line_height);
-      line_height->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string attribute ="line_height";
-      dunst_valuator(o,attribute);
-    } // Fl_Value_Input* line_height
-    { Fl_Value_Input* o = separator_height = new Fl_Value_Input(185, 370, 45, 20, gettext("Separator Height"));
-      separator_height->tooltip(gettext("Draw a line of this pixel height between two notifications. Set to 0 to disab\
+        line_height->box(FL_FLAT_BOX);
+        line_height->selection_color((Fl_Color)80);
+        line_height->callback((Fl_Callback*)cb_line_height);
+        line_height->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="line_height";
+        dunst_valuator(o,attribute);
+      } // Fl_Value_Input* line_height
+      { Fl_Value_Input* o = separator_height = new Fl_Value_Input(155, 305, 45, 20, gettext("Separator Height"));
+        separator_height->tooltip(gettext("Draw a line of this pixel height between two notifications. Set to 0 to disab\
 le."));
-      separator_height->box(FL_FLAT_BOX);
-      separator_height->selection_color((Fl_Color)80);
-      separator_height->callback((Fl_Callback*)cb_separator_height);
-      separator_height->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string attribute ="separator_height";
-      dunst_valuator(o,attribute);
-    } // Fl_Value_Input* separator_height
-    { Fl_Value_Input* o = padding = new Fl_Value_Input(185, 395, 45, 20, gettext("Text Padding"));
-      padding->tooltip(gettext("Padding between text and separator."));
-      padding->box(FL_FLAT_BOX);
-      padding->selection_color((Fl_Color)80);
-      padding->callback((Fl_Callback*)cb_padding);
-      padding->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string attribute ="padding";
-      dunst_valuator(o,attribute);
-    } // Fl_Value_Input* padding
-    { Fl_Value_Input* o = horizontal_padding = new Fl_Value_Input(185, 420, 45, 20, gettext("Horizontal Padding"));
-      horizontal_padding->tooltip(gettext("Padding between text and separator."));
-      horizontal_padding->box(FL_FLAT_BOX);
-      horizontal_padding->selection_color((Fl_Color)80);
-      horizontal_padding->callback((Fl_Callback*)cb_horizontal_padding);
-      horizontal_padding->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string attribute ="horizontal_padding";
-      dunst_valuator(o,attribute);
-    } // Fl_Value_Input* horizontal_padding
-    { Fl_Button* o = new Fl_Button(250, 95, 65, 25);
-      o->tooltip(gettext("Choose a color"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-    } // Fl_Button* o
-    { Fl_Check_Button* o = startup_notification = new Fl_Check_Button(10, 310, 140, 25, gettext("Startup Notification"));
-      startup_notification->tooltip(gettext("Print a notification on startup. This is mainly for error detection, since db\
+        separator_height->box(FL_FLAT_BOX);
+        separator_height->selection_color((Fl_Color)80);
+        separator_height->callback((Fl_Callback*)cb_separator_height);
+        separator_height->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="separator_height";
+        dunst_valuator(o,attribute);
+      } // Fl_Value_Input* separator_height
+      { Fl_Value_Input* o = padding = new Fl_Value_Input(155, 330, 45, 20, gettext("Text Padding"));
+        padding->tooltip(gettext("Padding between text and separator."));
+        padding->box(FL_FLAT_BOX);
+        padding->selection_color((Fl_Color)80);
+        padding->callback((Fl_Callback*)cb_padding);
+        padding->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="padding";
+        dunst_valuator(o,attribute);
+      } // Fl_Value_Input* padding
+      { Fl_Value_Input* o = horizontal_padding = new Fl_Value_Input(155, 355, 45, 20, gettext("Horizontal Padding"));
+        horizontal_padding->tooltip(gettext("Padding between text and separator."));
+        horizontal_padding->box(FL_FLAT_BOX);
+        horizontal_padding->selection_color((Fl_Color)80);
+        horizontal_padding->callback((Fl_Callback*)cb_horizontal_padding);
+        horizontal_padding->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="horizontal_padding";
+        dunst_valuator(o,attribute);
+      } // Fl_Value_Input* horizontal_padding
+      { sep_col_b = new Fl_Button(245, 114, 65, 25);
+        sep_col_b->tooltip(gettext("Choose a color"));
+        sep_col_b->box(FL_FLAT_BOX);
+        sep_col_b->color((Fl_Color)23);
+        sep_col_b->callback((Fl_Callback*)cb_sep_col_b);
+      } // Fl_Button* sep_col_b
+      { Fl_Check_Button* o = startup_notification = new Fl_Check_Button(145, 250, 140, 25, gettext("Startup Notification"));
+        startup_notification->tooltip(gettext("Print a notification on startup. This is mainly for error detection, since db\
 us (re-)starts dunst automatically after a crash."));
-      startup_notification->down_box(FL_GTK_DOWN_BOX);
-      startup_notification->color(FL_BACKGROUND2_COLOR);
-      startup_notification->selection_color((Fl_Color)2);
-      startup_notification->callback((Fl_Callback*)cb_startup_notification);
-      std::string attribute ="startup_notification";
-      dunst_bool(o,"global",attribute);
-    } // Fl_Check_Button* startup_notification
-    { Fl_Output* o = dmenu = new Fl_Output(10, 445, 175, 25, gettext("Dmenu path"));
-      dmenu->box(FL_FLAT_BOX);
-      dmenu->selection_color((Fl_Color)80);
-      dmenu->callback((Fl_Callback*)cb_dmenu);
-      dmenu->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string attribute ="dmenu";
-      dunst_input(o,attribute);
-    } // Fl_Output* dmenu
-    { Fl_Value_Input* o = Frame_width = new Fl_Value_Input(250, 210, 25, 20, gettext("Frame Width"));
-      Frame_width->box(FL_FLAT_BOX);
-      Frame_width->selection_color((Fl_Color)80);
-      Frame_width->callback((Fl_Callback*)cb_Frame_width);
-      Frame_width->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string element="frame";
-      std::string attribute ="width";
-      dunst_valuator(o,element,attribute);
-    } // Fl_Value_Input* Frame_width
-    { Fl_Button* o = Frame_color = new Fl_Button(250, 235, 70, 25, gettext("Frame Color"));
-      Frame_color->box(FL_FLAT_BOX);
-      Frame_color->color((Fl_Color)23);
-      Frame_color->callback((Fl_Callback*)cb_Frame_color);
-      Frame_color->align(Fl_Align(FL_ALIGN_RIGHT));
-      std::string element="frame";
-      std::string attribute="color";
-      dunst_color(o,element,attribute);
-    } // Fl_Button* Frame_color
+        startup_notification->down_box(FL_GTK_DOWN_BOX);
+        startup_notification->color(FL_BACKGROUND2_COLOR);
+        startup_notification->selection_color((Fl_Color)2);
+        startup_notification->callback((Fl_Callback*)cb_startup_notification);
+        std::string attribute ="startup_notification";
+        dunst_bool(o,"global",attribute);
+      } // Fl_Check_Button* startup_notification
+      { Fl_Output* o = dmenu = new Fl_Output(5, 380, 175, 25, gettext("Dmenu path"));
+        dmenu->box(FL_FLAT_BOX);
+        dmenu->selection_color((Fl_Color)80);
+        dmenu->callback((Fl_Callback*)cb_dmenu);
+        dmenu->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="dmenu";
+        dunst_input(o,attribute);
+      } // Fl_Output* dmenu
+      { Fl_Box* o = new Fl_Box(405, 355, 125, 70, gettext("Frame"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)42);
+        o->align(Fl_Align(FL_ALIGN_TOP));
+      } // Fl_Box* o
+      { Fl_Value_Input* o = Frame_width = new Fl_Value_Input(410, 360, 25, 20, gettext("Width"));
+        Frame_width->box(FL_FLAT_BOX);
+        Frame_width->selection_color((Fl_Color)80);
+        Frame_width->callback((Fl_Callback*)cb_Frame_width);
+        Frame_width->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string element="frame";
+        std::string attribute ="width";
+        dunst_valuator(o,element,attribute);
+      } // Fl_Value_Input* Frame_width
+      { Fl_Button* o = Frame_color = new Fl_Button(410, 385, 70, 25, gettext("Color"));
+        Frame_color->box(FL_FLAT_BOX);
+        Frame_color->color((Fl_Color)23);
+        Frame_color->callback((Fl_Callback*)cb_Frame_color);
+        Frame_color->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string element="frame";
+        std::string attribute="color";
+        dunst_color(o,element,attribute);
+      } // Fl_Button* Frame_color
+      { Fl_Box* o = new Fl_Box(315, 20, 225, 130, gettext("Shortcuts"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)42);
+        o->align(Fl_Align(FL_ALIGN_TOP));
+      } // Fl_Box* o
+      { Fl_Output* o = close = new Fl_Output(320, 25, 150, 25, gettext("Close"));
+        close->tooltip(gettext("Close notification."));
+        close->box(FL_FLAT_BOX);
+        close->selection_color((Fl_Color)80);
+        close->callback((Fl_Callback*)cb_close);
+        close->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="close";
+        dunst_input(o,"shortcuts",attribute);
+      } // Fl_Output* close
+      { Fl_Output* o = close_all = new Fl_Output(320, 55, 150, 25, gettext("Close All"));
+        close_all->tooltip(gettext("Close all notifications."));
+        close_all->box(FL_FLAT_BOX);
+        close_all->selection_color((Fl_Color)80);
+        close_all->callback((Fl_Callback*)cb_close_all);
+        close_all->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="close_all";
+        dunst_input(o,"shortcuts",attribute);
+      } // Fl_Output* close_all
+      { Fl_Output* o = history = new Fl_Output(320, 85, 150, 25, gettext("History"));
+        history->tooltip(gettext("Redisplay last message(s). On the US keyboard layout \"grave\" is normally ab\
+ove TAB and left of \"1\"."));
+        history->box(FL_FLAT_BOX);
+        history->selection_color((Fl_Color)80);
+        history->callback((Fl_Callback*)cb_history);
+        history->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="history";
+        dunst_input(o,"shortcuts",attribute);
+      } // Fl_Output* history
+      { Fl_Output* o = context = new Fl_Output(320, 115, 150, 25, gettext("Context"));
+        context->tooltip(gettext("Context menu."));
+        context->box(FL_FLAT_BOX);
+        context->selection_color((Fl_Color)80);
+        context->callback((Fl_Callback*)cb_context);
+        context->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="context";
+        dunst_input(o,"shortcuts",attribute);
+      } // Fl_Output* context
+      { Fl_Box* o = new Fl_Box(365, 490, 175, 90, gettext("Low Urgency"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)42);
+        o->align(Fl_Align(FL_ALIGN_TOP));
+      } // Fl_Box* o
+      { Fl_Button* o = Low_foreground = new Fl_Button(370, 495, 70, 25, gettext("Foreground"));
+        Low_foreground->tooltip(gettext("Background color"));
+        Low_foreground->box(FL_FLAT_BOX);
+        Low_foreground->color((Fl_Color)23);
+        Low_foreground->callback((Fl_Callback*)cb_Low_foreground);
+        Low_foreground->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string element="urgency_low";
+        std::string attribute="foreground";
+        dunst_color(o,element,attribute);
+      } // Fl_Button* Low_foreground
+      { Fl_Value_Input* o = Low_timeout = new Fl_Value_Input(370, 555, 25, 20, gettext("Timeout"));
+        Low_timeout->box(FL_FLAT_BOX);
+        Low_timeout->selection_color((Fl_Color)80);
+        Low_timeout->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string element="urgency_low";
+        std::string attribute ="timeout";
+        dunst_valuator(o,element,attribute);
+      } // Fl_Value_Input* Low_timeout
+      { Fl_Button* o = Low_background = new Fl_Button(370, 525, 70, 25, gettext("Background"));
+        Low_background->tooltip(gettext("Background color"));
+        Low_background->box(FL_FLAT_BOX);
+        Low_background->color((Fl_Color)23);
+        Low_background->callback((Fl_Callback*)cb_Low_background);
+        Low_background->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string element="urgency_low";
+        std::string attribute="background";
+        dunst_color(o,element,attribute);
+      } // Fl_Button* Low_background
+      { Fl_Box* o = new Fl_Box(185, 490, 175, 90, gettext("Normal Urgency"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)42);
+        o->align(Fl_Align(FL_ALIGN_TOP));
+      } // Fl_Box* o
+      { Fl_Button* o = Norm_foreground = new Fl_Button(190, 495, 70, 25, gettext("Foreground"));
+        Norm_foreground->tooltip(gettext("Background color"));
+        Norm_foreground->box(FL_FLAT_BOX);
+        Norm_foreground->color((Fl_Color)23);
+        Norm_foreground->callback((Fl_Callback*)cb_Norm_foreground);
+        Norm_foreground->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string element="urgency_normal";
+        std::string attribute="foreground";
+        dunst_color(o,element,attribute);
+      } // Fl_Button* Norm_foreground
+      { Fl_Value_Input* o = Norm_timeout = new Fl_Value_Input(190, 555, 25, 20, gettext("Timeout"));
+        Norm_timeout->box(FL_FLAT_BOX);
+        Norm_timeout->selection_color((Fl_Color)80);
+        Norm_timeout->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string element="urgency_normal";
+        std::string attribute ="timeout";
+        dunst_valuator(o,element,attribute);
+      } // Fl_Value_Input* Norm_timeout
+      { Fl_Button* o = Norm_background = new Fl_Button(190, 525, 70, 25, gettext("Background"));
+        Norm_background->tooltip(gettext("Background color"));
+        Norm_background->box(FL_FLAT_BOX);
+        Norm_background->color((Fl_Color)23);
+        Norm_background->callback((Fl_Callback*)cb_Norm_background);
+        Norm_background->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string element="urgency_normal";
+        std::string attribute="background";
+        dunst_color(o,element,attribute);
+      } // Fl_Button* Norm_background
+      { Fl_Box* o = new Fl_Box(5, 490, 175, 90, gettext("Critical Urgency"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)42);
+        o->align(Fl_Align(FL_ALIGN_TOP));
+      } // Fl_Box* o
+      { Fl_Button* o = Crit_foreground = new Fl_Button(10, 495, 70, 25, gettext("Foreground"));
+        Crit_foreground->tooltip(gettext("Background color"));
+        Crit_foreground->box(FL_FLAT_BOX);
+        Crit_foreground->color((Fl_Color)23);
+        Crit_foreground->callback((Fl_Callback*)cb_Crit_foreground);
+        Crit_foreground->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string element="urgency_critical";
+        std::string attribute="foreground";
+        dunst_color(o,element,attribute);
+      } // Fl_Button* Crit_foreground
+      { Fl_Value_Input* o = Crit_timeout = new Fl_Value_Input(10, 555, 25, 20, gettext("Timeout"));
+        Crit_timeout->box(FL_FLAT_BOX);
+        Crit_timeout->selection_color((Fl_Color)80);
+        Crit_timeout->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string element="urgency_critical";
+        std::string attribute ="timeout";
+        dunst_valuator(o,element,attribute);
+      } // Fl_Value_Input* Crit_timeout
+      { Fl_Button* o = Crit_background = new Fl_Button(10, 525, 70, 25, gettext("Background"));
+        Crit_background->tooltip(gettext("Background color"));
+        Crit_background->box(FL_FLAT_BOX);
+        Crit_background->color((Fl_Color)23);
+        Crit_background->callback((Fl_Callback*)cb_Crit_background);
+        Crit_background->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string element="urgency_critical";
+        std::string attribute="background";
+        dunst_color(o,element,attribute);
+      } // Fl_Button* Crit_background
+      { icon_folders = new Fl_Browser(355, 165, 180, 135, gettext("Icon Folders"));
+        icon_folders->type(1);
+        icon_folders->box(FL_FLAT_BOX);
+        icon_folders->selection_color((Fl_Color)80);
+        icon_folders->callback((Fl_Callback*)cb_icon_folders);
+        icon_folders->align(Fl_Align(FL_ALIGN_TOP));
+        dunst_icons();
+      } // Fl_Browser* icon_folders
+      { icon_folders_input = new Fl_Input(355, 305, 180, 25);
+        icon_folders_input->box(FL_FLAT_BOX);
+        icon_folders_input->selection_color((Fl_Color)80);
+        icon_folders_input->callback((Fl_Callback*)cb_icon_folders_input);
+      } // Fl_Input* icon_folders_input
+      { Fl_Output* o = browser = new Fl_Output(5, 445, 175, 25, gettext("Browser"));
+        browser->tooltip(gettext("Browser for opening urls in context menu."));
+        browser->box(FL_FLAT_BOX);
+        browser->selection_color((Fl_Color)80);
+        browser->align(Fl_Align(FL_ALIGN_RIGHT));
+        std::string attribute ="browser";
+        dunst_input(o,attribute);
+      } // Fl_Output* browser
+      { Fl_Menu_Button* o = new Fl_Menu_Button(5, 87, 125, 25, gettext("Icon Alignment"));
+        o->tooltip(gettext("Alignment of icons. Possible values are \"left\", \"center\" and \"right\"."));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->selection_color(FL_DARK_RED);
+        if (!menu_Icon_i18n_done) {
+          int i=0;
+          for ( ; i<3; i++)
+            if (menu_Icon[i].label())
+              menu_Icon[i].label(gettext(menu_Icon[i].label()));
+          menu_Icon_i18n_done = 1;
+        }
+        o->menu(menu_Icon);
+      } // Fl_Menu_Button* o
+      { Fl_Output* o = icon_position = new Fl_Output(145, 87, 90, 25);
+        icon_position->tooltip(gettext("Alignment of Icons. Possible values are \"left\", \"center\" and \"right\"."));
+        icon_position->box(FL_FLAT_BOX);
+        icon_position->selection_color((Fl_Color)80);
+        std::string attribute ="icon_position";
+        dunst_input(o,attribute);
+      } // Fl_Output* icon_position
+      { Fl_Button* o = new Fl_Button(470, 585, 70, 25, gettext("Save"));
+        o->tooltip(gettext("This will OVERWRITE the current configuration"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)62);
+        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->callback((Fl_Callback*)cb_Save);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(390, 585, 70, 25, gettext("Quit"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)80);
+        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->callback((Fl_Callback*)cb_Quit);
+      } // Fl_Button* o
+      o->end();
+    } // Fl_Scroll* o
     startup(o);
     debug_out("dunst window");
     dunst_win->xclass("preferences-system-notifications");
@@ -929,23 +1301,20 @@ std::string PopupsUI::get_dunst_global(std::string attribute) {
   return get_dunst("global",attribute);
 }
 
-void PopupsUI::set_dunst_global(std::string attribute) {
-  set_dunst("global",attribute);
-}
-
 std::string PopupsUI::get_dunst(std::string element, std::string attribute) {
   debug_out("get_dunst("+element+","+attribute);
-  std::string filename=linuxcommon::home_path();
-  filename+=".config/dunst/dunstrc";
-  std::string tmp= linuxcommon::get_line_with_equal(filename,attribute);
-  unsigned int space=tmp.find(" ");
-  if(space<tmp.length()){tmp=tmp.substr(space+1,std::string::npos);}
+  if(DUNSTCONF.compare("")==0)DUNSTCONF=dunst_config();
+  std::string filename=DUNSTCONF;
+  if(filename.compare("")==0){return "";}
+  attribute+=" =";
+  std::string tmp= linuxcommon::get_line_with_equal_after_header(element,filename,attribute);
   debug_out("result="+tmp);
+  unsigned int find=tmp.find("\"");
+  if(find==0){tmp=tmp.erase(0,1);}
+  find=tmp.find("\"");
+  unsigned int len=tmp.length();
+  if(find==len-1){tmp=tmp.erase(len-1,std::string::npos);}
   return tmp;
-}
-
-void PopupsUI::set_dunst(std::string element, std::string attribute) {
-  printf("Hello, World!\n");
 }
 
 void PopupsUI::dunst_input(Fl_Input *o,std::string element,std::string attribute) {
@@ -999,4 +1368,162 @@ void PopupsUI::dunst_color(Fl_Widget *o,std::string element,std::string attribut
   unsigned int color=flCOLOR(tmp);
   o->color(color);
   o->redraw();
+}
+
+std::string PopupsUI::dunst_config() {
+  std::string xdg_config=linuxcommon::get_config_dir();
+  xdg_config+="dunst/dunstrc";
+  if(!linuxcommon::test_file(xdg_config)){
+    errorOUT("Could not find the right file");
+    return "";
+  }
+  return xdg_config;
+}
+
+void PopupsUI::dunst_icons() {
+  std::string list=get_dunst_global("icon_folders");
+  std::vector<std::string> myVec=linuxcommon::delimiter_vector_from_string(list,":");
+  populateBrowserWithStringVector(icon_folders,myVec);
+}
+
+void PopupsUI::color_picker(Fl_Widget* o) {
+  int retval=0;
+  double* color=choose_a_color(retval,o);
+  std::string COLORstring=colorToString(color);
+  unsigned int COLOR=flCOLOR(COLORstring);
+  o->color(COLOR);
+  std::cout<<o->color()<<std::endl;
+}
+
+void PopupsUI::make_dunst_conf() {
+  std::string TOTAL="#DO NOT MANUALLY EDIT\n[global]";
+  TOTAL+=out_val(font,"font",false);
+  TOTAL+=bool_val(allow_markup,"allow_markup",false);
+  TOTAL+=out_val(format,"format",true);
+  TOTAL+=bool_val(sort,"sort",false);
+  TOTAL+=bool_val(indicate_hidden,"indicate_hidden",false);
+  TOTAL+=out_val(alignment,"alignment",false);
+  TOTAL+=int_val(bounce_freq,"bounce_freq");
+  TOTAL+=int_val(show_age_threshold,"show_age_threshold");
+  TOTAL+=bool_val(word_wrap,"word_wrap",false);
+  TOTAL+=bool_val(ignore_newline,"ignore_newline",false);
+  TOTAL+=out_val(geometry,"geometry",true);
+  TOTAL+=bool_val(shrink,"shrink",false);
+  TOTAL+=int_val(transparency,"transparency");
+  TOTAL+=int_val(idle_threshold,"idle_threshold");
+  TOTAL+=int_val(monitor,"monitor");
+  TOTAL+=out_val(follow,"follow",false);
+  TOTAL+=bool_val(sticky_history,"sticky_history",false);
+  TOTAL+=int_val(history_length,"history_length");
+  TOTAL+=bool_val(show_indicators,"show_indicators",false);
+  TOTAL+=int_val(line_height,"line_height");
+  TOTAL+=int_val(separator_height,"separator_height");
+  TOTAL+=int_val(padding,"padding");
+  TOTAL+=int_val(horizontal_padding,"horizontal_padding");
+  TOTAL+=out_val(separator_color,"separator_color",false);
+  TOTAL+=bool_val(startup_notification,"startup_notification",true);
+  TOTAL+=out_val(dmenu,"dmenu",false);
+  TOTAL+=out_val(browser,"browser",false);
+  TOTAL+=out_val(icon_position,"icon_position",false);
+  TOTAL+=icon_val();
+  TOTAL+="\n[frame]";
+  TOTAL+=int_val(Frame_width,"width");
+  TOTAL+=color_val(Frame_color,"color");
+  TOTAL+="\n[shortcuts]";
+  TOTAL+=out_val(close,"close",false);
+  TOTAL+=out_val(close_all,"close_all",false);
+  TOTAL+=out_val(history,"history",false);
+  TOTAL+=out_val(context,"context",false);
+  TOTAL+="\n[urgency_low]";
+  TOTAL+=color_val(Low_background,"background");
+  TOTAL+=color_val(Low_foreground,"foreground");
+  TOTAL+=int_val(Low_timeout,"timeout");
+  TOTAL+="\n[urgency_normal]";
+  TOTAL+=color_val(Norm_background,"background");
+  TOTAL+=color_val(Norm_foreground,"foreground");
+  TOTAL+=int_val(Norm_timeout,"timeout");
+  TOTAL+="\n[urgency_critical]";
+  TOTAL+=color_val(Crit_background,"background");
+  TOTAL+=color_val(Crit_foreground,"foreground");
+  TOTAL+=int_val(Crit_timeout,"timeout");
+  if(DUNSTCONF.compare("")==0)DUNSTCONF=dunst_config();
+  std::string filename=DUNSTCONF;
+  if(!linuxcommon::save_string_to_file(TOTAL,filename)){
+    errorOUT("Could not save the file:");
+    std::cout<<TOTAL<<std::endl;
+  }
+}
+
+std::string PopupsUI::out_val(Fl_Input *o,std::string thing,bool quote) {
+  std::string tmp;
+  if(!InputIsEmpty(o)){
+    tmp=o->value();
+    if(isColor(tmp)){quote=true;}
+    if(quote){tmp="\""+tmp+"\"";}
+    tmp="\n    "+thing+" = "+tmp;
+  }
+  return tmp;
+}
+
+std::string PopupsUI::bool_val(Fl_Check_Button *o,std::string thing,bool boolean) {
+  std::string tmp;
+  std::string value="no";
+  if(boolean){value="false";}
+  if(o->value()==1){
+    value="yes";
+    if(boolean)value="true";
+  }
+  tmp="\n    "+thing+" = "+value;
+  return tmp;
+}
+
+std::string PopupsUI::int_val(Fl_Valuator *o,std::string thing) {
+  std::string tmp;
+  const char* value=linuxcommon::convert_num_to_string(o->value());
+  if(value==NULL){return "";}
+  tmp="\n    "+thing+" = ";
+  tmp+=value;
+  return tmp;
+}
+
+std::string PopupsUI::color_val(Fl_Widget *o,std::string thing) {
+  std::string tmp;
+  std::string value=widgetColor(o);
+  if(value.compare("")==0){return "";}
+  value="\""+value+"\"";
+  tmp="\n    "+thing+" = ";
+  tmp+=value;
+  return tmp;
+}
+
+std::string PopupsUI::icon_val() {
+  int total=icon_folders->size();
+  std::string result="\n    icon_folders = ";
+  for(int start=1;start<total;start++){
+    const char* tmp=icon_folders->text(start);
+    if(tmp!=NULL){
+      if(result.compare("")!=0)
+      	result=result+":";
+      result+=tmp;
+    }
+  }
+  return result;
+}
+
+void PopupsUI::get_delay(Fl_Valuator*o) {
+  std::string val=getElementAttribute("PopupStyle","delay");
+  int num=linuxcommon::convert_string_to_number(val.c_str());
+  o->value(num);
+}
+
+void PopupsUI::set_delay(Fl_Valuator*o) {
+  double num=o->value();
+  const char* value=linuxcommon::convert_num_to_string(num);
+  if(value==NULL){
+    errorOUT("Invalid value");
+    return;
+  }
+  if(!setElementAttribute("PopupStyle","delay",value)){
+    errorOUT("Could not set delay");
+  }
 }

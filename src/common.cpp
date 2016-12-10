@@ -141,6 +141,26 @@ LINUX_COMMON__NS_BEGIN
 		if(!test_dir(cacheFile)){mkdir_p(cacheFile.c_str());}
 		return 	cacheFile;
 	}
+	/** Get XDG_CONFIG_HOME or the equivalent*/
+	std::string get_config_dir(){
+		std::string cacheFile;
+		const char* xdgcache =  getenv("XDG_CONFIG_HOME");
+		if(xdgcache==NULL){
+			std::string home = home_path();
+			if(home.compare("")==0){return home;}
+			else{
+				home+=".config";
+				cacheFile=home;
+			}
+		}
+		else{
+			cacheFile=xdgcache;
+		}
+		if(cacheFile.compare("")==0){return "";}
+		cacheFile+="/";
+		if(!test_dir(cacheFile)){mkdir_p(cacheFile.c_str());}
+		return 	cacheFile;
+	}
 	/** return the directory portion of a filename
 	 * @param filename the filename get the directory from
 	 */
@@ -151,32 +171,6 @@ LINUX_COMMON__NS_BEGIN
 		}
 		else{return "";} /**return empty if there is no directory*/
 		return filename;
-	}
-	/** This function is used for files like *.desktop files to get a value
-	 * @param filename the filename to look in
-	 * @param line the line to look for
-	 */
-	std::string get_line_with_equal(std::string filename, std::string line){
-		if(line.compare("")==0){return "";}
-		if(filename.compare("")==0){return "";}
-		if(!test_file(filename)){echo_error("No file sent in\n"+filename+","+line);}
-		std::string thisLine;
-		std::string subString;
-		std::ifstream inputFileStream(filename.c_str(), std::ifstream::in);
-		if(inputFileStream.is_open()){
-			while (getline(inputFileStream,thisLine)){
-				//echo_error(thisLine);
-				if(thisLine.find(line)<thisLine.length()){
-					unsigned int found =thisLine.find("=");
-					if(found < thisLine.length()){
-						subString=thisLine.substr(found+1,std::string::npos);
-						return subString;
-					}
-				}
-			}
-		}
-		else{echo_error("Could not open filestream for "+filename);}
-		return "";
 	}
 	/** use the get_gtk_item function to get an icon theme, or use hicolor if nothing is found*/	
 	std::string get_gtk_icon_theme(){return get_gtk_item("icon","hicolor");}
@@ -244,6 +238,55 @@ LINUX_COMMON__NS_BEGIN
 		}
 		return defaultTheme;
 	}
+	/** This function is used for files like *.desktop files to get a value
+	 * @param filename the filename to look in
+	 * @param line the line to look for
+	 */
+	std::string get_line_with_equal(std::string filename, std::string line){
+		if(line.compare("")==0){return "";}
+		if(filename.compare("")==0){return "";}
+		if(!test_file(filename)){echo_error("No file sent in\n"+filename+","+line);}
+		std::string thisLine;
+		std::string subString;
+		std::ifstream inputFileStream(filename.c_str(), std::ifstream::in);
+		if(inputFileStream.is_open()){
+			while (getline(inputFileStream,thisLine)){
+				//echo_error(thisLine);
+				if(thisLine.find(line)<thisLine.length()){
+					unsigned int found =thisLine.find("=");
+					if(found < thisLine.length()){
+						subString=thisLine.substr(found+1,std::string::npos);
+						return subString;
+					}
+				}
+			}
+		}
+		else{echo_error("Could not open filestream for "+filename);}
+		return "";
+	}
+	/** This function is used for files like *.desktop files to get a value
+	 * @param header The portion contained in '[ ]' to look for the item AFTER
+	 * @param filename the file to look in
+	 * @param line the line to find
+	 */
+	std::string get_line_with_equal_after_header(std::string header,std::string filename, std::string line){
+		if(line.compare("")==0){return "";}
+		if(header.compare("")==0){return "";}
+		if(filename.compare("")==0){return "";}
+		if(!test_file(filename)){echo_error("No file sent in\n"+filename+","+line);}
+		std::string find_header=header;
+		unsigned int open=header.find("[");
+		unsigned int close=header.find("]");
+		unsigned int header_length=header.length();
+		if(open>header_length){find_header="["+find_header;}
+		if(close>header_length){find_header=find_header+"]";}
+		std::string result=grep_first_after(find_header,line,filename);
+		unsigned int found =result.find("=");
+		if(found < result.length()){result=result.substr(found+1,std::string::npos);}
+		unsigned int space=result.find(" ");
+		if(space==0){result=result.substr(space+1,std::string::npos);}
+		return result;
+	}
 	/** This is a specialized internal function to return something akin to "bash -c '"*/
 	std::string get_shell_for_C(){
 		std::string shell=term_out("which bash");
@@ -292,6 +335,33 @@ LINUX_COMMON__NS_BEGIN
           }
       }
       return "";
+	}
+	/** Look for a string in a file AFTER a certain string
+	 * @param after_this look for this first
+	 * @param grep_this get this string
+	 * @param filename the file to look in
+	 */
+	std::string grep_first_after(std::string after_this, std::string grep_this, std::string filename){
+		echo("AFTER THIS="+after_this+"\nLOOK FOR="+grep_this+"\nIN="+filename);
+		bool found_after_this=false;
+		std::string line;
+		int lengthofARGS = grep_this.length();
+		std::string subString;
+		std::ifstream inputFileStrem (filename.c_str(), std::ifstream::in);
+		/** check if the input file stream is open */
+		if(inputFileStrem.is_open()){
+			while (getline(inputFileStrem,line)){
+				subString=line.substr(0,lengthofARGS);
+				if(line.find(after_this)<line.length()){
+					echo("FOUND:"+after_this);
+					found_after_this=true;}
+				/** if found return it immediately */
+				if(found_after_this){
+					if(line.find(grep_this)<line.length()){return line;}
+				}
+			}
+		}
+		return "";
 	}
 	//H
 	/** get the enviroment variable $HOME returned with an appended '/'*/
@@ -857,6 +927,28 @@ LINUX_COMMON__NS_BEGIN
 		unsigned int found,finder;
 		finder=original.length();
 		for(found=original.find(",");found<finder;found=original.find(",")){
+			preComma=original;
+			postComma=original;
+			preComma=preComma.erase(found,std::string::npos);
+			if(preComma.compare("")!=0){Vector.push_back(preComma);}
+			postComma=postComma.erase(0,found+1);
+			original=postComma;
+			finder=original.length();
+		}
+		if(postComma.compare("")!=0){Vector.push_back(postComma);}
+		return Vector;
+	}
+	/** make a string vector from a string with a delimiter string
+	 * @param string_to_become_vector The string to become the vector
+	 * @param delimiter the delimiter
+	 */
+	std::vector<std::string> delimiter_vector_from_string(std::string string_to_become_vector,std::string delimiter){
+		std::vector<std::string> Vector;
+		std::string original,preComma,postComma;
+		original=string_to_become_vector;
+		unsigned int found,finder;
+		finder=original.length();
+		for(found=original.find(delimiter);found<finder;found=original.find(delimiter)){
 			preComma=original;
 			postComma=original;
 			preComma=preComma.erase(found,std::string::npos);

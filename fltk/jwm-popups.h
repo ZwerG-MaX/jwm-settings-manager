@@ -38,8 +38,12 @@
 #include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Check_Button.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Browser.H>
+#include <FL/Fl_Input.H>
 
 class PopupsUI {
+  std::string DUNSTCONF; 
 public:
   Fl_Double_Window* make_window();
   Fl_Double_Window *popup_window;
@@ -125,8 +129,8 @@ private:
   static void cb_foreground(Fl_Menu_*, void*);
   inline void cb_frame_i(Fl_Menu_*, void*);
   static void cb_frame(Fl_Menu_*, void*);
-  inline void cb_frame1_i(Fl_Menu_*, void*);
-  static void cb_frame1(Fl_Menu_*, void*);
+  inline void cb_color_i(Fl_Menu_*, void*);
+  static void cb_color(Fl_Menu_*, void*);
 public:
   Fl_Output *separator_color;
   Fl_Check_Button *word_wrap;
@@ -139,8 +143,11 @@ public:
 private:
   inline void cb_allow_markup_i(Fl_Check_Button*, void*);
   static void cb_allow_markup(Fl_Check_Button*, void*);
-  inline void cb_Format_i(Fl_Output*, void*);
-  static void cb_Format(Fl_Output*, void*);
+public:
+  Fl_Output *format;
+private:
+  inline void cb_format_i(Fl_Output*, void*);
+  static void cb_format(Fl_Output*, void*);
 public:
   Fl_Check_Button *sort;
 private:
@@ -227,6 +234,11 @@ private:
   inline void cb_horizontal_padding_i(Fl_Value_Input*, void*);
   static void cb_horizontal_padding(Fl_Value_Input*, void*);
 public:
+  Fl_Button *sep_col_b;
+private:
+  inline void cb_sep_col_b_i(Fl_Button*, void*);
+  static void cb_sep_col_b(Fl_Button*, void*);
+public:
   Fl_Check_Button *startup_notification;
 private:
   inline void cb_startup_notification_i(Fl_Check_Button*, void*);
@@ -247,18 +259,108 @@ private:
   inline void cb_Frame_color_i(Fl_Button*, void*);
   static void cb_Frame_color(Fl_Button*, void*);
 public:
+  Fl_Output *close;
+private:
+  inline void cb_close_i(Fl_Output*, void*);
+  static void cb_close(Fl_Output*, void*);
+public:
+  Fl_Output *close_all;
+private:
+  inline void cb_close_all_i(Fl_Output*, void*);
+  static void cb_close_all(Fl_Output*, void*);
+public:
+  Fl_Output *history;
+private:
+  inline void cb_history_i(Fl_Output*, void*);
+  static void cb_history(Fl_Output*, void*);
+public:
+  Fl_Output *context;
+private:
+  inline void cb_context_i(Fl_Output*, void*);
+  static void cb_context(Fl_Output*, void*);
+public:
+  Fl_Button *Low_foreground;
+private:
+  inline void cb_Low_foreground_i(Fl_Button*, void*);
+  static void cb_Low_foreground(Fl_Button*, void*);
+public:
+  Fl_Value_Input *Low_timeout;
+  Fl_Button *Low_background;
+private:
+  inline void cb_Low_background_i(Fl_Button*, void*);
+  static void cb_Low_background(Fl_Button*, void*);
+public:
+  Fl_Button *Norm_foreground;
+private:
+  inline void cb_Norm_foreground_i(Fl_Button*, void*);
+  static void cb_Norm_foreground(Fl_Button*, void*);
+public:
+  Fl_Value_Input *Norm_timeout;
+  Fl_Button *Norm_background;
+private:
+  inline void cb_Norm_background_i(Fl_Button*, void*);
+  static void cb_Norm_background(Fl_Button*, void*);
+public:
+  Fl_Button *Crit_foreground;
+private:
+  inline void cb_Crit_foreground_i(Fl_Button*, void*);
+  static void cb_Crit_foreground(Fl_Button*, void*);
+public:
+  Fl_Value_Input *Crit_timeout;
+  Fl_Button *Crit_background;
+private:
+  inline void cb_Crit_background_i(Fl_Button*, void*);
+  static void cb_Crit_background(Fl_Button*, void*);
+public:
+  Fl_Browser *icon_folders;
+private:
+  inline void cb_icon_folders_i(Fl_Browser*, void*);
+  static void cb_icon_folders(Fl_Browser*, void*);
+public:
+  Fl_Input *icon_folders_input;
+private:
+  inline void cb_icon_folders_input_i(Fl_Input*, void*);
+  static void cb_icon_folders_input(Fl_Input*, void*);
+public:
+  Fl_Output *browser;
+  static unsigned char menu_Icon_i18n_done;
+  static Fl_Menu_Item menu_Icon[];
+private:
+  inline void cb_left1_i(Fl_Menu_*, void*);
+  static void cb_left1(Fl_Menu_*, void*);
+  inline void cb_off_i(Fl_Menu_*, void*);
+  static void cb_off(Fl_Menu_*, void*);
+  inline void cb_right1_i(Fl_Menu_*, void*);
+  static void cb_right1(Fl_Menu_*, void*);
+public:
+  Fl_Output *icon_position;
+private:
+  inline void cb_Save_i(Fl_Button*, void*);
+  static void cb_Save(Fl_Button*, void*);
+  inline void cb_Quit_i(Fl_Button*, void*);
+  static void cb_Quit(Fl_Button*, void*);
+public:
   void enabled(std::string value);
   unsigned int get_color(std::string element);
   void set_color(Fl_Widget*o,std::string element);
   std::string get_dunst_global(std::string attribute);
-  void set_dunst_global(std::string attribute);
   std::string get_dunst(std::string element, std::string attribute);
-  void set_dunst(std::string element, std::string attribute);
   void dunst_input(Fl_Input *o,std::string element,std::string attribute);
   void dunst_valuator(Fl_Valuator *o,std::string element,std::string attribute);
   void dunst_valuator(Fl_Valuator *o,std::string attribute);
   void dunst_input(Fl_Input *o,std::string attribute);
   void dunst_bool(Fl_Check_Button *o,std::string element,std::string attribute);
   void dunst_color(Fl_Widget *o,std::string element,std::string attribute);
+  std::string dunst_config();
+  void dunst_icons();
+  void color_picker(Fl_Widget* o);
+  void make_dunst_conf();
+  std::string out_val(Fl_Input *o,std::string thing,bool quote);
+  std::string bool_val(Fl_Check_Button *o,std::string thing,bool boolean);
+  std::string int_val(Fl_Valuator *o,std::string thing);
+  std::string color_val(Fl_Widget *o,std::string thing);
+  std::string icon_val();
+  void get_delay(Fl_Valuator*o);
+  void set_delay(Fl_Valuator*o);
 };
 #endif

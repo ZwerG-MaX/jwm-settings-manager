@@ -76,14 +76,17 @@ namespace linuxcommon{
 	std::string fix_file_path_for_command_line(std::string filepath);
 	//g
 	std::string get_cache_dir();
+	std::string get_config_dir();
 	std::string get_directory_from_filename(std::string filename);
 	std::string get_gtk_icon_theme();
 	std::string get_gtk_widget_theme();
 	std::string get_gtk_item(std::string itemToGet, std::string defaultTheme);
-	std::string get_line_with_equal(std::string filename, std::string line);
-	std::string get_shell_for_C();
-	std::string get_symlinkpath(std::string symlink);
-	std::string grep(std::string args, std::string filename);
+	std::string get_line_with_equal(std::string filename, std::string line);/** This function is used for files like *.desktop files to get a value*/
+	std::string get_line_with_equal_after_header(std::string header,std::string filename, std::string line);/** This function is used for files like *.desktop files to get a value*/
+	std::string get_shell_for_C();/** This is a specialized internal function to return something akin to "bash -c '"*/
+	std::string get_symlinkpath(std::string symlink);/** This function dereferences a symlink to the actual file*/
+	std::string grep(std::string args, std::string filename);/** Return the FIRST match of the 'args' from a file*/
+	std::string grep_first_after(std::string after_this, std::string grep_this, std::string filename); /** Look for a string in a file AFTER a certain string*/
 	//h
 	std::string home_path();
 	//l
@@ -106,6 +109,7 @@ namespace linuxcommon{
 	#endif
 	///vector
 	std::vector<std::string> comma_vector(std::string LINE,std::vector<std::string> Vector);
+	std::vector<std::string> delimiter_vector_from_string(std::string string_to_become_vector,std::string delimiter);/** make a string vector from a string with a delimiter string*/
 	std::vector<std::string> desktop_dirs();
 	std::vector<std::string> desktop_paths();
 	std::vector<std::string> file_to_vector(std::string filename);

@@ -47,6 +47,7 @@ std::string choose_a_program();
 std::string choose_an_icon();
 std::string choose_an_icon(std::string directory);
 std::string nativeFileDialog(std::string title,std::string path,std::string filters);
+std::string widgetColor(Fl_Widget* o);
 ///char*
 char* Get_Fl_Icon(const char** pIcon);
 ///double*
@@ -74,6 +75,7 @@ void outline2(Fl_Widget *a, Fl_Output *b,std::string element);
 //p
 void populateBrowserWithTextFile(Fl_Browser *o, std::string filename);
 void populateBrowserWithString(Fl_Browser *o, std::string STRING);
+void populateBrowserWithStringVector(Fl_Browser *o, std::vector<std::string> STRING_VEC);
 //s
 void setDecorations(Fl_Output *o,std::string element,std::string value);
 void startup(Fl_Window *o);
@@ -81,5 +83,6 @@ void startup(Fl_Window *o ,const char** windowIcon);
 //t
 void two_colors(Fl_Widget *a, Fl_Widget *b, std::string whichElement,std::string subelement);
 ///bool
+bool InputIsEmpty(Fl_Input* o);
 bool OutputIsEmpty(Fl_Output* o);
 #endif

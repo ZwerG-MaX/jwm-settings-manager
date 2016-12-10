@@ -193,6 +193,18 @@ std::string choose_an_icon(std::string directory){
 	}
 	return "";
 }
+std::string widgetColor(Fl_Widget* o){
+	uchar r;
+	uchar g;
+	uchar b;
+	Fl::get_color((o->color()),r,g,b);
+	double* colors = new double[4];
+	colors[0] = int(r); 
+	colors[1] = int(g);
+	colors[2] = int(b);
+	colors[3] = 0;
+	return colorToString(colors);
+}
 //Char*/////////////////////////////////////////////////////////////////
 /** create data FLTK can use to set a window icon
  * @param pIcon the data sent in (from an xpm file)
@@ -585,12 +597,7 @@ void outline2(Fl_Widget *a, Fl_Output *b,std::string element){
 void populateBrowserWithTextFile(Fl_Browser *o, std::string filename){
 	if(filename.compare("")==0)return;
 	std::vector<std::string> myfile=linuxcommon::file_to_vector(filename);
-	for( std::vector<std::string>::iterator it = myfile.begin();
-		it!=myfile.end();
-		++it){
-		std::string tmp=*it;
-		o->add(tmp.c_str());
-	}
+	populateBrowserWithStringVector(o,myfile);
 }
 /** populate a Fl_Browser with a string each line separated by a new line, OR the whole string as one line
  * @param o the browser
@@ -621,6 +628,18 @@ void populateBrowserWithString(Fl_Browser *o, std::string STRING){
 			finder=tmp1.find(sep);
 			STRING=tmp1.substr(finder+1,std::string::npos);
 		}
+	}
+}
+/** Populate an Fl_Browser with a vector
+ * @param o the browser object
+ * @param STRING_VEC the vector to use
+ */
+void populateBrowserWithStringVector(Fl_Browser *o, std::vector<std::string> STRING_VEC){
+	for( std::vector<std::string>::iterator it = STRING_VEC.begin();
+		it!=STRING_VEC.end();
+		++it){
+		std::string tmp=*it;
+		o->add(tmp.c_str());
 	}
 }
 //S
@@ -686,6 +705,24 @@ void two_colors(Fl_Widget *a, Fl_Widget *b, std::string whichElement,std::string
 	}
 }
 //Boolean///////////////////////////////////////////////////////////////
+bool InputIsEmpty(Fl_Input* o){
+	debug_out("bool InputIsEmpty(Fl_Input* o)");
+	if(o->value()==NULL){return true;}
+	const char* value=o->value();
+	/** is it NULL?*/
+	if(value==NULL){
+		debug_out("Empty");
+		return true;
+	}
+	std::string val=value;
+	/** is it empty?*/
+	if(val.compare("")==0){
+		debug_out("Empty");
+		return true;
+	}
+	debug_out("Not empty");
+	return false;
+}
 /** Check if an Fl_Output is empty or not even containing "" rather than NULL
  * @param o the output to check
  */
