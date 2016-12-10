@@ -127,8 +127,8 @@ showAutostart();}
       Fl_Button {} {
         label Popups
         callback {settings_window->hide();
-showPopus();}
-        xywh {175 260 80 80} box FLAT_BOX color 23 align 128 deactivate
+showPopus();} selected
+        xywh {175 260 80 80} box FLAT_BOX color 23 align 128
         code0 {makeWidgetIcon("preferences-system-notifications",o,48);}
       }
     }
@@ -161,7 +161,6 @@ else{
 int retval = linuxcommon::run_a_program_in_background("torios-info");
 if(retval !=0){
   std::cerr<<"system(\\"bash -c 'torios-info &disown'\\") did not return 0"<<std::endl;
-}} {selected
-    }
+}} {}
   }
 } 

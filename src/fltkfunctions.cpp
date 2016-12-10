@@ -435,7 +435,7 @@ void one_color(Fl_Widget *o, std::string whichElement){
 	int c;
 	double* colors = choose_a_color(c,o);
 	if(c!=0){
-		if(!setElementFloat(whichElement,colors)){errorOUT("Could not set the color");}
+		if(!setElementFloat(whichElement,"Background",colors)){errorOUT("Could not set the color");}
 		std::string colorString=getElementText(whichElement,"Background");
 		unsigned int unusedColor;
 		unsigned int colorSet = flCOLOR(colorString,unusedColor);

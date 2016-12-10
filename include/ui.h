@@ -34,6 +34,7 @@
 #include "../fltk/jwm-icons.h"
 #include "../fltk/jwm-panel.h"
 #include "../fltk/jwm-menu.h"
+#include "../fltk/jwm-popups.h"
 #include "../include/jwmrc.h"
 int showPanel();
 int showClock();

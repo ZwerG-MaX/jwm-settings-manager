@@ -42,6 +42,7 @@ set(ARGshortcuts "--shortcuts")
 set(ARGcopyright "--copyright")
 set(ARGversion "--version")
 set(ARGrecover "--recover")
+set(ARGpopup "--popups")
 set(MISCDEPS "\${misc:Depends}")
 set(DEBDEPS "\${source:Version}) , \${shlibs:Depends}, ${MISCDEPS}")
 set(ARGdebug "--debug")
@@ -74,6 +75,7 @@ add_definitions("-DCOMPILER_ARGS=\"${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG=true\"")
 #Configure Man page
 configure_file("debian/${PROJECT_NAME}.1.in" "${PROJECT_NAME}.1")
 configure_file("debian/control.in" "debian/control")
+configure_file("debian/jwm-settings-manager-common.install.in" "debian/jwm-settings-manager-common.install")
 configure_file("src/jsm.cpp.in" "src/jsm.cpp")
 if ( ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR} )
      message( FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there. You may need to remove CMakeCache.txt." )
@@ -113,6 +115,7 @@ set( FLTK_SRCS2
 	fltk/jwm-themes.cxx
 	fltk/jwm-window.cxx
 	fltk/jwm-menu.cxx
+	fltk/jwm-popups.cxx
 )
 ### ALL the source code
 set(JSM_SRCS

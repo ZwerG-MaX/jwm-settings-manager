@@ -1,0 +1,549 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0303 
+i18n_type 1 
+i18n_include <libintl.h> 
+i18n_function gettext 
+header_name {.h} 
+code_name {.cxx}
+comment {/*                 Joe's Window Manager Configuration
+ *
+ * This program configures JWM using pugixml and FLTK
+ *
+ *         Copyright (C) 2016  Israel <israeldahl@gmail.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This has been developed as a part of the ToriOS Project
+ *
+ *
+ * You may redistribute this, but you must keep this comment in place
+ * Jesus is my Lord, and if you don't like it feel free to ignore it.
+ */} {in_source in_header
+} 
+
+decl {\#include <libintl.h>} {public global
+} 
+
+decl {\#include "../include/jwmrc.h"} {public global
+} 
+
+decl {\#include "../include/common.hpp"} {public global
+} 
+
+decl {\#include "../include/fltkfunctions.hpp"} {public global
+} 
+
+class PopupsUI {open
+} {
+  Function {make_window()} {open
+  } {
+    Fl_Window popup_window {
+      label Popups open
+      xywh {725 134 275 220} type Double color 45 labelcolor 7 xclass {preferences-system-notifications} visible
+    } {
+      Fl_Scroll {} {open
+        tooltip {This controls the look of popup tooltips such as those shown when the mouse sits over a panel item.} xywh {0 0 270 215}
+      } {
+        Fl_Button outline {
+          label Outline
+          callback {set_color(o,"Outline");}
+          tooltip {The color of the window  outline.  The  default  is black.} xywh {105 40 75 25} box FLAT_BOX color 23 align 132
+          code0 {o->color(get_color("Outline"));}
+        }
+        Fl_Value_Input delay_out {
+          label milliseconds
+          callback {delay_slider->value(o->value());}
+          tooltip {The  delay  in milliseconds before popups activate. The default is 600.} xywh {185 10 25 25} box FLAT_BOX selection_color 72 labelsize 8 align 8
+        }
+        Fl_Slider delay_slider {
+          label Delay
+          callback {delay_out->value(o->value());}
+          tooltip {The  delay  in milliseconds before popups activate. The default is 600.} xywh {105 10 75 25} type Horizontal box GTK_DOWN_BOX color 42 selection_color 50 align 4 maximum 1200 step 10 value 600
+        }
+        Fl_Menu_Button {} {
+          label enabled
+          tooltip {Determine if popups are shown. This is a comma-sep‐ arated  list  of one or more of the following: true (all enabled), false (no  popups  enabled),  button (tray buttons), clock (clocks), menu (menus), pager (pagers), and task (task list items).  The  default is true.} xywh {10 135 85 25} box FLAT_BOX color 23 selection_color 72
+        } {
+          MenuItem {} {
+            label true
+            callback {std::string value="true";
+enabled(value);}
+            xywh {15 15 100 20}
+          }
+          MenuItem {} {
+            label false
+            callback {std::string value="false";
+enabled(value);}
+            xywh {5 5 100 20}
+          }
+          MenuItem {} {
+            label button
+            callback {std::string value="button";
+enabled(value);}
+            xywh {25 25 100 20}
+          }
+          MenuItem {} {
+            label clock
+            callback {std::string value="clock";
+enabled(value);}
+            xywh {35 35 100 20}
+          }
+          MenuItem {} {
+            label menu
+            callback {std::string value="menu";
+enabled(value);}
+            xywh {45 45 100 20}
+          }
+          MenuItem {} {
+            label pager
+            callback {std::string value="pager";
+enabled(value);}
+            xywh {55 55 100 20}
+          }
+          MenuItem {} {
+            label task
+            callback {std::string value="task";
+enabled(value);}
+            xywh {65 65 100 20}
+          }
+        }
+        Fl_Output enabled_out {
+          tooltip {Determine if popups are shown. This is a comma-sep‐ arated  list  of one or more of the following: true (all enabled), false (no  popups  enabled),  button (tray buttons), clock (clocks), menu (menus), pager (pagers), and task (task list items).  The  default is true.} xywh {105 135 105 25} box FLAT_BOX color 55 selection_color 72
+          code0 {std::string val=getElementAttribute("PopupStyle","enabled");}
+          code1 {if(val.compare("")==0){val="true";}}
+          code2 {o->value(val.c_str());}
+        }
+        Fl_Button {} {
+          label Text
+          callback {set_color(o,"Foreground");}
+          tooltip {The text color} xywh {105 70 75 25} box FLAT_BOX color 23 align 132
+          code0 {o->color(get_color("Foreground"));}
+        }
+        Fl_Button {} {
+          label Background
+          callback {set_color(o,"Background");}
+          tooltip {The background color} xywh {105 100 75 25} box FLAT_BOX color 23 align 132
+          code0 {o->color(get_color("Background"));}
+        }
+        Fl_Button {} {
+          label OK
+          callback {saveChanges();
+quit();}
+          xywh {210 190 60 25} box FLAT_BOX color 62 labelcolor 7 align 128
+        }
+        Fl_Button {} {
+          label Cancel
+          callback {cancel();}
+          xywh {140 190 65 25} box FLAT_BOX color 80 labelcolor 7 align 128
+        }
+        Fl_Button {} {
+          label Notifications
+          callback {dunst_window()->show();} selected
+          tooltip {Sytem notification pop up windows} xywh {10 190 100 25} box FLAT_BOX color 23 align 128 hide deactivate
+        }
+      }
+    }
+  }
+  Function {dunst_window()} {open
+  } {
+    Fl_Window dunst_win {
+      label {System Notifications} open
+      xywh {466 84 515 580} type Double hide
+      code0 {startup(o);}
+      code1 {debug_out("dunst window");} xclass {preferences-system-notifications}
+    } {
+      Fl_Button {} {
+        label Font
+        callback {std::string attribute ="font";}
+        xywh {10 5 125 25} box FLAT_BOX color 23
+      }
+      Fl_Output font {
+        xywh {150 5 90 25} box FLAT_BOX selection_color 80
+        code0 {std::string attribute ="font";}
+        code1 {dunst_input(o,attribute);}
+      }
+      Fl_Menu_Button {} {
+        label Alignment
+        tooltip {Alignment of message text. Possible values are "left", "center" and "right".} xywh {10 35 125 25} box FLAT_BOX color 23 selection_color 72
+      } {
+        MenuItem {} {
+          label left
+          callback {std::string value="left";
+std::string attribute ="alignment";}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label center
+          callback {std::string value="center";
+std::string attribute ="alignment";}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label right
+          callback {std::string value="right";
+std::string attribute ="alignment";}
+          xywh {0 0 100 20}
+        }
+      }
+      Fl_Output alignment {
+        tooltip {Alignment of message text. Possible values are "left", "center" and "right".} xywh {150 35 90 25} box FLAT_BOX selection_color 80
+        code0 {std::string attribute ="alignment";}
+        code1 {dunst_input(o,attribute);}
+      }
+      Fl_Menu_Button {} {
+        label Follow
+        tooltip {Display notification on focused monitor.  Possible modes are:   mouse: follow mouse pointer   keyboard: follow window with keyboard focus   none: don't follow anything  "keyboard" needs a windowmanager that exports the _NET_ACTIVE_WINDOW property. This should be the case for almost all modern windowmanagers.  If this option is set to mouse or keyboard, the monitor option will be ignored.} xywh {10 65 125 25} box FLAT_BOX color 23 selection_color 72
+      } {
+        MenuItem {} {
+          label mouse
+          callback {std::string value="mouse";
+std::string attribute ="follow";}
+          xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label keyboard
+          callback {std::string value="keyboard";
+std::string attribute ="follow";}
+          xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label none
+          callback {std::string value="none";
+std::string attribute ="follow";}
+          xywh {10 10 100 20}
+        }
+      }
+      Fl_Output follow {
+        tooltip {Display notification on focused monitor.  Possible modes are:   mouse: follow mouse pointer   keyboard: follow window with keyboard focus   none: don't follow anything  "keyboard" needs a windowmanager that exports the _NET_ACTIVE_WINDOW property. This should be the case for almost all modern windowmanagers.  If this option is set to mouse or keyboard, the monitor option will be ignored.} xywh {150 65 90 25} box FLAT_BOX selection_color 80
+        code0 {std::string attribute ="follow";}
+        code1 {dunst_input(o,attribute);}
+      }
+      Fl_Menu_Button {} {
+        label {Separator Color}
+        tooltip {Define a color for the separator. possible values are:  * auto: dunst tries to find a color fitting to the background;  * foreground: use the same color as the foreground;  * frame: use the same color as the frame;  * anything else will be interpreted as a X color.} xywh {10 95 125 25} box FLAT_BOX color 23 selection_color 72
+      } {
+        MenuItem {} {
+          label auto
+          callback {std::string value="auto";
+std::string attribute ="separator_color";}
+          xywh {20 20 100 20}
+        }
+        MenuItem {} {
+          label foreground
+          callback {std::string value="foreground";
+std::string attribute ="separator_color";}
+          xywh {20 20 100 20}
+        }
+        MenuItem {} {
+          label frame
+          callback {std::string value="frame";
+std::string attribute ="separator_color";}
+          xywh {20 20 100 20}
+        }
+        MenuItem {} {
+          label frame
+          callback {std::string value="color";}
+          xywh {30 30 100 20}
+        }
+      }
+      Fl_Output separator_color {
+        tooltip {Define a color for the separator. possible values are:  * auto: dunst tries to find a color fitting to the background;  * foreground: use the same color as the foreground;  * frame: use the same color as the frame;  * anything else will be interpreted as a X color.} xywh {150 95 90 25} box FLAT_BOX selection_color 80
+        code0 {std::string attribute ="separator_color";}
+        code1 {dunst_input(o,attribute);}
+      }
+      Fl_Check_Button word_wrap {
+        label {Word wrap}
+        callback {std::string attribute ="word_wrap";
+if(o->value()==1){bounce_freq->deactivate();}
+else{bounce_freq->activate();}}
+        tooltip {Split notifications into multiple lines if they don't fit into geometery} xywh {10 125 90 25} down_box GTK_DOWN_BOX color 7 selection_color 2
+        code0 {std::string attribute ="word_wrap";}
+        code1 {dunst_bool(o,"global",attribute);}
+      }
+      Fl_Value_Input bounce_freq {
+        label {Bounce Frequency}
+        tooltip {The frequency with wich text that is longer than the notification window allows bounces back and forth. This option conflicts with "word_wrap". Set to 0 to disable.} xywh {150 125 25 20} box FLAT_BOX selection_color 80 align 8
+        code0 {if(word_wrap->value()==1){o->deactivate();}}
+        code1 {std::string attribute = "bounce_freq";}
+        code2 {dunst_valuator(o,attribute);}
+      }
+      Fl_Check_Button allow_markup {
+        label {Allow Markup}
+        callback {std::string attribute ="allow_markup";}
+        tooltip {For a complete reference see <http://developer.gnome.org/pango/stable/PangoMarkupFormat.html>. If markup is not allowed, those tags will be stripped out of the message.} xywh {10 150 90 25} down_box GTK_DOWN_BOX color 7 selection_color 2
+        code0 {std::string attribute ="allow_markup";}
+        code1 {dunst_bool(o,"global",attribute);}
+      }
+      Fl_Output {} {
+        label Format
+        callback {std::string attribute ="format";}
+        tooltip {The format of the message.  Possible variables are:   %a  appname   %s  summary   %b  body   %i  iconname (including its path)   %I  iconname (without its path)   %p  progress value if set ([  0%] to [100%]) or nothing} xywh {150 150 150 25} box FLAT_BOX selection_color 80 align 8
+        code0 {std::string attribute ="format";}
+        code1 {dunst_input(o,attribute);}
+      }
+      Fl_Check_Button sort {
+        label {Sort by urgency}
+        callback {std::string attribute ="sort";}
+        tooltip {Sort messages by urgency.} xywh {10 170 90 25} down_box GTK_DOWN_BOX color 7 selection_color 2
+        code0 {std::string attribute ="sort";}
+        code1 {dunst_bool(o,"global",attribute);}
+      }
+      Fl_Check_Button indicate_hidden {
+        label {Indicate hidden}
+        callback {std::string attribute ="indicate_hidden";}
+        tooltip {Show how many messages are currently hidden (because of geometry).} xywh {10 194 90 25} down_box GTK_DOWN_BOX color 7 selection_color 2
+        code0 {std::string attribute ="indicate_hidden";}
+        code1 {dunst_bool(o,"global",attribute);}
+      }
+      Fl_Check_Button ignore_newline {
+        label {Ignore newlines}
+        callback {std::string attribute ="ignore_newline";}
+        tooltip {Ignore newlines '\\n' in notifications.} xywh {10 217 140 25} down_box GTK_DOWN_BOX color 7 selection_color 2
+        code0 {std::string attribute ="ignore_newline";}
+        code1 {dunst_bool(o,"global",attribute);}
+      }
+      Fl_Check_Button shrink {
+        label Shrink
+        callback {std::string attribute ="shrink";}
+        tooltip {Shrink window if it's smaller than the width.  Will be ignored if width is 0.} xywh {10 240 140 25} down_box GTK_DOWN_BOX color 7 selection_color 2
+        code0 {std::string attribute ="shrink";}
+        code1 {dunst_bool(o,"global",attribute);}
+      }
+      Fl_Check_Button sticky_history {
+        label {Sticky History}
+        callback {std::string attribute ="sticky_history";}
+        tooltip {Should a notification popped up from history be sticky or timeout as if it would normally do.} xywh {10 264 140 25} down_box GTK_DOWN_BOX color 7 selection_color 2
+        code0 {std::string attribute ="sticky_history";}
+        code1 {dunst_bool(o,"global",attribute);}
+      }
+      Fl_Value_Input idle_threshold {
+        label {idle threshold}
+        callback {std::string attribute ="idle_threshold";}
+        tooltip {Don't remove messages, if the user is idle (no mouse or keyboard input) for longer than idle_threshold seconds. Set to 0 to disable.} xywh {10 370 40 20} box FLAT_BOX selection_color 80 align 8
+        code0 {std::string attribute ="idle_threshold";}
+        code1 {dunst_valuator(o,attribute);}
+      }
+      Fl_Check_Button show_indicators {
+        label {Show Indicators}
+        callback {std::string attribute ="show_indicators";}
+        tooltip {Display indicators for URLs (U) and actions (A)} xywh {10 287 140 25} down_box GTK_DOWN_BOX color 7 selection_color 2
+        code0 {std::string attribute ="show_indicators";}
+        code1 {dunst_bool(o,"global",attribute);}
+      }
+      Fl_Output geometry {
+        label Geometery
+        callback {std::string attribute ="geometry";}
+        xywh {10 480 175 25} box FLAT_BOX selection_color 80 align 8
+        code0 {std::string attribute ="geometry";}
+        code1 {dunst_input(o,attribute);}
+      }
+      Fl_Slider trans_slide {
+        callback {transparency->value(o->value());}
+        tooltip {The transparency of the window.  Range: [0; 100]. This option will only work if a compositing windowmanager is present (e.g. xcompmgr, compiz, etc.).} xywh {10 510 90 25} type Horizontal box GTK_DOWN_BOX color 41 align 4 maximum 100 step 1
+      }
+      Fl_Value_Input transparency {
+        label Transparency
+        callback {trans_slide->value(o->value());}
+        tooltip {The transparency of the window.  Range: [0; 100]. This option will only work if a compositing windowmanager is present (e.g. xcompmgr, compiz, etc.).} xywh {110 510 25 25} box FLAT_BOX selection_color 80 align 8 when 3 maximum 100 step 1
+        code0 {std::string attribute ="transparency";}
+        code1 {dunst_valuator(o,attribute);}
+        code2 {//trans_slide->value(o->value());}
+      }
+      Fl_Value_Input show_age_threshold {
+        label {Age threshold}
+        callback {std::string attribute = "show_age_threshold";}
+        tooltip {Show age of message if message is older than this ammount in seconds} xywh {10 345 40 20} box FLAT_BOX selection_color 80 align 8
+        code0 {std::string attribute = "show_age_threshold";}
+        code1 {dunst_valuator(o,attribute);}
+      }
+      Fl_Value_Input monitor {
+        label Monitor
+        callback {std::string attribute ="monitor";}
+        tooltip {Which monitor should the notifications be displayed on.} xywh {10 395 40 20} box FLAT_BOX selection_color 80 align 8
+        code0 {std::string attribute ="monitor";}
+        code1 {dunst_valuator(o,attribute);}
+      }
+      Fl_Value_Input history_length {
+        label {History Length}
+        callback {std::string attribute ="history_length";}
+        tooltip {Maximum amount of notifications kept in history} xywh {10 420 40 20} box FLAT_BOX selection_color 80 align 8
+        code0 {std::string attribute ="history_length";}
+        code1 {dunst_valuator(o,attribute);}
+      }
+      Fl_Value_Input line_height {
+        label {Line Height}
+        callback {std::string attribute ="line_height";}
+        tooltip {The height of a single line.  If the height is smaller than the font height, it will get raised to the font height. This adds empty space above and under the text.} xywh {185 345 45 20} box FLAT_BOX selection_color 80 align 8
+        code0 {std::string attribute ="line_height";}
+        code1 {dunst_valuator(o,attribute);}
+      }
+      Fl_Value_Input separator_height {
+        label {Separator Height}
+        callback {std::string attribute ="separator_height";}
+        tooltip {Draw a line of this pixel height between two notifications. Set to 0 to disable.} xywh {185 370 45 20} box FLAT_BOX selection_color 80 align 8
+        code0 {std::string attribute ="separator_height";}
+        code1 {dunst_valuator(o,attribute);}
+      }
+      Fl_Value_Input padding {
+        label {Text Padding}
+        callback {std::string attribute ="padding";}
+        tooltip {Padding between text and separator.} xywh {185 395 45 20} box FLAT_BOX selection_color 80 align 8
+        code0 {std::string attribute ="padding";}
+        code1 {dunst_valuator(o,attribute);}
+      }
+      Fl_Value_Input horizontal_padding {
+        label {Horizontal Padding}
+        callback {std::string attribute ="horizontal_padding";}
+        tooltip {Padding between text and separator.} xywh {185 420 45 20} box FLAT_BOX selection_color 80 align 8
+        code0 {std::string attribute ="horizontal_padding";}
+        code1 {dunst_valuator(o,attribute);}
+      }
+      Fl_Button {} {
+        tooltip {Choose a color} xywh {250 95 65 25} box FLAT_BOX color 23
+      }
+      Fl_Check_Button startup_notification {
+        label {Startup Notification}
+        callback {std::string attribute ="startup_notification";}
+        tooltip {Print a notification on startup. This is mainly for error detection, since dbus (re-)starts dunst automatically after a crash.} xywh {10 310 140 25} down_box GTK_DOWN_BOX color 7 selection_color 2
+        code0 {std::string attribute ="startup_notification";}
+        code1 {dunst_bool(o,"global",attribute);}
+      }
+      Fl_Output dmenu {
+        label {Dmenu path}
+        callback {std::string attribute ="dmenu";}
+        xywh {10 445 175 25} box FLAT_BOX selection_color 80 align 8
+        code0 {std::string attribute ="dmenu";}
+        code1 {dunst_input(o,attribute);}
+      }
+      Fl_Value_Input Frame_width {
+        label {Frame Width}
+        callback {std::string attribute ="width";
+std::string element="frame";}
+        xywh {250 210 25 20} box FLAT_BOX selection_color 80 align 8
+        code0 {std::string element="frame";}
+        code1 {std::string attribute ="width";}
+        code2 {dunst_valuator(o,element,attribute);}
+      }
+      Fl_Button Frame_color {
+        label {Frame Color}
+        callback {std::string element="frame";
+std::string attribute="color";}
+        xywh {250 235 70 25} box FLAT_BOX color 23 align 8
+        code0 {std::string element="frame";}
+        code1 {std::string attribute="color";}
+        code2 {dunst_color(o,element,attribute);}
+      }
+    }
+  }
+  Function {enabled(std::string value)} {} {
+    code {if(!setElementAttribute("PopupStyle","enabled",value)){
+  debug_out("Could not set popup style");
+}
+enabled_out->value(value.c_str());
+enabled_out->redraw();} {}
+  }
+  Function {get_color(std::string element)} {open return_type {unsigned int}
+  } {
+    code {std::string color=getElementText("PopupStyle",element);
+return flCOLOR(color);} {}
+  }
+  Function {set_color(Fl_Widget*o,std::string element)} {open
+  } {
+    code {int retval=0;
+double* color = choose_a_color(retval,o);
+if(retval!=0){
+  if(!setElementFloat("PopupStyle",element,color)){
+    errorOUT("Could not set the color");
+    return;
+  }
+  std::string tmp=getElementText("PopupStyle",element);
+  unsigned int colorSet=flCOLOR(tmp);
+  o->color(colorSet);
+  o->redraw();
+}} {}
+  }
+  Function {get_dunst_global(std::string attribute)} {open return_type {std::string}
+  } {
+    code {return get_dunst("global",attribute);} {}
+  }
+  Function {set_dunst_global(std::string attribute)} {} {
+    code {set_dunst("global",attribute);} {}
+  }
+  Function {get_dunst(std::string element, std::string attribute)} {open return_type {std::string}
+  } {
+    code {debug_out("get_dunst("+element+","+attribute);
+std::string filename=linuxcommon::home_path();
+filename+=".config/dunst/dunstrc";
+std::string tmp= linuxcommon::get_line_with_equal(filename,attribute);
+unsigned int space=tmp.find(" ");
+if(space<tmp.length()){tmp=tmp.substr(space+1,std::string::npos);}
+debug_out("result="+tmp);
+return tmp;} {}
+  }
+  Function {set_dunst(std::string element, std::string attribute)} {open
+  } {
+    code {printf("Hello, World!\\n");} {}
+  }
+  Function {dunst_input(Fl_Input *o,std::string element,std::string attribute)} {open
+  } {
+    code {std::string tmp=get_dunst(element,attribute);
+if(tmp.compare("")==0){
+  debug_out(element+"->"+attribute+" contained nothing");
+  return;
+}
+o->value(tmp.c_str());
+o->redraw();} {}
+  }
+  Function {dunst_valuator(Fl_Valuator *o,std::string element,std::string attribute)} {open
+  } {
+    code {std::string tmp=get_dunst(element,attribute);
+if(tmp.compare("")==0){
+  debug_out(element+"->"+attribute+" contained nothing");
+  return;
+}
+double val=linuxcommon::convert_string_to_double(tmp);
+o->value(val);
+o->redraw();} {}
+  }
+  Function {dunst_valuator(Fl_Valuator *o,std::string attribute)} {open
+  } {
+    code {//GLOBAL
+dunst_valuator(o,"global",attribute);} {}
+  }
+  Function {dunst_input(Fl_Input *o,std::string attribute)} {open
+  } {
+    code {//GLOBAL
+dunst_input(o,"global",attribute);} {}
+  }
+  Function {dunst_bool(Fl_Check_Button *o,std::string element,std::string attribute)} {open
+  } {
+    code {std::string tmp=get_dunst(element,attribute);
+if(tmp.compare("")==0){
+  debug_out(element+"->"+attribute+" contained nothing");
+  return;
+}
+std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
+if((tmp.compare("true")==0)||(tmp.compare("yes")==0)){o->value(1);}
+else{o->value(0);}} {}
+  }
+  Function {dunst_color(Fl_Widget *o,std::string element,std::string attribute)} {open
+  } {
+    code {std::string tmp=get_dunst(element,attribute);
+if(tmp.compare("")==0){
+  debug_out(element+"->"+attribute+" contained nothing");
+  return;
+}
+unsigned int color=flCOLOR(tmp);
+o->color(color);
+o->redraw();} {}
+  }
+} 

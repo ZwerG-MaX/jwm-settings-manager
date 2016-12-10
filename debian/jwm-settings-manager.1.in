@@ -28,11 +28,13 @@
 .TP
 \-m  @ARGmouse@       show mouse settings
 .TP
-\-p  @ARGpanel@       show panel @ARGshutdown@settings
+\-p  @ARGpanel@       show panel settings
 .TP
 \-t  @ARGthemes@      show theme settings
 .TP
 \-w  @ARGwindow@      show window settings
+.TP
+\-u  @ARGpopup@        show popups window
 .TP
 \-v  @ARGversion@     show version number
 .TP

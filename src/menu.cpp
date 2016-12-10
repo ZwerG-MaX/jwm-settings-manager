@@ -84,27 +84,6 @@ bool ConfigMenuItem(int menu,int item,Fl_Input* prog_label,Fl_Input* prog_icon,F
 	//TODO toggle button issue...
 	return retval;
 }
-bool ConfigMenuItem(Fl_Browser* menuElement,
-					Fl_Browser* menuElementText,
-					Fl_Input* prog_label,
-					Fl_Input* prog_icon,
-					Fl_Input* prog_input,
-					Fl_Check_Button* conf_button){
-	debug_out("bool ConfigMenuItem(Fl_Browser* menuElement,Fl_Browser* menuElementText,Fl_Input* prog_label,Fl_Input* prog_icon,Fl_Input* prog_input,Fl_Check_Button* conf_button)");
-	if(!checkFlBrowserItem(menuElement)){return false;}
-	if(!checkFlBrowserItem(menuElementText)){return false;}
-	const char* menuele=menuElement->text(menuElement->value());
-	const char* menueletext=menuElementText->text(menuElementText->value());
-	const char* lbl=prog_label->value();
-	const char* icn=prog_icon->value();
-	const char* prog=prog_input->value();
-	if((lbl==NULL)||(icn==NULL)||(prog==NULL)){
-		debug_out("Fl_Input with NULL value");
-		return false;
-	}
-	
-	return false;
-}
 //Void//////////////////////////////////////////////////////////////////
 void changeMenuInclude(std::string newInclude, std::string old, std::string MENU){
 	debug_out("void changeMenuInclude(std::string "+newInclude+", std::string "+old+", std::string "+MENU+")");

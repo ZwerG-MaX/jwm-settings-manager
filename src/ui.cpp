@@ -139,7 +139,8 @@ int showShortcuts(){
 //Popups
 int showPopus(){
 	debug_out("Popus UI activated");
-	
+	PopupsUI Pop;
+	Pop.make_window()->show();
 	return Fl::run();	
 }
 

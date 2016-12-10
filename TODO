@@ -1,5 +1,3 @@
-If CheckIncludes Fails... create the Element
-
 NEXT features:
 keyboard
 GET
@@ -12,9 +10,10 @@ SET
 localectl set-x11-keymap layout $model $variant $options
 
 menu:
-Configure Dynamic
 Desktop names
-windows->decorations/outline decorations
+
+windows->outline 2 color ONLY if motif
+
 ShutdownCommand
 RestartCommand
 PopupStyle

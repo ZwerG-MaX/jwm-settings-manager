@@ -1,12 +1,6 @@
 data/Buttons/ usr/share/jwm-settings-manager/
-data/themes/old/ usr/share/jwm-settings-manager/themes/
-data/themes/2.3.0/ usr/share/jwm-settings-manager/themes/
-data/themes/Default/ usr/share/jwm-settings-manager/themes/
-data/themes/Ambiance/ usr/share/jwm-settings-manager/themes/
-data/themes/DarkGnome2/ usr/share/jwm-settings-manager/themes/
-data/themes/LightGnome2/ usr/share/jwm-settings-manager/themes/
-data/themes/Bassem/ usr/share/jwm-settings-manager/themes/
-data/themes/Numix/ usr/share/jwm-settings-manager/themes/
+
+usr/share/polkit-1/actions/org.freedesktop.policykit.desktop-file-editor.policy usr/share/polkit-1/actions/
 data/time usr/share/jwm-settings-manager/
 data/icons/jwm-settings-manager.png usr/share/pixmaps/
 data/*.desktop usr/share/applications/
@@ -15,5 +9,5 @@ data/icons/*.svg usr/share/icons/hicolor/scalable/apps
 data/icons/*.png usr/share/icons/hicolor/48x48/apps
 data/icons/*.xpm usr/share/pixmaps/
 data/reconfigure_jwm_themes usr/bin/
+data/indicators.list usr/share/jwm-settings-manager/
 jwm-settings-manager.1 usr/share/man/man1/
-usr/share/locale/ usr/share/

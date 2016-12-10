@@ -86,6 +86,7 @@ std::string ARGhelp="@ARGhelp@";
 std::string ARGversion="@ARGversion@";
 std::string ARGcopyright="@ARGcopyright@";
 std::string ARGdebug="@ARGdebug@";
+std::string ARGpopup="@ARGpopup@";
 int main(int argc, char *argv[]){
 
     try{
@@ -146,6 +147,9 @@ int main(int argc, char *argv[]){
                 else if((command.compare(ARGshortcuts)==0)||(command.compare("-s")==0)){
                     return showShortcuts();
                 }
+                else if(command.compare(ARGpopup)==0){
+                    return showPopus();
+                }
                 else if((command.compare(ARGcopyright)==0)||(command.compare("-c")==0)){
                     copyrightFile=linuxcommon::find_xdg_data_dir_subdir(programName);
                     copyrightFile+="COPYING";
@@ -193,14 +197,15 @@ int showHelp(){
         <<" -p "<<ARGpanel<<"       show panel settings\n"
         <<" -t "<<themes<<"      show theme settings\n"
         <<" -w "<<ARGwindow<<"      show window settings\n"
+        <<" "<<ARGpopup<<"        show popups window\n"
         //<<" -r "<<ARGrecover<<"     recover settings file\n"
         <<" -v "<<ARGversion<<"     show current version\n"
         <<" -c "<<ARGcopyright<<"   show copyright information\n"
+        <<" "<<ARGdebug<<"        show debugging output\n"
         <<"\n SHORTCUTS FOR USE IN THE PANELS AND MENUS\n"
         <<" "<<ARGshutdown<<" "<<halt <<"   show shutdown menu\n"
         <<" -u "<<menu<<"        show menu editor\n"
         <<" -l "<<ARGclock<<"        show clock settings\n"
-        <<" "<<ARGdebug<<"        show debugging output\n"
         <<" -s "<<ARGshortcuts <<"         show shortcut editor\n\n"
         <<" Version: "<<versionMajor<<"."<<versionMinor<<"."<<revNo
         << std::endl;

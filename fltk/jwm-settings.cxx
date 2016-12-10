@@ -4155,7 +4155,6 @@ Fl_Double_Window* SettingsUI::make_window() {
       o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_Popups);
       o->align(Fl_Align(FL_ALIGN_WRAP));
-      o->deactivate();
       makeWidgetIcon("preferences-system-notifications",o,48);
     } // Fl_Button* o
     startup(o,jwm_settings_manager);
