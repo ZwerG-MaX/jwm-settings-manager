@@ -39,6 +39,7 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Box.H>
+#include <FL/Fl_Input.H>
 
 class ThemesUI {
 public:
@@ -89,6 +90,6 @@ private:
   inline void cb_overwritten_i(Fl_Button*, void*);
   static void cb_overwritten(Fl_Button*, void*);
 public:
-  Fl_Box *current_theme;
+  Fl_Input *current_theme;
 };
 #endif

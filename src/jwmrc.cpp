@@ -627,7 +627,8 @@ bool loadTemp(){
 	fileName+="~";
 	return load(fileName);
 }
-bool load(std::string fileName){
+bool load(std::string filename){return load(filename,true);}
+bool load(std::string fileName, bool saveTemp){
 	debug_out("bool load(std::string "+fileName+")");
     if(fileName.compare("")==0){linuxcommon::echo_error("file does not exist and cannot be loaded");return false;}
    // debug_out("load(): "+fileName);
@@ -640,7 +641,7 @@ bool load(std::string fileName){
     else{
 		//debug_out("document loaded!");
 		setJSMItem("file",fileName);
-		return saveChangesTempOverwrite(fileName); //save the current file as the temp file
+		if(saveTemp){return saveChangesTempOverwrite(fileName);} //save the current file as the temp file
     }
     return true;
 }
@@ -764,7 +765,7 @@ bool saveChanges(std::string filename, bool restart, bool reload){
 		return false;
 	}
 	if(restart){
-		if(std::system("jwm -restart")!=0){std::cerr<<"couldn't restart JWM"<<std::endl;}
+		if(std::system("jwm -restart")!=0){errorOUT("couldn't restart JWM");}
     }
     else{
 		if(reload){return load(filename);}
@@ -1840,7 +1841,7 @@ int newStyle(){
     if(active && !inActive){
         if(!newVersion){
             //do something to let the user know || fix it...
-            std::cerr<<"Something went wrong trying to find your version of JWM"<<std::endl;
+            errorOUT("Something went wrong trying to find your version of JWM");
         }
         debug_out("New Version Support");
         return two30;

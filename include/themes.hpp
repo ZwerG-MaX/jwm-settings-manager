@@ -70,7 +70,7 @@ std::string choose_file();
 std::string getTheme(std::string whichTheme);
 std::string sysThemeDir();
 std::string userThemeDir();
-std::string theme_cb(Fl_Browser* browser,bool systemTheme, Fl_Widget* current_theme);
+std::string theme_cb(Fl_Browser* browser,bool systemTheme, Fl_Input* current_theme);
 std::string getButton(std::string element);
 //int
 int saveAs(std::string save_name);

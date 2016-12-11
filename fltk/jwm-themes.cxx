@@ -27,7 +27,7 @@
 #include "jwm-themes.h"
 
 void ThemesUI::cb_ok_i(Fl_Button*, void*) {
-  const char* result = current_theme->label();
+  const char* result = current_theme->value();
 if(result!=NULL){
   std::string temp=result;
   change_theme(temp,false);
@@ -72,7 +72,7 @@ void ThemesUI::cb_usr_theme(Fl_Browser* o, void* v) {
 }
 
 void ThemesUI::cb_overwritten_i(Fl_Button*, void*) {
-  const char* result = current_theme->label();
+  const char* result = current_theme->value();
 if(result!=NULL){
   std::string temp=result;
   change_theme(temp,true);
@@ -189,10 +189,10 @@ Fl_Double_Window* ThemesUI::make_window() {
         overwritten->labelcolor(FL_BACKGROUND2_COLOR);
         overwritten->callback((Fl_Callback*)cb_overwritten);
       } // Fl_Button* overwritten
-      { current_theme = new Fl_Box(160, 255, 415, 30);
+      { current_theme = new Fl_Input(160, 255, 415, 30);
         current_theme->box(FL_FLAT_BOX);
-        current_theme->color((Fl_Color)55);
-      } // Fl_Box* current_theme
+        current_theme->selection_color((Fl_Color)80);
+      } // Fl_Input* current_theme
       o->end();
     } // Fl_Scroll* o
     startup(o,jsm_theme_xpm);

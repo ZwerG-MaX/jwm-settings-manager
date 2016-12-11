@@ -109,6 +109,7 @@ bool isTrayElement(std::string element);
 //L
 bool load();
 bool load(std::string filename);
+bool load(std::string filename, bool saveTemp);
 bool loadTemp();
 //N
 bool newVersionJWM();

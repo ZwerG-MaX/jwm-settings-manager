@@ -167,7 +167,7 @@ void choose_button(std::string whichButton){
 	label += whichButton;
 	std::string tempPath = buttonPath();
 	if(tempPath.compare("")==0){
-		std::cerr<<"Button Path not found... must exit!!"<<std::endl;
+		errorOUT("Button Path not found... must exit!!");
 		return;
 	}
 	std::string ICON=choose_an_icon(tempPath);

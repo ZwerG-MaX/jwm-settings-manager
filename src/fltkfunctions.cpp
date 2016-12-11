@@ -405,7 +405,7 @@ void makeWidgetIcon(std::string icon_file, Fl_Widget * widget, int w, int h){
 		const int depth = 4;
 		svg_image = nsvgParseFromFile(icon_file.c_str(), "px", 96.0f);
 		if (svg_image == NULL) {
-			std::cerr<<"Could not open SVG image:"<<icon_file<<std::endl;
+			errorOUT("Could not open SVG image:"+icon_file);
 			return;
 		}
     	width = (int)svg_image->width;

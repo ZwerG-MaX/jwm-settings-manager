@@ -60,15 +60,15 @@ class ThemesUI {open
   } {
     Fl_Window themes_window {
       label Themes open
-      xywh {619 259 590 300} type Double color 47 labelcolor 7 hide
-      code0 {startup(o,jsm_theme_xpm);} xclass {jsm-theme}
+      xywh {619 259 590 300} type Double color 47 labelcolor 7
+      code0 {startup(o,jsm_theme_xpm);} xclass {jsm-theme} visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 585 295} color 31
       } {
         Fl_Button ok {
           label {Change Colors ONLY}
-          callback {const char* result = current_theme->label();
+          callback {const char* result = current_theme->value();
 if(result!=NULL){
   std::string temp=result;
   change_theme(temp,false);
@@ -154,15 +154,15 @@ updateTheme(o,button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,
         }
         Fl_Button overwritten {
           label {Overwrite Current Theme}
-          callback {const char* result = current_theme->label();
+          callback {const char* result = current_theme->value();
 if(result!=NULL){
   std::string temp=result;
   change_theme(temp,true);
 }}
           tooltip {This will copy your current theme somewhere else} xywh {380 200 195 35} box FLAT_BOX color 61 selection_color 58 labelcolor 7
         }
-        Fl_Box current_theme {
-          xywh {160 255 415 30} box FLAT_BOX color 55
+        Fl_Input current_theme {
+          xywh {160 255 415 30} box FLAT_BOX selection_color 80
         }
       }
     }

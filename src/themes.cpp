@@ -24,76 +24,99 @@
 #include <libintl.h>
 #include "../include/themes.hpp"
 void change_theme(std::string whichTheme, bool overwrite){
-  if(overwrite){theme_copier(whichTheme);}
-  else if(!overwrite){modCurrentTheme(whichTheme);}
-  saveChanges();
-}
-void save_theme(Fl_Browser *usr_theme) {
-  std::string save_name = choose_directory(gettext("Save File"));
-  if (save_name.compare("")==0){return;}
-  int result = saveAs(save_name);
-  if(result!=0){fl_alert("Problem saving: %s",save_name.c_str()); return;}
-  populateUserThemes(usr_theme);
+	debug_out("void change_theme(std::string "+whichTheme+", bool overwrite");
+	if(whichTheme.compare("")==0){
+		errorOUT("Empty theme sent in!");
+		return;
+	}
+	if(overwrite){theme_copier(whichTheme);}
+	else if(!overwrite){modCurrentTheme(whichTheme);}
+	saveChanges();
+} 
+void save_theme(Fl_Browser *usr_theme){
+	debug_out("void save_theme(Fl_Browser *usr_theme)");
+	std::string save_name = choose_directory(gettext("Save File"));
+	if(save_name.compare("")==0){return;}
+	int result = saveAs(save_name);
+	if(result!=0){
+		errorOUT("Problem saving: "+save_name);
+		return;
+	}
+	populateUserThemes(usr_theme);
 }
 void theme_copier(std::string theme){
+	debug_out("void theme_copier(std::string "+theme+")");
+	if(theme.compare("")==0){
+		errorOUT("Theme was empty");
+		return;
+	}
 	if(!linuxcommon::test_file(theme)){
-		std::cerr<<theme<<" is not a file"<<std::endl;
+		errorOUT(theme+" is not a file");
 		return;
 	}
     bool existant=checkForTheme(theme);
     std::string bash=bash = "/bin/bash -c '";
     std::string path=linuxcommon::home_path();
-    std::string error=" ERROR!!";
+    std::string error=gettext("ERROR");
     if (existant){
         std::string copyTheme = bash;
         copyTheme = copyTheme + "cp "+ theme + " " + path +".jwmrc'";
         //userTheme();
         if(system(copyTheme.c_str())!=0){
-            std::cerr<<copyTheme<<error;
+            errorOUT(copyTheme+" "+error);
         }
         copyTheme = bash+"cp "+ theme + " " + path +".jwmrc~'";
         if(system(copyTheme.c_str())!=0){
-            std::cerr<<copyTheme<<error;
+            errorOUT(copyTheme+" "+error);
         }
     }
-    else {errorOUT("Theme doesn't exist, cannot copy\n");}
+    else {errorOUT(error+"Theme doesn't exist, cannot copy\n");}
 }
 void setButton(std::string filename,std::string element){
-	if(!load(filename)){return;}
+	debug_out("void setButton(std::string "+filename+",std::string "+element+")");
+	if(!load(filename,false)){return;}
 	std::string temp=getElementText(element);
 	if(temp.compare("")==0){
-		debug_out("Did NOT get Button from "+filename);
+		errorOUT("Did NOT get Button from "+filename);
 		return;
 	}
-	if(!load())debug_out("LOADING base document FAILED");
-	if(!setElementText(element,temp)){debug_out("FAILED setting "+element+" with "+temp+" in the main DOC");}
+	if(!load()){
+		errorOUT("LOADING base document FAILED");
+		return;
+	}
+	if(!setElementText(element,temp)){errorOUT("FAILED setting "+element+" with "+temp+" in the main DOC");}
 	else{saveNoRestart();}
 }
 void setThemeElementTextwithSub(std::string filename,std::string element,std::string subelement){
-	if(!load(filename)){return;}
-	std::string temp=getElementText(element,subelement);
-	if(temp.compare("")==0){
-		debug_out("Did NOT get Button from "+filename);
+	debug_out("void setThemeElementTextwithSub(std::string "+filename+",std::string "+element+",std::string "+subelement+")");
+	if(!load(filename,false)){
+		errorOUT("Could not load "+filename);
 		return;
 	}
-	if(!load())debug_out("LOADING base document FAILED");
-	if(!setElementText(element,subelement,temp)){debug_out("FAILED setting "+element+" with "+temp+" in the main DOC");}
+	std::string temp=getElementText(element,subelement);
+	if(temp.compare("")==0){
+		errorOUT("Did NOT get Button from "+filename);
+		return;
+	}
+	if(!load())errorOUT("LOADING base document FAILED");
+	if(!setElementText(element,subelement,temp)){errorOUT("FAILED setting "+element+" with "+temp+" in the main DOC");}
 	else{saveNoRestart();}
 }
 void setThemeElementTextwithSub(std::string filename,std::string element,std::string subelement,std::string SUBsubelement){
-	if(!load(filename)){return;}
+	debug_out("void setThemeElementTextwithSub(std::string "+filename+",std::string "+element+",std::string "+subelement+",std::string "+SUBsubelement+")");
+	if(!load(filename,false)){return;}
 	std::string temp=getElementText(element,subelement,SUBsubelement);
 	if(temp.compare("")==0){
-		debug_out("Did NOT get Button from "+filename);
+		errorOUT("Did NOT get Button from "+filename);
 		return;
 	}
 	if(!load())debug_out("LOADING base document FAILED");
-	if(!setElementText(element,subelement,SUBsubelement,temp)){debug_out("FAILED setting "+element+" with "+temp+" in the main DOC");}
+	if(!setElementText(element,subelement,SUBsubelement,temp)){errorOUT("FAILED setting "+element+" with "+temp+" in the main DOC");}
 	else{saveNoRestart();}
 }
 void modCurrentTheme(std::string filename){
 	debug_out("void modCurrentTheme(std::string "+filename+")");
-    if(!load(filename)){return;}
+    if(!load(filename,false)){return;}
     setButton(filename,"ButtonMin");
 	setButton(filename,"ButtonMax");
     setButton(filename,"ButtonMaxActive");
@@ -173,7 +196,7 @@ void updateTheme( Fl_Browser *o,
 			else{populateThemes(o);}
 		}
 	}
-    if(!load(filename)){return;}
+    if(!load(filename,false)){return;}
 //menu buttons
     std::string maxButton = getButton("ButtonMax");
     std::string minButton = getButton("ButtonMin");
@@ -273,14 +296,16 @@ void updateTheme( Fl_Browser *o,
 }
 //String////////////////////////////////////////////////////////////////
 std::string choose_directory(std::string whichChoice){
-  std::string directory_path =userThemeDir();
-  std::string label=gettext("Choose");
-  label += " ";
-  label+=whichChoice;
-  return choose_a_directory_to_save(directory_path,label);
+	debug_out("std::string choose_directory(std::string "+whichChoice+")");
+	std::string directory_path =userThemeDir();
+	std::string label=gettext("Choose");
+	label += " ";
+	label+=whichChoice;
+	return choose_a_directory_to_save(directory_path,label);
 }
 std::string choose_file(){return choose_a_file();}
 std::string getTheme(std::string whichTheme){
+	debug_out("std::string getTheme(std::string "+whichTheme+")");
     std::string stringTheme = whichTheme;
     std::string themeTest;
     std::string theme;
@@ -317,20 +342,36 @@ std::string getTheme(std::string whichTheme){
     return "Themes don't exist";
 }
 std::string sysThemeDir(){
+	debug_out("std::string sysThemeDir()");
 	std::string result=linuxcommon::find_xdg_data_dir_subdir("jwm-settings-manager");
 	result+="themes/";
+	if(!linuxcommon::test_dir(result)){
+		errorOUT("Could not find "+result);
+		return "";
+	}
 	return result;
 }
 std::string userThemeDir(){
+	debug_out("std::string userThemeDir()");
 	std::string result=linuxcommon::home_path();
 	result+=".themes/";
+	if(!linuxcommon::test_dir(result)){
+		errorOUT("Could not find "+result);
+		return "";
+	}
 	return result;
 }
-std::string theme_cb(Fl_Browser* browser,bool systemTheme, Fl_Widget* current_theme){
+std::string theme_cb(Fl_Browser* browser,bool systemTheme, Fl_Input* current_theme){
+	debug_out("std::string theme_cb(Fl_Browser* browser,bool systemTheme, Fl_Widget* current_theme)");
 	int line = browser->value();
-	std::string text = browser->text(line);
+	const char* TEXT= browser->text(line);
+	if(TEXT==NULL){
+		errorOUT("Nothing selected");
+		return "";
+	}
+	std::string text = TEXT;
 	if(text.compare("..")==0){
-		const char* temp=current_theme->label();
+		const char* temp=current_theme->value();
 		if(temp!=NULL){
 			std::string dir=temp;
 			return dir;
@@ -348,7 +389,8 @@ std::string theme_cb(Fl_Browser* browser,bool systemTheme, Fl_Widget* current_th
 	std::string returnpath=path+text;
 	if(!linuxcommon::test_file(returnpath)){ return path;}
 	//std::cout<<"filename: "<<path<<std::endl;
-	current_theme->copy_label(returnpath.c_str());
+	current_theme->value(returnpath.c_str());
+	current_theme->redraw();
 	return returnpath;
 }
 std::string getButton(std::string element){
@@ -364,10 +406,12 @@ std::string getButton(std::string element){
 }
 //Int///////////////////////////////////////////////////////////////////
 int saveAs(std::string save_name){
+	debug_out("int saveAs(std::string "+save_name+")");
 	if(!saveChanges(save_name,false,false)){return 1;}
 	return 0;
 }
 int populateANYThemes(Fl_Browser *o,std::string checkHERE,bool backone){
+	debug_out("int populateANYThemes(Fl_Browser *o,std::string "+checkHERE+",bool backone)");
 	if(backone){o->add("..");}
 	DIR *dir=NULL;
     std::string itemName;
@@ -392,8 +436,8 @@ int populateThemes(Fl_Browser *o){return populateANYThemes(o,sysThemeDir(),false
 int populateUserThemes(Fl_Browser *o){return populateANYThemes(o,userThemeDir(),false);}
 int loadTheme(std::string themePath){
     if(!linuxcommon::test_file(themePath)){return 42;}
-    if (!load(themePath.c_str())){
-        std::cerr<<"An error occured loading "<<themePath<<std::endl;
+    if (!load(themePath.c_str(),false)){
+        errorOUT("An error occured loading "+themePath);
         return 1;
     }
     else{debug_out("Theme loaded: "+themePath);}
@@ -412,17 +456,14 @@ int themeNewStyle(std::string themefile){
     int not23 = -1; //OLD
     int two30 = 0; // version before removing traybutton/tasklist styles
     int two3later = 1; //2.3.2 ++
-    #ifdef DEBUG
-    std::cerr<<"loading theme"<<std::endl;
-    #endif
+    debug_out("loading theme");
     int retval=loadTheme(themefile);
     if(retval!=0){return 42;}
     if( !(isElement("TrayButtonStyle")) &&
         !(isElement("TaskListStyle")) &&
         !(isElement("ClockStyle")) ){
-		#ifdef DEBUG
-		std::cerr<<"this is an NEW (2.3.2++) theme, returning:"<<two3later<<"\n<--themeNewStyle()"<<std::endl;
-		#endif
+		std::string temp=linuxcommon::convert_num_to_string(two3later);
+		debug_out("this is an NEW (2.3.2++) theme, returning:"+temp+"\n<--themeNewStyle()");
         return two3later;
     }
     //OLD STYLE
@@ -435,20 +476,22 @@ int themeNewStyle(std::string themefile){
 	(isElement(pager,afore)) ||
 	(isElement(button,afore))
 	){
-       #ifdef DEBUG
-       std::cerr<<"this is an OLD theme, returning:"<<not23<<"\n<--themeNewStyle()"<<std::endl;
-       #endif
-       return not23;
-    }
-    #ifdef DEBUG
-    std::cerr<<"this is an NEW (2.3.0 || 2.3.1) theme, returning:"<<two30<<"\n<--themeNewStyle()"<<std::endl;
-    #endif
+		std::string temp=linuxcommon::convert_num_to_string(not23);
+		debug_out("this is an OLD theme, returning:"+temp+"\n<--themeNewStyle()");
+		return not23;
+	}
+	std::string temp=linuxcommon::convert_num_to_string(two30);
+	debug_out("this is an NEW (2.3.0 || 2.3.1) theme, returning:"+temp+"\n<--themeNewStyle()");
     return two30;
 }
 
 //Boolean///////////////////////////////////////////////////////////////
-bool checkForTheme(std::string theme){return linuxcommon::test_file(theme);}
+bool checkForTheme(std::string theme){
+	debug_out("bool checkForTheme(std::string "+theme+")");
+	return linuxcommon::test_file(theme);
+}
 bool checkThemeVersion(){
+	debug_out("bool checkThemeVersion()");
     bool text = false;
     bool title =false;
     bool inactive =false;
@@ -461,11 +504,13 @@ bool checkThemeVersion(){
     return isNewTheme;
 }
 bool oldThemesExist(){
+	debug_out("bool oldThemesExist()");
     std::string userHomePath = sysThemeDir();
     userHomePath+="old/";
     return linuxcommon::test_dir(userHomePath.c_str());
 }
 bool themesExist(){
+	debug_out("bool themesExist()");
     std::string userHomePath = sysThemeDir();
     return linuxcommon::test_dir(userHomePath.c_str());
 }
