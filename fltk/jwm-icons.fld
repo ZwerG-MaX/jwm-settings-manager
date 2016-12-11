@@ -85,7 +85,11 @@ ux.showSettings();*/}
           label OK
           callback {if(!switchTheme(iconsBrowser,32)){
   std::cerr<<"Error switching themes"<<std::endl;
-}}
+}
+else{
+  saveChanges();
+  quit();
+}} selected
           tooltip {Write to configuration file} xywh {271 230 45 25} box FLAT_BOX color 61 selection_color 59 labelcolor 55
         }
         Fl_Browser iconsBrowser {
@@ -99,7 +103,7 @@ ux.showSettings();*/}
 directories_button->value(0);
 directories_button->value(0);
 edit_button->hide();
-populateIconThemes(iconsBrowser);} selected
+populateIconThemes(iconsBrowser);}
           tooltip {Icon themes to choose from} xywh {102 230 71 25} box FLAT_BOX selection_color 63
         }
         Fl_Light_Button directories_button {

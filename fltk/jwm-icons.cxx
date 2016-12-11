@@ -39,6 +39,10 @@ void IconsUI::cb_Cancel(Fl_Button* o, void* v) {
 void IconsUI::cb_save_button_i(Fl_Button*, void*) {
   if(!switchTheme(iconsBrowser,32)){
   std::cerr<<"Error switching themes"<<std::endl;
+}
+else{
+  saveChanges();
+  quit();
 };
 }
 void IconsUI::cb_save_button(Fl_Button* o, void* v) {
