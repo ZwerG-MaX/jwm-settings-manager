@@ -510,8 +510,6 @@ public:
 private:
   inline void cb_OK2_i(Fl_Button*, void*);
   static void cb_OK2(Fl_Button*, void*);
-  inline void cb_TEST_i(Fl_Button*, void*);
-  static void cb_TEST(Fl_Button*, void*);
   inline void cb_Cancel2_i(Fl_Button*, void*);
   static void cb_Cancel2(Fl_Button*, void*);
   inline void cb_Model_i(Fl_Browser*, void*);

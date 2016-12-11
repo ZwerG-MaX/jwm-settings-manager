@@ -639,10 +639,10 @@ its over a panel item."));
         get_delay(o);
       } // Fl_Slider* delay_slider
       { Fl_Menu_Button* o = new Fl_Menu_Button(10, 135, 85, 25, gettext("enabled"));
-        o->tooltip(gettext("Determine if popups are shown. This is a comma-sep\342\200\220 arated  list  \
-of one or more of the following: true (all enabled), false (no  popups  enable\
-d),  button (tray buttons), clock (clocks), menu (menus), pager (pagers), and \
-task (task list items).  The  default is true."));
+        o->tooltip(gettext("Determine if popups are shown. This is a comma-separated list of one or more \
+of the following: true (all enabled), false (no  popups  enabled),  button (tr\
+ay buttons), clock (clocks), menu (menus), pager (pagers), and task (task list\
+ items). The default is true."));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->selection_color(FL_DARK_RED);
@@ -656,10 +656,10 @@ task (task list items).  The  default is true."));
         o->menu(menu_enabled);
       } // Fl_Menu_Button* o
       { Fl_Output* o = enabled_out = new Fl_Output(105, 135, 105, 25);
-        enabled_out->tooltip(gettext("Determine if popups are shown. This is a comma-sep\342\200\220 arated  list  \
-of one or more of the following: true (all enabled), false (no  popups  enable\
-d),  button (tray buttons), clock (clocks), menu (menus), pager (pagers), and \
-task (task list items).  The  default is true."));
+        enabled_out->tooltip(gettext("Determine if popups are shown. This is a comma-separated list of one or more \
+of the following: true (all enabled), false (no  popups  enabled),  button (tr\
+ay buttons), clock (clocks), menu (menus), pager (pagers), and task (task list\
+ items). The default is true."));
         enabled_out->box(FL_FLAT_BOX);
         enabled_out->color((Fl_Color)55);
         enabled_out->selection_color(FL_DARK_RED);

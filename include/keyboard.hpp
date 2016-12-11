@@ -72,7 +72,7 @@ void testLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutp
 std::string fixLayoutString(Fl_Browser *o);
 std::string getAction(std::string keyShortcut);
 std::string getKey(std::string keyShortcut);
-std::string getLayout();
+std::string getLayout(Fl_Input *o,std::string whichOne);
 std::string getMod(std::string keyShortcut);
 std::string getMod1(std::string keyShortcut);
 std::string getMod2(std::string keyShortcut);

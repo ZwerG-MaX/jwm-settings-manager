@@ -124,7 +124,7 @@ void keyModelPopulate(Fl_Browser *o){keyPopulate(o,"model");}
 void keyOptionPopulate(Fl_Browser *o){keyPopulate(o,"option");}
 void keyPopulate(Fl_Browser *o,std::string thingToGet){
 	debug_out("void keyPopulate(Fl_Browser *o,std::string "+thingToGet+")");
-	std::string list=linuxcommon::term_out("plocalectl list-x11-keymap-"+thingToGet+"s");
+	std::string list=linuxcommon::term_out("localectl list-x11-keymap-"+thingToGet+"s");
 	if(list.compare("")==0){
 		std::string file="/usr/share/X11/xkb/rules/base.lst";
 		if(!linuxcommon::test_file(file)){
@@ -296,7 +296,7 @@ std::string getKey(std::string keyShortcut){
     }
     return "";
 }
-std::string getLayout(){
+std::string getLayout(Fl_Input *o,std::string whichOne){
 	debug_out("std::string getLayout()");
 	std::string test_command=linuxcommon::term_out("which localectl");
 	std::string command="localectl";
@@ -313,9 +313,22 @@ std::string getLayout(){
 	else{
 		command+=" status";
 		layout=linuxcommon::term_out(command);
-		std::transform(layout.begin(),layout.end(),layout.begin(), ::tolower);
 	}
-	//std::vector<std::string> stringVec=linuxcommon::
+	std::vector<std::string> STRING_VEC=linuxcommon::delimiter_vector_from_string(layout,"\n");
+	for( std::vector<std::string>::iterator it = STRING_VEC.begin();
+		it!=STRING_VEC.end();
+		++it){
+			std::string tmp=*it;			
+			std::transform(tmp.begin(),tmp.end(),tmp.begin(), ::tolower);
+			unsigned int finder = tmp.find(whichOne);
+			if(finder<tmp.length()){
+				finder = tmp.find(":");
+				if(finder<tmp.length()){
+					tmp=tmp.substr(finder+1,std::string::npos);
+				}
+				layout=tmp;
+			}
+		}
 	return layout;
 }
 std::string getMod(std::string keyShortcut){

@@ -2421,9 +2421,7 @@ void populateOptions(Fl_Browser *o){
 
 }
 //Q
-void quit(){
-  exit(0);
-}
+void quit(){exit(0);}
 //R
 void removeElement(unsigned int whichMainElement, std::string element,std::string subelement,std::string text){
 	debug_out("void removeElement(unsigned int whichMainElement, std::string "+element+",std::string "+subelement+",std::string "+text+")");

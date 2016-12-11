@@ -50,7 +50,7 @@ class PopupsUI {open
   } {
     Fl_Window popup_window {
       label Popups open
-      xywh {725 134 275 220} type Double color 45 labelcolor 7 xclass {preferences-system-notifications} visible
+      xywh {439 195 275 220} type Double color 45 labelcolor 7 xclass {preferences-system-notifications} visible
     } {
       Fl_Scroll {} {open
         tooltip {This controls the look of popup tooltips such as those shown when the mouse sits over a panel item.} xywh {0 0 270 215}
@@ -74,8 +74,8 @@ class PopupsUI {open
           code0 {get_delay(o);}
         }
         Fl_Menu_Button {} {
-          label enabled
-          tooltip {Determine if popups are shown. This is a comma-sep‐ arated  list  of one or more of the following: true (all enabled), false (no  popups  enabled),  button (tray buttons), clock (clocks), menu (menus), pager (pagers), and task (task list items).  The  default is true.} xywh {10 135 85 25} box FLAT_BOX color 23 selection_color 72
+          label enabled open selected
+          tooltip {Determine if popups are shown. This is a comma-separated list of one or more of the following: true (all enabled), false (no  popups  enabled),  button (tray buttons), clock (clocks), menu (menus), pager (pagers), and task (task list items). The default is true.} xywh {10 135 85 25} box FLAT_BOX color 23 selection_color 72
         } {
           MenuItem {} {
             label true
@@ -121,7 +121,7 @@ enabled(value);}
           }
         }
         Fl_Output enabled_out {
-          tooltip {Determine if popups are shown. This is a comma-sep‐ arated  list  of one or more of the following: true (all enabled), false (no  popups  enabled),  button (tray buttons), clock (clocks), menu (menus), pager (pagers), and task (task list items).  The  default is true.} xywh {105 135 105 25} box FLAT_BOX color 55 selection_color 72
+          tooltip {Determine if popups are shown. This is a comma-separated list of one or more of the following: true (all enabled), false (no  popups  enabled),  button (tray buttons), clock (clocks), menu (menus), pager (pagers), and task (task list items). The default is true.} xywh {105 135 105 25} box FLAT_BOX color 55 selection_color 72
           code0 {std::string val=getElementAttribute("PopupStyle","enabled");}
           code1 {if(val.compare("")==0){val="true";}}
           code2 {o->value(val.c_str());}
@@ -891,8 +891,7 @@ return result;} {}
   } {
     code {std::string val=getElementAttribute("PopupStyle","delay");
 int num=linuxcommon::convert_string_to_number(val.c_str());
-o->value(num);} {selected
-    }
+o->value(num);} {}
   }
   Function {set_delay(Fl_Valuator*o)} {open
   } {

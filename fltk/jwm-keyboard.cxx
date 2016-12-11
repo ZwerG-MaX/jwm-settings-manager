@@ -1202,13 +1202,6 @@ void KeyboardUI::cb_OK2(Fl_Button* o, void* v) {
   ((KeyboardUI*)(o->parent()->user_data()))->cb_OK2_i(o,v);
 }
 
-void KeyboardUI::cb_TEST_i(Fl_Button*, void*) {
-  testLayout(layoutput, modeloutput, optionoutput);
-}
-void KeyboardUI::cb_TEST(Fl_Button* o, void* v) {
-  ((KeyboardUI*)(o->parent()->user_data()))->cb_TEST_i(o,v);
-}
-
 void KeyboardUI::cb_Cancel2_i(Fl_Button*, void*) {
   layout_win->hide();
 }
@@ -1539,6 +1532,7 @@ Fl_Double_Window* KeyboardUI::layout_window() {
   { layout_win = new Fl_Double_Window(490, 310, gettext("Layout"));
     layout_win->user_data((void*)(this));
     { Fl_Browser* o = new Fl_Browser(5, 5, 150, 225, gettext("Layout"));
+      o->tooltip(gettext("The Keyboard regional layout"));
       o->type(2);
       o->box(FL_FLAT_BOX);
       o->selection_color((Fl_Color)80);
@@ -1547,7 +1541,7 @@ Fl_Double_Window* KeyboardUI::layout_window() {
     } // Fl_Browser* o
     { Fl_Input* o = layoutput = new Fl_Input(5, 245, 150, 25);
       layoutput->box(FL_FLAT_BOX);
-      o->value(getLayout().c_str());
+      o->value(getLayout(o,"layout").c_str());
     } // Fl_Input* layoutput
     { Fl_Button* o = new Fl_Button(440, 275, 45, 30, gettext("OK"));
       o->tooltip(gettext("Write to configuration file"));
@@ -1557,14 +1551,6 @@ Fl_Double_Window* KeyboardUI::layout_window() {
       o->labelcolor((Fl_Color)55);
       o->callback((Fl_Callback*)cb_OK2);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(170, 275, 45, 30, gettext("TEST"));
-      o->tooltip(gettext("Write to configuration file"));
-      o->box(FL_FLAT_BOX);
-      o->color(FL_YELLOW);
-      o->selection_color((Fl_Color)134);
-      o->labelcolor(FL_GRAY0);
-      o->callback((Fl_Callback*)cb_TEST);
-    } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(360, 275, 65, 30, gettext("Cancel"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)80);
@@ -1573,6 +1559,7 @@ Fl_Double_Window* KeyboardUI::layout_window() {
       o->callback((Fl_Callback*)cb_Cancel2);
     } // Fl_Button* o
     { Fl_Browser* o = new Fl_Browser(165, 5, 145, 225, gettext("Model"));
+      o->tooltip(gettext("The type of keyboard"));
       o->type(2);
       o->box(FL_FLAT_BOX);
       o->selection_color((Fl_Color)80);
@@ -1580,14 +1567,16 @@ Fl_Double_Window* KeyboardUI::layout_window() {
       keyModelPopulate(o);
     } // Fl_Browser* o
     { Fl_Browser* o = new Fl_Browser(320, 5, 165, 220, gettext("Option"));
+      o->tooltip(gettext("Additional quirks"));
       o->type(2);
       o->box(FL_FLAT_BOX);
       o->selection_color((Fl_Color)80);
       o->callback((Fl_Callback*)cb_Option);
       keyOptionPopulate(o);
     } // Fl_Browser* o
-    { modeloutput = new Fl_Input(165, 245, 150, 25);
+    { Fl_Input* o = modeloutput = new Fl_Input(165, 245, 150, 25);
       modeloutput->box(FL_FLAT_BOX);
+      o->value(getLayout(o,"model").c_str());
     } // Fl_Input* modeloutput
     { optionoutput = new Fl_Input(320, 245, 165, 25);
       optionoutput->box(FL_FLAT_BOX);

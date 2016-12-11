@@ -929,29 +929,24 @@ o->deactivate();}
   } {
     Fl_Window layout_win {
       label Layout open
-      xywh {140 299 490 310} type Double visible
+      xywh {561 233 490 310} type Double visible
     } {
       Fl_Browser {} {
         label Layout
         callback {std::string val =fixLayoutString(o);
 layoutput->value(val.c_str());
 layoutput->redraw();}
-        xywh {5 5 150 225} type Hold box FLAT_BOX selection_color 80
+        tooltip {The Keyboard regional layout} xywh {5 5 150 225} type Hold box FLAT_BOX selection_color 80
         code0 {keyLayoutPopulate(o);}
       }
       Fl_Input layoutput {
         xywh {5 245 150 25} box FLAT_BOX
-        code0 {o->value(getLayout().c_str());}
+        code0 {o->value(getLayout(o,"layout").c_str());}
       }
       Fl_Button {} {
         label OK
-        callback {setLayout(layoutput, modeloutput, optionoutput);} selected
+        callback {setLayout(layoutput, modeloutput, optionoutput);}
         tooltip {Write to configuration file} xywh {440 275 45 30} box FLAT_BOX color 61 selection_color 59 labelcolor 55
-      }
-      Fl_Button {} {
-        label TEST
-        callback {testLayout(layoutput, modeloutput, optionoutput);}
-        tooltip {Write to configuration file} xywh {170 275 45 30} box FLAT_BOX color 95 selection_color 134 labelcolor 32
       }
       Fl_Button {} {
         label Cancel
@@ -963,19 +958,20 @@ layoutput->redraw();}
         callback {std::string val =fixLayoutString(o);
 modeloutput->value(val.c_str());
 modeloutput->redraw();}
-        xywh {165 5 145 225} type Hold box FLAT_BOX selection_color 80
+        tooltip {The type of keyboard} xywh {165 5 145 225} type Hold box FLAT_BOX selection_color 80
         code0 {keyModelPopulate(o);}
       }
       Fl_Browser {} {
         label Option
         callback {std::string val =fixLayoutString(o);
 optionoutput->value(val.c_str());
-optionoutput->redraw();}
-        xywh {320 5 165 220} type Hold box FLAT_BOX selection_color 80
+optionoutput->redraw();} selected
+        tooltip {Additional quirks} xywh {320 5 165 220} type Hold box FLAT_BOX selection_color 80
         code0 {keyOptionPopulate(o);}
       }
       Fl_Input modeloutput {
         xywh {165 245 150 25} box FLAT_BOX
+        code0 {o->value(getLayout(o,"model").c_str());}
       }
       Fl_Input optionoutput {
         xywh {320 245 165 25} box FLAT_BOX
