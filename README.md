@@ -122,3 +122,8 @@ Edit menus, and configure menu items easily
 ![Alt text](/screenshots/clock.png?raw=true "Clock Settings Window")
 
 Edit the clock display easily, and modify timezone settings quickly
+
+##Shutdown window
+![Alt text](/screenshots/shutdown.png?raw=true "Shutdown Window")
+
+This launches a variety of programs to control shutdown/suspend/logout from a JWM/ToriOS session
