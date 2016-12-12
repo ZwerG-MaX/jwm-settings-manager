@@ -71,7 +71,7 @@ std::string getTheme(std::string whichTheme);
 std::string sysThemeDir();
 std::string userThemeDir();
 std::string theme_cb(Fl_Browser* browser,bool systemTheme, Fl_Input* current_theme);
-std::string getButton(std::string element);
+std::string getButton(std::string element,std::string themefile);
 //int
 int saveAs(std::string save_name);
 int populateANYThemes(Fl_Browser *o,std::string checkHERE,bool backone);

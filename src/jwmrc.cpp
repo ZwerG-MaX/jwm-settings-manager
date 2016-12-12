@@ -1567,7 +1567,12 @@ std::string makeTempName(std::string filename){
 	filename+="~";
 	return filename;
 }
-std::string makeNOTtemp(std::string filename){return linuxcommon::remove_cruft(filename,"~");}
+std::string makeNOTtemp(std::string filename){
+	unsigned int find=filename.find("~");
+	std::string tmp=filename;
+	if(find==filename.length()-1){tmp=tmp.erase(find,std::string::npos);}
+	return tmp;
+}
 std::string menuButtonText(pugi::xml_node node){
 	debug_out("std::string menuButtonText(pugi::xml_node node)");
 	if(!node){errorOUT("Button node was not found");return "";}

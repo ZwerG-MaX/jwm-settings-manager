@@ -41,6 +41,11 @@ ADD_NEW=$(gettext "Add new items to Desktop")
 ##TODO: fix this so the install dir can be changed via the user
 RELINSTDIR="/usr/share"
 PROGNAME="${0/*\/}"
+if [[ "$(whoami)" != "root" ]]
+then
+  echo "Please rerun $0 as root"
+  exit 0
+fi
 ## our startup log file
 LOGDIR="$HOME/.jwm/jsm-logs"
 if [[ ! -d "$HOME" ]]
@@ -164,14 +169,15 @@ getPROG(){
   EXEC="$1"
   shift
   LIST=(${@})
-  if [ ! -x "$(which $EXEC)" ]
+  if [[ ! -x "$(which $EXEC)" ]]
   then
     PROG=""
     for i in "${LIST[@]}"
     do
-      [[ -x "$(which $i)" ]] && PROG="$i" && echo "$PROG" && break
+      [[ -x "$(which $i)" ]] && PROG="$i" && LOG "getPROG Found: $PROG" && echo "$PROG" && break
     done
   else
+    LOG "getPROG unsing first item: $PROG"
     PROG="$EXEC"
     echo "$PROG"
   fi
@@ -210,7 +216,7 @@ VOL_DOWN="amixer-down"
 VOL_MUTE="amixer-toggle"
 [[ -x "$VOL_MUTE" ]] || VOL_MUTE=""
 HELP_PROG=$(getPROG "xman" "${helpProgs[@]}")
-DISPLAY_PROG=$("arandr" "${displayProgs[@]}")
+DISPLAY_PROG=$(getPROG "arandr" "${displayProgs[@]}")
 LOGOUT_PROGRAM="torios-exit"
 [[ -x "$LOGOUT_PROGRAM" ]] || LOGOUT_PROGRAM="jwm -ext"
 TZ_PROG=$(getPROG "dpkg-reconfigure" "${clockProgs[@]}")
@@ -342,7 +348,8 @@ JWM_ROOT="root:${JWM_ROOT_NUM}"
 if [ -n "$(which starttorios)" ]
 then
   JWM_ROOT_MENU="<RootMenu onroot=\"${JWM_ROOT_NUM}\">"
-  [[ -n "$JWM_MENU" ]] && JWM_ROOT_MENU="$JWM_ROOT_MENU        <Include>${JWMexec}${JWM_MENU}</Include>"
+  [[ -n "$JWM_MENU" ]] && JWM_ROOT_MENU="$JWM_ROOT_MENU
+       <Include>${JWMexec}${JWM_MENU}</Include>"
   JWM_ROOT_MENU="$JWM_ROOT_MENU
        <Menu label=\"$AboutToriOS\" icon=\"help-about${EXTENTION}\" height=\"0\">
            <Program label=\"$Help\" icon=\"help${EXTENTION}\">${MANUAL}</Program>
@@ -414,7 +421,7 @@ W_HEIGHT="20"
 ## PANEL CONFIGURATIONS
 ## THE NORMAL CONFIG used in Default, Ambiance and Live
 [[ -n "$MENU_ICON" ]] && MENU_ICONer=" icon=\"${MENU_ICON}\""
-TRAY="    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign=\"fixed\" layout=\"horizontal\">
+DEFAULT_TRAY="    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign=\"fixed\" layout=\"horizontal\">
         <TrayButton label=\"${MENU_NAME}\"${MENU_ICONer} border=\"false\">
             <Button mask=\"1\">${JWM_ROOT}</Button>
             <Button mask=\"23\">${EDIT_MENU_ROOT}</Button>
@@ -431,9 +438,9 @@ TRAY="    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign
         <TaskList maxwidth=\"256\"/>
         <Dock/>
 $TRAYbuttonForTray"
-[[ -n "$(which xload)" ]] && TRAY="$TRAY
+[[ -n "$(which xload)" ]] && DEFAULT_TRAY="${DEFAULT_TRAY}
            <Swallow name=\"xload\" width=\"64\">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>"
-TRAY="$TRAY
+DEFAULT_TRAY="${DEFAULT_TRAY}
            ${CLOCK_TAG}
     </Tray>"
 ### OLD STYLE 2.2.2 configs
@@ -451,7 +458,7 @@ OLD_TRAY="$OLD_TRAY
         ${OLD_CLOCK_TAG}
         <TrayButton label=\"${SHUTDOWN_NAME}\" icon=\"${SHUTDOWN_ICON}\" border=\"false\">${SHUTDOWN_ROOT}</TrayButton>
     </Tray>"
-
+TRAY="${DEFAULT_TRAY}"
 ## see http://en.wikipedia.org/wiki/Table_of_keyboard_shortcuts
 # I tried to implement everything from GNOME, Windows and OSX in here
 KEYSHORTCUTS="<Key key=\"Up\">up</Key>
@@ -770,7 +777,8 @@ MOUSE="<DoubleClickSpeed>400</DoubleClickSpeed>
 AERGROUP="<Group>
         <Option>aerosnap</Option>
     </Group>"
-GROUPS="<Group>
+
+WINDOW_GROUPS="<Group>
         <Option>noshade</Option>
     </Group>
     <Group>
@@ -787,13 +795,13 @@ GROUPS="<Group>
         <Option>nolist</Option>
         <Option>sticky</Option>
     </Group>"
-
+export WINDOW_GROUPS
 #####################################################################################
 ### End Variables
 THEMEfiles=("Default" "Ambiance" "DarkGnome2" "LightGnome2" "Bassem" "Numix" )
 defaulttheme(){
-TRAY="${TRAY}"
-OLD_TRAY="${OLD_TRAY}"
+TRAY="${DEFAULT_TRAY}"
+OLD_TRAY="${OLD_DEFAULT_TRAY}"
 MENUS_LIST="${REGULAR_MENUS_LIST}"
 TASK_ACTIVE_FOREGROUND="#FFFFFF"
 TASK_ACTIVE_BACKGROUND="#5A584F"
@@ -948,8 +956,9 @@ BUTTONS="<ButtonClose>$INSTDIR/Buttons/Default/close.png</ButtonClose>
     <ButtonMin>$INSTDIR/Buttons/Default/min.png</ButtonMin>"
 }
 baseemtheme(){
-TRAY="    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign=\"fixed\" layout=\"horizontal\">
-<TrayButton icon=\"${MENU_ICON}\" border=\"false\">${TORI_ROOT}</TrayButton>
+
+TRAY="<Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign=\"fixed\" layout=\"horizontal\">
+		<TrayButton icon=\"${MENU_ICON}\" border=\"false\">${TORI_ROOT}</TrayButton>
         <Spacer/>
         ${CLOCK_TAG}
         <Spacer/>
@@ -959,12 +968,13 @@ TRAY="    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign
         <Pager labeled=\"true\"/>
         <TaskList maxwidth=\"256\"/>"
 [[ -n "$(which xload)" ]] && TRAY="$TRAY
-           <Swallow name=\"xload\" width=\"64\">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>"
+        <Swallow name=\"xload\" width=\"64\">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>"
+
 TRAY="$TRAY
-<TrayButton label=\"${PLACES_NAME}\" icon=\"${PLACES_ICON}\" border=\"false\">${PLACES_ROOT}</TrayButton>
+		<TrayButton label=\"${PLACES_NAME}\" icon=\"${PLACES_ICON}\" border=\"false\">${PLACES_ROOT}</TrayButton>
         <Dock/>
     </Tray>"
-OLD_TRAY="    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign=\"fixed\" layout=\"horizontal\">
+OLD_TRAY="<Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" halign=\"fixed\" layout=\"horizontal\">
 <TrayButton icon=\"${MENU_ICON}\" border=\"false\">${TORI_ROOT}</TrayButton>
         <Spacer/>
         ${OLD_CLOCK_TAG}
@@ -975,9 +985,9 @@ OLD_TRAY="    <Tray x=\"0\" y=\"-1\" height=\"34\" valign=\"top\" width=\"0\" ha
         <Pager labeled=\"true\"/>
         <TaskList maxwidth=\"256\"/>"
 [[ -n "$(which xload)" ]] && OLD_TRAY="$OLD_TRAY
-           <Swallow name=\"xload\" width=\"64\">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>"
-TRAY="$TRAY
-<TrayButton label=\"${PLACES_NAME}\" icon=\"${PLACES_ICON}\" border=\"false\">${PLACES_ROOT}</TrayButton>
+        <Swallow name=\"xload\" width=\"64\">xload -nolabel -bg DimGrey -fg Grey -hl DarkGrey</Swallow>"
+OLD_TRAY="$OLD_TRAY
+		<TrayButton label=\"${PLACES_NAME}\" icon=\"${PLACES_ICON}\" border=\"false\">${PLACES_ROOT}</TrayButton>
         <Dock/>
     </Tray>"
 MENUS_LIST="${REGULAR_MENUS_LIST}"
@@ -1072,7 +1082,7 @@ oldthemes(){
     </RootMenu>
 <!-- END MENUS -->
 <!-- GROUP -->
-    $GROUPS
+    $WINDOW_GROUPS
 <!-- PANEL -->
     $OLD_TRAY
 <!-- Panel Style -->
@@ -1120,10 +1130,10 @@ oldthemes(){
             <Outline>$WINDOW_ACTIVE_OUTLINE</Outline>
             <Opacity>$WINDOW_ACTIVE_OPACITY</Opacity>
         </Active>
-	<Text>$WINDOW_FOREGROUND</Text>
-	<Title>$WINDOW_BACKGROUND</Title>
-	<Outline>$WINDOW_OUTLINE</Outline>
-	<Opacity>$WINDOW_OPACITY</Opacity>
+		<Text>$WINDOW_FOREGROUND</Text>
+		<Title>$WINDOW_BACKGROUND</Title>
+		<Outline>$WINDOW_OUTLINE</Outline>
+		<Opacity>$WINDOW_OPACITY</Opacity>
     </WindowStyle>
     <FocusModel>click</FocusModel>
     <SnapMode distance=\"10\">border</SnapMode>
@@ -1172,9 +1182,9 @@ $EDIT_MENU
 $CLOCK_MENU
 <!-- END MENUS -->
 <!-- GROUP -->
-    $GROUPS
+    $WINDOW_GROUPS
 <!-- PANEL -->
-    $TRAY
+	$TRAY
 <!-- Panel Style -->
     <TaskListStyle>
         <Font>$FONT</Font>
@@ -1228,10 +1238,10 @@ $CLOCK_MENU
             <Outline>$WINDOW_ACTIVE_OUTLINE</Outline>
             <Opacity>$WINDOW_ACTIVE_OPACITY</Opacity>
         </Active>
-	<Foreground>$WINDOW_FOREGROUND</Foreground>
-	<Background>$WINDOW_BACKGROUND</Background>
-	<Outline>$WINDOW_OUTLINE</Outline>
-	<Opacity>$WINDOW_OPACITY</Opacity>
+		<Foreground>$WINDOW_FOREGROUND</Foreground>
+		<Background>$WINDOW_BACKGROUND</Background>
+		<Outline>$WINDOW_OUTLINE</Outline>
+		<Opacity>$WINDOW_OPACITY</Opacity>
     </WindowStyle>
     $BUTTONS
     <FocusModel>click</FocusModel>
@@ -1281,7 +1291,7 @@ $EDIT_MENU
 $CLOCK_MENU
 <!-- END MENUS -->
 <!-- GROUP -->
-    $GROUPS
+    $WINDOW_GROUPS
     $AERGROUP
 <!-- PANEL -->
     $TRAY
@@ -1324,10 +1334,10 @@ $CLOCK_MENU
             <Outline>$WINDOW_ACTIVE_OUTLINE</Outline>
             <Opacity>$WINDOW_ACTIVE_OPACITY</Opacity>
         </Active>
-	<Foreground>$WINDOW_FOREGROUND</Foreground>
-	<Background>$WINDOW_BACKGROUND</Background>
-	<Outline>$WINDOW_OUTLINE</Outline>
-	<Opacity>$WINDOW_OPACITY</Opacity>
+		<Foreground>$WINDOW_FOREGROUND</Foreground>
+		<Background>$WINDOW_BACKGROUND</Background>
+		<Outline>$WINDOW_OUTLINE</Outline>
+		<Opacity>$WINDOW_OPACITY</Opacity>
     </WindowStyle>
     $BUTTONS
     <FocusModel>click</FocusModel>

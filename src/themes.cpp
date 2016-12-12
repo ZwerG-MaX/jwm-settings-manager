@@ -50,23 +50,19 @@ void theme_copier(std::string theme){
 		errorOUT("Theme was empty");
 		return;
 	}
-	if(!linuxcommon::test_file(theme)){
-		errorOUT(theme+" is not a file");
-		return;
-	}
     bool existant=checkForTheme(theme);
-    std::string bash=bash = "/bin/bash -c '";
     std::string path=linuxcommon::home_path();
     std::string error=gettext("ERROR");
-    if (existant){
-        std::string copyTheme = bash;
-        copyTheme = copyTheme + "cp "+ theme + " " + path +".jwmrc'";
+    if(existant){
+        std::string copyTheme = "cp "+ theme + " " + path +".jwmrc";
         //userTheme();
-        if(system(copyTheme.c_str())!=0){
+        int retval =linuxcommon::run_a_program(copyTheme);
+        if(retval!=0){
             errorOUT(copyTheme+" "+error);
         }
-        copyTheme = bash+"cp "+ theme + " " + path +".jwmrc~'";
-        if(system(copyTheme.c_str())!=0){
+        copyTheme = "cp "+ theme + " " + path +".jwmrc~";
+        retval =linuxcommon::run_a_program(copyTheme);
+        if(retval!=0){
             errorOUT(copyTheme+" "+error);
         }
     }
@@ -196,99 +192,143 @@ void updateTheme( Fl_Browser *o,
 			else{populateThemes(o);}
 		}
 	}
-    if(!load(filename,false)){return;}
-//menu buttons
-    std::string maxButton = getButton("ButtonMax");
-    std::string minButton = getButton("ButtonMin");
-    std::string closeButton = getButton("ButtonClose");
+	/** Window buttons */
+    std::string maxButton = getButton("ButtonMax",filename);
+    std::string minButton = getButton("ButtonMin",filename);
+    std::string closeButton = getButton("ButtonClose",filename);
 	std::string WindowStyle="WindowStyle";
 	std::string TrayStyle="TrayStyle";
-    //These should never be empty, unless it is NOT a file.
-    if( (minButton.compare("")!=0) && (!isSVG(minButton)) ){
-        ///make image and copy
-        Fl_Image * MIN;
-        MIN = new Fl_PNG_Image(minButton.c_str());
-
-        //copy makes the image not get all quirky
-        Fl_Image * MIN2 = MIN->copy(25,25);
-        active_min_button->image(MIN2);
-        inactive_min_button->image(MIN2);
-
-        //redraw the button to show the icon
+	//debug_out("*************************************************\nMin="+minButton+"\nMax="+maxButton+"\nClose="+closeButton+"\n*************************************************\n");
+    /**These should never be empty, unless it is NOT a file, or the tags do not exist*/
+    if(minButton.compare("")!=0){
+        if(!load(filename,false)){return;}
+        makeWidgetIcon(minButton,active_min_button,25);
         active_min_button->redraw();
+        if(!load(filename,false)){return;}
+        makeWidgetIcon(minButton,inactive_min_button,25);
         inactive_min_button->redraw();
     }
-    if( (maxButton.compare("")!=0) && (!isSVG(maxButton)) ){
-        Fl_Image * MAX;
-        MAX = new Fl_PNG_Image(maxButton.c_str());
-        Fl_Image * MAX2 = MAX->copy(25,25);
-        active_max_button->image(MAX2);
-        inactive_max_button->image(MAX2);
+    if(maxButton.compare("")!=0){
+		if(!load(filename,false)){return;}
+        makeWidgetIcon(maxButton,active_max_button,25);
         active_max_button->redraw();
+        if(!load(filename,false)){return;}
+        makeWidgetIcon(maxButton,inactive_max_button,25);
         inactive_max_button->redraw();
     }
-    if( (closeButton.compare("")!=0) && (!isSVG(closeButton)) ){
-        Fl_Image * CLOSE;
-        CLOSE = new Fl_PNG_Image(closeButton.c_str());
-        Fl_Image * CLOSE2 = CLOSE->copy(25,25);
-        active_close_button->image(CLOSE2);
-        inactive_close_button->image(CLOSE2);
+    if(closeButton.compare("")!=0){
+		if(!load(filename,false)){return;}
+        makeWidgetIcon(closeButton,active_close_button,25);
         active_close_button->redraw();
+        if(!load(filename,false)){return;}
+        makeWidgetIcon(closeButton,inactive_close_button,25);
         inactive_close_button->redraw();
     }
-//windows
+/** Window styles */
     unsigned int active_color2=0;
-    unsigned int activeWindowColor = flCOLOR(getElementText(WindowStyle,"Active","Background"),active_color2);
-    unsigned int activeWindowColorText = flCOLOR(getElementText(WindowStyle,"Active","Foreground"));
-
-    //modify the UI
-    activeW->color(activeWindowColor);
-    activeW2->color(active_color2);
-    activeW_text->labelcolor(activeWindowColorText);
-    activeW->redraw();
-    activeW2->redraw();
-    activeW_text->redraw();
-
+    unsigned int activeWindowColorText = 0;
+    unsigned int activeWindowColor = 0;
+    std::string activeWC;
+	std::string activeWCT;
+	if(!load(filename,false)){return;}
+    activeWC = getElementText(WindowStyle,"Active","Background");
+    if(activeWC.compare("")==0){
+		if(!load(filename,false)){return;}
+		activeWC = getElementText(WindowStyle,"Active","Title");
+	}
+    if(!load(filename,false)){return;}
+	activeWCT = getElementText(WindowStyle,"Active","Foreground");
+	if(activeWCT.compare("")==0){
+		if(!load(filename,false)){return;}
+		activeWCT = getElementText(WindowStyle,"Active","Text");
+	}
+    /** modify the UI if needed */
+    if(activeWC.compare("")!=0){
+		activeWindowColor = flCOLOR(activeWC,active_color2);
+		activeW->color(activeWindowColor);
+		activeW2->color(active_color2);
+		activeW->redraw();
+		activeW2->redraw();
+	}
+	if(activeWCT.compare("")!=0){
+		activeWindowColorText=flCOLOR(activeWCT);
+		activeW_text->labelcolor(activeWindowColorText);
+		activeW_text->redraw();
+	}
     unsigned int inactive_color2=0;
-    unsigned int windowColor = flCOLOR(getElementText(WindowStyle),inactive_color2);
-    unsigned int windowColorText = flCOLOR(getElementText(WindowStyle,"Foreground"));
-
-    //modify the UI
-    inactiveW->color(windowColor);
-    inactiveW2->color(inactive_color2);
-    inactiveW_text->labelcolor(windowColorText);
-    inactiveW->redraw();
-    inactiveW2->redraw();
-    inactiveW_text->redraw();
-
-//Panel
-    std::string label;// = getPanelLabel(); //TODO
-    unsigned int panelColor = flCOLOR(getElementText(TrayStyle,"Background"));
-    unsigned int panelColorText = flCOLOR(getElementText(TrayStyle,"Foreground"));
-    #ifdef DEBUG
-    std::cerr<<"LABEL: "+label<<"\npanelColor: "<<panelColor<<"\npanelColorText: "<<panelColorText<<std::endl;
-    #endif
-    //modify the UI
-    tray->color(panelColor);//labelcolor
-    tray->labelcolor(panelColorText);
-    tray->redraw();
-
-    //panel Button
+    unsigned int windowColor = 0;
+    unsigned int windowColorText = 0;
+    if(!load(filename,false)){return;}
+    std::string WC=getElementText(WindowStyle,"Background");
+    if(WC.compare("")==0){
+		if(!load(filename,false)){return;}
+		WC=getElementText(WindowStyle,"Title");
+	}
+    if(!load(filename,false)){return;}
+    std::string WCT=getElementText(WindowStyle,"Foreground");
+    if(WCT.compare("")==0){
+		if(!load(filename,false)){return;}
+		WCT=getElementText(WindowStyle,"Text");
+	}
+    /** modify the UI if needed */
+    if(WC.compare("")!=0){
+		windowColor=flCOLOR(WC,inactive_color2);
+		inactiveW->color(windowColor);
+		inactiveW2->color(inactive_color2);
+		inactiveW->redraw();
+		inactiveW2->redraw();
+	}
+	if(WCT.compare("")!=0){
+		windowColorText = flCOLOR(WCT);
+		inactiveW_text->labelcolor(windowColorText);
+		inactiveW_text->redraw();
+	}
+/** Panel */
+	if(!load(filename,false)){return;}
+    std::string label =getElementAttribute("Tray","TrayButton","label");
+    unsigned int panelColor = 0;
+    if(!load(filename,false)){return;}
+    std::string PC = getElementText(TrayStyle,"Background");
+    /** modify the UI if needed */
+    if(PC.compare("")!=0){
+		panelColor = flCOLOR(PC);
+		tray->color(panelColor);
+	}
+    unsigned int panelColorText = 0;
+    if(!load(filename,false)){return;}
+    std::string PCT = getElementText(TrayStyle,"Foreground");
+    if(PCT.compare("")!=0){
+		panelColorText = flCOLOR(PCT);
+		tray->labelcolor(panelColorText);
+	}
+    debug_out("LABEL: "+label+"\npanelColor: "+PC+"\npanelColorText: "+PCT);
+	tray->redraw();
+    //panel Button */
     unsigned int panelButtonColorText=panelColorText;
     unsigned int panelButtonColor=panelColor;
-    //New version
+    
+    /** New version */
     if(themeNewStyle(filename)<1){
-        panelButtonColor = flCOLOR(getElementText("TrayButtonStyle","Background"));
-        panelButtonColorText = flCOLOR(getElementText("TrayButtonStyle","Foreground"));
-    }//END Dont do this IF new version
+		if(!load(filename,false)){return;}
+		std::string tmp=getElementText("TrayButtonStyle","Background");
+		if(tmp.compare("")!=0)
+			panelButtonColor = flCOLOR(tmp);
+		if(!load(filename,false)){return;}
+		tmp = getElementText("TrayButtonStyle","Foreground");
+		if(tmp.compare("")!=0)
+			panelButtonColorText = flCOLOR(tmp);
+    }/**END Dont do this IF new version*/
     else{
         panelButtonColor=panelColor;
         panelButtonColorText = panelColorText;
     }
-    button->copy_label(label.c_str());
+    if(label.compare("")!=0)
+		button->copy_label(label.c_str());
+	
     button->color(panelButtonColor);
     button->labelcolor(panelButtonColorText);
     button_icon->color(panelButtonColor);
+    if(!load(filename,false)){return;}
     std::string icon_file = getPanelButtonIcon();
     makeWidgetIcon(icon_file,button_icon,30);
     button->redraw();
@@ -393,14 +433,16 @@ std::string theme_cb(Fl_Browser* browser,bool systemTheme, Fl_Input* current_the
 	current_theme->redraw();
 	return returnpath;
 }
-std::string getButton(std::string element){
+std::string getButton(std::string element,std::string themefile){
 	debug_out("std::string getButton(std::string "+element+")");
+	if(!load(themefile,false)){return "";}
 	std::string filename=getElementText(element);
 	if(linuxcommon::test_file(filename)){
 		debug_out(filename+" is a file");
 		return filename;
 	}
-	debug_out(filename+" is NOT a file");
+	debug_out(filename+" is NOT a file still going to try to make it happen...");
+	if(!load(themefile,false)){return "";}
 	std::vector<std::string> icon_paths=IconPaths();
 	return linuxcommon::test_file_in_vector_path(filename,icon_paths);
 }
@@ -456,32 +498,54 @@ int themeNewStyle(std::string themefile){
     int not23 = -1; //OLD
     int two30 = 0; // version before removing traybutton/tasklist styles
     int two3later = 1; //2.3.2 ++
+    //int NEWEST = 2; //Added traybutton taskliststyles
     debug_out("loading theme");
     int retval=loadTheme(themefile);
     if(retval!=0){return 42;}
-    if( !(isElement("TrayButtonStyle")) &&
-        !(isElement("TaskListStyle")) &&
-        !(isElement("ClockStyle")) ){
+    bool TBS=isElement("TrayButtonStyle");
+    retval=loadTheme(themefile);
+    if(retval!=0){return 42;}
+    bool TLS=isElement("TaskListStyle");
+    retval=loadTheme(themefile);
+    if(retval!=0){return 42;}
+    bool CS=isElement("ClockStyle");
+    if(!TBS && !TLS && !CS ){
 		std::string temp=linuxcommon::convert_num_to_string(two3later);
-		debug_out("this is an NEW (2.3.2++) theme, returning:"+temp+"\n<--themeNewStyle()");
+		debug_out("this is an NEW (>2.3.2) but not newest(2.3.6) theme, returning:"+temp+"\n<--themeNewStyle()");
         return two3later;
     }
-    //OLD STYLE
-	if((isElement(tray,aback)) ||
-	(isElement(task,aback)) ||
-	(isElement(pager,aback)) ||
-	(isElement(button,aback)) ||
-	(isElement(tray,afore)) ||
-	(isElement(task,afore)) ||
-	(isElement(pager,afore)) ||
-	(isElement(button,afore))
-	){
+    retval=loadTheme(themefile);
+    if(retval!=0){return 42;}
+    bool TAB=isElement(tray,aback);
+    retval=loadTheme(themefile);
+    if(retval!=0){return 42;}
+    bool TSAB=isElement(task,aback);
+    retval=loadTheme(themefile);
+    if(retval!=0){return 42;}
+    bool PAB=isElement(pager,aback);
+    retval=loadTheme(themefile);
+    if(retval!=0){return 42;}
+    bool BAB=isElement(button,aback);
+    retval=loadTheme(themefile);
+    if(retval!=0){return 42;}
+    bool TAF=isElement(tray,afore);
+    retval=loadTheme(themefile);
+    if(retval!=0){return 42;}
+    bool TSAF=isElement(task,afore);
+    retval=loadTheme(themefile);
+    if(retval!=0){return 42;}
+    bool PAF=isElement(pager,afore);
+    retval=loadTheme(themefile);
+    if(retval!=0){return 42;}
+    bool BAF=isElement(button,afore);
+    /**OLD STYLE*/
+	if(TAB||TSAB||PAB||BAB||TAF||TSAF||PAF||BAF){
 		std::string temp=linuxcommon::convert_num_to_string(not23);
 		debug_out("this is an OLD theme, returning:"+temp+"\n<--themeNewStyle()");
 		return not23;
 	}
 	std::string temp=linuxcommon::convert_num_to_string(two30);
-	debug_out("this is an NEW (2.3.0 || 2.3.1) theme, returning:"+temp+"\n<--themeNewStyle()");
+	debug_out("this is an NEW (2.3.0 || 2.3.1||2.3.6) theme, returning:"+temp+"\n<--themeNewStyle()");
     return two30;
 }
 
