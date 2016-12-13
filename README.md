@@ -37,6 +37,7 @@ jwm-settings-manager will open the Main settings screen if no options are suppli
 configure JWM easily
 
 Options:
+```
  -a --autostart   show autostart settings
  -d --desktop     show desktop settings
  -f --font        show font settings
@@ -47,16 +48,16 @@ Options:
  -p --panel       show panel settings
  -t --themes      show theme settings
  -w --window      show window settings
+ --popups        show popups window
  -v --version     show current version
  -c --copyright   show copyright information
-
+ --debug        show debugging output
  SHORTCUTS FOR USE IN THE PANELS AND MENUS
  --shutdown --halt   show shutdown menu
  -u --menu        show menu editor
  -l --clock        show clock settings
- --debug        show debugging output
  -s --shortcuts         show shortcut editor
-
+```
 ##Panel
 ![Alt text](/screenshots/panel.png?raw=true "Panel Window")
 
@@ -127,3 +128,8 @@ Edit the clock display easily, and modify timezone settings quickly
 ![Alt text](/screenshots/shutdown.png?raw=true "Shutdown Window")
 
 This launches a variety of programs to control shutdown/suspend/logout from a JWM/ToriOS session
+
+##Popups window
+![Alt text](/screenshots/popups.png?raw=true "Popups Window")
+
+Edit the JWM tooltip popups, as well as dunst Notifications (if dunst is installed)
