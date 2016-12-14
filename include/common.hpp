@@ -64,6 +64,7 @@ namespace linuxcommon{
 	const char* convert_num_to_string(double num);
 	///string functions
 	//c
+	std::string check_list_of_exec(std::vector<std::string> list);
 	std::string color_double_to_string(const double *rgb);
 	std::string convert_num_to_string(int num);
 	std::string convert_unsigned_to_string(unsigned int num);

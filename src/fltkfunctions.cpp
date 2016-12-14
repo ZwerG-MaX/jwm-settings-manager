@@ -88,7 +88,8 @@ std::string choose_a_directory_to_save(std::string directory, std::string label)
 	if(String.compare("")!=0){
 		std::string message = gettext("Save as ");
 		message +=String;
-		int choice = fl_choice("Save As","No","Yes","Cancel");//message.c_str(),gettext("No"),gettext("Yes"),gettext("Cancel"));
+		int choice = fl_choice("Save ?","No","Yes","Cancel");//message.c_str(),gettext("No"),gettext("Yes"),gettext("Cancel"));
+		std::cout<<"Choice:"<<choice<<std::endl;
 		if (choice!=1){return "";}
 	}
 	return String;

@@ -1159,14 +1159,7 @@ bool testExec(std::string command){return linuxcommon::test_exec(command);}
 //String////////////////////////////////////////////////////////////////
 //C
 std::string checkListofExec(std::vector<std::string> list){
-	for( std::vector<std::string>::iterator it = list.begin();
-		it!=list.end();
-		++it){
-		std::string tmp=*it;
-		std::string tempexec=linuxcommon::term_out("which "+tmp);
-		if(tempexec.compare("")!=0){return tmp;}
-	}
-	return "";
+	return linuxcommon::check_list_of_exec(list);
 }
 std::string colorToString(const double *rgb){
 	return linuxcommon::color_double_to_string(rgb);

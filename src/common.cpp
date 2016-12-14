@@ -42,6 +42,19 @@ LINUX_COMMON__NS_BEGIN
 	}
 	///STRING FUNCTIONS/////////////////////////////////////////////////
 	//C
+	/** check a list of executables to see if thy exist and return the first working one
+	 * @param list the std::vector<std::string> list of executables to check
+	 */
+	std::string check_list_of_exec(std::vector<std::string> list){
+		for( std::vector<std::string>::iterator it = list.begin();
+		it!=list.end();
+		++it){
+			std::string tmp=*it;
+			bool tester=test_exec(tmp);
+			if(tester){return tmp;}
+		}
+		return "";
+	}
 	/** turn a double red green blue value into an HTML string
 	 * @param rgb the double to convert
 	 */

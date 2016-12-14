@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <float.h>
 #include "../include/fltkfunctions.hpp"
+#include "../include/jwmrc.h"
 #include <sstream>
 #include <FL/Fl_Text_Buffer.H>
 #include "../include/common.hpp"
@@ -211,8 +212,6 @@ private:
   static void cb_CLEAR(Fl_Button*, void*);
   inline void cb_PREVIEW_i(Fl_Button*, void*);
   static void cb_PREVIEW(Fl_Button*, void*);
-  inline void cb_Filename_i(Fl_Button*, void*);
-  static void cb_Filename(Fl_Button*, void*);
 public:
   Fl_Double_Window* preview_window(std::string message);
   Fl_Double_Window *preview_win;

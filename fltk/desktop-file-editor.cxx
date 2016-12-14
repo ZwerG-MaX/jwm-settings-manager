@@ -528,14 +528,6 @@ void Desktop::cb_PREVIEW(Fl_Button* o, void* v) {
   ((Desktop*)(o->parent()->parent()->user_data()))->cb_PREVIEW_i(o,v);
 }
 
-void Desktop::cb_Filename_i(Fl_Button*, void*) {
-  std::string filename=choose_a_directory_to_save("","");
-if(filename.compare("")!=0){Filename->value();};
-}
-void Desktop::cb_Filename(Fl_Button* o, void* v) {
-  ((Desktop*)(o->parent()->parent()->user_data()))->cb_Filename_i(o,v);
-}
-
 void Desktop::cb_SAVE1_i(Fl_Button*, void*) {
   if(check_file()){write_out();}
 close(preview_win);;
@@ -956,7 +948,7 @@ key."));
         o->labelcolor(FL_BACKGROUND2_COLOR);
         o->callback((Fl_Callback*)cb_SAVE);
       } // Fl_Button* o
-      { Filename = new Fl_Input(115, 475, 285, 30);
+      { Filename = new Fl_Input(15, 475, 385, 30);
         Filename->tooltip(gettext("The file you want to save (or the name of the current open file)"));
         Filename->box(FL_FLAT_BOX);
       } // Fl_Input* Filename
@@ -975,14 +967,6 @@ key."));
         o->selection_color((Fl_Color)94);
         o->labelcolor(FL_GRAY0);
         o->callback((Fl_Callback*)cb_PREVIEW);
-      } // Fl_Button* o
-      { Fl_Button* o = new Fl_Button(15, 473, 80, 30, gettext("Filename"));
-        o->tooltip(gettext("The filename to save this as."));
-        o->box(FL_FLAT_BOX);
-        o->color((Fl_Color)61);
-        o->selection_color((Fl_Color)59);
-        o->labelcolor(FL_BACKGROUND2_COLOR);
-        o->callback((Fl_Callback*)cb_Filename);
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
@@ -1691,6 +1675,7 @@ int main(int argc, char *argv[]) {
         for(int i=0;i<argc;i++){
           if(linuxcommon::test_file(command)){
             Desktop D;
+            debug_out("Command argument:"+command);
             D.make_window(command)->show();
             return Fl::run();
           }

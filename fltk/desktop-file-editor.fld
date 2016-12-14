@@ -38,6 +38,9 @@ decl {\#include <float.h>} {public local
 decl {\#include "../include/fltkfunctions.hpp"} {public global
 } 
 
+decl {\#include "../include/jwmrc.h"} {selected public global
+} 
+
 decl {\#include <sstream>} {public local
 } 
 
@@ -55,8 +58,8 @@ class Desktop {open
   } {
     Fl_Window {} {
       label {Desktop File Editor} open
-      xywh {542 97 410 570} type Double color 47
-      code0 {load(filePassedIn);} xclass {desktop-file-editor} visible
+      xywh {542 97 410 570} type Double color 47 hide
+      code0 {load(filePassedIn);} xclass {desktop-file-editor}
     } {
       Fl_Scroll {} {open
         xywh {0 0 409 563}
@@ -535,7 +538,7 @@ dbus->redraw();}
           tooltip {Save the current data as a file} xywh {320 530 80 30} box FLAT_BOX color 61 selection_color 59 labelcolor 7
         }
         Fl_Input Filename {
-          tooltip {The file you want to save (or the name of the current open file)} xywh {115 475 285 30} box FLAT_BOX
+          tooltip {The file you want to save (or the name of the current open file)} xywh {15 475 385 30} box FLAT_BOX
         }
         Fl_Button {} {
           label CLEAR
@@ -547,14 +550,8 @@ dbus->redraw();}
           callback {std::string re=stringfile();
 if(re.compare("")!=0){
   preview_window(re)->show();
-}} selected
+}}
           tooltip {Preview text} xywh {115 530 80 30} box FLAT_BOX color 95 selection_color 94 labelcolor 32
-        }
-        Fl_Button {} {
-          label Filename
-          callback {std::string filename=choose_a_directory_to_save("","");
-if(filename.compare("")!=0){Filename->value();}}
-          tooltip {The filename to save this as.} xywh {15 473 80 30} box FLAT_BOX color 61 selection_color 59 labelcolor 7
         }
       }
     }
@@ -563,7 +560,7 @@ if(filename.compare("")!=0){Filename->value();}}
   } {
     Fl_Window preview_win {
       label Preview open
-      xywh {535 206 465 465} type Double hide
+      xywh {430 140 465 465} type Double hide
     } {
       Fl_Scroll {} {open
         xywh {10 5 440 410}
@@ -1160,7 +1157,7 @@ if(!linuxcommon::save_string_to_file(fileContents,FILENAME)){
   } {
     Fl_Window error_win {
       label {Save Error} open
-      xywh {657 237 270 90} type Double visible
+      xywh {657 237 270 90} type Double hide
     } {
       Fl_Output {} {
         label {There was an error saving the file:}
@@ -1184,7 +1181,7 @@ get_help(help_browser);}
   } {
     Fl_Window help_win {
       label Help open
-      xywh {52 102 280 280} type Double visible
+      xywh {52 102 280 280} type Double hide
     } {
       Fl_Button {} {
         label CLOSE
@@ -1220,7 +1217,7 @@ else{
   }
 } 
 
-Function {main(int argc, char *argv[])} {return_type int
+Function {main(int argc, char *argv[])} {open return_type int
 } {
   code {std::string command;
 try{
@@ -1231,6 +1228,7 @@ try{
       for(int i=0;i<argc;i++){
         if(linuxcommon::test_file(command)){
           Desktop D;
+          debug_out("Command argument:"+command);
           D.make_window(command)->show();
           return Fl::run();
         }
