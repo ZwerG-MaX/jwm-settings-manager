@@ -124,7 +124,7 @@ void keyModelPopulate(Fl_Browser *o){keyPopulate(o,"model");}
 void keyOptionPopulate(Fl_Browser *o){keyPopulate(o,"option");}
 void keyPopulate(Fl_Browser *o,std::string thingToGet){
 	debug_out("void keyPopulate(Fl_Browser *o,std::string "+thingToGet+")");
-	std::string list=linuxcommon::term_out("localectl list-x11-keymap-"+thingToGet+"s");
+	std::string list=linuxcommon::term_out("localectl list-x11-keymap-"+thingToGet+"s --no-pager");
 	if(list.compare("")==0){
 		std::string file="/usr/share/X11/xkb/rules/base.lst";
 		if(!linuxcommon::test_file(file)){

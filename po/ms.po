@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR "Israel Dahl"
+# Malay Language Translation.
+# Copyright (C) 2016 "Israel Dahl"
 # This file is distributed under the same license as the "jwm-settings-manager" package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# faraco <skelic3@gmail.com>, 2016.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \"jwm-settings-manager\" \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-02 08:16-0600\n"
+"POT-Creation-Date: 2016-12-11 07:41-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,39 +17,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 #
-# File: fltk/desktop-file-editor.cxx, line: 570
-msgid "Desktop File Editor"
-msgstr ""
-#
 # File: fltk/desktop-file-editor.cxx, line: 578
-msgid "Normal"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 581
-msgid "Name"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 582
-msgid "Specific name of the application, for example \"Mozilla\"."
-msgstr ""
+msgid "Desktop File Editor"
+msgstr "Pengedit Fail Desktop"
 #
 # File: fltk/desktop-file-editor.cxx, line: 586
+msgid "Normal"
+msgstr "Normal"
+#
+# File: fltk/desktop-file-editor.cxx, line: 589
+msgid "Name"
+msgstr "Nama"
+#
+# File: fltk/desktop-file-editor.cxx, line: 590
+msgid "Specific name of the application, for example \"Mozilla\"."
+msgstr "Nama spesifik aplikasi, contohnya \"Mozilla\"."
+#
+# File: fltk/desktop-file-editor.cxx, line: 594
 #. Fl_Input* name
 msgid "Comment"
-msgstr ""
+msgstr "Komen"
 #
-# File: fltk/desktop-file-editor.cxx, line: 587
+# File: fltk/desktop-file-editor.cxx, line: 595
 msgid ""
 "Tooltip for the entry, for example \"View sites on the Internet\". The value "
 "should not be redundant with the values of Name and GenericName."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 591
+# File: fltk/desktop-file-editor.cxx, line: 599
 #. Fl_Input* comment
 msgid "TryExec"
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 592
+# File: fltk/desktop-file-editor.cxx, line: 600
 msgid ""
 "Path to an executable file on disk used to determine if the program is "
 "actually installed. If the path is not an absolute path, the file is looked "
@@ -57,12 +57,12 @@ msgid ""
 "not executable, the entry may be ignored (not be used in menus, for example)."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 598
+# File: fltk/desktop-file-editor.cxx, line: 606
 #. Fl_Input* tryexec
 msgid "Exec"
-msgstr ""
+msgstr "Exec"
 #
-# File: fltk/desktop-file-editor.cxx, line: 599
+# File: fltk/desktop-file-editor.cxx, line: 607
 msgid ""
 "Program to execute, possibly with arguments. See the Exec key for details on "
 "how this key works. The Exec key is required if DBusActivatable is not set "
@@ -70,7 +70,7 @@ msgid ""
 "compatibility with implementations that do not understand DBusActivatable."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 605
+# File: fltk/desktop-file-editor.cxx, line: 613
 # File: fltk/jwm-menu.cxx, line: 576
 # File: fltk/jwm-menu.cxx, line: 640
 # File: fltk/jwm-panel.cxx, line: 2364
@@ -84,9 +84,9 @@ msgstr ""
 #. Fl_Button* icon_view
 #. Fl_Browser* options_desc
 msgid "Icon"
-msgstr ""
+msgstr "Ikon"
 #
-# File: fltk/desktop-file-editor.cxx, line: 606
+# File: fltk/desktop-file-editor.cxx, line: 614
 msgid ""
 "Icon to display in file manager, menus, etc. If the name is an absolute "
 "path, the given file will be used. If the name is not an absolute path, the "
@@ -94,7 +94,7 @@ msgid ""
 "the icon."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 612
+# File: fltk/desktop-file-editor.cxx, line: 620
 msgid ""
 "This specification defines 3 types of desktop entries: Application (type 1), "
 "Link (type 2) and Directory (type 3). To allow the addition of new types in "
@@ -102,17 +102,17 @@ msgid ""
 "type"
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 618
-# File: fltk/desktop-file-editor.cxx, line: 677
+# File: fltk/desktop-file-editor.cxx, line: 626
+# File: fltk/desktop-file-editor.cxx, line: 685
 msgid ""
 "Categories in which the entry should be shown in a menu (for possible values "
 "see the Desktop Menu Specification)."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 623
-# File: fltk/desktop-file-editor.cxx, line: 635
-# File: fltk/desktop-file-editor.cxx, line: 693
-# File: fltk/desktop-file-editor.cxx, line: 716
+# File: fltk/desktop-file-editor.cxx, line: 631
+# File: fltk/desktop-file-editor.cxx, line: 643
+# File: fltk/desktop-file-editor.cxx, line: 701
+# File: fltk/desktop-file-editor.cxx, line: 724
 msgid ""
 "A list of strings identifying the desktop environments that should display/"
 "not display a given desktop entry.\n"
@@ -130,13 +130,13 @@ msgid ""
 "group."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 647
-# File: fltk/desktop-file-editor.cxx, line: 739
+# File: fltk/desktop-file-editor.cxx, line: 655
+# File: fltk/desktop-file-editor.cxx, line: 747
 msgid "Whether the program runs in a terminal window."
-msgstr ""
+msgstr "Sama ada program berikut dilaksanakan di dalam tetingkap terminal."
 #
-# File: fltk/desktop-file-editor.cxx, line: 651
-# File: fltk/desktop-file-editor.cxx, line: 754
+# File: fltk/desktop-file-editor.cxx, line: 659
+# File: fltk/desktop-file-editor.cxx, line: 762
 msgid ""
 "NoDisplay means \"this application exists, but don't display it in the menus"
 "\". This can be useful to e.g. associate this application with MIME types, "
@@ -145,12 +145,12 @@ msgid ""
 "the netscape -remote, or kfmclient openURL kind of stuff)."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 658
+# File: fltk/desktop-file-editor.cxx, line: 666
 #. Fl_Input* nodisplay
 msgid "Type"
-msgstr ""
+msgstr "Jenis"
 #
-# File: fltk/desktop-file-editor.cxx, line: 659
+# File: fltk/desktop-file-editor.cxx, line: 667
 msgid ""
 "This specification defines 3 types of desktop entries: Application (type 1), "
 "Link (type 2) and Directory (type 3). To allow the addition of new types in "
@@ -158,99 +158,99 @@ msgid ""
 "type."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 676
+# File: fltk/desktop-file-editor.cxx, line: 684
 #. Fl_Menu_Button* o
 msgid "Categories"
-msgstr ""
+msgstr "Kategori-kategori"
 #
-# File: fltk/desktop-file-editor.cxx, line: 692
+# File: fltk/desktop-file-editor.cxx, line: 700
 #. Fl_Menu_Button* cat_Button
 msgid "NotShowIn"
-msgstr ""
+msgstr "TidakDitunjuk"
 #
-# File: fltk/desktop-file-editor.cxx, line: 715
+# File: fltk/desktop-file-editor.cxx, line: 723
 #. Fl_Menu_Button* nsi_Button
 msgid "OnlyShowIn"
-msgstr ""
+msgstr "HanyaTunjuk"
 #
-# File: fltk/desktop-file-editor.cxx, line: 738
+# File: fltk/desktop-file-editor.cxx, line: 746
 #. Fl_Menu_Button* osi_Button
 msgid "Terminal"
-msgstr ""
+msgstr "Terminal"
 #
-# File: fltk/desktop-file-editor.cxx, line: 753
+# File: fltk/desktop-file-editor.cxx, line: 761
 #. Fl_Menu_Button* term_Button
 msgid "NoDisplay"
-msgstr ""
+msgstr "TiadaPaparan"
 #
-# File: fltk/desktop-file-editor.cxx, line: 772
+# File: fltk/desktop-file-editor.cxx, line: 780
 #. Fl_Menu_Button* nod_Button
 msgid "ICON"
-msgstr ""
+msgstr "IKON"
 #
-# File: fltk/desktop-file-editor.cxx, line: 781
+# File: fltk/desktop-file-editor.cxx, line: 789
 # File: fltk/jwm-window.cxx, line: 1244
 #. Fl_Group* o
 msgid "Advanced"
-msgstr ""
+msgstr "Maju"
 #
-# File: fltk/desktop-file-editor.cxx, line: 785
+# File: fltk/desktop-file-editor.cxx, line: 793
 msgid "GenericName"
-msgstr ""
+msgstr "NamaGenerik"
 #
-# File: fltk/desktop-file-editor.cxx, line: 786
+# File: fltk/desktop-file-editor.cxx, line: 794
 msgid "Generic name of the application, for example \"Web Browser\"."
-msgstr ""
+msgstr "Nama generik untuk aplikasi, contohnya \"Pelayar Web\"."
 #
-# File: fltk/desktop-file-editor.cxx, line: 789
+# File: fltk/desktop-file-editor.cxx, line: 797
 #. Fl_Input* genericname
 msgid "Version"
-msgstr ""
+msgstr "Versi"
 #
-# File: fltk/desktop-file-editor.cxx, line: 790
+# File: fltk/desktop-file-editor.cxx, line: 798
 msgid ""
 "Version of the Desktop Entry Specification that the desktop entry conforms "
 "with. Entries that confirm with this version of the specification should use "
 "1.0. Note that the version field is not required to be present."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 795
+# File: fltk/desktop-file-editor.cxx, line: 803
 #. Fl_Input* version
 msgid "Path"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 796
-msgid ""
-"If entry is of type Application, the working directory to run the program in."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 799
-#. Fl_Input* path
-msgid "MimeType"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 800
-msgid "The MIME type(s) supported by this application."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 803
-#. Fl_Input* mime
-msgid "Implements"
-msgstr ""
+msgstr "Laluan"
 #
 # File: fltk/desktop-file-editor.cxx, line: 804
+msgid ""
+"If entry is of type Application, the working directory to run the program in."
+msgstr "Jika entry ada sejenis Aplikasi, "
+#
+# File: fltk/desktop-file-editor.cxx, line: 807
+#. Fl_Input* path
+msgid "MimeType"
+msgstr "JenisMime"
+#
+# File: fltk/desktop-file-editor.cxx, line: 808
+msgid "The MIME type(s) supported by this application."
+msgstr "Jenis MIME yang disokong oleh aplikasi ini."
+#
+# File: fltk/desktop-file-editor.cxx, line: 811
+#. Fl_Input* mime
+msgid "Implements"
+msgstr "Melaksanakan"
+#
+# File: fltk/desktop-file-editor.cxx, line: 812
 msgid ""
 "A list of interfaces that this application implements. By default, a desktop "
 "file implements no interfaces. See http://standards.freedesktop.org/desktop-"
 "entry-spec/latest/ar01s08.html for more information on how this works."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 809
+# File: fltk/desktop-file-editor.cxx, line: 817
 #. Fl_Input* implements
 msgid "Keywords"
-msgstr ""
+msgstr "Kata kunci"
 #
-# File: fltk/desktop-file-editor.cxx, line: 810
+# File: fltk/desktop-file-editor.cxx, line: 818
 msgid ""
 "A list of strings which may be used in addition to other metadata to "
 "describe this entry. This can be useful e.g. to facilitate searching through "
@@ -258,37 +258,37 @@ msgid ""
 "with the values of Name or GenericName."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 816
+# File: fltk/desktop-file-editor.cxx, line: 824
 #. Fl_Input* keywords
 msgid "StartupWMClass"
-msgstr ""
+msgstr "PermulaanWMClass"
 #
-# File: fltk/desktop-file-editor.cxx, line: 817
+# File: fltk/desktop-file-editor.cxx, line: 825
 msgid ""
 "If specified, it is known that the application will map at least one window "
 "with the given string as its WM class or WM name hint (see the Startup "
 "Notification Protocol Specification for more details)."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 822
+# File: fltk/desktop-file-editor.cxx, line: 830
 #. Fl_Input* wmclass
 msgid "URL"
-msgstr ""
+msgstr "URL"
 #
-# File: fltk/desktop-file-editor.cxx, line: 823
+# File: fltk/desktop-file-editor.cxx, line: 831
 msgid "If entry is Link type, the URL to access."
-msgstr ""
+msgstr "Jika entri adalah sejenis pautan, URL untuk diakses."
 #
-# File: fltk/desktop-file-editor.cxx, line: 828
-# File: fltk/desktop-file-editor.cxx, line: 864
+# File: fltk/desktop-file-editor.cxx, line: 836
+# File: fltk/desktop-file-editor.cxx, line: 872
 msgid ""
 "Identifiers for application actions. This can be used to tell the "
 "application to make a specific action, different from the default behavior. "
 "The Application actions section describes how actions work."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 835
-# File: fltk/desktop-file-editor.cxx, line: 872
+# File: fltk/desktop-file-editor.cxx, line: 843
+# File: fltk/desktop-file-editor.cxx, line: 880
 msgid ""
 "If true, it is KNOWN that the application will send a \"remove\" message "
 "when started with the DESKTOP_STARTUP_ID environment variable set. If false, "
@@ -299,8 +299,8 @@ msgid ""
 "Specification for more details)."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 845
-# File: fltk/desktop-file-editor.cxx, line: 893
+# File: fltk/desktop-file-editor.cxx, line: 853
+# File: fltk/desktop-file-editor.cxx, line: 901
 msgid ""
 "Hidden should have been called Deleted. It means the user deleted (at his "
 "level) something that was present (at an upper level, e.g. in the system "
@@ -310,8 +310,8 @@ msgid ""
 "file with Hidden=true in it."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 854
-# File: fltk/desktop-file-editor.cxx, line: 913
+# File: fltk/desktop-file-editor.cxx, line: 862
+# File: fltk/desktop-file-editor.cxx, line: 921
 msgid ""
 "A boolean value specifying if D-Bus activation is supported for this "
 "application. If this key is missing, the default value is false. If the "
@@ -322,77 +322,86 @@ msgid ""
 "understand the DBusActivatable key."
 msgstr ""
 #
-# File: fltk/desktop-file-editor.cxx, line: 863
+# File: fltk/desktop-file-editor.cxx, line: 871
 #. Fl_Input* dbus
 msgid "Actions"
-msgstr ""
+msgstr "Tindakan"
 #
-# File: fltk/desktop-file-editor.cxx, line: 871
+# File: fltk/desktop-file-editor.cxx, line: 879
 #. Fl_Button* o
 msgid "StartupNotify"
-msgstr ""
+msgstr "PermulaanNot"
 #
-# File: fltk/desktop-file-editor.cxx, line: 892
+# File: fltk/desktop-file-editor.cxx, line: 900
 #. Fl_Menu_Button* notify_Button
 msgid "Hidden"
-msgstr ""
+msgstr "Tersorok"
 #
-# File: fltk/desktop-file-editor.cxx, line: 912
+# File: fltk/desktop-file-editor.cxx, line: 920
 #. Fl_Menu_Button* o
 msgid "DBusActivatable"
-msgstr ""
+msgstr "DBusActivatable"
 #
-# File: fltk/desktop-file-editor.cxx, line: 937
+# File: fltk/desktop-file-editor.cxx, line: 945
 #. Fl_Tabs* o
 msgid "OPEN"
-msgstr ""
+msgstr "BUKA"
 #
-# File: fltk/desktop-file-editor.cxx, line: 938
+# File: fltk/desktop-file-editor.cxx, line: 946
 msgid "Open a desktop file"
-msgstr ""
+msgstr "Buka fail desktop"
 #
-# File: fltk/desktop-file-editor.cxx, line: 943
-# File: fltk/desktop-file-editor.cxx, line: 994
+# File: fltk/desktop-file-editor.cxx, line: 951
+# File: fltk/desktop-file-editor.cxx, line: 1010
 # File: fltk/jwm-panel.cxx, line: 2880
 #. Fl_Button* o
 #. Fl_Scroll* o
 #. Fl_Button* o
 msgid "SAVE"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 944
-# File: fltk/desktop-file-editor.cxx, line: 995
-msgid "Save the current data as a file"
-msgstr ""
+msgstr "SIMPAN"
 #
 # File: fltk/desktop-file-editor.cxx, line: 952
+# File: fltk/desktop-file-editor.cxx, line: 1011
+msgid "Save the current data as a file"
+msgstr "Simpan data sebagai fail"
+#
+# File: fltk/desktop-file-editor.cxx, line: 960
 msgid "The file you want to save (or the name of the current open file)"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 955
-#. Fl_Input* Filename
-msgid "CLEAR"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 956
-msgid "CLEAR EVERYTHING"
-msgstr ""
+msgstr "Fail yang hendak disimpan (atau nama fail yang sedang dibuka)"
 #
 # File: fltk/desktop-file-editor.cxx, line: 963
-#. Fl_Button* o
-msgid "PREVIEW"
-msgstr ""
+#. Fl_Input* Filename
+msgid "CLEAR"
+msgstr "BERSIHKAN"
 #
 # File: fltk/desktop-file-editor.cxx, line: 964
+msgid "CLEAR EVERYTHING"
+msgstr "BERSIHKAN KESEMUANYA"
+#
+# File: fltk/desktop-file-editor.cxx, line: 971
+#. Fl_Button* o
+msgid "PREVIEW"
+msgstr "PRATONTON"
+#
+# File: fltk/desktop-file-editor.cxx, line: 972
 msgid "Preview text"
-msgstr ""
+msgstr "Prototon teks"
 #
-# File: fltk/desktop-file-editor.cxx, line: 981
+# File: fltk/desktop-file-editor.cxx, line: 979
+#. Fl_Button* o
+msgid "Filename"
+msgstr "Nama fail"
+#
+# File: fltk/desktop-file-editor.cxx, line: 980
+msgid "The filename to save this as."
+msgstr "Simpan ini sabagai nama fail."
+#
+# File: fltk/desktop-file-editor.cxx, line: 997
 msgid "Preview"
-msgstr ""
+msgstr "Protonton"
 #
-# File: fltk/desktop-file-editor.cxx, line: 1002
-# File: fltk/desktop-file-editor.cxx, line: 1631
+# File: fltk/desktop-file-editor.cxx, line: 1018
+# File: fltk/desktop-file-editor.cxx, line: 1647
 # File: fltk/jwm-panel.cxx, line: 1993
 # File: fltk/jwm-panel.cxx, line: 2039
 # File: fltk/jwm-panel.cxx, line: 2131
@@ -403,35 +412,35 @@ msgstr ""
 #. Fl_Box* o
 #. Fl_Button* app_icon_box
 msgid "CLOSE"
-msgstr ""
+msgstr "TUTUP"
 #
-# File: fltk/desktop-file-editor.cxx, line: 1042
+# File: fltk/desktop-file-editor.cxx, line: 1058
 msgid "Choose a Directory"
-msgstr ""
+msgstr "Pilih Direktori"
 #
-# File: fltk/desktop-file-editor.cxx, line: 1319
+# File: fltk/desktop-file-editor.cxx, line: 1335
 msgid "Choose a Desktop File"
-msgstr ""
+msgstr "Pilih Fail Desktop"
 #
-# File: fltk/desktop-file-editor.cxx, line: 1599
+# File: fltk/desktop-file-editor.cxx, line: 1615
 msgid "Save Error"
-msgstr ""
+msgstr "Simpan Ralat"
 #
-# File: fltk/desktop-file-editor.cxx, line: 1601
+# File: fltk/desktop-file-editor.cxx, line: 1617
 msgid "There was an error saving the file:"
-msgstr ""
+msgstr "Terdapat ralat semasa menyimpan file: "
 #
-# File: fltk/desktop-file-editor.cxx, line: 1602
+# File: fltk/desktop-file-editor.cxx, line: 1618
 msgid "Make sure you have permission to save."
-msgstr ""
+msgstr "Pastikan anda mempunyai izin untuk menyimpan."
 #
-# File: fltk/desktop-file-editor.cxx, line: 1607
+# File: fltk/desktop-file-editor.cxx, line: 1623
 # File: fltk/jwm-autostart.cxx, line: 185
 # File: fltk/jwm-desktop.cxx, line: 204
 # File: fltk/jwm-fonts.cxx, line: 367
 # File: fltk/jwm-fonts.cxx, line: 398
-# File: fltk/jwm-icons.cxx, line: 175
-# File: fltk/jwm-icons.cxx, line: 233
+# File: fltk/jwm-icons.cxx, line: 171
+# File: fltk/jwm-icons.cxx, line: 229
 # File: fltk/jwm-keyboard.cxx, line: 1322
 # File: fltk/jwm-keyboard.cxx, line: 1442
 # File: fltk/jwm-keyboard.cxx, line: 1546
@@ -493,31 +502,31 @@ msgstr ""
 #. Fl_Input* input_to_add_prog
 #. Fl_Button* o
 msgid "OK"
-msgstr ""
+msgstr "OK"
 #
-# File: fltk/desktop-file-editor.cxx, line: 1614
+# File: fltk/desktop-file-editor.cxx, line: 1630
 #. Fl_Button* o
 msgid "?"
-msgstr ""
+msgstr "?"
 #
-# File: fltk/desktop-file-editor.cxx, line: 1629
+# File: fltk/desktop-file-editor.cxx, line: 1645
 msgid "Help"
-msgstr ""
+msgstr "Bantuan"
 #
 # File: fltk/jwm-autostart.cxx, line: 166
 msgid "Autostart Programs"
-msgstr ""
+msgstr "Program-program Automula"
 #
 # File: fltk/jwm-autostart.cxx, line: 172
 msgid "You can add extra arguments here"
-msgstr ""
+msgstr "Anda boleh menambah lebih pilihan disini"
 #
 # File: fltk/jwm-autostart.cxx, line: 178
 # File: fltk/jwm-desktop.cxx, line: 197
 # File: fltk/jwm-fonts.cxx, line: 358
 # File: fltk/jwm-fonts.cxx, line: 389
-# File: fltk/jwm-icons.cxx, line: 168
-# File: fltk/jwm-icons.cxx, line: 226
+# File: fltk/jwm-icons.cxx, line: 164
+# File: fltk/jwm-icons.cxx, line: 222
 # File: fltk/jwm-keyboard.cxx, line: 1355
 # File: fltk/jwm-keyboard.cxx, line: 1475
 # File: fltk/jwm-keyboard.cxx, line: 1554
@@ -549,15 +558,15 @@ msgstr ""
 #. Fl_Tabs* o
 #. Fl_Browser* theme_browser
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 #
 # File: fltk/jwm-autostart.cxx, line: 186
 # File: fltk/jwm-desktop.cxx, line: 205
 # File: fltk/jwm-fonts.cxx, line: 368
 # File: fltk/jwm-fonts.cxx, line: 399
-# File: fltk/jwm-icons.cxx, line: 176
-# File: fltk/jwm-icons.cxx, line: 205
-# File: fltk/jwm-icons.cxx, line: 234
+# File: fltk/jwm-icons.cxx, line: 172
+# File: fltk/jwm-icons.cxx, line: 201
+# File: fltk/jwm-icons.cxx, line: 230
 # File: fltk/jwm-keyboard.cxx, line: 1547
 # File: fltk/jwm-keyboard.cxx, line: 1622
 # File: fltk/jwm-menu.cxx, line: 955
@@ -571,7 +580,7 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 745
 # File: fltk/jwm-window.cxx, line: 1399
 msgid "Write to configuration file"
-msgstr ""
+msgstr "Tulis fail konfigurasi"
 #
 # File: fltk/jwm-autostart.cxx, line: 193
 # File: fltk/jwm-keyboard.cxx, line: 1629
@@ -599,22 +608,22 @@ msgstr ""
 #. Fl_Browser* name_browser
 #. Fl_Browser* class_browser
 msgid "@+"
-msgstr ""
+msgstr "@+"
 #
 # File: fltk/jwm-autostart.cxx, line: 194
 msgid "Add OR chose a program"
-msgstr ""
+msgstr "Tammbah ATAU pilih program"
 #
 # File: fltk/jwm-autostart.cxx, line: 210
 # File: fltk/jwm-mouse.cxx, line: 1199
 #. Fl_Group* o
 msgid "JWM"
-msgstr ""
+msgstr "JWM"
 #
 # File: fltk/jwm-autostart.cxx, line: 220
 #. Fl_Group* jwm_tab
 msgid "XDG"
-msgstr ""
+msgstr "XDG"
 #
 # File: fltk/jwm-autostart.cxx, line: 235
 msgid ""
@@ -624,46 +633,46 @@ msgstr ""
 #
 # File: fltk/jwm-desktop.cxx, line: 102
 msgid "Desktop Settings"
-msgstr ""
+msgstr "Tetapan Desktop"
 #
 # File: fltk/jwm-desktop.cxx, line: 125
 #. Fl_Box* color_display2
 msgid "Choose Image"
-msgstr ""
+msgstr "Pilih Imej"
 #
 # File: fltk/jwm-desktop.cxx, line: 130
 #. Fl_Button* o
 msgid "Choose Color"
-msgstr ""
+msgstr "Pilih Warna"
 #
 # File: fltk/jwm-desktop.cxx, line: 131
 # File: fltk/jwm-desktop.cxx, line: 137
 msgid "This will take icons off the desktop"
-msgstr ""
+msgstr "Ini akan membuang ikon daripada desktop"
 #
 # File: fltk/jwm-desktop.cxx, line: 136
 #. Fl_Button* o
 msgid "Choose Gradient"
-msgstr ""
+msgstr "Pilih Kecuraman"
 #
 # File: fltk/jwm-desktop.cxx, line: 142
 #. Fl_Button* o
 msgid "Filemanager"
-msgstr ""
+msgstr "Pengurus fail"
 #
 # File: fltk/jwm-desktop.cxx, line: 143
 msgid "Open the filemanager to change preferences"
-msgstr ""
+msgstr "Buka pengurus fail untuk mengubah pilihan"
 #
 # File: fltk/jwm-desktop.cxx, line: 148
 #. Fl_Button* fm_pref
 msgid "Icons on Desktop"
-msgstr ""
+msgstr "Ikon untuk Desktop"
 #
 # File: fltk/jwm-desktop.cxx, line: 167
 #. Fl_Output* current_bg
 msgid "Multiple Desktops"
-msgstr ""
+msgstr "Berbilang Desktop"
 #
 # File: fltk/jwm-desktop.cxx, line: 168
 msgid "This allows you to have multiple screens to work on from one Display"
@@ -672,38 +681,38 @@ msgstr ""
 # File: fltk/jwm-desktop.cxx, line: 179
 #. Fl_Check_Button* check_desktops
 msgid "Workspaces Wide"
-msgstr ""
+msgstr "Lebar Ruang kerja"
 #
 # File: fltk/jwm-desktop.cxx, line: 180
 msgid "Number of workspaces to the left and right"
-msgstr ""
+msgstr "Bilangan ruang kerja ke kiri dan ke kanan"
 #
 # File: fltk/jwm-desktop.cxx, line: 188
 #. Fl_Value_Input* num_desktop_w
 msgid "Workspaces High "
-msgstr ""
+msgstr "Tinggi Ruang kerja"
 #
 # File: fltk/jwm-desktop.cxx, line: 189
 msgid "Number of workspaces up and down"
-msgstr ""
+msgstr "Bilangan ruang kerja, atas dan bawah"
 #
 # File: fltk/jwm-desktop.cxx, line: 212
 #. Fl_Button* o
 msgid "Names"
-msgstr ""
+msgstr "Nama"
 #
 # File: fltk/jwm-desktop.cxx, line: 213
 msgid "Name your workspaces"
-msgstr ""
+msgstr "Nama ruang kerja"
 #
 # File: fltk/jwm-fonts.cxx, line: 221
 msgid "Font Settings"
-msgstr ""
+msgstr "Tetapan Fon"
 #
 # File: fltk/jwm-fonts.cxx, line: 230
 #. Fl_Box* window_box
 msgid "Window Title Font"
-msgstr ""
+msgstr "Fon Tajuk Tetingkap"
 #
 # File: fltk/jwm-fonts.cxx, line: 238
 # File: fltk/jwm-menu.cxx, line: 839
@@ -716,7 +725,7 @@ msgstr ""
 #. Fl_Box* o
 #. Fl_Button* a_fg
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 #
 # File: fltk/jwm-fonts.cxx, line: 247
 # File: fltk/jwm-fonts.cxx, line: 273
@@ -724,7 +733,7 @@ msgstr ""
 # File: fltk/jwm-fonts.cxx, line: 322
 # File: fltk/jwm-fonts.cxx, line: 351
 msgid "Open the font list Window"
-msgstr ""
+msgstr "Bukan senarai fon Tetingkap"
 #
 # File: fltk/jwm-fonts.cxx, line: 253
 # File: fltk/jwm-menu.cxx, line: 845
@@ -734,44 +743,44 @@ msgstr ""
 #. Fl_Button* o
 #. Fl_Box* o
 msgid "Inactive"
-msgstr ""
+msgstr "Tidak aktif"
 #
 # File: fltk/jwm-fonts.cxx, line: 265
 #. Fl_Box* menu_box
 msgid "Menu Font"
-msgstr ""
+msgstr "Fon Menu"
 #
 # File: fltk/jwm-fonts.cxx, line: 286
 #. Fl_Button* menu_font_color_button
 msgid "Panel Button Font"
-msgstr ""
+msgstr "Fon Butang Panel"
 #
 # File: fltk/jwm-fonts.cxx, line: 314
 #. Fl_Box* panel_box
 msgid "Panel Font"
-msgstr ""
+msgstr "Fon Panel"
 #
 # File: fltk/jwm-fonts.cxx, line: 342
 #. Fl_Button* task_font_color_button
 msgid "Running App List Font"
-msgstr ""
+msgstr "Font Senarai Aplikasi yang sedang dijalankan"
 #
 # File: fltk/jwm-fonts.cxx, line: 359
 # File: fltk/jwm-fonts.cxx, line: 390
 msgid "No changes will be saved"
-msgstr ""
+msgstr "Tiada perubahan akan disimpan"
 #
 # File: fltk/jwm-fonts.cxx, line: 387
 msgid "Choose a Font"
-msgstr ""
+msgstr "Pilih Fon"
 #
-# File: fltk/jwm-icons.cxx, line: 163
+# File: fltk/jwm-icons.cxx, line: 159
 # File: fltk/jwm-settings.cxx, line: 4095
 #. Fl_Button* o
 msgid "Icons"
-msgstr ""
+msgstr "Ikon"
 #
-# File: fltk/jwm-icons.cxx, line: 191
+# File: fltk/jwm-icons.cxx, line: 187
 # File: fltk/jwm-settings.cxx, line: 4125
 # File: fltk/jwm-themes.cxx, line: 86
 # File: fltk/jwm-themes.cxx, line: 100
@@ -779,75 +788,75 @@ msgstr ""
 #. Fl_Button* o
 #. Fl_Button* ok
 msgid "Themes"
-msgstr ""
+msgstr "Tema"
 #
-# File: fltk/jwm-icons.cxx, line: 192
+# File: fltk/jwm-icons.cxx, line: 188
 msgid "Icon themes to choose from"
-msgstr ""
+msgstr "Ikon tema untuk dipilih"
 #
-# File: fltk/jwm-icons.cxx, line: 197
+# File: fltk/jwm-icons.cxx, line: 193
 #. Fl_Light_Button* icon_themes_button
 msgid "Directories"
-msgstr ""
+msgstr "Direktori"
 #
-# File: fltk/jwm-icons.cxx, line: 198
+# File: fltk/jwm-icons.cxx, line: 194
 msgid "The icon directories JWM will search"
-msgstr ""
+msgstr "Ikon direcktori yang JWM akan cari"
 #
-# File: fltk/jwm-icons.cxx, line: 224
+# File: fltk/jwm-icons.cxx, line: 220
 msgid "Edit Directory"
-msgstr ""
+msgstr "Edit Direktori"
 #
-# File: fltk/jwm-icons.cxx, line: 244
+# File: fltk/jwm-icons.cxx, line: 240
 #. Fl_Input* dir_edit_input
 msgid "Choose a new directory"
-msgstr ""
+msgstr "Pilih direktori baharu"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1320
 msgid "Configure Keyboard Shortcut"
-msgstr ""
+msgstr "Buat Tetapan Kekunci Pintas"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1329
 # File: fltk/jwm-keyboard.cxx, line: 1449
 #. Fl_Button* o
 msgid "Action"
-msgstr ""
+msgstr "Tindakan"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1342
 # File: fltk/jwm-keyboard.cxx, line: 1462
 #. Fl_Menu_Button* o
 msgid "Choose Program"
-msgstr ""
+msgstr "Pilih Program"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1343
 # File: fltk/jwm-keyboard.cxx, line: 1463
 msgid "Choose a program to add"
-msgstr ""
+msgstr "Pilih program untuk ditambah"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1352
 # File: fltk/jwm-keyboard.cxx, line: 1472
 #. Fl_Input* action_name1
 #. Fl_Input* action_name
 msgid "OR"
-msgstr ""
+msgstr "ATAU"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1362
 # File: fltk/jwm-keyboard.cxx, line: 1482
 #. Fl_Button* o
 msgid "Modifiers"
-msgstr ""
+msgstr "Pengubah"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1374
 #. Fl_Output* mod3_output
 msgid "Current"
-msgstr ""
+msgstr "Sekarang"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1375
 # File: fltk/jwm-keyboard.cxx, line: 1392
 # File: fltk/jwm-keyboard.cxx, line: 1398
 # File: fltk/jwm-keyboard.cxx, line: 1404
 msgid "Current Shortcut to Edit"
-msgstr ""
+msgstr "Pintasan yang sedia ada untuk diedit"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1380
 # File: fltk/jwm-keyboard.cxx, line: 1492
@@ -868,33 +877,33 @@ msgstr ""
 #. Fl_Output* keyshortcut
 #. Fl_Output* modder3_output
 msgid "Key"
-msgstr ""
+msgstr "Kekunci"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1415
 # File: fltk/jwm-keyboard.cxx, line: 1509
 #. Fl_Output* old_action
 #. Fl_Output* key
 msgid "Special Keys"
-msgstr ""
+msgstr "Kekunci Istimewa"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1416
 # File: fltk/jwm-keyboard.cxx, line: 1510
 msgid "Picture button keys on the keyboard"
-msgstr ""
+msgstr "Gambar butang kekunci pada papan kekunci"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1439
 msgid "Create Keyboard Shortcut"
-msgstr ""
+msgstr "Cipta Pintasan Papan Kekunci"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1483
 msgid "First keyboard modifier"
-msgstr ""
+msgstr "Pengubah papan kekunci yang pertama"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1488
 # File: fltk/jwm-keyboard.cxx, line: 1500
 # File: fltk/jwm-keyboard.cxx, line: 1505
 msgid "Second keyboard modifier"
-msgstr ""
+msgstr "Pengubah papan kekunci yang kedua"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1532
 # File: fltk/jwm-keyboard.cxx, line: 1534
@@ -910,16 +919,16 @@ msgstr ""
 # File: fltk/jwm-keyboard.cxx, line: 1561
 #. Fl_Button* o
 msgid "Model"
-msgstr ""
+msgstr "Model"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1562
 msgid "The type of keyboard"
-msgstr ""
+msgstr "Jenis papan kekunci"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1569
 #. Fl_Browser* o
 msgid "Option"
-msgstr ""
+msgstr "Pilihan"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1570
 msgid "Additional quirks"
@@ -928,11 +937,11 @@ msgstr ""
 # File: fltk/jwm-keyboard.cxx, line: 1593
 #. Fl::add_handler(handle);
 msgid "Keyboard Settings"
-msgstr ""
+msgstr "Tetapan Papan Kekunci"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1598
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Pintasan Kekunci"
 #
 # File: fltk/jwm-keyboard.cxx, line: 1607
 # File: fltk/jwm-panel.cxx, line: 1460
@@ -942,11 +951,11 @@ msgstr ""
 #. Fl_Browser* indicator_browser
 #. Fl_Browser* shortcut_browser
 msgid "-"
-msgstr ""
+msgstr "-"
 #
 # File: fltk/jwm-menu.cxx, line: 514
 msgid "Add a Menu"
-msgstr ""
+msgstr "Tambah Menu"
 #
 # File: fltk/jwm-menu.cxx, line: 518
 msgid ""
@@ -971,7 +980,7 @@ msgstr ""
 #. Fl_Input* item_prog_icon
 #. Fl_Button* o
 msgid "Label"
-msgstr ""
+msgstr "Label"
 #
 # File: fltk/jwm-menu.cxx, line: 532
 msgid "The label to display at the top of the menu, normally this is NOT shown"
@@ -989,7 +998,7 @@ msgstr ""
 #. Fl_Value_Input* spacer_w
 #. Fl_Value_Input* o
 msgid "Height"
-msgstr ""
+msgstr "Tinggi"
 #
 # File: fltk/jwm-menu.cxx, line: 537
 msgid ""
@@ -1005,15 +1014,15 @@ msgstr ""
 #
 # File: fltk/jwm-menu.cxx, line: 570
 msgid "Add an Item"
-msgstr ""
+msgstr "Tambah Item"
 #
 # File: fltk/jwm-menu.cxx, line: 573
 msgid "The label to display for this item"
-msgstr ""
+msgstr "Label yang dipaparkan untuk item ini"
 #
 # File: fltk/jwm-menu.cxx, line: 577
 msgid "The icon to display for this item"
-msgstr ""
+msgstr "Ikon yang dipaparkan untuk item ini "
 #
 # File: fltk/jwm-menu.cxx, line: 580
 # File: fltk/jwm-menu.cxx, line: 646
@@ -1024,11 +1033,11 @@ msgstr ""
 #. Fl_Value_Output* button_val
 #. Fl_Button* clock_menu_conf_gear
 msgid "Program"
-msgstr ""
+msgstr "Program"
 #
 # File: fltk/jwm-menu.cxx, line: 581
 msgid "The program to run"
-msgstr ""
+msgstr "Program untuk dijalankan"
 #
 # File: fltk/jwm-menu.cxx, line: 584
 # File: fltk/jwm-menu.cxx, line: 649
@@ -1036,27 +1045,27 @@ msgstr ""
 #. Fl_Input* add_input
 #. Fl_Input* item_prog_input
 msgid "Confirm"
-msgstr ""
+msgstr "Sahkan"
 #
 # File: fltk/jwm-menu.cxx, line: 589
-# File: src/fltkfunctions.cpp, line: 124
-# File: src/fltkfunctions.cpp, line: 263
+# File: src/fltkfunctions.cpp, line: 123
+# File: src/fltkfunctions.cpp, line: 262
 # File: src/panel.cpp, line: 588
 msgid "Choose a program"
-msgstr ""
+msgstr "Pilih program"
 #
 # File: fltk/jwm-menu.cxx, line: 602
 msgid "Choose an icon"
-msgstr ""
+msgstr "Pilih ikon"
 #
 # File: fltk/jwm-menu.cxx, line: 607
 #. Fl_Button* add_icon_button
 msgid "Item to add"
-msgstr ""
+msgstr "Item untuk ditambah"
 #
 # File: fltk/jwm-menu.cxx, line: 623
 msgid "The JWM Menu item to add"
-msgstr ""
+msgstr "Menu item JWM untuk ditambah"
 #
 # File: fltk/jwm-menu.cxx, line: 626
 # File: fltk/jwm-panel.cxx, line: 2664
@@ -1072,29 +1081,29 @@ msgstr ""
 # File: fltk/jwm-menu.cxx, line: 638
 # File: fltk/jwm-menu.cxx, line: 678
 msgid "Configure the Item"
-msgstr ""
+msgstr "Buat tetapan item"
 #
 # File: fltk/jwm-menu.cxx, line: 690
 #. Fl_Button* o
 msgid "Root"
-msgstr ""
+msgstr "Root"
 #
 # File: fltk/jwm-menu.cxx, line: 694
 #. Fl_Input* prog_root
 msgid "Labeled?"
-msgstr ""
+msgstr "Telah dilabel?"
 #
 # File: fltk/jwm-menu.cxx, line: 695
 msgid "Display the Label in the Menu"
-msgstr ""
+msgstr "Paparkan label dalam Menu"
 #
 # File: fltk/jwm-menu.cxx, line: 726
 msgid "Edit Include Item"
-msgstr ""
+msgstr "Edit Masukkan Item"
 #
 # File: fltk/jwm-menu.cxx, line: 728
 msgid "Include"
-msgstr ""
+msgstr "Masukkan"
 #
 # File: fltk/jwm-menu.cxx, line: 754
 msgid "Menu properties"
@@ -1102,29 +1111,30 @@ msgstr ""
 #
 # File: fltk/jwm-menu.cxx, line: 762
 msgid "Menus"
-msgstr ""
+msgstr "Menu"
 #
 # File: fltk/jwm-menu.cxx, line: 767
 msgid "Add a menu"
-msgstr ""
+msgstr "Tambah menu"
 #
 # File: fltk/jwm-menu.cxx, line: 774
 msgid "remove a menu"
-msgstr ""
+msgstr "buang menu"
 #
 # File: fltk/jwm-menu.cxx, line: 782
 msgid ""
 "Options: Menu, Dynamic, Include, Program, Separator, Desktops, SendTo, "
 "Stick, Maximize, Minimize, Shade, Move, Resize, Kill, Close, Restart, Exit"
 msgstr ""
+"Pilihan: Menu, Dinamik, Masukkan, Program, Pemisah, Desktop, HantarKepada, Lekat, Memaksimumkan, Meminimumkan, Menambah bayang-bayang, Gerakkan, Ubah saiz. Bunuh, Tutup, Mula semula, Keluar"
 #
 # File: fltk/jwm-menu.cxx, line: 790
 msgid "Add a menu item"
-msgstr ""
+msgstr "Tambah menu item"
 #
 # File: fltk/jwm-menu.cxx, line: 797
 msgid "remove a menu item"
-msgstr ""
+msgstr "Buang menu item"
 #
 # File: fltk/jwm-menu.cxx, line: 805
 msgid "These options correspond to specific Root Menu items"
@@ -1133,7 +1143,7 @@ msgstr ""
 # File: fltk/jwm-menu.cxx, line: 813
 #. Fl_Browser* menuElementText
 msgid " "
-msgstr ""
+msgstr " "
 #
 # File: fltk/jwm-menu.cxx, line: 814
 msgid ""
@@ -1146,7 +1156,7 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 2746
 #. Fl_Input* swallow_name
 msgid "Configure"
-msgstr ""
+msgstr "Tetapkan"
 #
 # File: fltk/jwm-menu.cxx, line: 835
 # File: fltk/jwm-panel.cxx, line: 1500
@@ -1156,25 +1166,25 @@ msgstr ""
 #. Fl_Group* apps_tab
 #. Fl_Button* tray_outline2
 msgid "Appearance"
-msgstr ""
+msgstr "Penampilan"
 #
 # File: fltk/jwm-menu.cxx, line: 852
 msgid "Menu Inactive Background Color"
-msgstr ""
+msgstr "Warna Latar Belakang Menu Tidak Aktif"
 #
 # File: fltk/jwm-menu.cxx, line: 862
 msgid "Menu Active Background Color"
-msgstr ""
+msgstr "Warna Latar Belakang Menu Aktif"
 #
 # File: fltk/jwm-menu.cxx, line: 872
 msgid "Menu Inactive Text Color"
-msgstr ""
+msgstr "Warna Teks Menu Tidak Aktif"
 #
 # File: fltk/jwm-menu.cxx, line: 881
 # File: fltk/jwm-menu.cxx, line: 892
 #. Fl_Button* menu_font_color
 msgid "Opacity of Menu"
-msgstr ""
+msgstr "Kelegapan Menu"
 #
 # File: fltk/jwm-menu.cxx, line: 882
 # File: fltk/jwm-panel.cxx, line: 1550
@@ -1194,11 +1204,11 @@ msgstr ""
 #. Fl_Slider* active_o_slider
 #. Fl_Slider* inactive_o_slider
 msgid "%"
-msgstr ""
+msgstr "%"
 #
 # File: fltk/jwm-menu.cxx, line: 906
 msgid "Menu Active Text Color"
-msgstr ""
+msgstr "Warna Teks Menu Aktif"
 #
 # File: fltk/jwm-menu.cxx, line: 914
 # File: fltk/jwm-panel.cxx, line: 1635
@@ -1207,13 +1217,13 @@ msgstr ""
 #. Fl_Box* o
 #. Fl_Output* list_out
 msgid "decorations"
-msgstr ""
+msgstr "hiasan"
 #
 # File: fltk/jwm-menu.cxx, line: 915
 # File: fltk/jwm-panel.cxx, line: 1636
 # File: fltk/jwm-panel.cxx, line: 2289
 msgid "Flat or Motif style decorations"
-msgstr ""
+msgstr "Gaya hiasan Rata atau Motif"
 #
 # File: fltk/jwm-menu.cxx, line: 928
 # File: fltk/jwm-panel.cxx, line: 1656
@@ -1229,25 +1239,25 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 1650
 # File: fltk/jwm-panel.cxx, line: 2303
 msgid "Flat or Motif style decorations (flat is default)"
-msgstr ""
+msgstr "Gaya hiasan Rata atau Motif (rata adalah lalai)"
 #
 # File: fltk/jwm-menu.cxx, line: 971
 # File: fltk/jwm-menu.cxx, line: 974
 # File: fltk/jwm-panel.cxx, line: 2959
 # File: fltk/jwm-panel.cxx, line: 2962
 msgid "Nothing to Configure"
-msgstr ""
+msgstr "Tiada apa untuk ditetapkan"
 #
 # File: fltk/jwm-menu.cxx, line: 987
 msgid "Submenu"
-msgstr ""
+msgstr "Submenu"
 #
 # File: fltk/jwm-menu.cxx, line: 1036
 # File: fltk/jwm-menu.cxx, line: 1171
 # File: fltk/jwm-panel.cxx, line: 2245
 #. Fl_Value_Input* o
 msgid "Labeled"
-msgstr ""
+msgstr "Dilabelkan"
 #
 # File: fltk/jwm-menu.cxx, line: 1037
 msgid ""
@@ -1260,44 +1270,43 @@ msgstr ""
 #
 # File: fltk/jwm-mouse.cxx, line: 574
 msgid "Mouse Cursors"
-msgstr ""
+msgstr "Anak Panah"
 #
 # File: fltk/jwm-mouse.cxx, line: 606
-# File: src/themes.cpp, line: 55
 msgid "ERROR"
-msgstr ""
+msgstr "RALAT"
 #
 # File: fltk/jwm-mouse.cxx, line: 609
 # File: fltk/jwm-mouse.cxx, line: 1277
 #. Fl_Button* main_cursors_button
 msgid "QUIT"
-msgstr ""
+msgstr "BERHENTI"
 #
 # File: fltk/jwm-mouse.cxx, line: 615
 #. Fl_Button* o
 msgid "No touchpad detected"
-msgstr ""
+msgstr "Tiada pad sentuh dikesan"
 #
 # File: fltk/jwm-mouse.cxx, line: 625
 msgid "JWM Mouse Settings"
-msgstr ""
+msgstr "Tetapan Tetikus JWM"
 #
 # File: fltk/jwm-mouse.cxx, line: 628
 # File: fltk/jwm-mouse.cxx, line: 1202
 msgid "Double Click Speed"
-msgstr ""
+msgstr "Kelajuan Klik Berganda"
 #
 # File: fltk/jwm-mouse.cxx, line: 629
 # File: fltk/jwm-mouse.cxx, line: 1203
 msgid "This sets how fast you must click to Double Click"
-msgstr ""
+msgstr "Ini menetapkan berapa pantas untuk anda klik bagi klik berganda"
 #
 # File: fltk/jwm-mouse.cxx, line: 643
 # File: fltk/jwm-mouse.cxx, line: 1227
 #. Fl_Slider* double_click_slider2
 #. Fl_Value_Input* double_v
 msgid "Double Click Delta"
-msgstr ""
+msgstr "Delta Klik Berganda"
 #
 # File: fltk/jwm-mouse.cxx, line: 644
 # File: fltk/jwm-mouse.cxx, line: 1228
@@ -1309,42 +1318,42 @@ msgstr ""
 #. Fl_Slider* delta_slider2
 #. Fl_Slider* delta_slider
 msgid "Pixels"
-msgstr ""
+msgstr "Piksel"
 #
 # File: fltk/jwm-mouse.cxx, line: 668
 # File: fltk/jwm-mouse.cxx, line: 1217
 #. Fl_Value_Input* delta_v2
 #. Fl_Slider* double_click_slider
 msgid "Miliseconds"
-msgstr ""
+msgstr "Milisaat"
 #
 # File: fltk/jwm-mouse.cxx, line: 693
 # File: fltk/jwm-mouse.cxx, line: 1271
 #. Fl_Button* cancel_button3
 #. Fl_Button* ok_button
 msgid "Cursors"
-msgstr ""
+msgstr "Panah"
 #
 # File: fltk/jwm-mouse.cxx, line: 712
 msgid "Touchpad Settings"
-msgstr ""
+msgstr "Tetapan Pad Sentuh"
 #
 # File: fltk/jwm-mouse.cxx, line: 720
 msgid "TouchPad"
-msgstr ""
+msgstr "PadSentuh"
 #
 # File: fltk/jwm-mouse.cxx, line: 722
 msgid "Touchpad Mode"
-msgstr ""
+msgstr "Mod Pad Sentuh"
 #
 # File: fltk/jwm-mouse.cxx, line: 723
 msgid "Toggle the pad ON/OFF or only move (no scroll, tap, ecc.)"
-msgstr ""
+msgstr "Hidupkan pad kepada ON/OFF atau hanya gerakkan (tiada skrol, sentuh, ecc.)"
 #
 # File: fltk/jwm-mouse.cxx, line: 739
 #. Fl_Choice* TouchpadOff
 msgid "Guest Mouse Off"
-msgstr ""
+msgstr "Tetikus tetamu tidak dihidupkan"
 #
 # File: fltk/jwm-mouse.cxx, line: 740
 msgid "Toggle on/of the secondary pointer (tipically a joypad)"
@@ -1353,25 +1362,25 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 747
 #. Fl_Check_Button* GuestMouseOff
 msgid "Circular Pad"
-msgstr ""
+msgstr "Pad Membulat"
 #
 # File: fltk/jwm-mouse.cxx, line: 748
 msgid "Use this if your touchpad is circular"
-msgstr ""
+msgstr "Guna ini jika pad sentuh anda adalah membulat"
 #
 # File: fltk/jwm-mouse.cxx, line: 755
 #. Fl_Check_Button* CircularPad
 msgid "Touch Sensitivity"
-msgstr ""
+msgstr "Sensitiviti Sentuh"
 #
 # File: fltk/jwm-mouse.cxx, line: 756
 msgid "The minimum pressure to react to"
-msgstr ""
+msgstr "Tekanan minimum untuk memberi reaksi"
 #
 # File: fltk/jwm-mouse.cxx, line: 768
 #. Fl_Value_Slider* FingerLowHigh
 msgid "Click Emulation Time"
-msgstr ""
+msgstr "Masa Emulasi Klik"
 #
 # File: fltk/jwm-mouse.cxx, line: 769
 msgid "The duration of the mouse click generated by tapping"
@@ -1380,56 +1389,56 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 781
 #. Fl_Value_Slider* ClickTime
 msgid "Middle Button Emulation Time"
-msgstr ""
+msgstr "Masa Emulasi Butang Tengah"
 #
 # File: fltk/jwm-mouse.cxx, line: 782
 msgid "Maximum time for middle button emulation."
-msgstr ""
+msgstr "Masa maksimum untuk emulasi butang tengah."
 #
 # File: fltk/jwm-mouse.cxx, line: 796
 #. Fl_Group* o
 msgid "Tapping"
-msgstr ""
+msgstr "Sentuh"
 #
 # File: fltk/jwm-mouse.cxx, line: 799
 msgid "One Finger"
-msgstr ""
+msgstr "Satu Jari"
 #
 # File: fltk/jwm-mouse.cxx, line: 800
 msgid "Which mouse button is reported on a non-corner one-finger tap"
-msgstr ""
+msgstr "Butang tetikus manakah yang dilaporkan untuk bukan-sudut sentuhan satu jari"
 #
 # File: fltk/jwm-mouse.cxx, line: 815
 #. Fl_Choice* TapButton1
 msgid "Two Finger"
-msgstr ""
+msgstr "Dua Jari"
 #
 # File: fltk/jwm-mouse.cxx, line: 816
 msgid "Which mouse button is reported on a non-corner two-finger tap"
-msgstr ""
+msgstr "Butang tetikus manakah yang dilaporkan untuk bukan-sudut sentuhan dua jari"
 #
 # File: fltk/jwm-mouse.cxx, line: 832
 #. Fl_Choice* TapButton2
 msgid "Three Finger"
-msgstr ""
+msgstr "Tiga Jari"
 #
 # File: fltk/jwm-mouse.cxx, line: 833
 msgid "Which mouse button is reported on a non-corner three-finger tap"
-msgstr ""
+msgstr "Butang tetikus manakah yang dilaporkan bukan-sudut sentuhan tiga jari"
 #
 # File: fltk/jwm-mouse.cxx, line: 849
 #. Fl_Choice* TapButton3
 msgid "Top Left Corner"
-msgstr ""
+msgstr "Sudut Kiri Atas"
 #
 # File: fltk/jwm-mouse.cxx, line: 850
 msgid "Which mouse button is reported on a  top left corner finger tap"
-msgstr ""
+msgstr "Butang tetikus manakah yang dilaporkan sudut kiri atas sentuhan jari"
 #
 # File: fltk/jwm-mouse.cxx, line: 866
 #. Fl_Choice* LTCornerButton
 msgid "Top Right Corner"
-msgstr ""
+msgstr "Sudut Kanan Atas"
 #
 # File: fltk/jwm-mouse.cxx, line: 867
 msgid ""
@@ -1440,7 +1449,7 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 884
 #. Fl_Choice* RTCornerButton
 msgid "Bottom Left Corner"
-msgstr ""
+msgstr "Sudut Kiri Bawah"
 #
 # File: fltk/jwm-mouse.cxx, line: 885
 msgid ""
@@ -1451,7 +1460,7 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 902
 #. Fl_Choice* LBCornerButton
 msgid "Bottom Right Corner"
-msgstr ""
+msgstr "Sudut Kanan Bawah"
 #
 # File: fltk/jwm-mouse.cxx, line: 903
 msgid "Which mouse button is reported on a  bottom right corner finger tap"
@@ -1460,25 +1469,25 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 919
 #. Fl_Choice* RBCornerButton
 msgid "Tap Time"
-msgstr ""
+msgstr "Sentuh Masa"
 #
 # File: fltk/jwm-mouse.cxx, line: 920
 msgid "Maximum time for detecting a tap."
-msgstr ""
+msgstr "Maksimum masa untuk mengesan sentuhan."
 #
 # File: fltk/jwm-mouse.cxx, line: 932
 #. Fl_Value_Slider* MaxTapTime
 msgid "Double Tap Time"
-msgstr ""
+msgstr "Sentuh Masa Berganda"
 #
 # File: fltk/jwm-mouse.cxx, line: 933
 msgid "Maximum time for detecting a double tap"
-msgstr ""
+msgstr "Maksimum masa untuk mengesan sentuhan berganda"
 #
 # File: fltk/jwm-mouse.cxx, line: 945
 #. Fl_Value_Slider* MaxDoubleTapTime
 msgid "Tap Move"
-msgstr ""
+msgstr "Gerak sentuh"
 #
 # File: fltk/jwm-mouse.cxx, line: 946
 msgid "Maximum movement of the finger for detecting a tap"
@@ -1487,11 +1496,11 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 960
 #. Fl_Group* o
 msgid "Scrolling"
-msgstr ""
+msgstr "Skrol"
 #
 # File: fltk/jwm-mouse.cxx, line: 963
 msgid "Vertical 2 Finger Scroll"
-msgstr ""
+msgstr "Skrol 2 Jari Menegak"
 #
 # File: fltk/jwm-mouse.cxx, line: 964
 msgid "Enable Vertical Edge scrolling for this to work"
@@ -1500,7 +1509,7 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 971
 #. Fl_Check_Button* VertTwoFingerScroll
 msgid "Horizontal 2 Finger Scroll"
-msgstr ""
+msgstr "Skrol 2 Jari Melintang"
 #
 # File: fltk/jwm-mouse.cxx, line: 972
 msgid "Enable Horizontal Edge scrolling for this to work"
@@ -1509,7 +1518,7 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 979
 #. Fl_Check_Button* HorizTwoFingerScroll
 msgid "Up Down Buttons Scroll"
-msgstr ""
+msgstr "Skrol Atas Bawah Butang"
 #
 # File: fltk/jwm-mouse.cxx, line: 980
 msgid "If on, the up/down buttons generate button 4/5 events"
@@ -1518,7 +1527,7 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 987
 #. Fl_Check_Button* UpDownScrolling
 msgid "Left Right Buttons Scroll"
-msgstr ""
+msgstr "Skrol Butang Kanan Kiri"
 #
 # File: fltk/jwm-mouse.cxx, line: 988
 msgid "If on, the left/right buttons generate button 6/7 events"
@@ -1527,16 +1536,16 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 995
 #. Fl_Check_Button* LeftRightScrolling
 msgid "Circular Scroll"
-msgstr ""
+msgstr "Skrol Membulat"
 #
 # File: fltk/jwm-mouse.cxx, line: 996
 msgid "If on, circular scrolling is used"
-msgstr ""
+msgstr "Jika hidup, skrol membulat digunakan"
 #
 # File: fltk/jwm-mouse.cxx, line: 1003
 #. Fl_Check_Button* CircularScrolling
 msgid "VScroll Delta"
-msgstr ""
+msgstr "VScroll Delta"
 #
 # File: fltk/jwm-mouse.cxx, line: 1004
 # File: fltk/jwm-mouse.cxx, line: 1017
@@ -1546,26 +1555,26 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 1016
 #. Fl_Value_Slider* VertScrollDelta
 msgid "HScroll Delta"
-msgstr ""
+msgstr "HScroll Delta"
 #
 # File: fltk/jwm-mouse.cxx, line: 1029
 #. Fl_Value_Slider* HorizScrollDelta
 msgid "CScroll Delta"
-msgstr ""
+msgstr "CSroll Delta"
 #
 # File: fltk/jwm-mouse.cxx, line: 1030
 msgid "Move angle (radians) of finger to generate a scroll event"
-msgstr ""
+msgstr "Ubah sudut (radians) jari untuk menghasilkan acara skrol"
 #
 # File: fltk/jwm-mouse.cxx, line: 1042
 #. Fl_Value_Slider* CircScrollDelta
 msgid "CScroll Start"
-msgstr ""
+msgstr "CScroll Strat"
 #
 # File: fltk/jwm-mouse.cxx, line: 1058
 #. Fl_Choice* CircScrollTrigger
 msgid "Edge Min Speed"
-msgstr ""
+msgstr "Kelajuan Min Bucu"
 #
 # File: fltk/jwm-mouse.cxx, line: 1059
 msgid "Slowest setting for edge motion speed"
@@ -1574,7 +1583,7 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 1071
 #. Fl_Value_Slider* EdgeMotionMinSpeed
 msgid "Edge Max Speed"
-msgstr ""
+msgstr "Kelajuan Maks Bucu"
 #
 # File: fltk/jwm-mouse.cxx, line: 1072
 msgid "Fastest setting for edge motion speed"
@@ -1583,7 +1592,7 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 1084
 #. Fl_Value_Slider* EdgeMotionMaxSpeed
 msgid "Edge Sensitivity"
-msgstr ""
+msgstr "Sensitiviti Bucu"
 #
 # File: fltk/jwm-mouse.cxx, line: 1085
 msgid "Finger pressure for  motion speed"
@@ -1592,15 +1601,15 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 1099
 #. Fl_Group* o
 msgid "Movement"
-msgstr ""
+msgstr "Pergerakan"
 #
 # File: fltk/jwm-mouse.cxx, line: 1102
 msgid "@8->| Top"
-msgstr ""
+msgstr "@8->| Atas"
 #
 # File: fltk/jwm-mouse.cxx, line: 1103
 msgid "Y coordinate for top edge"
-msgstr ""
+msgstr "Koordinat Y untuk bucu atas"
 #
 # File: fltk/jwm-mouse.cxx, line: 1109
 # File: fltk/jwm-mouse.cxx, line: 1123
@@ -1611,7 +1620,7 @@ msgstr ""
 #. Fl_Value_Output* LeftEdge
 #. Fl_Value_Output* RightEdge
 msgid "Calibrate"
-msgstr ""
+msgstr "Kalibrasi"
 #
 # File: fltk/jwm-mouse.cxx, line: 1110
 msgid "To calibrate push button and move finger on the top of the pad"
@@ -1620,11 +1629,11 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 1116
 #. Fl_Button* o
 msgid "@2->| Bottom"
-msgstr ""
+msgstr "@2->| Bawah"
 #
 # File: fltk/jwm-mouse.cxx, line: 1117
 msgid "Y coordinate for bottom edge"
-msgstr ""
+msgstr "Koordinat Y untuk bucu bawah"
 #
 # File: fltk/jwm-mouse.cxx, line: 1124
 msgid "To calibrate push button and move finger on the bottom of the pad"
@@ -1633,11 +1642,11 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 1130
 #. Fl_Button* o
 msgid "@4->| Left"
-msgstr ""
+msgstr "@4->| Kiri"
 #
 # File: fltk/jwm-mouse.cxx, line: 1131
 msgid "X coordinate for left edge"
-msgstr ""
+msgstr "Koordinat X untuk bucu kiri"
 #
 # File: fltk/jwm-mouse.cxx, line: 1138
 msgid "To calibrate push button and move finger on the left of the pad"
@@ -1646,11 +1655,11 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 1144
 #. Fl_Button* o
 msgid "@->| Right"
-msgstr ""
+msgstr "@->| Kanan"
 #
 # File: fltk/jwm-mouse.cxx, line: 1145
 msgid "X coordinate for right edge"
-msgstr ""
+msgstr "Koordinat X untuk bucu kanan"
 #
 # File: fltk/jwm-mouse.cxx, line: 1152
 msgid "To calibrate push button and move finger on the right of the pad"
@@ -1659,56 +1668,56 @@ msgstr ""
 # File: fltk/jwm-mouse.cxx, line: 1158
 #. Fl_Button* o
 msgid "Min Speed"
-msgstr ""
+msgstr "Kelajuan Min"
 #
 # File: fltk/jwm-mouse.cxx, line: 1159
 msgid "Minimum speed factor"
-msgstr ""
+msgstr "Faktor kelajuan minimum"
 #
 # File: fltk/jwm-mouse.cxx, line: 1171
 #. Fl_Value_Slider* MinSpeed
 msgid "Max Speed"
-msgstr ""
+msgstr "Kelajuan Maks"
 #
 # File: fltk/jwm-mouse.cxx, line: 1172
 msgid "Maximum speed factor"
-msgstr ""
+msgstr "Faktor kelajuan maksimum"
 #
 # File: fltk/jwm-mouse.cxx, line: 1184
 #. Fl_Value_Slider* MaxSpeed
 msgid "Acceleration"
-msgstr ""
+msgstr "Pemecutan"
 #
 # File: fltk/jwm-mouse.cxx, line: 1185
 msgid "Acceleration factor"
-msgstr ""
+msgstr "Faktor pemecutan"
 #
 # File: fltk/jwm-mouse.cxx, line: 1252
 #. Fl_Value_Input* delta_v
 msgid "Reset"
-msgstr ""
+msgstr "Set semula"
 #
 # File: fltk/jwm-panel.cxx, line: 1133
 # File: fltk/jwm-panel.cxx, line: 2414
 # File: fltk/jwm-panel.cxx, line: 2530
 # File: fltk/jwm-panel.cxx, line: 2707
 # File: fltk/jwm-panel.cxx, line: 3077
-# File: src/jwmrc.cpp, line: 2252
+# File: src/jwmrc.cpp, line: 2253
 # File: src/panel.cpp, line: 468
 # File: src/panel.cpp, line: 665
 #. Fl_Button* prog_conf_gear
 #. Fl_Value_Output* output_button_val
 #. Fl_Input* hidden_icon_name
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 #
 # File: fltk/jwm-panel.cxx, line: 1365
 # File: fltk/jwm-panel.cxx, line: 3081
 # File: fltk/jwm-panel.cxx, line: 3277
-# File: src/jwmrc.cpp, line: 2255
+# File: src/jwmrc.cpp, line: 2256
 # File: src/panel.cpp, line: 668
 msgid "Spacer"
-msgstr ""
+msgstr "Jarak"
 #
 # File: fltk/jwm-panel.cxx, line: 1374
 # File: fltk/jwm-panel.cxx, line: 2494
@@ -1723,7 +1732,7 @@ msgstr ""
 #. Fl_Button* o
 #. Fl_Box* o
 msgid "Width"
-msgstr ""
+msgstr "Lebar"
 #
 # File: fltk/jwm-panel.cxx, line: 1375
 # File: fltk/jwm-panel.cxx, line: 3287
@@ -1739,89 +1748,89 @@ msgstr ""
 #
 # File: fltk/jwm-panel.cxx, line: 1405
 msgid "Panel Settings"
-msgstr ""
+msgstr "Tetapan Panel"
 #
 # File: fltk/jwm-panel.cxx, line: 1419
 # File: fltk/jwm-panel.cxx, line: 2938
 msgid "Add a Panel"
-msgstr ""
+msgstr "Tambah Panel"
 #
 # File: fltk/jwm-panel.cxx, line: 1423
 msgid "Panel 1"
-msgstr ""
+msgstr "Panel 1"
 #
 # File: fltk/jwm-panel.cxx, line: 1428
 msgid "Panel 2"
-msgstr ""
+msgstr "Panel 2"
 #
 # File: fltk/jwm-panel.cxx, line: 1433
 msgid "Panel 3"
-msgstr ""
+msgstr "Panel 3"
 #
 # File: fltk/jwm-panel.cxx, line: 1438
 msgid "Panel 4"
-msgstr ""
+msgstr "Panel 4"
 #
 # File: fltk/jwm-panel.cxx, line: 1442
 msgid "Remove Current  Panel"
-msgstr ""
+msgstr "Buang Panel Sedia Ada"
 #
 # File: fltk/jwm-panel.cxx, line: 1458
 # File: fltk/jwm-panel.cxx, line: 1497
 #. Fl_Button* o
 msgid "Apps"
-msgstr ""
+msgstr "Aplikasi"
 #
 # File: fltk/jwm-panel.cxx, line: 1485
 #. Fl_Button* choose_apps
 msgid "@+98>"
-msgstr ""
+msgstr "@+98>"
 #
 # File: fltk/jwm-panel.cxx, line: 1491
 #. Fl_Button* o
 msgid "@+92>"
-msgstr ""
+msgstr "@+92>"
 #
 # File: fltk/jwm-panel.cxx, line: 1530
 msgid "Panel Inactive Background Color"
-msgstr ""
+msgstr "Warna Latar Belakang Panel Tidak Aktif"
 #
 # File: fltk/jwm-panel.cxx, line: 1540
 msgid "Panel Button Active Text Color"
-msgstr ""
+msgstr "Warna Teks Butang Panel Aktif"
 #
 # File: fltk/jwm-panel.cxx, line: 1549
 #. Fl_Button* button_color_font_a
 msgid "Opacity of Panel  "
-msgstr ""
+msgstr "Kelegapan Panel "
 #
 # File: fltk/jwm-panel.cxx, line: 1560
 msgid "Opacity of Panel"
-msgstr ""
+msgstr "Kelegapan Panel"
 #
 # File: fltk/jwm-panel.cxx, line: 1574
 msgid "Panel Button Inactive Background Color"
-msgstr ""
+msgstr "Warna Latar Belakang Butang Panel Tidak Aktif"
 #
 # File: fltk/jwm-panel.cxx, line: 1584
 msgid "Panel Button Active Background Color"
-msgstr ""
+msgstr "Warna Latar Belakang Butang Panel Aktif"
 #
 # File: fltk/jwm-panel.cxx, line: 1594
 msgid "Panel Button Inactive Text Color"
-msgstr ""
+msgstr "Warna Teks Butang Panel Tidak Aktif"
 #
 # File: fltk/jwm-panel.cxx, line: 1604
 msgid "Panel Active Text Color"
-msgstr ""
+msgstr "Warna Teks Panel Aktif"
 #
 # File: fltk/jwm-panel.cxx, line: 1613
 msgid "Panel Active Background Color"
-msgstr ""
+msgstr "Warna Latar Belakang Panel Tidak Aktif"
 #
 # File: fltk/jwm-panel.cxx, line: 1622
 msgid "Panel Inactive Text Color"
-msgstr ""
+msgstr "Warna Teks Panel Tidak Aktif"
 #
 # File: fltk/jwm-panel.cxx, line: 1630
 # File: fltk/jwm-settings.cxx, line: 4083
@@ -1832,74 +1841,74 @@ msgstr ""
 #. Fl_Button* panel_font
 #. Fl_Box* button
 msgid "Panel"
-msgstr ""
+msgstr "Panel"
 #
 # File: fltk/jwm-panel.cxx, line: 1632
 #. Fl_Box* o
 msgid "Panel Buttons"
-msgstr ""
+msgstr "Butang Panel"
 #
 # File: fltk/jwm-panel.cxx, line: 1674
 # File: fltk/jwm-panel.cxx, line: 1945
 #. Fl_Group* o
 #. Fl_Output* layer
 msgid "Size And Position"
-msgstr ""
+msgstr "Posisi dan Saiz"
 #
 # File: fltk/jwm-panel.cxx, line: 1677
 # File: fltk/jwm-panel.cxx, line: 1702
 msgid "Panel Position"
-msgstr ""
+msgstr "Posisi Panel"
 #
 # File: fltk/jwm-panel.cxx, line: 1678
 msgid "Move the current panel to a new position"
-msgstr ""
+msgstr "Ubah kedudukan panel sedia kepada kedudukan baru"
 #
 # File: fltk/jwm-panel.cxx, line: 1683
 # File: fltk/jwm-panel.cxx, line: 1848
 msgid "top"
-msgstr ""
+msgstr "atas"
 #
 # File: fltk/jwm-panel.cxx, line: 1686
 # File: fltk/jwm-panel.cxx, line: 1851
 msgid "bottom"
-msgstr ""
+msgstr "bawah"
 #
 # File: fltk/jwm-panel.cxx, line: 1689
 # File: fltk/jwm-panel.cxx, line: 1854
 msgid "right"
-msgstr ""
+msgstr "kanan"
 #
 # File: fltk/jwm-panel.cxx, line: 1692
 # File: fltk/jwm-panel.cxx, line: 1857
 msgid "left"
-msgstr ""
+msgstr "kiri"
 #
 # File: fltk/jwm-panel.cxx, line: 1704
 #. Fl_Menu_Button* o
 msgid "Autohide"
-msgstr ""
+msgstr "Autosorok"
 #
 # File: fltk/jwm-panel.cxx, line: 1705
 msgid "This will make the Panel hide when you aren't using it."
-msgstr ""
+msgstr "Ini akan membuatkan panel tersorok jika tidak digunakan."
 #
 # File: fltk/jwm-panel.cxx, line: 1710
 msgid "Autohide?"
-msgstr ""
+msgstr "Autosorok?"
 #
 # File: fltk/jwm-panel.cxx, line: 1712
 #. Fl_Check_Button* autohide_check
 msgid "Width of Panel  "
-msgstr ""
+msgstr "Lebar Panel"
 #
 # File: fltk/jwm-panel.cxx, line: 1713
 msgid "0 is Full Length"
-msgstr ""
+msgstr "0 adalan Panjang Penuh"
 #
 # File: fltk/jwm-panel.cxx, line: 1724
 msgid "Width of Panel"
-msgstr ""
+msgstr "Lebar Panel"
 #
 # File: fltk/jwm-panel.cxx, line: 1728
 # File: fltk/jwm-panel.cxx, line: 1740
@@ -1919,7 +1928,7 @@ msgstr ""
 #. Fl_Slider* a_b_slider
 #. Fl_Slider* a_t_slider
 msgid "pixels"
-msgstr ""
+msgstr "piksel"
 #
 # File: fltk/jwm-panel.cxx, line: 1729
 msgid ""
@@ -1932,7 +1941,7 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 1742
 #. Fl_Value_Input* width_input
 msgid "Height of Panel  "
-msgstr ""
+msgstr "Tinggi Panel "
 #
 # File: fltk/jwm-panel.cxx, line: 1743
 msgid "0 will base size from the current items in the panel"
@@ -1940,7 +1949,7 @@ msgstr ""
 #
 # File: fltk/jwm-panel.cxx, line: 1754
 msgid "Height of Panel"
-msgstr ""
+msgstr "Tinggi Panel"
 #
 # File: fltk/jwm-panel.cxx, line: 1759
 msgid ""
@@ -1954,12 +1963,12 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 1775
 #. Fl_Value_Input* height_input
 msgid "Advanced Options"
-msgstr ""
+msgstr "Lebih Pilihan"
 #
 # File: fltk/jwm-panel.cxx, line: 1777
 #. Fl_Box* o
 msgid "X coordinate"
-msgstr ""
+msgstr "Koordinat X"
 #
 # File: fltk/jwm-panel.cxx, line: 1778
 msgid ""
@@ -1969,12 +1978,12 @@ msgstr ""
 #
 # File: fltk/jwm-panel.cxx, line: 1787
 msgid "X position of panel"
-msgstr ""
+msgstr "Posisi X pada panel"
 #
 # File: fltk/jwm-panel.cxx, line: 1789
 #. Fl_Value_Input* o
 msgid "Y coordinate"
-msgstr ""
+msgstr "Koordinat Y"
 #
 # File: fltk/jwm-panel.cxx, line: 1790
 msgid ""
@@ -1985,7 +1994,7 @@ msgstr ""
 #
 # File: fltk/jwm-panel.cxx, line: 1799
 msgid "Y position of panel"
-msgstr ""
+msgstr "Posisi Y pada panel"
 #
 # File: fltk/jwm-panel.cxx, line: 1802
 msgid "The horizontal alignment of the Panel"
@@ -1999,13 +2008,13 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 1825
 #. Fl_Output* valign
 msgid "Width of Panel Border"
-msgstr ""
+msgstr "Lebar Sempadan Panel"
 #
 # File: fltk/jwm-panel.cxx, line: 1840
 # File: fltk/jwm-panel.cxx, line: 1871
 #. Fl_Value_Input* border_input
 msgid "Autohide Position"
-msgstr ""
+msgstr "Autosorok Posisi"
 #
 # File: fltk/jwm-panel.cxx, line: 1841
 msgid ""
@@ -2016,11 +2025,11 @@ msgstr ""
 #
 # File: fltk/jwm-panel.cxx, line: 1860
 msgid "off"
-msgstr ""
+msgstr "tutup"
 #
 # File: fltk/jwm-panel.cxx, line: 1874
 msgid "current autohide position (if any)"
-msgstr ""
+msgstr "posisi autosorok (jika ada)"
 #
 # File: fltk/jwm-panel.cxx, line: 1879
 #. Fl_Output* autohide_pos
@@ -2032,7 +2041,7 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 1906
 # File: fltk/jwm-panel.cxx, line: 1926
 msgid "Use 'Panel Position' for easy configuration"
-msgstr ""
+msgstr "Guna 'Posisi Panel' untuk konfigurasi mudah"
 #
 # File: fltk/jwm-panel.cxx, line: 1892
 #. Fl_Menu_Button* o
@@ -2051,7 +2060,7 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 1925
 #. Fl_Output* layOut
 msgid "layer"
-msgstr ""
+msgstr "Lapisan"
 #
 # File: fltk/jwm-panel.cxx, line: 1939
 msgid "The layer of the tray. The default is above."
@@ -2061,42 +2070,42 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 1971
 #. Fl_Button* save_button
 msgid "Edit Menus"
-msgstr ""
+msgstr "Edit Menu"
 #
 # File: fltk/jwm-panel.cxx, line: 1984
 msgid "Add Indicator"
-msgstr ""
+msgstr "Tambah Penunjuk"
 #
 # File: fltk/jwm-panel.cxx, line: 2018
 # File: fltk/jwm-panel.cxx, line: 2047
 msgid "Add to Panel"
-msgstr ""
+msgstr "Tambah pada Panel"
 #
 # File: fltk/jwm-panel.cxx, line: 2055
 # File: fltk/jwm-panel.cxx, line: 2101
 # File: fltk/jwm-panel.cxx, line: 2442
 msgid "Configure Clock"
-msgstr ""
+msgstr "Tetapkan Jam"
 #
 # File: fltk/jwm-panel.cxx, line: 2066
 # File: fltk/jwm-panel.cxx, line: 2071
 #. Fl_Button* o
 msgid "style"
-msgstr ""
+msgstr "gaya"
 #
 # File: fltk/jwm-panel.cxx, line: 2086
 # File: fltk/jwm-panel.cxx, line: 2090
 # File: fltk/jwm-panel.cxx, line: 2110
 #. Fl_Output* clock_display
 msgid "Notes"
-msgstr ""
+msgstr "Nota"
 #
 # File: fltk/jwm-panel.cxx, line: 2092
 # File: fltk/jwm-panel.cxx, line: 2096
 # File: fltk/jwm-panel.cxx, line: 2147
 #. Fl_Button* o
 msgid "Modifier Notes"
-msgstr ""
+msgstr "Pengubah Nota"
 #
 # File: fltk/jwm-panel.cxx, line: 2113
 msgid ""
@@ -2133,15 +2142,15 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 2173
 #. Fl_Scroll* o
 msgid "See also ctime"
-msgstr ""
+msgstr "Juga lihat ctime"
 #
 # File: fltk/jwm-panel.cxx, line: 2188
 # File: fltk/jwm-panel.cxx, line: 3073
-# File: src/jwmrc.cpp, line: 2248
+# File: src/jwmrc.cpp, line: 2249
 # File: src/panel.cpp, line: 464
 # File: src/panel.cpp, line: 661
 msgid "Running App List"
-msgstr ""
+msgstr "Senarai Aplikasi Yang Sedang Dijalankan"
 #
 # File: fltk/jwm-panel.cxx, line: 2212
 # File: fltk/jwm-panel.cxx, line: 2221
@@ -2150,12 +2159,12 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 2327
 # File: fltk/jwm-panel.cxx, line: 2336
 msgid "Optional, Will use Panel colors if not specified."
-msgstr ""
+msgstr "Pilihan, Akan guna warna Panel jika tidak dinyatakan."
 #
 # File: fltk/jwm-panel.cxx, line: 2229
 #. Fl_Button* task_fg_color
 msgid "Max Width"
-msgstr ""
+msgstr "Lebar Maks"
 #
 # File: fltk/jwm-panel.cxx, line: 2230
 msgid ""
@@ -2178,7 +2187,7 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 2255
 #. Fl_Check_Button* o
 msgid "Group"
-msgstr ""
+msgstr "Kumpulan"
 #
 # File: fltk/jwm-panel.cxx, line: 2256
 msgid ""
@@ -2189,7 +2198,7 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 2265
 #. Fl_Check_Button* o
 msgid "List"
-msgstr ""
+msgstr "Senarai"
 #
 # File: fltk/jwm-panel.cxx, line: 2266
 msgid ""
@@ -2199,31 +2208,31 @@ msgstr ""
 #
 # File: fltk/jwm-panel.cxx, line: 2353
 msgid "Configure Button"
-msgstr ""
+msgstr "Tetapkan Butang"
 #
 # File: fltk/jwm-panel.cxx, line: 2357
 # File: fltk/jwm-panel.cxx, line: 2400
 msgid "Text for the Panel Button"
-msgstr ""
+msgstr "Teks untuk Butang Panel"
 #
 # File: fltk/jwm-panel.cxx, line: 2365
 # File: fltk/jwm-panel.cxx, line: 2703
 msgid "The icon file name"
-msgstr ""
+msgstr "Nama fail ikon"
 #
 # File: fltk/jwm-panel.cxx, line: 2372
 # File: fltk/jwm-panel.cxx, line: 2695
 # File: fltk/jwm-window.cxx, line: 701
-# File: src/fltkfunctions.cpp, line: 156
+# File: src/fltkfunctions.cpp, line: 155
 msgid "Choose an Icon"
-msgstr ""
+msgstr "Pilih Ikon"
 #
 # File: fltk/jwm-panel.cxx, line: 2380
 # File: fltk/jwm-panel.cxx, line: 2510
 #. Fl_Button* button_icon_view
 #. Fl_Value_Input* o
 msgid "Mouse Button"
-msgstr ""
+msgstr "Butang Tetikus"
 #
 # File: fltk/jwm-panel.cxx, line: 2394
 msgid "Button 1 is Left, Button 2 is right. Button 3 is middle."
@@ -2232,50 +2241,50 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 2408
 # File: fltk/jwm-panel.cxx, line: 2553
 msgid "Configure the program"
-msgstr ""
+msgstr "Tetapkan program"
 #
 # File: fltk/jwm-panel.cxx, line: 2415
 # File: fltk/jwm-panel.cxx, line: 2708
 msgid "The root menu the button is tied to"
-msgstr ""
+msgstr "Butang menu root terikat kepada"
 #
 # File: fltk/jwm-panel.cxx, line: 2421
 # File: fltk/jwm-panel.cxx, line: 2537
 msgid "Configure the menu"
-msgstr ""
+msgstr "Tetapkan menu"
 #
 # File: fltk/jwm-panel.cxx, line: 2444
 msgid "Clock Format"
-msgstr ""
+msgstr "Format Jam"
 #
 # File: fltk/jwm-panel.cxx, line: 2449
 msgid "Day name Month Day 12 Hour"
-msgstr ""
+msgstr "Nama Hari Bulang Hari 12 Jam"
 #
 # File: fltk/jwm-panel.cxx, line: 2453
 msgid "24 Hour Clock"
-msgstr ""
+msgstr "Jam 24 Jam"
 #
 # File: fltk/jwm-panel.cxx, line: 2457
 msgid "12 Hour Clock"
-msgstr ""
+msgstr "Jam 12 Jam"
 #
 # File: fltk/jwm-panel.cxx, line: 2461
 msgid "Year Month Day 24 Hour clock"
-msgstr ""
+msgstr "Tahun Bulan Hari Jam 24 jam"
 #
 # File: fltk/jwm-panel.cxx, line: 2465
 msgid "(Advanced) User Defined"
-msgstr ""
+msgstr "(Maju) Diisytiharkan Pengguna"
 #
 # File: fltk/jwm-panel.cxx, line: 2487
 #. Fl_Output* tz_out
 msgid "Time Zone"
-msgstr ""
+msgstr "Zon Masa"
 #
 # File: fltk/jwm-panel.cxx, line: 2488
 msgid "Optional. The time zone of the clock."
-msgstr ""
+msgstr "Pilihan. Zon masa untuk jam."
 #
 # File: fltk/jwm-panel.cxx, line: 2495
 msgid ""
@@ -2291,11 +2300,11 @@ msgstr ""
 #
 # File: fltk/jwm-panel.cxx, line: 2531
 msgid "The root menu the Clock is tied to"
-msgstr ""
+msgstr "Menu root yang jam terikat kepada"
 #
 # File: fltk/jwm-panel.cxx, line: 2544
 msgid "Execute a command."
-msgstr ""
+msgstr "Jalankan arahan."
 #
 # File: fltk/jwm-panel.cxx, line: 2565
 # File: fltk/jwm-panel.cxx, line: 2790
@@ -2305,12 +2314,12 @@ msgstr ""
 #. Fl_Button* o
 #. Fl_Box* o
 msgid "Foreground"
-msgstr ""
+msgstr "Latar Depan"
 #
 # File: fltk/jwm-panel.cxx, line: 2566
 # File: fltk/jwm-panel.cxx, line: 2575
 msgid "Optional, this will use the Panel colors if not specified"
-msgstr ""
+msgstr "Pilihan, ini akan menggunakan warna Panel jika tidak dinyatakan"
 #
 # File: fltk/jwm-panel.cxx, line: 2574
 # File: fltk/jwm-panel.cxx, line: 2794
@@ -2325,11 +2334,11 @@ msgstr ""
 #. Fl_Value_Input* Norm_timeout
 #. Fl_Value_Input* Crit_timeout
 msgid "Background"
-msgstr ""
+msgstr "Latar Belakang"
 #
 # File: fltk/jwm-panel.cxx, line: 2591
 msgid "Configure Indicators"
-msgstr ""
+msgstr "Tetapkan Penunjuk"
 #
 # File: fltk/jwm-panel.cxx, line: 2619
 msgid ""
@@ -2339,7 +2348,7 @@ msgstr ""
 #
 # File: fltk/jwm-panel.cxx, line: 2634
 msgid "Manual Editing"
-msgstr ""
+msgstr "Edit secara Manual"
 #
 # File: fltk/jwm-panel.cxx, line: 2647
 # File: fltk/jwm-panel.cxx, line: 2665
@@ -2348,24 +2357,24 @@ msgstr ""
 #
 # File: fltk/jwm-panel.cxx, line: 2677
 msgid "Configure Menu"
-msgstr ""
+msgstr "Tetapkan Menu"
 #
 # File: fltk/jwm-panel.cxx, line: 2688
 msgid "Text for the Button that shows the menu"
-msgstr ""
+msgstr "Teks untuk butang yang menunjukkan menu"
 #
 # File: fltk/jwm-panel.cxx, line: 2713
 msgid "Configure the menu items"
-msgstr ""
+msgstr "Tetapkan item menu"
 #
 # File: fltk/jwm-panel.cxx, line: 2728
 msgid "Configure Swallowed Application"
-msgstr ""
+msgstr "Tetapkan Aplikasi Ditelan"
 #
 # File: fltk/jwm-panel.cxx, line: 2736
 #. Fl_Button* o
 msgid "App Name"
-msgstr ""
+msgstr "Nama Aplikasi"
 #
 # File: fltk/jwm-panel.cxx, line: 2737
 msgid "This MUST be the same as the executable's name"
@@ -2389,22 +2398,17 @@ msgstr ""
 #
 # File: fltk/jwm-panel.cxx, line: 2781
 msgid "Configure Switcher"
-msgstr ""
+msgstr "Tetapkan Penukar"
 #
 # File: fltk/jwm-panel.cxx, line: 2824
 #. Fl_Button* t_bg
 msgid "Number of Desktops Wide"
-msgstr ""
+msgstr "Nombor Luas Desktop"
 #
 # File: fltk/jwm-panel.cxx, line: 2831
 #. Fl_Value_Input* num_desktop_w
 msgid "Number of Desktops High "
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 2838
-#. Fl_Value_Input* num_desktop_h
-msgid "Labled"
-msgstr ""
+msgstr "Nombor Tinggi Desktop "
 #
 # File: fltk/jwm-panel.cxx, line: 2839
 msgid "Determines if the pager has text labels. Default is false."
@@ -2412,11 +2416,11 @@ msgstr ""
 #
 # File: fltk/jwm-panel.cxx, line: 2854
 msgid "Choose an application to add"
-msgstr ""
+msgstr "Pilih aplikasi untuk ditambah"
 #
 # File: fltk/jwm-panel.cxx, line: 2856
 msgid "Application"
-msgstr ""
+msgstr "Aplikasi"
 #
 # File: fltk/jwm-panel.cxx, line: 2863
 msgid "You can add arguments here"
@@ -2425,69 +2429,69 @@ msgstr ""
 # File: fltk/jwm-panel.cxx, line: 2870
 #. Fl_Input* app_command
 msgid "Tooltip Label"
-msgstr ""
+msgstr "Label Tips"
 #
 # File: fltk/jwm-panel.cxx, line: 2888
 #. Fl_Button* ok_button
 msgid "Show a Border around the Button?"
-msgstr ""
+msgstr "Tunjuk Sempadan pada sekeliling Butang?"
 #
 # File: fltk/jwm-panel.cxx, line: 2889
 msgid "The button you are adding can be borderless, if you like"
-msgstr ""
+msgstr "Butang yang anda tambah boleh tidak mempunya sempadan jika anda suka"
 #
 # File: fltk/jwm-panel.cxx, line: 2896
 #. Fl_Check_Button* shortcut_border
 msgid "Current Panel Buttons"
-msgstr ""
+msgstr "Butang Panel Sekarang"
 #
 # File: fltk/jwm-panel.cxx, line: 2904
 msgid "Remove application launcher"
-msgstr ""
+msgstr "Buang pelancar aplikasi"
 #
 # File: fltk/jwm-panel.cxx, line: 2912
 #. Fl_Button* o
 msgid "Icon File Name"
-msgstr ""
+msgstr "Nama Fail Ikon"
 #
 # File: fltk/jwm-panel.cxx, line: 2940
 msgid "Only Four Panels are supported"
-msgstr ""
+msgstr "Hanya Empat Panel disokong"
 #
 # File: fltk/jwm-panel.cxx, line: 3074
-# File: src/jwmrc.cpp, line: 2249
+# File: src/jwmrc.cpp, line: 2250
 # File: src/panel.cpp, line: 465
 # File: src/panel.cpp, line: 662
 msgid "Indicators"
-msgstr ""
+msgstr "Penunjuk"
 #
 # File: fltk/jwm-panel.cxx, line: 3075
-# File: src/jwmrc.cpp, line: 2250
+# File: src/jwmrc.cpp, line: 2251
 # File: src/panel.cpp, line: 466
 # File: src/panel.cpp, line: 663
 msgid "Clock"
-msgstr ""
+msgstr "Jam"
 #
 # File: fltk/jwm-panel.cxx, line: 3076
-# File: src/jwmrc.cpp, line: 2251
+# File: src/jwmrc.cpp, line: 2252
 # File: src/panel.cpp, line: 467
 # File: src/panel.cpp, line: 664
 msgid "Swallow"
-msgstr ""
+msgstr "Telan"
 #
 # File: fltk/jwm-panel.cxx, line: 3078
-# File: src/jwmrc.cpp, line: 2253
+# File: src/jwmrc.cpp, line: 2254
 # File: src/panel.cpp, line: 469
 # File: src/panel.cpp, line: 666
 msgid "Desktop Switcher"
-msgstr ""
+msgstr "Penukar Desktop"
 #
 # File: fltk/jwm-panel.cxx, line: 3079
-# File: src/jwmrc.cpp, line: 2254
+# File: src/jwmrc.cpp, line: 2255
 # File: src/panel.cpp, line: 470
 # File: src/panel.cpp, line: 667
 msgid "Launcher"
-msgstr ""
+msgstr "Pelancar"
 #
 # File: fltk/jwm-popups.cxx, line: 604
 # File: fltk/jwm-settings.cxx, line: 4153
@@ -2508,7 +2512,7 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 619
 #. Fl_Button* outline
 msgid "milliseconds"
-msgstr ""
+msgstr "milisaat"
 #
 # File: fltk/jwm-popups.cxx, line: 620
 # File: fltk/jwm-popups.cxx, line: 629
@@ -2523,34 +2527,41 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 641
 #. Fl_Slider* delay_slider
 msgid "enabled"
-msgstr ""
+msgstr "dibenarkan"
 #
 # File: fltk/jwm-popups.cxx, line: 642
+msgid ""
+"Determine if popups are shown. This is a comma-separated  list  of one or "
+"more of the following: true (all enabled), false (no  popups  enabled),  "
+"button (tray buttons), clock (clocks), menu (menus), pager (pagers), and "
+"task (task list items).  The  default is true."
+msgstr ""
+#
 # File: fltk/jwm-popups.cxx, line: 659
 msgid ""
-"Determine if popups are shown. This is a comma-separated list of one or more "
-"of the following: true (all enabled), false (no  popups  enabled),  button "
-"(tray buttons), clock (clocks), menu (menus), pager (pagers), and task (task "
-"list items). The default is true."
+"Determine if popups are shown. This is a comma-separated  list of one or "
+"more of the following: true (all enabled), false (no  popups  enabled),  "
+"button (tray buttons), clock (clocks), menu (menus), pager (pagers), and "
+"task (task list items). The default is true."
 msgstr ""
 #
 # File: fltk/jwm-popups.cxx, line: 670
 #. Fl_Output* enabled_out
 msgid "Text"
-msgstr ""
+msgstr "Teks"
 #
 # File: fltk/jwm-popups.cxx, line: 671
 msgid "The text color"
-msgstr ""
+msgstr "Warna teks"
 #
 # File: fltk/jwm-popups.cxx, line: 679
 msgid "The background color"
-msgstr ""
+msgstr "Warna latar belakang"
 #
 # File: fltk/jwm-popups.cxx, line: 700
 #. Fl_Button* o
 msgid "Notifications"
-msgstr ""
+msgstr "Notifikasi"
 #
 # File: fltk/jwm-popups.cxx, line: 701
 msgid "Sytem notification pop up windows"
@@ -2558,16 +2569,16 @@ msgstr ""
 #
 # File: fltk/jwm-popups.cxx, line: 717
 msgid "System Notifications"
-msgstr ""
+msgstr "Notifikasi Sistem"
 #
 # File: fltk/jwm-popups.cxx, line: 720
 msgid "Font"
-msgstr ""
+msgstr "Fon"
 #
 # File: fltk/jwm-popups.cxx, line: 731
 #. Fl_Output* font
 msgid "Alignment"
-msgstr ""
+msgstr "Penjajaran"
 #
 # File: fltk/jwm-popups.cxx, line: 732
 # File: fltk/jwm-popups.cxx, line: 747
@@ -2579,7 +2590,7 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 754
 #. Fl_Output* alignment
 msgid "Follow"
-msgstr ""
+msgstr "Ikut"
 #
 # File: fltk/jwm-popups.cxx, line: 755
 # File: fltk/jwm-popups.cxx, line: 774
@@ -2595,7 +2606,7 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 785
 #. Fl_Output* follow
 msgid "Separator Color"
-msgstr ""
+msgstr "Pemisah Warna"
 #
 # File: fltk/jwm-popups.cxx, line: 786
 # File: fltk/jwm-popups.cxx, line: 803
@@ -2609,7 +2620,7 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 812
 #. Fl_Output* separator_color
 msgid "Word wrap"
-msgstr ""
+msgstr "Balut Kata"
 #
 # File: fltk/jwm-popups.cxx, line: 813
 msgid ""
@@ -2619,7 +2630,7 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 821
 #. Fl_Check_Button* word_wrap
 msgid "Bounce Frequency"
-msgstr ""
+msgstr "Frekuensi Lantun"
 #
 # File: fltk/jwm-popups.cxx, line: 822
 msgid ""
@@ -2631,7 +2642,7 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 832
 #. Fl_Value_Input* bounce_freq
 msgid "Allow Markup"
-msgstr ""
+msgstr "Benarkan Markup"
 #
 # File: fltk/jwm-popups.cxx, line: 833
 msgid ""
@@ -2643,7 +2654,7 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 843
 #. Fl_Check_Button* allow_markup
 msgid "Format"
-msgstr ""
+msgstr "Format"
 #
 # File: fltk/jwm-popups.cxx, line: 844
 msgid ""
@@ -2655,11 +2666,11 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 854
 #. Fl_Output* format
 msgid "Sort by urgency"
-msgstr ""
+msgstr "Susun mengikut kesegeraan"
 #
 # File: fltk/jwm-popups.cxx, line: 855
 msgid "Sort messages by urgency."
-msgstr ""
+msgstr "Susun mesej mengikut kesegeraan"
 #
 # File: fltk/jwm-popups.cxx, line: 863
 #. Fl_Check_Button* sort
@@ -2673,16 +2684,16 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 872
 #. Fl_Check_Button* indicate_hidden
 msgid "Ignore newlines"
-msgstr ""
+msgstr "Endah baris baru"
 #
 # File: fltk/jwm-popups.cxx, line: 873
 msgid "Ignore newlines '\\n' in notifications."
-msgstr ""
+msgstr "Mengendahkan baris baru '\\n' di dalam notifikasi."
 #
 # File: fltk/jwm-popups.cxx, line: 881
 #. Fl_Check_Button* ignore_newline
 msgid "Shrink"
-msgstr ""
+msgstr "Kecil"
 #
 # File: fltk/jwm-popups.cxx, line: 882
 msgid ""
@@ -2692,7 +2703,7 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 891
 #. Fl_Check_Button* shrink
 msgid "Sticky History"
-msgstr ""
+msgstr "Sejarah Lekit"
 #
 # File: fltk/jwm-popups.cxx, line: 892
 msgid ""
@@ -2714,21 +2725,21 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 911
 #. Fl_Value_Input* idle_threshold
 msgid "Show Indicators"
-msgstr ""
+msgstr "Tunjuk Penunjuk"
 #
 # File: fltk/jwm-popups.cxx, line: 912
 msgid "Display indicators for URLs (U) and actions (A)"
-msgstr ""
+msgstr "Paparkan penunjuk URL (U) dan tindakan (A)"
 #
 # File: fltk/jwm-popups.cxx, line: 920
 #. Fl_Check_Button* show_indicators
 msgid "Geometery"
-msgstr ""
+msgstr "Geometri"
 #
 # File: fltk/jwm-popups.cxx, line: 928
 #. Fl_Output* geometry
 msgid "Transparency"
-msgstr ""
+msgstr "Transparensi"
 #
 # File: fltk/jwm-popups.cxx, line: 929
 # File: fltk/jwm-popups.cxx, line: 940
@@ -2750,25 +2761,25 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 962
 #. Fl_Value_Input* show_age_threshold
 msgid "Monitor"
-msgstr ""
+msgstr "Monitor"
 #
 # File: fltk/jwm-popups.cxx, line: 963
 msgid "Which monitor should the notifications be displayed on."
-msgstr ""
+msgstr "Monitor manakah notifikasi patut dipaparkan."
 #
 # File: fltk/jwm-popups.cxx, line: 971
 #. Fl_Value_Input* monitor
 msgid "History Length"
-msgstr ""
+msgstr "Panjang Sejarah"
 #
 # File: fltk/jwm-popups.cxx, line: 972
 msgid "Maximum amount of notifications kept in history"
-msgstr ""
+msgstr "Jumlah maksimum notifikasi yang disimpan di dalam sejarah"
 #
 # File: fltk/jwm-popups.cxx, line: 980
 #. Fl_Value_Input* history_length
 msgid "Line Height"
-msgstr ""
+msgstr "Tinggi Garis"
 #
 # File: fltk/jwm-popups.cxx, line: 981
 msgid ""
@@ -2780,7 +2791,7 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 991
 #. Fl_Value_Input* line_height
 msgid "Separator Height"
-msgstr ""
+msgstr "Pemisah Tinggi"
 #
 # File: fltk/jwm-popups.cxx, line: 992
 msgid ""
@@ -2791,21 +2802,21 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 1001
 #. Fl_Value_Input* separator_height
 msgid "Text Padding"
-msgstr ""
+msgstr "Lapik Teks"
 #
 # File: fltk/jwm-popups.cxx, line: 1002
 # File: fltk/jwm-popups.cxx, line: 1011
 msgid "Padding between text and separator."
-msgstr ""
+msgstr "Lapik di antara teks dan pemisah."
 #
 # File: fltk/jwm-popups.cxx, line: 1010
 #. Fl_Value_Input* padding
 msgid "Horizontal Padding"
-msgstr ""
+msgstr "Lapik Melintang"
 #
 # File: fltk/jwm-popups.cxx, line: 1020
 msgid "Choose a color"
-msgstr ""
+msgstr "Pilih Warna"
 #
 # File: fltk/jwm-popups.cxx, line: 1025
 #. Fl_Button* sep_col_b
@@ -2821,45 +2832,45 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 1035
 #. Fl_Check_Button* startup_notification
 msgid "Dmenu path"
-msgstr ""
+msgstr "Laluan Dmenu"
 #
 # File: fltk/jwm-popups.cxx, line: 1043
 #. Fl_Output* dmenu
 msgid "Frame"
-msgstr ""
+msgstr "Bingkai"
 #
 # File: fltk/jwm-popups.cxx, line: 1057
 #. Fl_Value_Input* Frame_width
 msgid "Color"
-msgstr ""
+msgstr "Warna"
 #
 # File: fltk/jwm-popups.cxx, line: 1066
 #. Fl_Button* Frame_color
 msgid "Shortcuts"
-msgstr ""
+msgstr "Pintasan"
 #
 # File: fltk/jwm-popups.cxx, line: 1071
 #. Fl_Box* o
 msgid "Close"
-msgstr ""
+msgstr "Tutup"
 #
 # File: fltk/jwm-popups.cxx, line: 1072
 msgid "Close notification."
-msgstr ""
+msgstr "Tutup Notifikasi"
 #
 # File: fltk/jwm-popups.cxx, line: 1080
 #. Fl_Output* close
 msgid "Close All"
-msgstr ""
+msgstr "Tutup Semua"
 #
 # File: fltk/jwm-popups.cxx, line: 1081
 msgid "Close all notifications."
-msgstr ""
+msgstr "Tutup semua notifikasi"
 #
 # File: fltk/jwm-popups.cxx, line: 1089
 #. Fl_Output* close_all
 msgid "History"
-msgstr ""
+msgstr "Sejarah"
 #
 # File: fltk/jwm-popups.cxx, line: 1090
 msgid ""
@@ -2870,16 +2881,16 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 1099
 #. Fl_Output* history
 msgid "Context"
-msgstr ""
+msgstr "Konteks"
 #
 # File: fltk/jwm-popups.cxx, line: 1100
 msgid "Context menu."
-msgstr ""
+msgstr "Menu Konteks"
 #
 # File: fltk/jwm-popups.cxx, line: 1108
 #. Fl_Output* context
 msgid "Low Urgency"
-msgstr ""
+msgstr "Kesegeraan Rendah"
 #
 # File: fltk/jwm-popups.cxx, line: 1114
 # File: fltk/jwm-popups.cxx, line: 1132
@@ -2888,7 +2899,7 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 1180
 # File: fltk/jwm-popups.cxx, line: 1198
 msgid "Background color"
-msgstr ""
+msgstr "Warna latar belakang"
 #
 # File: fltk/jwm-popups.cxx, line: 1123
 # File: fltk/jwm-popups.cxx, line: 1156
@@ -2897,36 +2908,36 @@ msgstr ""
 #. Fl_Button* Norm_foreground
 #. Fl_Button* Crit_foreground
 msgid "Timeout"
-msgstr ""
+msgstr "Masa rehat"
 #
 # File: fltk/jwm-popups.cxx, line: 1141
 #. Fl_Button* Low_background
 msgid "Normal Urgency"
-msgstr ""
+msgstr "Kesegeraan Normal"
 #
 # File: fltk/jwm-popups.cxx, line: 1174
 #. Fl_Button* Norm_background
 msgid "Critical Urgency"
-msgstr ""
+msgstr "Kesegeraan Kritikal"
 #
 # File: fltk/jwm-popups.cxx, line: 1207
 #. Fl_Button* Crit_background
 msgid "Icon Folders"
-msgstr ""
+msgstr "Ikon Folder"
 #
 # File: fltk/jwm-popups.cxx, line: 1220
 #. Fl_Input* icon_folders_input
 msgid "Browser"
-msgstr ""
+msgstr "Pelayar"
 #
 # File: fltk/jwm-popups.cxx, line: 1221
 msgid "Browser for opening urls in context menu."
-msgstr ""
+msgstr "Pelayar untuk membuka URL dalam menu konteks"
 #
 # File: fltk/jwm-popups.cxx, line: 1228
 #. Fl_Output* browser
 msgid "Icon Alignment"
-msgstr ""
+msgstr "Penjajaran Ikon"
 #
 # File: fltk/jwm-popups.cxx, line: 1229
 msgid ""
@@ -2941,47 +2952,47 @@ msgstr ""
 # File: fltk/jwm-popups.cxx, line: 1249
 #. Fl_Output* icon_position
 msgid "Save"
-msgstr ""
+msgstr "Simpan"
 #
 # File: fltk/jwm-popups.cxx, line: 1250
 msgid "This will OVERWRITE the current configuration"
-msgstr ""
+msgstr "Ini akan MENULIS SEMULA konfigurasi yang sedia ada"
 #
 # File: fltk/jwm-popups.cxx, line: 1256
 #. Fl_Button* o
 msgid "Quit"
-msgstr ""
+msgstr "Berhenti"
 #
 # File: fltk/jwm-settings.cxx, line: 4079
 msgid "Settings Manager"
-msgstr ""
+msgstr "Pengurus Tetapan"
 #
 # File: fltk/jwm-settings.cxx, line: 4089
 #. Fl_Button* o
 msgid "Keyboard"
-msgstr ""
+msgstr "Papan Kekunci"
 #
 # File: fltk/jwm-settings.cxx, line: 4101
 # File: fltk/jwm-window.cxx, line: 656
 #. Fl_Button* o
 #. Fl_Slider* opacity_value
 msgid "Desktop"
-msgstr ""
+msgstr "Desktop"
 #
 # File: fltk/jwm-settings.cxx, line: 4107
 #. Fl_Button* o
 msgid "Touchpad"
-msgstr ""
+msgstr "Pad Sentuh"
 #
 # File: fltk/jwm-settings.cxx, line: 4113
 #. Fl_Button* o
 msgid "Fonts"
-msgstr ""
+msgstr "Fon"
 #
 # File: fltk/jwm-settings.cxx, line: 4119
 #. Fl_Button* o
 msgid "Windows"
-msgstr ""
+msgstr "Tetingkap"
 #
 # File: fltk/jwm-settings.cxx, line: 4126
 msgid "This is for Predefined Thems"
@@ -2990,68 +3001,68 @@ msgstr ""
 # File: fltk/jwm-settings.cxx, line: 4132
 #. Fl_Button* o
 msgid "Autostart"
-msgstr ""
+msgstr "Automula"
 #
 # File: fltk/jwm-settings.cxx, line: 4138
 #. Fl_Button* o
 msgid "Users and Groups"
-msgstr ""
+msgstr "Kumpulan dan Pengguna"
 #
 # File: fltk/jwm-settings.cxx, line: 4146
 #. Fl_Button* o
 msgid "System Details"
-msgstr ""
+msgstr "Maklumat Sistem"
 #
 # File: fltk/jwm-shutdown.cxx, line: 74
 # File: fltk/jwm-shutdown.cxx, line: 77
 msgid "Shutdown"
-msgstr ""
+msgstr "Tutup"
 #
 # File: fltk/jwm-shutdown.cxx, line: 84
 # File: src/jwmrc.cpp, line: 417
 #. Fl_Button* shut
 msgid "Restart"
-msgstr ""
+msgstr "Mula Semula"
 #
 # File: fltk/jwm-shutdown.cxx, line: 91
 #. Fl_Button* restart
 msgid "Suspend"
-msgstr ""
+msgstr "Tangguh"
 #
 # File: fltk/jwm-shutdown.cxx, line: 98
 #. Fl_Button* suspend
 msgid "Logout"
-msgstr ""
+msgstr "Log keluar"
 #
 # File: fltk/jwm-themes.cxx, line: 92
 msgid "Change Colors ONLY"
-msgstr ""
+msgstr "Tukar warna SAHAJA"
 #
 # File: fltk/jwm-themes.cxx, line: 93
 # File: fltk/jwm-themes.cxx, line: 162
 # File: fltk/jwm-themes.cxx, line: 168
 # File: fltk/jwm-themes.cxx, line: 185
 msgid "This will copy your current theme somewhere else"
-msgstr ""
+msgstr "Ini akan menyalin tema sekarang ke tempat yang lain"
 #
 # File: fltk/jwm-themes.cxx, line: 101
 msgid "All the installed system themes"
-msgstr ""
+msgstr "Kesemua tema sistem yang dipasang"
 #
 # File: fltk/jwm-themes.cxx, line: 113
 #. Fl_Box* button_icon
 msgid "Button"
-msgstr ""
+msgstr "Butang"
 #
 # File: fltk/jwm-themes.cxx, line: 129
 #. Fl_Box* awin
 msgid "Window (Active)"
-msgstr ""
+msgstr "Tetingkap (Aktif)"
 #
 # File: fltk/jwm-themes.cxx, line: 149
 #. Fl_Box* iwin2
 msgid "Window (Inactive)"
-msgstr ""
+msgstr "Tetingkap (Tidak Aktif)"
 #
 # File: fltk/jwm-themes.cxx, line: 161
 #. Fl_Box* iclose
@@ -3061,7 +3072,7 @@ msgstr ""
 # File: fltk/jwm-themes.cxx, line: 175
 #. Fl_Button* cancel_button
 msgid "User Themes"
-msgstr ""
+msgstr "Tema Pengguna"
 #
 # File: fltk/jwm-themes.cxx, line: 176
 msgid "This contains all the themes in ~/.themes which MAY NOT be JWM themes"
@@ -3070,20 +3081,20 @@ msgstr ""
 # File: fltk/jwm-themes.cxx, line: 184
 #. Fl_Browser* usr_theme
 msgid "Overwrite Current Theme"
-msgstr ""
+msgstr "Tulis semula tema sekarang"
 #
 # File: fltk/jwm-window.cxx, line: 623
 msgid "Add an Option"
-msgstr ""
+msgstr "Tambah pilihan"
 #
 # File: fltk/jwm-window.cxx, line: 642
 msgid "The Icon Name"
-msgstr ""
+msgstr "Nama Ikon"
 #
 # File: fltk/jwm-window.cxx, line: 647
 #. Fl_Input* icon_value
 msgid "Opacity"
-msgstr ""
+msgstr "Kelegapan"
 #
 # File: fltk/jwm-window.cxx, line: 657
 msgid "Which virtual desktop does this effect?"
@@ -3091,20 +3102,20 @@ msgstr ""
 #
 # File: fltk/jwm-window.cxx, line: 664
 msgid "Cancel changes"
-msgstr ""
+msgstr "Batal perubahan"
 #
 # File: fltk/jwm-window.cxx, line: 673
 msgid "Save Changes"
-msgstr ""
+msgstr "Simpan perubahan"
 #
 # File: fltk/jwm-window.cxx, line: 681
 #. Fl_Button* o
 msgid "Layer"
-msgstr ""
+msgstr "Lapisan"
 #
 # File: fltk/jwm-window.cxx, line: 682
 msgid "Choose a layer"
-msgstr ""
+msgstr "Pilih lapisan"
 #
 # File: fltk/jwm-window.cxx, line: 696
 msgid "The layer this option effects"
@@ -3112,24 +3123,24 @@ msgstr ""
 #
 # File: fltk/jwm-window.cxx, line: 717
 msgid "Add Class"
-msgstr ""
+msgstr "Tambah Kelas"
 #
 # File: fltk/jwm-window.cxx, line: 719
 msgid "Class to Add"
-msgstr ""
+msgstr "Kelas untuk ditambah"
 #
 # File: fltk/jwm-window.cxx, line: 739
 msgid "Program to add"
-msgstr ""
+msgstr "Program untuk ditambah"
 #
 # File: fltk/jwm-window.cxx, line: 753
 #. Fl_Button* o
 msgid "Program @+"
-msgstr ""
+msgstr "Program @+"
 #
 # File: fltk/jwm-window.cxx, line: 768
 msgid "Window Settings"
-msgstr ""
+msgstr "Tetapan Tetingkap"
 #
 # File: fltk/jwm-window.cxx, line: 780
 # File: fltk/jwm-window.cxx, line: 794
@@ -3141,26 +3152,26 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 785
 #. Fl_Box* o
 msgid "Active Window"
-msgstr ""
+msgstr "Tetingkap aktif"
 #
 # File: fltk/jwm-window.cxx, line: 790
 # File: fltk/jwm-window.cxx, line: 868
 #. Fl_Box* o
 msgid "Title bar"
-msgstr ""
+msgstr "Bar tajuk"
 #
 # File: fltk/jwm-window.cxx, line: 793
 # File: fltk/jwm-window.cxx, line: 871
 #. Fl_Box* o
 msgid "Color 1"
-msgstr ""
+msgstr "Warna 1"
 #
 # File: fltk/jwm-window.cxx, line: 802
 # File: fltk/jwm-window.cxx, line: 881
 #. Fl_Button* a_title_color1
 #. Fl_Button* inactive_color
 msgid "Color 2"
-msgstr ""
+msgstr "Warna 2"
 #
 # File: fltk/jwm-window.cxx, line: 803
 # File: fltk/jwm-window.cxx, line: 815
@@ -3174,14 +3185,14 @@ msgstr ""
 #. Fl_Button* a_title_color2
 #. Fl_Button* inactive_color2
 msgid "Font Color"
-msgstr ""
+msgstr "Warna Fon"
 #
 # File: fltk/jwm-window.cxx, line: 823
 # File: fltk/jwm-window.cxx, line: 903
 #. Fl_Button* a_font_color
 #. Fl_Button* inactive_font_color
 msgid "Border Color"
-msgstr ""
+msgstr "Warna Sempadan"
 #
 # File: fltk/jwm-window.cxx, line: 827
 msgid ""
@@ -3192,12 +3203,12 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 835
 #. Fl_Button* a_border_color
 msgid "Opacity  "
-msgstr ""
+msgstr "Kelegapan"
 #
 # File: fltk/jwm-window.cxx, line: 863
 #. Fl_Box* o
 msgid "Background  Window"
-msgstr ""
+msgstr "Latar belakang tetingkap"
 #
 # File: fltk/jwm-window.cxx, line: 872
 # File: fltk/jwm-window.cxx, line: 882
@@ -3221,17 +3232,17 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 915
 #. Fl_Button* inactive_border_color
 msgid "Opacity "
-msgstr ""
+msgstr "Kelegapan"
 #
 # File: fltk/jwm-window.cxx, line: 939
 #. Fl_Value_Input* inactive_o_slider_v
 msgid "Change the Window Button Images"
-msgstr ""
+msgstr "Tukar gambar butang tetingkap"
 #
 # File: fltk/jwm-window.cxx, line: 944
 #. Fl_Box* o
 msgid " Maximize (Activated)"
-msgstr ""
+msgstr "Besarkan (Diaktifkan)"
 #
 # File: fltk/jwm-window.cxx, line: 948
 msgid ""
@@ -3242,7 +3253,7 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 956
 #. Fl_Button* max_a_image
 msgid " Maximize"
-msgstr ""
+msgstr "Besarkan"
 #
 # File: fltk/jwm-window.cxx, line: 959
 msgid ""
@@ -3253,7 +3264,7 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 967
 #. Fl_Button* max_image
 msgid " Minimize"
-msgstr ""
+msgstr "Kecilkan"
 #
 # File: fltk/jwm-window.cxx, line: 970
 msgid ""
@@ -3264,7 +3275,7 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 978
 #. Fl_Button* min_image
 msgid " Close"
-msgstr ""
+msgstr "Tutup"
 #
 # File: fltk/jwm-window.cxx, line: 981
 msgid ""
@@ -3282,13 +3293,13 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 1009
 #. Fl_Group* o
 msgid "Settings"
-msgstr ""
+msgstr "Tetapan"
 #
 # File: fltk/jwm-window.cxx, line: 1012
 # File: fltk/jwm-window.cxx, line: 1279
 #. Fl_Value_Output* a_b_slider_v
 msgid "Window Title Bar Size"
-msgstr ""
+msgstr "Saiz Bar Tajuk Tetingkap"
 #
 # File: fltk/jwm-window.cxx, line: 1013
 # File: fltk/jwm-window.cxx, line: 1029
@@ -3298,7 +3309,7 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 1038
 #. Fl_Value_Input* t_slider_v
 msgid "Size of the Window Frame"
-msgstr ""
+msgstr "Saiz Bingkai Tetingkap"
 #
 # File: fltk/jwm-window.cxx, line: 1039
 # File: fltk/jwm-window.cxx, line: 1056
@@ -3310,7 +3321,7 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 1066
 #. Fl_Value_Input* b_slider_v
 msgid "Choose how the Window comes to the front of the screen"
-msgstr ""
+msgstr "Pilih bagaimana tetingkap muncul di hadapan skrin"
 #
 # File: fltk/jwm-window.cxx, line: 1067
 msgid "This determines how windows are brought to the front"
@@ -3319,16 +3330,16 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 1082
 #. Fl_Menu_Button* focus_menu
 msgid "Appearance of the Window while Resizing"
-msgstr ""
+msgstr "Penampilan tetingkap apabila diubah saiz"
 #
 # File: fltk/jwm-window.cxx, line: 1083
 msgid "What the windows look like while resizing"
-msgstr ""
+msgstr "Penampilan tetingkap apabila diubah saiz"
 #
 # File: fltk/jwm-window.cxx, line: 1098
 #. Fl_Menu_Button* resize_menu
 msgid "Appearance of Window while Moving"
-msgstr ""
+msgstr "Penampilan tetingkap apabila digerakkan"
 #
 # File: fltk/jwm-window.cxx, line: 1099
 msgid "What the windows look like while moving"
@@ -3351,7 +3362,7 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 1143
 #. Fl_Value_Input* snap_int
 msgid "Size of Corner"
-msgstr ""
+msgstr "Saiz Sudut"
 #
 # File: fltk/jwm-window.cxx, line: 1144
 msgid ""
@@ -3363,7 +3374,7 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 1159
 #. Fl_Group* o
 msgid "Groups"
-msgstr ""
+msgstr "Kumpulan"
 #
 # File: fltk/jwm-window.cxx, line: 1162
 msgid "Current Groups"
@@ -3378,20 +3389,20 @@ msgstr ""
 #
 # File: fltk/jwm-window.cxx, line: 1173
 msgid "Add a new group of options for windows"
-msgstr ""
+msgstr "Tambah pilihan kumpulan baru untuk tetingkap"
 #
 # File: fltk/jwm-window.cxx, line: 1179
 msgid "Remove ENTIRE selected group"
-msgstr ""
+msgstr "Buang KESEMUA kumpulan yang dipilih"
 #
 # File: fltk/jwm-window.cxx, line: 1185
 #. Fl_Button* rm_group
 msgid "Current Options"
-msgstr ""
+msgstr "Pilihan Sekarang"
 #
 # File: fltk/jwm-window.cxx, line: 1186
 msgid "Window specific options"
-msgstr ""
+msgstr "Pilihan tetingkap spesifik"
 #
 # File: fltk/jwm-window.cxx, line: 1192
 msgid "Add a new option to the current group"
@@ -3399,12 +3410,12 @@ msgstr ""
 #
 # File: fltk/jwm-window.cxx, line: 1198
 msgid "Remove selected option"
-msgstr ""
+msgstr "Buang pilihan yang dipilih"
 #
 # File: fltk/jwm-window.cxx, line: 1204
 #. Fl_Button* rm_opt
 msgid "Program Name"
-msgstr ""
+msgstr "Nama Program"
 #
 # File: fltk/jwm-window.cxx, line: 1205
 msgid "Programs that are effected by the options"
@@ -3416,12 +3427,12 @@ msgstr ""
 #
 # File: fltk/jwm-window.cxx, line: 1217
 msgid "Remove selected Program name"
-msgstr ""
+msgstr "Buang nama program yang dipilih"
 #
 # File: fltk/jwm-window.cxx, line: 1223
 #. Fl_Button* rm_prog
 msgid "Window Class"
-msgstr ""
+msgstr "Kelas Tetingkap"
 #
 # File: fltk/jwm-window.cxx, line: 1224
 msgid "Window classes that effected by the options"
@@ -3429,15 +3440,15 @@ msgstr ""
 #
 # File: fltk/jwm-window.cxx, line: 1230
 msgid "Add a new Window class effected by the option"
-msgstr ""
+msgstr "Tambah kelas tetingkap baru yang menerima kesan disebabkan pilihan tersebut"
 #
 # File: fltk/jwm-window.cxx, line: 1236
 msgid "Remove selected Window Class"
-msgstr ""
+msgstr "Buang kelas tetingkap yang dipilih"
 #
 # File: fltk/jwm-window.cxx, line: 1247
 msgid "Window Border Size"
-msgstr ""
+msgstr "Saiz Sempadan Tetingkap"
 #
 # File: fltk/jwm-window.cxx, line: 1248
 # File: fltk/jwm-window.cxx, line: 1265
@@ -3456,17 +3467,17 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 1310
 #. Fl_Value_Output* a_t_slider_v
 msgid "This can make your window borders and Title bar"
-msgstr ""
+msgstr "Ini boleh menyebabkan sempadan tetingkap dan bar tajuk"
 #
 # File: fltk/jwm-window.cxx, line: 1312
 #. Fl_Box* o
 msgid "REALLY HUGE!"
-msgstr ""
+msgstr "SANGAT BESAR!"
 #
 # File: fltk/jwm-window.cxx, line: 1316
 #. Fl_Box* o
 msgid "Default Menu Button Icon"
-msgstr ""
+msgstr "Ikon Butang Menu Lalai"
 #
 # File: fltk/jwm-window.cxx, line: 1317
 msgid ""
@@ -3484,7 +3495,7 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 1332
 #. Fl_Button* default_icon_button
 msgid "Default Window Icon"
-msgstr ""
+msgstr "Ikon Tetingkap Lalai"
 #
 # File: fltk/jwm-window.cxx, line: 1333
 msgid "An icon to display for windows that  do  not  specify  an icon."
@@ -3499,80 +3510,80 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 1346
 #. Fl_Button* default_icon_button_win
 msgid "title decorations"
-msgstr ""
+msgstr "hiasan tajuk"
 #
 # File: fltk/jwm-window.cxx, line: 1366
 #. Fl_Output* decorations
 msgid "border decorations"
-msgstr ""
+msgstr "hiasan sempadan"
 #
 # File: fltk/jwm-window.cxx, line: 1407
 #. Fl_Button* o
 msgid "Change GTK Widget theme"
-msgstr ""
+msgstr "Tukar tema GTK Widget"
 #
 # File: fltk/jwm-window.cxx, line: 1408
 # File: fltk/jwm-window.cxx, line: 1428
 # File: fltk/jwm-window.cxx, line: 1429
 # File: fltk/jwm-window.cxx, line: 1445
 msgid "You will need to close any open windows to see the change"
-msgstr ""
+msgstr "Anda perlu tutup sebarang tetingkap yang dibuka untuk melihat perubahan"
 #
 # File: fltk/jwm-window.cxx, line: 1425
 msgid "Widget theme"
-msgstr ""
+msgstr "Tema Widget"
 #
 # File: src/desktop.cpp, line: 108
 msgid "Choose a Background"
-msgstr ""
+msgstr "Pilih latar belakang"
 #
 # File: src/desktop.cpp, line: 140
 msgid "Solid Color"
-msgstr ""
+msgstr "Warna Pejal"
 #
 # File: src/desktop.cpp, line: 141
 msgid "Color Gradient"
-msgstr ""
+msgstr "Kecuraman Warna"
 #
 # File: src/fltkfunctions.cpp, line: 41
 # File: src/fltkfunctions.cpp, line: 69
 msgid "Choose Directory"
-msgstr ""
+msgstr "Pilih Direktori"
 #
 # File: src/fltkfunctions.cpp, line: 89
 msgid "Save as "
-msgstr ""
+msgstr "Simpan sebagai "
 #
-# File: src/fltkfunctions.cpp, line: 100
-# File: src/fltkfunctions.cpp, line: 108
-# File: src/fltkfunctions.cpp, line: 117
+# File: src/fltkfunctions.cpp, line: 99
+# File: src/fltkfunctions.cpp, line: 107
+# File: src/fltkfunctions.cpp, line: 116
 msgid "Choose a File"
-msgstr ""
+msgstr "Pilih Fail"
 #
-# File: src/fltkfunctions.cpp, line: 168
-# File: src/themes.cpp, line: 341
+# File: src/fltkfunctions.cpp, line: 167
+# File: src/themes.cpp, line: 277
 msgid "Choose"
-msgstr ""
+msgstr "Pilih"
 #
-# File: src/fltkfunctions.cpp, line: 247
+# File: src/fltkfunctions.cpp, line: 246
 msgid "Choose a Color"
-msgstr ""
+msgstr "Pilih Warna"
 #
 # File: src/jwmrc.cpp, line: 409
 msgid "Sub Menu"
-msgstr ""
+msgstr "Sub Menu"
 #
 # File: src/jwmrc.cpp, line: 413
 msgid "Separator"
-msgstr ""
+msgstr "Pemisah"
 #
 # File: src/jwmrc.cpp, line: 421
 msgid "Desktop List"
-msgstr ""
+msgstr "Senarai Desktop"
 #
 # File: src/jwmrc.cpp, line: 425
 msgid "Send To Desktop Menu"
-msgstr ""
+msgstr "Hantar Ke Menu Desktop"
 #
 # File: src/jwmrc.cpp, line: 429
 msgid "Sticky state of Window"
@@ -3580,11 +3591,11 @@ msgstr ""
 #
 # File: src/jwmrc.cpp, line: 433
 msgid "Maximize window"
-msgstr ""
+msgstr "Besarkan tetingkap"
 #
 # File: src/jwmrc.cpp, line: 437
 msgid "Minimize window"
-msgstr ""
+msgstr "Kecilkan tetingkap"
 #
 # File: src/jwmrc.cpp, line: 441
 msgid "Shade window"
@@ -3592,44 +3603,44 @@ msgstr ""
 #
 # File: src/jwmrc.cpp, line: 445
 msgid "Move window"
-msgstr ""
+msgstr "Ubah kedudukan tetingkap"
 #
 # File: src/jwmrc.cpp, line: 449
 msgid "Resize window"
-msgstr ""
+msgstr "Saiz semula tetingkap"
 #
 # File: src/jwmrc.cpp, line: 453
 msgid "Kill window"
-msgstr ""
+msgstr "Tutuk tetingkap"
 #
 # File: src/jwmrc.cpp, line: 457
 msgid "Close window"
-msgstr ""
+msgstr "Tutup Tetingkap"
 #
 # File: src/jwmrc.cpp, line: 461
 msgid "Exit"
-msgstr ""
+msgstr "Keluar"
 #
 # File: src/keyboard.cpp, line: 418
 msgid "read input command did not return 0"
-msgstr ""
+msgstr "Arahan input baca tidak mengembalikan 0"
 #
 # File: src/panel.cpp, line: 414
 msgid "Day"
-msgstr ""
+msgstr "Hari"
 #
 # File: src/panel.cpp, line: 415
 msgid "12"
-msgstr ""
+msgstr "12"
 #
 # File: src/panel.cpp, line: 416
 msgid "24"
-msgstr ""
+msgstr "24"
 #
 # File: src/panel.cpp, line: 417
 msgid "Year"
-msgstr ""
+msgstr "Tahun"
 #
-# File: src/themes.cpp, line: 38
+# File: src/themes.cpp, line: 32
 msgid "Save File"
-msgstr ""
+msgstr "Simpan Fail"

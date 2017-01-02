@@ -510,6 +510,8 @@ KEYSHORTCUTS="<Key key=\"Up\">up</Key>
 [[ -n "$ROOT_MENU" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
     <Key mask=\"C\" key=\"Escape\">${ROOT_MENU}</Key>
     <Key key=\"XF86LaunchA\">${ROOT_MENU}</Key>"
+[[ -n $(which amixer-mic-mute) ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
+	<Key key=\"XF86AudioMicMute\">exec:amixer-mic-mute</Key>"
 [[ -n "$VOL_MUTE" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
     <Key key=\"XF86AudioMute\">${JWMexec}${VOL_MUTE}</Key>"
 [[ -n "$VOL_UP" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}
