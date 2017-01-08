@@ -68,6 +68,8 @@ if(pro.compare("")==0){
 }
 debug_out("Adding:"+pro+":");
 tabbies->value(jwm_tab);
+program_name->value("");
+program_name->redraw();
 add_program_to_autostart(autoStartBrowser,pro);
 }
 void AutostartUI::cb_add_item(Fl_Button* o, void* v) {

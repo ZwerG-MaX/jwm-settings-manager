@@ -64,7 +64,7 @@ class AutostartUI {open
     code {load();} {}
     Fl_Window autostart_window {
       label {Autostart Programs} open
-      xywh {718 242 335 275} type Double color 47 resizable
+      xywh {544 177 335 275} type Double color 47 resizable
       code0 {startup(o,jsm_autostart_xpm);} xclass {jsm-autostart} visible
     } {
       Fl_Scroll {} {open
@@ -85,7 +85,7 @@ if(proggie!=NULL){
 std::string val=proggie;
   if(val.compare("")!=0){add_program_to_autostart(autoStartBrowser,proggie);}
 }
-quit();} selected
+quit();}
           tooltip {Write to configuration file} xywh {281 240 49 25} box FLAT_BOX color 61 selection_color 38 labelcolor 55
         }
         Fl_Button add_item {
@@ -112,7 +112,9 @@ if(pro.compare("")==0){
 }
 debug_out("Adding:"+pro+":");
 tabbies->value(jwm_tab);
-add_program_to_autostart(autoStartBrowser,pro);}
+program_name->value("");
+program_name->redraw();
+add_program_to_autostart(autoStartBrowser,pro);} selected
           tooltip {Add OR chose a program} xywh {5 240 30 30} box FLAT_BOX color 23 selection_color 38
         }
         Fl_Button remove_item {
