@@ -29,9 +29,9 @@
 #include <FL/x.H>
 //FLTK includes
 #include <FL/fl_ask.H> //errorJWM
-#include <Fl/Fl_Menu_Button.H>
-#include <Fl/Fl_Output.H>
-#include <Fl/Fl_Double_Window.H>
+#include <FL/Fl_Menu_Button.H>
+#include <FL/Fl_Output.H>
+#include <FL/Fl_Double_Window.H>
 #include <FL/Fl_File_Chooser.H>
 #include <FL/Fl_PNG_Image.H>
 //Used for getting the user's Home directory
