@@ -87,6 +87,7 @@ bool checkFlBrowserItem(Fl_Browser* o);
 bool checkVector(std::vector<std::string> myVec,std::string item);
 //D
 bool deleteElements(std::string element);
+bool deleteSubElement(std::string element, int whichElement);
 //E
 bool editMenuItem(int menu, int item, std::string text);
 bool editMenuItem(int menu, int item, std::string attribute,std::string value);

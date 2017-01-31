@@ -82,10 +82,10 @@ void add_program_to_autostart(Fl_Browser *o,std::string input) {
 	else{errorOUT("Couldn't save the file correctly");}
 }
 void remove_program_from_autostart(Fl_Browser *o) {
-	const char * item = o->text(o->value());
-	if (item !=NULL){
-		removeElement("StartupCommand",item);
-		if(saveNoRestart()){
+	int item = o->value();
+	if( (item<1) && (item > o->size()) ){std::cerr<<"Please click on an item to remove!"<<std::endl;}
+	else{
+		if( (deleteSubElement("StartupCommand",item)) && (saveNoRestart()) ){
 			o->clear();
 			load();
 			populateFLBrowser(o,"StartupCommand");
@@ -93,7 +93,6 @@ void remove_program_from_autostart(Fl_Browser *o) {
 		}
 		else{std::cerr<<"Couldn't save the file correctly"<<std::endl;}
 	}
-	else{std::cerr<<"Please click on an item to remove!"<<std::endl;}
 }
 void remove_program_from_xdg_autostart(Fl_Browser* o){
 	debug_out("void remove_program_from_xdg_autostart(Fl_Browser* o)");

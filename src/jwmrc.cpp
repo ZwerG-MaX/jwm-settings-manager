@@ -370,6 +370,23 @@ bool deleteElements(std::string element){
 	}
 	return saveChangesTemp();
 }
+bool deleteSubElement(std::string element, int whichElement){
+	pugi::xml_node baseNode=doc.child("JWM");
+	pugi::xml_node node=doc.child("JWM").child(element.c_str());
+	if(!node){
+		debug_out("NO "+element+" nodes found!");
+		return true;
+	}
+	int i=1;
+	if(whichElement!=i){
+		while(node.next_sibling(element.c_str()) && i!=whichElement){
+            node=node.next_sibling(element.c_str());
+            i++;
+        }
+    }
+    baseNode.remove_child(node);
+    return saveChangesTemp();
+}
 //E
 bool editMenuItem(int menu, int item, std::string text){
 	debug_out("bool editMenuItem(int menu, int item, std::string "+text+")");
