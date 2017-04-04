@@ -1,5 +1,4 @@
 data/Buttons/ usr/share/jwm-settings-manager/
-
 usr/share/polkit-1/actions/org.freedesktop.policykit.desktop-file-editor.policy usr/share/polkit-1/actions/
 data/time usr/share/jwm-settings-manager/
 data/icons/jwm-settings-manager.png usr/share/pixmaps/

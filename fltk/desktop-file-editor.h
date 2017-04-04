@@ -25,12 +25,13 @@
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Button.H>
-#include <FL/Fl_Text_Display.H>
-#include <FL/Fl_Box.H>
-#include <FL/Fl_Output.H>
 #include <FL/Fl_Browser.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Text_Display.H>
+#include <FL/Fl_Output.H>
 
 class Desktop {
+  std::string LOCALE_STRING; 
 public:
   Fl_Text_Buffer * textBuffer; 
   Fl_Double_Window* make_window(std::string filePassedIn);
@@ -201,6 +202,8 @@ private:
   static void cb_True4(Fl_Menu_*, void*);
   inline void cb_False4_i(Fl_Menu_*, void*);
   static void cb_False4(Fl_Menu_*, void*);
+  inline void cb__i(Fl_Browser*, void*);
+  static void cb_(Fl_Browser*, void*);
   inline void cb_OPEN_i(Fl_Button*, void*);
   static void cb_OPEN(Fl_Button*, void*);
   inline void cb_SAVE_i(Fl_Button*, void*);
@@ -260,8 +263,8 @@ public:
 private:
   inline void cb_OK_i(Fl_Button*, void*);
   static void cb_OK(Fl_Button*, void*);
-  inline void cb__i(Fl_Button*, void*);
-  static void cb_(Fl_Button*, void*);
+  inline void cb_1_i(Fl_Button*, void*);
+  static void cb_1(Fl_Button*, void*);
 public:
   Fl_Double_Window* help_window();
   Fl_Double_Window *help_win;

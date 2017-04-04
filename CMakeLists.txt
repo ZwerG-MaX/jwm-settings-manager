@@ -142,7 +142,7 @@ add_executable(jwm-settings-manager src/jsm.cpp)
 add_executable(fltk-mouse fltk/jwm-mouse.cxx)
 add_executable(desktop-file-editor fltk/desktop-file-editor.cxx)
 ## Linker settings
-set(ALL_LIBS JSM  ${X11_LIBRARIES} ${X11_X11_LIB} ${X11_Xpm_LIB} ${FLTK_LIBRARIES}) #fltk_SHARED fltk_images_SHARED
+set(ALL_LIBS JSM ${X11_LIBRARIES} ${X11_X11_LIB} ${X11_Xpm_LIB} ${FLTK_LIBRARIES}) #fltk_SHARED fltk_images_SHARED
 TARGET_LINK_LIBRARIES(jwm-settings-manager ${ALL_LIBS})
 TARGET_LINK_LIBRARIES(fltk-mouse ${ALL_LIBS})
 TARGET_LINK_LIBRARIES(desktop-file-editor ${ALL_LIBS})

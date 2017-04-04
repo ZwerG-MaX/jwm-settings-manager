@@ -497,6 +497,13 @@ Fl_Menu_Item Desktop::menu_DBusActivatable[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
+void Desktop::cb__i(Fl_Browser* o, void*) {
+  if(!checkFlBrowserItem(o))return;
+}
+void Desktop::cb_(Fl_Browser* o, void* v) {
+  ((Desktop*)(o->parent()->parent()->parent()->parent()->user_data()))->cb__i(o,v);
+}
+
 void Desktop::cb_OPEN_i(Fl_Button*, void*) {
   open_file();
 }
@@ -550,12 +557,12 @@ void Desktop::cb_OK(Fl_Button* o, void* v) {
   ((Desktop*)(o->parent()->user_data()))->cb_OK_i(o,v);
 }
 
-void Desktop::cb__i(Fl_Button*, void*) {
+void Desktop::cb_1_i(Fl_Button*, void*) {
   help_window()->show();
 get_help(help_browser);
 }
-void Desktop::cb_(Fl_Button* o, void* v) {
-  ((Desktop*)(o->parent()->user_data()))->cb__i(o,v);
+void Desktop::cb_1(Fl_Button* o, void* v) {
+  ((Desktop*)(o->parent()->user_data()))->cb_1_i(o,v);
 }
 
 void Desktop::cb_CLOSE1_i(Fl_Button*, void*) {
@@ -567,12 +574,13 @@ void Desktop::cb_CLOSE1(Fl_Button* o, void* v) {
 
 Fl_Double_Window* Desktop::make_window(std::string filePassedIn) {
   Fl_Double_Window* w;
+  LOCALE_STRING="aa\nab\nace\nach\naf\naf_ZA\naln\nam\nan\nar\nar_AR\nary\nas\nast\naz\nbal\nbe\nbe@latin\nbem\nbg\nbg_BG\nbn\nbn_IN\nbo\nbr\nbrx\nbs\nbyn\nca\nca_ES@valencia\nca@valencia\nce\ncgg\nchr\nckb\ncmn\nco\ncrh\ncs\ncsb\ncs_CZ\ncv\ncy\nda\nda_DK\nde\nde_CH\nde_DE\ndv\ndz\nel\nen\nen_AU\nen@boldquot\nen_CA\nen_GB\nen_NZ\nen@quot\nen@shaw\nen_US\neo\nes\nes_AR\nes_CL\nes_CO\nes_CR\nes_DO\nes_EC\nes_ES\nes_MX\nes_NI\nes_PA\nes_PE\nes_PR\nes_SV\nes_US\nes_UY\nes_VE\net\neu\neu_ES\newo\nfa\nfa_AF\nfa_IR\nff\nfi\nfi_FI\nfil\nfo\nfr\nfr_CA\nfr_FR\nfrp\nfur\nfy\nga\ngd\ngez\ngl\ngl_ES\ngu\ngv\nha\nhaw\nhe\nhe_IL\nhi\nhne\nhr\nhr_HR\nhsb\nht\nhu\nhu_HU\nhy\nia\nid\nid_ID\nig\nilo\nis\nit\nit_IT\nja\nja_JP\njv\nka\nkab\nkk\nkl\nkm\nkm_KH\nkn\nko\nkok\nko_KR\nks\nks_IN\nku\nku_IQ\nkw\nky\nla\nlb\nlg\nli\nln\nlo\nlo_LA\nlt\nlt_LT\nlv\nlv_LV\nmai\nmg\nmhr\nmi\nmk\nmk_MK\nml\nml_IN\nmn\nmr\nms\nms_MY\nmt\nmy\nnah\nnb\nnb_NO\nnds\nne\nnhn\nnl\nnl_NL\nnn\nnn_NO\nno\nnqo\nnso\noc\nom\nor\nos\npa\npam\npl\npl_PL\nps\npt\npt_BR\npt_PT\nqu\nrm\nro\nro_RO\nru\nru_RU\nrw\nsa\nsc\nsco\nsd\nse\nshn\nsi\nsk\nsk_SK\nsl\nsl_SI\nsma\nsml\nsn\nso\nsq\nsr\nsr@cyrillic\nsr@ijekavian\nsr@ijekavianlatin\nsr@latin\nsr@Latn\nsr_RS\nsr_RS@latin\nst\nsv\nsw\nszl\nta\nta_IN\nta_LK\nte\ntet\ntg\nth\nth_TH\nti\ntig\ntk\ntl\ntr\ntrv\nts\ntt\ntt@iqtelif\ntt_RU\nug\nuk\nuk_UA\nur\nur_PK\nuz\nuz@cyrillic\nuz@Latn\nve\nvec\nvi\nvi_VN\nwa\nwae\nwal\nwo\nxh\nyi\nyo\nzh_CN\nzh_HK\nzh_TW\nzu";
   { Fl_Double_Window* o = new Fl_Double_Window(410, 570, gettext("Desktop File Editor"));
     w = o;
     o->color(FL_DARK1);
     o->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(0, 0, 409, 563);
-      { Fl_Tabs* o = new Fl_Tabs(5, 5, 402, 460);
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 415, 563);
+      { Fl_Tabs* o = new Fl_Tabs(5, 5, 410, 460);
         o->box(FL_FLAT_BOX);
         o->color(FL_DARK1);
         { Fl_Group* o = new Fl_Group(5, 30, 402, 430, gettext("Normal"));
@@ -930,6 +938,35 @@ key."));
             }
             o->menu(menu_DBusActivatable);
           } // Fl_Menu_Button* o
+          o->end();
+        } // Fl_Group* o
+        { Fl_Group* o = new Fl_Group(5, 35, 395, 415, gettext("Locale"));
+          o->tooltip(gettext("Configure Locale specific Names"));
+          o->selection_color(FL_DARK2);
+          o->hide();
+          o->deactivate();
+          { Fl_Browser* o = new Fl_Browser(10, 35, 120, 390);
+            o->type(2);
+            o->box(FL_FLAT_BOX);
+            o->selection_color(FL_DARK_RED);
+            o->callback((Fl_Callback*)cb_);
+            populateBrowserWithString(o,LOCALE_STRING);
+          } // Fl_Browser* o
+          { Fl_Browser* o = new Fl_Browser(135, 35, 260, 390);
+            o->type(2);
+            o->box(FL_FLAT_BOX);
+            o->selection_color(FL_DARK_RED);
+          } // Fl_Browser* o
+          o->end();
+        } // Fl_Group* o
+        { Fl_Group* o = new Fl_Group(5, 40, 401, 425, gettext("Extra Actions"));
+          o->tooltip(gettext("Configure extra Actions"));
+          o->selection_color(FL_DARK2);
+          o->hide();
+          o->deactivate();
+          { Fl_Box* o = new Fl_Box(145, 160, 85, 40, gettext("TODO!"));
+            o->labelfont(1);
+          } // Fl_Box* o
           o->end();
         } // Fl_Group* o
         o->end();
@@ -1618,7 +1655,7 @@ Fl_Double_Window* Desktop::save_error() {
       o->labelfont(1);
       o->labelsize(17);
       o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_);
+      o->callback((Fl_Callback*)cb_1);
     } // Fl_Button* o
     error_win->end();
   } // Fl_Double_Window* error_win

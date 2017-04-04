@@ -46,9 +46,31 @@ then
   echo "Please rerun $0 as root"
   exit 0
 fi
+myTTY="$XDG_VTNR"
+if [[ -n "$myTTY" ]]
+then
+  myTTY="tty$myTTY"
+else
+  myTTY="tty7"
+fi
+## get the user name through some really nifty testing    
+if [[ -n "$SUDO_USER" ]]
+then
+   [[ -n "$DISPLAY" ]] && [[ -z "$postintME" ]] && postintME=$(last -wR |grep "$myTTY"| grep "still logged in" | sed "s/ .*//")
+   [[ -n "$DISPLAY" ]] && [[ -z "$postintME" ]] &&postintME=$(last -wR |grep -m 1 "$myTTY"|sed "s/ .*//")
+[[ -n "$DISPLAY" ]] && [[ -z "$postintME" ]] &&postintME=$(last |grep "$DISPLAY"| grep "still logged in" |sed "s/ .*//")
+[[ -n "$DISPLAY" ]] && [[ -z "$postintME" ]] &&postintME=$(last |grep -m 1 "$DISPLAY"|sed "s/ .*//")
+  [[ -n "$postintME" ]] &&  postintME="${postintME/$'\n'*}" && echo "User logged in on $myTTY is $postintME.  This will be used to chown files"
+else
+   postintME="$SUDO_USER"
+fi
+export postintME
+[[ -n "$postintME" ]] && [[ -d "/home/$postintME" ]] && HOMMIE="/home/$postintME"
+[[ -z "$postintME" ]] && HOMMIE="$HOME" && postintME=$(whoami)
+
 ## our startup log file
-LOGDIR="$HOME/.jwm/jsm-logs"
-if [[ ! -d "$HOME" ]]
+LOGDIR="$HOMMIE/.jwm/jsm-logs"
+if [[ ! -d "$HOMMIE" ]]
 then
    if [[ -d "/var/log" ]]
    then
@@ -81,7 +103,7 @@ calendarProgs=(zenity yad ccal evolution gdeskcal gsimplecal gnome-calendar osmo
 clockProgs=(sunclock gworldclock)
 STARTvolS=(volumeicon)
 toriOSrunCheck="$(which torios-runchecker) "
-FONT="serif"
+FONT="serif" ##TODO find system font and use it...
 JWMver=$(jwm -v)
 JWMmajor="${JWMver/JWM v}"
 JWMmajor="${JWMmajor/ *}"
@@ -148,23 +170,6 @@ then
   brightUP="$TORIGAMMA up"
   brightDown="$TORIGAMMA down"
 fi
-
-WEB_PROG="x-www-browser"
-if [ ! -x "$WEB_PROG" ]
-then
-  WEB_PROG=""
-  for i in "${WEBLIST[@]}"
-  do
-   if [ -z "$TRUEWEB" ]
-   then
-     if [ -x "$i" ]
-     then
-       TRUEWEB="true"
-       WEB_PROG="$i"
-     fi
-  fi
-  done
-fi
 getPROG(){
   EXEC="$1"
   shift
@@ -172,6 +177,7 @@ getPROG(){
   if [[ ! -x "$(which $EXEC)" ]]
   then
     PROG=""
+	[[ -z "${LIST[@]}" ]] && echo "" && return
     for i in "${LIST[@]}"
     do
       [[ -x "$(which $i)" ]] && PROG="$i" && LOG "getPROG Found: $PROG" && echo "$PROG" && break
@@ -183,6 +189,7 @@ getPROG(){
   fi
   
 }
+WEB_PROG=$(getPROG "x-www-browser" "${WEBLIST[@]}")
 TERM_PROG=$(getPROG "x-terminal-emulator" "${TERMS[@]}")
 [[ -n $TERM_PROG ]] && LOG "TERM_PROG=$TERM_PROG"
 SYS_MONITOR=$(getPROG "lxtask" "${SYS_MONITORS[@]}")
@@ -229,8 +236,9 @@ case $CAL_PROG in
 esac
 SEARCH_PROG=$(getPROG "zlocate" "${searchProgs[@]}")
 [[ -n $SEARCH_PROG ]] && LOG "SEARCH_PROG=$SEARCH_PROG"
-RESTART_PROGRAM="torios-reboot"
-[[ -x "$RESTART_PROGRAM" ]] || RESTART_PROGRAM=""
+RESTART_PROGRAM=$(getPROG "torios-reboot" "$JSM")
+[[ -n $(which "$RESTART_PROGRAM") ]] || RESTART_PROGRAM=""
+[[ "$RESTART_PROGRAM" == "$JSM" ]] && RESTART_PROGRAM="$JSM --halt"
 ## menu programs
 PLACES_INCLUDE=$(getPROG "jwm-places" "jwm-places-bash")
 if [[ -z "$(which $PLACES_INCLUDE)" ]]
@@ -389,7 +397,7 @@ PLACES_ROOT="root:${PLACES_NUM}"
 
 PLACES_ICON="folder${EXTENTION}"
 PLACES_MENU="    <RootMenu onroot=\"${PLACES_NUM}\">
-        <Include>${PLACES_INCLUDE}</Include>
+        <Include>${JWMexec}${PLACES_INCLUDE}</Include>
     </RootMenu>"
 
 MENUS_LIST_NEW="${JWM_ROOT_MENU}
@@ -403,10 +411,10 @@ MOUSE_MENU="<RootMenu height=\"0\" onroot=\"3\">
         <Program icon=\"${JSM}${EXTENTION}\" label=\"$Settings\">${JSM}</Program>
 		<Program icon=\"add${EXTENTION}\" label=\"$ADD_NEW\">desktop-file-editor</Program>
         <Program icon=\"preferences-desktop-wallpaper${EXTENTION}\" label=\"$ChangeDesktopBackground\">${JSM} --desktop</Program>"
-if [[ "$JWMver" == "new" ]]
+if [[ -n "$JWM_MENU" ]] && [[ "$JWMver" == "new" ]]
 then
 MOUSE_MENU="${MOUSE_MENU}
-		<Dynamic label=\"$MENU_NAME\" icon=\"torios-logo\" border=\"false\">exec:jwm-menu||jwm-menu-bash</Dynamic>"
+		<Dynamic label=\"$MENU_NAME\" icon=\"torios-logo\" border=\"false\">${JWMexec}${JWM_MENU}</Dynamic>"
 fi
 MOUSE_MENU="${MOUSE_MENU}
     </RootMenu>"

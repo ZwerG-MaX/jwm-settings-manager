@@ -89,6 +89,7 @@ bool checkVector(std::vector<std::string> myVec,std::string item);
 bool deleteElements(std::string element);
 bool deleteSubElement(std::string element, int whichElement);
 //E
+bool elementTextExists(std::string element, std::string text);
 bool editMenuItem(int menu, int item, std::string text);
 bool editMenuItem(int menu, int item, std::string attribute,std::string value);
 //G
@@ -280,6 +281,7 @@ void removeElement(unsigned int whichMainElement, std::string element,std::strin
 void removeElement(unsigned int whichMainElement, std::string element,std::string subelement);
 void removeElement(unsigned int whichMainElement, std::string element);
 void removeElement(std::string element,std::string text);
+void removeElementHazy(std::string element,std::string text);
 void removeElementCompare2Attr(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text);
 void removeXDGautostart(bool NOT, bool ONLY, bool DE, std::string filename, std::string env);
 //S

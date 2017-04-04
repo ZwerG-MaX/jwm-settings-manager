@@ -38,7 +38,7 @@ decl {\#include <float.h>} {public local
 decl {\#include "../include/fltkfunctions.hpp"} {public global
 } 
 
-decl {\#include "../include/jwmrc.h"} {selected public global
+decl {\#include "../include/jwmrc.h"} {public global
 } 
 
 decl {\#include <sstream>} {public local
@@ -52,23 +52,26 @@ decl {\#include "../include/common.hpp"} {public global
 
 class Desktop {open
 } {
+  decl {std::string LOCALE_STRING;} {private local
+  }
   decl {Fl_Text_Buffer * textBuffer;} {public local
   }
   Function {make_window(std::string filePassedIn)} {open
   } {
+    code {LOCALE_STRING="aa\\nab\\nace\\nach\\naf\\naf_ZA\\naln\\nam\\nan\\nar\\nar_AR\\nary\\nas\\nast\\naz\\nbal\\nbe\\nbe@latin\\nbem\\nbg\\nbg_BG\\nbn\\nbn_IN\\nbo\\nbr\\nbrx\\nbs\\nbyn\\nca\\nca_ES@valencia\\nca@valencia\\nce\\ncgg\\nchr\\nckb\\ncmn\\nco\\ncrh\\ncs\\ncsb\\ncs_CZ\\ncv\\ncy\\nda\\nda_DK\\nde\\nde_CH\\nde_DE\\ndv\\ndz\\nel\\nen\\nen_AU\\nen@boldquot\\nen_CA\\nen_GB\\nen_NZ\\nen@quot\\nen@shaw\\nen_US\\neo\\nes\\nes_AR\\nes_CL\\nes_CO\\nes_CR\\nes_DO\\nes_EC\\nes_ES\\nes_MX\\nes_NI\\nes_PA\\nes_PE\\nes_PR\\nes_SV\\nes_US\\nes_UY\\nes_VE\\net\\neu\\neu_ES\\newo\\nfa\\nfa_AF\\nfa_IR\\nff\\nfi\\nfi_FI\\nfil\\nfo\\nfr\\nfr_CA\\nfr_FR\\nfrp\\nfur\\nfy\\nga\\ngd\\ngez\\ngl\\ngl_ES\\ngu\\ngv\\nha\\nhaw\\nhe\\nhe_IL\\nhi\\nhne\\nhr\\nhr_HR\\nhsb\\nht\\nhu\\nhu_HU\\nhy\\nia\\nid\\nid_ID\\nig\\nilo\\nis\\nit\\nit_IT\\nja\\nja_JP\\njv\\nka\\nkab\\nkk\\nkl\\nkm\\nkm_KH\\nkn\\nko\\nkok\\nko_KR\\nks\\nks_IN\\nku\\nku_IQ\\nkw\\nky\\nla\\nlb\\nlg\\nli\\nln\\nlo\\nlo_LA\\nlt\\nlt_LT\\nlv\\nlv_LV\\nmai\\nmg\\nmhr\\nmi\\nmk\\nmk_MK\\nml\\nml_IN\\nmn\\nmr\\nms\\nms_MY\\nmt\\nmy\\nnah\\nnb\\nnb_NO\\nnds\\nne\\nnhn\\nnl\\nnl_NL\\nnn\\nnn_NO\\nno\\nnqo\\nnso\\noc\\nom\\nor\\nos\\npa\\npam\\npl\\npl_PL\\nps\\npt\\npt_BR\\npt_PT\\nqu\\nrm\\nro\\nro_RO\\nru\\nru_RU\\nrw\\nsa\\nsc\\nsco\\nsd\\nse\\nshn\\nsi\\nsk\\nsk_SK\\nsl\\nsl_SI\\nsma\\nsml\\nsn\\nso\\nsq\\nsr\\nsr@cyrillic\\nsr@ijekavian\\nsr@ijekavianlatin\\nsr@latin\\nsr@Latn\\nsr_RS\\nsr_RS@latin\\nst\\nsv\\nsw\\nszl\\nta\\nta_IN\\nta_LK\\nte\\ntet\\ntg\\nth\\nth_TH\\nti\\ntig\\ntk\\ntl\\ntr\\ntrv\\nts\\ntt\\ntt@iqtelif\\ntt_RU\\nug\\nuk\\nuk_UA\\nur\\nur_PK\\nuz\\nuz@cyrillic\\nuz@Latn\\nve\\nvec\\nvi\\nvi_VN\\nwa\\nwae\\nwal\\nwo\\nxh\\nyi\\nyo\\nzh_CN\\nzh_HK\\nzh_TW\\nzu";} {}
     Fl_Window {} {
       label {Desktop File Editor} open
-      xywh {542 97 410 570} type Double color 47 hide
-      code0 {load(filePassedIn);} xclass {desktop-file-editor}
+      xywh {813 88 410 570} type Double color 47
+      code0 {load(filePassedIn);} xclass {desktop-file-editor} visible
     } {
       Fl_Scroll {} {open
-        xywh {0 0 409 563}
+        xywh {0 0 415 563}
       } {
         Fl_Tabs {} {open
-          xywh {5 5 402 460} box FLAT_BOX color 47
+          xywh {5 5 410 460} box FLAT_BOX color 47
         } {
           Fl_Group {} {
-            label Normal open
+            label Normal open selected
             xywh {5 30 402 430} box FLAT_BOX selection_color 45
           } {
             Fl_Input name {
@@ -526,6 +529,28 @@ dbus->redraw();}
               }
             }
           }
+          Fl_Group {} {
+            label Locale open
+            tooltip {Configure Locale specific Names} xywh {5 35 395 415} selection_color 45 hide deactivate
+          } {
+            Fl_Browser {} {
+              callback {if(!checkFlBrowserItem(o))return;}
+              xywh {10 35 120 390} type Hold box FLAT_BOX selection_color 72
+              code0 {populateBrowserWithString(o,LOCALE_STRING);}
+            }
+            Fl_Browser {} {
+              xywh {135 35 260 390} type Hold box FLAT_BOX selection_color 72
+            }
+          }
+          Fl_Group {} {
+            label {Extra Actions} open
+            tooltip {Configure extra Actions} xywh {5 40 401 425} selection_color 45 hide deactivate
+          } {
+            Fl_Box {} {
+              label {TODO!}
+              xywh {145 160 85 40} labelfont 1
+            }
+          }
         }
         Fl_Button {} {
           label OPEN
@@ -556,8 +581,7 @@ if(re.compare("")!=0){
       }
     }
   }
-  Function {preview_window(std::string message)} {open
-  } {
+  Function {preview_window(std::string message)} {} {
     Fl_Window preview_win {
       label Preview open
       xywh {430 140 465 465} type Double hide
@@ -660,8 +684,7 @@ show_all();} {}
     code {o->value("");
 o->redraw();} {}
   }
-  Function {close(Fl_Double_Window* o)} {open
-  } {
+  Function {close(Fl_Double_Window* o)} {} {
     code {o->hide();} {}
   }
   Function {DEactivate(Fl_Input* o)} {} {
@@ -888,8 +911,7 @@ if(filer!=NULL){fname=filer;}
 std::string result =nativeFileDialog(message,fname,pat);
 load(result);} {}
   }
-  Function {populate(std::string fileName)} {open
-  } {
+  Function {populate(std::string fileName)} {} {
     code {//if(!linuxcommon::test_file(fileName)){return;}
 if(fileName.compare("")==0){return;}
 std::string filename=fileName; 
@@ -950,7 +972,7 @@ set_input(hidden,HIDDEN);
 set_input(dbus,DBUS);
 check_type();} {}
   }
-  Function {check_file()} {open return_type bool
+  Function {check_file()} {return_type bool
   } {
     code {std::string testFilename;
 if (isEmpty(Filename)){
@@ -1137,8 +1159,7 @@ fileContents+=TEMPval;
 fileContents+="\\n";
 return fileContents;} {}
   }
-  Function {write_out()} {open
-  } {
+  Function {write_out()} {} {
     code {const char* FILENAME=Filename->value();
 std::string fileContents=stringfile();
 if(!linuxcommon::save_string_to_file(fileContents,FILENAME)){
@@ -1146,15 +1167,13 @@ if(!linuxcommon::save_string_to_file(fileContents,FILENAME)){
   linuxcommon::echo_error("Did not save the file correctly");
 }} {}
   }
-  Function {save_file()} {open
-  } {
+  Function {save_file()} {} {
     code {if(check_file()){
   std::string fileContents=stringfile();
   preview_window(fileContents)->show();
 }} {}
   }
-  Function {save_error()} {open
-  } {
+  Function {save_error()} {} {
     Fl_Window error_win {
       label {Save Error} open
       xywh {657 237 270 90} type Double hide
@@ -1177,8 +1196,7 @@ get_help(help_browser);}
       }
     }
   }
-  Function {help_window()} {open
-  } {
+  Function {help_window()} {} {
     Fl_Window help_win {
       label Help open
       xywh {52 102 280 280} type Double hide
@@ -1193,8 +1211,7 @@ get_help(help_browser);}
       }
     }
   }
-  Function {get_help(Fl_Browser *o)} {open
-  } {
+  Function {get_help(Fl_Browser *o)} {} {
     code {const char* lang=getenv("LANG");
 if(lang==NULL)lang=getenv("LANGUAGE");
 else{
@@ -1217,7 +1234,7 @@ else{
   }
 } 
 
-Function {main(int argc, char *argv[])} {open return_type int
+Function {main(int argc, char *argv[])} {return_type int
 } {
   code {std::string command;
 try{

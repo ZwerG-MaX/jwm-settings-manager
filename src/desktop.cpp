@@ -488,6 +488,9 @@ bool multipleDesktops(){
 bool removeIconsOnDesktop(){
 	debug_out("bool removeIconsOnDesktop()");
 	std::string current = whichFileManagerRunning();
+	/** remove the current file manager.. might cause issues if there is some other reason the same filemanager is in startup commands*/
+	//TODO possibly affix the ending, or look for both fm and ending using hazy search?
+	removeElementHazy("StartupCommand",current);
 	/** kill the current file manager*/
 	return linuxcommon::pkill(current);
 }
@@ -544,8 +547,10 @@ bool setIconsOnDesktop(){
 			errorOUT("system call did not return 0");
 			return false;
 		}
-		/** add the filemanager to startup */
-        addElementWithText("StartupCommand",desktopCOMMAND);
+		/** add the filemanager to startup if needed*/
+		if(!elementTextExists("StartupCommand",desktopCOMMAND){
+			addElementWithText("StartupCommand",desktopCOMMAND);
+		}
     }
     /**set the background for whatever filemanager is running, if it isn't already*/
     setFMBackground("image",currentWallpaper);

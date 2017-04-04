@@ -388,6 +388,16 @@ bool deleteSubElement(std::string element, int whichElement){
     return saveChangesTemp();
 }
 //E
+bool elementTextExists(std::string element, std::string text){
+	if(!isElement(element)){return false;}
+	std::vector<std::string> tempVec= AnythingVector(element);
+	std::string current ="";
+	for(std::vector<std::string>::iterator it = tempVec.begin();it!=tempVec.end();++it){
+		current=*it;
+		if(current.compare(text)==0){return true;}
+	}
+	return false;
+}
 bool editMenuItem(int menu, int item, std::string text){
 	debug_out("bool editMenuItem(int menu, int item, std::string "+text+")");
 	pugi::xml_node node = getNode(menu,"RootMenu",item);
@@ -2512,6 +2522,22 @@ void removeElement(std::string subelement,std::string text){
 	for (pugi::xml_node node2=node.child(subelement.c_str());node2;node2=node.next_sibling(subelement.c_str())){
 		std::string value  = node2.text().as_string();
 		if(value.compare(text)==0){
+			node.remove_child(node2);
+		}
+    }
+    if(!saveChangesTemp()){debug_out("void removeElement(std::string "+subelement+",std::string "+text+") failed to save");}
+}
+void removeElementHazy(std::string element,std::string text){
+	debug_out("void removeElementHazy(std::string "+subelement+",std::string "+text+")");
+	if(subelement.compare("")==0){return;}
+	pugi::xml_node node =doc.child("JWM").child(subelement.c_str());
+	if(!node){node=checkIncludes(subelement);}
+	if(!node){return;}
+	node=doc.child("JWM");
+	for (pugi::xml_node node2=node.child(subelement.c_str());node2;node2=node.next_sibling(subelement.c_str())){
+		std::string value  = node2.text().as_string();
+		unsigned int finder=value.find(text);
+		if(finder<value.length()){
 			node.remove_child(node2);
 		}
     }
