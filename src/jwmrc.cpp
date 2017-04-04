@@ -2527,7 +2527,7 @@ void removeElement(std::string subelement,std::string text){
     }
     if(!saveChangesTemp()){debug_out("void removeElement(std::string "+subelement+",std::string "+text+") failed to save");}
 }
-void removeElementHazy(std::string element,std::string text){
+void removeElementHazy(std::string subelement,std::string text){
 	debug_out("void removeElementHazy(std::string "+subelement+",std::string "+text+")");
 	if(subelement.compare("")==0){return;}
 	pugi::xml_node node =doc.child("JWM").child(subelement.c_str());
