@@ -548,7 +548,7 @@ bool setIconsOnDesktop(){
 			return false;
 		}
 		/** add the filemanager to startup if needed*/
-		if(!elementTextExists("StartupCommand",desktopCOMMAND){
+		if(!elementTextExists("StartupCommand",desktopCOMMAND)){
 			addElementWithText("StartupCommand",desktopCOMMAND);
 		}
     }

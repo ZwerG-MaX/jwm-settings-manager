@@ -47,7 +47,7 @@ set(MISCDEPS "\${misc:Depends}")
 set(DEBDEPS "\${source:Version}) , \${shlibs:Depends}, ${MISCDEPS}")
 set(ARGdebug "--debug")
 # Packages we need
-FIND_PACKAGE(FLTK REQUIRED)# NO_MODULE)
+FIND_PACKAGE(FLTK REQUIRED)# NO_MODULE) #comment out for normal Non Ubuntu builds
 FIND_PACKAGE(X11 REQUIRED)
 IF(NOT EXISTS "${FLTK_FLUID_EXECUTABLE}")
     # Try to detect full path anyway
@@ -142,7 +142,7 @@ add_executable(jwm-settings-manager src/jsm.cpp)
 add_executable(fltk-mouse fltk/jwm-mouse.cxx)
 add_executable(desktop-file-editor fltk/desktop-file-editor.cxx)
 ## Linker settings
-set(ALL_LIBS JSM ${X11_LIBRARIES} ${X11_X11_LIB} ${X11_Xpm_LIB} ${FLTK_LIBRARIES}) #fltk_SHARED fltk_images_SHARED
+set(ALL_LIBS JSM ${X11_LIBRARIES} ${X11_X11_LIB} ${X11_Xpm_LIB} ${FLTK_LIBRARIES})#fltk_SHARED fltk_images_SHARED)# #use this on non ubuntu builds
 TARGET_LINK_LIBRARIES(jwm-settings-manager ${ALL_LIBS})
 TARGET_LINK_LIBRARIES(fltk-mouse ${ALL_LIBS})
 TARGET_LINK_LIBRARIES(desktop-file-editor ${ALL_LIBS})
