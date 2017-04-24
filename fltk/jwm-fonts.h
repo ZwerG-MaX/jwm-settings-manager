@@ -41,9 +41,15 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Tabs.H>
+#include <FL/Fl_Group.H>
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Slider.H>
 #include <FL/Fl_Value_Output.H>
+#include <FL/Fl_Check_Button.H>
+#include <FL/Fl_Value_Input.H>
+#include <FL/Fl_Menu_Button.H>
+#include <FL/Fl_Input.H>
 
 class FontUI {
   std::string currentElement; 
@@ -111,6 +117,11 @@ private:
   inline void cb_OK_i(Fl_Button*, void*);
   static void cb_OK(Fl_Button*, void*);
 public:
+  Fl_Output *window_gtk_font;
+private:
+  inline void cb_5_i(Fl_Button*, void*);
+  static void cb_5(Fl_Button*, void*);
+public:
   Fl_Double_Window* font_chooser_window();
   Fl_Double_Window *font_choosing;
 private:
@@ -135,5 +146,106 @@ private:
   static void cb_font_size_slider(Fl_Slider*, void*);
 public:
   Fl_Value_Output *chooser_size;
+private:
+  inline void cb_Hinting_i(Fl_Check_Button*, void*);
+  static void cb_Hinting(Fl_Check_Button*, void*);
+  inline void cb_Antialiasing_i(Fl_Check_Button*, void*);
+  static void cb_Antialiasing(Fl_Check_Button*, void*);
+  static unsigned char menu_RGBA_i18n_done;
+  static Fl_Menu_Item menu_RGBA[];
+  inline void cb_rgb_i(Fl_Menu_*, void*);
+  static void cb_rgb(Fl_Menu_*, void*);
+  inline void cb_bgr_i(Fl_Menu_*, void*);
+  static void cb_bgr(Fl_Menu_*, void*);
+  inline void cb_vrgb_i(Fl_Menu_*, void*);
+  static void cb_vrgb(Fl_Menu_*, void*);
+  inline void cb_vbgr_i(Fl_Menu_*, void*);
+  static void cb_vbgr(Fl_Menu_*, void*);
+  inline void cb_none_i(Fl_Menu_*, void*);
+  static void cb_none(Fl_Menu_*, void*);
+  static unsigned char menu_Weight_i18n_done;
+  static Fl_Menu_Item menu_Weight[];
+  inline void cb_Light_i(Fl_Menu_*, void*);
+  static void cb_Light(Fl_Menu_*, void*);
+  inline void cb_Medium_i(Fl_Menu_*, void*);
+  static void cb_Medium(Fl_Menu_*, void*);
+  inline void cb_Demibold_i(Fl_Menu_*, void*);
+  static void cb_Demibold(Fl_Menu_*, void*);
+  inline void cb_Black_i(Fl_Menu_*, void*);
+  static void cb_Black(Fl_Menu_*, void*);
+  static unsigned char menu_Width_i18n_done;
+  static Fl_Menu_Item menu_Width[];
+  inline void cb_Extra_i(Fl_Menu_*, void*);
+  static void cb_Extra(Fl_Menu_*, void*);
+  inline void cb_Ultra_i(Fl_Menu_*, void*);
+  static void cb_Ultra(Fl_Menu_*, void*);
+  inline void cb_Semi_i(Fl_Menu_*, void*);
+  static void cb_Semi(Fl_Menu_*, void*);
+  inline void cb_Condensed_i(Fl_Menu_*, void*);
+  static void cb_Condensed(Fl_Menu_*, void*);
+  inline void cb_Normal_i(Fl_Menu_*, void*);
+  static void cb_Normal(Fl_Menu_*, void*);
+  inline void cb_Semi1_i(Fl_Menu_*, void*);
+  static void cb_Semi1(Fl_Menu_*, void*);
+  inline void cb_Expanded_i(Fl_Menu_*, void*);
+  static void cb_Expanded(Fl_Menu_*, void*);
+  inline void cb_Extra1_i(Fl_Menu_*, void*);
+  static void cb_Extra1(Fl_Menu_*, void*);
+  inline void cb_Ultra1_i(Fl_Menu_*, void*);
+  static void cb_Ultra1(Fl_Menu_*, void*);
+  static unsigned char menu_LCD_i18n_done;
+  static Fl_Menu_Item menu_LCD[];
+  inline void cb_None_i(Fl_Menu_*, void*);
+  static void cb_None(Fl_Menu_*, void*);
+  inline void cb_Default_i(Fl_Menu_*, void*);
+  static void cb_Default(Fl_Menu_*, void*);
+  inline void cb_Light1_i(Fl_Menu_*, void*);
+  static void cb_Light1(Fl_Menu_*, void*);
+  inline void cb_Legacy_i(Fl_Menu_*, void*);
+  static void cb_Legacy(Fl_Menu_*, void*);
+  static unsigned char menu_Hint_i18n_done;
+  static Fl_Menu_Item menu_Hint[];
+  inline void cb_None1_i(Fl_Menu_*, void*);
+  static void cb_None1(Fl_Menu_*, void*);
+  inline void cb_Light2_i(Fl_Menu_*, void*);
+  static void cb_Light2(Fl_Menu_*, void*);
+  inline void cb_Medium1_i(Fl_Menu_*, void*);
+  static void cb_Medium1(Fl_Menu_*, void*);
+  inline void cb_Full_i(Fl_Menu_*, void*);
+  static void cb_Full(Fl_Menu_*, void*);
+public:
+  Fl_Output *rgba_out;
+  Fl_Output *weight_out;
+  Fl_Output *width_out;
+  Fl_Output *lcd_out;
+  Fl_Output *hint_out;
+private:
+  inline void cb_Encoding_i(Fl_Input*, void*);
+  static void cb_Encoding(Fl_Input*, void*);
+public:
+  Fl_Double_Window* gtk_font_chooser_window();
+  Fl_Double_Window *gtk_font_choosing;
+private:
+  inline void cb_Cancel2_i(Fl_Button*, void*);
+  static void cb_Cancel2(Fl_Button*, void*);
+  inline void cb_OK2_i(Fl_Button*, void*);
+  static void cb_OK2(Fl_Button*, void*);
+public:
+  Fl_Browser *gtk_font_browser;
+private:
+  inline void cb_gtk_font_browser_i(Fl_Browser*, void*);
+  static void cb_gtk_font_browser(Fl_Browser*, void*);
+public:
+  Fl_Output *gtk_font_name;
+private:
+  inline void cb_gtk_font_name_i(Fl_Output*, void*);
+  static void cb_gtk_font_name(Fl_Output*, void*);
+public:
+  Fl_Slider *gtk_font_size_slider;
+private:
+  inline void cb_gtk_font_size_slider_i(Fl_Slider*, void*);
+  static void cb_gtk_font_size_slider(Fl_Slider*, void*);
+public:
+  Fl_Value_Output *gtk_chooser_size;
 };
 #endif

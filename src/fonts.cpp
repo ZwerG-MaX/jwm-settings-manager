@@ -31,6 +31,16 @@ unsigned int getFontColor(std::string whichElement){
 	std::string color=getElementText(whichElement,"Foreground");
 	return flCOLOR(color);
 }
+int gtk_get_font_size(){
+	std::string TMP=getGTKfont();
+	std::string tmp=TMP;
+	unsigned int finder=tmp.rfind(" ");
+	if(finder<tmp.length()){
+		tmp=tmp.erase(0,finder+1);
+		return linuxcommon::convert_string_to_number(tmp.c_str());
+	}
+	return 12;
+}
 int get_font_size(std::string whichElement){
 	debug_out("int get_font_size(std::string "+ whichElement+")");
 	int font_size=12;
@@ -81,6 +91,7 @@ std::string getDefaultFONT(){
 	return "sans";
 }
 std::string processFont(std::string font){
+	//TODO replace with getFonrOPT
 	debug_out("std::string processFont(std::string "+font+")");
 	// make sure we process the font correctly
 	std::string result=font;
@@ -97,12 +108,66 @@ std::string processFont(std::string font){
 	debug_out("processFont TOTAL-> result="+result);
 	return result;
 }
+std::string getFontOPT(std::string whichElement, std::string option){
+	debug_out("std::string getFontOPT(std::string "+whichElement+", std::string "+option+")");
+	std::string fontLine=getElementText(whichElement,"Font");
+	std::vector<std::string> optsVec=linuxcommon::delimiter_vector_from_string(fontLine,":");
+	for( std::vector<std::string>::iterator it = optsVec.begin();
+		it!=optsVec.end();
+		++it){
+		std::string tmp=*it;
+		unsigned int finder=tmp.find("=");
+		if((finder<tmp.length())&&(finder!=0)){
+			std::string temporary=tmp;
+			temporary=temporary.erase(finder,std::string::npos);
+			std::string temp2=tmp;
+			temp2=temp2.erase(0,finder+1);
+			debug_out("Font ITEM="+temporary+"\nVALUE="+temp2);
+			if(temporary.compare(option)==0){return temp2;}
+		}
+	}
+	return "";
+}
+std::string getGTKfont(){
+	return linuxcommon::get_gtk_item("font-name","Sans 10");
+}
+std::string changeFontOPT(std::string fontLine, std::string option, std::string value){
+	debug_out("std::string changeFontOPT(std::string "+fontLine+", std::string "+option+", std::string "+value+")");
+	std::vector<std::string> optsVec=linuxcommon::delimiter_vector_from_string(fontLine,":");
+	std::string opts;
+	bool foundTheThing=false;
+	for( std::vector<std::string>::iterator it = optsVec.begin();
+		it!=optsVec.end();
+		++it){
+		std::string tmp=*it;
+		unsigned int finder=tmp.find("=");
+		std::string adder=tmp;
+		if((finder<tmp.length())&&(finder!=0)){
+			std::string temporary=tmp;
+			temporary=temporary.erase(finder,std::string::npos);
+			std::string temp2=tmp;
+			temp2=temp2.erase(0,finder+1);
+			debug_out("Font ITEM="+temporary+"\nVALUE="+temp2);
+			if(temporary.compare(option)==0){
+				foundTheThing=true;
+				adder=option+"="+value;
+			}
+		}
+		if(opts.compare("")!=0){opts=opts+":"+adder;}
+		else{opts=adder;}
+	}
+	if(!foundTheThing){opts=opts+":"+option+"="+value;}
+	debug_out("Input line="+fontLine+"\nNew Line="+opts);
+	if(opts.compare("")==0){opts=fontLine;}//just in case we screwed up somewhere :D
+	return opts;
+}
 std::string processFontOPTS(std::string font,std::string currentOPTS){
 	//TODO remove bold/italic if they are not in the current font, and in the OLD options...
 	debug_out("std::string processFontOPTS(std::string "+font+",std::string "+currentOPTS+")");
 	// make sure we process the font Options correctly
 	std::string result=font;
 	std::string type;
+	
 	unsigned int found=result.find(" bold");
 	unsigned int finder=currentOPTS.find(":bold");
 	if((finder>currentOPTS.length())&&(found<result.length())){type=":bold";}
@@ -142,6 +207,16 @@ bool newOne(){
 			break;
 	}
 }
+bool getFontOpt(std::string fontLine,std::string item){
+	std::string tmp=getFontOPT(fontLine,item);
+	std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
+	if(tmp.compare("true")==0)return true;
+	return false;
+}
+bool setGTKFont(std::string value){
+	debug_out("bool setGTKFont(std::string "+value+")");
+	return linuxcommon::switch_gtk_setting("font-name",value);
+}
 //Void//////////////////////////////////////////////////////////////////
 void missingFont(std::string whichElement){
 	debug_out("");
@@ -165,6 +240,20 @@ void font_browser_cb(Fl_Browser* font_browser,Fl_Output *font_name,Fl_Slider* fo
 	font_name->textsize(fs);
 	font_name->textfont(b);
 	font_name->redraw();
+}
+void gtk_font_chooser_cb(Fl_Output *Widget,Fl_Value_Output *chooser_size,Fl_Output *font_name){
+	const char* fontFamily = font_name->value();
+	if(fontFamily==NULL){return;}
+	std::string family = fontFamily;
+	if (family.compare("")==0){return;}
+	unsigned int val=chooser_size->value();
+	std::string tmpSZE=linuxcommon::convert_unsigned_to_string(val);
+	std::string item=family+" "+tmpSZE;
+	if(setGTKFont(item)){
+		Widget->value(fontFamily);
+		Widget->redraw();
+	}
+	else{debug_out("Didn't set GTK font="+item);}
 }
 void font_chooser_cb(Fl_Output *Widget,Fl_Value_Output *chooser_size,Fl_Output *font_name,std::string currentElement){
 	const char* fontFamily = font_name->value();
@@ -233,6 +322,20 @@ void get_window_font_color(Fl_Widget *o, int Active1_Inactive2){
   o->color(colorSet);
   o->redraw();
 }
+void gtk_get_font(Fl_Output *o){
+	debug_out("void gtk_get_font(Fl_Output *o)");
+	std::string TMP=getGTKfont();
+	std::string tmp=TMP;
+	unsigned int finder=tmp.rfind(" ");
+	if(finder<tmp.length()){
+		tmp=tmp.erase(finder,std::string::npos);
+		if(tmp.compare("")!=0){
+			o->value(tmp.c_str());
+			return;
+		}
+	}
+	o->value(TMP.c_str());
+}
 void set_font_size(Fl_Value_Output *chooser_size,std::string currentElement){
 	debug_out("void set_font_size(Fl_Value_Output *chooser_size,std::string "+currentElement+")");
 	unsigned int sizer = chooser_size->value();
@@ -255,6 +358,14 @@ void set_font_size(Fl_Value_Output *chooser_size,std::string currentElement){
 	//add the stuff together, and...
 	result = temp1+SIZE+temp2;
 	if(!setElementText(currentElement,"Font",result)){debug_out("FAILED to set the size for the font in "+currentElement);}
+}
+void setFontOption(std::string currentElement, std::string option, std::string value){
+	std::string current=fontTest(currentElement);
+	std::string newFont=changeFontOPT(current,option,value);
+	if(!setElementText(currentElement,"Font",newFont)){
+		debug_out("FAILED setting NEW options:"+newFont+" in "+currentElement);
+	}
+	else{debug_out(currentElement+" font was successfully set to: "+newFont);}
 }
 void setFontName(std::string family, std::string currentElement){
 	debug_out("void setFontName(std::string "+family+", std::string "+currentElement+")");

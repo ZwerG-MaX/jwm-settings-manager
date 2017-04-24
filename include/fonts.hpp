@@ -43,14 +43,20 @@
 //integer
 unsigned int getFontColor(std::string whichElement);
 int get_font_size(std::string whichElement);
+int gtk_get_font_size();
 //string
 std::string fontTest(std::string whichElement);
 std::string getDefaultFONT();
 std::string processFont(std::string font);
 std::string processFontOPTS(std::string font,std::string currentOPTS);
+std::string changeFontOPT(std::string fontLine, std::string option, std::string value);
+std::string getFontOPT(std::string whichElement, std::string option);
+std::string getGTKfont();
 //boolean
 bool isFONT(std::string font);
 bool newOne();
+bool setGTKFont(std::string value);
+bool getFontOpt(std::string ,std::string item);
 //void
 void missingFont(std::string whichElement);
 void font_browser_cb(Fl_Browser* font_browser,Fl_Output *font_name,Fl_Slider* font_size_slider);
@@ -60,7 +66,10 @@ void font_populate(Fl_Browser *o);
 void get_font(std::string  element, Fl_Output *o);
 void get_font_color(Fl_Widget *o, std::string whichStyle);
 void get_window_font_color(Fl_Widget *o, int Active1_Inactive2);
+void gtk_get_font(Fl_Output *o);
+void gtk_font_chooser_cb(Fl_Output *Widget,Fl_Value_Output *chooser_size,Fl_Output *font_name);
 void set_font_size(Fl_Value_Output *chooser_size,std::string currentElement);
+void setFontOption(std::string currentElement, std::string option, std::string value);
 void setFontName(std::string family, std::string currentElement);
 void setSize(unsigned int &fontSize,std::string whichElement);
 void setFontColor(const double* colors, std::string whichElement);

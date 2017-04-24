@@ -186,14 +186,73 @@ LINUX_COMMON__NS_BEGIN
 		return filename;
 	}
 	/** use the get_gtk_item function to get an icon theme, or use hicolor if nothing is found*/	
-	std::string get_gtk_icon_theme(){return get_gtk_item("icon","hicolor");}
+	std::string get_gtk_icon_theme(){return get_gtk_themeitem("icon","hicolor");}
 	/** get the gtk theme using the get_gtk_item function, or return Raleigh if nothing is found*/
-	std::string get_gtk_widget_theme(){return get_gtk_item("gtk","Raleigh");}
+	std::string get_gtk_widget_theme(){return get_gtk_themeitem("gtk","Raleigh");}
 	/** get something from org.gnome.desktop.interface *-theme
 	 * @param itemToGet this will be icon OR gtk only
 	 * @param defaultTheme the default theme to return
 	 */
-	std::string get_gtk_item(std::string itemToGet, std::string defaultTheme){
+	std::string get_gtk_item(std::string itemToGet, std::string defaultItem){
+		std::string temp=sed_i(itemToGet,"-","_");
+		std::string tmpGTK="gtk-"+itemToGet;
+		return get_gtk_item(itemToGet,temp,tmpGTK,tmpGTK,defaultItem);
+	}
+	std::string get_gtk_item(std::string itemToGet,std::string configItem, std::string defaultItem){
+		std::string temp=sed_i(itemToGet,"-","_");
+		return get_gtk_item(itemToGet,temp,configItem,configItem,defaultItem);
+	}
+	std::string get_gtk_item(std::string itemToGetgtk3,std::string itemToGetgtk2,std::string gtk3fileopt,std::string gtk2fileopt, std::string defaultItem){
+		std::string gtkrc2_result, gtkrc3_result,gtk2;
+		std::string GSETTINGS=term_out("which gsettings");
+		std::string GCONF2=term_out("which gconftool-2");
+		if(GSETTINGS.find("gsettings")<GSETTINGS.length()){
+			gtkrc3_result=term_out(GSETTINGS+" get org.gnome.desktop.interface "+itemToGetgtk3);
+			gtkrc3_result=remove_cruft(gtkrc3_result,"\'");
+			gtkrc3_result=remove_cruft(gtkrc3_result,"\'");
+			if(gtkrc3_result.compare("")!=0){return gtkrc3_result;}
+		}
+		if(itemToGetgtk2.compare("")!=0){
+			if(GCONF2.find("gconftool-2")<GCONF2.length()){
+				gtk2=term_out(GCONF2+" --get /desktop/gnome/interface/"+itemToGetgtk2);
+				if(gtk2.compare("")!=0){return gtk2;}
+			}
+		}
+		const char* home = getenv("HOME");
+		if(home==NULL){return defaultItem;}
+		std::string HOME=home;
+		//CHECK/SET GTKRC FILES
+		std::string GTKRC2=HOME + "/.gtkrc-2.0";
+		const char* xdg_config_home=getenv("XDG_CONFIG_HOME");
+		std::string XDG_CONFIG_HOME;
+		if (xdg_config_home!=NULL){
+			XDG_CONFIG_HOME=xdg_config_home;
+		}
+		else{
+			XDG_CONFIG_HOME=HOME +"/.config";
+		}
+		if(gtk3fileopt.compare("")!=0){
+			std::string GTKRC3=XDG_CONFIG_HOME + "/gtk-3.0/settings.ini";
+			if(test_file(GTKRC3.c_str())){
+				gtkrc3_result=get_line_with_equal(GTKRC3,gtk3fileopt);
+				gtkrc3_result=remove_cruft(gtkrc3_result,gtk3fileopt);
+				gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
+				gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
+				if(gtkrc3_result.compare("")!=0){return gtkrc3_result;}
+			}
+		}
+		if(gtk2fileopt.compare("")!=0){
+			if(test_file(GTKRC2.c_str())){
+				gtkrc2_result=get_line_with_equal(GTKRC2,gtk2fileopt);
+				gtkrc2_result=remove_cruft(gtkrc2_result,gtk2fileopt);
+				gtkrc2_result=remove_cruft(gtkrc2_result,"\"");
+				gtkrc2_result=remove_cruft(gtkrc2_result,"\"");
+				if(gtkrc2_result.compare("")!=0){return gtkrc2_result;}
+			}
+		}
+		return defaultItem;
+	}
+	std::string get_gtk_themeitem(std::string itemToGet, std::string defaultTheme){
 		std::string gtkrc2_result, gtkrc3_result,gtk2;
 		if((itemToGet.compare("icon")!=0)&&(itemToGet.compare("")!=0)){
 			itemToGet="";
@@ -1320,6 +1379,68 @@ LINUX_COMMON__NS_BEGIN
 	 * @param item (icon or gtk)
 	 * @param value the new value
 	 */
+	bool switch_gtk_setting(std::string item, std::string value){
+		std::string GTK2=sed_i(item,"-","_");
+		std::string tmpGTKconf="gtk-"+item;
+		std::string gtkrc2_result, gtkrc3_result,gtk2;
+		if(value.compare("")==0){return false;}
+		if((item.compare("")==0)){return false;}
+		int retval=0;
+		std::string GSETTINGS=term_out("which gsettings");
+		std::string GCONF2=term_out("which gconftool-2");
+		if(GSETTINGS.find("gsettings")<GSETTINGS.length()){
+			retval=run_a_program(GSETTINGS+" set org.gnome.desktop.interface "+item+ " \"" +value+"\"");
+			if(retval!=0){echo_error("Error setting the GSETTINGS theme");}
+		}
+		if(GCONF2.find("gconftool-2")<GCONF2.length()){
+			retval=run_a_program(GCONF2+" --set --type string /desktop/gnome/interface/"+GTK2+" \""+value+"\"");
+			if(retval!=0){echo_error("Error setting the GCONF2 theme");}
+		}
+		const char* home = getenv("HOME");
+		bool fileFix=true;
+		if(home==NULL){fileFix=false;}
+		else{
+			std::string HOME=home;
+		//CHECK/SET GTKRC FILES
+			std::string GTKRC2=HOME + "/.gtkrc-2.0";
+			const char* xdg_config_home=getenv("XDG_CONFIG_HOME");
+			std::string XDG_CONFIG_HOME;
+			if (xdg_config_home!=NULL){XDG_CONFIG_HOME=xdg_config_home;}
+			else{XDG_CONFIG_HOME=HOME +"/.config";}
+			std::string GTKRC3=XDG_CONFIG_HOME + "/gtk-3.0/settings.ini";
+			if(test_file(GTKRC3.c_str())){
+				gtkrc3_result=get_line_with_equal(GTKRC3,tmpGTKconf);
+				gtkrc3_result=remove_cruft(gtkrc3_result,tmpGTKconf);
+				gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
+				gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
+				if(value.compare(gtkrc3_result)!=0){
+					fileFix=false;
+					std::string command="sed -i \"s#"+gtkrc3_result+"#"+value+"#\" "+GTKRC3;
+					//echo_error(command);
+					retval=run_a_program(command);
+					if(retval==0)fileFix=true;
+					//TODO don't use sed... actually do it :P
+				}
+			}
+			if(test_file(GTKRC2.c_str())){
+				gtkrc2_result=get_line_with_equal(GTKRC2,tmpGTKconf);
+				gtkrc2_result=remove_cruft(gtkrc2_result,tmpGTKconf);
+				gtkrc2_result=remove_cruft(gtkrc2_result,"\"");
+				gtkrc2_result=remove_cruft(gtkrc2_result,"\"");
+				if(value.compare(gtkrc2_result)!=0){
+				//TODO
+					fileFix=false;
+					///THIS
+					std::string command="sed -i \"s#"+gtkrc2_result+"#"+value+"#\" "+GTKRC2;
+					//echo_error(command);
+					retval=run_a_program(command);
+					if(retval==0)fileFix=true;
+				}
+			}
+		}
+		if((retval!=0)&&(!fileFix))return false;
+		return true;
+	}
 	bool switch_gtk_item(std::string item, std::string value){
 		std::string gtkrc2_result, gtkrc3_result,gtk2;
 		if(value.compare("")==0){return false;}
@@ -1338,7 +1459,7 @@ LINUX_COMMON__NS_BEGIN
 		if(GCONF2.find("gconftool-2")<GCONF2.length()){
 			std::string temp="gtk";
 			if(item.compare("")!=0)temp=item;
-			retval=run_a_program(GCONF2+" --get /desktop/gnome/interface/"+temp+"_theme");
+			retval=run_a_program(GCONF2+" --set --type string /desktop/gnome/interface/"+temp+"_theme "+ value);
 			if(retval!=0){echo_error("Error setting the theme");}
 		}
 		const char* home = getenv("HOME");
@@ -1363,7 +1484,7 @@ LINUX_COMMON__NS_BEGIN
 				gtkrc3_result=remove_cruft(gtkrc3_result,"\"");
 				if(value.compare(gtkrc3_result)!=0){
 					fileFix=false;
-				std::string command="sed -i s#"+gtkrc3_result+"#"+value+"# "+GTKRC3;
+				std::string command="sed -i \"s#"+gtkrc3_result+"#"+value+"#\" "+GTKRC3;
 				retval=run_a_program(command);
 				if(retval==0)fileFix=true;
 				//TODO don't use sed... actually do it :P
@@ -1379,7 +1500,7 @@ LINUX_COMMON__NS_BEGIN
 				if(value.compare(gtkrc2_result)!=0){
 				//TODO
 					fileFix=false;
-				std::string command="sed -i s#"+gtkrc2_result+"#"+value+"# "+GTKRC2;
+				std::string command="sed -i \"s#"+gtkrc2_result+"#"+value+"#\" "+GTKRC2;
 				retval=run_a_program(command);
 				if(retval==0)fileFix=true;
 				}

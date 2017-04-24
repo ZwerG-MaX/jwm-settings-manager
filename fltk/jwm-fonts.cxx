@@ -166,9 +166,18 @@ void FontUI::cb_Cancel(Fl_Button* o, void* v) {
 
 void FontUI::cb_OK_i(Fl_Button*, void*) {
   saveChanges();
+font_window->hide();
 }
 void FontUI::cb_OK(Fl_Button* o, void* v) {
   ((FontUI*)(o->parent()->parent()->user_data()))->cb_OK_i(o,v);
+}
+
+void FontUI::cb_5_i(Fl_Button*, void*) {
+  Widget=window_gtk_font;
+gtk_font_chooser_window()->show();
+}
+void FontUI::cb_5(Fl_Button* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->user_data()))->cb_5_i(o,v);
 }
 
 void FontUI::cb_Cancel1_i(Fl_Button*, void*) {
@@ -190,7 +199,7 @@ void FontUI::cb_font_browser_i(Fl_Browser*, void*) {
   font_browser_cb(font_browser,font_name,font_size_slider);
 }
 void FontUI::cb_font_browser(Fl_Browser* o, void* v) {
-  ((FontUI*)(o->parent()->user_data()))->cb_font_browser_i(o,v);
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_font_browser_i(o,v);
 }
 
 void FontUI::cb_font_name_i(Fl_Output* o, void*) {
@@ -201,7 +210,7 @@ o->textsize(fs);
 o->redraw();
 }
 void FontUI::cb_font_name(Fl_Output* o, void* v) {
-  ((FontUI*)(o->parent()->user_data()))->cb_font_name_i(o,v);
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_font_name_i(o,v);
 }
 
 void FontUI::cb_font_size_slider_i(Fl_Slider* o, void*) {
@@ -213,12 +222,401 @@ font_name->textsize(fs);
 font_name->redraw();
 }
 void FontUI::cb_font_size_slider(Fl_Slider* o, void* v) {
-  ((FontUI*)(o->parent()->user_data()))->cb_font_size_slider_i(o,v);
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_font_size_slider_i(o,v);
+}
+
+void FontUI::cb_Hinting_i(Fl_Check_Button* o, void*) {
+  std::string item="hinting";
+int val=o->value();
+std::string value="false";
+if(val!=0){value="true";}
+setFontOption(currentElement,item,value);
+}
+void FontUI::cb_Hinting(Fl_Check_Button* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Hinting_i(o,v);
+}
+
+void FontUI::cb_Antialiasing_i(Fl_Check_Button* o, void*) {
+  std::string item="antialias";
+int val=o->value();
+std::string value="false";
+if(val!=0){value="true";}
+setFontOption(currentElement,item,value);
+}
+void FontUI::cb_Antialiasing(Fl_Check_Button* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Antialiasing_i(o,v);
+}
+
+void FontUI::cb_rgb_i(Fl_Menu_*, void*) {
+  std::string item="rgba";
+std::string value="rgb";
+setFontOption(currentElement,item,value);
+rgba_out->value(value.c_str());
+}
+void FontUI::cb_rgb(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_rgb_i(o,v);
+}
+
+void FontUI::cb_bgr_i(Fl_Menu_*, void*) {
+  std::string item="rgba";
+std::string value="bgr";
+setFontOption(currentElement,item,value);
+rgba_out->value(value.c_str());
+}
+void FontUI::cb_bgr(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_bgr_i(o,v);
+}
+
+void FontUI::cb_vrgb_i(Fl_Menu_*, void*) {
+  std::string item="rgba";
+std::string value="vrgb";
+setFontOption(currentElement,item,value);
+rgba_out->value(value.c_str());
+}
+void FontUI::cb_vrgb(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_vrgb_i(o,v);
+}
+
+void FontUI::cb_vbgr_i(Fl_Menu_*, void*) {
+  std::string item="rgba";
+std::string value="vbgr";
+setFontOption(currentElement,item,value);
+rgba_out->value(value.c_str());
+}
+void FontUI::cb_vbgr(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_vbgr_i(o,v);
+}
+
+void FontUI::cb_none_i(Fl_Menu_*, void*) {
+  std::string item="rgba";
+std::string value="none";
+setFontOption(currentElement,item,value);
+rgba_out->value(value.c_str());
+}
+void FontUI::cb_none(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_none_i(o,v);
+}
+
+unsigned char FontUI::menu_RGBA_i18n_done = 0;
+Fl_Menu_Item FontUI::menu_RGBA[] = {
+ {"rgb", 0,  (Fl_Callback*)FontUI::cb_rgb, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"bgr", 0,  (Fl_Callback*)FontUI::cb_bgr, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"vrgb", 0,  (Fl_Callback*)FontUI::cb_vrgb, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"vbgr", 0,  (Fl_Callback*)FontUI::cb_vbgr, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"none", 0,  (Fl_Callback*)FontUI::cb_none, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void FontUI::cb_Light_i(Fl_Menu_*, void*) {
+  std::string item="weight";
+std::string value="light";
+setFontOption(currentElement,item,value);
+weight_out->value(value.c_str());
+}
+void FontUI::cb_Light(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Light_i(o,v);
+}
+
+void FontUI::cb_Medium_i(Fl_Menu_*, void*) {
+  std::string item="weight";
+std::string value="medium";
+setFontOption(currentElement,item,value);
+weight_out->value(value.c_str());
+}
+void FontUI::cb_Medium(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Medium_i(o,v);
+}
+
+void FontUI::cb_Demibold_i(Fl_Menu_*, void*) {
+  std::string item="weight";
+std::string value="demibold";
+setFontOption(currentElement,item,value);
+weight_out->value(value.c_str());
+}
+void FontUI::cb_Demibold(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Demibold_i(o,v);
+}
+
+void FontUI::cb_Black_i(Fl_Menu_*, void*) {
+  std::string item="weight";
+std::string value="black";
+setFontOption(currentElement,item,value);
+weight_out->value(value.c_str());
+}
+void FontUI::cb_Black(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Black_i(o,v);
+}
+
+unsigned char FontUI::menu_Weight_i18n_done = 0;
+Fl_Menu_Item FontUI::menu_Weight[] = {
+ {"Light", 0,  (Fl_Callback*)FontUI::cb_Light, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Medium", 0,  (Fl_Callback*)FontUI::cb_Medium, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Demibold", 0,  (Fl_Callback*)FontUI::cb_Demibold, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Black", 0,  (Fl_Callback*)FontUI::cb_Black, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void FontUI::cb_Extra_i(Fl_Menu_*, void*) {
+  std::string item="width";
+std::string value="63";
+setFontOption(currentElement,item,value);
+width_out->value(value.c_str());
+}
+void FontUI::cb_Extra(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Extra_i(o,v);
+}
+
+void FontUI::cb_Ultra_i(Fl_Menu_*, void*) {
+  std::string item="width";
+std::string value="50";
+setFontOption(currentElement,item,value);
+width_out->value(value.c_str());
+}
+void FontUI::cb_Ultra(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Ultra_i(o,v);
+}
+
+void FontUI::cb_Semi_i(Fl_Menu_*, void*) {
+  std::string item="width";
+std::string value="87";
+setFontOption(currentElement,item,value);
+width_out->value(value.c_str());
+}
+void FontUI::cb_Semi(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Semi_i(o,v);
+}
+
+void FontUI::cb_Condensed_i(Fl_Menu_*, void*) {
+  std::string item="width";
+std::string value="75";
+setFontOption(currentElement,item,value);
+width_out->value(value.c_str());
+}
+void FontUI::cb_Condensed(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Condensed_i(o,v);
+}
+
+void FontUI::cb_Normal_i(Fl_Menu_*, void*) {
+  std::string item="width";
+std::string value="100";
+setFontOption(currentElement,item,value);
+width_out->value(value.c_str());
+}
+void FontUI::cb_Normal(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Normal_i(o,v);
+}
+
+void FontUI::cb_Semi1_i(Fl_Menu_*, void*) {
+  std::string item="width";
+std::string value="113";
+setFontOption(currentElement,item,value);
+width_out->value(value.c_str());
+}
+void FontUI::cb_Semi1(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Semi1_i(o,v);
+}
+
+void FontUI::cb_Expanded_i(Fl_Menu_*, void*) {
+  std::string item="width";
+std::string value="125";
+setFontOption(currentElement,item,value);
+width_out->value(value.c_str());
+}
+void FontUI::cb_Expanded(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Expanded_i(o,v);
+}
+
+void FontUI::cb_Extra1_i(Fl_Menu_*, void*) {
+  std::string item="width";
+std::string value="150";
+setFontOption(currentElement,item,value);
+width_out->value(value.c_str());
+}
+void FontUI::cb_Extra1(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Extra1_i(o,v);
+}
+
+void FontUI::cb_Ultra1_i(Fl_Menu_*, void*) {
+  std::string item="width";
+std::string value="200";
+setFontOption(currentElement,item,value);
+width_out->value(value.c_str());
+}
+void FontUI::cb_Ultra1(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Ultra1_i(o,v);
+}
+
+unsigned char FontUI::menu_Width_i18n_done = 0;
+Fl_Menu_Item FontUI::menu_Width[] = {
+ {"Extra Condensed", 0,  (Fl_Callback*)FontUI::cb_Extra, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Ultra Condensed", 0,  (Fl_Callback*)FontUI::cb_Ultra, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Semi Condensed", 0,  (Fl_Callback*)FontUI::cb_Semi, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Condensed", 0,  (Fl_Callback*)FontUI::cb_Condensed, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Normal", 0,  (Fl_Callback*)FontUI::cb_Normal, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Semi Expanded", 0,  (Fl_Callback*)FontUI::cb_Semi1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Expanded", 0,  (Fl_Callback*)FontUI::cb_Expanded, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Extra Expanded", 0,  (Fl_Callback*)FontUI::cb_Extra1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Ultra Expanded", 0,  (Fl_Callback*)FontUI::cb_Ultra1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void FontUI::cb_None_i(Fl_Menu_*, void*) {
+  std::string item="lcdfilter";
+std::string value="lcdnone";
+setFontOption(currentElement,item,value);
+lcd_out->value(value.c_str());
+}
+void FontUI::cb_None(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_None_i(o,v);
+}
+
+void FontUI::cb_Default_i(Fl_Menu_*, void*) {
+  std::string item="lcdfilter";
+std::string value="lcddefault";
+setFontOption(currentElement,item,value);
+lcd_out->value(value.c_str());
+}
+void FontUI::cb_Default(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Default_i(o,v);
+}
+
+void FontUI::cb_Light1_i(Fl_Menu_*, void*) {
+  std::string item="lcdfilter";
+std::string value="lcdlight";
+setFontOption(currentElement,item,value);
+lcd_out->value(value.c_str());
+}
+void FontUI::cb_Light1(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Light1_i(o,v);
+}
+
+void FontUI::cb_Legacy_i(Fl_Menu_*, void*) {
+  std::string item="lcdfilter";
+std::string value="lcdlegacy";
+setFontOption(currentElement,item,value);
+lcd_out->value(value.c_str());
+}
+void FontUI::cb_Legacy(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Legacy_i(o,v);
+}
+
+unsigned char FontUI::menu_LCD_i18n_done = 0;
+Fl_Menu_Item FontUI::menu_LCD[] = {
+ {"None", 0,  (Fl_Callback*)FontUI::cb_None, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Default", 0,  (Fl_Callback*)FontUI::cb_Default, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Light", 0,  (Fl_Callback*)FontUI::cb_Light1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Legacy", 0,  (Fl_Callback*)FontUI::cb_Legacy, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void FontUI::cb_None1_i(Fl_Menu_*, void*) {
+  std::string item="hintstyle";
+std::string value="0";
+setFontOption(currentElement,item,value);
+hint_out->value(value.c_str());
+}
+void FontUI::cb_None1(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_None1_i(o,v);
+}
+
+void FontUI::cb_Light2_i(Fl_Menu_*, void*) {
+  std::string item="hintstyle";
+std::string value="1";
+setFontOption(currentElement,item,value);
+hint_out->value(value.c_str());
+}
+void FontUI::cb_Light2(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Light2_i(o,v);
+}
+
+void FontUI::cb_Medium1_i(Fl_Menu_*, void*) {
+  std::string item="hintstyle";
+std::string value="2";
+setFontOption(currentElement,item,value);
+hint_out->value(value.c_str());
+}
+void FontUI::cb_Medium1(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Medium1_i(o,v);
+}
+
+void FontUI::cb_Full_i(Fl_Menu_*, void*) {
+  std::string item="hintstyle";
+std::string value="3";
+setFontOption(currentElement,item,value);
+hint_out->value(value.c_str());
+}
+void FontUI::cb_Full(Fl_Menu_* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Full_i(o,v);
+}
+
+unsigned char FontUI::menu_Hint_i18n_done = 0;
+Fl_Menu_Item FontUI::menu_Hint[] = {
+ {"None", 0,  (Fl_Callback*)FontUI::cb_None1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Light", 0,  (Fl_Callback*)FontUI::cb_Light2, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Medium", 0,  (Fl_Callback*)FontUI::cb_Medium1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Full", 0,  (Fl_Callback*)FontUI::cb_Full, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void FontUI::cb_Encoding_i(Fl_Input* o, void*) {
+  std::string item="encoding";
+const char* tmp=o->value();
+if(tmp!=NULL){
+  setFontOption(currentElement,item,tmp);
+};
+}
+void FontUI::cb_Encoding(Fl_Input* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Encoding_i(o,v);
+}
+
+void FontUI::cb_Cancel2_i(Fl_Button*, void*) {
+  gtk_font_choosing->hide();
+}
+void FontUI::cb_Cancel2(Fl_Button* o, void* v) {
+  ((FontUI*)(o->parent()->user_data()))->cb_Cancel2_i(o,v);
+}
+
+void FontUI::cb_OK2_i(Fl_Button*, void*) {
+  gtk_font_chooser_cb(Widget,gtk_chooser_size,gtk_font_name);
+gtk_font_choosing->hide();
+}
+void FontUI::cb_OK2(Fl_Button* o, void* v) {
+  ((FontUI*)(o->parent()->user_data()))->cb_OK2_i(o,v);
+}
+
+void FontUI::cb_gtk_font_browser_i(Fl_Browser*, void*) {
+  font_browser_cb(gtk_font_browser,gtk_font_name,gtk_font_size_slider);
+}
+void FontUI::cb_gtk_font_browser(Fl_Browser* o, void* v) {
+  ((FontUI*)(o->parent()->user_data()))->cb_gtk_font_browser_i(o,v);
+}
+
+void FontUI::cb_gtk_font_name_i(Fl_Output* o, void*) {
+  //const char * item = font_browser->text(font_browser->value());
+unsigned int size_of_font = 0;//get_font_size(currentElement);
+Fl_Fontsize fs = size_of_font;
+o->textsize(fs);
+o->redraw();
+}
+void FontUI::cb_gtk_font_name(Fl_Output* o, void* v) {
+  ((FontUI*)(o->parent()->user_data()))->cb_gtk_font_name_i(o,v);
+}
+
+void FontUI::cb_gtk_font_size_slider_i(Fl_Slider* o, void*) {
+  int size_of_font = o->value();
+gtk_chooser_size->value(size_of_font);
+gtk_chooser_size->redraw();
+Fl_Fontsize fs = size_of_font;
+gtk_font_name->textsize(fs);
+gtk_font_name->redraw();
+}
+void FontUI::cb_gtk_font_size_slider(Fl_Slider* o, void* v) {
+  ((FontUI*)(o->parent()->user_data()))->cb_gtk_font_size_slider_i(o,v);
 }
 
 Fl_Double_Window* FontUI::make_window() {
   load();
-  { Fl_Double_Window* o = font_window = new Fl_Double_Window(280, 330, gettext("Font Settings"));
+  { Fl_Double_Window* o = font_window = new Fl_Double_Window(280, 335, gettext("Font Settings"));
     font_window->color(FL_DARK1);
     font_window->user_data((void*)(this));
     { Fl_Scroll* o = new Fl_Scroll(0, -5, 280, 335);
@@ -236,6 +634,7 @@ Fl_Double_Window* FontUI::make_window() {
         get_font("WindowStyle",o);
       } // Fl_Output* window_font
       { Fl_Button* o = active_window_font_color_button = new Fl_Button(210, 20, 60, 30, gettext("Active"));
+        active_window_font_color_button->tooltip(gettext("The foreground window font color"));
         active_window_font_color_button->box(FL_FLAT_BOX);
         active_window_font_color_button->color((Fl_Color)23);
         active_window_font_color_button->callback((Fl_Callback*)cb_active_window_font_color_button);
@@ -251,6 +650,7 @@ Fl_Double_Window* FontUI::make_window() {
         o->callback((Fl_Callback*)cb_);
       } // Fl_Button* o
       { Fl_Button* o = window_font_color_button = new Fl_Button(210, 65, 60, 30, gettext("Inactive"));
+        window_font_color_button->tooltip(gettext("The background window font color"));
         window_font_color_button->box(FL_FLAT_BOX);
         window_font_color_button->color((Fl_Color)23);
         window_font_color_button->callback((Fl_Callback*)cb_window_font_color_button);
@@ -373,6 +773,22 @@ Fl_Double_Window* FontUI::make_window() {
         o->labelcolor((Fl_Color)55);
         o->callback((Fl_Callback*)cb_OK);
       } // Fl_Button* o
+      { Fl_Output* o = window_gtk_font = new Fl_Output(45, 65, 160, 30, gettext("Window Interior Font"));
+        window_gtk_font->tooltip(gettext("The color of this cannot be chosen, this is the GTK font"));
+        window_gtk_font->box(FL_FLAT_BOX);
+        window_gtk_font->color((Fl_Color)53);
+        window_gtk_font->selection_color(FL_DARK_RED);
+        window_gtk_font->align(Fl_Align(FL_ALIGN_TOP));
+        window_gtk_font->when(FL_WHEN_CHANGED);
+        gtk_get_font(o);
+      } // Fl_Output* window_gtk_font
+      { Fl_Button* o = new Fl_Button(10, 65, 30, 30);
+        o->tooltip(gettext("Open the font list Window"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->image(image_gear16);
+        o->callback((Fl_Callback*)cb_5);
+      } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
     startup(o,jsm_fonts_xpm);
@@ -384,9 +800,9 @@ Fl_Double_Window* FontUI::make_window() {
 }
 
 Fl_Double_Window* FontUI::font_chooser_window() {
-  { Fl_Double_Window* o = font_choosing = new Fl_Double_Window(315, 410, gettext("Choose a Font"));
+  { Fl_Double_Window* o = font_choosing = new Fl_Double_Window(315, 460, gettext("Choose a Font"));
     font_choosing->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(195, 380, 60, 25, gettext("Cancel"));
+    { Fl_Button* o = new Fl_Button(195, 430, 60, 25, gettext("Cancel"));
       o->tooltip(gettext("No changes will be saved"));
       o->box(FL_FLAT_BOX);
       o->down_box(FL_GTK_DOWN_BOX);
@@ -395,7 +811,7 @@ Fl_Double_Window* FontUI::font_chooser_window() {
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_Cancel1);
     } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(265, 380, 45, 25, gettext("OK"));
+    { Fl_Button* o = new Fl_Button(265, 430, 45, 25, gettext("OK"));
       o->tooltip(gettext("Write to configuration file"));
       o->box(FL_FLAT_BOX);
       o->down_box(FL_GTK_DOWN_BOX);
@@ -404,51 +820,315 @@ Fl_Double_Window* FontUI::font_chooser_window() {
       o->labelcolor((Fl_Color)55);
       o->callback((Fl_Callback*)cb_OK1);
     } // Fl_Button* o
-    { Fl_Browser* o = font_browser = new Fl_Browser(5, 5, 305, 285);
-      font_browser->type(2);
-      font_browser->box(FL_FLAT_BOX);
-      font_browser->color((Fl_Color)55);
-      font_browser->selection_color(FL_DARK_RED);
-      font_browser->labelfont(8);
-      font_browser->callback((Fl_Callback*)cb_font_browser);
-      font_browser->when(FL_WHEN_RELEASE);
-      font_populate(o);
-    } // Fl_Browser* font_browser
-    { Fl_Output* o = font_name = new Fl_Output(5, 325, 305, 50);
-      font_name->box(FL_FLAT_BOX);
-      font_name->color((Fl_Color)55);
-      font_name->selection_color((Fl_Color)80);
-      font_name->labelsize(20);
-      font_name->callback((Fl_Callback*)cb_font_name);
-      font_name->when(FL_WHEN_RELEASE_ALWAYS);
-      get_font(currentElement,o);
-    } // Fl_Output* font_name
-    { Fl_Slider* o = font_size_slider = new Fl_Slider(5, 295, 250, 25);
-      font_size_slider->type(1);
-      font_size_slider->box(FL_GTK_DOWN_BOX);
-      font_size_slider->color((Fl_Color)41);
-      font_size_slider->selection_color((Fl_Color)48);
-      font_size_slider->minimum(8);
-      font_size_slider->maximum(200);
-      font_size_slider->step(1);
-      font_size_slider->value(12);
-      font_size_slider->callback((Fl_Callback*)cb_font_size_slider);
-      int fs = get_font_size(currentElement);
-      o->value(fs);
-    } // Fl_Slider* font_size_slider
-    { Fl_Value_Output* o = chooser_size = new Fl_Value_Output(265, 295, 45, 25);
-      chooser_size->box(FL_FLAT_BOX);
-      chooser_size->color((Fl_Color)23);
-      chooser_size->minimum(8);
-      chooser_size->maximum(200);
-      chooser_size->step(1);
-      chooser_size->value(12);
-      int fs = get_font_size(currentElement);
-      o->value(fs);
-    } // Fl_Value_Output* chooser_size
+    { Fl_Tabs* o = new Fl_Tabs(0, 0, 320, 430);
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)42);
+      o->selection_color(FL_LIGHT1);
+      { Fl_Group* o = new Fl_Group(0, 25, 315, 400, gettext("General Options"));
+        o->box(FL_FLAT_BOX);
+        o->color(FL_LIGHT1);
+        o->selection_color(FL_DARK2);
+        { Fl_Browser* o = font_browser = new Fl_Browser(5, 25, 305, 285);
+          font_browser->type(2);
+          font_browser->box(FL_FLAT_BOX);
+          font_browser->color((Fl_Color)55);
+          font_browser->selection_color(FL_DARK_RED);
+          font_browser->labelfont(8);
+          font_browser->callback((Fl_Callback*)cb_font_browser);
+          font_browser->when(FL_WHEN_RELEASE);
+          font_populate(o);
+        } // Fl_Browser* font_browser
+        { Fl_Output* o = font_name = new Fl_Output(10, 350, 305, 40);
+          font_name->box(FL_FLAT_BOX);
+          font_name->color((Fl_Color)55);
+          font_name->selection_color((Fl_Color)80);
+          font_name->labelsize(20);
+          font_name->callback((Fl_Callback*)cb_font_name);
+          font_name->when(FL_WHEN_RELEASE_ALWAYS);
+          get_font(currentElement,o);
+        } // Fl_Output* font_name
+        { Fl_Slider* o = font_size_slider = new Fl_Slider(5, 315, 250, 25);
+          font_size_slider->type(1);
+          font_size_slider->box(FL_GTK_DOWN_BOX);
+          font_size_slider->color((Fl_Color)41);
+          font_size_slider->selection_color((Fl_Color)48);
+          font_size_slider->minimum(8);
+          font_size_slider->maximum(200);
+          font_size_slider->step(1);
+          font_size_slider->value(12);
+          font_size_slider->callback((Fl_Callback*)cb_font_size_slider);
+          int fs = get_font_size(currentElement);
+          o->value(fs);
+        } // Fl_Slider* font_size_slider
+        { Fl_Value_Output* o = chooser_size = new Fl_Value_Output(265, 315, 45, 25);
+          chooser_size->box(FL_FLAT_BOX);
+          chooser_size->color((Fl_Color)23);
+          chooser_size->minimum(8);
+          chooser_size->maximum(200);
+          chooser_size->step(1);
+          chooser_size->value(12);
+          int fs = get_font_size(currentElement);
+          o->value(fs);
+        } // Fl_Value_Output* chooser_size
+        o->end();
+      } // Fl_Group* o
+      { Fl_Group* o = new Fl_Group(0, 25, 315, 405, gettext("Advanced"));
+        o->selection_color(FL_DARK2);
+        o->hide();
+        { Fl_Check_Button* o = new Fl_Check_Button(10, 240, 85, 25, gettext("Hinting"));
+          o->tooltip(gettext("Whether the rasterizer should use hinting"));
+          o->down_box(FL_GTK_DOWN_BOX);
+          o->color((Fl_Color)55);
+          o->selection_color((Fl_Color)61);
+          o->callback((Fl_Callback*)cb_Hinting);
+          std::string item="hinting";
+          if(!getFontOpt(currentElement,item)){o->value(0);}else{o->value(1);}
+        } // Fl_Check_Button* o
+        { Fl_Check_Button* o = new Fl_Check_Button(10, 263, 110, 25, gettext("Antialiasing"));
+          o->tooltip(gettext("Whether glyphs can be antialiased"));
+          o->down_box(FL_GTK_DOWN_BOX);
+          o->color((Fl_Color)55);
+          o->selection_color((Fl_Color)61);
+          o->callback((Fl_Callback*)cb_Antialiasing);
+          std::string item="antialias";
+          if(!getFontOpt(currentElement,item)){o->value(0);}else{o->value(1);}
+        } // Fl_Check_Button* o
+        { Fl_Value_Input* o = new Fl_Value_Input(75, 375, 25, 25, gettext("DPI"));
+          o->tooltip(gettext("Target dots per inch"));
+          o->box(FL_FLAT_BOX);
+          o->align(Fl_Align(FL_ALIGN_RIGHT));
+        } // Fl_Value_Input* o
+        { Fl_Menu_Button* o = new Fl_Menu_Button(10, 40, 85, 25, gettext("RGBA"));
+          o->tooltip(gettext("rgb, bgr, vrgb, vbgr, none - subpixel geometry"));
+          o->box(FL_FLAT_BOX);
+          o->color((Fl_Color)23);
+          o->selection_color((Fl_Color)120);
+          if (!menu_RGBA_i18n_done) {
+            int i=0;
+            for ( ; i<5; i++)
+              if (menu_RGBA[i].label())
+                menu_RGBA[i].label(gettext(menu_RGBA[i].label()));
+            menu_RGBA_i18n_done = 1;
+          }
+          o->menu(menu_RGBA);
+        } // Fl_Menu_Button* o
+        { Fl_Menu_Button* o = new Fl_Menu_Button(10, 73, 85, 25, gettext("Weight"));
+          o->box(FL_FLAT_BOX);
+          o->color((Fl_Color)23);
+          o->selection_color((Fl_Color)120);
+          if (!menu_Weight_i18n_done) {
+            int i=0;
+            for ( ; i<4; i++)
+              if (menu_Weight[i].label())
+                menu_Weight[i].label(gettext(menu_Weight[i].label()));
+            menu_Weight_i18n_done = 1;
+          }
+          o->menu(menu_Weight);
+        } // Fl_Menu_Button* o
+        { Fl_Menu_Button* o = new Fl_Menu_Button(10, 107, 85, 25, gettext("Width"));
+          o->tooltip(gettext("Condensed, normal or expanded"));
+          o->box(FL_FLAT_BOX);
+          o->color((Fl_Color)23);
+          o->selection_color((Fl_Color)120);
+          if (!menu_Width_i18n_done) {
+            int i=0;
+            for ( ; i<9; i++)
+              if (menu_Width[i].label())
+                menu_Width[i].label(gettext(menu_Width[i].label()));
+            menu_Width_i18n_done = 1;
+          }
+          o->menu(menu_Width);
+        } // Fl_Menu_Button* o
+        { Fl_Menu_Button* o = new Fl_Menu_Button(10, 141, 85, 25, gettext("LCD Filter"));
+          o->tooltip(gettext("Type of LCD filter"));
+          o->box(FL_FLAT_BOX);
+          o->color((Fl_Color)23);
+          o->selection_color((Fl_Color)120);
+          if (!menu_LCD_i18n_done) {
+            int i=0;
+            for ( ; i<4; i++)
+              if (menu_LCD[i].label())
+                menu_LCD[i].label(gettext(menu_LCD[i].label()));
+            menu_LCD_i18n_done = 1;
+          }
+          o->menu(menu_LCD);
+        } // Fl_Menu_Button* o
+        { Fl_Menu_Button* o = new Fl_Menu_Button(10, 175, 85, 25, gettext("Hint Style"));
+          o->tooltip(gettext("Automatic hinting style"));
+          o->box(FL_FLAT_BOX);
+          o->color((Fl_Color)23);
+          o->selection_color((Fl_Color)120);
+          if (!menu_Hint_i18n_done) {
+            int i=0;
+            for ( ; i<4; i++)
+              if (menu_Hint[i].label())
+                menu_Hint[i].label(gettext(menu_Hint[i].label()));
+            menu_Hint_i18n_done = 1;
+          }
+          o->menu(menu_Hint);
+        } // Fl_Menu_Button* o
+        { Fl_Output* o = rgba_out = new Fl_Output(110, 40, 95, 25);
+          rgba_out->box(FL_FLAT_BOX);
+          rgba_out->color(FL_LIGHT3);
+          rgba_out->selection_color((Fl_Color)120);
+          std::string item="rgba";
+          std::string tmp=getFontOPT(currentElement,item);
+          if(tmp.compare("")!=0){o->value(tmp.c_str());}
+        } // Fl_Output* rgba_out
+        { Fl_Output* o = weight_out = new Fl_Output(110, 73, 95, 25);
+          weight_out->box(FL_FLAT_BOX);
+          weight_out->color(FL_LIGHT3);
+          weight_out->selection_color((Fl_Color)120);
+          std::string item="weight";
+          std::string tmp=getFontOPT(currentElement,item);
+          if(tmp.compare("")!=0){o->value(tmp.c_str());}
+        } // Fl_Output* weight_out
+        { Fl_Output* o = width_out = new Fl_Output(110, 107, 95, 25);
+          width_out->box(FL_FLAT_BOX);
+          width_out->color(FL_LIGHT3);
+          width_out->selection_color((Fl_Color)120);
+          std::string item="width";
+          std::string tmp=getFontOPT(currentElement,item);
+          if(tmp.compare("")!=0){o->value(tmp.c_str());}
+        } // Fl_Output* width_out
+        { Fl_Output* o = lcd_out = new Fl_Output(110, 141, 95, 25);
+          lcd_out->box(FL_FLAT_BOX);
+          lcd_out->color(FL_LIGHT3);
+          lcd_out->selection_color((Fl_Color)120);
+          std::string item="lcdfilter";
+          std::string tmp=getFontOPT(currentElement,item);
+          if(tmp.compare("")!=0){o->value(tmp.c_str());}
+        } // Fl_Output* lcd_out
+        { Fl_Output* o = hint_out = new Fl_Output(110, 175, 95, 25);
+          hint_out->box(FL_FLAT_BOX);
+          hint_out->color(FL_LIGHT3);
+          hint_out->selection_color((Fl_Color)120);
+          std::string item="hintstyle";
+          std::string tmp=getFontOPT(currentElement,item);
+          if(tmp.compare("")!=0){o->value(tmp.c_str());}
+        } // Fl_Output* hint_out
+        { Fl_Check_Button* o = new Fl_Check_Button(10, 285, 110, 25, gettext("Autohint"));
+          o->tooltip(gettext("Use autohinter instead of normal hinter"));
+          o->down_box(FL_GTK_DOWN_BOX);
+          o->color((Fl_Color)55);
+          o->selection_color((Fl_Color)61);
+          std::string item="autohint";
+          if(!getFontOpt(currentElement,item)){o->value(0);}else{o->value(1);}
+        } // Fl_Check_Button* o
+        { Fl_Check_Button* o = new Fl_Check_Button(10, 308, 110, 25, gettext("Vertical Layout"));
+          o->tooltip(gettext("Use vertical layout"));
+          o->down_box(FL_GTK_DOWN_BOX);
+          o->color((Fl_Color)55);
+          o->selection_color((Fl_Color)61);
+          std::string item="verticallayout";
+          if(!getFontOpt(currentElement,item)){o->value(0);}else{o->value(1);}
+        } // Fl_Check_Button* o
+        { Fl_Check_Button* o = new Fl_Check_Button(10, 330, 110, 25, gettext("No Leading space"));
+          o->tooltip(gettext("Eliminate leading from line spacing"));
+          o->down_box(FL_GTK_DOWN_BOX);
+          o->color((Fl_Color)55);
+          o->selection_color((Fl_Color)61);
+          std::string item="minspace";
+          if(!getFontOpt(currentElement,item)){o->value(0);}else{o->value(1);}
+        } // Fl_Check_Button* o
+        { Fl_Check_Button* o = new Fl_Check_Button(190, 350, 110, 25, gettext("Bold"));
+          o->down_box(FL_GTK_DOWN_BOX);
+          o->color((Fl_Color)55);
+          o->selection_color((Fl_Color)61);
+          o->deactivate();
+        } // Fl_Check_Button* o
+        { Fl_Check_Button* o = new Fl_Check_Button(190, 375, 110, 25, gettext("Italic"));
+          o->down_box(FL_GTK_DOWN_BOX);
+          o->color((Fl_Color)55);
+          o->selection_color((Fl_Color)61);
+          o->deactivate();
+        } // Fl_Check_Button* o
+        { Fl_Input* o = new Fl_Input(10, 210, 95, 25, gettext("Encoding"));
+          o->box(FL_FLAT_BOX);
+          o->selection_color((Fl_Color)120);
+          o->callback((Fl_Callback*)cb_Encoding);
+          o->align(Fl_Align(FL_ALIGN_RIGHT));
+          std::string item="encoding";
+          std::string tmp=getFontOPT(currentElement,item);
+          if(tmp.compare("")!=0){o->value(tmp.c_str());}
+        } // Fl_Input* o
+        o->end();
+      } // Fl_Group* o
+      o->end();
+    } // Fl_Tabs* o
     startup(o,jsm_fonts_xpm);
     font_choosing->xclass("jsm-fonts");
     font_choosing->end();
   } // Fl_Double_Window* font_choosing
   return font_choosing;
+}
+
+Fl_Double_Window* FontUI::gtk_font_chooser_window() {
+  { Fl_Double_Window* o = gtk_font_choosing = new Fl_Double_Window(315, 405, gettext("Choose a Font"));
+    gtk_font_choosing->user_data((void*)(this));
+    { Fl_Button* o = new Fl_Button(195, 375, 60, 25, gettext("Cancel"));
+      o->tooltip(gettext("No changes will be saved"));
+      o->box(FL_FLAT_BOX);
+      o->down_box(FL_GTK_DOWN_BOX);
+      o->color((Fl_Color)80);
+      o->selection_color((Fl_Color)81);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_Cancel2);
+    } // Fl_Button* o
+    { Fl_Button* o = new Fl_Button(265, 375, 45, 25, gettext("OK"));
+      o->tooltip(gettext("You will need to reopen active apps"));
+      o->box(FL_FLAT_BOX);
+      o->down_box(FL_GTK_DOWN_BOX);
+      o->color((Fl_Color)61);
+      o->selection_color((Fl_Color)59);
+      o->labelcolor((Fl_Color)55);
+      o->callback((Fl_Callback*)cb_OK2);
+    } // Fl_Button* o
+    { Fl_Browser* o = gtk_font_browser = new Fl_Browser(5, 5, 305, 285);
+      gtk_font_browser->type(2);
+      gtk_font_browser->box(FL_FLAT_BOX);
+      gtk_font_browser->color((Fl_Color)55);
+      gtk_font_browser->selection_color(FL_DARK_RED);
+      gtk_font_browser->labelfont(8);
+      gtk_font_browser->callback((Fl_Callback*)cb_gtk_font_browser);
+      gtk_font_browser->when(FL_WHEN_RELEASE);
+      font_populate(o);
+    } // Fl_Browser* gtk_font_browser
+    { Fl_Output* o = gtk_font_name = new Fl_Output(5, 330, 305, 40);
+      gtk_font_name->box(FL_FLAT_BOX);
+      gtk_font_name->color((Fl_Color)55);
+      gtk_font_name->selection_color((Fl_Color)80);
+      gtk_font_name->labelsize(20);
+      gtk_font_name->callback((Fl_Callback*)cb_gtk_font_name);
+      gtk_font_name->when(FL_WHEN_RELEASE_ALWAYS);
+      gtk_get_font(o);
+    } // Fl_Output* gtk_font_name
+    { Fl_Slider* o = gtk_font_size_slider = new Fl_Slider(5, 295, 250, 25);
+      gtk_font_size_slider->type(1);
+      gtk_font_size_slider->box(FL_GTK_DOWN_BOX);
+      gtk_font_size_slider->color((Fl_Color)41);
+      gtk_font_size_slider->selection_color((Fl_Color)48);
+      gtk_font_size_slider->minimum(8);
+      gtk_font_size_slider->maximum(200);
+      gtk_font_size_slider->step(1);
+      gtk_font_size_slider->value(12);
+      gtk_font_size_slider->callback((Fl_Callback*)cb_gtk_font_size_slider);
+      int fs = gtk_get_font_size();
+      o->value(fs);
+    } // Fl_Slider* gtk_font_size_slider
+    { Fl_Value_Output* o = gtk_chooser_size = new Fl_Value_Output(265, 295, 45, 25);
+      gtk_chooser_size->box(FL_FLAT_BOX);
+      gtk_chooser_size->color((Fl_Color)23);
+      gtk_chooser_size->minimum(8);
+      gtk_chooser_size->maximum(200);
+      gtk_chooser_size->step(1);
+      gtk_chooser_size->value(12);
+      int fs = gtk_get_font_size();
+      o->value(fs);
+    } // Fl_Value_Output* gtk_chooser_size
+    startup(o,jsm_fonts_xpm);
+    gtk_font_choosing->xclass("jsm-fonts");
+    gtk_font_choosing->end();
+  } // Fl_Double_Window* gtk_font_choosing
+  return gtk_font_choosing;
 }

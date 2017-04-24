@@ -81,7 +81,10 @@ namespace linuxcommon{
 	std::string get_directory_from_filename(std::string filename);
 	std::string get_gtk_icon_theme();
 	std::string get_gtk_widget_theme();
-	std::string get_gtk_item(std::string itemToGet, std::string defaultTheme);
+	std::string get_gtk_item(std::string itemToGet, std::string defaultItem);
+	std::string get_gtk_item(std::string itemToGet,std::string configItem, std::string defaultItem);
+	std::string get_gtk_item(std::string itemToGetgtk3,std::string itemToGetgtk2,std::string gtk3fileopt,std::string gtk2fileopt, std::string defaultItem);
+	std::string get_gtk_themeitem(std::string itemToGet, std::string defaultTheme);
 	std::string get_line_with_equal(std::string filename, std::string line);/** This function is used for files like *.desktop files to get a value*/
 	std::string get_line_with_equal_after_header(std::string header,std::string filename, std::string line);/** This function is used for files like *.desktop files to get a value*/
 	std::string get_shell_for_C();/** This is a specialized internal function to return something akin to "bash -c '"*/
@@ -127,6 +130,7 @@ namespace linuxcommon{
 	bool program_is_running(std::string program_line);
 	bool save_string_to_file(std::string MSG,std::string filename);/**This should make the directory recursively if it does not exist*/
 	bool switch_gtk_item(std::string item, std::string value);
+	bool switch_gtk_setting(std::string item, std::string value);
 	bool look_for_string_in_vector(std::vector<std::string> vector_to_check,std::string item_to_find);
 	bool test_file(std::string fileWithFullPATH);
 	bool test_dir(std::string fullpath);
