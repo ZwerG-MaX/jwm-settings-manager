@@ -59,7 +59,7 @@ Options:
  -s --shortcuts         show shortcut editor
 ```
 ## Panel
-![Alt text](/screenshots/panel.png?raw=true "Panel Window")
+![Alt text](/screenshots/panel.png?raw=true "Panel Window") ![Alt text](/screenshots/panel-appearance.png?raw=true "Panel Appearance") ![Alt text](/screenshots/panel-size.png?raw=true "Panel Size")
 
 This portion allows you to configure the Menus, Application launchers, indicators, pager, appearance, sizing and position, etc..
 
@@ -70,7 +70,7 @@ This allows you to change the background, and amount of virtual desktops.
 It also supports filemanagers creating the desktop background (pcmanfm and gsettings... i.e. thunar/nautilus/etc..)
 
 ## Windows
-![Alt text](/screenshots/windows.png?raw=true "Windows Window")
+![Alt text](/screenshots/windows.png?raw=true "Windows Window") ![Alt text](/screenshots/windows-settings.png?raw=true "Windows Settings") ![Alt text](/screenshots/windows-groups.png?raw=true "Windows Groups") ![Alt text](/screenshots/windows-advanced.png?raw=true "Windows Advanced")
 
 This allows you to change the window buttons, appearance, and configure window groups
 You can also change the GTK widget theme
@@ -80,6 +80,7 @@ You can also change the GTK widget theme
 
 This allows you to change keyboard shortcuts.
 There is a 'key grabber' for combinations, as well as a drop down for XF86 keys
+![Alt text](/screenshots/keyboard-grabber.png?raw=true "Keyboard Grabber")
 There is also a preliminary effort to configure keyboard layout.
 
 ## Touchpad
@@ -121,7 +122,7 @@ Configure and edit all JWM Startup commands, as well as handle XDG autostart thr
 A very full featured desktop file editor offering the ability to edit almost everything possible in a desktop file.
 
 ## Menus
-![Alt text](/screenshots/menus.png?raw=true Menus" Window")
+![Alt text](/screenshots/menus.png?raw=true "Menus Window")
 
 Edit menus, and configure menu items easily
 
