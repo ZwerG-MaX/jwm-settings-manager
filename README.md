@@ -1,4 +1,4 @@
-#JWM Settings Manager
+# JWM Settings Manager
 Build Depends on Debian/Ubuntu
 - cmake
 - gcc-multilib [amd64]
@@ -32,7 +32,7 @@ For example
 `./jwm-settings-manager --debug > jwm-settings-manager.log`
 will save all the output to a file.
 
-###Command Line Options
+### Command Line Options
 jwm-settings-manager will open the Main settings screen if no options are supplied
 configure JWM easily
 
@@ -58,78 +58,84 @@ Options:
  -l --clock        show clock settings
  -s --shortcuts         show shortcut editor
 ```
-##Panel
+## Panel
 ![Alt text](/screenshots/panel.png?raw=true "Panel Window")
 
 This portion allows you to configure the Menus, Application launchers, indicators, pager, appearance, sizing and position, etc..
 
-##Desktop
+## Desktop
 ![Alt text](/screenshots/desktop.png?raw=true "Desktop Window")
 
 This allows you to change the background, and amount of virtual desktops.
 It also supports filemanagers creating the desktop background (pcmanfm and gsettings... i.e. thunar/nautilus/etc..)
 
-##Windows
+## Windows
 ![Alt text](/screenshots/windows.png?raw=true "Windows Window")
 
 This allows you to change the window buttons, appearance, and configure window groups
 You can also change the GTK widget theme
 
-##Keyboard
+## Keyboard
 ![Alt text](/screenshots/keyboard.png?raw=true "Keyboard Window")
 
 This allows you to change keyboard shortcuts.
 There is a 'key grabber' for combinations, as well as a drop down for XF86 keys
 There is also a preliminary effort to configure keyboard layout.
 
-##Touchpad
+## Touchpad
 ![Alt text](/screenshots/touchpad.png?raw=true "Touchpad Window")
 
 This allows you to configure your touchpad.
 It also configures the JWM options, and if no touchpad exists only JWM options will be shown
 
-##Themes
+## Themes
 ![Alt text](/screenshots/themes.png?raw=true "Themes Window")
 
 Switch between a few premade themes, with support for user themes in
 ~/.themes
 
-##Icons
+## Icons
 ![Alt text](/screenshots/icons.png?raw=true "Icons Window")
 
 Change JWM icons.  You can manually edit the lines, or simply change GTK icon theme
 
-##Fonts
+## Fonts
 ![Alt text](/screenshots/fonts.png?raw=true "Fonts Window")
 
-Configure all fonts (and font colors) used in JWM through a graphical font manager
+Configure all fonts (and font colors) used in JWM through a graphical font manager.  You can also choose the GTK interior window fonts.
 
-##Autostart
+![Alt text](/screenshots/fonts-subwin.png?raw=true "Fonts Chooser Window")
+
+You may control many aspects of the font using the advanced options (many Xft font options are supported)
+
+![Alt text](/screenshots/fonts-subwin-advanced.png?raw=true "Fonts Chooser Window - Advanced")
+
+## Autostart
 ![Alt text](/screenshots/autostart.png?raw=true "Autostart Window")
 
 Configure and edit all JWM Startup commands, as well as handle XDG autostart through the desktop-file-editor (via pkexec, for system files)
 
-##Desktop File Editor
+## Desktop File Editor
 ![Alt text](/screenshots/desktop-file-editor.png?raw=true "Desktop File Editor Window")
 
 A very full featured desktop file editor offering the ability to edit almost everything possible in a desktop file.
 
-##Menus
+## Menus
 ![Alt text](/screenshots/menus.png?raw=true Menus" Window")
 
 Edit menus, and configure menu items easily
 
-##Clock Settings
+## Clock Settings
 ![Alt text](/screenshots/clock.png?raw=true "Clock Settings Window")
 
 Edit the clock display easily, and modify timezone settings quickly
 
-##Shutdown window
+## Shutdown window
 ![Alt text](/screenshots/shutdown.png?raw=true "Shutdown Window")
 
 This launches a variety of programs to control shutdown/suspend/logout from a JWM/ToriOS session
 
-##Popups window
+## Popups window
 ![Alt text](/screenshots/popups.png?raw=true "Popups Window")
 
 Edit the JWM tooltip popups, as well as dunst Notifications (if dunst is installed)

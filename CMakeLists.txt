@@ -46,11 +46,12 @@ set(ARGpopup "--popups")
 set(MISCDEPS "\${misc:Depends}")
 set(DEBDEPS "\${source:Version}) , \${shlibs:Depends}, ${MISCDEPS}")
 set(ARGdebug "--debug")
-execute_process(COMMAND gcc -v 2>&1|grep Ubuntu OUTPUT_VARIABLE ISUBUNTU)
+execute_process(COMMAND "gcc -v -o /dev/stdout|grep Ubuntu" OUTPUT_VARIABLE ISUBUNTU)
 string(COMPARE EQUAL "${ISUBUNTU}" "" result)
 
 # Packages we need
 if(result)
+    MESSAGE("Using Ubuntu")
 	FIND_PACKAGE(FLTK REQUIRED)
 else()
 	 FIND_PACKAGE(FLTK REQUIRED NO_MODULE)
@@ -153,11 +154,14 @@ set(ALL_LIBS JSM ${X11_LIBRARIES} ${X11_X11_LIB} ${X11_Xpm_LIB} ${FLTK_LIBRARIES
 set(UBUNTU_LIBS JSM ${X11_LIBRARIES} ${X11_X11_LIB} ${X11_Xpm_LIB} ${FLTK_LIBRARIES} fltk_SHARED fltk_images_SHARED)
 if(result)
 	TARGET_LINK_LIBRARIES(jwm-settings-manager ${ALL_LIBS})
+	TARGET_LINK_LIBRARIES(fltk-mouse ${ALL_LIBS})
+	TARGET_LINK_LIBRARIES(desktop-file-editor ${ALL_LIBS})
 else()
+	TARGET_LINK_LIBRARIES(fltk-mouse ${UBUNTU_LIBS})
+	TARGET_LINK_LIBRARIES(desktop-file-editor ${UBUNTU_LIBS})
 	TARGET_LINK_LIBRARIES(jwm-settings-manager ${UBUNTU_LIBS})
+
 endif()
-TARGET_LINK_LIBRARIES(fltk-mouse ${ALL_LIBS})
-TARGET_LINK_LIBRARIES(desktop-file-editor ${ALL_LIBS})
 ## Install the binary to bin and the library to lib :)
 install(TARGETS jwm-settings-manager fltk-mouse desktop-file-editor JSM
 	RUNTIME DESTINATION bin
