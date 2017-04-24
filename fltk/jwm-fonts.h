@@ -146,9 +146,10 @@ private:
   static void cb_font_size_slider(Fl_Slider*, void*);
 public:
   Fl_Value_Output *chooser_size;
+  Fl_Check_Button *hint_check;
 private:
-  inline void cb_Hinting_i(Fl_Check_Button*, void*);
-  static void cb_Hinting(Fl_Check_Button*, void*);
+  inline void cb_hint_check_i(Fl_Check_Button*, void*);
+  static void cb_hint_check(Fl_Check_Button*, void*);
   inline void cb_Antialiasing_i(Fl_Check_Button*, void*);
   static void cb_Antialiasing(Fl_Check_Button*, void*);
   static unsigned char menu_RGBA_i18n_done;
@@ -247,5 +248,6 @@ private:
   static void cb_gtk_font_size_slider(Fl_Slider*, void*);
 public:
   Fl_Value_Output *gtk_chooser_size;
+  void hinting(int val);
 };
 #endif

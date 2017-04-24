@@ -225,15 +225,16 @@ void FontUI::cb_font_size_slider(Fl_Slider* o, void* v) {
   ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_font_size_slider_i(o,v);
 }
 
-void FontUI::cb_Hinting_i(Fl_Check_Button* o, void*) {
+void FontUI::cb_hint_check_i(Fl_Check_Button* o, void*) {
   std::string item="hinting";
 int val=o->value();
 std::string value="false";
 if(val!=0){value="true";}
 setFontOption(currentElement,item,value);
+hinting(val);
 }
-void FontUI::cb_Hinting(Fl_Check_Button* o, void* v) {
-  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_Hinting_i(o,v);
+void FontUI::cb_hint_check(Fl_Check_Button* o, void* v) {
+  ((FontUI*)(o->parent()->parent()->parent()->user_data()))->cb_hint_check_i(o,v);
 }
 
 void FontUI::cb_Antialiasing_i(Fl_Check_Button* o, void*) {
@@ -541,7 +542,7 @@ void FontUI::cb_Medium1(Fl_Menu_* o, void* v) {
 
 void FontUI::cb_Full_i(Fl_Menu_*, void*) {
   std::string item="hintstyle";
-std::string value="3";
+std::string value="hintfull";
 setFontOption(currentElement,item,value);
 hint_out->value(value.c_str());
 }
@@ -828,6 +829,7 @@ Fl_Double_Window* FontUI::font_chooser_window() {
         o->box(FL_FLAT_BOX);
         o->color(FL_LIGHT1);
         o->selection_color(FL_DARK2);
+        o->hide();
         { Fl_Browser* o = font_browser = new Fl_Browser(5, 25, 305, 285);
           font_browser->type(2);
           font_browser->box(FL_FLAT_BOX);
@@ -874,16 +876,15 @@ Fl_Double_Window* FontUI::font_chooser_window() {
       } // Fl_Group* o
       { Fl_Group* o = new Fl_Group(0, 25, 315, 405, gettext("Advanced"));
         o->selection_color(FL_DARK2);
-        o->hide();
-        { Fl_Check_Button* o = new Fl_Check_Button(10, 240, 85, 25, gettext("Hinting"));
-          o->tooltip(gettext("Whether the rasterizer should use hinting"));
-          o->down_box(FL_GTK_DOWN_BOX);
-          o->color((Fl_Color)55);
-          o->selection_color((Fl_Color)61);
-          o->callback((Fl_Callback*)cb_Hinting);
+        { Fl_Check_Button* o = hint_check = new Fl_Check_Button(10, 240, 85, 25, gettext("Hinting"));
+          hint_check->tooltip(gettext("Whether the rasterizer should use hinting"));
+          hint_check->down_box(FL_GTK_DOWN_BOX);
+          hint_check->color((Fl_Color)55);
+          hint_check->selection_color((Fl_Color)61);
+          hint_check->callback((Fl_Callback*)cb_hint_check);
           std::string item="hinting";
           if(!getFontOpt(currentElement,item)){o->value(0);}else{o->value(1);}
-        } // Fl_Check_Button* o
+        } // Fl_Check_Button* hint_check
         { Fl_Check_Button* o = new Fl_Check_Button(10, 263, 110, 25, gettext("Antialiasing"));
           o->tooltip(gettext("Whether glyphs can be antialiased"));
           o->down_box(FL_GTK_DOWN_BOX);
@@ -1131,4 +1132,17 @@ Fl_Double_Window* FontUI::gtk_font_chooser_window() {
     gtk_font_choosing->end();
   } // Fl_Double_Window* gtk_font_choosing
   return gtk_font_choosing;
+}
+
+void FontUI::hinting(int val) {
+  //hint_check->value(val);
+  if(val!=0){
+    std::string tmp=getFontOPT(currentElement,item);
+    if(tmp.compare("")!=0){
+      std::string item="hintstyle";
+      std::string  value="hintfull";
+      setFontOption(currentElement,item,value);
+      hint_out->value(value.c_str());
+    }
+  }
 }

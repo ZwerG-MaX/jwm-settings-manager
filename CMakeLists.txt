@@ -46,17 +46,23 @@ set(ARGpopup "--popups")
 set(MISCDEPS "\${misc:Depends}")
 set(DEBDEPS "\${source:Version}) , \${shlibs:Depends}, ${MISCDEPS}")
 set(ARGdebug "--debug")
+if ( ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR} )
+     message( FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there. You may need to remove CMakeCache.txt." )
+endif()
 execute_process(COMMAND "gcc -v -o /dev/stdout|grep Ubuntu" OUTPUT_VARIABLE ISUBUNTU)
 string(COMPARE EQUAL "${ISUBUNTU}" "" result)
 
 # Packages we need
 if(result)
+	## Because Launchpad's build system is really weird!
     MESSAGE("Using Ubuntu")
 	FIND_PACKAGE(FLTK REQUIRED NO_MODULE)
 else()
 	 FIND_PACKAGE(FLTK REQUIRED)
 endif()
 FIND_PACKAGE(X11 REQUIRED)
+
+## Because Launchpad's build system is really weird!
 IF(NOT EXISTS "${FLTK_FLUID_EXECUTABLE}")
     # Try to detect full path anyway
     EXECUTE_PROCESS(COMMAND which fluid OUTPUT_VARIABLE FLTK_FLUID_EXECUTABLE OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -64,6 +70,8 @@ IF(NOT EXISTS "${FLTK_FLUID_EXECUTABLE}")
         MESSAGE(FATAL_ERROR "Please install the fluid binary which is part of FLTK.")
     ENDIF()
 ENDIF()
+
+## Because Launchpad's build system is really weird!
 IF(NOT EXISTS "${FLTK_INCLUDE_DIR}")
     # Try to detect full path anyway
     set(FLTK_INCLUDE_DIR "/usr/include")
@@ -85,9 +93,6 @@ configure_file("debian/${PROJECT_NAME}.1.in" "${PROJECT_NAME}.1")
 configure_file("debian/control.in" "debian/control")
 configure_file("debian/jwm-settings-manager-common.install.in" "debian/jwm-settings-manager-common.install")
 configure_file("src/jsm.cpp.in" "src/jsm.cpp")
-if ( ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR} )
-     message( FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there. You may need to remove CMakeCache.txt." )
-endif()
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g -fvar-tracking -DDEBUG=true")
 #set(CMAKE_BUILD_TYPE "RELEASE")
 #set(CMAKE_CONFIGURATION_TYPE "RELEASE")
@@ -151,17 +156,14 @@ add_executable(fltk-mouse fltk/jwm-mouse.cxx)
 add_executable(desktop-file-editor fltk/desktop-file-editor.cxx)
 ## Linker settings
 set(ALL_LIBS JSM ${X11_LIBRARIES} ${X11_X11_LIB} ${X11_Xpm_LIB} ${FLTK_LIBRARIES})
-set(UBUNTU_LIBS JSM ${X11_LIBRARIES} ${X11_X11_LIB} ${X11_Xpm_LIB} ${FLTK_LIBRARIES} fltk_SHARED fltk_images_SHARED)
+## Because Launchpad's build system is really weird!
 if(result)
-	TARGET_LINK_LIBRARIES(jwm-settings-manager ${ALL_LIBS})
-	TARGET_LINK_LIBRARIES(fltk-mouse ${ALL_LIBS})
-	TARGET_LINK_LIBRARIES(desktop-file-editor ${ALL_LIBS})
-else()
-	TARGET_LINK_LIBRARIES(fltk-mouse ${UBUNTU_LIBS})
-	TARGET_LINK_LIBRARIES(desktop-file-editor ${UBUNTU_LIBS})
-	TARGET_LINK_LIBRARIES(jwm-settings-manager ${UBUNTU_LIBS})
-
+	set(ALL_LIBS ${ALL_LIBS} fltk_SHARED fltk_images_SHARED)
 endif()
+## link them up!
+TARGET_LINK_LIBRARIES(jwm-settings-manager ${ALL_LIBS})
+TARGET_LINK_LIBRARIES(fltk-mouse ${ALL_LIBS})
+TARGET_LINK_LIBRARIES(desktop-file-editor ${ALL_LIBS})
 ## Install the binary to bin and the library to lib :)
 install(TARGETS jwm-settings-manager fltk-mouse desktop-file-editor JSM
 	RUNTIME DESTINATION bin

@@ -71,8 +71,8 @@ class FontUI {open
     code {load();} {}
     Fl_Window font_window {
       label {Font Settings} open
-      xywh {920 135 280 335} type Double color 47 resizable
-      code0 {startup(o,jsm_fonts_xpm);} xclass {jsm-fonts} visible
+      xywh {920 135 280 335} type Double color 47 hide resizable
+      code0 {startup(o,jsm_fonts_xpm);} xclass {jsm-fonts}
     } {
       Fl_Scroll {} {open
         xywh {0 -5 280 335} color 31
@@ -207,7 +207,7 @@ gtk_font_chooser_window()->show();}
   } {
     Fl_Window font_choosing {
       label {Choose a Font} open
-      xywh {198 165 315 460} type Double
+      xywh {405 66 315 460} type Double
       code0 {startup(o,jsm_fonts_xpm);} xclass {jsm-fonts} visible
     } {
       Fl_Button {} {
@@ -225,8 +225,8 @@ font_choosing->hide();}
         xywh {0 0 320 430} box FLAT_BOX color 42 selection_color 50
       } {
         Fl_Group {} {
-          label {General Options} open selected
-          xywh {0 25 315 400} box FLAT_BOX color 50 selection_color 45
+          label {General Options} open
+          xywh {0 25 315 400} box FLAT_BOX color 50 selection_color 45 hide
         } {
           Fl_Browser font_browser {
             callback {font_browser_cb(font_browser,font_name,font_size_slider);}
@@ -261,15 +261,16 @@ font_name->redraw();}
         }
         Fl_Group {} {
           label Advanced open
-          xywh {0 25 315 405} selection_color 45 hide
+          xywh {0 25 315 405} selection_color 45
         } {
-          Fl_Check_Button {} {
+          Fl_Check_Button hint_check {
             label Hinting
             callback {std::string item="hinting";
 int val=o->value();
 std::string value="false";
 if(val!=0){value="true";}
-setFontOption(currentElement,item,value);}
+setFontOption(currentElement,item,value);
+hinting(val);}
             tooltip {Whether the rasterizer should use hinting} xywh {10 240 85 25} down_box GTK_DOWN_BOX color 55 selection_color 61
             code0 {std::string item="hinting";}
             code1 {if(!getFontOpt(currentElement,item)){o->value(0);}else{o->value(1);}}
@@ -516,7 +517,7 @@ hint_out->value(value.c_str());}
             MenuItem {} {
               label Full
               callback {std::string item="hintstyle";
-std::string value="3";
+std::string value="hintfull";
 setFontOption(currentElement,item,value);
 hint_out->value(value.c_str());}
               xywh {20 20 100 20}
@@ -642,6 +643,20 @@ gtk_font_name->redraw();}
         code0 {int fs = gtk_get_font_size();}
         code1 {o->value(fs);}
       }
+    }
+  }
+  Function {hinting(int val)} {open
+  } {
+    code {//hint_check->value(val);
+if(val!=0){
+  std::string tmp=getFontOPT(currentElement,item);
+  if(tmp.compare("")!=0){
+    std::string item="hintstyle";
+    std::string  value="hintfull";
+    setFontOption(currentElement,item,value);
+    hint_out->value(value.c_str());
+  }
+}} {selected
     }
   }
 } 
