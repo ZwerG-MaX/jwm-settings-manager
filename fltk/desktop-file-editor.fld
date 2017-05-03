@@ -72,7 +72,7 @@ CURRENT_FILE=filePassedIn;} {}
           xywh {5 5 410 460} box FLAT_BOX color 47
         } {
           Fl_Group {} {
-            label Normal open
+            label Normal open selected
             xywh {5 30 402 430} box FLAT_BOX selection_color 45
           } {
             Fl_Input name {
@@ -757,8 +757,7 @@ return result;} {}
   else{save_button->activate();}
 }
 check_type();
-check_save();} {selected
-    }
+check_save();} {}
   }
   Function {locale_chooser(std::string filename, bool getval)} {open
   } {
@@ -1368,7 +1367,7 @@ save_button->redraw();} {}
   }
 } 
 
-Function {main(int argc, char *argv[])} {return_type int
+Function {main(int argc, char *argv[])} {open return_type int
 } {
   code {std::string command;
 try{
@@ -1377,6 +1376,8 @@ try{
     for(int i=1;i<argc;++i){
       command=argv[i];
       for(int i=0;i<argc;i++){
+        std::string tmp=linuxcommon::process_filename(command);
+        if(tmp.compare("")!=0)command=tmp;
         if(linuxcommon::test_file(command)){
           Desktop D;
           debug_out("Command argument:"+command);

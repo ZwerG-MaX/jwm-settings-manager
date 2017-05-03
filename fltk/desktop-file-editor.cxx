@@ -1916,6 +1916,8 @@ int main(int argc, char *argv[]) {
       for(int i=1;i<argc;++i){
         command=argv[i];
         for(int i=0;i<argc;i++){
+          std::string tmp=linuxcommon::process_filename(command);
+          if(tmp.compare("")!=0)command=tmp;
           if(linuxcommon::test_file(command)){
             Desktop D;
             debug_out("Command argument:"+command);

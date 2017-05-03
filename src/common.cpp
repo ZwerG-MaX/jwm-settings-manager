@@ -399,18 +399,24 @@ LINUX_COMMON__NS_BEGIN
 	}
 	/** This function dereferences a symlink to the actual file*/
 	std::string get_symlinkpath(std::string symlink){
-		std::vector<char> buf(400);
-		size_t len;
-		do{
-			buf.resize(buf.size() + 100);
-			len = ::readlink(symlink.c_str(), &(buf[0]), buf.size());
+		struct stat statinfo;
+		if((lstat(symlink.c_str(), &statinfo)>0)){return symlink;}
+		if ((!S_ISLNK (statinfo.st_mode) && statinfo.st_nlink > 1)
+		||
+		(S_ISLNK (statinfo.st_mode))){
+			std::vector<char> buf(400);
+			size_t len;
+			do{
+				buf.resize(buf.size() + 100);
+				len = ::readlink(symlink.c_str(), &(buf[0]), buf.size());
+			}
+			while(buf.size() == len);
+			if (len > 0){
+				buf[len] = '\0';
+				return (std::string(&(buf[0])));
+			}
 		}
-		while(buf.size() == len);
-		if (len > 0){
-			buf[len] = '\0';
-			return (std::string(&(buf[0])));
-		}
-		//echo_error("Error with symlink");
+		else{return symlink;}
 		return symlink;
 	}
 	std::string get_user_name(){
@@ -931,6 +937,7 @@ LINUX_COMMON__NS_BEGIN
 			filename=filename.erase(0,HOMEVAR+1);
 			filename=home_path()+filename;
 		}
+		if(filename.compare("")==0)return pathORfilename;
 		return filename;
 	}
 	std::string process_back_dir_in_filename(std::string filename){
@@ -962,9 +969,16 @@ LINUX_COMMON__NS_BEGIN
 	 * @param filename the filename to process
 	 */
 	std::string process_filename(std::string filename){
+		echo("Processing="+filename);
 		std::string tmp=process_back_dir_in_filename(filename);
-		//tmp=get_symlinkpath(tmp);
-		return translate_home(tmp);
+		echo(tmp);
+		std::string tmp2=get_symlinkpath(tmp);
+		if(tmp2.compare("")!=0)tmp=tmp2;
+		echo(tmp);
+		std:: string tmp3=translate_home(tmp);
+		if(tmp3.compare("")!=0)tmp=tmp3;
+		echo(tmp);
+		return tmp;
 	}
 	//Q
 	/** change characters XML doesn't like into ones it does
