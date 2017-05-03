@@ -1269,18 +1269,9 @@ std::string Desktop::keyWords(std::string filename) {
 
 void Desktop::load(std::string result) {
   if(result.compare("")!=0){
-    std::string tmp=result;
-    if(result.find("../")<result.length()){
-      std::string pwd=linuxcommon::current_directory();
-      if(pwd.compare("")!=0){
-        unsigned int finder = result.rfind("../");
-        if(finder<result.length()){
-          tmp=tmp.substr(finder+3,std::string::npos);
-          result=pwd+tmp;
-        }
-      }
-    }
-    std::cout<<result<<std::endl;
+    std::string tmp=linuxcommon::process_filename(result);
+    result=tmp;
+    std::cout<<"POST PROCESSED FILE="<<result<<std::endl;
     populate(result);
     Filename->value(tmp.c_str());
     if(!linuxcommon::file_is_writable(result)){save_button->deactivate();}

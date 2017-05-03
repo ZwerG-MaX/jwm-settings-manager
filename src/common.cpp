@@ -410,8 +410,8 @@ LINUX_COMMON__NS_BEGIN
 			buf[len] = '\0';
 			return (std::string(&(buf[0])));
 		}
-		echo_error("Error with symlink");
-		return "";
+		//echo_error("Error with symlink");
+		return symlink;
 	}
 	std::string get_user_name(){
 		std::string temp;
@@ -933,6 +933,39 @@ LINUX_COMMON__NS_BEGIN
 		}
 		return filename;
 	}
+	std::string process_back_dir_in_filename(std::string filename){
+		unsigned int finder = filename.find("../");
+		std::string pwd=linuxcommon::current_directory();
+		std::string tempPWD=pwd;
+		std::string tempLoop=filename;
+		int counter=3;
+		echo_error("Initial process back dir="+tempLoop);
+		while(finder<tempLoop.length()){
+			tempLoop=tempLoop.substr(finder+counter,std::string::npos);
+			unsigned int slash=tempPWD.rfind("/");
+			if(slash==tempPWD.length()-1){
+				tempPWD=tempPWD.substr(0,slash);
+				slash=tempPWD.rfind("/");
+			}
+			tempPWD=tempPWD.substr(0,slash);
+			echo_error("temploop="+tempLoop+"\ntempPWD"+tempPWD);
+			tempLoop=tempPWD+tempLoop;
+			if(tempLoop.compare("")!=0){filename=tempLoop;}
+			finder = tempLoop.find("../");
+		}
+		if(filename.find("/")>1){filename="/"+filename;}
+		echo_error("returning:"+filename);
+		return filename;
+	}
+	//P
+	/** This will dereference symlinks as well as translate ~/ and $HOME as well as ../
+	 * @param filename the filename to process
+	 */
+	std::string process_filename(std::string filename){
+		std::string tmp=process_back_dir_in_filename(filename);
+		//tmp=get_symlinkpath(tmp);
+		return translate_home(tmp);
+	}
 	//Q
 	/** change characters XML doesn't like into ones it does
 	 * @param input the string to modify
@@ -1059,12 +1092,45 @@ LINUX_COMMON__NS_BEGIN
 		std::vector <std::string> USERgroups;
 		std::string tmp=get_user_name();
 		if(tmp.compare("")!=0)return get_user_groups(tmp);
-		const char* user=getenv("USER");
+			const char* user=getenv("USER");
 		if(user==NULL){
 			echo_error("FAILED getting user");
 			return USERgroups;
 		}
 		return get_user_groups(user);
+	}
+	/** Get all actual users (UID > 1000) excluding nobody*/
+	std::vector <std::string> all_users(){
+		struct passwd *pw = getpwent();
+		std::vector <std::string> ALLusers;
+		if(pw != NULL){
+			for(pw = getpwent();pw!=NULL;pw = getpwent()){
+				uid_t tmp=pw->pw_uid;
+				std::string TMP=pw->pw_name;
+				if(tmp>=1000){
+					if(TMP.compare("nobody")!=0){
+						ALLusers.push_back(TMP);
+					}
+				}
+			}
+		}
+		setpwent();
+		endpwent();
+		return ALLusers;
+	}
+	/** Get all the users including all processes*/
+	std::vector <std::string> all_users_including_processes(){
+		struct passwd *pw = getpwent();
+		std::vector <std::string> ALLusers;
+		if(pw != NULL){
+			for(pw = getpwent();pw!=NULL;pw = getpwent()){
+				std::string TMP=pw->pw_name;
+				ALLusers.push_back(TMP);
+			}
+		}
+		setpwent();
+		endpwent();
+		return ALLusers;
 	}
 	/** get a vector list of all USER's groups
 	 * @param USER the user name to get the groups of

@@ -597,7 +597,7 @@ const char* filer = Filename->value();
 std::string fname="desktop-file-editor.desktop";
 if(filer!=NULL){fname=filer;}
 std::string result =nativeFileDialog(message,fname,pat);
-if(result.compare("")!=0){Filename->value(result.c_str());}} selected
+if(result.compare("")!=0){Filename->value(result.c_str());}}
           tooltip {Open a desktop file} image {custom_buttons/gear16.png} xywh {10 475 35 30} box FLAT_BOX color 23
         }
       }
@@ -607,7 +607,7 @@ if(result.compare("")!=0){Filename->value(result.c_str());}} selected
   } {
     Fl_Window preview_win {
       label Preview open
-      xywh {221 54 465 465} type Double visible
+      xywh {221 54 465 465} type Double hide
     } {
       Fl_Scroll {} {open
         xywh {10 5 440 410}
@@ -748,25 +748,17 @@ return result;} {}
   Function {load(std::string result)} {open
   } {
     code {if(result.compare("")!=0){
-  std::string tmp=result;
-  if(result.find("../")<result.length()){
-    std::string pwd=linuxcommon::current_directory();
-    if(pwd.compare("")!=0){
-      unsigned int finder = result.rfind("../");
-      if(finder<result.length()){
-        tmp=tmp.substr(finder+3,std::string::npos);
-        result=pwd+tmp;
-      }
-    }
-  }
-  std::cout<<result<<std::endl;
+  std::string tmp=linuxcommon::process_filename(result);
+  result=tmp;
+  std::cout<<"POST PROCESSED FILE="<<result<<std::endl;
   populate(result);
   Filename->value(tmp.c_str());
   if(!linuxcommon::file_is_writable(result)){save_button->deactivate();}
   else{save_button->activate();}
 }
 check_type();
-check_save();} {}
+check_save();} {selected
+    }
   }
   Function {locale_chooser(std::string filename, bool getval)} {open
   } {

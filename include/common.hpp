@@ -114,6 +114,9 @@ namespace linuxcommon{
 	std::string test_file_in_vector_path(std::string fileWithNOPATH,std::vector<std::string> directories_to_check);
 	std::string term_out(std::string terminal_Command_You_Want_Output_From);
 	std::string translate_home(std::string pathORfilename);
+	//p
+	std::string process_back_dir_in_filename(std::string filename);
+	std::string process_filename(std::string filename);
 	//q
 	std::string quote_xml(std::string input);
 	///COLOR functions
@@ -121,6 +124,8 @@ namespace linuxcommon{
 	std::string x_color_from_name(const char *colorName);
 	#endif
 	///vector
+	std::vector <std::string> all_users();
+	std::vector <std::string> all_users_including_processes();
 	std::vector <std::string> get_user_groups(std::string USER);
 	std::vector <std::string> get_current_user_groups();
 	std::vector <std::string> all_groups();
