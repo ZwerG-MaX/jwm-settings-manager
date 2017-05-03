@@ -1,3 +1,7 @@
+common bool file_is_writable(std::string filename)
+get user's group and check permissions
+Add PAM stuff for desktop-file-editor?? perhaps?
+
 NEXT features:
 keyboard
 GET

@@ -1136,10 +1136,11 @@ Fl_Double_Window* FontUI::gtk_font_chooser_window() {
 
 void FontUI::hinting(int val) {
   //hint_check->value(val);
+  std::string item="hintstyle";
   if(val!=0){
     std::string tmp=getFontOPT(currentElement,item);
     if(tmp.compare("")!=0){
-      std::string item="hintstyle";
+      
       std::string  value="hintfull";
       setFontOption(currentElement,item,value);
       hint_out->value(value.c_str());

@@ -33,6 +33,7 @@
 #include <sstream>
 #include <float.h>
 #include <dirent.h>
+//file permissions/owner/etc..
 #include <sys/stat.h>
 #include <langinfo.h>
 #include <stdlib.h>
@@ -43,6 +44,10 @@
 #include <locale.h>
 #include <unistd.h>
 #include <signal.h>
+//Specific for groups
+#include <grp.h>
+#include <pwd.h>
+#include <limits.h>
 #ifdef LINUX_COMMON_HAS_X
 #include <X11/Xlib.h>
 //#include <X11/xpm.h>
@@ -85,10 +90,13 @@ namespace linuxcommon{
 	std::string get_gtk_item(std::string itemToGet,std::string configItem, std::string defaultItem);
 	std::string get_gtk_item(std::string itemToGetgtk3,std::string itemToGetgtk2,std::string gtk3fileopt,std::string gtk2fileopt, std::string defaultItem);
 	std::string get_gtk_themeitem(std::string itemToGet, std::string defaultTheme);
+	std::string get_file_owner(std::string filename);
+	std::string get_file_group(std::string filename);
 	std::string get_line_with_equal(std::string filename, std::string line);/** This function is used for files like *.desktop files to get a value*/
 	std::string get_line_with_equal_after_header(std::string header,std::string filename, std::string line);/** This function is used for files like *.desktop files to get a value*/
 	std::string get_shell_for_C();/** This is a specialized internal function to return something akin to "bash -c '"*/
 	std::string get_symlinkpath(std::string symlink);/** This function dereferences a symlink to the actual file*/
+	std::string get_user_name();
 	std::string grep(std::string args, std::string filename);/** Return the FIRST match of the 'args' from a file*/
 	std::string grep_first_after(std::string after_this, std::string grep_this, std::string filename); /** Look for a string in a file AFTER a certain string*/
 	//h
@@ -112,6 +120,9 @@ namespace linuxcommon{
 	std::string x_color_from_name(const char *colorName);
 	#endif
 	///vector
+	std::vector <std::string> get_user_groups(std::string USER);
+	std::vector <std::string> get_current_user_groups();
+	std::vector <std::string> all_groups();
 	std::vector<std::string> comma_vector(std::string LINE,std::vector<std::string> Vector);
 	std::vector<std::string> delimiter_vector_from_string(std::string string_to_become_vector,std::string delimiter);/** make a string vector from a string with a delimiter string*/
 	std::vector<std::string> desktop_dirs();
@@ -126,6 +137,8 @@ namespace linuxcommon{
 	///boolean
 	bool append_string_to_file(std::string STRING, std::string FILENAME);
 	bool has_file_extention_at_end(std::string filename,std::string extention);
+	bool file_is_writable(std::string filename);
+	bool file_is_readable(std::string filename);
 	bool pkill(std::string programname);
 	bool program_is_running(std::string program_line);
 	bool save_string_to_file(std::string MSG,std::string filename);/**This should make the directory recursively if it does not exist*/

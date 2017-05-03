@@ -310,6 +310,30 @@ LINUX_COMMON__NS_BEGIN
 		}
 		return defaultTheme;
 	}
+	/** this function gets the owner of the filename provided
+	 * @param filename
+	 */
+	std::string get_file_owner(std::string filename){
+		std::string result;
+		struct stat info;
+		if(stat(filename.c_str(), &info)==0){
+			struct passwd *pw = getpwuid(info.st_gid);
+			if(pw!=0){result=pw->pw_name;}
+		}
+		return result;
+	}
+	/** this function gets the group owner of the filename provided
+	 * @param filename
+	 */
+	std::string get_file_group(std::string filename){
+		std::string result;
+		struct stat info;
+		if(stat(filename.c_str(), &info)==0){
+			struct group  *gr = getgrgid(info.st_gid);
+			if(gr!=0){result=gr->gr_name;}
+		}
+		return result;
+	}
 	/** This function is used for files like *.desktop files to get a value
 	 * @param filename the filename to look in
 	 * @param line the line to look for
@@ -387,6 +411,16 @@ LINUX_COMMON__NS_BEGIN
 		}
 		echo_error("Error with symlink");
 		return "";
+	}
+	std::string get_user_name(){
+		std::string temp;
+		struct passwd *pw;
+		uid_t uid;
+		uid = geteuid ();
+		pw = getpwuid (uid);
+		if(pw!=0){temp=pw->pw_name;}
+		return temp;
+		
 	}
     /** Return the FIRST match of the 'args' from a file
      * this is like  line=`grep -m 1 $args $filename`
@@ -988,6 +1022,53 @@ LINUX_COMMON__NS_BEGIN
 	}
 	#endif
 	///VECTOR FUNCTIONS/////////////////////////////////////////////////
+	/** get a vector list of all possible current system groups*/
+	std::vector <std::string> all_groups(){
+		std::vector <std::string> GROUPvEC;
+		struct group *groupsPtr = getgrent();
+		if(groupsPtr != NULL){
+			for(groupsPtr = getgrent();groupsPtr!=NULL;groupsPtr = getgrent()){
+				GROUPvEC.push_back(groupsPtr->gr_name);
+			}
+		}
+		else{echo_error("No groups found on system!");}
+		setgrent();
+		endgrent();
+		return GROUPvEC;
+	}
+	/** get a vector list of all $USER groups */
+	std::vector <std::string> get_current_user_groups(){
+		std::vector <std::string> USERgroups;
+		std::string tmp=get_user_name();
+		if(tmp.compare("")!=0)return get_user_groups(tmp);
+		const char* user=getenv("USER");
+		if(user==NULL){
+			echo_error("FAILED getting user");
+			return USERgroups;
+		}
+		return get_user_groups(user);
+	}
+	/** get a vector list of all USER's groups
+	 * @param USER the user name to get the groups of
+	 */
+	std::vector <std::string> get_user_groups(std::string USER){
+		std::vector <std::string> USERgroups;
+	//echo_error("Getting groups for:"+USER)l;
+		int ngroups=NGROUPS_MAX;
+		struct passwd *pw;
+		struct group *gr;
+		gid_t groups[NGROUPS_MAX];
+		pw = getpwnam(USER.c_str());
+		if(getgrouplist(USER.c_str(),pw->pw_gid,groups, &ngroups) == -1){
+			echo_error("FAILED getting groups for:"+USER);
+			return USERgroups;
+		}
+		for (int j = 0; j < ngroups; j++) {
+			gr = getgrgid(groups[j]);
+			if (gr != NULL)USERgroups.push_back(gr->gr_name);
+		}
+		return USERgroups;
+	}
 	/** turn a comma delimited string into vector, and join the current items to the vector sent in
 	 * @param LINE the comma delimited line
 	 * @param Vector the vector to append to (can be empty)
@@ -1276,6 +1357,42 @@ LINUX_COMMON__NS_BEGIN
 		unsigned int file_len=filename.length();
 		if(found<file_len){
 			if(found==(file_len-ext_len)){return true;}
+		}
+		return false;
+	}
+	bool file_is_readable(std::string filename){
+		if(!test_file(filename)){return false;}
+		struct stat info;
+		std::string file_owner,file_group;
+		if(stat(filename.c_str(), &info)==0){
+			struct passwd *pw = getpwuid(info.st_uid);
+			struct group  *gr = getgrgid(info.st_gid);
+			if(pw!=0){file_owner=pw->pw_name;}
+			if(gr!=0){file_group=gr->gr_name;}
+			if(info.st_mode &  S_IROTH)return true;
+			std::string user=get_user_name();
+			if(file_owner.compare(user)==0){
+				if(info.st_mode &  S_IRUSR)return true;
+			}
+			//TODO get group of user and check group permissions
+		}
+		return false;
+	}
+	bool file_is_writable(std::string filename){
+		if(!test_file(filename)){return false;}
+		struct stat info;
+		std::string file_owner,file_group;
+		if(stat(filename.c_str(), &info)==0){
+			struct passwd *pw = getpwuid(info.st_uid);
+			struct group  *gr = getgrgid(info.st_gid);
+			if(pw!=0){file_owner=pw->pw_name;}
+			if(gr!=0){file_group=gr->gr_name;}
+			if(info.st_mode &  S_IWOTH)return true;
+			std::string user=get_user_name();
+			if(file_owner.compare(user)==0){
+				if(info.st_mode &  S_IWUSR)return true;
+			}
+			//TODO get group of user and check group permissions
 		}
 		return false;
 	}

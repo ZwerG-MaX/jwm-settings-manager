@@ -52,16 +52,17 @@ decl {\#include "../include/common.hpp"} {public global
 
 class Desktop {open
 } {
-  decl {std::string LOCALE_STRING;} {private local
+  decl {std::string LOCALE_STRING, CURRENT_FILE;} {private local
   }
   decl {Fl_Text_Buffer * textBuffer;} {public local
   }
   Function {make_window(std::string filePassedIn)} {open
   } {
-    code {LOCALE_STRING="aa\\nab\\nace\\nach\\naf\\naf_ZA\\naln\\nam\\nan\\nar\\nar_AR\\nary\\nas\\nast\\naz\\nbal\\nbe\\nbe@latin\\nbem\\nbg\\nbg_BG\\nbn\\nbn_IN\\nbo\\nbr\\nbrx\\nbs\\nbyn\\nca\\nca_ES@valencia\\nca@valencia\\nce\\ncgg\\nchr\\nckb\\ncmn\\nco\\ncrh\\ncs\\ncsb\\ncs_CZ\\ncv\\ncy\\nda\\nda_DK\\nde\\nde_CH\\nde_DE\\ndv\\ndz\\nel\\nen\\nen_AU\\nen@boldquot\\nen_CA\\nen_GB\\nen_NZ\\nen@quot\\nen@shaw\\nen_US\\neo\\nes\\nes_AR\\nes_CL\\nes_CO\\nes_CR\\nes_DO\\nes_EC\\nes_ES\\nes_MX\\nes_NI\\nes_PA\\nes_PE\\nes_PR\\nes_SV\\nes_US\\nes_UY\\nes_VE\\net\\neu\\neu_ES\\newo\\nfa\\nfa_AF\\nfa_IR\\nff\\nfi\\nfi_FI\\nfil\\nfo\\nfr\\nfr_CA\\nfr_FR\\nfrp\\nfur\\nfy\\nga\\ngd\\ngez\\ngl\\ngl_ES\\ngu\\ngv\\nha\\nhaw\\nhe\\nhe_IL\\nhi\\nhne\\nhr\\nhr_HR\\nhsb\\nht\\nhu\\nhu_HU\\nhy\\nia\\nid\\nid_ID\\nig\\nilo\\nis\\nit\\nit_IT\\nja\\nja_JP\\njv\\nka\\nkab\\nkk\\nkl\\nkm\\nkm_KH\\nkn\\nko\\nkok\\nko_KR\\nks\\nks_IN\\nku\\nku_IQ\\nkw\\nky\\nla\\nlb\\nlg\\nli\\nln\\nlo\\nlo_LA\\nlt\\nlt_LT\\nlv\\nlv_LV\\nmai\\nmg\\nmhr\\nmi\\nmk\\nmk_MK\\nml\\nml_IN\\nmn\\nmr\\nms\\nms_MY\\nmt\\nmy\\nnah\\nnb\\nnb_NO\\nnds\\nne\\nnhn\\nnl\\nnl_NL\\nnn\\nnn_NO\\nno\\nnqo\\nnso\\noc\\nom\\nor\\nos\\npa\\npam\\npl\\npl_PL\\nps\\npt\\npt_BR\\npt_PT\\nqu\\nrm\\nro\\nro_RO\\nru\\nru_RU\\nrw\\nsa\\nsc\\nsco\\nsd\\nse\\nshn\\nsi\\nsk\\nsk_SK\\nsl\\nsl_SI\\nsma\\nsml\\nsn\\nso\\nsq\\nsr\\nsr@cyrillic\\nsr@ijekavian\\nsr@ijekavianlatin\\nsr@latin\\nsr@Latn\\nsr_RS\\nsr_RS@latin\\nst\\nsv\\nsw\\nszl\\nta\\nta_IN\\nta_LK\\nte\\ntet\\ntg\\nth\\nth_TH\\nti\\ntig\\ntk\\ntl\\ntr\\ntrv\\nts\\ntt\\ntt@iqtelif\\ntt_RU\\nug\\nuk\\nuk_UA\\nur\\nur_PK\\nuz\\nuz@cyrillic\\nuz@Latn\\nve\\nvec\\nvi\\nvi_VN\\nwa\\nwae\\nwal\\nwo\\nxh\\nyi\\nyo\\nzh_CN\\nzh_HK\\nzh_TW\\nzu";} {}
+    code {LOCALE_STRING="aa\\nab\\nace\\nach\\naf\\naf_ZA\\naln\\nam\\nan\\nar\\nar_AR\\nary\\nas\\nast\\naz\\nbal\\nbe\\nbe@latin\\nbem\\nbg\\nbg_BG\\nbn\\nbn_IN\\nbo\\nbr\\nbrx\\nbs\\nbyn\\nca\\nca_ES@valencia\\nca@valencia\\nce\\ncgg\\nchr\\nckb\\ncmn\\nco\\ncrh\\ncs\\ncsb\\ncs_CZ\\ncv\\ncy\\nda\\nda_DK\\nde\\nde_CH\\nde_DE\\ndv\\ndz\\nel\\nen\\nen_AU\\nen@boldquot\\nen_CA\\nen_GB\\nen_NZ\\nen@quot\\nen@shaw\\nen_US\\neo\\nes\\nes_AR\\nes_CL\\nes_CO\\nes_CR\\nes_DO\\nes_EC\\nes_ES\\nes_MX\\nes_NI\\nes_PA\\nes_PE\\nes_PR\\nes_SV\\nes_US\\nes_UY\\nes_VE\\net\\neu\\neu_ES\\newo\\nfa\\nfa_AF\\nfa_IR\\nff\\nfi\\nfi_FI\\nfil\\nfo\\nfr\\nfr_CA\\nfr_FR\\nfrp\\nfur\\nfy\\nga\\ngd\\ngez\\ngl\\ngl_ES\\ngu\\ngv\\nha\\nhaw\\nhe\\nhe_IL\\nhi\\nhne\\nhr\\nhr_HR\\nhsb\\nht\\nhu\\nhu_HU\\nhy\\nia\\nid\\nid_ID\\nig\\nilo\\nis\\nit\\nit_IT\\nja\\nja_JP\\njv\\nka\\nkab\\nkk\\nkl\\nkm\\nkm_KH\\nkn\\nko\\nkok\\nko_KR\\nks\\nks_IN\\nku\\nku_IQ\\nkw\\nky\\nla\\nlb\\nlg\\nli\\nln\\nlo\\nlo_LA\\nlt\\nlt_LT\\nlv\\nlv_LV\\nmai\\nmg\\nmhr\\nmi\\nmk\\nmk_MK\\nml\\nml_IN\\nmn\\nmr\\nms\\nms_MY\\nmt\\nmy\\nnah\\nnb\\nnb_NO\\nnds\\nne\\nnhn\\nnl\\nnl_NL\\nnn\\nnn_NO\\nno\\nnqo\\nnso\\noc\\nom\\nor\\nos\\npa\\npam\\npl\\npl_PL\\nps\\npt\\npt_BR\\npt_PT\\nqu\\nrm\\nro\\nro_RO\\nru\\nru_RU\\nrw\\nsa\\nsc\\nsco\\nsd\\nse\\nshn\\nsi\\nsk\\nsk_SK\\nsl\\nsl_SI\\nsma\\nsml\\nsn\\nso\\nsq\\nsr\\nsr@cyrillic\\nsr@ijekavian\\nsr@ijekavianlatin\\nsr@latin\\nsr@Latn\\nsr_RS\\nsr_RS@latin\\nst\\nsv\\nsw\\nszl\\nta\\nta_IN\\nta_LK\\nte\\ntet\\ntg\\nth\\nth_TH\\nti\\ntig\\ntk\\ntl\\ntr\\ntrv\\nts\\ntt\\ntt@iqtelif\\ntt_RU\\nug\\nuk\\nuk_UA\\nur\\nur_PK\\nuz\\nuz@cyrillic\\nuz@Latn\\nve\\nvec\\nvi\\nvi_VN\\nwa\\nwae\\nwal\\nwo\\nxh\\nyi\\nyo\\nzh_CN\\nzh_HK\\nzh_TW\\nzu";
+CURRENT_FILE=filePassedIn;} {}
     Fl_Window {} {
       label {Desktop File Editor} open
-      xywh {813 88 410 570} type Double color 47
+      xywh {474 54 410 570} type Double color 47
       code0 {load(filePassedIn);} xclass {desktop-file-editor} visible
     } {
       Fl_Scroll {} {open
@@ -71,8 +72,8 @@ class Desktop {open
           xywh {5 5 410 460} box FLAT_BOX color 47
         } {
           Fl_Group {} {
-            label Normal open selected
-            xywh {5 30 402 430} box FLAT_BOX selection_color 45
+            label Normal open
+            xywh {5 30 402 430} box FLAT_BOX selection_color 45 hide
           } {
             Fl_Input name {
               label Name
@@ -531,15 +532,24 @@ dbus->redraw();}
           }
           Fl_Group {} {
             label Locale open
-            tooltip {Configure Locale specific Names} xywh {5 35 395 415} selection_color 45 hide deactivate
+            tooltip {Configure Locale specific Names} xywh {5 35 395 427} selection_color 45
           } {
-            Fl_Browser {} {
-              callback {if(!checkFlBrowserItem(o))return;}
-              xywh {10 35 120 390} type Hold box FLAT_BOX selection_color 72
+            Fl_Browser locales_browser {
+              callback {locale_chooser(CURRENT_FILE,true);
+result_locale->select(o->value());}
+              xywh {10 35 120 390} type Hold box FLAT_BOX selection_color 72 when 3
               code0 {populateBrowserWithString(o,LOCALE_STRING);}
             }
-            Fl_Browser {} {
+            Fl_Browser result_locale {
+              callback {locales_browser->select(o->value());
+locale_chooser(CURRENT_FILE,false);
+locale_value->value(o->text(o->value()));} selected
               xywh {135 35 260 390} type Hold box FLAT_BOX selection_color 72
+              code0 {populate_locales(o,CURRENT_FILE);}
+            }
+            Fl_Input locale_value {
+              callback {result_locale->text(result_locale->value(),o->value());}
+              tooltip {Change Locale text} xywh {65 429 330 33} box FLAT_BOX selection_color 80 when 3
             }
           }
           Fl_Group {} {
@@ -557,13 +567,19 @@ dbus->redraw();}
           callback {open_file();}
           tooltip {Open a desktop file} xywh {15 530 80 30} box FLAT_BOX color 23
         }
-        Fl_Button {} {
+        Fl_Button save_button {
           label SAVE
           callback {save_file();}
           tooltip {Save the current data as a file} xywh {320 530 80 30} box FLAT_BOX color 61 selection_color 59 labelcolor 7
         }
         Fl_Input Filename {
-          tooltip {The file you want to save (or the name of the current open file)} xywh {15 475 385 30} box FLAT_BOX
+          callback {const char* res=o->value();
+std::string result;
+if(res!=NULL){result=res;}
+result=linuxcommon::get_directory_from_filename(result);
+if(!linuxcommon::file_is_writable(result)){save_button->deactivate();}
+else{save_button->activate();}}
+          tooltip {The file you want to save (or the name of the current open file)} xywh {15 475 385 30} box FLAT_BOX when 1
         }
         Fl_Button {} {
           label CLEAR
@@ -581,26 +597,24 @@ if(re.compare("")!=0){
       }
     }
   }
-  Function {preview_window(std::string message)} {} {
+  Function {preview_window(std::string message)} {open
+  } {
     Fl_Window preview_win {
       label Preview open
-      xywh {430 140 465 465} type Double hide
+      xywh {221 54 465 465} type Double visible
     } {
       Fl_Scroll {} {open
         xywh {10 5 440 410}
       } {
-        Fl_Text_Display {} {
+        Fl_Text_Editor file_editor {
           xywh {10 5 440 410} box FLAT_BOX
-          code0 {//if(message.compare("")!=0)o->insert(message.c_str());}
-        }
-        Fl_Box {} {
-          xywh {10 5 440 410} align 149
-          code0 {if(message.compare("")!=0)o->copy_label(message.c_str());}
+          code0 {preview_text(o,message);}
         }
       }
       Fl_Button {} {
         label SAVE
-        callback {if(check_file()){write_out();}
+        callback {const char* tryin=file_editor->buffer()->text();
+write_out();
 close(preview_win);;}
         tooltip {Save the current data as a file} xywh {365 425 80 30} box FLAT_BOX color 61 selection_color 58 labelcolor 7
       }
@@ -725,7 +739,8 @@ if(Keywords.compare("")!=0){result+=Keywords;}
 if(result.compare("")==0){result="none";}
 return result;} {}
   }
-  Function {load(std::string result)} {} {
+  Function {load(std::string result)} {open
+  } {
     code {if(result.compare("")!=0){
   std::string tmp=result;
   if(result.find("../")<result.length()){
@@ -734,15 +749,31 @@ return result;} {}
       unsigned int finder = result.rfind("../");
       if(finder<result.length()){
         tmp=tmp.substr(finder+3,std::string::npos);
-        tmp=pwd+tmp;
+        result=pwd+tmp;
       }
     }
   }
   std::cout<<result<<std::endl;
   populate(result);
   Filename->value(tmp.c_str());
+  if(!linuxcommon::file_is_writable(result)){save_button->deactivate();}
+  else{save_button->activate();}
 }
 check_type();} {}
+  }
+  Function {locale_chooser(std::string filename, bool getval)} {open
+  } {
+    code {std::string tmp="";
+if(getval){
+  tmp=name_locale_line(filename,locales_browser);
+}
+locale_value->copy_label("                 ");
+locale_value->copy_label(locales_browser->text(locales_browser->value()));
+locale_value->value(tmp.c_str());
+if(tmp.compare("")!=0){
+  result_locale->text(locales_browser->value(),tmp.c_str());
+  result_locale->redraw();
+}} {}
   }
   Function {make_red(Fl_Input *o)} {} {
     code {o->color(FL_RED);
@@ -820,6 +851,30 @@ if(underscore<base_lang.length())
 result=get_line( filename,(LOCALNAME+ base_lang + LOCALEND));
 if(result.compare("")!=0){return result;}
 return get_line(filename,"Name=");} {}
+  }
+  Function {name_locale_line(std::string filename,Fl_Browser *o)} {open return_type {std::string}
+  } {
+    code {//errorOUT(filename);
+if(!checkFlBrowserItem(o)){return "";}
+std::string LANG=o->text(o->value());
+return no_browser_name_locale(filename,LANG);} {}
+  }
+  Function {no_browser_name_locale(std::string filename, std::string LANG)} {open return_type {std::string}
+  } {
+    code {std::string result,LOCALNAME,LOCALEND;
+LOCALNAME="Name[";
+LOCALEND="]=";
+std::string testing=LOCALNAME+ LANG + LOCALEND;
+result=get_line(filename, testing);
+//errorOUT(testing+" "+result);
+if(result.compare("")!=0){return result;}
+else{
+  testing=LOCALNAME+ LANG;
+  result=get_line(filename, testing);
+  //errorOUT(testing+" "+result);
+  if(result.compare("")!=0){return result;}
+}
+return "";} {}
   }
   Function {no_display(std::string filename)} {return_type bool
   } {
@@ -902,7 +957,8 @@ if(!isEmpty(notshowin)){
 onlyshowin->value(DE);
 onlyshowin->redraw();} {}
   }
-  Function {open_file()} {} {
+  Function {open_file()} {open
+  } {
     code {std::string message=gettext("Choose a Desktop File");
 std::string pat="*.desktop";
 const char* filer = Filename->value();
@@ -1075,7 +1131,7 @@ DEactivate(wmclass);
 DEactivate(mime);
 activate(url);} {}
   }
-  Function {stringfile()} {return_type {std::string}
+  Function {stringfile()} {open return_type {std::string}
   } {
     code {const char* FILENAME=Filename->value();
 if(FILENAME==NULL){std::cerr<<"Filename is NULL"<<std::endl;}
@@ -1103,6 +1159,7 @@ std::string fileContents="[Desktop Entry]\\n";
 fileContents+=testValue("Type=",type);
 fileContents+=testValue("Version=",version);
 fileContents+=testValue("Name=",name);
+fileContents+=locales_string();
 fileContents+=testValue("GenericName=",genericname);
 if (TypeOf.compare("Application")==0){
   const char* EXEC = exec->value();
@@ -1159,7 +1216,8 @@ fileContents+=TEMPval;
 fileContents+="\\n";
 return fileContents;} {}
   }
-  Function {write_out()} {} {
+  Function {write_out()} {open
+  } {
     code {const char* FILENAME=Filename->value();
 std::string fileContents=stringfile();
 if(!linuxcommon::save_string_to_file(fileContents,FILENAME)){
@@ -1230,6 +1288,62 @@ if(linuxcommon::test_file(fullfile)){
 else{
   fullfile="If you have trouble saving your file, ensure that you are able to save in the directory.  You may need to reopen the program as administrator by running:\\n\\npkexec desktop-file-editor";
   populateBrowserWithString(o,fullfile);
+}} {}
+  }
+  Function {populate_locales(Fl_Browser *o,std::string filename)} {open
+  } {
+    code {std::vector<std::string> STRING_VEC=linuxcommon::delimiter_vector_from_string(LOCALE_STRING,"\\n");
+for( std::vector<std::string>::iterator it = STRING_VEC.begin();
+ it!=STRING_VEC.end();
+ ++it){
+  std::string tmp=*it;  
+  std::string res=no_browser_name_locale(filename,tmp);
+  o->add(res.c_str());
+}
+o->redraw();} {}
+  }
+  Function {make_window()} {open
+  } {}
+  Function {locales_string()} {open return_type {std::string}
+  } {
+    code {std::string result;
+for(int i=1;i<=result_locale->size();i++){
+  std::string LINE="Name[";
+  std::string thisLine; 
+    std::string thisLocale;
+  const char* tmpr=result_locale->text(i);
+  if(tmpr!=NULL){
+    const char* ltemp=locales_browser->text(i);
+    if(ltemp!=NULL){
+      thisLocale=ltemp;
+      std::string tmp=tmpr;
+      if(tmp.compare("")!=0){
+        thisLine=LINE+thisLocale+"]="+tmp;
+        errorOUT(thisLine);
+        result=result+"\\n"+thisLine;
+      }
+    }
+  }
+}
+return result;} {}
+  }
+  Function {preview_text(Fl_Text_Display *o,std::string TEXT)} {open
+  } {
+    code {if(TEXT.compare("")==0)return;
+int tmp=TEXT.length();
+Fl_Text_Buffer *buf=new Fl_Text_Buffer(tmp);
+buf->text(TEXT.c_str());
+o->buffer(buf);} {}
+  }
+  Function {write_out(const char* txt)} {open
+  } {
+    code {const char* FILENAME=Filename->value();
+if(txt==NULL)return;
+if(FILENAME==NULL)return;
+std::string fileContents=txt;
+if(!linuxcommon::save_string_to_file(fileContents,FILENAME)){
+  error_win->show();
+  linuxcommon::echo_error("Did not save the file correctly");
 }} {}
   }
 } 

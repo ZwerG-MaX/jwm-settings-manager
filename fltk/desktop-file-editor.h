@@ -27,11 +27,11 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Box.H>
-#include <FL/Fl_Text_Display.H>
+#include <FL/Fl_Text_Editor.H>
 #include <FL/Fl_Output.H>
 
 class Desktop {
-  std::string LOCALE_STRING; 
+  std::string LOCALE_STRING, CURRENT_FILE; 
 public:
   Fl_Text_Buffer * textBuffer; 
   Fl_Double_Window* make_window(std::string filePassedIn);
@@ -202,15 +202,33 @@ private:
   static void cb_True4(Fl_Menu_*, void*);
   inline void cb_False4_i(Fl_Menu_*, void*);
   static void cb_False4(Fl_Menu_*, void*);
-  inline void cb__i(Fl_Browser*, void*);
-  static void cb_(Fl_Browser*, void*);
+public:
+  Fl_Browser *locales_browser;
+private:
+  inline void cb_locales_browser_i(Fl_Browser*, void*);
+  static void cb_locales_browser(Fl_Browser*, void*);
+public:
+  Fl_Browser *result_locale;
+private:
+  inline void cb_result_locale_i(Fl_Browser*, void*);
+  static void cb_result_locale(Fl_Browser*, void*);
+public:
+  Fl_Input *locale_value;
+private:
+  inline void cb_locale_value_i(Fl_Input*, void*);
+  static void cb_locale_value(Fl_Input*, void*);
   inline void cb_OPEN_i(Fl_Button*, void*);
   static void cb_OPEN(Fl_Button*, void*);
-  inline void cb_SAVE_i(Fl_Button*, void*);
-  static void cb_SAVE(Fl_Button*, void*);
+public:
+  Fl_Button *save_button;
+private:
+  inline void cb_save_button_i(Fl_Button*, void*);
+  static void cb_save_button(Fl_Button*, void*);
 public:
   Fl_Input *Filename;
 private:
+  inline void cb_Filename_i(Fl_Input*, void*);
+  static void cb_Filename(Fl_Input*, void*);
   inline void cb_CLEAR_i(Fl_Button*, void*);
   static void cb_CLEAR(Fl_Button*, void*);
   inline void cb_PREVIEW_i(Fl_Button*, void*);
@@ -218,9 +236,10 @@ private:
 public:
   Fl_Double_Window* preview_window(std::string message);
   Fl_Double_Window *preview_win;
+  Fl_Text_Editor *file_editor;
 private:
-  inline void cb_SAVE1_i(Fl_Button*, void*);
-  static void cb_SAVE1(Fl_Button*, void*);
+  inline void cb_SAVE_i(Fl_Button*, void*);
+  static void cb_SAVE(Fl_Button*, void*);
   inline void cb_CLOSE_i(Fl_Button*, void*);
   static void cb_CLOSE(Fl_Button*, void*);
 public:
@@ -237,10 +256,13 @@ public:
   bool isEmpty(Fl_Input *o);
   std::string keyWords(std::string filename);
   void load(std::string result);
+  void locale_chooser(std::string filename, bool getval);
   void make_red(Fl_Input *o);
   void make_white(Fl_Input *o);
   bool not_showin(std::string filename);
   std::string name_line(std::string filename);
+  std::string name_locale_line(std::string filename,Fl_Browser *o);
+  std::string no_browser_name_locale(std::string filename, std::string LANG);
   bool no_display(std::string filename);
   void NotShowIn(const char* DE);
   bool only_show(std::string filename);
@@ -263,8 +285,8 @@ public:
 private:
   inline void cb_OK_i(Fl_Button*, void*);
   static void cb_OK(Fl_Button*, void*);
-  inline void cb_1_i(Fl_Button*, void*);
-  static void cb_1(Fl_Button*, void*);
+  inline void cb__i(Fl_Button*, void*);
+  static void cb_(Fl_Button*, void*);
 public:
   Fl_Double_Window* help_window();
   Fl_Double_Window *help_win;
@@ -274,6 +296,11 @@ private:
 public:
   Fl_Browser *help_browser;
   void get_help(Fl_Browser *o);
+  void populate_locales(Fl_Browser *o,std::string filename);
+  void make_window();
+  std::string locales_string();
+  void preview_text(Fl_Text_Display *o,std::string TEXT);
+  void write_out(const char* txt);
 };
 int main(int argc, char *argv[]);
 #endif
