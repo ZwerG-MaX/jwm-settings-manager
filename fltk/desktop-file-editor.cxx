@@ -529,19 +529,15 @@ void Desktop::cb_OPEN(Fl_Button* o, void* v) {
 }
 
 void Desktop::cb_save_button_i(Fl_Button*, void*) {
-  save_file();
+  check_save();
+save_file();
 }
 void Desktop::cb_save_button(Fl_Button* o, void* v) {
   ((Desktop*)(o->parent()->parent()->user_data()))->cb_save_button_i(o,v);
 }
 
-void Desktop::cb_Filename_i(Fl_Input* o, void*) {
-  const char* res=o->value();
-std::string result;
-if(res!=NULL){result=res;}
-result=linuxcommon::get_directory_from_filename(result);
-if(!linuxcommon::file_is_writable(result)){save_button->deactivate();}
-else{save_button->activate();};
+void Desktop::cb_Filename_i(Fl_Input*, void*) {
+  check_save();
 }
 void Desktop::cb_Filename(Fl_Input* o, void* v) {
   ((Desktop*)(o->parent()->parent()->user_data()))->cb_Filename_i(o,v);
@@ -563,6 +559,62 @@ if(re.compare("")!=0){
 void Desktop::cb_PREVIEW(Fl_Button* o, void* v) {
   ((Desktop*)(o->parent()->parent()->user_data()))->cb_PREVIEW_i(o,v);
 }
+
+void Desktop::cb__i(Fl_Button*, void*) {
+  std::string message=gettext("Choose a Desktop File");
+std::string pat="*.desktop";
+const char* filer = Filename->value();
+std::string fname="desktop-file-editor.desktop";
+if(filer!=NULL){fname=filer;}
+std::string result =nativeFileDialog(message,fname,pat);
+if(result.compare("")!=0){Filename->value(result.c_str());};
+}
+void Desktop::cb_(Fl_Button* o, void* v) {
+  ((Desktop*)(o->parent()->parent()->user_data()))->cb__i(o,v);
+}
+
+#include <FL/Fl_Image.H>
+static const unsigned char idata_gear16[] =
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,148,0,255,0,252,0,252,0,255,0,146,0,
+2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,0,48,0,3,0,0,0,2,0,149,
+0,255,0,255,0,255,0,255,0,147,0,2,0,0,0,2,0,24,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,20,0,151,0,218,0,79,0,0,0,2,0,149,0,255,0,255,0,255,0,255,0,147,0,1,0,0,0,
+69,0,193,0,96,0,2,0,0,0,0,0,0,0,0,0,0,0,22,0,156,0,251,0,255,0,221,0,75,0,22,0,
+169,0,255,0,255,0,255,0,255,0,167,0,22,0,73,0,217,0,255,0,231,0,89,0,2,0,0,0,0,
+0,0,0,24,0,162,0,252,0,255,0,255,0,255,0,224,0,199,0,245,0,255,0,255,0,255,0,
+255,0,245,0,200,0,225,0,255,0,255,0,255,0,228,0,85,0,2,0,0,0,0,0,46,0,212,0,255,
+0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,
+0,255,0,255,0,255,0,255,0,196,0,25,0,0,0,0,0,0,0,71,0,219,0,255,0,255,0,255,0,
+255,0,255,0,246,0,209,0,172,0,172,0,209,0,246,0,255,0,255,0,255,0,255,0,255,0,
+223,0,83,0,3,0,0,0,0,0,0,0,0,0,76,0,227,0,255,0,255,0,255,0,210,0,95,0,25,0,9,0,
+10,0,25,0,95,0,210,0,255,0,255,0,255,0,225,0,77,0,1,0,0,0,0,0,2,0,2,0,0,0,23,0,
+203,0,255,0,255,0,210,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,210,0,255,0,255,0,202,
+0,23,0,0,0,2,0,2,0,147,0,149,0,148,0,169,0,246,0,255,0,246,0,94,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,94,0,246,0,255,0,246,0,169,0,148,0,149,0,147,0,254,0,255,
+0,255,0,255,0,255,0,255,0,207,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,207,
+0,255,0,255,0,255,0,255,0,255,0,254,0,252,0,255,0,255,0,255,0,255,0,255,0,170,
+0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,170,0,255,0,255,0,255,0,255,0,255,0,
+252,0,252,0,255,0,255,0,255,0,255,0,255,0,170,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,9,0,170,0,255,0,255,0,255,0,255,0,255,0,252,0,254,0,255,0,255,0,255,0,255,
+0,255,0,207,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,207,0,255,0,255,0,255,
+0,255,0,255,0,254,0,144,0,146,0,144,0,166,0,245,0,255,0,246,0,94,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,94,0,246,0,255,0,246,0,167,0,144,0,146,0,144,0,1,0,1,0,
+0,0,36,0,220,0,255,0,255,0,210,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,210,0,255,
+0,255,0,193,0,20,0,0,0,1,0,1,0,0,0,0,0,19,0,148,0,249,0,255,0,255,0,255,0,210,
+0,95,0,25,0,9,0,10,0,25,0,95,0,210,0,255,0,255,0,255,0,187,0,26,0,0,0,0,0,0,0,
+0,0,24,0,156,0,250,0,255,0,255,0,255,0,255,0,255,0,246,0,209,0,172,0,172,0,
+209,0,246,0,255,0,255,0,255,0,255,0,253,0,162,0,23,0,0,0,0,0,0,0,96,0,246,0,255,
+0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,
+0,255,0,255,0,255,0,253,0,142,0,6,0,0,0,0,0,22,0,158,0,252,0,255,0,255,0,250,
+0,183,0,191,0,246,0,255,0,255,0,255,0,255,0,244,0,218,0,247,0,255,0,255,0,255,
+0,229,0,90,0,2,0,0,0,0,0,0,0,23,0,163,0,253,0,251,0,156,0,22,0,20,0,169,0,255,
+0,255,0,255,0,255,0,166,0,33,0,142,0,249,0,255,0,225,0,85,0,2,0,0,0,0,0,0,0,0,
+0,0,0,26,0,164,0,149,0,20,0,0,0,2,0,149,0,255,0,255,0,255,0,255,0,147,0,0,0,
+16,0,149,0,216,0,80,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,0,13,0,0,0,0,0,2,0,
+149,0,255,0,255,0,255,0,255,0,147,0,2,0,0,0,20,0,46,0,2,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,148,0,255,0,252,0,252,0,255,0,146,0,2,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0};
+static Fl_RGB_Image image_gear16(idata_gear16, 24, 24, 2, 0);
 
 void Desktop::cb_SAVE_i(Fl_Button*, void*) {
   const char* tryin=file_editor->buffer()->text();
@@ -587,12 +639,12 @@ void Desktop::cb_OK(Fl_Button* o, void* v) {
   ((Desktop*)(o->parent()->user_data()))->cb_OK_i(o,v);
 }
 
-void Desktop::cb__i(Fl_Button*, void*) {
+void Desktop::cb_1_i(Fl_Button*, void*) {
   help_window()->show();
 get_help(help_browser);
 }
-void Desktop::cb_(Fl_Button* o, void* v) {
-  ((Desktop*)(o->parent()->user_data()))->cb__i(o,v);
+void Desktop::cb_1(Fl_Button* o, void* v) {
+  ((Desktop*)(o->parent()->user_data()))->cb_1_i(o,v);
 }
 
 void Desktop::cb_CLOSE1_i(Fl_Button*, void*) {
@@ -617,7 +669,6 @@ Fl_Double_Window* Desktop::make_window(std::string filePassedIn) {
         { Fl_Group* o = new Fl_Group(5, 30, 402, 430, gettext("Normal"));
           o->box(FL_FLAT_BOX);
           o->selection_color(FL_DARK2);
-          o->hide();
           { name = new Fl_Input(145, 50, 255, 30, gettext("Name"));
             name->tooltip(gettext("Specific name of the application, for example \"Mozilla\"."));
             name->box(FL_FLAT_BOX);
@@ -975,6 +1026,7 @@ key."));
         { Fl_Group* o = new Fl_Group(5, 35, 395, 427, gettext("Locale"));
           o->tooltip(gettext("Configure Locale specific Names"));
           o->selection_color(FL_DARK2);
+          o->hide();
           { Fl_Browser* o = locales_browser = new Fl_Browser(10, 35, 120, 390);
             locales_browser->type(2);
             locales_browser->box(FL_FLAT_BOX);
@@ -1025,11 +1077,11 @@ key."));
         save_button->labelcolor(FL_BACKGROUND2_COLOR);
         save_button->callback((Fl_Callback*)cb_save_button);
       } // Fl_Button* save_button
-      { Filename = new Fl_Input(15, 475, 385, 30);
+      { Filename = new Fl_Input(50, 475, 350, 30);
         Filename->tooltip(gettext("The file you want to save (or the name of the current open file)"));
         Filename->box(FL_FLAT_BOX);
         Filename->callback((Fl_Callback*)cb_Filename);
-        Filename->when(FL_WHEN_CHANGED);
+        Filename->when(3);
       } // Fl_Input* Filename
       { Fl_Button* o = new Fl_Button(220, 530, 80, 30, gettext("CLEAR"));
         o->tooltip(gettext("CLEAR EVERYTHING"));
@@ -1046,6 +1098,13 @@ key."));
         o->selection_color((Fl_Color)94);
         o->labelcolor(FL_GRAY0);
         o->callback((Fl_Callback*)cb_PREVIEW);
+      } // Fl_Button* o
+      { Fl_Button* o = new Fl_Button(10, 475, 35, 30);
+        o->tooltip(gettext("Open a desktop file"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->image(image_gear16);
+        o->callback((Fl_Callback*)cb_);
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
@@ -1228,6 +1287,7 @@ void Desktop::load(std::string result) {
     else{save_button->activate();}
   }
   check_type();
+  check_save();
 }
 
 void Desktop::locale_chooser(std::string filename, bool getval) {
@@ -1734,7 +1794,7 @@ Fl_Double_Window* Desktop::save_error() {
       o->labelfont(1);
       o->labelsize(17);
       o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_);
+      o->callback((Fl_Callback*)cb_1);
     } // Fl_Button* o
     error_win->end();
   } // Fl_Double_Window* error_win
@@ -1833,6 +1893,28 @@ void Desktop::write_out(const char* txt) {
     error_win->show();
     linuxcommon::echo_error("Did not save the file correctly");
   }
+}
+
+void Desktop::check_save() {
+  const char* res=Filename->value();
+  std::string result;
+  if(res!=NULL){result=res;}
+  std::string tmpRES=linuxcommon::translate_home(result);
+  if(tmpRES.compare(result)!=0){
+    Filename->value(tmpRES.c_str());
+  }
+  if(!linuxcommon::file_is_writable(result)){
+    save_button->deactivate();
+    unsigned int color=linuxcommon::get_fl_color("#006900");
+    save_button->color(color);
+  }
+  else{
+    unsigned int color=linuxcommon::get_fl_color("#00b600");
+    save_button->color(color);  
+    save_button->activate();
+    
+  }
+  save_button->redraw();
 }
 
 int main(int argc, char *argv[]) {

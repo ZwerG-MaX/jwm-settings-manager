@@ -233,6 +233,8 @@ private:
   static void cb_CLEAR(Fl_Button*, void*);
   inline void cb_PREVIEW_i(Fl_Button*, void*);
   static void cb_PREVIEW(Fl_Button*, void*);
+  inline void cb__i(Fl_Button*, void*);
+  static void cb_(Fl_Button*, void*);
 public:
   Fl_Double_Window* preview_window(std::string message);
   Fl_Double_Window *preview_win;
@@ -285,8 +287,8 @@ public:
 private:
   inline void cb_OK_i(Fl_Button*, void*);
   static void cb_OK(Fl_Button*, void*);
-  inline void cb__i(Fl_Button*, void*);
-  static void cb_(Fl_Button*, void*);
+  inline void cb_1_i(Fl_Button*, void*);
+  static void cb_1(Fl_Button*, void*);
 public:
   Fl_Double_Window* help_window();
   Fl_Double_Window *help_win;
@@ -297,10 +299,10 @@ public:
   Fl_Browser *help_browser;
   void get_help(Fl_Browser *o);
   void populate_locales(Fl_Browser *o,std::string filename);
-  void make_window();
   std::string locales_string();
   void preview_text(Fl_Text_Display *o,std::string TEXT);
   void write_out(const char* txt);
+  void check_save();
 };
 int main(int argc, char *argv[]);
 #endif

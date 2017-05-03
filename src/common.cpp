@@ -178,6 +178,7 @@ LINUX_COMMON__NS_BEGIN
 	 * @param filename the filename get the directory from
 	 */
 	std::string get_directory_from_filename(std::string filename){
+		filename=translate_home(filename);
 		unsigned int finder=filename.rfind("/");
 		if(finder<filename.length()){
 			filename=filename.erase(finder,std::string::npos);
@@ -915,6 +916,23 @@ LINUX_COMMON__NS_BEGIN
 		//echo_error("test_file_in_vector_path... found NO files");
 		return "";
 	}
+	/** translate ~/ OR $HOME into full user's path to $HOME
+	 * @param pathORfilename any path or filename
+	 */
+	std::string translate_home(std::string pathORfilename){
+		std::string filename=pathORfilename;
+		unsigned int tilde=filename.find("~/");
+		if(tilde<filename.length()){
+			filename=filename.erase(0,tilde+1);
+			filename=home_path()+filename;
+		}
+		unsigned int HOMEVAR=filename.find("$HOME");
+		if(HOMEVAR<filename.length()){
+			filename=filename.erase(0,HOMEVAR+1);
+			filename=home_path()+filename;
+		}
+		return filename;
+	}
 	//Q
 	/** change characters XML doesn't like into ones it does
 	 * @param input the string to modify
@@ -1379,7 +1397,9 @@ LINUX_COMMON__NS_BEGIN
 		return false;
 	}
 	bool file_is_writable(std::string filename){
-		if(!test_file(filename)){return false;}
+		if(!test_file(filename)){
+			filename=get_directory_from_filename(filename);
+		}
 		struct stat info;
 		std::string file_owner,file_group;
 		if(stat(filename.c_str(), &info)==0){

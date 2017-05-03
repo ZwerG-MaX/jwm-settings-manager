@@ -73,7 +73,7 @@ CURRENT_FILE=filePassedIn;} {}
         } {
           Fl_Group {} {
             label Normal open
-            xywh {5 30 402 430} box FLAT_BOX selection_color 45 hide
+            xywh {5 30 402 430} box FLAT_BOX selection_color 45
           } {
             Fl_Input name {
               label Name
@@ -532,7 +532,7 @@ dbus->redraw();}
           }
           Fl_Group {} {
             label Locale open
-            tooltip {Configure Locale specific Names} xywh {5 35 395 427} selection_color 45
+            tooltip {Configure Locale specific Names} xywh {5 35 395 427} selection_color 45 hide
           } {
             Fl_Browser locales_browser {
               callback {locale_chooser(CURRENT_FILE,true);
@@ -543,7 +543,7 @@ result_locale->select(o->value());}
             Fl_Browser result_locale {
               callback {locales_browser->select(o->value());
 locale_chooser(CURRENT_FILE,false);
-locale_value->value(o->text(o->value()));} selected
+locale_value->value(o->text(o->value()));}
               xywh {135 35 260 390} type Hold box FLAT_BOX selection_color 72
               code0 {populate_locales(o,CURRENT_FILE);}
             }
@@ -569,17 +569,13 @@ locale_value->value(o->text(o->value()));} selected
         }
         Fl_Button save_button {
           label SAVE
-          callback {save_file();}
+          callback {check_save();
+save_file();}
           tooltip {Save the current data as a file} xywh {320 530 80 30} box FLAT_BOX color 61 selection_color 59 labelcolor 7
         }
         Fl_Input Filename {
-          callback {const char* res=o->value();
-std::string result;
-if(res!=NULL){result=res;}
-result=linuxcommon::get_directory_from_filename(result);
-if(!linuxcommon::file_is_writable(result)){save_button->deactivate();}
-else{save_button->activate();}}
-          tooltip {The file you want to save (or the name of the current open file)} xywh {15 475 385 30} box FLAT_BOX when 1
+          callback {check_save();}
+          tooltip {The file you want to save (or the name of the current open file)} xywh {50 475 350 30} box FLAT_BOX when 3
         }
         Fl_Button {} {
           label CLEAR
@@ -593,6 +589,16 @@ if(re.compare("")!=0){
   preview_window(re)->show();
 }}
           tooltip {Preview text} xywh {115 530 80 30} box FLAT_BOX color 95 selection_color 94 labelcolor 32
+        }
+        Fl_Button {} {
+          callback {std::string message=gettext("Choose a Desktop File");
+std::string pat="*.desktop";
+const char* filer = Filename->value();
+std::string fname="desktop-file-editor.desktop";
+if(filer!=NULL){fname=filer;}
+std::string result =nativeFileDialog(message,fname,pat);
+if(result.compare("")!=0){Filename->value(result.c_str());}} selected
+          tooltip {Open a desktop file} image {custom_buttons/gear16.png} xywh {10 475 35 30} box FLAT_BOX color 23
         }
       }
     }
@@ -759,7 +765,8 @@ return result;} {}
   if(!linuxcommon::file_is_writable(result)){save_button->deactivate();}
   else{save_button->activate();}
 }
-check_type();} {}
+check_type();
+check_save();} {}
   }
   Function {locale_chooser(std::string filename, bool getval)} {open
   } {
@@ -1028,7 +1035,7 @@ set_input(hidden,HIDDEN);
 set_input(dbus,DBUS);
 check_type();} {}
   }
-  Function {check_file()} {return_type bool
+  Function {check_file()} {open return_type bool
   } {
     code {std::string testFilename;
 if (isEmpty(Filename)){
@@ -1225,7 +1232,8 @@ if(!linuxcommon::save_string_to_file(fileContents,FILENAME)){
   linuxcommon::echo_error("Did not save the file correctly");
 }} {}
   }
-  Function {save_file()} {} {
+  Function {save_file()} {open
+  } {
     code {if(check_file()){
   std::string fileContents=stringfile();
   preview_window(fileContents)->show();
@@ -1302,8 +1310,6 @@ for( std::vector<std::string>::iterator it = STRING_VEC.begin();
 }
 o->redraw();} {}
   }
-  Function {make_window()} {open
-  } {}
   Function {locales_string()} {open return_type {std::string}
   } {
     code {std::string result;
@@ -1345,6 +1351,28 @@ if(!linuxcommon::save_string_to_file(fileContents,FILENAME)){
   error_win->show();
   linuxcommon::echo_error("Did not save the file correctly");
 }} {}
+  }
+  Function {check_save()} {open
+  } {
+    code {const char* res=Filename->value();
+std::string result;
+if(res!=NULL){result=res;}
+std::string tmpRES=linuxcommon::translate_home(result);
+if(tmpRES.compare(result)!=0){
+  Filename->value(tmpRES.c_str());
+}
+if(!linuxcommon::file_is_writable(result)){
+  save_button->deactivate();
+  unsigned int color=linuxcommon::get_fl_color("\#006900");
+  save_button->color(color);
+}
+else{
+  unsigned int color=linuxcommon::get_fl_color("\#00b600");
+  save_button->color(color);  
+  save_button->activate();
+  
+}
+save_button->redraw();} {}
   }
 } 
 

@@ -113,6 +113,7 @@ namespace linuxcommon{
 	//t
 	std::string test_file_in_vector_path(std::string fileWithNOPATH,std::vector<std::string> directories_to_check);
 	std::string term_out(std::string terminal_Command_You_Want_Output_From);
+	std::string translate_home(std::string pathORfilename);
 	//q
 	std::string quote_xml(std::string input);
 	///COLOR functions
