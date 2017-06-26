@@ -505,7 +505,8 @@ KEYSHORTCUTS="<Key key=\"Up\">up</Key>
     <Key mask=\"A\" key=\"F9\">minimize</Key>
     <Key mask=\"4\" key=\"w\">close</Key>
     <Key mask=\"A\" key=\"F4\">close</Key>
-	<Key key=\"XF86Tools\">jwm-settings-manager</Key>"
+	<Key key=\"XF86Tools\">${JWMexec}jwm-settings-manager</Key>
+	<Key key=\"XF86Eject\">${JWMexec}eject</Key>"
 
 ## DYNAMIC includes of things that exist :)
 [[ -n "$FM_PROG" ]] && KEYSHORTCUTS="${KEYSHORTCUTS}

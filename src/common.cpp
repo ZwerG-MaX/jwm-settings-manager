@@ -1119,10 +1119,10 @@ LINUX_COMMON__NS_BEGIN
 		std::vector <std::string> ALLusers;
 		if(pw != NULL){
 			for(pw = getpwent();pw!=NULL;pw = getpwent()){
-				uid_t tmp=pw->pw_uid;
 				std::string TMP=pw->pw_name;
-				if(tmp>=1000){
-					if(TMP.compare("nobody")!=0){
+				std::string shell=pw->pw_shell;
+				if( (shell.compare("/usr/sbin/nologin")!=0)&&(shell.compare("/bin/false")!=0) ){
+					if(TMP.compare("sync")!=0){
 						ALLusers.push_back(TMP);
 					}
 				}
@@ -1884,6 +1884,38 @@ LINUX_COMMON__NS_BEGIN
 		}
 	}
 	#endif
+	unsigned int userUID(std::string user){
+		unsigned int ERROR=99999
+		if(user.compare("")==0)return ERROR;
+		struct passwd *pw
+		if(getpwnam(user.c_str())==NULL)return ERROR;
+		unsigned int UID=pw->pw_uid;
+		setpwent();
+		endpwent();
+		return UID;
+	}
+	unsigned int userGID(std::string user){
+		unsigned int ERROR=99999
+		if(user.compare("")==0)return ERROR;
+		struct passwd *pw
+		if(getpwnam(user.c_str())==NULL)return ERROR;
+		unsigned int UID=pw->pw_gid;
+		setpwent();
+		endpwent();
+		return UID;
+	}
+	unsigned int highest_user_UID(){
+		std::vector <std::string> ALLusers = all_users();
+		unsigned int TOTAL=0;
+		for( std::vector<std::string>::iterator itr = ALLusers.begin();
+			itr!=ALLusers.end();
+			++itr){
+			std::string tmpUser=*itr;
+			unsigned int tmp=userUID(tmpUser);
+			if(tmp>TOTAL)TOTAL=tmp;
+		}
+		return TOTAL;
+	}
 	//INTEGER FUNCTIONS/////////////////////////////////////////////////
 	/** get a process ID from a name like 'pgrep'
 	 * @param  procName the process name to look for

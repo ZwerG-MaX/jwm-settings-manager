@@ -167,6 +167,9 @@ namespace linuxcommon{
 	unsigned int get_fl_color(std::string color);
 	unsigned int get_fl_color(std::string color, unsigned int &color2);
     #endif
+    unsigned int userGID(std::string user);
+    unsigned int userUID(std::string user);
+    unsigned int highest_user_UID();
     unsigned int items_in_path();
 	//void
 	void echo(std::string msg);
