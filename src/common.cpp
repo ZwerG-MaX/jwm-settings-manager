@@ -1885,9 +1885,9 @@ LINUX_COMMON__NS_BEGIN
 	}
 	#endif
 	unsigned int userUID(std::string user){
-		unsigned int ERROR=99999
+		unsigned int ERROR=99999;
 		if(user.compare("")==0)return ERROR;
-		struct passwd *pw
+		struct passwd *pw;
 		if(getpwnam(user.c_str())==NULL)return ERROR;
 		unsigned int UID=pw->pw_uid;
 		setpwent();
@@ -1895,9 +1895,9 @@ LINUX_COMMON__NS_BEGIN
 		return UID;
 	}
 	unsigned int userGID(std::string user){
-		unsigned int ERROR=99999
+		unsigned int ERROR=99999;
 		if(user.compare("")==0)return ERROR;
-		struct passwd *pw
+		struct passwd *pw;
 		if(getpwnam(user.c_str())==NULL)return ERROR;
 		unsigned int UID=pw->pw_gid;
 		setpwent();
