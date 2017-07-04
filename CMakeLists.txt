@@ -65,7 +65,7 @@ endif()
 FIND_PACKAGE(X11 REQUIRED)
 
 ## Because Launchpad's build system is really weird!
-IF(NOT EXISTS "${FLTK_FLUID_EXECUTABLE}")
+IF("${FLTK_FLUID_EXECUTABLE}" STREQUAL "")
     # Try to detect full path anyway
     EXECUTE_PROCESS(COMMAND which fluid OUTPUT_VARIABLE FLTK_FLUID_EXECUTABLE OUTPUT_STRIP_TRAILING_WHITESPACE)
     IF(NOT EXISTS "${FLTK_FLUID_EXECUTABLE}")
@@ -74,11 +74,11 @@ IF(NOT EXISTS "${FLTK_FLUID_EXECUTABLE}")
 ENDIF()
 
 ## Because Launchpad's build system is really weird!
-IF(NOT EXISTS "${FLTK_INCLUDE_DIR}")
+IF("${FLTK_INCLUDE_DIR}" STREQUAL "")
     # Try to detect full path anyway
     set(FLTK_INCLUDE_DIR "/usr/include")
     IF(NOT EXISTS "${FLTK_INCLUDE_DIR}")
-        MESSAGE(FATAL_ERROR "Please install the fluid binary which is part of FLTK.")
+        MESSAGE(FATAL_ERROR "Please install the FLTK header files which is part of FLTK.")
     ENDIF()
 ENDIF()
 # Don't need OpenGL or the Fluid plugin, since I export the source from FLUID
@@ -113,7 +113,9 @@ INCLUDE_DIRECTORIES("${FLTK_INCLUDE_DIR}"
 #set(SVG_DEFINES "-DNANOSVG_IMPLEMENTATION=true -DNANOSVG_ALL_COLOR_KEYWORDS=true -DNANOSVGRAST_IMPLEMENTATION=true")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SVG_DEFINES}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Os -finline-small-functions -finline-functions-called-once -fno-unwind-tables -fno-asynchronous-unwind-tables -s")
-if(EXISTS ${X11_INCLUDE_DIR})
+if(${X11_INCLUDE_DIR} STREQUAL "")
+    MESSAGE(FATAL_ERROR "X11 headers are not found")
+else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DLINUX_COMMON_HAS_X=true")
 endif()
 set(XML_HEADERS include/pugixml.hpp)
