@@ -64,17 +64,20 @@ else()
 endif()
 FIND_PACKAGE(X11 REQUIRED)
 
+#Because NixOS does things differently
+string(COMPARE EQUAL "${FLTK_FLUID_EXECUTABLE}" "" fluid_result)
 ## Because Launchpad's build system is really weird!
-IF("${FLTK_FLUID_EXECUTABLE}" STREQUAL "")
+IF(fluid_result)
     # Try to detect full path anyway
     EXECUTE_PROCESS(COMMAND which fluid OUTPUT_VARIABLE FLTK_FLUID_EXECUTABLE OUTPUT_STRIP_TRAILING_WHITESPACE)
     IF(NOT EXISTS "${FLTK_FLUID_EXECUTABLE}")
         MESSAGE(FATAL_ERROR "Please install the fluid binary which is part of FLTK.")
     ENDIF()
 ENDIF()
-
+#Because NixOS does things differently
+string(COMPARE EQUAL "${FLTK_INCLUDE_DIR}" "" fltk_result)
 ## Because Launchpad's build system is really weird!
-IF("${FLTK_INCLUDE_DIR}" STREQUAL "")
+IF( fltk_result)
     # Try to detect full path anyway
     set(FLTK_INCLUDE_DIR "/usr/include")
     IF(NOT EXISTS "${FLTK_INCLUDE_DIR}")
@@ -113,7 +116,9 @@ INCLUDE_DIRECTORIES("${FLTK_INCLUDE_DIR}"
 #set(SVG_DEFINES "-DNANOSVG_IMPLEMENTATION=true -DNANOSVG_ALL_COLOR_KEYWORDS=true -DNANOSVGRAST_IMPLEMENTATION=true")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SVG_DEFINES}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Os -finline-small-functions -finline-functions-called-once -fno-unwind-tables -fno-asynchronous-unwind-tables -s")
-if(${X11_INCLUDE_DIR} STREQUAL "")
+#Because NixOS does things differently
+string(COMPARE EQUAL "${X11_INCLUDE_DIR}" "" x11_result)
+if( x11_result )
     MESSAGE(FATAL_ERROR "X11 headers are not found")
 else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DLINUX_COMMON_HAS_X=true")
