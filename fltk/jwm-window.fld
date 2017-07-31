@@ -59,8 +59,8 @@ class WindowUI {open
   } {
     Fl_Window add_opt_window {
       label {Add an Option} open
-      xywh {56 190 500 280} type Double hide resizable
-      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows}
+      xywh {732 115 500 280} type Double resizable
+      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows} visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 500 280} resizable
@@ -85,10 +85,10 @@ if(value!=NULL){
         }
         Fl_Slider opacity_value {
           label Opacity
-          xywh {320 210 100 25} type Horizontal box GTK_DOWN_BOX color 41 align 8 step 0.2 value 1 deactivate
+          xywh {335 210 100 25} type Horizontal box GTK_DOWN_BOX color 41 align 8 step 0.2 value 1 deactivate
         }
-        Fl_Value_Input desktop_num {
-          xywh {215 210 35 25} box FLAT_BOX align 8 maximum 10000 deactivate
+        Fl_Value_Input desktop_num {selected
+          xywh {205 210 35 25} box FLAT_BOX align 8 maximum 10000 deactivate
         }
         Fl_Button {} {
           label Cancel
@@ -423,7 +423,7 @@ get_button(o,"ButtonClose",a_title_color1);}
               }
               MenuItem {} {
                 label {Mouse over to focus. Click title or border to raise.}
-                callback {setThing("FocusModel"," sloppytitle");} selected
+                callback {setThing("FocusModel"," sloppytitle");}
                 xywh {50 50 100 20}
                 code0 {if(JWMVERSION<237)o->hide();}
               }

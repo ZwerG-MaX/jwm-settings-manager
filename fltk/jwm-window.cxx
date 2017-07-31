@@ -660,7 +660,7 @@ Fl_Double_Window* WindowUI::add_option_window() {
         icon_value->align(Fl_Align(FL_ALIGN_RIGHT));
         icon_value->deactivate();
       } // Fl_Input* icon_value
-      { opacity_value = new Fl_Slider(320, 210, 100, 25, gettext("Opacity"));
+      { opacity_value = new Fl_Slider(335, 210, 100, 25, gettext("Opacity"));
         opacity_value->type(1);
         opacity_value->box(FL_GTK_DOWN_BOX);
         opacity_value->color((Fl_Color)41);
@@ -669,7 +669,7 @@ Fl_Double_Window* WindowUI::add_option_window() {
         opacity_value->align(Fl_Align(FL_ALIGN_RIGHT));
         opacity_value->deactivate();
       } // Fl_Slider* opacity_value
-      { desktop_num = new Fl_Value_Input(215, 210, 35, 25);
+      { desktop_num = new Fl_Value_Input(205, 210, 35, 25);
         desktop_num->box(FL_FLAT_BOX);
         desktop_num->maximum(10000);
         desktop_num->align(Fl_Align(FL_ALIGN_RIGHT));

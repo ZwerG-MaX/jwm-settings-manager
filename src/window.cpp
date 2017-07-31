@@ -155,6 +155,8 @@ void check_opts(std::string itemValue,Fl_Value_Input* desktop_num, Fl_Output* la
 	debug_out("void check_opts(std::string "+itemValue+",Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Input* icon_value, Fl_Menu_Button* layer_chooser)");
 	if(itemValue.compare("")==0){return;}
 	desktop_num->deactivate();
+	desktop_num->label("");
+	desktop_num->tooltip("");
 	layer_value->deactivate();
 	opacity_value->deactivate();
 	icon_value->deactivate();
