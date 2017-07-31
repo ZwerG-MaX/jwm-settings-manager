@@ -62,6 +62,7 @@ std::string getItemVal(int position, std::string attribute);
 double getItemWH(int position, std::string attribute);
 double setTaskW(int position);
 double getItemW(int position);
+double getSpacing(int position);
 double getTaskW(int position);
 double getItemH(int position);
 unsigned int switch_panel(Fl_Menu_Item *o);

@@ -1091,12 +1091,21 @@ void PanelUI::cb_6(Fl_Button* o, void* v) {
 }
 
 void PanelUI::cb_Width1_i(Fl_Value_Input* o, void*) {
-  if(!setItemH(BUTTON_NUM,o->value())){
+  if(!setItemW(BUTTON_NUM,o->value())){
   errorOUT("Did not set width correctly");
 };
 }
 void PanelUI::cb_Width1(Fl_Value_Input* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_Width1_i(o,v);
+}
+
+void PanelUI::cb_Spacing_i(Fl_Value_Input* o, void*) {
+  if(!setItemWH("spacing",BUTTON_NUM,o->value())){
+  errorOUT("Did not set width correctly");
+};
+}
+void PanelUI::cb_Spacing(Fl_Value_Input* o, void* v) {
+  ((PanelUI*)(o->parent()->user_data()))->cb_Spacing_i(o,v);
 }
 
 void PanelUI::cb_OK8_i(Fl_Button*, void*) {
@@ -2588,22 +2597,22 @@ m the font used."));
 }
 
 Fl_Double_Window* PanelUI::config_indicator_window() {
-  { Fl_Double_Window* o = conf_indicator_window = new Fl_Double_Window(260, 215, gettext("Configure Indicators"));
+  { Fl_Double_Window* o = conf_indicator_window = new Fl_Double_Window(305, 215, gettext("Configure Indicators"));
     conf_indicator_window->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(195, 180, 60, 30, gettext("OK"));
+    { Fl_Button* o = new Fl_Button(235, 180, 60, 30, gettext("OK"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)61);
       o->selection_color((Fl_Color)59);
       o->labelcolor(FL_BACKGROUND2_COLOR);
       o->callback((Fl_Callback*)cb_OK7);
     } // Fl_Button* o
-    { Fl_Browser* o = indicator_browser = new Fl_Browser(5, 5, 250, 170);
+    { Fl_Browser* o = indicator_browser = new Fl_Browser(5, 5, 285, 170);
       indicator_browser->type(2);
       indicator_browser->box(FL_FLAT_BOX);
       indicator_browser->selection_color((Fl_Color)80);
       getIndicators(o);
     } // Fl_Browser* indicator_browser
-    { Fl_Button* o = new Fl_Button(50, 180, 30, 30, gettext("-"));
+    { Fl_Button* o = new Fl_Button(40, 180, 30, 30, gettext("-"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->labelfont(1);
@@ -2615,13 +2624,23 @@ Fl_Double_Window* PanelUI::config_indicator_window() {
       o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_6);
     } // Fl_Button* o
-    { Fl_Value_Input* o = new Fl_Value_Input(150, 180, 25, 25, gettext("Width"));
+    { Fl_Value_Input* o = new Fl_Value_Input(115, 185, 25, 25, gettext("Width"));
       o->tooltip(gettext("The maximum width of an item contained in the dock. This defaults to the widt\
 h or height of the tray (whichever is smaller)."));
       o->box(FL_FLAT_BOX);
       o->selection_color(FL_DARK_RED);
       o->callback((Fl_Callback*)cb_Width1);
       o->value(getItemW(BUTTON_NUM));
+    } // Fl_Value_Input* o
+    { Fl_Value_Input* o = new Fl_Value_Input(205, 185, 25, 25, gettext("Spacing"));
+      o->tooltip(gettext("Number of pixels to leave between items in the dock. The default is 0."));
+      o->box(FL_FLAT_BOX);
+      o->selection_color(FL_DARK_RED);
+      o->maximum(1000);
+      o->step(1);
+      o->callback((Fl_Callback*)cb_Spacing);
+      if(JWM_VERSION<237){o->hide();}
+      else{o->value(getSpacing(BUTTON_NUM));}
     } // Fl_Value_Input* o
     startup(o,jsm_panel_xpm);
     conf_indicator_window->xclass("jsm-panel");

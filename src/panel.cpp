@@ -107,6 +107,7 @@ std::string Menu_Label(int num){
 //double////////////////////////////////////////////////////////////////
 double getItemH(int position){return getItemWH(position,"height");}
 double getItemW(int position){return getItemWH(position,"width");}
+double getSpacing(int position){return getItemWH(position,"spacing");}
 double getTaskW(int position){return getItemWH(position,"maxwidth");}
 double getItemWH(int position, std::string attribute){
 	debug_out("std::string getItemWH(int position, std::string "+attribute+")");

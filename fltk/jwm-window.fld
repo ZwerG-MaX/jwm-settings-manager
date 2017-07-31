@@ -59,11 +59,11 @@ class WindowUI {open
   } {
     Fl_Window add_opt_window {
       label {Add an Option} open
-      xywh {28 442 500 275} type Double hide resizable
+      xywh {56 190 500 280} type Double hide resizable
       code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows}
     } {
       Fl_Scroll {} {open
-        xywh {0 0 500 273} resizable
+        xywh {0 0 500 280} resizable
       } {
         Fl_Browser options_available {
           callback {int line = options_available->value();
@@ -88,8 +88,7 @@ if(value!=NULL){
           xywh {320 210 100 25} type Horizontal box GTK_DOWN_BOX color 41 align 8 step 0.2 value 1 deactivate
         }
         Fl_Value_Input desktop_num {
-          label Desktop
-          tooltip {Which virtual desktop does this effect?} xywh {215 210 35 25} box FLAT_BOX align 8 maximum 10000 deactivate
+          xywh {215 210 35 25} box FLAT_BOX align 8 maximum 10000 deactivate
         }
         Fl_Button {} {
           label Cancel
@@ -194,8 +193,8 @@ if(input!=NULL){
 JWMVERSION=JWMversion();} {}
     Fl_Window window_window {
       label {Window Settings} open
-      xywh {96 430 510 315} type Double color 47 resizable
-      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows} visible
+      xywh {292 262 510 315} type Double color 47 hide resizable
+      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows}
     } {
       Fl_Scroll {} {open
         xywh {0 0 510 315} color 31
@@ -204,8 +203,8 @@ JWMVERSION=JWMversion();} {}
           xywh {0 0 510 280} box FLAT_BOX color 45 selection_color 51
         } {
           Fl_Group {} {
-            label Appearance open selected
-            xywh {0 30 510 250} selection_color 45
+            label Appearance open
+            xywh {0 30 510 250} selection_color 45 hide
           } {
             Fl_Box {} {
               tooltip {The  color  of  the  title bar (gradients are supported).  The default is \#CC7700:\#884400.} xywh {0 35 255 160} box FLAT_BOX color 47
@@ -372,7 +371,7 @@ get_button(o,"ButtonClose",a_title_color1);}
           }
           Fl_Group {} {
             label Settings open
-            xywh {10 35 485 245} selection_color 45 hide
+            xywh {10 35 485 245} selection_color 45
           } {
             Fl_Slider t_slider {
               label {Window Title Bar Size}
@@ -407,14 +406,26 @@ get_button(o,"ButtonClose",a_title_color1);}
               tooltip {This determines how windows are brought to the front} xywh {20 125 450 25} box FLAT_BOX color 23 selection_color 72 labelcolor 35 textcolor 35
             } {
               MenuItem {} {
-                label {By Clicking on it}
+                label { Click to focus and raise.}
                 callback {setThing("FocusModel","click");}
                 xywh {30 30 100 20}
               }
               MenuItem {} {
-                label {By moving the mouse over it}
+                label {Mouse over to focus. Click to raise.}
                 callback {setThing("FocusModel","sloppy");}
                 xywh {25 25 100 20}
+              }
+              MenuItem {} {
+                label {Click to focus. Click title or border to raise.}
+                callback {setThing("FocusModel","clicktitle");}
+                xywh {40 40 100 20}
+                code0 {if(JWMVERSION<237)o->hide();}
+              }
+              MenuItem {} {
+                label {Mouse over to focus. Click title or border to raise.}
+                callback {setThing("FocusModel"," sloppytitle");} selected
+                xywh {50 50 100 20}
+                code0 {if(JWMVERSION<237)o->hide();}
               }
             }
             Fl_Menu_Button resize_menu {
@@ -489,7 +500,7 @@ setSnap(d);}
             }
           }
           Fl_Group {} {
-            label Groups
+            label Groups open
             xywh {0 30 510 230} selection_color 45 hide
           } {
             Fl_Browser groups_browser {

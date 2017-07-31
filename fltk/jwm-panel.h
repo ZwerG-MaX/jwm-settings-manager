@@ -515,6 +515,8 @@ private:
   static void cb_6(Fl_Button*, void*);
   inline void cb_Width1_i(Fl_Value_Input*, void*);
   static void cb_Width1(Fl_Value_Input*, void*);
+  inline void cb_Spacing_i(Fl_Value_Input*, void*);
+  static void cb_Spacing(Fl_Value_Input*, void*);
 public:
   Fl_Double_Window* configure_manually_window(std::string icon);
   Fl_Double_Window *conf_manual_window;

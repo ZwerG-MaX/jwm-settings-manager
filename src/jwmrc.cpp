@@ -2337,8 +2337,14 @@ void populateDesc(Fl_Browser *b){
   //see BELOW function to see how I generated this code
     //these are all the descriptions of the options above
     int vernum=JWMversion();
+    if(vernum>=237){
+		b->add("Set the initial width for windows in this group to n (pixels).");
+		b->add("Set the initial x-coordinate for windows in this group to n. ");
+		b->add("Set the initial y-coordinate for windows in this group to n. ");
+	}
     if(vernum>=236){
     	b->add("Enable auto-maximization. New in v2.3.6.");
+    	b->add("Disable mod1+drag for moving/resizing windows in this group. ");
 	}
     b->add("Enables the border on windows in this group.");
     b->add("Center windows in this group upon initial placement instead of using cascaded placement.");
@@ -2402,8 +2408,14 @@ void populateOptions(Fl_Browser *o){
     // I also added the vernum>=23X portions where the description says New in 2.3.X
     //these are all the options
     int vernum=JWMversion();
+    if(vernum>=237){
+		o->add("width:");
+		o->add("x:");
+		o->add("y:");
+	}
     if(vernum>=236){
     	o->add("aerosnap");
+    	o->add("nodrag");
     }
 	o->add("border");
     o->add("centered");

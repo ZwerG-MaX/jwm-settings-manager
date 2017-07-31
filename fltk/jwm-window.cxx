@@ -284,24 +284,40 @@ void WindowUI::cb_b_slider_v(Fl_Value_Input* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_b_slider_v_i(o,v);
 }
 
-void WindowUI::cb_By_i(Fl_Menu_*, void*) {
+void WindowUI::cb_Click_i(Fl_Menu_*, void*) {
   setThing("FocusModel","click");
 }
-void WindowUI::cb_By(Fl_Menu_* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_By_i(o,v);
+void WindowUI::cb_Click(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Click_i(o,v);
 }
 
-void WindowUI::cb_By1_i(Fl_Menu_*, void*) {
+void WindowUI::cb_Mouse_i(Fl_Menu_*, void*) {
   setThing("FocusModel","sloppy");
 }
-void WindowUI::cb_By1(Fl_Menu_* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_By1_i(o,v);
+void WindowUI::cb_Mouse(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Mouse_i(o,v);
+}
+
+void WindowUI::cb_Click1_i(Fl_Menu_*, void*) {
+  setThing("FocusModel","clicktitle");
+}
+void WindowUI::cb_Click1(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Click1_i(o,v);
+}
+
+void WindowUI::cb_Mouse1_i(Fl_Menu_*, void*) {
+  setThing("FocusModel"," sloppytitle");
+}
+void WindowUI::cb_Mouse1(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Mouse1_i(o,v);
 }
 
 unsigned char WindowUI::menu_focus_menu_i18n_done = 0;
 Fl_Menu_Item WindowUI::menu_focus_menu[] = {
- {"By Clicking on it", 0,  (Fl_Callback*)WindowUI::cb_By, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"By moving the mouse over it", 0,  (Fl_Callback*)WindowUI::cb_By1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {" Click to focus and raise.", 0,  (Fl_Callback*)WindowUI::cb_Click, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Mouse over to focus. Click to raise.", 0,  (Fl_Callback*)WindowUI::cb_Mouse, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Click to focus. Click title or border to raise.", 0,  (Fl_Callback*)WindowUI::cb_Click1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Mouse over to focus. Click title or border to raise.", 0,  (Fl_Callback*)WindowUI::cb_Mouse1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
 
@@ -620,9 +636,9 @@ void WindowUI::cb_OK4(Fl_Button* o, void* v) {
 }
 
 Fl_Double_Window* WindowUI::add_option_window() {
-  { Fl_Double_Window* o = add_opt_window = new Fl_Double_Window(500, 275, gettext("Add an Option"));
+  { Fl_Double_Window* o = add_opt_window = new Fl_Double_Window(500, 280, gettext("Add an Option"));
     add_opt_window->user_data((void*)(this));
-    { Fl_Scroll* o = new Fl_Scroll(0, 0, 500, 273);
+    { Fl_Scroll* o = new Fl_Scroll(0, 0, 500, 280);
       { Fl_Browser* o = options_available = new Fl_Browser(10, 10, 115, 195);
         options_available->type(2);
         options_available->box(FL_FLAT_BOX);
@@ -653,8 +669,7 @@ Fl_Double_Window* WindowUI::add_option_window() {
         opacity_value->align(Fl_Align(FL_ALIGN_RIGHT));
         opacity_value->deactivate();
       } // Fl_Slider* opacity_value
-      { desktop_num = new Fl_Value_Input(215, 210, 35, 25, gettext("Desktop"));
-        desktop_num->tooltip(gettext("Which virtual desktop does this effect?"));
+      { desktop_num = new Fl_Value_Input(215, 210, 35, 25);
         desktop_num->box(FL_FLAT_BOX);
         desktop_num->maximum(10000);
         desktop_num->align(Fl_Align(FL_ALIGN_RIGHT));
@@ -776,6 +791,7 @@ Fl_Double_Window* WindowUI::make_window() {
         o->selection_color((Fl_Color)51);
         { Fl_Group* o = new Fl_Group(0, 30, 510, 250, gettext("Appearance"));
           o->selection_color(FL_DARK2);
+          o->hide();
           { Fl_Box* o = new Fl_Box(0, 35, 255, 160);
             o->tooltip(gettext("The  color  of  the  title bar (gradients are supported).  The default is #CC\
 7700:#884400."));
@@ -1008,7 +1024,6 @@ ated by a \':\' to set the down and up colors respetively."));
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(10, 35, 485, 245, gettext("Settings"));
           o->selection_color(FL_DARK2);
-          o->hide();
           { Fl_Slider* o = t_slider = new Fl_Slider(205, 35, 125, 25, gettext("Window Title Bar Size"));
             t_slider->tooltip(gettext("This is the top with the program name, and close button, etc.."));
             t_slider->type(1);
@@ -1070,9 +1085,15 @@ re easily"));
             focus_menu->selection_color(FL_DARK_RED);
             focus_menu->labelcolor((Fl_Color)35);
             focus_menu->textcolor((Fl_Color)35);
+            { Fl_Menu_Item* o = &menu_focus_menu[2];
+              if(JWMVERSION<237)o->hide();
+            }
+            { Fl_Menu_Item* o = &menu_focus_menu[3];
+              if(JWMVERSION<237)o->hide();
+            }
             if (!menu_focus_menu_i18n_done) {
               int i=0;
-              for ( ; i<2; i++)
+              for ( ; i<4; i++)
                 if (menu_focus_menu[i].label())
                   menu_focus_menu[i].label(gettext(menu_focus_menu[i].label()));
               menu_focus_menu_i18n_done = 1;

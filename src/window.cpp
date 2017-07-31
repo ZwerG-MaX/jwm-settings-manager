@@ -55,7 +55,7 @@ void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl
 		const char* tmp = options_available->text(line);
 		if(tmp==NULL){return;}
 		std::string val = tmp;
-		std::string thisitem;
+		std::string thisitem=val;
 		if(val.compare("")==0){return;}
 		if(val.compare("icon:")==0){
 			const char* temp =icon_value->value();
@@ -69,22 +69,34 @@ void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl
 			thisitem=convert(desktop_num->value());
 			if(thisitem.compare("")==0){return;}
 			thisitem=val+thisitem;
-			addGroupItem( whichGroup, "Option",thisitem);
+		}
+		else if(val.compare("width:")==0){
+			thisitem=convert(desktop_num->value());
+			if(thisitem.compare("")==0){return;}
+			thisitem=val+thisitem;
+		}
+		else if(val.compare("x:")==0){
+			thisitem=convert(desktop_num->value());
+			if(thisitem.compare("")==0){return;}
+			thisitem=val+thisitem;
+		}
+		else if(val.compare("y:")==0){
+			thisitem=convert(desktop_num->value());
+			if(thisitem.compare("")==0){return;}
+			thisitem=val+thisitem;
 		}
 		else if(val.compare("layer:")==0){
 			const char* temp =layer_value->value();
 			if(temp==NULL){return;}
 			if(thisitem.compare("")==0){return;}
 			thisitem=val+thisitem;
-			addGroupItem( whichGroup, "Option",thisitem);
 		}
 		else if(val.compare("opacity:")==0){
 			thisitem = convert(opacity_value->value());
 			if(thisitem.compare("")==0){return;}
 			thisitem=val+thisitem;
-			addGroupItem( whichGroup, "Option",thisitem);
 		}
-		else{addGroupItem( whichGroup, "Option",val);}
+		addGroupItem( whichGroup, "Option",thisitem);
 	}
 }
 void add_thingie(Fl_Browser *groups_browser,std::string input,std::string Item){
@@ -152,6 +164,8 @@ void check_opts(std::string itemValue,Fl_Value_Input* desktop_num, Fl_Output* la
 	}
 	else if(itemValue.compare("desktop:")==0){
 		desktop_num->activate();
+		desktop_num->label("Desktop");
+		desktop_num->tooltip("Which virtual desktop does this effect?");
 	}
 	else if(itemValue.compare("layer:")==0){
 		layer_value->activate();
@@ -159,6 +173,21 @@ void check_opts(std::string itemValue,Fl_Value_Input* desktop_num, Fl_Output* la
 	}
 	else if(itemValue.compare("opacity:")==0){
 		opacity_value->activate();
+	}
+	else if(itemValue.compare("width:")==0){
+		desktop_num->activate();
+		desktop_num->label("Initial Width");
+		desktop_num->tooltip("Set the initial width for windows in this group");
+	}
+	else if(itemValue.compare("y:")==0){
+		desktop_num->activate();
+		desktop_num->label("Initial Y");
+		desktop_num->tooltip("Set the initial y-coordinate for windows in this group");
+	}
+	else if(itemValue.compare("x:")==0){
+		desktop_num->activate();
+		desktop_num->label("Initial X");
+		desktop_num->tooltip("Set the initial x-coordinate for windows in this group");
 	}
 }
 void choose_button(std::string whichButton){

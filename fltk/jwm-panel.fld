@@ -973,8 +973,8 @@ task_outline->redraw();}
     code {BUTTON_NUM=input_num;} {}
     Fl_Window conf_button_window {
       label {Configure Button} open
-      xywh {234 294 285 150} type Double labelfont 14
-      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
+      xywh {234 294 285 150} type Double labelfont 14 hide
+      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
     } {
       Fl_Input button_label {
         label Label
@@ -1197,25 +1197,26 @@ if(program.compare("")==0){
       }
     }
   }
-  Function {config_indicator_window()} {} {
+  Function {config_indicator_window()} {open
+  } {
     Fl_Window conf_indicator_window {
       label {Configure Indicators} open
-      xywh {743 256 260 215} type Double hide
-      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
+      xywh {612 171 305 215} type Double
+      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
     } {
       Fl_Button {} {
         label OK
         callback {conf_indicator_window->hide();}
-        xywh {195 180 60 30} box FLAT_BOX color 61 selection_color 59 labelcolor 7
+        xywh {235 180 60 30} box FLAT_BOX color 61 selection_color 59 labelcolor 7
       }
       Fl_Browser indicator_browser {
-        xywh {5 5 250 170} type Hold box FLAT_BOX selection_color 80
+        xywh {5 5 285 170} type Hold box FLAT_BOX selection_color 80
         code1 {getIndicators(o);}
       }
       Fl_Button {} {
         label {-}
         callback {removeIndicator(indicator_browser);}
-        xywh {50 180 30 30} box FLAT_BOX color 23 labelfont 1 labelsize 34
+        xywh {40 180 30 30} box FLAT_BOX color 23 labelfont 1 labelsize 34
       }
       Fl_Button {} {
         label {@+}
@@ -1224,11 +1225,20 @@ if(program.compare("")==0){
       }
       Fl_Value_Input {} {
         label Width
-        callback {if(!setItemH(BUTTON_NUM,o->value())){
+        callback {if(!setItemW(BUTTON_NUM,o->value())){
+  errorOUT("Did not set width correctly");
+}} selected
+        tooltip {The maximum width of an item contained in the dock. This defaults to the width or height of the tray (whichever is smaller).} xywh {115 185 25 25} box FLAT_BOX selection_color 72
+        code0 {o->value(getItemW(BUTTON_NUM));}
+      }
+      Fl_Value_Input {} {
+        label Spacing
+        callback {if(!setItemWH("spacing",BUTTON_NUM,o->value())){
   errorOUT("Did not set width correctly");
 }}
-        tooltip {The maximum width of an item contained in the dock. This defaults to the width or height of the tray (whichever is smaller).} xywh {150 180 25 25} box FLAT_BOX selection_color 72
-        code0 {o->value(getItemW(BUTTON_NUM));}
+        tooltip {Number of pixels to leave between items in the dock. The default is 0.} xywh {205 185 25 25} box FLAT_BOX selection_color 72 maximum 1000 step 1
+        code0 {if(JWM_VERSION<237){o->hide();}}
+        code1 {else{o->value(getSpacing(BUTTON_NUM));}}
       }
     }
   }
@@ -1772,8 +1782,7 @@ if(text.find("root:")==0){
 if(o!=NULL){
   o->value(text.c_str());
   o->activate();
-}} {selected
-    }
+}} {}
   }
   Function {get_tray_element_attrib(Fl_Input *o, std::string attribute,int num)} {} {
     code {std::string val=getAttribute(getTraySubElement(num),attribute);

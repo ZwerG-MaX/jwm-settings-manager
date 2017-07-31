@@ -215,10 +215,14 @@ public:
   static unsigned char menu_focus_menu_i18n_done;
   static Fl_Menu_Item menu_focus_menu[];
 private:
-  inline void cb_By_i(Fl_Menu_*, void*);
-  static void cb_By(Fl_Menu_*, void*);
-  inline void cb_By1_i(Fl_Menu_*, void*);
-  static void cb_By1(Fl_Menu_*, void*);
+  inline void cb_Click_i(Fl_Menu_*, void*);
+  static void cb_Click(Fl_Menu_*, void*);
+  inline void cb_Mouse_i(Fl_Menu_*, void*);
+  static void cb_Mouse(Fl_Menu_*, void*);
+  inline void cb_Click1_i(Fl_Menu_*, void*);
+  static void cb_Click1(Fl_Menu_*, void*);
+  inline void cb_Mouse1_i(Fl_Menu_*, void*);
+  static void cb_Mouse1(Fl_Menu_*, void*);
 public:
   Fl_Menu_Button *resize_menu;
   static unsigned char menu_resize_menu_i18n_done;
