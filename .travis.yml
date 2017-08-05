@@ -1,0 +1,27 @@
+language: cpp
+sudo: required
+dist: trusty
+compiler: gcc
+addons:
+  apt:
+    packages:
+      - cmake
+      - cmake-data
+      - gcc-multilib
+      - g++-multilib
+      - libc6
+      - libfltk-images1.3
+      - libfltk1.3
+      - libfltk1.3-dev
+      - libfltk1.3-compat-headers
+      - libgcc1
+      - libstdc++6
+      - libx11-dev
+      - libxpm-dev
+      - fluid
+      - pkg-config
+before_script:
+  - mkdir build && cd build
+script:
+  - cmake ..
+  - make
