@@ -21,28 +21,19 @@ addons:
     - fluid
     - pkg-config
 before_script:
-- mkdir build && cd build
+  - mkdir build && cd build
 script:
-- cmake ..
-- make
+  - cmake ..
+  - make -j$(nproc)
+  - make INSTALL_ROOT=appdir install ; find appdir/
+  - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage" 
+  - chmod a+x linuxdeployqt*.AppImage
+  - unset LD_LIBRARY_PATH
+  - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -bundle-non-qt-libs
+  - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -appimage
+
 after_success:
-- make_appimage.sh
-deploy:
-  matrix:
-  - provider: bintray
-    skip_cleanup: true
-    user: israeldahl
-    file: ".bintray.yml"
-    on:
-      all_branches: true
-  - provider: releases
-    skip_cleanup: true
-    file: deploy/*.AppImage
-    file_glob: true
-    on:
-      tags: true
-      all_branches: true
-  key:
-    secure: SRsWxbcYGE85nAKRXvC0JH68IcZg2Uq7Ecg/CuZUaQqrxHDdfGVejKBiVD/LgB48+hlgwcU7sv507IToQr7A5MCuQXFYmEe7G0htKyP5nJ8szCRZVve35z3wJO93LKWlFEvhw3iBYzaR5mfScDJRPIwLgIjWngqx3ZYJSmuIEIsgJnWsJIi62AFmK1pNGCfk9ERmb/QkjWJ9b6Wic6oHMlsSNApoivzgrT8zHrYI1Xc5TJxWpMzifo6wvpptoXp/OAxUoJb3KrH5F4kCE8T7x0fP+O5qO+o95Bbzuvh+cZoPSazTm/RLdgBoZx85uUxkPa99bJYW1oKkIBi5guVpRHcW9lvjxID7r7oEj9y9guT1ulEBH56hKAoPMmYri6NqreFCMhbCIYi8T0Aoz2R67xBATN/jHirTrmsfZcPM+dWUKGgzJW8xJ/Vf9CsZwIy6ZSiU50D8yc8wTb013u+zWlWavVNT1DwDcdcikVf926da7yf7pTWGJzAQlrtIydoJI2B9oMLk00Krz3jNfOUPaYtfwhzicEbks3RXt9W+tj3x3E6FkxOyTo00fg74ntX6+CiHK3tQ29kgikuvYdD/s8d+2ZzGeUN27g0czY4hvqpoZ6xTC6YiljStZDEKuTva++Wpb1P3W2AX7YqBClvfTkZI/S3sRBWAwmA81/e6l94=
+  - find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
+  - curl --upload-file ./JWM Settings Manager*.AppImage https://transfer.sh/JWM Settings Manager-git.$(git rev-parse --short HEAD)-x86_64.AppImage
 notifications: 
 email: false
