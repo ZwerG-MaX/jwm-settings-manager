@@ -1,0 +1,34 @@
+{
+    "package": {
+        "name": "jwm-settings-manager",
+        "repo": "AppImages",
+        "subject": "israeldahl",
+        "desc": "",
+        "website_url": "https://github.com/Israel-/jwm-settings-manager",
+        "issue_tracker_url": "https://github.com/Israel-/jwm-settings-manager/issues",
+        "vcs_url": "https://github.com/Israel-/jwm-settings-manager.git",
+        "licenses": ["GPL3+"],
+        "labels": [
+            "JWM",
+            "JWM Settings Manager",
+            "Settings",
+        ],
+        "public_download_numbers": false,
+        "public_stats": false
+    },
+    "version": {
+        "name": "master",
+        "desc": "AppImage of JWM Settings Manager master HEAD deployed by Travis CI build",
+        "gpgSign": true
+    },
+    "files": [
+        {
+            "includePattern": "Deploy/(.*\\.AppImage)",
+            "uploadPattern": "$1",
+            "matrixParams": {
+                "override": 1
+            }
+        }
+    ],
+    "publish": true
+}
