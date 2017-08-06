@@ -25,7 +25,7 @@ before_script:
 script:
   - cmake ..
   - make -j$(nproc)
-  - make INSTALL_ROOT=appdir install ; find appdir/
+  - make DESTDIR=appdir install ; find appdir/
   - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage" 
   - chmod a+x linuxdeployqt*.AppImage
   - unset LD_LIBRARY_PATH
