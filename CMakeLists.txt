@@ -159,6 +159,7 @@ set(JSM_SRCS
 )
 ## Turn the source code into a library
 add_library(JSM STATIC ${JSM_SRCS})
+add_subdirectory(data)
 ## make the executable
 add_executable(jwm-settings-manager src/jsm.cpp)
 add_executable(fltk-mouse fltk/jwm-mouse.cxx)
