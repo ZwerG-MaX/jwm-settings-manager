@@ -34,6 +34,6 @@ script:
 
 after_success:
   - find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
-  - curl --upload-file ./JWM\ Settings\ Manager*.AppImage https://transfer.sh/JWM\ Settings\ Manager-git.$(git rev-parse --short HEAD)-x86_64.AppImage
+  - curl --upload-file ./JWM_Settings_Manager*.AppImage https://transfer.sh/JWM_Settings_Manager-git.$(git rev-parse --short HEAD)-x86_64.AppImage
 notifications: 
 email: false
