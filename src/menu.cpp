@@ -37,9 +37,27 @@ std::string getItemIcon(int menu, int itemline,std::string element){
 	debug_out("std::string getItemIcon(int menu, int itemline,std::string "+element+")");
 	return getMenuAttribute(menu,itemline,element,"icon");
 }
+std::string getItemIcon(int menu, int item, int sub){
+	debug_out("std::string getItemIcon(int menu, int item, int sub)");
+	pugi::xml_node noder=getNode(menu, "RootMenu", item);
+	pugi::xml_node node=getSubNode(sub,noder);
+	std::string ret=getAttribute(node,"icon");
+	debug_out("icon="+ret);
+	return ret;
+}
 std::string getItemIcon(std::string text2, std::string menu){
 	debug_out("std::string getItemIcon(std::string "+text2+",std::string "+menu+")");
 	return getElementAttributeFromElementWithAttributeAndValueAndText("RootMenu","onroot",menu,"Program","icon",text2);
+}
+std::string getItemLabel(int menu, int item, int sub){
+	debug_out("std::string getItemLabel(int menu, int itemline, int sub)");
+	pugi::xml_node noder=getNode(menu, "RootMenu", item);
+	if(!noder){return "";}
+	pugi::xml_node node=getSubNode(sub,noder);
+	if(!node){return "";}
+	std::string ret=getAttribute(node,"label");
+	debug_out("label="+ret);
+	return ret;
 }
 std::string getItemLabel(int menu, int itemline,std::string element){
 	debug_out("std::string getItemLabel(int menu, int itemline,std::string "+element+")");
@@ -77,10 +95,51 @@ bool ConfigMenuItem(int menu,int item,Fl_Input* prog_label,Fl_Input* prog_icon,F
 	if(prog_icon!=NULL)icn=prog_icon->value();
 	const char* prog=NULL;
 	if(prog_input!=NULL)prog=prog_input->value();
+	char chk='a';
+	if(conf_button!=NULL)chk=conf_button->value();
+	std::string check="false";
+	switch (chk){
+		case '0':check="true";
+		default:check="false";
+	}
 	bool retval = true;
 	if(lbl!=NULL){if(!editMenuItem(menu,item,"label",lbl)){retval=false;}}
 	if(icn!=NULL){if(!editMenuItem(menu,item,"icon",icn)){retval=false;}}
 	if(prog!=NULL){if(!editMenuItem(menu,item,prog)){retval=false;}}
+	//TODO toggle button issue...
+	return retval;
+}
+bool ConfigSubMenuItem(int menu,int item,int sub,Fl_Input* prog_label,Fl_Input* prog_icon,Fl_Input* prog_input,Fl_Check_Button* conf_button){
+	debug_out("bool ConfigMenuItem(int menu,int item,int sub,Fl_Input* prog_label,Fl_Input* prog_icon,Fl_Input* prog_input,Fl_Check_Button* conf_button)");
+	const char* lbl=NULL;
+	if(prog_label!=NULL)lbl=prog_label->value();
+	const char* icn=NULL;
+	if(prog_icon!=NULL)icn=prog_icon->value();
+	const char* prog=NULL;
+	if(prog_input!=NULL)prog=prog_input->value();
+	char chk='a';
+	if(conf_button!=NULL)chk=conf_button->value();
+	std::string check="false";
+	switch (chk){
+		case '0':check="true";
+		default:check="false";
+	}
+	bool retval = true;
+	pugi::xml_node noder=getNode(menu, "RootMenu", item);
+	if(!noder){return false;}
+	pugi::xml_node node=getSubNode(sub,noder);
+	pugi::xml_node node1=node;
+	pugi::xml_node node2=node;
+	if(!node){return false;}
+	if(lbl!=NULL){if(!setAttribute(node,"label",lbl)){retval=false;}}
+	noder=getNode(menu, "RootMenu", item);
+	if(!noder){return false;}
+	node=getSubNode(sub,noder);
+	if(icn!=NULL){if(!setAttribute(node,"icon",icn)){retval=false;}}
+	noder=getNode(menu, "RootMenu", item);
+	if(!noder){return false;}
+	node=getSubNode(sub,noder);
+	if(prog!=NULL){if(!setNodeText(node,prog)){retval=false;}}
 	//TODO toggle button issue...
 	return retval;
 }

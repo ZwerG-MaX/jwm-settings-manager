@@ -256,6 +256,13 @@ void WindowUI::cb_a_border_color2(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_a_border_color2_i(o,v);
 }
 
+void WindowUI::cb_button_order_i(Fl_Button*, void*) {
+  button_order_window()->show();
+}
+void WindowUI::cb_button_order(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_button_order_i(o,v);
+}
+
 void WindowUI::cb_t_slider_i(Fl_Slider*, void*) {
   title_bar_modifier(t_slider,t_slider_v,2);
 }
@@ -635,6 +642,22 @@ void WindowUI::cb_OK4(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK4_i(o,v);
 }
 
+void WindowUI::cb_Cancel3_i(Fl_Button*, void*) {
+  button_orderer->hide();
+}
+void WindowUI::cb_Cancel3(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Cancel3_i(o,v);
+}
+
+void WindowUI::cb_OK5_i(Fl_Button*, void*) {
+  std::string val=ordering->value();
+setElementText("TitleButtonOrder",val);
+saveChanges();
+}
+void WindowUI::cb_OK5(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_OK5_i(o,v);
+}
+
 Fl_Double_Window* WindowUI::add_option_window() {
   { Fl_Double_Window* o = add_opt_window = new Fl_Double_Window(500, 280, gettext("Add an Option"));
     add_opt_window->user_data((void*)(this));
@@ -791,7 +814,6 @@ Fl_Double_Window* WindowUI::make_window() {
         o->selection_color((Fl_Color)51);
         { Fl_Group* o = new Fl_Group(0, 30, 510, 250, gettext("Appearance"));
           o->selection_color(FL_DARK2);
-          o->hide();
           { Fl_Box* o = new Fl_Box(0, 35, 255, 160);
             o->tooltip(gettext("The  color  of  the  title bar (gradients are supported).  The default is #CC\
 7700:#884400."));
@@ -1020,10 +1042,20 @@ ated by a \':\' to set the down and up colors respetively."));
             a_border_color2->when(FL_WHEN_RELEASE_ALWAYS);
             if(secondColor(o)){border_color_loader(o,1,2);}
           } // Fl_Button* a_border_color2
+          { Fl_Button* o = button_order = new Fl_Button(385, 205, 100, 35, gettext("Button Order"));
+            button_order->tooltip(gettext("Choose an icon to display for the close button on client windows instead of t\
+he default."));
+            button_order->box(FL_FLAT_BOX);
+            button_order->color((Fl_Color)23);
+            button_order->callback((Fl_Callback*)cb_button_order);
+            button_order->align(Fl_Align(256));
+            hideWidgetForVersion(o,240);
+          } // Fl_Button* button_order
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(10, 35, 485, 245, gettext("Settings"));
           o->selection_color(FL_DARK2);
+          o->hide();
           { Fl_Slider* o = t_slider = new Fl_Slider(205, 35, 125, 25, gettext("Window Title Bar Size"));
             t_slider->tooltip(gettext("This is the top with the program name, and close button, etc.."));
             t_slider->type(1);
@@ -1476,4 +1508,40 @@ Fl_Double_Window* WindowUI::make_gtk_theme_window() {
     theme_window->end();
   } // Fl_Double_Window* theme_window
   return theme_window;
+}
+
+Fl_Double_Window* WindowUI::button_order_window() {
+  { button_orderer = new Fl_Double_Window(225, 165);
+    button_orderer->user_data((void*)(this));
+    { Fl_Input* o = ordering = new Fl_Input(25, 15, 190, 25, gettext("m Maximize button\ni Minimize (iconify) button\nt Window title\nw Window menu\
+ button\nx Close button"));
+      ordering->tooltip(gettext("Title Button Order\n\nm Maximize button\ni Minimize (iconify) button\nt Windo\
+w title\nw Window menu button\nx Close button"));
+      ordering->box(FL_FLAT_BOX);
+      ordering->selection_color((Fl_Color)80);
+      ordering->align(Fl_Align(FL_ALIGN_BOTTOM));
+      std::string val=getElementText("TitleButtonOrder");
+      if(val.compare("")==0){val="wtimx";}
+      o->value(val.c_str());
+    } // Fl_Input* ordering
+    { Fl_Button* o = new Fl_Button(60, 125, 55, 25, gettext("Cancel"));
+      o->box(FL_FLAT_BOX);
+      o->down_box(FL_GTK_DOWN_BOX);
+      o->color((Fl_Color)80);
+      o->selection_color((Fl_Color)81);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_Cancel3);
+    } // Fl_Button* o
+    { Fl_Button* o = new Fl_Button(125, 125, 45, 25, gettext("OK"));
+      o->tooltip(gettext("Write to configuration file"));
+      o->box(FL_FLAT_BOX);
+      o->down_box(FL_GTK_DOWN_BOX);
+      o->color((Fl_Color)61);
+      o->selection_color((Fl_Color)59);
+      o->labelcolor((Fl_Color)55);
+      o->callback((Fl_Callback*)cb_OK5);
+    } // Fl_Button* o
+    button_orderer->end();
+  } // Fl_Double_Window* button_orderer
+  return button_orderer;
 }

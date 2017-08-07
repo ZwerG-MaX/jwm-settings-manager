@@ -29,6 +29,7 @@
 #include <FL/x.H>
 //FLTK includes
 #include <FL/fl_ask.H> //errorJWM
+#include <FL/Fl_Widget.H>
 #include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Double_Window.H>
@@ -73,6 +74,7 @@ bool addElementWithTextAndAttribute(std::string element, std::string attribute, 
 bool addElementWithTextAndAttribute(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text);
 bool addElementWithSubAndText(std::string element, std::string subelement, std::string text);
 bool addMenuElement(unsigned int whichMenu,std::string element);
+bool addMenuElement(pugi::xml_node node,std::string element);
 bool addSubElement(unsigned int whichElement,std::string element, std::string subelelemnt);
 bool addSubElementWithText(unsigned int whichElement,std::string element, std::string subelelemnt, std::string text);
 bool addSubElementWithTextandAttribute(unsigned int whichElement,std::string element, std::string subelelemnt, std::string text,std::string attribute, std::string value);
@@ -96,6 +98,7 @@ bool editMenuItem(int menu, int item, std::string attribute,std::string value);
 bool getIcons(Fl_Browser *o);
 bool getMenuItems(Fl_Browser* menuElement,std::string menu,Fl_Browser* menuElementText);
 bool getMenus(Fl_Browser* rootnode);
+bool getSubMenu(Fl_Browser* name, Fl_Browser* text, unsigned int whichMenu, unsigned int whichItem);
 //I
 bool isColor(std::string text);
 bool isElement(std::string element);
@@ -116,14 +119,17 @@ bool loadTemp();
 //N
 bool newVersionJWM();
 //P
+bool populateFLBrowser(Fl_Browser *o, pugi::xml_node noder);
 bool populateFLBrowser(Fl_Browser *o,std::string element);
 bool populateFLBrowser(Fl_Browser *o,std::string element,std::string subelement, unsigned int whichMainElement);
+bool populateFLBrowserElements(Fl_Browser *o, pugi::xml_node noder);
 bool populateFLBrowser2Attr(Fl_Browser *o,std::string element,std::string attribute1, std::string attribute2);
 //R
 bool removeMenu(std::string value);
 //S
 bool saveChanges();
 bool saveChanges(std::string filename,bool restart, bool reload);
+bool saveChangesMenu();
 bool saveChangesTemp();
 bool saveChangesTempOverwrite();
 bool saveChangesTempOverwrite(std::string myhomie);
@@ -231,11 +237,14 @@ unsigned int splitColor(std::string color, int one_or_two);
 unsigned int switch_panel(Fl_Menu_Item *o);
 //int///////////////////////////////////////////////////////////////////
 int addMenuItem(Fl_Browser* root_menu, Fl_Input* add_label, Fl_Input* add_icon, Fl_Input* add_input, Fl_Input* add_tooltip, Fl_Check_Button* add_button, std::string result);
+int addMenuItem(int menu, int item, Fl_Input* add_label, Fl_Input* add_icon, Fl_Input* add_input, Fl_Input* add_tooltip, Fl_Check_Button* add_button, std::string result);
 int addMenuAttrib(int whichMenu,std::string element,std::string attribute,const char *value);
+int addMenuAttrib(pugi::xml_node node,std::string element,std::string attribute,std::string value);
 int getIntAttribute(std::string element, std::string attribute);
 int getIntAttribute(std::string element, std::string subelement, std::string attribute);
-int newStyle();
 int JWMversion();
+int newStyle();
+int removeMenuItem(int menu, int item, int sub);
 int whichAlign(std::string align);
 //float/////////////////////////////////////////////////////////////////
 float getElementFloat(std::string element);
@@ -265,6 +274,8 @@ void deleteShortcut(std::string program);
 void errorOUT(std::string msg);
 //G
 void getShortcuts(Fl_Browser *o);
+//H
+void hideWidgetForVersion(Fl_Widget *o, int version);
 //L
 void listAutostartXDG(Fl_Browser *o);
 //M
@@ -307,6 +318,7 @@ pugi::xml_node getMenuButtonByMask(std::string text,int item);
 pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned int whichNODE);
 pugi::xml_node getNode(unsigned int whichElement,std::string element,unsigned int whichNODE, std::string subelement);
 pugi::xml_node getRootMenu(std::string text);
+pugi::xml_node getSubNode(unsigned int whichElement, pugi::xml_node inputnode);
 pugi::xml_node getSubNode(unsigned int whichElement,std::string element,unsigned int whichSubElement, std::string subelement);
 pugi::xml_node getTraySubElement(unsigned int whichElement);
 //p

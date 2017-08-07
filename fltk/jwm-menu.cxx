@@ -64,76 +64,6 @@ void MenuUI::cb_height_input(Fl_Value_Input* o, void* v) {
   ((MenuUI*)(o->parent()->user_data()))->cb_height_input_i(o,v);
 }
 
-void MenuUI::cb_add_prog_button_i(Fl_Button*, void*) {
-  std::string result =choose_a_program();
-if(result.compare("")!=0){add_input->value(result.c_str());};
-}
-void MenuUI::cb_add_prog_button(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->user_data()))->cb_add_prog_button_i(o,v);
-}
-
-#include <FL/Fl_Image.H>
-static const unsigned char idata_gear16[] =
-{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,148,0,255,0,252,0,252,0,255,0,146,0,
-2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,0,48,0,3,0,0,0,2,0,149,
-0,255,0,255,0,255,0,255,0,147,0,2,0,0,0,2,0,24,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,20,0,151,0,218,0,79,0,0,0,2,0,149,0,255,0,255,0,255,0,255,0,147,0,1,0,0,0,
-69,0,193,0,96,0,2,0,0,0,0,0,0,0,0,0,0,0,22,0,156,0,251,0,255,0,221,0,75,0,22,0,
-169,0,255,0,255,0,255,0,255,0,167,0,22,0,73,0,217,0,255,0,231,0,89,0,2,0,0,0,0,
-0,0,0,24,0,162,0,252,0,255,0,255,0,255,0,224,0,199,0,245,0,255,0,255,0,255,0,
-255,0,245,0,200,0,225,0,255,0,255,0,255,0,228,0,85,0,2,0,0,0,0,0,46,0,212,0,255,
-0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,
-0,255,0,255,0,255,0,255,0,196,0,25,0,0,0,0,0,0,0,71,0,219,0,255,0,255,0,255,0,
-255,0,255,0,246,0,209,0,172,0,172,0,209,0,246,0,255,0,255,0,255,0,255,0,255,0,
-223,0,83,0,3,0,0,0,0,0,0,0,0,0,76,0,227,0,255,0,255,0,255,0,210,0,95,0,25,0,9,0,
-10,0,25,0,95,0,210,0,255,0,255,0,255,0,225,0,77,0,1,0,0,0,0,0,2,0,2,0,0,0,23,0,
-203,0,255,0,255,0,210,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,210,0,255,0,255,0,202,
-0,23,0,0,0,2,0,2,0,147,0,149,0,148,0,169,0,246,0,255,0,246,0,94,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,94,0,246,0,255,0,246,0,169,0,148,0,149,0,147,0,254,0,255,
-0,255,0,255,0,255,0,255,0,207,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,207,
-0,255,0,255,0,255,0,255,0,255,0,254,0,252,0,255,0,255,0,255,0,255,0,255,0,170,
-0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,170,0,255,0,255,0,255,0,255,0,255,0,
-252,0,252,0,255,0,255,0,255,0,255,0,255,0,170,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,9,0,170,0,255,0,255,0,255,0,255,0,255,0,252,0,254,0,255,0,255,0,255,0,255,
-0,255,0,207,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,207,0,255,0,255,0,255,
-0,255,0,255,0,254,0,144,0,146,0,144,0,166,0,245,0,255,0,246,0,94,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,94,0,246,0,255,0,246,0,167,0,144,0,146,0,144,0,1,0,1,0,
-0,0,36,0,220,0,255,0,255,0,210,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,210,0,255,
-0,255,0,193,0,20,0,0,0,1,0,1,0,0,0,0,0,19,0,148,0,249,0,255,0,255,0,255,0,210,
-0,95,0,25,0,9,0,10,0,25,0,95,0,210,0,255,0,255,0,255,0,187,0,26,0,0,0,0,0,0,0,
-0,0,24,0,156,0,250,0,255,0,255,0,255,0,255,0,255,0,246,0,209,0,172,0,172,0,
-209,0,246,0,255,0,255,0,255,0,255,0,253,0,162,0,23,0,0,0,0,0,0,0,96,0,246,0,255,
-0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,
-0,255,0,255,0,255,0,253,0,142,0,6,0,0,0,0,0,22,0,158,0,252,0,255,0,255,0,250,
-0,183,0,191,0,246,0,255,0,255,0,255,0,255,0,244,0,218,0,247,0,255,0,255,0,255,
-0,229,0,90,0,2,0,0,0,0,0,0,0,23,0,163,0,253,0,251,0,156,0,22,0,20,0,169,0,255,
-0,255,0,255,0,255,0,166,0,33,0,142,0,249,0,255,0,225,0,85,0,2,0,0,0,0,0,0,0,0,
-0,0,0,26,0,164,0,149,0,20,0,0,0,2,0,149,0,255,0,255,0,255,0,255,0,147,0,0,0,
-16,0,149,0,216,0,80,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,0,13,0,0,0,0,0,2,0,
-149,0,255,0,255,0,255,0,255,0,147,0,2,0,0,0,20,0,46,0,2,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,148,0,255,0,252,0,252,0,255,0,146,0,2,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0};
-static Fl_RGB_Image image_gear16(idata_gear16, 24, 24, 2, 0);
-
-void MenuUI::cb_OK1_i(Fl_Button*, void*) {
-  int resultant = save_cb();
-if(resultant == 0){adding_win->hide();};
-}
-void MenuUI::cb_OK1(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->user_data()))->cb_OK1_i(o,v);
-}
-
-void MenuUI::cb_add_icon_button_i(Fl_Button* o, void*) {
-  std::string icon=choose_an_icon();
-if(icon.compare("")!=0){
-  add_icon->value(icon.c_str());
-  makeWidgetIcon(icon,o,48);
-};
-}
-void MenuUI::cb_add_icon_button(Fl_Button* o, void* v) {
-  ((MenuUI*)(o->parent()->user_data()))->cb_add_icon_button_i(o,v);
-}
-
 void MenuUI::cb_Program_i(Fl_Menu_*, void*) {
   add_cb(0);
 }
@@ -275,6 +205,76 @@ Fl_Menu_Item MenuUI::menu_Item[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
+void MenuUI::cb_OK1_i(Fl_Button*, void*) {
+  int resultant = save_cb();
+if(resultant == 0){adding_win->hide();};
+}
+void MenuUI::cb_OK1(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_OK1_i(o,v);
+}
+
+void MenuUI::cb_add_icon_button_i(Fl_Button* o, void*) {
+  std::string icon=choose_an_icon();
+if(icon.compare("")!=0){
+  add_icon->value(icon.c_str());
+  makeWidgetIcon(icon,o,48);
+};
+}
+void MenuUI::cb_add_icon_button(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_add_icon_button_i(o,v);
+}
+
+void MenuUI::cb_add_prog_button_i(Fl_Button*, void*) {
+  std::string result =choose_a_program();
+if(result.compare("")!=0){add_input->value(result.c_str());};
+}
+void MenuUI::cb_add_prog_button(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_add_prog_button_i(o,v);
+}
+
+#include <FL/Fl_Image.H>
+static const unsigned char idata_gear16[] =
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,148,0,255,0,252,0,252,0,255,0,146,0,
+2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,0,48,0,3,0,0,0,2,0,149,
+0,255,0,255,0,255,0,255,0,147,0,2,0,0,0,2,0,24,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,20,0,151,0,218,0,79,0,0,0,2,0,149,0,255,0,255,0,255,0,255,0,147,0,1,0,0,0,
+69,0,193,0,96,0,2,0,0,0,0,0,0,0,0,0,0,0,22,0,156,0,251,0,255,0,221,0,75,0,22,0,
+169,0,255,0,255,0,255,0,255,0,167,0,22,0,73,0,217,0,255,0,231,0,89,0,2,0,0,0,0,
+0,0,0,24,0,162,0,252,0,255,0,255,0,255,0,224,0,199,0,245,0,255,0,255,0,255,0,
+255,0,245,0,200,0,225,0,255,0,255,0,255,0,228,0,85,0,2,0,0,0,0,0,46,0,212,0,255,
+0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,
+0,255,0,255,0,255,0,255,0,196,0,25,0,0,0,0,0,0,0,71,0,219,0,255,0,255,0,255,0,
+255,0,255,0,246,0,209,0,172,0,172,0,209,0,246,0,255,0,255,0,255,0,255,0,255,0,
+223,0,83,0,3,0,0,0,0,0,0,0,0,0,76,0,227,0,255,0,255,0,255,0,210,0,95,0,25,0,9,0,
+10,0,25,0,95,0,210,0,255,0,255,0,255,0,225,0,77,0,1,0,0,0,0,0,2,0,2,0,0,0,23,0,
+203,0,255,0,255,0,210,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,210,0,255,0,255,0,202,
+0,23,0,0,0,2,0,2,0,147,0,149,0,148,0,169,0,246,0,255,0,246,0,94,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,94,0,246,0,255,0,246,0,169,0,148,0,149,0,147,0,254,0,255,
+0,255,0,255,0,255,0,255,0,207,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,207,
+0,255,0,255,0,255,0,255,0,255,0,254,0,252,0,255,0,255,0,255,0,255,0,255,0,170,
+0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,170,0,255,0,255,0,255,0,255,0,255,0,
+252,0,252,0,255,0,255,0,255,0,255,0,255,0,170,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,9,0,170,0,255,0,255,0,255,0,255,0,255,0,252,0,254,0,255,0,255,0,255,0,255,
+0,255,0,207,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,207,0,255,0,255,0,255,
+0,255,0,255,0,254,0,144,0,146,0,144,0,166,0,245,0,255,0,246,0,94,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,94,0,246,0,255,0,246,0,167,0,144,0,146,0,144,0,1,0,1,0,
+0,0,36,0,220,0,255,0,255,0,210,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,210,0,255,
+0,255,0,193,0,20,0,0,0,1,0,1,0,0,0,0,0,19,0,148,0,249,0,255,0,255,0,255,0,210,
+0,95,0,25,0,9,0,10,0,25,0,95,0,210,0,255,0,255,0,255,0,187,0,26,0,0,0,0,0,0,0,
+0,0,24,0,156,0,250,0,255,0,255,0,255,0,255,0,255,0,246,0,209,0,172,0,172,0,
+209,0,246,0,255,0,255,0,255,0,255,0,253,0,162,0,23,0,0,0,0,0,0,0,96,0,246,0,255,
+0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,0,255,
+0,255,0,255,0,255,0,253,0,142,0,6,0,0,0,0,0,22,0,158,0,252,0,255,0,255,0,250,
+0,183,0,191,0,246,0,255,0,255,0,255,0,255,0,244,0,218,0,247,0,255,0,255,0,255,
+0,229,0,90,0,2,0,0,0,0,0,0,0,23,0,163,0,253,0,251,0,156,0,22,0,20,0,169,0,255,
+0,255,0,255,0,255,0,166,0,33,0,142,0,249,0,255,0,225,0,85,0,2,0,0,0,0,0,0,0,0,
+0,0,0,26,0,164,0,149,0,20,0,0,0,2,0,149,0,255,0,255,0,255,0,255,0,147,0,0,0,
+16,0,149,0,216,0,80,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,0,13,0,0,0,0,0,2,0,
+149,0,255,0,255,0,255,0,255,0,147,0,2,0,0,0,20,0,46,0,2,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,148,0,255,0,252,0,252,0,255,0,146,0,2,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0};
+static Fl_RGB_Image image_gear16(idata_gear16, 24, 24, 2, 0);
+
 void MenuUI::cb_item_prog_button_i(Fl_Button*, void*) {
   std::string result =choose_a_program();
 if(result.compare("")!=0){
@@ -287,7 +287,8 @@ void MenuUI::cb_item_prog_button(Fl_Button* o, void* v) {
 }
 
 void MenuUI::cb_OK2_i(Fl_Button*, void*) {
-  configure_item();
+  if(!SUBMENU){configure_item();}
+else{configure_submenu_item();}
 config_item_win->hide();
 }
 void MenuUI::cb_OK2(Fl_Button* o, void* v) {
@@ -306,7 +307,8 @@ void MenuUI::cb_item_icon_button(Fl_Button* o, void* v) {
 }
 
 void MenuUI::cb_OK3_i(Fl_Button*, void*) {
-  configure_item();
+  if(!SUBMENU){configure_item();}
+else{configure_submenu_item();}
 config_flwin->hide();
 }
 void MenuUI::cb_OK3(Fl_Button* o, void* v) {
@@ -370,7 +372,7 @@ void MenuUI::cb_1(Fl_Button* o, void* v) {
 }
 
 void MenuUI::cb_minus_element_i(Fl_Button*, void*) {
-  remove_an_item();
+  if(checkFlBrowserItem(root_menu)){remove_an_item();};
 }
 void MenuUI::cb_minus_element(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_minus_element_i(o,v);
@@ -488,8 +490,7 @@ void MenuUI::cb_Cancel(Fl_Button* o, void* v) {
 }
 
 void MenuUI::cb_save_button_i(Fl_Button*, void*) {
-  saveChanges();
-//showSettings();
+  saveChangesMenu();
 }
 void MenuUI::cb_save_button(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->user_data()))->cb_save_button_i(o,v);
@@ -507,6 +508,60 @@ void MenuUI::cb_Nothing_i(Fl_Button*, void*) {
 }
 void MenuUI::cb_Nothing(Fl_Button* o, void* v) {
   ((MenuUI*)(o->parent()->user_data()))->cb_Nothing_i(o,v);
+}
+
+void MenuUI::cb_submenu_items_browser_i(Fl_Browser* o, void*) {
+  submenu_items_value->select(o->value());
+}
+void MenuUI::cb_submenu_items_browser(Fl_Browser* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_submenu_items_browser_i(o,v);
+}
+
+void MenuUI::cb_submenu_items_value_i(Fl_Browser* o, void*) {
+  submenu_items_browser->select(o->value());
+}
+void MenuUI::cb_submenu_items_value(Fl_Browser* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_submenu_items_value_i(o,v);
+}
+
+void MenuUI::cb_config_sub_i(Fl_Button*, void*) {
+  if(checkFlBrowserItem(submenu_items_value)){
+  if(!edit_a_submenu_item()){
+    debug_out("Couldn't edit submenu item");
+  }
+
+}
+subwin->hide();
+}
+void MenuUI::cb_config_sub(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_config_sub_i(o,v);
+}
+
+void MenuUI::cb_OK5_i(Fl_Button*, void*) {
+  subwin->hide();
+saveChangesMenu();
+SUBMENU=false;
+SUBSUB=0;
+}
+void MenuUI::cb_OK5(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_OK5_i(o,v);
+}
+
+void MenuUI::cb_2_i(Fl_Button*, void*) {
+  add_window()->show();
+}
+void MenuUI::cb_2(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_2_i(o,v);
+}
+
+void MenuUI::cb_3_i(Fl_Button*, void*) {
+  if(checkFlBrowserItem(submenu_items_browser)){
+  SUBSUB=submenu_items_value->value();
+  remove_an_item();
+};
+}
+void MenuUI::cb_3(Fl_Button* o, void* v) {
+  ((MenuUI*)(o->parent()->user_data()))->cb_3_i(o,v);
 }
 
 Fl_Double_Window* MenuUI::add_a_menu() {
@@ -569,41 +624,6 @@ t if the label is not set"));
 Fl_Double_Window* MenuUI::add_window() {
   { Fl_Double_Window* o = adding_win = new Fl_Double_Window(295, 185, gettext("Add an Item"));
     adding_win->user_data((void*)(this));
-    { add_label = new Fl_Input(130, 65, 160, 25, gettext("Label"));
-      add_label->tooltip(gettext("The label to display for this item"));
-      add_label->box(FL_FLAT_BOX);
-    } // Fl_Input* add_label
-    { add_icon = new Fl_Input(130, 35, 160, 25, gettext("Icon"));
-      add_icon->tooltip(gettext("The icon to display for this item"));
-      add_icon->box(FL_FLAT_BOX);
-    } // Fl_Input* add_icon
-    { add_input = new Fl_Input(130, 95, 160, 25, gettext("Program"));
-      add_input->tooltip(gettext("The program to run"));
-      add_input->box(FL_FLAT_BOX);
-    } // Fl_Input* add_input
-    { add_button = new Fl_Check_Button(5, 155, 90, 25, gettext("Confirm"));
-      add_button->box(FL_FLAT_BOX);
-      add_button->down_box(FL_GTK_DOWN_BOX);
-    } // Fl_Check_Button* add_button
-    { add_prog_button = new Fl_Button(5, 90, 30, 30);
-      add_prog_button->tooltip(gettext("Choose a program"));
-      add_prog_button->box(FL_FLAT_BOX);
-      add_prog_button->color((Fl_Color)23);
-      add_prog_button->image(image_gear16);
-      add_prog_button->callback((Fl_Callback*)cb_add_prog_button);
-    } // Fl_Button* add_prog_button
-    { Fl_Button* o = new Fl_Button(225, 155, 60, 25, gettext("OK"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)61);
-      o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_OK1);
-    } // Fl_Button* o
-    { add_icon_button = new Fl_Button(5, 35, 50, 50);
-      add_icon_button->tooltip(gettext("Choose an icon"));
-      add_icon_button->box(FL_FLAT_BOX);
-      add_icon_button->color((Fl_Color)23);
-      add_icon_button->callback((Fl_Callback*)cb_add_icon_button);
-    } // Fl_Button* add_icon_button
     { Fl_Menu_Button* o = new Fl_Menu_Button(5, 5, 115, 25, gettext("Item to add"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
@@ -623,10 +643,45 @@ Fl_Double_Window* MenuUI::add_window() {
       item_display->tooltip(gettext("The JWM Menu item to add"));
       item_display->box(FL_FLAT_BOX);
     } // Fl_Output* item_display
+    { add_icon = new Fl_Input(130, 35, 160, 25, gettext("Icon"));
+      add_icon->tooltip(gettext("The icon to display for this item"));
+      add_icon->box(FL_FLAT_BOX);
+    } // Fl_Input* add_icon
+    { add_label = new Fl_Input(130, 65, 160, 25, gettext("Label"));
+      add_label->tooltip(gettext("The label to display for this item"));
+      add_label->box(FL_FLAT_BOX);
+    } // Fl_Input* add_label
+    { add_input = new Fl_Input(130, 95, 160, 25, gettext("Program"));
+      add_input->tooltip(gettext("The program to run"));
+      add_input->box(FL_FLAT_BOX);
+    } // Fl_Input* add_input
     { add_tooltip = new Fl_Input(130, 125, 160, 25, gettext("Tooltip"));
       add_tooltip->tooltip(gettext("The popup tooltip"));
       add_tooltip->box(FL_FLAT_BOX);
     } // Fl_Input* add_tooltip
+    { Fl_Button* o = new Fl_Button(225, 155, 60, 25, gettext("OK"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)61);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_OK1);
+    } // Fl_Button* o
+    { add_icon_button = new Fl_Button(5, 35, 50, 50);
+      add_icon_button->tooltip(gettext("Choose an icon"));
+      add_icon_button->box(FL_FLAT_BOX);
+      add_icon_button->color((Fl_Color)23);
+      add_icon_button->callback((Fl_Callback*)cb_add_icon_button);
+    } // Fl_Button* add_icon_button
+    { add_prog_button = new Fl_Button(5, 90, 30, 30);
+      add_prog_button->tooltip(gettext("Choose a program"));
+      add_prog_button->box(FL_FLAT_BOX);
+      add_prog_button->color((Fl_Color)23);
+      add_prog_button->image(image_gear16);
+      add_prog_button->callback((Fl_Callback*)cb_add_prog_button);
+    } // Fl_Button* add_prog_button
+    { add_button = new Fl_Check_Button(5, 155, 90, 25, gettext("Confirm"));
+      add_button->box(FL_FLAT_BOX);
+      add_button->down_box(FL_GTK_DOWN_BOX);
+    } // Fl_Check_Button* add_button
     startup(o);
     adding_win->xclass("jsm-panel");
     adding_win->end();
@@ -983,24 +1038,58 @@ Fl_Double_Window* MenuUI::nada_window() {
 }
 
 Fl_Double_Window* MenuUI::submenu_window() {
-  Fl_Double_Window* w;
-  { Fl_Double_Window* o = new Fl_Double_Window(255, 200, gettext("Submenu"));
-    w = o;
-    o->user_data((void*)(this));
-    { submenu_items_browser = new Fl_Browser(5, 5, 245, 160);
+  { Fl_Double_Window* o = subwin = new Fl_Double_Window(405, 205, gettext("Submenu"));
+    subwin->user_data((void*)(this));
+    { submenu_items_browser = new Fl_Browser(10, 5, 90, 160);
       submenu_items_browser->type(2);
       submenu_items_browser->box(FL_FLAT_BOX);
+      submenu_items_browser->selection_color((Fl_Color)80);
+      submenu_items_browser->callback((Fl_Callback*)cb_submenu_items_browser);
     } // Fl_Browser* submenu_items_browser
-    { submenu_menu = new Fl_Output(10, 170, 25, 25);
-      submenu_menu->hide();
-    } // Fl_Output* submenu_menu
-    { Fl_Input* o = new Fl_Input(115, 170, 135, 25);
+    { Fl_Browser* o = submenu_items_value = new Fl_Browser(110, 5, 275, 160);
+      submenu_items_value->type(2);
+      submenu_items_value->box(FL_FLAT_BOX);
+      submenu_items_value->selection_color((Fl_Color)80);
+      submenu_items_value->callback((Fl_Callback*)cb_submenu_items_value);
+      getSubMenu(submenu_items_browser,o,ROOTMENU,menuItemLineNumber);
+    } // Fl_Browser* submenu_items_value
+    { config_sub = new Fl_Button(110, 170, 30, 30);
+      config_sub->tooltip(gettext("Configure Item"));
+      config_sub->box(FL_FLAT_BOX);
+      config_sub->color((Fl_Color)23);
+      config_sub->image(image_gear16);
+      config_sub->labelfont(1);
+      config_sub->callback((Fl_Callback*)cb_config_sub);
+      config_sub->align(Fl_Align(FL_ALIGN_WRAP));
+    } // Fl_Button* config_sub
+    { Fl_Button* o = new Fl_Button(326, 170, 49, 25, gettext("OK"));
+      o->tooltip(gettext("Write to configuration file"));
       o->box(FL_FLAT_BOX);
-    } // Fl_Input* o
+      o->color((Fl_Color)61);
+      o->selection_color((Fl_Color)59);
+      o->labelcolor((Fl_Color)55);
+      o->callback((Fl_Callback*)cb_OK5);
+    } // Fl_Button* o
+    { Fl_Button* o = new Fl_Button(10, 170, 30, 30, gettext("@+"));
+      o->tooltip(gettext("Add an Item"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->selection_color(FL_DARK1);
+      o->callback((Fl_Callback*)cb_2);
+    } // Fl_Button* o
+    { Fl_Button* o = new Fl_Button(45, 170, 30, 30);
+      o->tooltip(gettext("Remove an Item"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->image(image_minus);
+      o->callback((Fl_Callback*)cb_3);
+      o->align(Fl_Align(256));
+    } // Fl_Button* o
     startup(o);
-    o->end();
-  } // Fl_Double_Window* o
-  return w;
+    SUBMENU=true;
+    subwin->end();
+  } // Fl_Double_Window* subwin
+  return subwin;
 }
 
 void MenuUI::add_an_item() {
@@ -1154,14 +1243,120 @@ void MenuUI::configure_item() {
   //config_flwin->hide();
 }
 
+void MenuUI::configure_submenu_item() {
+  if(!checkFlBrowserItem(submenu_items_browser)){
+    errorOUT("No menu item selected");
+    return;
+  }
+  if(!checkFlBrowserItem(submenu_items_value)){
+    errorOUT("No menu item selected");
+    return;
+  }
+  const char* MENU=root_menu->text(ROOTMENU);
+  if(ConfigSubMenuItem(ROOTMENU,menuItemLineNumber,SUBSUB,item_prog_label,item_prog_icon,item_prog_input,item_conf_button)){
+  //TODO...
+  }
+  //config_flwin->hide();
+}
+
 void MenuUI::edit_a_menu() {
-  if(checkFlBrowserItem(root_menu)){conf_window()->show();}
+  if(checkFlBrowserItem(root_menu)){
+    SUBMENU=false;
+    conf_window()->show();
+  }
+}
+
+bool MenuUI::edit_a_submenu_item() {
+  if(!checkFlBrowserItem(submenu_items_value)){return false;}
+  if(!checkFlBrowserItem(submenu_items_browser)){return false;}
+  int menuNum = ROOTMENU;
+  int line = submenu_items_browser->value();
+  SUBSUB=line;
+  const char* text = submenu_items_browser->text(line);
+  const char* text2 = submenu_items_value->text(line);
+  if(text2==NULL)return false;
+  if(text==NULL)return false;
+  const char* menu = root_menu->text(menuNum);
+  std::string LABELED=gettext("Labeled");
+  std::string EXIT="Exit";
+  std::string RESTART="Restart";
+  std::string iconattrib = "icon"; 
+  std::string labelattrib = "label";
+  std::string labeledattrib = "labeled";
+  std::string confirmattrib = "confirm";
+  std::string ITEM = text;
+  debug_out("edit SUBMENU Item: "+ITEM);
+  std::string ICON,LABEL,PROG;
+  SUBMENU=true;
+  ICON = getItemIcon(menuNum,menuItemLineNumber,SUBSUB);
+  LABEL= getItemLabel(menuNum,menuItemLineNumber,SUBSUB);
+  if(ITEM.compare("Separator")==0){
+    nada_window()->show();
+    return true;
+  }
+  if(ITEM.compare("Include")==0){
+    std::string exec ="exec:";
+    unsigned int exec_len = exec.length();
+    std::string INCLUDE;
+    if(text2!=NULL)
+      INCLUDE = text2;
+    else return false;
+    configure_include()->show();
+    unsigned int found = INCLUDE.find(exec);
+    if(found<INCLUDE.length()){
+      INCLUDE=INCLUDE.erase(0,exec_len);
+    }
+    include_input->value(INCLUDE.c_str());
+    include_input_menu->value(menu);
+    old_include_input->value(INCLUDE.c_str());
+    return true;
+  }
+  else if(ITEM.compare("Menu")==0){
+     nada_window()->show();//submenu_window()->show();
+    return true;
+  }
+  //Show the configure item window
+  conf_item_window()->show();
+  if(ITEM.compare("Dynamic")==0){
+    item_prog_input->value(text2);
+    debug_out("Dynamic");
+    item_conf_button->copy_label(LABELED.c_str());
+    std::string confirm = getItemAttribute(menuNum,line,ITEM,labeledattrib); 
+    if(confirm.compare("true")){item_conf_button->value(0);}
+    else{item_conf_button->value(1);}
+  }
+  if(ITEM.compare("Program")==0){
+    item_prog_input->value(text2);
+    item_conf_button->hide();
+  }
+  else if(ITEM.compare(EXIT)==0){
+    item_prog_input->hide();
+    item_prog_button->hide();
+    std::string confirm = getItemAttribute(menuNum,line,ITEM,confirmattrib); 
+    if(confirm.compare("true")){item_conf_button->value(0);}
+    else{item_conf_button->value(1);}
+  }
+  else if(ITEM.compare(RESTART)==0){
+    item_prog_input->hide();
+    item_prog_button->hide();
+    item_conf_button->hide();
+  }
+  if(ICON.compare("")!=0){
+    item_prog_icon->value(ICON.c_str());
+    makeWidgetIcon(ICON,item_icon_button,48);
+  }
+  if(LABEL.compare("")!=0){
+    item_prog_label->value(LABEL.c_str());
+    item_prog_label->redraw();
+  }
+  return true;
 }
 
 void MenuUI::edit_an_item() {
   if(!checkFlBrowserItem(menuElement)){return;}
   if(!checkFlBrowserItem(root_menu)){return;}
   if(!checkFlBrowserItem(menuElementText)){return;}
+  SUBMENU=false;
   int line = menuElement->value();
   const char* text = menuElement->text(line);
   int menuNum = root_menu->value();
@@ -1205,7 +1400,6 @@ void MenuUI::edit_an_item() {
   }
   else if(ITEM.compare("Menu")==0){
     submenu_window()->show();
-    submenu_menu->value(menu);
     return;
   }
   //Show the configure item window
@@ -1247,6 +1441,18 @@ void MenuUI::edit_an_item() {
 
 void MenuUI::remove_an_item() {
   std::cout<<"Remove"<<std::endl;
+  int retval=0;
+  if(SUBMENU){
+    retval=removeMenuItem(ROOTMENU,menuItemLineNumber,SUBSUB);
+    getSubMenu(submenu_items_browser,submenu_items_value,ROOTMENU,menuItemLineNumber);
+  }
+  else{
+    menuElement->clear();
+    menuElementText->clear();
+    menuElement->deselect();
+    menuElementText->deselect();
+    retval=removeMenuItem(ROOTMENU,menuItemLineNumber,0);
+  }
 }
 
 void MenuUI::remove_a_menu() {
@@ -1262,8 +1468,20 @@ void MenuUI::remove_a_menu() {
 int MenuUI::save_cb() {
   //save
   const char* result = item_display->value();
+  int retval=0;
   if(result ==NULL){return 42;}
-  return addMenuItem(root_menu, add_label, add_icon, add_input, add_tooltip, add_button, result);
+  if(SUBMENU){
+    retval=addMenuItem(ROOTMENU,menuItemLineNumber, add_label, add_icon, add_input, add_tooltip, add_button, result);
+    getSubMenu(submenu_items_browser,submenu_items_value,ROOTMENU,menuItemLineNumber);
+  }
+  else{
+    retval=addMenuItem(root_menu, add_label, add_icon, add_input, add_tooltip, add_button, result);
+    menuElement->clear();
+    menuElementText->clear();
+    menuElement->deselect();
+    menuElementText->deselect();
+  }
+  return retval;
 }
 
 void MenuUI::select_sent_in(std::string thatMenu) {

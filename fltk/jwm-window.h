@@ -191,6 +191,11 @@ private:
   inline void cb_a_border_color2_i(Fl_Button*, void*);
   static void cb_a_border_color2(Fl_Button*, void*);
 public:
+  Fl_Button *button_order;
+private:
+  inline void cb_button_order_i(Fl_Button*, void*);
+  static void cb_button_order(Fl_Button*, void*);
+public:
   Fl_Slider *t_slider;
 private:
   inline void cb_t_slider_i(Fl_Slider*, void*);
@@ -377,5 +382,14 @@ private:
   static void cb_Cancel2(Fl_Button*, void*);
   inline void cb_OK4_i(Fl_Button*, void*);
   static void cb_OK4(Fl_Button*, void*);
+public:
+  Fl_Double_Window* button_order_window();
+  Fl_Double_Window *button_orderer;
+  Fl_Input *ordering;
+private:
+  inline void cb_Cancel3_i(Fl_Button*, void*);
+  static void cb_Cancel3(Fl_Button*, void*);
+  inline void cb_OK5_i(Fl_Button*, void*);
+  static void cb_OK5(Fl_Button*, void*);
 };
 #endif

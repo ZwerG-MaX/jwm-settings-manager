@@ -55,12 +55,11 @@ class WindowUI {open
 } {
   decl {int JWMVERSION;} {private local
   }
-  Function {add_option_window()} {open
-  } {
+  Function {add_option_window()} {} {
     Fl_Window add_opt_window {
-      label {Add an Option} open
-      xywh {732 115 500 280} type Double resizable
-      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows} visible
+      label {Add an Option}
+      xywh {732 115 500 280} type Double hide resizable
+      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows}
     } {
       Fl_Scroll {} {open
         xywh {0 0 500 280} resizable
@@ -87,7 +86,7 @@ if(value!=NULL){
           label Opacity
           xywh {335 210 100 25} type Horizontal box GTK_DOWN_BOX color 41 align 8 step 0.2 value 1 deactivate
         }
-        Fl_Value_Input desktop_num {selected
+        Fl_Value_Input desktop_num {
           xywh {205 210 35 25} box FLAT_BOX align 8 maximum 10000 deactivate
         }
         Fl_Button {} {
@@ -137,8 +136,7 @@ if(ICON.compare("")!=0){
       }
     }
   }
-  Function {add_class_window()} {open
-  } {
+  Function {add_class_window()} {} {
     Fl_Window class_win {
       label {Add Class} open
       xywh {218 580 375 50} type Double hide
@@ -160,8 +158,7 @@ if(input!=NULL){
       }
     }
   }
-  Function {add_program_window()} {open
-  } {
+  Function {add_program_window()} {} {
     Fl_Window prog_win {
       label {Program to add} open
       xywh {208 542 380 40} type Double hide
@@ -193,7 +190,7 @@ if(input!=NULL){
 JWMVERSION=JWMversion();} {}
     Fl_Window window_window {
       label {Window Settings} open
-      xywh {292 262 510 315} type Double color 47 hide resizable
+      xywh {648 133 510 315} type Double color 47 hide resizable
       code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows}
     } {
       Fl_Scroll {} {open
@@ -204,7 +201,7 @@ JWMVERSION=JWMversion();} {}
         } {
           Fl_Group {} {
             label Appearance open
-            xywh {0 30 510 250} selection_color 45 hide
+            xywh {0 30 510 250} selection_color 45
           } {
             Fl_Box {} {
               tooltip {The  color  of  the  title bar (gradients are supported).  The default is \#CC7700:\#884400.} xywh {0 35 255 160} box FLAT_BOX color 47
@@ -368,10 +365,16 @@ get_button(o,"ButtonClose",a_title_color1);}
               tooltip {If motif window decorations are  specified,  two colors  may  be  given separated by a ':' to set the down and up colors respetively.} xywh {175 135 60 25} box FLAT_BOX color 23 when 6
               code0 {if(secondColor(o)){border_color_loader(o,1,2);}}
             }
+            Fl_Button button_order {
+              label {Button Order}
+              callback {button_order_window()->show();}
+              tooltip {Choose an icon to display for the close button on client windows instead of the default.} xywh {385 205 100 35} box FLAT_BOX color 23 align 256
+              code0 {hideWidgetForVersion(o,240);}
+            }
           }
           Fl_Group {} {
             label Settings open
-            xywh {10 35 485 245} selection_color 45
+            xywh {10 35 485 245} selection_color 45 hide
           } {
             Fl_Slider t_slider {
               label {Window Title Bar Size}
@@ -750,6 +753,42 @@ quit();}
 theme_window->hide();}
           tooltip {You will need to close any open windows to see the change} xywh {255 240 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
         }
+      }
+    }
+  }
+  Function {button_order_window()} {open
+  } {
+    Fl_Window button_orderer {open
+      xywh {527 387 225 165} type Double hide
+    } {
+      Fl_Input ordering {
+        label {m Maximize button
+i Minimize (iconify) button
+t Window title
+w Window menu button
+x Close button}
+        tooltip {Title Button Order
+
+m Maximize button
+i Minimize (iconify) button
+t Window title
+w Window menu button
+x Close button} xywh {25 15 190 25} box FLAT_BOX selection_color 80 align 2
+        code0 {std::string val=getElementText("TitleButtonOrder");}
+        code1 {if(val.compare("")==0){val="wtimx";}}
+        code2 {o->value(val.c_str());}
+      }
+      Fl_Button {} {
+        label Cancel
+        callback {button_orderer->hide();}
+        xywh {60 125 55 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+      }
+      Fl_Button {} {
+        label OK
+        callback {std::string val=ordering->value();
+setElementText("TitleButtonOrder",val);
+saveChanges();} selected
+        tooltip {Write to configuration file} xywh {125 125 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
       }
     }
   }

@@ -114,6 +114,16 @@ bool addMenuElement(unsigned int whichMenu,std::string element){
 	node.append_child(element.c_str());
 	return saveChangesTemp();	
 }
+bool addMenuElement(pugi::xml_node node,std::string element){
+	debug_out("bool addMenuElement(pugi::xml_node node,std::string "+element+")");
+	if(element.compare("")==0){return false;}
+	if(!node){
+		errorOUT("The root menu does not exist!!");
+		return false;
+	}
+	node.append_child(element.c_str());
+	return saveChangesTemp();	
+}
 bool addSubElement(unsigned int whichElement,std::string element, std::string subelement){
 //	if(!loadTemp()){return false;}
 	debug_out("addSubElementWithText(unsigned int whichElement,std::string "+ element+", std::string "+ subelement+ ")");
@@ -522,6 +532,20 @@ bool getMenus(Fl_Browser* rootnode){
      rootnode->redraw();
 	return retval;
 }
+bool getSubMenu(Fl_Browser* name, Fl_Browser* text, unsigned int whichMenu, unsigned int whichItem){
+	//TODO Includes
+	debug_out("bool getSubMenu(Fl_Browser* program, Fl_Browser* program, unsigned int whichMenu, unsigned int whichItem)");
+	std::string element="RootMenu";
+	std::string attributevalue;
+	bool retval=false;
+	name->clear();text->clear();
+	pugi::xml_node noder=getNode(whichMenu, "RootMenu", whichItem);
+	if(!noder){return false;}
+	pugi::xml_node tmp=noder;
+	populateFLBrowser(text,noder);
+	populateFLBrowserElements(name,tmp);
+	return true;
+}
 //I
 bool isColor(std::string text){
 	debug_out("bool isColor(std::string "+text+")");
@@ -654,11 +678,14 @@ bool loadTemp(){
 	fileName+="~";
 	return load(fileName);
 }
-bool load(std::string filename){return load(filename,true);}
+bool load(std::string filename){
+	debug_out("bool load(std::string "+filename+")");
+	return load(filename,true);
+}
 bool load(std::string fileName, bool saveTemp){
-	debug_out("bool load(std::string "+fileName+")");
+	debug_out("bool load(std::string "+fileName+", bool saveTemp)");
     if(fileName.compare("")==0){linuxcommon::echo_error("file does not exist and cannot be loaded");return false;}
-   // debug_out("load(): "+fileName);
+    debug_out("load(): "+fileName);
     if(!doc.load_file( fileName.c_str() )){
         if(!linuxcommon::test_file(fileName.c_str())){
             debug_out("The file: "+fileName+" was not found.");
@@ -691,6 +718,24 @@ bool newVersionJWM(){
     return false;
 }
 //P
+bool populateFLBrowser(Fl_Browser *o, pugi::xml_node noder){
+//	if(!loadTemp()){return false;}
+	debug_out("bool populateFLBrowser(Fl_Browser *o,, pugi::xml_node noder");
+	if(!noder){return false;}
+    for (noder=noder.first_child();noder;noder=noder.next_sibling()){
+        std::string value  = noder.text().as_string();
+        if(value.compare("")!=0){
+            o->add(value.c_str());
+            debug_out("Value:"+value);
+        }
+        else{
+			std::string val = noder.name();
+			o->add(val.c_str());
+			debug_out("Empty text using node name:"+val);
+		}
+    }
+    return true;
+}
 bool populateFLBrowser(Fl_Browser *o,std::string element){
 //	if(!loadTemp()){return false;}
 	debug_out("bool populateFLBrowser(Fl_Browser *o,std::string "+element+")");
@@ -772,10 +817,33 @@ debug_out("bool populateFLBrowser2Attr(Fl_Browser *o,std::string "+element+",std
     }
     return true;
 }
+bool populateFLBrowserElements(Fl_Browser *o, pugi::xml_node noder){
+//	if(!loadTemp()){return false;}
+	debug_out("bool populateFLBrowser(Fl_Browser *o,, pugi::xml_node noder");
+	if(!noder){return false;}
+    for (noder=noder.first_child();noder;noder=noder.next_sibling()){
+        std::string value  = noder.name();
+        if(value.compare("")!=0){
+            const char * v = value.c_str();
+            o->add(v);
+        }
+        else{return false;}
+        debug_out("Value:"+value);
+    }
+    return true;
+}
 //R
 bool removeMenu(std::string value){
 	debug_out("bool removeMenu(std::string "+value+")");
-	return false;
+	pugi::xml_node node=getRootMenu(value);
+	if(!node){return false;}
+	pugi::xml_node basenode=node.parent();
+	if(!basenode){return false;}
+	std::string msg="Remove Node=";
+	msg+=node.name();
+	debug_out(msg);
+	if(!basenode.remove_child(node)){return false;}
+	return saveChangesMenu();
 }
 //S
 bool saveChanges(){
@@ -792,22 +860,33 @@ bool saveChanges(std::string filename, bool restart, bool reload){
 		return false;
 	}
 	if(restart){
+		debug_out("Restart JWM");
 		if(std::system("jwm -restart")!=0){errorOUT("couldn't restart JWM");}
     }
     else{
-		if(reload){return load(filename);}
+		if(reload){
+			debug_out("Reload file");
+			return load(filename);
+		}
 		return true;
 	}
     return false;
 }
-bool saveNoRestart(){
-	loadTemp();
-	std::string myhomie=getJSMItem("file");
-	if(myhomie.compare("")==0){return false;}
-	myhomie=makeNOTtemp(myhomie);
-	return saveChanges(myhomie,false,false);
+bool saveChangesMenu(){
+	debug_out("bool saveChangesMenu()");
+	std::string filename=getJSMItem("file");
+	if(filename.compare("")==0){return false;}
+	filename=makeNOTtemp(filename);
+	if(filename.compare("")==0){return false;}
+    if(!doc.save_file( filename.c_str() )){
+		debug_out("saveChangesMenu failed for: "+filename);
+		return false;
+	}
+	if(std::system("jwm -reload")!=0){errorOUT("couldn't reload JWM menus");}
+    return load(filename);
 }
 bool saveChangesTemp(){
+	debug_out("bool saveChangesTemp()");
 	std::string myhomie=getJSMItem("file");
 	if(myhomie.compare("")==0){return false;}
 	myhomie=makeTempName(myhomie);
@@ -822,6 +901,13 @@ bool saveChangesTempOverwrite(){
 bool saveChangesTempOverwrite(std::string myhomie){
 	if(myhomie.compare("")==0){return false;}
 	myhomie=makeTempName(myhomie);
+	return saveChanges(myhomie,false,false);
+}
+bool saveNoRestart(){
+	loadTemp();
+	std::string myhomie=getJSMItem("file");
+	if(myhomie.compare("")==0){return false;}
+	myhomie=makeNOTtemp(myhomie);
 	return saveChanges(myhomie,false,false);
 }
 bool setAttribute(pugi::xml_node node,std::string attribute,std::string value){
@@ -1203,6 +1289,7 @@ std::string getAttribute(pugi::xml_node node,std::string attribute){
 	if(!node){return "";}
 	if(attribute.compare("")==0){return "";}
 	std::string res=node.attribute(attribute.c_str()).as_string();
+	debug_out(attribute+"="+res);
 	return res;
 }
 std::string getElementText(std::string element){
@@ -1757,6 +1844,7 @@ int addMenuItem(Fl_Browser* root_menu, Fl_Input* add_label, Fl_Input* add_icon, 
 	}
 	if(result.compare("Separator")==0){
 		if(!addMenuElement(whichMenu,result)){return 1;}
+		saveChangesMenu();
 		return 0;
 	}
 	const char* lbl = add_label->value();
@@ -1769,7 +1857,10 @@ int addMenuItem(Fl_Browser* root_menu, Fl_Input* add_label, Fl_Input* add_icon, 
 			if(!setNodeText(getLastSubNode(whichMenu,"RootMenu",result),input)){
 				errorOUT("Could not set the text");
 			}
-			else{return 0;}
+			else{
+				saveChangesMenu();
+				return 0;
+			}
 		}
 		return -1;		
 	}
@@ -1788,7 +1879,90 @@ int addMenuItem(Fl_Browser* root_menu, Fl_Input* add_label, Fl_Input* add_icon, 
 	if(attrib.compare("")!=0){
 		retval = addMenuAttrib(whichMenu,result,attrib,labled.c_str());
 	}
-	return -1;
+	if(result.compare("Program")==0){
+		if(input!=NULL){
+			if(!setNodeText(getLastSubNode(whichMenu,"RootMenu",result),input)){
+				errorOUT("Could not set the text");
+			}
+			else{
+				retval=0;
+			}
+		}
+		retval=-1;		
+	}
+	if(retval==0)saveChangesMenu();
+	return retval;
+}
+int addMenuItem(int menu, int item, Fl_Input* add_label, Fl_Input* add_icon, Fl_Input* add_input, Fl_Input* add_tooltip, Fl_Check_Button* add_button, std::string result){
+	debug_out("int addMenuItem(int menu, int item, int sub, Fl_Input* add_label, Fl_Input* add_icon, Fl_Input* add_input, Fl_Input* add_tooltip, Fl_Check_Button* add_button, std::string "+result+")");
+	if(result.compare("")==0){
+		errorOUT("Nothing to add..");
+		return -1;
+	}
+	pugi::xml_node node=getNode(menu, "RootMenu", item);
+	if(!node){return -1;}
+	if(result.compare("Separator")==0){
+		if(!addMenuElement(node,result)){return 1;}
+		saveChangesMenu();
+		return 0;
+	}
+	const char* lbl = add_label->value();
+	const char* icon = add_icon->value();
+	const char* input = add_input->value();
+	const char* tooltip = add_tooltip->value();
+	if(!addMenuElement(node,result)){return 1;}
+	node=getNode(menu, "RootMenu", item);
+	if(!node){return -1;}
+	node=node.last_child();
+	if(result.compare("Include")==0){
+		if(input!=NULL){
+			if(!setNodeText(node,input)){
+				errorOUT("Could not set the text");
+			}
+			else{
+				saveChangesMenu();
+				return 0;
+			}
+		}
+		return -1;		
+	}
+	int retval=0;
+	if(result.compare("Program")==0){
+		if(input!=NULL){
+			if(!setNodeText(node,input)){
+				errorOUT("Could not set the text");
+				retval=-1;
+			}
+		}
+		else{retval=-1;}		
+	}
+	if(retval==-1){return retval;}
+	retval = addMenuAttrib(node,result,"label",lbl);
+	if(retval==-1){errorOUT("Couldn't set label");}
+	node=getNode(menu, "RootMenu", item);
+	if(!node){return -1;}
+	node=node.last_child();
+	retval = addMenuAttrib(node,result,"icon",icon);
+	if(retval==-1){errorOUT("Couldn't set icon");}
+	node=getNode(menu, "RootMenu", item);
+	if(!node){return -1;}
+	node=node.last_child();
+	retval = addMenuAttrib(node,result,"tooltip",tooltip);
+	if(retval==-1){errorOUT("Couldn't set tooltip");}
+	node=getNode(menu, "RootMenu", item);
+	if(!node){return -1;}
+	node=node.last_child();
+	int button = add_button->value();
+	std::string labled="false";
+	if(button==1){labled="true";}
+	std::string attrib;
+	if(result.compare("Exit")==0){attrib="confirm";}
+	if((result.compare("Menu")==0)||(result.compare("Dynamic")==0)){attrib="labeled";}
+	if(attrib.compare("")!=0){
+		retval = addMenuAttrib(node,result,attrib,labled.c_str());
+	}
+	if(retval==0)saveChangesMenu();
+	return retval;
 }
 int addMenuAttrib(int whichMenu,std::string element,std::string attribute,const char *value){
 	debug_out("int addMenuAttrib(int whichMenu,std::string "+element+",std::string "+attribute+",const char *value)");
@@ -1797,6 +1971,17 @@ int addMenuAttrib(int whichMenu,std::string element,std::string attribute,const 
 		return 1;
 	}
 	if(!setAttribute(getLastSubNode(whichMenu,"RootMenu",element),attribute,value)){
+		return -1;
+	}
+	return 0;
+}
+int addMenuAttrib(pugi::xml_node node,std::string element,std::string attribute,std::string value){
+	debug_out("int addMenuAttrib(int whichMenu,std::string "+element+",std::string "+attribute+",const char *value)");
+	if(value.compare("")==0){
+		debug_out("attribute value was non existant");
+		return 1;
+	}
+	if(!setAttribute(node,attribute,value)){
 		return -1;
 	}
 	return 0;
@@ -1819,6 +2004,16 @@ int getIntAttribute(std::string element, std::string subelement, std::string att
     if(node){stringie = node.attribute(attribute.c_str()).as_uint();}
     return stringie;
   }
+int JWMversion(){
+	std::string command="jwm -v |grep v[0-9] | sed 's/.* v//'|sed 's/ .*//'";
+	std::string result=linuxcommon::term_out(command);
+	if(result.compare("")==0){result="2.2.0";}
+	result=linuxcommon::sed_i(result,".","");
+	debug_out("RESULT="+result);
+	unsigned int retval =linuxcommon::convert_string_to_number(result.c_str());
+	int tmpret=retval;
+	return tmpret;
+}
 int newStyle(){
 	debug_out("int newStyle()");
     const char* tray = "TrayButtonStyle";
@@ -1874,15 +2069,20 @@ int newStyle(){
     debug_out("OLD Version Support");
     return not23;
 }
-int JWMversion(){
-	std::string command="jwm -v |grep v[0-9] | sed 's/.* v//'|sed 's/ .*//'";
-	std::string result=linuxcommon::term_out(command);
-	if(result.compare("")==0){result="2.2.0";}
-	result=linuxcommon::sed_i(result,".","");
-	debug_out("RESULT="+result);
-	unsigned int retval =linuxcommon::convert_string_to_number(result.c_str());
-	int tmpret=retval;
-	return tmpret;
+int removeMenuItem(int menu, int item, int sub){
+	debug_out("int RemoveMenuItem(int menu, int item, int sub)");
+	pugi::xml_node node=getNode(menu, "RootMenu", item);
+	if(!node){return -1;}
+	if(sub>0){
+		node=getSubNode(sub,node);
+	}
+	pugi::xml_node basenode=node.parent();
+	std::string msg="Remove Node=";
+	msg+=node.name();
+	debug_out(msg);
+	if(!basenode.remove_child(node)){return -1;}
+	saveChangesMenu();
+	return 0;
 }
 int whichAlign(std::string align){
     if(align.compare("top")==0 || align.compare("bottom")==0){return 1;}
@@ -2175,6 +2375,7 @@ void errorOUT(std::string msg){
 	#endif
 	linuxcommon::echo_error(lines+msg+lines);
 }
+//G
 void getShortcuts(Fl_Browser*o){
 	debug_out("void getShortcuts(Fl_Browser*o)");
 	o->clear();
@@ -2205,6 +2406,11 @@ void getShortcuts(Fl_Browser*o){
 		}	
 	}
 	o->redraw();
+}
+//H
+void hideWidgetForVersion(Fl_Widget *o, int version){
+	int ver=JWMversion();
+	if(version<ver){o->hide();}
 }
 //L
 void listAutostartXDG(Fl_Browser *o){
@@ -3053,6 +3259,18 @@ pugi::xml_node getRootMenu(std::string text){
 	pugi::xml_node empty;
     return empty;
 }
+pugi::xml_node getSubNode(unsigned int whichElement, pugi::xml_node inputnode){
+	pugi::xml_node node;
+	int i=1;
+	node=inputnode.first_child();
+    while(node.next_sibling() && i!=whichElement){
+		std::string noder=node.name();
+		debug_out("getting next "+noder);
+		node=node.next_sibling();
+		i++;
+	}
+	return node;
+}
 pugi::xml_node getSubNode(unsigned int whichElement,std::string element,unsigned int whichSubElement, std::string subelement){
 	debug_out("pugi::xml_node getSubNode(unsigned int whichElement,std::string "+element+",unsigned int whichSubElement, std::string "+subelement+")");
 	unsigned int i=1;
@@ -3060,17 +3278,17 @@ pugi::xml_node getSubNode(unsigned int whichElement,std::string element,unsigned
 	if(element.compare("")==0){return node;}
 	if(subelement.compare("")==0){return node;}
 	node=parseNodes(whichElement,element);
-    i=1;
-    node=node.child(subelement.c_str());
-    if(whichSubElement!=i){
+	i=1;
+	node=node.child(subelement.c_str());
+	if(whichSubElement!=i){
 		while(node.next_sibling(subelement.c_str()) && i!=whichElement){
 			std::string noder=node.name();
 			debug_out("getting next "+noder);
-            node=node.next_sibling(subelement.c_str());
-            i++;
-        }
-    }
-    return node;
+			node=node.next_sibling(subelement.c_str());
+			i++;
+		}
+	}
+	return node;
 }
 pugi::xml_node getTraySubElement(unsigned int whichNODE){
 	unsigned int i=1;

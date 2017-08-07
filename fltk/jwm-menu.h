@@ -51,7 +51,7 @@
 
 class MenuUI {
 public:
-  int menuItemLineNumber;int JWMVERSION;int ROOTMENU; 
+  int menuItemLineNumber; int JWMVERSION;int ROOTMENU;bool SUBMENU;int SUBSUB; 
   Fl_Double_Window* add_a_menu();
   Fl_Browser *list_browser;
   Fl_Input *new_menu_label;
@@ -72,23 +72,9 @@ private:
 public:
   Fl_Double_Window* add_window();
   Fl_Double_Window *adding_win;
-  Fl_Input *add_label;
-  Fl_Input *add_icon;
-  Fl_Input *add_input;
-  Fl_Check_Button *add_button;
-  Fl_Button *add_prog_button;
-private:
-  inline void cb_add_prog_button_i(Fl_Button*, void*);
-  static void cb_add_prog_button(Fl_Button*, void*);
-  inline void cb_OK1_i(Fl_Button*, void*);
-  static void cb_OK1(Fl_Button*, void*);
-public:
-  Fl_Button *add_icon_button;
-private:
-  inline void cb_add_icon_button_i(Fl_Button*, void*);
-  static void cb_add_icon_button(Fl_Button*, void*);
   static unsigned char menu_Item_i18n_done;
   static Fl_Menu_Item menu_Item[];
+private:
   inline void cb_Program_i(Fl_Menu_*, void*);
   static void cb_Program(Fl_Menu_*, void*);
   inline void cb_Restart_i(Fl_Menu_*, void*);
@@ -125,7 +111,25 @@ private:
   static void cb_Dynamic(Fl_Menu_*, void*);
 public:
   Fl_Output *item_display;
+  Fl_Input *add_icon;
+  Fl_Input *add_label;
+  Fl_Input *add_input;
   Fl_Input *add_tooltip;
+private:
+  inline void cb_OK1_i(Fl_Button*, void*);
+  static void cb_OK1(Fl_Button*, void*);
+public:
+  Fl_Button *add_icon_button;
+private:
+  inline void cb_add_icon_button_i(Fl_Button*, void*);
+  static void cb_add_icon_button(Fl_Button*, void*);
+public:
+  Fl_Button *add_prog_button;
+private:
+  inline void cb_add_prog_button_i(Fl_Button*, void*);
+  static void cb_add_prog_button(Fl_Button*, void*);
+public:
+  Fl_Check_Button *add_button;
   Fl_Double_Window* conf_item_window();
   Fl_Double_Window *config_item_win;
   Fl_Input *item_prog_icon;
@@ -270,14 +274,36 @@ private:
   static void cb_Nothing(Fl_Button*, void*);
 public:
   Fl_Double_Window* submenu_window();
+  Fl_Double_Window *subwin;
   Fl_Browser *submenu_items_browser;
-  Fl_Output *submenu_menu;
+private:
+  inline void cb_submenu_items_browser_i(Fl_Browser*, void*);
+  static void cb_submenu_items_browser(Fl_Browser*, void*);
+public:
+  Fl_Browser *submenu_items_value;
+private:
+  inline void cb_submenu_items_value_i(Fl_Browser*, void*);
+  static void cb_submenu_items_value(Fl_Browser*, void*);
+public:
+  Fl_Button *config_sub;
+private:
+  inline void cb_config_sub_i(Fl_Button*, void*);
+  static void cb_config_sub(Fl_Button*, void*);
+  inline void cb_OK5_i(Fl_Button*, void*);
+  static void cb_OK5(Fl_Button*, void*);
+  inline void cb_2_i(Fl_Button*, void*);
+  static void cb_2(Fl_Button*, void*);
+  inline void cb_3_i(Fl_Button*, void*);
+  static void cb_3(Fl_Button*, void*);
+public:
   void add_an_item();
   void add_cb(int whichOne);
   void change_include();
   void choose_menu(std::string menu);
   void configure_item();
+  void configure_submenu_item();
   void edit_a_menu();
+  bool edit_a_submenu_item();
   void edit_an_item();
   void remove_an_item();
   void remove_a_menu();
