@@ -35,11 +35,9 @@ script:
   -appimage"
 after_success:
   - mkdir Deploy
-  - find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " "
-  -f 2-3 | sort | uniq
+  - find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
   - cp ./JWM_Settings_Manager*.AppImage Deploy/
-  - curl --upload-file ./JWM_Settings_Manager*.AppImage https://transfer.sh/JWM_Settings_Manager-git.$(git
-  rev-parse --short HEAD)-x86_64.AppImage
+  - curl --upload-file ./JWM_Settings_Manager*.AppImage https://transfer.sh/JWM_Settings_Manager-git.$(git rev-parse --short HEAD)-x86_64.AppImage
 notifications: 
 email: false
 deploy:
