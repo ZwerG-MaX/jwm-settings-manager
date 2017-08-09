@@ -3,7 +3,7 @@
         "name": "jwm-settings-manager",
         "repo": "AppImages",
         "subject": "israeldahl",
-        "desc": "",
+        "desc": "Graphical Settings Manager for JWM",
         "website_url": "https://github.com/Israel-/jwm-settings-manager",
         "issue_tracker_url": "https://github.com/Israel-/jwm-settings-manager/issues",
         "vcs_url": "https://github.com/Israel-/jwm-settings-manager.git",

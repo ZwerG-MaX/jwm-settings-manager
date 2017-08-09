@@ -3,3 +3,5 @@ CMakeCache.txt
 CMakeFiles
 .git/
 .gitignore
+_config.yml
+.bintray.yml
