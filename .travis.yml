@@ -21,26 +21,30 @@ addons:
     - fluid
     - pkg-config
 before_script:
-  - mkdir build && cd build
+- mkdir build && cd build
 script:
-  - cmake ..
-  - make -j$(nproc)
-  - make DESTDIR=appdir install ; find appdir/
-  - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
-  - chmod a+x linuxdeployqt*.AppImage
-  - unset LD_LIBRARY_PATH
-  - "./linuxdeployqt*.AppImage ./appdir/usr/share/applications/jwm-settings-manager.desktop -bundle-non-qt-libs"
-  - "./linuxdeployqt*.AppImage ./appdir/usr/share/applications/jwm-settings-manager.desktop -appimage"
+- cmake ..
+- make -j$(nproc)
+- make DESTDIR=appdir install ; find appdir/
+- wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+- chmod a+x linuxdeployqt*.AppImage
+- unset LD_LIBRARY_PATH
+- "./linuxdeployqt*.AppImage ./appdir/usr/share/applications/jwm-settings-manager.desktop
+  -bundle-non-qt-libs"
+- "./linuxdeployqt*.AppImage ./appdir/usr/share/applications/jwm-settings-manager.desktop
+  -appimage"
 after_success:
-  - mkdir Deploy
-  - find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
-  - cp ./JWM_Settings_Manager*.AppImage Deploy/
-  - curl --upload-file ./JWM_Settings_Manager*.AppImage https://transfer.sh/JWM_Settings_Manager-git.$(git rev-parse --short HEAD)-x86_64.AppImage
+- mkdir Deploy
+- find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " "
+  -f 2-3 | sort | uniq
+- cp ./JWM_Settings_Manager*.AppImage Deploy/
+- curl --upload-file ./JWM_Settings_Manager*.AppImage https://transfer.sh/JWM_Settings_Manager-git.$(git
+  rev-parse --short HEAD)-x86_64.AppImage
 notifications: 
 email: false
 deploy:
   provider: bintray
   file: "$TRAVIS_BUILD_DIR/bintray.json"
-  user: "israeldahl"
+  user: israeldahl
   key:
-    secure: cYhN5NzegbO2UVse5ieHzCAd7sagG/LQS6cAo3YVZ51Dvd3DtOcPVyUIK7NYvFesqi48gU0wS2dRsWG5uDUsI+fDgfsOcC0bPwjWgZMmLspayrM3iNc3Are1J9O6fJrey0JxhD42PdSIGrfAcJE1dzh4Br/7xOLrhPVIKJfanUIK8opcU89T+y0DrfjAZP1brIgdKm0j7nKjT/oYzz2tUf7neJ2LBEC8UorCkMx2p5F77Hw4oHNoaiNgN4q+glx0fnAjViBnysSvpT+hqyWcIImOblUd8v1B3DOED0f2TuaQMOHQ0euSBCS70481xi2qe0U32CMO6xRpUj98CdJZrC3Z10JK441VQTqmHElw1YdOAKgwFt4zHK5DWq4Lgj1i/Uit/KeRRYB2N3F3uwPq7TftDWr0dAqWW0LLKmka1niyJ+OnAJgnbMZ4HeInDxvCvffCRAMdkmH01Y8xs4QrafQG98Jnde2RQ3KkTeKLiMhS+o8FgQmqFM2mzoV0A/53oX7O18uq/vFn+4UmY8QbfGaFHuMlmYR6B7UA8ETpga2ATHIxNAWFnOogBei3zpS5Mr1XHeUupJ4WTvfUk5CuBzIU5rjmGnvenpLHZaP+WP5eR62Fwy0xZCDxHdy03ljWaYVwMKvwwUUrmwf5i3Ks7hjsj0PRiULeXet21hTuyd4=
+    secure: TQ1bxsJrU+dcgKKW1o/5QcZXu3nrpLwOge3oYTb1m5+FKmCpC+M3nh0VxLlZfVbBYwIi/UFGoN1Z1zJalk90q/tjjB4kmEljQhvS8DVibK71LnVWftXLMdBwbwUH38s03y5Rl+1QnmibHiFkBeD0rXwAlu1TxEQyzAHmLk/P8O8riMSc3SeQfQnKsC87yS0w5dy7I2FNmtWMizqa8H9FHsH57HOsYDriMoHGEWXZwgxWvr0x7AZ1Bh0mA2cbIle+E2WMVIXKB2E54PewLn/PHYis6lrkKTbVOdIIaUCIRQbBIDLGi7z5jIidE7zfhuKBpwMPDq4F2zca6RakicEcA7soy6NBmLtyRNSmMsq8Mc5JWmjLpFOJBm8vTJ1NNxAVJLTjWXMJkEV/cl1IAxB0aY91lmyCxmyXGpaXdVx+CB5B3vU9T/eFK7A42Glzob2rm3G2ZL7Li6EeH1w6J1ZibBslHrA8QdMmkr0tJ8msOnCcYCqk7sARKep54bifaN/eirq8PNZKYoQ56nTiFuh9YlUXLTu51O4ESa0rRrcaLE5wbxpMF+0StUxi8L0YnSwf7X486aLhBoTfk6Jjrohf4UpLcHjAy2n1GRmES7unmxHLvdLfa616xEg6KGsekEhXvWYPb+2I7n3wXplpCIS3nXzAa1sp6z9Vb+CXGF7aYM0=
