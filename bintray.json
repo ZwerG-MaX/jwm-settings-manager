@@ -8,11 +8,7 @@
         "issue_tracker_url": "https://github.com/Israel-/jwm-settings-manager/issues",
         "vcs_url": "https://github.com/Israel-/jwm-settings-manager.git",
         "licenses": ["GPL3+"],
-        "labels": [
-            "JWM",
-            "JWM Settings Manager",
-            "Settings",
-        ],
+        "labels": ["JWM", "JWM Settings Manager","Settings"],
         "public_download_numbers": false,
         "public_stats": false
     },
