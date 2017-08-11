@@ -768,7 +768,7 @@ LINUX_COMMON__NS_BEGIN
 			closedir(mydir);
 		}
 		else{echo_error(dir+" cannot be opened\nMUST EXIT");}
-		echo("Final Answer="+finalAnswer);
+		if(finalAnswer.compare("")!=0)echo("Final Answer="+finalAnswer);
 		return finalAnswer;
 	}
 	//R

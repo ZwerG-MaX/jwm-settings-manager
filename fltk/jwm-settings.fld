@@ -54,8 +54,8 @@ class SettingsUI {open
   } {
     Fl_Window settings_window {
       label {Settings Manager} open
-      xywh {623 115 260 345} type Double color 45 labelcolor 7 hide
-      code1 {startup(o,jwm_settings_manager);} xclass {jwm-settings-manager}
+      xywh {948 119 260 345} type Double color 45 labelcolor 7
+      code1 {startup(o,jwm_settings_manager);} xclass {jwm-settings-manager} visible
     } {
       Fl_Button {} {
         label Panel
@@ -115,29 +115,29 @@ showAutostart();}
         label {Users and Groups}
         callback {adduser();}
         xywh {5 260 80 80} box FLAT_BOX color 23 align 128
-        code0 {isAdduser(o);}
-        code1 {makeWidgetIcon("system-config-users",o,48);}
+        code0 {if(isAdduser(o))makeWidgetIcon("config-users",o,48);}
       }
       Fl_Button {} {
         label {System Details}
-        callback {addinfo();}
+        callback {addinfo();} selected
         xywh {90 260 80 80} box FLAT_BOX color 23 align 128
-        code0 {makeWidgetIcon("system-info",o,48);}
+        code0 {if(isInfo(o))makeWidgetIcon("help-browser",o,48);}
       }
       Fl_Button {} {
         label Popups
         callback {settings_window->hide();
-showPopus();} selected
+showPopus();}
         xywh {175 260 80 80} box FLAT_BOX color 23 align 128
         code0 {makeWidgetIcon("preferences-system-notifications",o,48);}
       }
     }
   }
-  Function {isAdduser(Fl_Button *o)} {open
+  Function {isAdduser(Fl_Button *o)} {open return_type bool
   } {
     code {bool isfladduser = testExec("fladduser");
 if(isfladduser){o->show();}
-else{o->hide();}} {}
+else{o->hide();}
+return isfladduser;} {}
   }
   Function {adduser()} {open
   } {
@@ -145,7 +145,7 @@ else{o->hide();}} {}
 int retval = linuxcommon::run_a_program_in_background("fladduser");
 if(retval !=0){errorOUT("Could not run the user adding program");}} {}
   }
-  Function {isInfo(Fl_Button *o)} {open
+  Function {isInfo(Fl_Button *o)} {open return_type bool
   } {
     code {bool isexec = testExec("torios-info");
 if(isexec){
@@ -153,7 +153,8 @@ if(isexec){
 }
 else{
   o->hide();
-}} {}
+}
+return isexec;} {}
   }
   Function {addinfo()} {open
   } {

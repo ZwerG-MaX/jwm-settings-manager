@@ -65,9 +65,9 @@ private:
   inline void cb_Popups_i(Fl_Button*, void*);
   static void cb_Popups(Fl_Button*, void*);
 public:
-  void isAdduser(Fl_Button *o);
+  bool isAdduser(Fl_Button *o);
   void adduser();
-  void isInfo(Fl_Button *o);
+  bool isInfo(Fl_Button *o);
   void addinfo();
 };
 #endif

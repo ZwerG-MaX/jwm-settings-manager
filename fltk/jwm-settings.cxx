@@ -4140,15 +4140,14 @@ Fl_Double_Window* SettingsUI::make_window() {
       o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_Users);
       o->align(Fl_Align(FL_ALIGN_WRAP));
-      isAdduser(o);
-      makeWidgetIcon("system-config-users",o,48);
+      if(isAdduser(o))makeWidgetIcon("config-users",o,48);
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(90, 260, 80, 80, gettext("System Details"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)23);
       o->callback((Fl_Callback*)cb_System);
       o->align(Fl_Align(FL_ALIGN_WRAP));
-      makeWidgetIcon("system-info",o,48);
+      if(isInfo(o))makeWidgetIcon("help-browser",o,48);
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(175, 260, 80, 80, gettext("Popups"));
       o->box(FL_FLAT_BOX);
@@ -4164,10 +4163,11 @@ Fl_Double_Window* SettingsUI::make_window() {
   return settings_window;
 }
 
-void SettingsUI::isAdduser(Fl_Button *o) {
+bool SettingsUI::isAdduser(Fl_Button *o) {
   bool isfladduser = testExec("fladduser");
   if(isfladduser){o->show();}
   else{o->hide();}
+  return isfladduser;
 }
 
 void SettingsUI::adduser() {
@@ -4176,7 +4176,7 @@ void SettingsUI::adduser() {
   if(retval !=0){errorOUT("Could not run the user adding program");}
 }
 
-void SettingsUI::isInfo(Fl_Button *o) {
+bool SettingsUI::isInfo(Fl_Button *o) {
   bool isexec = testExec("torios-info");
   if(isexec){
     o->show();
@@ -4184,6 +4184,7 @@ void SettingsUI::isInfo(Fl_Button *o) {
   else{
     o->hide();
   }
+  return isexec;
 }
 
 void SettingsUI::addinfo() {

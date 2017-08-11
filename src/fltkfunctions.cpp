@@ -379,9 +379,9 @@ void makeWidgetIcon(std::string icon_file, Fl_Widget * widget, int w, int h){
 			debug_out("RESULT="+tmp);
 		}
 	}
-	else{debug_out(icon_file+" is an Image!");}
+	else{debug_out(icon_file+" is a file!");}
 	if(icon_file.compare("")==0){
-		errorOUT("Icon file is empty");
+		debug_out("Icon file is empty");
 		return;
 	}
 	Fl_Image* image2=NULL;
