@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Israel-/jwm-settings-manager.svg?branch=master)](https://travis-ci.org/Israel-/jwm-settings-manager)
 # JWM Settings Manager
 Build Depends on Debian/Ubuntu
 - cmake
