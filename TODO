@@ -1,3 +1,6 @@
+makeWidgetIcon... extend this, or somehow check for some sort of icon or, extend to
+have a TRYthisFirst, FALLBACKname sort of condition....
+
 common bool file_is_writable(std::string filename)
 get user's group and check permissions
 Add PAM stuff for desktop-file-editor?? perhaps?

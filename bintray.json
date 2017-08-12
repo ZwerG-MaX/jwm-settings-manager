@@ -15,7 +15,7 @@
     "version": {
         "name": "master",
         "desc": "AppImage of JWM Settings Manager master HEAD deployed by Travis CI build",
-        "gpgSign": true
+        "gpgSign": false
     },
     "files": [
         {
