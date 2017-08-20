@@ -1029,12 +1029,23 @@ bool setElementAttributeANDtext(std::string element, std::string attribute, std:
 }
 bool setElementAttributeANDtext(std::string element, std::string subelement, std::string attribute, std::string value,std::string text){
 	debug_out("bool setElementAttributeANDtext(std::string "+ element+ ", std::string "+ subelement+", std::string " + attribute+ ", std::string "+ value+", std::string "+text+")");
+    return setElementAttributeANDtext(1,element,subelement,attribute,value,text);
+}
+bool setElementAttributeANDtext(unsigned int whichElement,std::string element, std::string subelement, std::string attribute, std::string value,std::string text){
+	debug_out("bool setElementAttributeANDtext(unsigned int whichElement,std::string "+ element+ ", std::string "+ subelement+", std::string " + attribute+ ", std::string "+ value+", std::string "+text+")");
 	if(element.compare("")==0){return false;}
 	if(subelement.compare("")==0){return false;}
 	if(attribute.compare("")==0){return false;}
 	if(value.compare("")==0){return false;}
 	if(text.compare("")==0){return false;}
+	unsigned int i=1;
 	pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str());
+    if(whichElement!=i){
+		while(node.next_sibling(element.c_str()) && i!=whichElement){
+            node=node.next_sibling(element.c_str());
+            i++;
+        }
+    }
 	if(!node){node=checkIncludes(element,subelement);}
     if(!node){node = doc.child("JWM").child(element.c_str()).append_child(subelement.c_str());}
     node.attribute(attribute.c_str()).set_value(value.c_str());
@@ -1267,6 +1278,58 @@ bool setRootMenuHeight(std::string val, int height){
 	setRootMenuAttribute(val,"height",thing);
 	return true;
 }
+bool set_user_tz(std::string timeZone){
+	timeZone=":"+timeZone;
+	setenv("TZ", timeZone.c_str(), 1);
+	tzset();
+	std::string hommie=linuxcommon::home_path();
+	std::string bashrc=hommie;
+	bashrc+=".profile";
+	std::string CONTENTS;
+	if(linuxcommon::test_file(bashrc)&&linuxcommon::file_is_writable(bashrc)){
+		std::string exportTZ=linuxcommon::grep("export TZ",bashrc);
+		std::string tmp=linuxcommon::get_line_with_equal(bashrc,"TZ");
+		if(tmp.compare("")!=0){
+			bool werx = linuxcommon::switch_equal_line_item("TZ",timeZone,bashrc);
+			if(!werx)return werx;
+			//fix it!!
+			if(exportTZ.compare("")==0){return linuxcommon::append_string_to_file("export TZ",bashrc);}
+			return true;
+		}
+		else{
+			CONTENTS=linuxcommon::file_to_string(bashrc);
+			CONTENTS+="\nTZ=\"";
+			CONTENTS+=timeZone;
+			CONTENTS+="\"";
+			if(exportTZ.compare("")==0){CONTENTS+="\nexport TZ";}
+			return linuxcommon::save_string_to_file(CONTENTS,bashrc);
+		}
+	}
+	else{
+		bashrc=hommie;
+		bashrc+=".bashrc";
+		std::string exportTZ=linuxcommon::grep("export TZ",bashrc);
+		if(linuxcommon::test_file(bashrc)&&linuxcommon::file_is_writable(bashrc)){
+			std::string tmp=linuxcommon::get_line_with_equal(bashrc,"TZ");
+			if(tmp.compare("")!=0){
+				bool werx = linuxcommon::switch_equal_line_item("TZ",timeZone,bashrc);
+				if(!werx)return werx;
+				//fix it!!
+				if(exportTZ.compare("")==0){return linuxcommon::append_string_to_file("export TZ",bashrc);}
+				return true;
+			}
+			else{
+				CONTENTS=linuxcommon::file_to_string(bashrc);
+				CONTENTS+="\nTZ=\"";
+				CONTENTS+=timeZone;
+				CONTENTS+="\"";
+				if(exportTZ.compare("")==0){CONTENTS+="\nexport TZ";}
+				return linuxcommon::save_string_to_file(CONTENTS,bashrc);
+			}
+		}
+	}
+	return false;
+}
 //T
 bool testExec(std::string command){return linuxcommon::test_exec(command);}
 //String////////////////////////////////////////////////////////////////
@@ -1324,6 +1387,20 @@ std::string getElementText(unsigned int whichElement, std::string element, std::
     }
     node=node.child(subelement.c_str());
     if(!node){return "";}
+    return node.text().as_string();
+}
+std::string getElementText(std::string element, unsigned int whichElement, std::string subelement,std::string subsub){
+	unsigned int i=1;
+    pugi::xml_node node = doc.child("JWM").child(element.c_str()).child(subelement.c_str());;
+    if(whichElement!=i){
+		while(node.next_sibling(subelement.c_str()) && i!=whichElement){
+            node=node.next_sibling(subelement.c_str());
+            i++;
+        }
+    }
+    node=node.child(subsub.c_str());
+    if(!node){return "";}
+    if(i!=whichElement){return "";}
     return node.text().as_string();
 }
 std::string getElementText(std::string element, std::string subelement, std::string SUBsubsubelement){
@@ -2190,7 +2267,7 @@ std::vector<std::string> zoneSubdir(std::string thisDIR){
 	std::string SUBDIRNAME=thisDIR;
 	unsigned int finder =SUBDIRNAME.rfind("/");
 	if(finder<SUBDIRNAME.length()){SUBDIRNAME=SUBDIRNAME.erase(0,finder+1);}
-	SUBDIRNAME+="\\/";
+	SUBDIRNAME+="/";
 	if (dir!=NULL){
 		while ((entryPointer=readdir(dir)) != NULL){
 			if ((entryPointer->d_type == DT_DIR)
@@ -2203,6 +2280,13 @@ std::vector<std::string> zoneSubdir(std::string thisDIR){
 			&&(entryPointer->d_name[0] != '.')){
 				std::string tmp=SUBDIRNAME;
 				tmp+=entryPointer->d_name;
+				returnVec.push_back(tmp);
+			}
+			if ((entryPointer->d_type ==  DT_LNK)
+			&&(entryPointer->d_name[0] != '.')){
+				std::string tmp=SUBDIRNAME;
+				tmp+=entryPointer->d_name;
+				debug_out("Symlink:"+tmp);
 				returnVec.push_back(tmp);
 			}
 		}
@@ -2230,6 +2314,12 @@ std::vector<std::string> zoneVector(){
 			else if((entryPointer->d_type == DT_REG)
 			&&(entryPointer->d_name[0] != '.')){
 				std::string tmp=entryPointer->d_name;
+				returnVec.push_back(tmp);
+			}
+			else if ((entryPointer->d_type ==  DT_LNK)
+			&&(entryPointer->d_name[0] != '.')){
+				std::string tmp=entryPointer->d_name;
+				debug_out("Symlink:"+tmp);
 				returnVec.push_back(tmp);
 			}
 		}

@@ -644,6 +644,32 @@ void populateBrowserWithStringVector(Fl_Browser *o, std::vector<std::string> STR
 	}
 }
 //S
+/** search an Fl_Browser with content from and input
+ * @param input    the Fl_Input to read data from
+ * @param browser  the Fl_Browser to search
+ */
+void searchBrowser(Fl_Input* input,Fl_Browser *browser){
+	if(InputIsEmpty(input)){return;}
+	std::string term=input->value();
+	std::transform(term.begin(), term.end(), term.begin(), ::tolower);
+	searchBrowser(term,browser);
+}
+/** search an Fl_Browser with content from and input
+ * @param term     the string to search for
+ * @param browser  the Fl_Browser to search
+ */
+void searchBrowser(std::string term,Fl_Browser *browser){
+	if(browser->size()==0){return;}
+	for(int start=browser->size();start>0;--start){
+		std::string val=browser->text(start);
+		std::transform(val.begin(), val.end(), val.begin(), ::tolower);
+		unsigned int finder=val.find(term);
+		if(finder<val.length()){
+			if(browser->visible(start)==0)browser->show(start);
+		}
+		else{browser->hide(start);}
+	}
+}
 /** Set the decorations attribute for some element
  * @param o the output to send the value to as user feedback
  * @param element the element to change JWM->element

@@ -57,67 +57,80 @@ decl {\#include "../include/ui.h"} {public global
 decl {\#include "../data/icons/jsm-desktop.xpm"} {public global
 } 
 
+decl {\#include <FL/Fl_Menu_Button.H>} {public global
+} 
+
 class DesktopUI {open
 } {
-  decl {std::string thisBG;std::string FILEMANAGER;} {public local
+  decl {std::string thisBG;std::string FILEMANAGER;unsigned int DESKTOPNUM;} {public local
   }
   Function {make_window()} {open
   } {
     code {load();
 thisBG=getBackground();
-FILEMANAGER=whichFileManagerRunning();} {}
+FILEMANAGER=whichFileManagerRunning();
+DESKTOPNUM=1;} {}
     Fl_Window desktop_window {
       label {Desktop Settings} open
-      xywh {752 123 360 420} type Double color 31 resizable
-      code0 {startup(o,jsm_desktop_xpm);} xclass {jsm-desktop} visible
+      xywh {871 159 360 420} type Double color 31 hide resizable
+      code0 {startup(o,jsm_desktop_xpm);} xclass {jsm-desktop}
     } {
       Fl_Scroll {} {open
         xywh {0 0 360 420} color 31
       } {
         Fl_Box background_displayer_thingie {
           xywh {8 5 345 270} box FLAT_BOX color 37 when 6
-          code0 {background(o,thisBG);}
+          code0 {background(o,thisBG,DESKTOPNUM);}
         }
         Fl_Box color_display1 {
           xywh {8 5 345 270} box FLAT_BOX color 37 when 6
-          code0 {background1(o,thisBG);}
+          code0 {background1(o,thisBG,DESKTOPNUM);}
         }
         Fl_Box color_display2 {
           xywh {8 135 345 140} box FLAT_BOX color 37 when 6
-          code0 {background2(o,thisBG);}
+          code0 {background2(o,thisBG,DESKTOPNUM);}
         }
         Fl_Button {} {
           label {Choose Image}
-          callback {bg_chooser_cb(background_displayer_thingie,current_bg,color_display1,color_display2);}
+          callback {bg_chooser_cb(background_displayer_thingie,current_bg,color_display1,color_display2,DESKTOPNUM);}
           xywh {8 315 110 25} box FLAT_BOX color 23
         }
         Fl_Button {} {
           label {Choose Color}
-          callback {one_color(color_display1,color_display2,background_displayer_thingie,current_bg);}
+          callback {one_color(color_display1,color_display2,background_displayer_thingie,current_bg,DESKTOPNUM);}
           tooltip {This will take icons off the desktop} xywh {123 315 100 25} box FLAT_BOX color 23
         }
         Fl_Button {} {
           label {Choose Gradient}
-          callback {two_color(color_display1,color_display2,background_displayer_thingie,current_bg);}
+          callback {two_color(color_display1,color_display2,background_displayer_thingie,current_bg,DESKTOPNUM);}
           tooltip {This will take icons off the desktop} xywh {228 315 125 25} box FLAT_BOX color 23
         }
         Fl_Button fm_pref {
-          label Filemanager selected
+          label Filemanager
           tooltip {Open the filemanager to change preferences} xywh {5 390 105 25} box FLAT_BOX color 23 deactivate
         }
         Fl_Check_Button icons_check {
           label {Icons on Desktop}
           callback {bool useful=use_icons_on_desktop(background_displayer_thingie,thisBG);
 o->value(0);
+DESKTOPNUM=1;
+std::string mybg="";
+const char* MyBG=current_bg->value();
+if(MyBG!=NULL) mybg=MyBG;
+allBGS(background_displayer_thingie,color_display1,color_display2,mybg,DESKTOPNUM,current_bg);
 fm_pref->hide();
-if(useful){o->value(1);fm_pref->show();}}
+if(useful){
+  o->value(1);
+  fm_pref->show();
+  
+}}
           xywh {5 345 140 25} box FLAT_BOX down_box GTK_DOWN_BOX color 31 selection_color 59 align 24 when 1
           code0 {if(isIconsOnDesktop()){o->value(1);fm_pref->show();}}
           code1 {else{fm_pref->hide();}}
         }
         Fl_Output current_bg {
           xywh {8 280 345 30} box FLAT_BOX color 50 selection_color 72 labelfont 1 align 33
-          code0 {bg_name(o,thisBG);}
+          code0 {bg_name(o,thisBG,DESKTOPNUM);}
         }
         Fl_Check_Button check_desktops {
           label {Multiple Desktops}
@@ -138,7 +151,7 @@ num_desktop_wh_cb("width",width,num_desktop_w,num_desktop_h,check_desktops);}
           label {Workspaces High }
           callback {int height = int((o->value()));
 num_desktop_wh_cb("height",height,num_desktop_w,num_desktop_h,check_desktops);}
-          tooltip {Number of workspaces up and down} xywh {150 370 20 20} box FLAT_BOX color 53 align 8
+          tooltip {Number of workspaces up and down} xywh {150 368 20 20} box FLAT_BOX color 53 align 8
           code0 {int height = getIntAttribute("Desktops","height");}
           code1 {o->value(height);}
         }
@@ -157,7 +170,71 @@ desktop_window->hide();}
           label Names
           tooltip {Name your workspaces} xywh {300 355 55 25} box FLAT_BOX color 23 hide deactivate
         }
+        Fl_Menu_Button menu_button {
+          label Desktop
+          callback {const char* numer;
+const Fl_Menu_Item *tmp=o->mvalue();
+numer=tmp->label();
+if(numer==NULL)return;
+std::string msg="Desktop=";
+msg+=numer;
+debug_out(msg);
+unsigned int NUM=std::stoul(numer);
+//DESKTOPNUM=NUM;
+std::string bg=getBackground(NUM);
+set_BGS(bg,NUM);} open
+          xywh {120 390 105 25} box FLAT_BOX color 23 selection_color 80
+          code0 {make_menu(o);}
+        } {}
       }
     }
+  }
+  Function {total_desktops()} {open return_type int
+  } {
+    code {int w = int((num_desktop_w->value()));
+if(w<1)w=1;
+int h = int((num_desktop_h->value()));
+if(h<1)h=1;
+return (w * h);} {}
+  }
+  Function {make_menu(Fl_Menu_Button* o)} {open
+  } {
+    code {std::string DESK;
+int width = getIntAttribute("Desktops","width");
+if(width<1)width=1;
+int height = getIntAttribute("Desktops","height");
+if(height<1)height=1;
+int num = width * height;
+unsigned int counter = 0;
+for (counter=1;counter<=num;++counter){
+  std::string numero=linuxcommon::convert_unsigned_to_string(counter);
+  o->add(numero.c_str());
+}} {selected
+    }
+  }
+  Function {desktop_menu_cb(Fl_Menu_ *o)} {open return_type {static void}
+  } {
+    code {((DesktopUI*)(o->user_data()))->menu_cb(o);} {}
+  }
+  Function {menu_cb(Fl_Menu_ *o)} {open
+  } {
+    code {const char* numer;
+const Fl_Menu_Item *tmp=o->mvalue();
+numer=tmp->label();
+if(numer==NULL)return;
+std::string msg="Desktop=";
+msg+=numer;
+debug_out(msg);
+unsigned int NUM=std::stoul(numer);
+//DESKTOPNUM=NUM;
+std::string bg=getBackground(NUM);
+set_BGS(bg,NUM);} {}
+  }
+  Function {set_BGS(std::string bg, unsigned int num)} {open
+  } {
+    code {debug_out("set_BGS");
+
+allBGS(background_displayer_thingie,color_display1,color_display2,bg,num,current_bg);
+//DESKTOPNUM=num;} {}
   }
 } 

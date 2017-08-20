@@ -32,32 +32,44 @@
 #include <libintl.h>
 #include "../include/desktop.hpp"
 ///Void//////////////////////////////////////////////////////////////////
+void allBGS(Fl_Box* Image, Fl_Box* Color1,Fl_Box* Color2, std::string choice, unsigned int num, Fl_Input *in){
+	debug_out("void allBGS(Fl_Box* Image, Fl_Box* Color1,Fl_Box* Color2, std::string "+choice+", unsigned int num, Fl_Input *in)");
+	const char* img=in->value();
+	if(choice.compare(img)==0){return;}
+	background(Image,choice,num);
+	background1(Color1,choice,num);
+	background2(Color2,choice,num);
+	in->value(choice.c_str());
+}
 //b
 /** Set the background image of an Fl_Box*/
-void background(Fl_Box*o,std::string thisBG){
-	debug_out("void background(Fl_Box*o,std::string "+thisBG+")");
+void background(Fl_Box*o,std::string thisBG,unsigned int bgnum){
+	debug_out("void background(Fl_Box*o,std::string "+thisBG+",unsigned int bgnum)");
 	std::string bg;
 	/** Check the string and get the background from the jwmrc if it is empty*/
 	if (thisBG.compare("")==0){
-		bg=getBackground();
+		bg=getBackground(bgnum);
 		thisBG=bg;
 	}
 	else{bg=thisBG;}
 	/** if the string is an image file, make an image of it in the Fl_Box (sizes hard coded here)*/
 	if (isImage(bg)){
 		makeWidgetIcon(bg,o,354,270);
-		o->show();
+		if(!o->visible())o->show();
 		o->redraw();
 	}
-	else{o->hide();}
+	else{
+		//if(o->visible())o->hide();
+		return;
+	}
 }
 /** Set the Background color of an Fl_Box*/
-void background1(Fl_Box*o,std::string thisBG){
-	debug_out("void background1(Fl_Box*o,std::string "+thisBG+")");
+void background1(Fl_Box*o,std::string thisBG,unsigned int bgnum){
+	debug_out("void background1(Fl_Box*o,std::string "+thisBG+",unsigned int bgnum)");
 	std::string bg;
 	/** Check the string and get the background from the jwmrc if it is empty*/
 	if (thisBG.compare("")==0){
-		bg =getBackground();
+		bg =getBackground(bgnum);
 		/** split the string from the jwmrc into the first color ONLY*/
 		bg=splitColor(1,bg);
 		if(bg.length()<=4){return;}
@@ -68,20 +80,21 @@ void background1(Fl_Box*o,std::string thisBG){
 	if(isColor(thisBG)){
 		unsigned int junk=0;
 		unsigned int colorSet = flCOLOR(thisBG,junk);
+		if(!o->visible())o->show();
 		o->color(colorSet);
 	}
 	else{
-		o->hide();
+		if(o->visible())o->hide();
 		return;
 	}
 }
 /** Set the Background color of an Fl_Box*/
-void background2(Fl_Box*o,std::string thisBG){
-	debug_out("void background1(Fl_Box*o,std::string "+thisBG+")");
+void background2(Fl_Box*o,std::string thisBG,unsigned int bgnum){
+	debug_out("void background1(Fl_Box*o,std::string "+thisBG+",unsigned int bgnum)");
 	std::string bg;
 	/** Check the string and get the background from the jwmrc if it is empty*/
 	if (thisBG.compare("")==0){
-		bg =getBackground();
+		bg =getBackground(bgnum);
 		/** split the string from the jwmrc into the second color ONLY*/
 		bg=splitColor(2,bg);
 		if(bg.length()<=4){return;}
@@ -93,16 +106,17 @@ void background2(Fl_Box*o,std::string thisBG){
 		unsigned int colorSet = 0;
 		unsigned int c=flCOLOR(thisBG,colorSet);
 		if(c!=0){c=0;}
+		if(!o->visible())o->show();
 		o->color(colorSet);
 	}
 	else{
-		o->hide();
+		if(o->visible())o->hide();
 		return;
 	}
 }
 /** Open a file dialog to pick an image*/
-void bg_chooser_cb(Fl_Box *background_displayer_thingie,Fl_Output *current_bg,Fl_Box *color_display1,Fl_Box *color_display2){
-	debug_out("void bg_chooser_cb(Fl_Box *background_displayer_thingie,Fl_Box *current_bg,Fl_Box *color_display1,Fl_Box *color_display2)");
+void bg_chooser_cb(Fl_Box *background_displayer_thingie,Fl_Output *current_bg,Fl_Box *color_display1,Fl_Box *color_display2,unsigned int bgnum){
+	debug_out("void bg_chooser_cb(Fl_Box *background_displayer_thingie,Fl_Box *current_bg,Fl_Box *color_display1,Fl_Box *color_display2,unsigned int bgnum)");
 	std::string background = linuxcommon::home_path();
 	background +="Pictures/";
 	std::string title=gettext("Choose a Background");
@@ -111,7 +125,7 @@ void bg_chooser_cb(Fl_Box *background_displayer_thingie,Fl_Output *current_bg,Fl
 		if(isImage(result)){
 			current_bg->value(result.c_str());
 			std::string type="image";
-			setBackground(type,result);
+			setBackground(type,result,bgnum);
 			makeWidgetIcon(result,background_displayer_thingie,354,270);
 			color_display1->hide();
 			color_display2->hide();
@@ -120,12 +134,12 @@ void bg_chooser_cb(Fl_Box *background_displayer_thingie,Fl_Output *current_bg,Fl
 	}
 }
 /**Get the filename OR display text describing the background type*/
-void bg_name(Fl_Output *o,std::string thisBG){
+void bg_name(Fl_Output *o,std::string thisBG,unsigned int bgnum){
 	debug_out("void bg_name(Fl_Output *o,std::string "+thisBG+")");
 	std::string bg;
 	/** Check the string and get the background from the jwmrc if it is empty*/
 	if (thisBG.compare("")==0){
-		bg=getBackground();
+		bg=getBackground(bgnum);
 		/** if it is empty or too small clear the output and return*/
 		if(bg.length()<=1){
 			o->value("");
@@ -167,8 +181,8 @@ void num_desktop_wh_cb(std::string whichone, int value,Fl_Value_Input* num_deskt
 }
 //o
 /** Choose a single color and save it to the file*/
-void one_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg){
-	debug_out("void one_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg)");
+void one_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg,unsigned int bgnum){
+	debug_out("void one_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg,unsigned int bgnum)");
 	int c;
 	/** open the color chooser dialog*/
 	double* colors = choose_a_color(c,color_display1);
@@ -176,18 +190,18 @@ void one_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_
 		/**If color chooser isn't canceled... do stuff*/
 		unsigned int unusedColor=0;
 		unsigned int colorSet=0;
-		setBackground("solid",colorToString(colors));
-		std::string bg=getBackground();
+		setBackground("solid",colorToString(colors),bgnum);
+		std::string bg=getBackground(bgnum);
 		colorSet=flCOLOR(bg,unusedColor);
 		color_display1->color(colorSet);
 		color_display1->show();
 		color_display2->hide();
 		background_displayer_thingie->hide();
 		current_bg->value("Color");
-		std::string BG=getBackground();
-		background(background_displayer_thingie,BG);
-		background1(color_display1,BG);
-		background2(color_display2,BG);
+		std::string BG=getBackground(bgnum);
+		background(background_displayer_thingie,BG,bgnum);
+		background1(color_display1,BG,bgnum);
+		background2(color_display2,BG,bgnum);
 	}
 }
 //s
@@ -236,7 +250,7 @@ void setFMBackground(std::string type, std::string wallpaper){
 			terminalCommand=desktopCOMMAND;
 		}
 		else if (current.compare("pcmanfm")==0){
-			svgGradient(wallpaper);
+			svgGradient(wallpaper,1);
 			std::string tmpHOME=linuxcommon::home_path();
 			terminalCommand=desktopCOMMAND+tmpHOME+"gradient.svg";
 			
@@ -259,7 +273,7 @@ void setFMBackground(std::string type, std::string wallpaper){
 		}
 		/** if using pcmanfm make an svg for the gradient*/
 		else if(current.compare("pcmanfm")==0){
-			svgGradient(wallpaper);
+			svgGradient(wallpaper,1);
 			std::string tmpHOME=linuxcommon::home_path();
 			terminalCommand=desktopCOMMAND+tmpHOME+"gradient.svg";
 		}
@@ -289,8 +303,8 @@ void setFMBackground(std::string type, std::string wallpaper){
     if(linuxcommon::run_a_program(terminalCommand)!=0){errorOUT("Couldn't set the wallpaper using:"+terminalCommand);}
 }
 /** create an SVG file of a color/colors and then set it as the background*/
-void svgGradient(std::string color){
-	debug_out("void svgGradient(std::string "+color+")");
+void svgGradient(std::string color,unsigned int bgnum){
+	debug_out("void svgGradient(std::string "+color+",unsigned int bgnum)");
 /**This just makes an svg file with a rectangle the size of the screen and the color(s) we send it*/
     std::string result;
     /**get the screen width from FLTK for the width*/
@@ -340,13 +354,13 @@ void svgGradient(std::string color){
     std::ofstream out( SVGpath.c_str() );
     if (!out.fail()){
         out<<result;
-        setBackground("scale",SVGpath.c_str());
+        setBackground("scale",SVGpath.c_str(),bgnum);
     }
 }
 //t
 /** The two color chooser*/
-void two_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg){
-	debug_out("void two_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg)");
+void two_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg,unsigned int bgnum){
+	debug_out("void two_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg,unsigned int bgnum)");
 	int c=0;
 	int c2=0;
 	std::string thisColor;
@@ -360,7 +374,7 @@ void two_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_
 			unsigned int color2=0;
 			thisColor=c1+":"+c2;
 			unsigned int color1=flCOLOR(thisColor,color2);
-			setBackground("gradient",thisColor);
+			setBackground("gradient",thisColor,bgnum);
 			color_display1->color(color1);
 			color_display2->color(color2);
 			color_display1->show();
@@ -370,10 +384,10 @@ void two_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_
 			color_display2->redraw();
 			debug_out("Color gradient:"+thisColor);
 			current_bg->value("Color Gradient");
-			std::string BG=getBackground();
-			background(background_displayer_thingie,BG);
-			background1(color_display1,BG);
-			background2(color_display2,BG);
+			std::string BG=getBackground(bgnum);
+			background(background_displayer_thingie,BG,bgnum);
+			background1(color_display1,BG,bgnum);
+			background2(color_display2,BG,bgnum);
 		}
 	}
 }
@@ -496,8 +510,8 @@ bool removeIconsOnDesktop(){
 }
 //s
 /** set the background in the jwmrc, and possibly filemanager*/
-bool setBackground(std::string type,std::string result){
-	debug_out("bool setBackground(std::string "+type+",std::string "+result+")");
+bool setBackground(std::string type,std::string result,unsigned int bgnum){
+	debug_out("bool setBackground(std::string "+type+",std::string "+result+",unsigned int bgnum)");
 	/** get a good decent attribute based on what is sent in*/
 	if(isImage(result)){type="image";}
 	if(isColor(result)){type="solid";}
@@ -516,7 +530,7 @@ bool setBackground(std::string type,std::string result){
 	} 
 	debug_out("Type="+type);
 	/** ok, set the attribute now*/
-	if(!setElementAttributeANDtext("Desktops","Background","type",type,result)){
+	if(!setElementAttributeANDtext(bgnum,"Desktops","Background","type",type,result)){
 		debug_out("Setting "+result+" as "+type+" image, FAILED");
 		return false;
 	}
@@ -562,7 +576,7 @@ bool use_icons_on_desktop(Fl_Box *background_displayer_thingie,std::string thisB
 	debug_out("bool use_icons_on_desktop(Fl_Box *background_displayer_thingie,std::string "+thisBG+")");
 	if(!isIconsOnDesktop()){
 		if(setIconsOnDesktop()){
-			background(background_displayer_thingie,thisBG);
+			background(background_displayer_thingie,thisBG,1);
 		}
 		else{errorOUT("Could not set a filemanager to show icons on the desktop");}
 	}
@@ -573,11 +587,14 @@ bool use_icons_on_desktop(Fl_Box *background_displayer_thingie,std::string thisB
 }
 ///String////////////////////////////////////////////////////////////////
 /** get the desktop background string*/
-std::string getBackground(){
-	debug_out("std::string getBackground()");
+std::string getBackground(){return getBackground(1);}
+std::string getBackground(unsigned int whichOne){
+	debug_out("std::string getBackground(unsigned int whichOne)");
 	std::string bg,JWMBG;
 	/** get the JWM background*/
-	JWMBG=getElementText("Desktops","Background");
+	JWMBG=getElementText("Desktops",whichOne,"Desktop","Background");
+	if(JWMBG.compare("")==0){JWMBG=getElementText("Desktops","Background");}
+	debug_out(JWMBG);
 	/** if a filemanager is running get that background*/
 	if(filemanagerRunning()){
 		bg= getFMBackground();
@@ -593,7 +610,7 @@ std::string getBackground(){
 		/** if the backgrounds are different set JWM background to the filemanager... since it is already on top*/
 		if(JWMBG.compare(bg)!=0){
 			debug_out("JWM background is not the same as the running file manager... setting it correctly to:"+bg);
-			if(!setBackground("image",bg)){debug_out("Didn't correctly set JWM bg to"+bg);}
+			if(!setBackground("image",bg,whichOne)){debug_out("Didn't correctly set JWM bg to"+bg);}
 		}
 	}
 	else{
@@ -627,7 +644,7 @@ std::string whichFileManager(){
 	debug_out("std::string whichFileManager()");
 	std::string XDGMIME = linuxcommon::term_out("xdg-mime query default inode/directory");
 	std::string desktopFile=linuxcommon::find_xdg_data_dir_subdir("applications");
-	debug_out("desktop file="+ desktopFile+"\ndirectory="+ XDGMIME);
+	debug_out("desktop dir="+ desktopFile+"\nMime="+ XDGMIME);
 	desktopFile+=XDGMIME;
 	if(!linuxcommon::test_file(desktopFile)){
 		std::vector<std::string> fileManagers;

@@ -77,6 +77,8 @@ void populateBrowserWithTextFile(Fl_Browser *o, std::string filename);
 void populateBrowserWithString(Fl_Browser *o, std::string STRING);
 void populateBrowserWithStringVector(Fl_Browser *o, std::vector<std::string> STRING_VEC);
 //s
+void searchBrowser(Fl_Input* input,Fl_Browser *browser);
+void searchBrowser(std::string term,Fl_Browser *browser);
 void setDecorations(Fl_Output *o,std::string element,std::string value);
 void startup(Fl_Window *o);
 void startup(Fl_Window *o ,const char** windowIcon);

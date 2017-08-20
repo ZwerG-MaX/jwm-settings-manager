@@ -719,7 +719,8 @@ refresh_app_browser(app_browser);}
       }
     }
   }
-  Function {clock_window()} {} {
+  Function {clock_window()} {open
+  } {
     Fl_Window clock_config_window {
       label {Configure Clock} open
       xywh {749 116 460 540} type Double hide resizable
@@ -795,7 +796,8 @@ clock_style->insert(item.c_str());
       }
     }
   }
-  Function {clock_info_window()} {} {
+  Function {clock_info_window()} {open
+  } {
     Fl_Window clock_modifier_notes {
       label {Modifier Notes} open
       xywh {81 107 350 400} type Double hide resizable
@@ -968,8 +970,7 @@ task_outline->redraw();}
       }
     }
   }
-  Function {config_button_window(int input_num)} {open
-  } {
+  Function {config_button_window(int input_num)} {} {
     code {BUTTON_NUM=input_num;} {}
     Fl_Window conf_button_window {
       label {Configure Button} open
@@ -1048,161 +1049,174 @@ else{showMenu();}}
       }
     }
   }
-  Function {config_clock_window()} {} {
+  Function {config_clock_window()} {open
+  } {
     Fl_Window conf_clock_window {
       label {Configure Clock} open
-      xywh {143 272 360 155} type Double hide
-      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
+      xywh {51 155 420 205} type Double resizable
+      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
     } {
-      Fl_Menu_Button clock_menu {
-        label {Clock Format} open
-        xywh {5 5 110 25} box FLAT_BOX color 23 selection_color 23
+      Fl_Scroll {} {open selected
+        xywh {0 -5 425 210}
       } {
-        MenuItem {} {
-          label {Day name Month Day 12 Hour}
-          callback {change_clock("Day");}
-          tooltip {%a, %e %b %l:%M %p} xywh {35 35 100 20}
-          code0 {const char* text=gettext("Day name Month Day 12 Hour");}
-          code1 {o->label(text);}
+        Fl_Browser zone_browser {
+          xywh {5 5 165 160} type Hold box FLAT_BOX selection_color 80
+          code0 {zoneMenu(o);}
         }
-        MenuItem {} {
-          label {24 Hour Clock}
-          callback {change_clock("24");}
-          tooltip {%H:%M} xywh {35 35 100 20}
-          code0 {const char* text=gettext("24 Hour Clock");}
-          code1 {o->label(text);}
+        Fl_Menu_Button clock_menu {
+          label {Clock Format}
+          xywh {185 5 110 25} box FLAT_BOX color 23 selection_color 23
+        } {
+          MenuItem {} {
+            label {Day name Month Day 12 Hour}
+            callback {change_clock("Day");}
+            tooltip {%a, %e %b %l:%M %p} xywh {40 40 100 20}
+            code0 {const char* text=gettext("Day name Month Day 12 Hour");}
+            code1 {o->label(text);}
+          }
+          MenuItem {} {
+            label {24 Hour Clock}
+            callback {change_clock("24");}
+            tooltip {%H:%M} xywh {40 40 100 20}
+            code0 {const char* text=gettext("24 Hour Clock");}
+            code1 {o->label(text);}
+          }
+          MenuItem {} {
+            label {12 Hour Clock}
+            callback {change_clock("12");}
+            tooltip {%l:%M %p} xywh {40 40 100 20}
+            code0 {const char* text=gettext("12 Hour Clock");}
+            code1 {o->label(text);}
+          }
+          MenuItem {} {
+            label {Year Month Day 24 Hour clock}
+            callback {change_clock("Year");}
+            tooltip {%F %H:%M %p} xywh {40 40 100 20}
+            code0 {const char* text=gettext("Year Month Day 24 Hour clock");}
+            code1 {o->label(text);}
+          }
+          MenuItem {} {
+            label {(Advanced) User Defined}
+            callback {clock_window()->show();}
+            tooltip {Use this to add a custom Unix time} xywh {50 50 100 20}
+            code0 {const char* text=gettext("(Advanced) User Defined");}
+            code1 {o->label(text);}
+          }
         }
-        MenuItem {} {
-          label {12 Hour Clock}
-          callback {change_clock("12");}
-          tooltip {%l:%M %p} xywh {35 35 100 20}
-          code0 {const char* text=gettext("12 Hour Clock");}
-          code1 {o->label(text);}
+        Fl_Output clock_displayer {
+          xywh {300 5 120 25} box FLAT_BOX align 1
+          code1 {std::string clock_text = getClock();}
+          code2 {o->value(clock_text.c_str());//copy_label(clock_text.c_str());}
+          code3 {o->redraw();//_label();}
         }
-        MenuItem {} {
-          label {Year Month Day 24 Hour clock}
-          callback {change_clock("Year");}
-          tooltip {%F %H:%M %p} xywh {35 35 100 20}
-          code0 {const char* text=gettext("Year Month Day 24 Hour clock");}
-          code1 {o->label(text);}
-        }
-        MenuItem {} {
-          label {(Advanced) User Defined}
-          callback {clock_window()->show();}
-          tooltip {Use this to add a custom Unix time} xywh {45 45 100 20}
-          code0 {const char* text=gettext("(Advanced) User Defined");}
-          code1 {o->label(text);}
-        }
-      }
-      Fl_Output clock_displayer {
-        xywh {120 5 120 25} box FLAT_BOX align 1
-        code1 {std::string clock_text = getClock();}
-        code2 {o->value(clock_text.c_str());//copy_label(clock_text.c_str());}
-        code3 {o->redraw();//_label();}
-      }
-      Fl_Output tz_out {
-        xywh {120 35 120 25} box FLAT_BOX
-      }
-      Fl_Menu_Button {} {
-        label {Time Zone}
-        callback {std::cout<<"hi"<<std::endl;} open
-        tooltip {Optional. The time zone of the clock.} xywh {5 35 110 25} box FLAT_BOX color 23
-        code0 {zoneMenu(o);}
-      } {}
-      Fl_Value_Input {} {
-        label Width
-        callback {if(!setItemH(BUTTON_NUM,o->value())){
+        Fl_Value_Input {} {
+          label Width
+          callback {if(!setItemH(BUTTON_NUM,o->value())){
   errorOUT("Did not set width correctly");
 }}
-        tooltip {The width of the clock. 0 indicates that the width should be determined from the length of the text to be displayed.} xywh {50 125 25 25} box FLAT_BOX selection_color 72
-        code0 {o->value(getItemW(BUTTON_NUM));}
-      }
-      Fl_Value_Input {} {
-        label Height
-        callback {if(!setItemW(BUTTON_NUM,o->value())){
+          tooltip {The width of the clock. 0 indicates that the width should be determined from the length of the text to be displayed.} xywh {225 50 25 25} box FLAT_BOX selection_color 72
+          code0 {o->value(getItemW(BUTTON_NUM));}
+        }
+        Fl_Button clock_fg {
+          label Foreground
+          callback {one_color_Font(o,"ClockStyle");}
+          tooltip {Optional, this will use the Panel colors if not specified} xywh {256 50 75 30} box FLAT_BOX color 23 align 1
+          code1 {if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}}
+          code2 {else{getColorFromItem(false,"ClockStyle","Foreground",o);}}
+        }
+        Fl_Button {} {
+          label Background
+          callback {one_color(o,"ClockStyle");}
+          tooltip {Optional, this will use the Panel colors if not specified} xywh {343 50 75 30} box FLAT_BOX color 23 align 1
+          code1 {if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}}
+          code2 {else{getColorFromItem(false,"ClockStyle","Background",o);}}
+        }
+        Fl_Value_Input {} {
+          label Height
+          callback {if(!setItemW(BUTTON_NUM,o->value())){
   errorOUT("Did not set height correctly");
 }}
-        tooltip {The height of the clock. 0 indicates that the height should be determined from the font used.} xywh {135 125 25 25} box FLAT_BOX selection_color 72
-        code0 {o->value(getItemH(BUTTON_NUM));}
-      }
-      Fl_Menu_Button {} {
-        label {Mouse Button} open
-        xywh {5 65 110 25} box FLAT_BOX color 23 selection_color 80
-        code0 {if(JWM_VERSION<230)o->hide();}
-      } {
-        MenuItem {} {
-          label 1
-          callback {get_clock_button_stuff(1);}
-          xywh {10 10 100 20}
+          tooltip {The height of the clock. 0 indicates that the height should be determined from the font used.} xywh {225 80 25 25} box FLAT_BOX selection_color 72
+          code0 {o->value(getItemH(BUTTON_NUM));}
         }
-        MenuItem {} {
-          label 2
-          callback {get_clock_button_stuff(2);}
-          xywh {10 10 100 20}
+        Fl_Menu_Button {} {
+          label {Mouse Button}
+          xywh {260 85 110 25} box FLAT_BOX color 23 selection_color 80
+          code0 {if(JWM_VERSION<230)o->hide();}
+        } {
+          MenuItem {} {
+            label 1
+            callback {get_clock_button_stuff(1);}
+            xywh {15 15 100 20}
+          }
+          MenuItem {} {
+            label 2
+            callback {get_clock_button_stuff(2);}
+            xywh {15 15 100 20}
+          }
+          MenuItem {} {
+            label 3
+            callback {get_clock_button_stuff(3);}
+            xywh {15 15 100 20}
+          }
         }
-        MenuItem {} {
-          label 3
-          callback {get_clock_button_stuff(3);}
-          xywh {10 10 100 20}
+        Fl_Value_Output output_button_val {
+          xywh {375 85 40 25} box FLAT_BOX color 23 selection_color 80
+          code0 {if(JWM_VERSION<230)o->hide();}
         }
-      }
-      Fl_Value_Output output_button_val {
-        xywh {120 65 40 25} box FLAT_BOX color 23 selection_color 80
-        code0 {if(JWM_VERSION<230)o->hide();}
-      }
-      Fl_Output clock_button_menu {
-        label Menu
-        tooltip {The root menu the Clock is tied to} xywh {215 65 25 25} box FLAT_BOX color 55 deactivate
-      }
-      Fl_Button clock_menu_conf_gear {
-        callback {const char* tmpTST =clock_button_menu->value();
-clock_button_menu->activate();
-if(tmpTST!=NULL){showMenu(tmpTST);}
-else{showMenu();}}
-        tooltip {Configure the menu} image {custom_buttons/gear16.png} xywh {245 65 25 25} box FLAT_BOX color 23
-      }
-      Fl_Input clock_prog {
-        label Program
-        tooltip {Execute a command.} xywh {120 95 120 25} box FLAT_BOX color 55 selection_color 72 when 1 deactivate
-        code0 {current_clock_text();}
-      }
-      Fl_Button clock_prog_conf_gear {
-        callback {std::string program=choose_a_program();
+        Fl_Input clock_prog {
+          label Program
+          tooltip {Execute a command.} xywh {265 115 115 25} box FLAT_BOX color 55 selection_color 72 when 1 deactivate
+          code0 {current_clock_text();}
+        }
+        Fl_Button clock_prog_conf_gear {
+          callback {std::string program=choose_a_program();
 if(program.compare("")==0){
   clock_prog->activate();
   std::string result="exec:"+program;
   clock_prog->value(result.c_str());
   clock_prog->redraw();
 }}
-        tooltip {Configure the program} image {custom_buttons/gear16.png} xywh {245 95 25 25} box FLAT_BOX color 23
-      }
-      Fl_Button {} {
-        label OK
-        callback {conf_clock_window->hide();}
-        xywh {295 125 55 25} box FLAT_BOX color 61 labelcolor 7
-      }
-      Fl_Button clock_fg {
-        label Foreground
-        callback {one_color_Font(o,"ClockStyle");}
-        tooltip {Optional, this will use the Panel colors if not specified} xywh {275 20 75 30} box FLAT_BOX color 23 align 1
-        code1 {if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}}
-        code2 {else{getColorFromItem(false,"ClockStyle","Foreground",o);}}
-      }
-      Fl_Button {} {
-        label Background
-        callback {one_color(o,"ClockStyle");}
-        tooltip {Optional, this will use the Panel colors if not specified} xywh {275 70 75 30} box FLAT_BOX color 23 align 1
-        code1 {if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}}
-        code2 {else{getColorFromItem(false,"ClockStyle","Background",o);}}
+          tooltip {Configure the program} image {custom_buttons/gear16.png} xywh {385 115 25 25} box FLAT_BOX color 23
+        }
+        Fl_Output clock_button_menu {
+          label Menu
+          tooltip {The root menu the Clock is tied to} xywh {355 145 25 25} box FLAT_BOX color 55 deactivate
+        }
+        Fl_Button clock_menu_conf_gear {
+          callback {const char* tmpTST =clock_button_menu->value();
+clock_button_menu->activate();
+if(tmpTST!=NULL){showMenu(tmpTST);}
+else{showMenu();}}
+          tooltip {Configure the menu} image {custom_buttons/gear16.png} xywh {385 145 25 25} box FLAT_BOX color 23
+        }
+        Fl_Button {} {
+          label OK
+          callback {conf_clock_window->hide();}
+          xywh {360 175 55 25} box FLAT_BOX color 61 labelcolor 7
+        }
+        Fl_Input tz_out {
+          callback {searchBrowser(o,zone_browser);}
+          tooltip {Type to search} xywh {65 175 150 25} box FLAT_BOX selection_color 80 when 3
+          code0 {std::string zonero=getElementAttribute(currentPanel(),"Tray","Clock","zone");}
+          code1 {if(zonero.compare("")!=0){o->value(zonero.c_str());}}
+        }
+        Fl_Button {} {
+          label SET
+          callback {zone_check(zone_browser);}
+          xywh {5 175 55 25} box FLAT_BOX color 61 labelcolor 7
+        }
+        Fl_Box {} {
+          image {custom_buttons/find.png} xywh {215 170 30 30} align 512
+        }
       }
     }
   }
-  Function {config_indicator_window()} {open
-  } {
+  Function {config_indicator_window()} {} {
     Fl_Window conf_indicator_window {
       label {Configure Indicators} open
-      xywh {612 171 305 215} type Double
-      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
+      xywh {612 171 305 215} type Double hide
+      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
     } {
       Fl_Button {} {
         label OK
@@ -1227,7 +1241,7 @@ if(program.compare("")==0){
         label Width
         callback {if(!setItemW(BUTTON_NUM,o->value())){
   errorOUT("Did not set width correctly");
-}} selected
+}}
         tooltip {The maximum width of an item contained in the dock. This defaults to the width or height of the tray (whichever is smaller).} xywh {115 185 25 25} box FLAT_BOX selection_color 72
         code0 {o->value(getItemW(BUTTON_NUM));}
       }
@@ -1881,31 +1895,23 @@ conf_button_window->hide();} {}
       }
     }
   }
-  Function {zone_cb(Fl_Menu_*o, void* v)} {private return_type {inline void}
+  Function {zone_check(Fl_Browser* o)} {open
   } {
-    code {zone_check(o);} {}
-  }
-  Function {zone_check(Fl_Menu_* o)} {} {
     code {debug_out("zone_check");
 std::string timeZone;
-timeZone+=o->text();
+if(!checkFlBrowserItem(o)){return;}
+const char* tmpr=o->text(o->value());
+if(tmpr==NULL){return;}
+timeZone=tmpr;
 tz_out->value(timeZone.c_str());
 if(!setElementAttribute(currentPanel(),"Tray","Clock","zone",timeZone)){
   errorOUT("Could not change JWM time zone");
-}} {}
+}
+else{set_user_tz(timeZone);}} {}
   }
-  Function {zoneMenu(Fl_Menu_Button *o)} {} {
-    code {std::vector<std::string> zoneVec=zoneVector();
-for( std::vector<std::string>::iterator it = zoneVec.begin();
-it!=zoneVec.end();
-++it){
-  std::string tmp=*it;
-  o->add(tmp.c_str(), 0,(Fl_Callback*)PanelUI::cb_zone);
-}} {}
-  }
-  Function {cb_zone(Fl_Menu_* o,void* v)} {private return_type {static void}
+  Function {zoneMenu(Fl_Browser *o)} {open
   } {
-    code {debug_out("cb_zone()");
-((PanelUI*)(o->parent()->user_data()))->zone_cb(o,v);} {}
+    code {std::vector<std::string> zoneVec=zoneVector();
+populateBrowserWithStringVector(zone_browser,zoneVec);} {}
   }
 } 

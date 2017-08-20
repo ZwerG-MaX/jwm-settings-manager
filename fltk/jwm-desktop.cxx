@@ -27,21 +27,21 @@
 #include "jwm-desktop.h"
 
 void DesktopUI::cb_Choose_i(Fl_Button*, void*) {
-  bg_chooser_cb(background_displayer_thingie,current_bg,color_display1,color_display2);
+  bg_chooser_cb(background_displayer_thingie,current_bg,color_display1,color_display2,DESKTOPNUM);
 }
 void DesktopUI::cb_Choose(Fl_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_Choose_i(o,v);
 }
 
 void DesktopUI::cb_Choose1_i(Fl_Button*, void*) {
-  one_color(color_display1,color_display2,background_displayer_thingie,current_bg);
+  one_color(color_display1,color_display2,background_displayer_thingie,current_bg,DESKTOPNUM);
 }
 void DesktopUI::cb_Choose1(Fl_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_Choose1_i(o,v);
 }
 
 void DesktopUI::cb_Choose2_i(Fl_Button*, void*) {
-  two_color(color_display1,color_display2,background_displayer_thingie,current_bg);
+  two_color(color_display1,color_display2,background_displayer_thingie,current_bg,DESKTOPNUM);
 }
 void DesktopUI::cb_Choose2(Fl_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_Choose2_i(o,v);
@@ -50,8 +50,17 @@ void DesktopUI::cb_Choose2(Fl_Button* o, void* v) {
 void DesktopUI::cb_icons_check_i(Fl_Check_Button* o, void*) {
   bool useful=use_icons_on_desktop(background_displayer_thingie,thisBG);
 o->value(0);
+DESKTOPNUM=1;
+std::string mybg="";
+const char* MyBG=current_bg->value();
+if(MyBG!=NULL) mybg=MyBG;
+allBGS(background_displayer_thingie,color_display1,color_display2,mybg,DESKTOPNUM,current_bg);
 fm_pref->hide();
-if(useful){o->value(1);fm_pref->show();};
+if(useful){
+  o->value(1);
+  fm_pref->show();
+  
+};
 }
 void DesktopUI::cb_icons_check(Fl_Check_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_icons_check_i(o,v);
@@ -95,10 +104,28 @@ void DesktopUI::cb_OK(Fl_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_OK_i(o,v);
 }
 
+void DesktopUI::cb_menu_button_i(Fl_Menu_Button* o, void*) {
+  const char* numer;
+const Fl_Menu_Item *tmp=o->mvalue();
+numer=tmp->label();
+if(numer==NULL)return;
+std::string msg="Desktop=";
+msg+=numer;
+debug_out(msg);
+unsigned int NUM=std::stoul(numer);
+//DESKTOPNUM=NUM;
+std::string bg=getBackground(NUM);
+set_BGS(bg,NUM);
+}
+void DesktopUI::cb_menu_button(Fl_Menu_Button* o, void* v) {
+  ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_menu_button_i(o,v);
+}
+
 Fl_Double_Window* DesktopUI::make_window() {
   load();
   thisBG=getBackground();
   FILEMANAGER=whichFileManagerRunning();
+  DESKTOPNUM=1;
   { Fl_Double_Window* o = desktop_window = new Fl_Double_Window(360, 420, gettext("Desktop Settings"));
     desktop_window->color((Fl_Color)31);
     desktop_window->user_data((void*)(this));
@@ -108,19 +135,19 @@ Fl_Double_Window* DesktopUI::make_window() {
         background_displayer_thingie->box(FL_FLAT_BOX);
         background_displayer_thingie->color((Fl_Color)37);
         background_displayer_thingie->when(FL_WHEN_RELEASE_ALWAYS);
-        background(o,thisBG);
+        background(o,thisBG,DESKTOPNUM);
       } // Fl_Box* background_displayer_thingie
       { Fl_Box* o = color_display1 = new Fl_Box(8, 5, 345, 270);
         color_display1->box(FL_FLAT_BOX);
         color_display1->color((Fl_Color)37);
         color_display1->when(FL_WHEN_RELEASE_ALWAYS);
-        background1(o,thisBG);
+        background1(o,thisBG,DESKTOPNUM);
       } // Fl_Box* color_display1
       { Fl_Box* o = color_display2 = new Fl_Box(8, 135, 345, 140);
         color_display2->box(FL_FLAT_BOX);
         color_display2->color((Fl_Color)37);
         color_display2->when(FL_WHEN_RELEASE_ALWAYS);
-        background2(o,thisBG);
+        background2(o,thisBG,DESKTOPNUM);
       } // Fl_Box* color_display2
       { Fl_Button* o = new Fl_Button(8, 315, 110, 25, gettext("Choose Image"));
         o->box(FL_FLAT_BOX);
@@ -162,7 +189,7 @@ Fl_Double_Window* DesktopUI::make_window() {
         current_bg->selection_color(FL_DARK_RED);
         current_bg->labelfont(1);
         current_bg->align(Fl_Align(33));
-        bg_name(o,thisBG);
+        bg_name(o,thisBG,DESKTOPNUM);
       } // Fl_Output* current_bg
       { Fl_Check_Button* o = check_desktops = new Fl_Check_Button(5, 365, 142, 25, gettext("Multiple Desktops"));
         check_desktops->tooltip(gettext("This allows you to have multiple screens to work on from one Display"));
@@ -185,7 +212,7 @@ Fl_Double_Window* DesktopUI::make_window() {
         int width = getIntAttribute("Desktops","width");
         o->value(width);
       } // Fl_Value_Input* num_desktop_w
-      { Fl_Value_Input* o = num_desktop_h = new Fl_Value_Input(150, 370, 20, 20, gettext("Workspaces High "));
+      { Fl_Value_Input* o = num_desktop_h = new Fl_Value_Input(150, 368, 20, 20, gettext("Workspaces High "));
         num_desktop_h->tooltip(gettext("Number of workspaces up and down"));
         num_desktop_h->box(FL_FLAT_BOX);
         num_desktop_h->color((Fl_Color)53);
@@ -216,6 +243,13 @@ Fl_Double_Window* DesktopUI::make_window() {
         o->hide();
         o->deactivate();
       } // Fl_Button* o
+      { Fl_Menu_Button* o = menu_button = new Fl_Menu_Button(120, 390, 105, 25, gettext("Desktop"));
+        menu_button->box(FL_FLAT_BOX);
+        menu_button->color((Fl_Color)23);
+        menu_button->selection_color((Fl_Color)80);
+        menu_button->callback((Fl_Callback*)cb_menu_button);
+        make_menu(o);
+      } // Fl_Menu_Button* menu_button
       o->end();
     } // Fl_Scroll* o
     startup(o,jsm_desktop_xpm);
@@ -224,4 +258,51 @@ Fl_Double_Window* DesktopUI::make_window() {
     desktop_window->resizable(desktop_window);
   } // Fl_Double_Window* desktop_window
   return desktop_window;
+}
+
+int DesktopUI::total_desktops() {
+  int w = int((num_desktop_w->value()));
+  if(w<1)w=1;
+  int h = int((num_desktop_h->value()));
+  if(h<1)h=1;
+  return (w * h);
+}
+
+void DesktopUI::make_menu(Fl_Menu_Button* o) {
+  std::string DESK;
+  int width = getIntAttribute("Desktops","width");
+  if(width<1)width=1;
+  int height = getIntAttribute("Desktops","height");
+  if(height<1)height=1;
+  int num = width * height;
+  unsigned int counter = 0;
+  for (counter=1;counter<=num;++counter){
+    std::string numero=linuxcommon::convert_unsigned_to_string(counter);
+    o->add(numero.c_str());
+  }
+}
+
+void DesktopUI::desktop_menu_cb(Fl_Menu_ *o) {
+  ((DesktopUI*)(o->user_data()))->menu_cb(o);
+}
+
+void DesktopUI::menu_cb(Fl_Menu_ *o) {
+  const char* numer;
+  const Fl_Menu_Item *tmp=o->mvalue();
+  numer=tmp->label();
+  if(numer==NULL)return;
+  std::string msg="Desktop=";
+  msg+=numer;
+  debug_out(msg);
+  unsigned int NUM=std::stoul(numer);
+  //DESKTOPNUM=NUM;
+  std::string bg=getBackground(NUM);
+  set_BGS(bg,NUM);
+}
+
+void DesktopUI::set_BGS(std::string bg, unsigned int num) {
+  debug_out("set_BGS");
+  
+  allBGS(background_displayer_thingie,color_display1,color_display2,bg,num,current_bg);
+  //DESKTOPNUM=num;
 }

@@ -446,6 +446,7 @@ private:
 public:
   Fl_Double_Window* config_clock_window();
   Fl_Double_Window *conf_clock_window;
+  Fl_Browser *zone_browser;
   Fl_Menu_Button *clock_menu;
   static unsigned char menu_clock_menu_i18n_done;
   static Fl_Menu_Item menu_clock_menu[];
@@ -462,12 +463,16 @@ private:
   static void cb_Advanced(Fl_Menu_*, void*);
 public:
   Fl_Output *clock_displayer;
-  Fl_Output *tz_out;
 private:
-  inline void cb_Time_i(Fl_Menu_Button*, void*);
-  static void cb_Time(Fl_Menu_Button*, void*);
   inline void cb_Width_i(Fl_Value_Input*, void*);
   static void cb_Width(Fl_Value_Input*, void*);
+public:
+  Fl_Button *clock_fg;
+private:
+  inline void cb_clock_fg_i(Fl_Button*, void*);
+  static void cb_clock_fg(Fl_Button*, void*);
+  inline void cb_Background_i(Fl_Button*, void*);
+  static void cb_Background(Fl_Button*, void*);
   inline void cb_Height1_i(Fl_Value_Input*, void*);
   static void cb_Height1(Fl_Value_Input*, void*);
   static unsigned char menu_Mouse1_i18n_done;
@@ -480,26 +485,26 @@ private:
   static void cb_32(Fl_Menu_*, void*);
 public:
   Fl_Value_Output *output_button_val;
-  Fl_Output *clock_button_menu;
-  Fl_Button *clock_menu_conf_gear;
-private:
-  inline void cb_clock_menu_conf_gear_i(Fl_Button*, void*);
-  static void cb_clock_menu_conf_gear(Fl_Button*, void*);
-public:
   Fl_Input *clock_prog;
   Fl_Button *clock_prog_conf_gear;
 private:
   inline void cb_clock_prog_conf_gear_i(Fl_Button*, void*);
   static void cb_clock_prog_conf_gear(Fl_Button*, void*);
+public:
+  Fl_Output *clock_button_menu;
+  Fl_Button *clock_menu_conf_gear;
+private:
+  inline void cb_clock_menu_conf_gear_i(Fl_Button*, void*);
+  static void cb_clock_menu_conf_gear(Fl_Button*, void*);
   inline void cb_OK6_i(Fl_Button*, void*);
   static void cb_OK6(Fl_Button*, void*);
 public:
-  Fl_Button *clock_fg;
+  Fl_Input *tz_out;
 private:
-  inline void cb_clock_fg_i(Fl_Button*, void*);
-  static void cb_clock_fg(Fl_Button*, void*);
-  inline void cb_Background_i(Fl_Button*, void*);
-  static void cb_Background(Fl_Button*, void*);
+  inline void cb_tz_out_i(Fl_Input*, void*);
+  static void cb_tz_out(Fl_Input*, void*);
+  inline void cb_SET_i(Fl_Button*, void*);
+  static void cb_SET(Fl_Button*, void*);
 public:
   Fl_Double_Window* config_indicator_window();
   Fl_Double_Window *conf_indicator_window;
@@ -680,11 +685,8 @@ private:
   static void cb_Width3(Fl_Value_Input*, void*);
   inline void cb_Height3_i(Fl_Value_Input*, void*);
   static void cb_Height3(Fl_Value_Input*, void*);
-  inline void zone_cb(Fl_Menu_*o, void* v);
 public:
-  void zone_check(Fl_Menu_* o);
-  void zoneMenu(Fl_Menu_Button *o);
-private:
-  static void cb_zone(Fl_Menu_* o,void* v);
+  void zone_check(Fl_Browser* o);
+  void zoneMenu(Fl_Browser *o);
 };
 #endif

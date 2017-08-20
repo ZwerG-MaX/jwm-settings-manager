@@ -153,6 +153,7 @@ bool setElementAttribute(std::string element, std::string subelement, std::strin
 bool setElementAttribute(std::string element, std::string subelement, std::string SUBsubsubelement, std::string attribute, std::string value);
 bool setElementAttributeANDtext(std::string element, std::string attribute, std::string value,std::string text);
 bool setElementAttributeANDtext(std::string element, std::string subelement, std::string attribute, std::string value,std::string text);
+bool setElementAttributeANDtext(unsigned int whichElement,std::string element, std::string subelement, std::string attribute, std::string value,std::string text);
 bool setElementAttributeANDtext(std::string element, std::string subelement, std::string SUBsubsubelement, std::string attribute, std::string value,std::string text);
 bool setElementColor(std::string element, const double* rgb);
 bool setElementColor(std::string element, std::string subelement, const double* rgb);
@@ -162,6 +163,7 @@ bool setNodeText(pugi::xml_node node,std::string text);
 bool setNodeButtonTextByMask(pugi::xml_node node,std::string text,std::string attribute);
 bool setRootMenuAttribute(int MENU, std::string attribute,std::string value);
 bool setRootMenuHeight(std::string val, int height);
+bool set_user_tz(std::string timeZone);
 //T
 bool testExec(std::string command); //linuxcommon wrapper
 //String////////////////////////////////////////////////////////////////
@@ -175,6 +177,7 @@ std::string getAttribute(pugi::xml_node node,std::string attribute);
 std::string getElementText(std::string element);
 std::string getElementText(std::string element, std::string subelement);
 std::string getElementText(unsigned int whichOne, std::string element, std::string subelement);
+std::string getElementText(std::string element, unsigned int whichElement, std::string subelement,std::string subsub);
 std::string getElementText(std::string element, std::string subelement, std::string SUBsubsubelement);
 std::string getElementAttribute(std::string element, std::string attribute);
 std::string getElementAttribute(std::string element, std::string subelement, std::string attribute);

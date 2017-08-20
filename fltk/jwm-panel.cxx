@@ -930,35 +930,35 @@ void PanelUI::cb_Day_i(Fl_Menu_*, void*) {
   change_clock("Day");
 }
 void PanelUI::cb_Day(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Day_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Day_i(o,v);
 }
 
 void PanelUI::cb_24_i(Fl_Menu_*, void*) {
   change_clock("24");
 }
 void PanelUI::cb_24(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_24_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_24_i(o,v);
 }
 
 void PanelUI::cb_12_i(Fl_Menu_*, void*) {
   change_clock("12");
 }
 void PanelUI::cb_12(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_12_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_12_i(o,v);
 }
 
 void PanelUI::cb_Year_i(Fl_Menu_*, void*) {
   change_clock("Year");
 }
 void PanelUI::cb_Year(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Year_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Year_i(o,v);
 }
 
 void PanelUI::cb_Advanced_i(Fl_Menu_*, void*) {
   clock_window()->show();
 }
 void PanelUI::cb_Advanced(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Advanced_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Advanced_i(o,v);
 }
 
 unsigned char PanelUI::menu_clock_menu_i18n_done = 0;
@@ -971,20 +971,27 @@ Fl_Menu_Item PanelUI::menu_clock_menu[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
-void PanelUI::cb_Time_i(Fl_Menu_Button*, void*) {
-  std::cout<<"hi"<<std::endl;
-}
-void PanelUI::cb_Time(Fl_Menu_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Time_i(o,v);
-}
-
 void PanelUI::cb_Width_i(Fl_Value_Input* o, void*) {
   if(!setItemH(BUTTON_NUM,o->value())){
   errorOUT("Did not set width correctly");
 };
 }
 void PanelUI::cb_Width(Fl_Value_Input* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Width_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Width_i(o,v);
+}
+
+void PanelUI::cb_clock_fg_i(Fl_Button* o, void*) {
+  one_color_Font(o,"ClockStyle");
+}
+void PanelUI::cb_clock_fg(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_clock_fg_i(o,v);
+}
+
+void PanelUI::cb_Background_i(Fl_Button* o, void*) {
+  one_color(o,"ClockStyle");
+}
+void PanelUI::cb_Background(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Background_i(o,v);
 }
 
 void PanelUI::cb_Height1_i(Fl_Value_Input* o, void*) {
@@ -993,28 +1000,28 @@ void PanelUI::cb_Height1_i(Fl_Value_Input* o, void*) {
 };
 }
 void PanelUI::cb_Height1(Fl_Value_Input* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Height1_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Height1_i(o,v);
 }
 
 void PanelUI::cb_13_i(Fl_Menu_*, void*) {
   get_clock_button_stuff(1);
 }
 void PanelUI::cb_13(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_13_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_13_i(o,v);
 }
 
 void PanelUI::cb_22_i(Fl_Menu_*, void*) {
   get_clock_button_stuff(2);
 }
 void PanelUI::cb_22(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_22_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_22_i(o,v);
 }
 
 void PanelUI::cb_32_i(Fl_Menu_*, void*) {
   get_clock_button_stuff(3);
 }
 void PanelUI::cb_32(Fl_Menu_* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_32_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_32_i(o,v);
 }
 
 unsigned char PanelUI::menu_Mouse1_i18n_done = 0;
@@ -1024,16 +1031,6 @@ Fl_Menu_Item PanelUI::menu_Mouse1[] = {
  {"3", 0,  (Fl_Callback*)PanelUI::cb_32, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
-
-void PanelUI::cb_clock_menu_conf_gear_i(Fl_Button*, void*) {
-  const char* tmpTST =clock_button_menu->value();
-clock_button_menu->activate();
-if(tmpTST!=NULL){showMenu(tmpTST);}
-else{showMenu();};
-}
-void PanelUI::cb_clock_menu_conf_gear(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_clock_menu_conf_gear_i(o,v);
-}
 
 void PanelUI::cb_clock_prog_conf_gear_i(Fl_Button*, void*) {
   std::string program=choose_a_program();
@@ -1045,29 +1042,89 @@ if(program.compare("")==0){
 };
 }
 void PanelUI::cb_clock_prog_conf_gear(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_clock_prog_conf_gear_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_clock_prog_conf_gear_i(o,v);
+}
+
+void PanelUI::cb_clock_menu_conf_gear_i(Fl_Button*, void*) {
+  const char* tmpTST =clock_button_menu->value();
+clock_button_menu->activate();
+if(tmpTST!=NULL){showMenu(tmpTST);}
+else{showMenu();};
+}
+void PanelUI::cb_clock_menu_conf_gear(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_clock_menu_conf_gear_i(o,v);
 }
 
 void PanelUI::cb_OK6_i(Fl_Button*, void*) {
   conf_clock_window->hide();
 }
 void PanelUI::cb_OK6(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_OK6_i(o,v);
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_OK6_i(o,v);
 }
 
-void PanelUI::cb_clock_fg_i(Fl_Button* o, void*) {
-  one_color_Font(o,"ClockStyle");
+void PanelUI::cb_tz_out_i(Fl_Input* o, void*) {
+  searchBrowser(o,zone_browser);
 }
-void PanelUI::cb_clock_fg(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_clock_fg_i(o,v);
+void PanelUI::cb_tz_out(Fl_Input* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_tz_out_i(o,v);
 }
 
-void PanelUI::cb_Background_i(Fl_Button* o, void*) {
-  one_color(o,"ClockStyle");
+void PanelUI::cb_SET_i(Fl_Button*, void*) {
+  zone_check(zone_browser);
 }
-void PanelUI::cb_Background(Fl_Button* o, void* v) {
-  ((PanelUI*)(o->parent()->user_data()))->cb_Background_i(o,v);
+void PanelUI::cb_SET(Fl_Button* o, void* v) {
+  ((PanelUI*)(o->parent()->parent()->user_data()))->cb_SET_i(o,v);
 }
+
+static const unsigned char idata_find[] =
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,48,0,0,0,147,0,0,0,215,0,0,0,245,0,0,
+0,242,0,0,0,210,0,0,0,138,0,0,0,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,8,0,0,0,155,0,0,0,253,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,
+255,0,0,0,255,0,0,0,255,0,0,0,250,0,0,0,134,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,8,0,0,0,195,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,248,0,0,0,214,0,0,0,
+215,0,0,0,252,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,172,0,0,0,2,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,156,0,0,0,255,0,0,0,255,0,0,0,243,0,0,0,112,0,0,0,13,0,0,0,0,0,0,
+0,0,0,0,0,19,0,0,0,129,0,0,0,250,0,0,0,255,0,0,0,255,0,0,0,126,0,0,0,0,0,0,0,
+0,0,0,0,49,0,0,0,253,0,0,0,255,0,0,0,243,0,0,0,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,73,0,0,0,251,0,0,0,255,0,0,0,246,0,0,0,27,0,0,0,0,0,
+0,0,148,0,0,0,255,0,0,0,255,0,0,0,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,139,0,0,0,255,0,0,0,255,0,0,0,119,0,0,0,0,0,0,0,
+215,0,0,0,255,0,0,0,248,0,0,0,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,34,0,0,0,255,0,0,0,255,0,0,0,187,0,0,0,0,0,0,0,244,0,
+0,0,255,0,0,0,212,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,241,0,0,0,255,0,0,0,216,0,0,0,0,0,0,0,242,0,0,0,255,
+0,0,0,215,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,243,0,0,0,255,0,0,0,213,0,0,0,0,0,0,0,212,0,0,0,255,0,0,0,
+250,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,39,0,0,0,255,0,0,0,255,0,0,0,183,0,0,0,0,0,0,0,142,0,0,0,255,0,0,0,255,0,
+0,0,121,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+151,0,0,0,255,0,0,0,255,0,0,0,113,0,0,0,0,0,0,0,42,0,0,0,252,0,0,0,255,0,0,0,
+248,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,88,0,0,0,254,
+0,0,0,255,0,0,0,242,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,143,0,0,0,255,0,0,0,255,0,
+0,0,249,0,0,0,131,0,0,0,26,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,198,0,0,0,254,0,0,0,
+255,0,0,0,255,0,0,0,112,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,181,0,0,0,255,0,0,
+0,255,0,0,0,255,0,0,0,254,0,0,0,231,0,0,0,233,0,0,0,255,0,0,0,255,0,0,0,255,0,
+0,0,255,0,0,0,156,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,136,0,
+0,0,249,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255,
+0,0,0,254,0,0,0,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,34,0,0,0,129,0,0,0,196,0,0,0,227,0,0,0,224,0,0,0,240,0,0,0,255,0,0,0,255,
+0,0,0,255,0,0,0,194,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,0,0,0,255,0,0,0,255,0,0,0,255,
+0,0,0,255,0,0,0,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,177,0,0,0,255,0,0,0,255,0,0,0,255,
+0,0,0,215,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40,0,0,0,251,0,0,0,255,0,0,0,255,0,0,0,255,
+0,0,0,98,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,157,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,228,
+0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,0,0,246,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,
+117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,136,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,226,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,16,0,0,0,237,0,0,0,255,0,0,0,255,0,0,0,223,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,73,0,0,0,223,0,0,0,221,0,0,0,70};
+static Fl_RGB_Image image_find(idata_find, 17, 24, 4, 0);
 
 void PanelUI::cb_OK7_i(Fl_Button*, void*) {
   conf_indicator_window->hide();
@@ -2448,150 +2505,169 @@ Fl_Double_Window* PanelUI::config_button_window(int input_num) {
 }
 
 Fl_Double_Window* PanelUI::config_clock_window() {
-  { Fl_Double_Window* o = conf_clock_window = new Fl_Double_Window(360, 155, gettext("Configure Clock"));
+  { Fl_Double_Window* o = conf_clock_window = new Fl_Double_Window(420, 205, gettext("Configure Clock"));
     conf_clock_window->user_data((void*)(this));
-    { clock_menu = new Fl_Menu_Button(5, 5, 110, 25, gettext("Clock Format"));
-      clock_menu->box(FL_FLAT_BOX);
-      clock_menu->color((Fl_Color)23);
-      clock_menu->selection_color((Fl_Color)23);
-      { Fl_Menu_Item* o = &menu_clock_menu[0];
-        const char* text=gettext("Day name Month Day 12 Hour");
-        o->label(text);
-      }
-      { Fl_Menu_Item* o = &menu_clock_menu[1];
-        const char* text=gettext("24 Hour Clock");
-        o->label(text);
-      }
-      { Fl_Menu_Item* o = &menu_clock_menu[2];
-        const char* text=gettext("12 Hour Clock");
-        o->label(text);
-      }
-      { Fl_Menu_Item* o = &menu_clock_menu[3];
-        const char* text=gettext("Year Month Day 24 Hour clock");
-        o->label(text);
-      }
-      { Fl_Menu_Item* o = &menu_clock_menu[4];
-        const char* text=gettext("(Advanced) User Defined");
-        o->label(text);
-      }
-      if (!menu_clock_menu_i18n_done) {
-        int i=0;
-        for ( ; i<5; i++)
-          if (menu_clock_menu[i].label())
-            menu_clock_menu[i].label(gettext(menu_clock_menu[i].label()));
-        menu_clock_menu_i18n_done = 1;
-      }
-      clock_menu->menu(menu_clock_menu);
-    } // Fl_Menu_Button* clock_menu
-    { Fl_Output* o = clock_displayer = new Fl_Output(120, 5, 120, 25);
-      clock_displayer->box(FL_FLAT_BOX);
-      clock_displayer->align(Fl_Align(FL_ALIGN_TOP));
-      std::string clock_text = getClock();
-      o->value(clock_text.c_str());//copy_label(clock_text.c_str());
-      o->redraw();//_label();
-    } // Fl_Output* clock_displayer
-    { tz_out = new Fl_Output(120, 35, 120, 25);
-      tz_out->box(FL_FLAT_BOX);
-    } // Fl_Output* tz_out
-    { Fl_Menu_Button* o = new Fl_Menu_Button(5, 35, 110, 25, gettext("Time Zone"));
-      o->tooltip(gettext("Optional. The time zone of the clock."));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_Time);
-      zoneMenu(o);
-    } // Fl_Menu_Button* o
-    { Fl_Value_Input* o = new Fl_Value_Input(50, 125, 25, 25, gettext("Width"));
-      o->tooltip(gettext("The width of the clock. 0 indicates that the width should be determined from \
+    { Fl_Scroll* o = new Fl_Scroll(0, -5, 425, 210);
+      { Fl_Browser* o = zone_browser = new Fl_Browser(5, 5, 165, 160);
+        zone_browser->type(2);
+        zone_browser->box(FL_FLAT_BOX);
+        zone_browser->selection_color((Fl_Color)80);
+        zoneMenu(o);
+      } // Fl_Browser* zone_browser
+      { clock_menu = new Fl_Menu_Button(185, 5, 110, 25, gettext("Clock Format"));
+        clock_menu->box(FL_FLAT_BOX);
+        clock_menu->color((Fl_Color)23);
+        clock_menu->selection_color((Fl_Color)23);
+        { Fl_Menu_Item* o = &menu_clock_menu[0];
+          const char* text=gettext("Day name Month Day 12 Hour");
+          o->label(text);
+        }
+        { Fl_Menu_Item* o = &menu_clock_menu[1];
+          const char* text=gettext("24 Hour Clock");
+          o->label(text);
+        }
+        { Fl_Menu_Item* o = &menu_clock_menu[2];
+          const char* text=gettext("12 Hour Clock");
+          o->label(text);
+        }
+        { Fl_Menu_Item* o = &menu_clock_menu[3];
+          const char* text=gettext("Year Month Day 24 Hour clock");
+          o->label(text);
+        }
+        { Fl_Menu_Item* o = &menu_clock_menu[4];
+          const char* text=gettext("(Advanced) User Defined");
+          o->label(text);
+        }
+        if (!menu_clock_menu_i18n_done) {
+          int i=0;
+          for ( ; i<5; i++)
+            if (menu_clock_menu[i].label())
+              menu_clock_menu[i].label(gettext(menu_clock_menu[i].label()));
+          menu_clock_menu_i18n_done = 1;
+        }
+        clock_menu->menu(menu_clock_menu);
+      } // Fl_Menu_Button* clock_menu
+      { Fl_Output* o = clock_displayer = new Fl_Output(300, 5, 120, 25);
+        clock_displayer->box(FL_FLAT_BOX);
+        clock_displayer->align(Fl_Align(FL_ALIGN_TOP));
+        std::string clock_text = getClock();
+        o->value(clock_text.c_str());//copy_label(clock_text.c_str());
+        o->redraw();//_label();
+      } // Fl_Output* clock_displayer
+      { Fl_Value_Input* o = new Fl_Value_Input(225, 50, 25, 25, gettext("Width"));
+        o->tooltip(gettext("The width of the clock. 0 indicates that the width should be determined from \
 the length of the text to be displayed."));
-      o->box(FL_FLAT_BOX);
-      o->selection_color(FL_DARK_RED);
-      o->callback((Fl_Callback*)cb_Width);
-      o->value(getItemW(BUTTON_NUM));
-    } // Fl_Value_Input* o
-    { Fl_Value_Input* o = new Fl_Value_Input(135, 125, 25, 25, gettext("Height"));
-      o->tooltip(gettext("The height of the clock. 0 indicates that the height should be determined fro\
+        o->box(FL_FLAT_BOX);
+        o->selection_color(FL_DARK_RED);
+        o->callback((Fl_Callback*)cb_Width);
+        o->value(getItemW(BUTTON_NUM));
+      } // Fl_Value_Input* o
+      { Fl_Button* o = clock_fg = new Fl_Button(256, 50, 75, 30, gettext("Foreground"));
+        clock_fg->tooltip(gettext("Optional, this will use the Panel colors if not specified"));
+        clock_fg->box(FL_FLAT_BOX);
+        clock_fg->color((Fl_Color)23);
+        clock_fg->callback((Fl_Callback*)cb_clock_fg);
+        clock_fg->align(Fl_Align(FL_ALIGN_TOP));
+        if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}
+        else{getColorFromItem(false,"ClockStyle","Foreground",o);}
+      } // Fl_Button* clock_fg
+      { Fl_Button* o = new Fl_Button(343, 50, 75, 30, gettext("Background"));
+        o->tooltip(gettext("Optional, this will use the Panel colors if not specified"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->callback((Fl_Callback*)cb_Background);
+        o->align(Fl_Align(FL_ALIGN_TOP));
+        if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}
+        else{getColorFromItem(false,"ClockStyle","Background",o);}
+      } // Fl_Button* o
+      { Fl_Value_Input* o = new Fl_Value_Input(225, 80, 25, 25, gettext("Height"));
+        o->tooltip(gettext("The height of the clock. 0 indicates that the height should be determined fro\
 m the font used."));
-      o->box(FL_FLAT_BOX);
-      o->selection_color(FL_DARK_RED);
-      o->callback((Fl_Callback*)cb_Height1);
-      o->value(getItemH(BUTTON_NUM));
-    } // Fl_Value_Input* o
-    { Fl_Menu_Button* o = new Fl_Menu_Button(5, 65, 110, 25, gettext("Mouse Button"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->selection_color((Fl_Color)80);
-      if (!menu_Mouse1_i18n_done) {
-        int i=0;
-        for ( ; i<3; i++)
-          if (menu_Mouse1[i].label())
-            menu_Mouse1[i].label(gettext(menu_Mouse1[i].label()));
-        menu_Mouse1_i18n_done = 1;
-      }
-      o->menu(menu_Mouse1);
-      if(JWM_VERSION<230)o->hide();
-    } // Fl_Menu_Button* o
-    { Fl_Value_Output* o = output_button_val = new Fl_Value_Output(120, 65, 40, 25);
-      output_button_val->box(FL_FLAT_BOX);
-      output_button_val->color((Fl_Color)23);
-      output_button_val->selection_color((Fl_Color)80);
-      if(JWM_VERSION<230)o->hide();
-    } // Fl_Value_Output* output_button_val
-    { clock_button_menu = new Fl_Output(215, 65, 25, 25, gettext("Menu"));
-      clock_button_menu->tooltip(gettext("The root menu the Clock is tied to"));
-      clock_button_menu->box(FL_FLAT_BOX);
-      clock_button_menu->color((Fl_Color)55);
-      clock_button_menu->deactivate();
-    } // Fl_Output* clock_button_menu
-    { clock_menu_conf_gear = new Fl_Button(245, 65, 25, 25);
-      clock_menu_conf_gear->tooltip(gettext("Configure the menu"));
-      clock_menu_conf_gear->box(FL_FLAT_BOX);
-      clock_menu_conf_gear->color((Fl_Color)23);
-      clock_menu_conf_gear->image(image_gear16);
-      clock_menu_conf_gear->callback((Fl_Callback*)cb_clock_menu_conf_gear);
-    } // Fl_Button* clock_menu_conf_gear
-    { clock_prog = new Fl_Input(120, 95, 120, 25, gettext("Program"));
-      clock_prog->tooltip(gettext("Execute a command."));
-      clock_prog->box(FL_FLAT_BOX);
-      clock_prog->color((Fl_Color)55);
-      clock_prog->selection_color(FL_DARK_RED);
-      clock_prog->when(FL_WHEN_CHANGED);
-      clock_prog->deactivate();
-      current_clock_text();
-    } // Fl_Input* clock_prog
-    { clock_prog_conf_gear = new Fl_Button(245, 95, 25, 25);
-      clock_prog_conf_gear->tooltip(gettext("Configure the program"));
-      clock_prog_conf_gear->box(FL_FLAT_BOX);
-      clock_prog_conf_gear->color((Fl_Color)23);
-      clock_prog_conf_gear->image(image_gear16);
-      clock_prog_conf_gear->callback((Fl_Callback*)cb_clock_prog_conf_gear);
-    } // Fl_Button* clock_prog_conf_gear
-    { Fl_Button* o = new Fl_Button(295, 125, 55, 25, gettext("OK"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)61);
-      o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_OK6);
-    } // Fl_Button* o
-    { Fl_Button* o = clock_fg = new Fl_Button(275, 20, 75, 30, gettext("Foreground"));
-      clock_fg->tooltip(gettext("Optional, this will use the Panel colors if not specified"));
-      clock_fg->box(FL_FLAT_BOX);
-      clock_fg->color((Fl_Color)23);
-      clock_fg->callback((Fl_Callback*)cb_clock_fg);
-      clock_fg->align(Fl_Align(FL_ALIGN_TOP));
-      if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}
-      else{getColorFromItem(false,"ClockStyle","Foreground",o);}
-    } // Fl_Button* clock_fg
-    { Fl_Button* o = new Fl_Button(275, 70, 75, 30, gettext("Background"));
-      o->tooltip(gettext("Optional, this will use the Panel colors if not specified"));
-      o->box(FL_FLAT_BOX);
-      o->color((Fl_Color)23);
-      o->callback((Fl_Callback*)cb_Background);
-      o->align(Fl_Align(FL_ALIGN_TOP));
-      if((JWM_VERSION>232)&&(JWM_VERSION<235)){o->hide();}
-      else{getColorFromItem(false,"ClockStyle","Background",o);}
-    } // Fl_Button* o
+        o->box(FL_FLAT_BOX);
+        o->selection_color(FL_DARK_RED);
+        o->callback((Fl_Callback*)cb_Height1);
+        o->value(getItemH(BUTTON_NUM));
+      } // Fl_Value_Input* o
+      { Fl_Menu_Button* o = new Fl_Menu_Button(260, 85, 110, 25, gettext("Mouse Button"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)23);
+        o->selection_color((Fl_Color)80);
+        if (!menu_Mouse1_i18n_done) {
+          int i=0;
+          for ( ; i<3; i++)
+            if (menu_Mouse1[i].label())
+              menu_Mouse1[i].label(gettext(menu_Mouse1[i].label()));
+          menu_Mouse1_i18n_done = 1;
+        }
+        o->menu(menu_Mouse1);
+        if(JWM_VERSION<230)o->hide();
+      } // Fl_Menu_Button* o
+      { Fl_Value_Output* o = output_button_val = new Fl_Value_Output(375, 85, 40, 25);
+        output_button_val->box(FL_FLAT_BOX);
+        output_button_val->color((Fl_Color)23);
+        output_button_val->selection_color((Fl_Color)80);
+        if(JWM_VERSION<230)o->hide();
+      } // Fl_Value_Output* output_button_val
+      { clock_prog = new Fl_Input(265, 115, 115, 25, gettext("Program"));
+        clock_prog->tooltip(gettext("Execute a command."));
+        clock_prog->box(FL_FLAT_BOX);
+        clock_prog->color((Fl_Color)55);
+        clock_prog->selection_color(FL_DARK_RED);
+        clock_prog->when(FL_WHEN_CHANGED);
+        clock_prog->deactivate();
+        current_clock_text();
+      } // Fl_Input* clock_prog
+      { clock_prog_conf_gear = new Fl_Button(385, 115, 25, 25);
+        clock_prog_conf_gear->tooltip(gettext("Configure the program"));
+        clock_prog_conf_gear->box(FL_FLAT_BOX);
+        clock_prog_conf_gear->color((Fl_Color)23);
+        clock_prog_conf_gear->image(image_gear16);
+        clock_prog_conf_gear->callback((Fl_Callback*)cb_clock_prog_conf_gear);
+      } // Fl_Button* clock_prog_conf_gear
+      { clock_button_menu = new Fl_Output(355, 145, 25, 25, gettext("Menu"));
+        clock_button_menu->tooltip(gettext("The root menu the Clock is tied to"));
+        clock_button_menu->box(FL_FLAT_BOX);
+        clock_button_menu->color((Fl_Color)55);
+        clock_button_menu->deactivate();
+      } // Fl_Output* clock_button_menu
+      { clock_menu_conf_gear = new Fl_Button(385, 145, 25, 25);
+        clock_menu_conf_gear->tooltip(gettext("Configure the menu"));
+        clock_menu_conf_gear->box(FL_FLAT_BOX);
+        clock_menu_conf_gear->color((Fl_Color)23);
+        clock_menu_conf_gear->image(image_gear16);
+        clock_menu_conf_gear->callback((Fl_Callback*)cb_clock_menu_conf_gear);
+      } // Fl_Button* clock_menu_conf_gear
+      { Fl_Button* o = new Fl_Button(360, 175, 55, 25, gettext("OK"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)61);
+        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->callback((Fl_Callback*)cb_OK6);
+      } // Fl_Button* o
+      { Fl_Input* o = tz_out = new Fl_Input(65, 175, 150, 25);
+        tz_out->tooltip(gettext("Type to search"));
+        tz_out->box(FL_FLAT_BOX);
+        tz_out->selection_color((Fl_Color)80);
+        tz_out->callback((Fl_Callback*)cb_tz_out);
+        tz_out->when(3);
+        std::string zonero=getElementAttribute(currentPanel(),"Tray","Clock","zone");
+        if(zonero.compare("")!=0){o->value(zonero.c_str());}
+      } // Fl_Input* tz_out
+      { Fl_Button* o = new Fl_Button(5, 175, 55, 25, gettext("SET"));
+        o->box(FL_FLAT_BOX);
+        o->color((Fl_Color)61);
+        o->labelcolor(FL_BACKGROUND2_COLOR);
+        o->callback((Fl_Callback*)cb_SET);
+      } // Fl_Button* o
+      { Fl_Box* o = new Fl_Box(215, 170, 30, 30);
+        o->image(image_find);
+        o->align(Fl_Align(512));
+      } // Fl_Box* o
+      o->end();
+    } // Fl_Scroll* o
     startup(o,jsm_panel_xpm);
     conf_clock_window->xclass("jsm-panel");
     conf_clock_window->end();
+    conf_clock_window->resizable(conf_clock_window);
   } // Fl_Double_Window* conf_clock_window
   return conf_clock_window;
 }
@@ -3320,31 +3396,21 @@ Fl_Double_Window* PanelUI::spacer_config() {
   return conf_spacer_win;
 }
 
-inline void PanelUI::zone_cb(Fl_Menu_*o, void* v) {
-  zone_check(o);
-}
-
-void PanelUI::zone_check(Fl_Menu_* o) {
+void PanelUI::zone_check(Fl_Browser* o) {
   debug_out("zone_check");
   std::string timeZone;
-  timeZone+=o->text();
+  if(!checkFlBrowserItem(o)){return;}
+  const char* tmpr=o->text(o->value());
+  if(tmpr==NULL){return;}
+  timeZone=tmpr;
   tz_out->value(timeZone.c_str());
   if(!setElementAttribute(currentPanel(),"Tray","Clock","zone",timeZone)){
     errorOUT("Could not change JWM time zone");
   }
+  else{set_user_tz(timeZone);}
 }
 
-void PanelUI::zoneMenu(Fl_Menu_Button *o) {
+void PanelUI::zoneMenu(Fl_Browser *o) {
   std::vector<std::string> zoneVec=zoneVector();
-  for( std::vector<std::string>::iterator it = zoneVec.begin();
-  it!=zoneVec.end();
-  ++it){
-    std::string tmp=*it;
-    o->add(tmp.c_str(), 0,(Fl_Callback*)PanelUI::cb_zone);
-  }
-}
-
-void PanelUI::cb_zone(Fl_Menu_* o,void* v) {
-  debug_out("cb_zone()");
-  ((PanelUI*)(o->parent()->user_data()))->zone_cb(o,v);
+  populateBrowserWithStringVector(zone_browser,zoneVec);
 }

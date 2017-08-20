@@ -35,6 +35,7 @@
 #include <algorithm>
 #include "../include/ui.h"
 #include "../data/icons/jsm-desktop.xpm"
+#include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Box.H>
@@ -42,10 +43,11 @@
 #include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Value_Input.H>
+#include <FL/Fl_Menu_Button.H>
 
 class DesktopUI {
 public:
-  std::string thisBG;std::string FILEMANAGER; 
+  std::string thisBG;std::string FILEMANAGER;unsigned int DESKTOPNUM; 
   Fl_Double_Window* make_window();
   Fl_Double_Window *desktop_window;
   Fl_Box *background_displayer_thingie;
@@ -84,5 +86,16 @@ private:
   static void cb_Cancel(Fl_Button*, void*);
   inline void cb_OK_i(Fl_Button*, void*);
   static void cb_OK(Fl_Button*, void*);
+public:
+  Fl_Menu_Button *menu_button;
+private:
+  inline void cb_menu_button_i(Fl_Menu_Button*, void*);
+  static void cb_menu_button(Fl_Menu_Button*, void*);
+public:
+  int total_desktops();
+  void make_menu(Fl_Menu_Button* o);
+  static void desktop_menu_cb(Fl_Menu_ *o);
+  void menu_cb(Fl_Menu_ *o);
+  void set_BGS(std::string bg, unsigned int num);
 };
 #endif

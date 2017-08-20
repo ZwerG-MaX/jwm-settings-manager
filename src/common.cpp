@@ -1437,6 +1437,8 @@ LINUX_COMMON__NS_BEGIN
 	 * this returns save_string_to_file()
 	 */
 	bool append_string_to_file(std::string STRING, std::string FILENAME){
+		if(!test_file(FILENAME))return false;
+		if(!file_is_writable(FILENAME))return false;
 		std::string tmp=file_to_string(FILENAME);
 		tmp+="\n";
 		tmp+=STRING;
@@ -1726,6 +1728,32 @@ LINUX_COMMON__NS_BEGIN
 		if((retval!=0)&&(!fileFix))return false;
 		return true;
 	}
+	/** switch a value out of a file in a Blank=thing setting.
+	 * @param item  The ITEM=
+	 * @param value what goes after the '=' (note... this can be blank and still succeed)
+	 * @param filename the file to look in and overwrite
+	 */
+	bool switch_equal_line_item(std::string item, std::string value,std::string filename){
+		if((item.compare("")==0) || (!test_file(filename)) || (!file_is_readable(filename)) || (!file_is_writable(filename)) ){return false;}
+		std::vector<std::string> fVec = file_to_vector(filename);
+		std::ifstream inputFileStream(filename.c_str(), std::ifstream::in);
+		std::string OUT,thisLine;
+		if(inputFileStream.is_open()){
+			while (getline(inputFileStream,thisLine)){
+				std::string LINE=thisLine;
+				if(thisLine.find(item)<thisLine.length()){
+					unsigned int found =thisLine.find("=");
+					if(found < thisLine.length()){
+						LINE=item+"="+value;
+					}
+				}
+				if(OUT.compare("")!=0) OUT=OUT+"\n"+LINE;
+				else OUT=LINE;
+			}
+		}
+		if(OUT.compare("")!=0)return save_string_to_file(OUT,filename);
+		return false;
+	}
 	/** test to see if a file exists
 	 * @param fileWithFullPATH the full path and filename to test
 	 */
@@ -1807,14 +1835,11 @@ LINUX_COMMON__NS_BEGIN
 	 * @param num the number to convert
 	 */
 	unsigned int convert_string_to_number(const char* num){
-		if(num==NULL){return 0;}
-		std::string empty="";
-		if(empty.compare(num)==0){return 0;}
-		std::stringstream out;
-		out << num;
-		unsigned int integer;
-		out >> integer;
-		return integer;
+		unsigned int NUM=0;
+		try{NUM=std::stoul(num);}
+		catch(std::invalid_argument e){return 0;}
+		catch(std::out_of_range e){return 0;}
+		return NUM;
 	}
 	/** count the items in the PATH environment variable*/
 	unsigned int items_in_path(){

@@ -150,6 +150,7 @@ namespace linuxcommon{
 	bool save_string_to_file(std::string MSG,std::string filename);/**This should make the directory recursively if it does not exist*/
 	bool switch_gtk_item(std::string item, std::string value);
 	bool switch_gtk_setting(std::string item, std::string value);
+	bool switch_equal_line_item(std::string item, std::string value,std::string filename);
 	bool look_for_string_in_vector(std::vector<std::string> vector_to_check,std::string item_to_find);
 	bool test_file(std::string fileWithFullPATH);
 	bool test_dir(std::string fullpath);

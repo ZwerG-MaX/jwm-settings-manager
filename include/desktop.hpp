@@ -48,34 +48,37 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Value_Input.H>
 //void//////////////////////////////////////////////////////////////////
+//A
+/** Run background, background1 and background2*/
+void allBGS(Fl_Box* Image, Fl_Box* Color1,Fl_Box* Color2, std::string choice, unsigned int num, Fl_Input *in);
 //B
  /** Set the background image of an Fl_Box
   * @param o The Fl_Box
   * @param thisBG The background Image filename you send in
   * */
-void background(Fl_Box*o,std::string thisBG);
+void background(Fl_Box*o,std::string thisBG,unsigned int bgnum);
  /** Set the background color of an Fl_Box
   * @param o The Fl_Box
   * @param thisBG The background COLOR (HTML, or X11) you send in
   * */
-void background1(Fl_Box*o,std::string thisBG);
+void background1(Fl_Box*o,std::string thisBG,unsigned int bgnum);
  /** Set the background color of an Fl_Box
   * @param o The Fl_Box
   * @param thisBG The background COLOR (HTML, or X11) you send in
   * */
-void background2(Fl_Box*o,std::string thisBG);
+void background2(Fl_Box*o,std::string thisBG,unsigned int bgnum);
 /** Open a file dialog to pick an image
   * @param background_displayer_thingie The Fl_Box with an image
   * @param current_bg the output showing the filename/type
   * @param color_display1 the single color box (to hide)
   * @param color_display2 the second color box (to hide)
   * */
-void bg_chooser_cb(Fl_Box *background_displayer_thingie,Fl_Output *current_bg,Fl_Box *color_display1,Fl_Box *color_display2);
+void bg_chooser_cb(Fl_Box *background_displayer_thingie,Fl_Output *current_bg,Fl_Box *color_display1,Fl_Box *color_display2,unsigned int bgnum);
 /** Get the filename OR display text describing the background type
   * @param o The ouput for the background name
   * @param thisBG The background (file,solid,gradient,command,etc...)
   * */
-void bg_name(Fl_Output *o,std::string thisBG);
+void bg_name(Fl_Output *o,std::string thisBG,unsigned int bgnum);
 //N
 /** set value for the number of desktops wide or high then make sure it is at least 1 If there are more than 1 each turn on the check button
  * @param whichone the attribute to set (width,height)
@@ -92,7 +95,7 @@ void num_desktop_wh_cb(std::string whichone, int value,Fl_Value_Input* num_deskt
  * @param background_displayer_thingie (hide this)
  * @param current_bg set this to match the current background type
  */
-void one_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg);
+void one_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg,unsigned int bgnum);
 //S
 /** Set the background of the filemanager to match the jwmrc
  * @param type The type of background (solid,gradient,image...)
@@ -102,7 +105,7 @@ void setFMBackground(std::string type,std::string wallpaper);
 /** create an SVG file of a color/colors and then set it as the background
  * @param color the color to turn into a solid svg, or gradient
  */
-void svgGradient(std::string color);
+void svgGradient(std::string color,unsigned int bgnum);
 //T
 /** Choose a two colors and save it to the file
  * @param color_display1 set this to the first color
@@ -110,7 +113,7 @@ void svgGradient(std::string color);
  * @param background_displayer_thingie (hide this)
  * @param current_bg set this to match the current background type
  */
-void two_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg);
+void two_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg,unsigned int bgnum);
 //U
 /** Toggle the multiple desktops... if we are using them,
  * make it so we are not!
@@ -145,7 +148,7 @@ bool removeIconsOnDesktop();
  * @param type The type of background (solid,gradient,image,etc..)
  * @param result the background to set
  */
-bool setBackground(std::string type,std::string result);
+bool setBackground(std::string type,std::string result,unsigned int bgnum);
 /** make the desktop handled by a filemanager*/
 bool setIconsOnDesktop();
 //U
@@ -163,6 +166,8 @@ std::string whichFileManagerRunning();
 std::string whichFileManager();
 /** get the filemanager's background*/
 std::string getFMBackground();
+/** get specific desktop background */
+std::string getBackground(unsigned int whichOne);
 ///vector////////////////////////////////////////////////////////////////
 /** my list of filemanagers I currently support in vector<string> format*/
 std::vector<std::string> ListFileManagers();
