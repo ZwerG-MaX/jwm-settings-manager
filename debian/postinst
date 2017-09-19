@@ -5,16 +5,7 @@ case "$1" in
      bin_list=(jwm-placesmenu jwm-desktopmenu)
      PROGNAME="${0/*\/}"
      ## our startup log file
-     LOGDIR="$HOME/.jwm/jsm-logs"
-     if [[ ! -d "$HOME" ]]
-     then
-       if [[ -d "/var/log" ]]
-       then
-         LOGDIR="/var/log"
-       else
-         LOGDIR="/"
-       fi
-     fi
+     LOGDIR="${HOME:-/var/log}/.jwm/jsm-logs"
      [[ -d "$LOGDIR" ]] || mkdir -p "$LOGDIR" 2> /dev/null
      chmod -R a+rw "${LOGDIR}" 2> /dev/null
      LOG="$LOGDIR/$PROGNAME.log"
