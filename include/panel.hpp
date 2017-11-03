@@ -47,9 +47,6 @@
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Output.H>
 //string
-std::string buttonExec(std::string line);
-std::string buttonFixer(std::string line, std::string thing);
-std::string buttonRoot(std::string line);
 std::string getAutoHide(int num);
 std::string getClock(std::string timeString);
 std::string getClock();

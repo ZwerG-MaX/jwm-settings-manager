@@ -1333,6 +1333,15 @@ bool set_user_tz(std::string timeZone){
 //T
 bool testExec(std::string command){return linuxcommon::test_exec(command);}
 //String////////////////////////////////////////////////////////////////
+//B
+std::string buttonExec(std::string line){return buttonFixer(line,"exec:");}
+//check for either exec: or root: and fix the line!
+std::string buttonFixer(std::string line, std::string thing){
+	if(line.compare("")==0){return "";}
+	if(line.find(thing)>0){line=thing+line;}
+	return line;
+}
+std::string buttonRoot(std::string line){return buttonFixer(line,"root:");}
 //C
 std::string checkListofExec(std::vector<std::string> list){
 	return linuxcommon::check_list_of_exec(list);

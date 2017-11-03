@@ -167,6 +167,10 @@ bool set_user_tz(std::string timeZone);
 //T
 bool testExec(std::string command); //linuxcommon wrapper
 //String////////////////////////////////////////////////////////////////
+//b
+std::string buttonExec(std::string line);
+std::string buttonFixer(std::string line, std::string thing);
+std::string buttonRoot(std::string line);
 //c
 std::string checkListofExec(std::vector<std::string> list);
 std::string colorToString(const double *rgb);
