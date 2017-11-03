@@ -24,6 +24,14 @@
 #include <libintl.h>
 #include "../include/panel.hpp"
 //String////////////////////////////////////////////////////////////////
+std::string buttonExec(std::string line){return buttonFixer(line,"exec:");}
+//check for either exec: or root: and fix the line!
+std::string buttonFixer(std::string line, std::string thing){
+	if(line.compare("")==0){return "";}
+	if(line.find(thing)>0){line=thing+line;}
+	return line;
+}
+std::string buttonRoot(std::string line){return buttonFixer(line,"root:");}
 std::string getAutoHide(int num){
 	debug_out("std::string getAutoHide(int num)");
 	std::string retval;

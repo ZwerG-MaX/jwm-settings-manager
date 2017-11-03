@@ -3364,6 +3364,8 @@ void PanelUI::save_traybutton() {
   int masker=button_val->value();
   if(masker>0){MASK=linuxcommon::convert_num_to_string(masker);}
   int whichbutton=app_browser->value();
+  PROG=buttonExec(PROG);
+  MENU=buttonRoot(MENU);
   editButton(whichbutton,MENU,PROG,ICON,LABEL,MASK);
   conf_button_window->hide();
 }

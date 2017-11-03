@@ -100,7 +100,8 @@ icon_name->redraw();} {}
     code {if(filename.compare("")==0){return;}
 makeWidgetIcon(filename,icon_view,48);} {}
   }
-  Function {make_window()} {} {
+  Function {make_window()} {open
+  } {
     code {load();
 JWM_VERSION=JWMversion();} {}
     Fl_Window panel_window {
@@ -719,8 +720,7 @@ refresh_app_browser(app_browser);}
       }
     }
   }
-  Function {clock_window()} {open
-  } {
+  Function {clock_window()} {} {
     Fl_Window clock_config_window {
       label {Configure Clock} open
       xywh {749 116 460 540} type Double hide resizable
@@ -796,8 +796,7 @@ clock_style->insert(item.c_str());
       }
     }
   }
-  Function {clock_info_window()} {open
-  } {
+  Function {clock_info_window()} {} {
     Fl_Window clock_modifier_notes {
       label {Modifier Notes} open
       xywh {81 107 350 400} type Double hide resizable
@@ -970,7 +969,8 @@ task_outline->redraw();}
       }
     }
   }
-  Function {config_button_window(int input_num)} {} {
+  Function {config_button_window(int input_num)} {open
+  } {
     code {BUTTON_NUM=input_num;} {}
     Fl_Window conf_button_window {
       label {Configure Button} open
@@ -1049,14 +1049,13 @@ else{showMenu();}}
       }
     }
   }
-  Function {config_clock_window()} {open
-  } {
+  Function {config_clock_window()} {} {
     Fl_Window conf_clock_window {
       label {Configure Clock} open
-      xywh {51 155 420 205} type Double resizable
-      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel} visible
+      xywh {51 155 420 205} type Double hide resizable
+      code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
     } {
-      Fl_Scroll {} {open selected
+      Fl_Scroll {} {open
         xywh {0 -5 425 210}
       } {
         Fl_Browser zone_browser {
@@ -1675,7 +1674,8 @@ else{
 std::cerr<<"coordinate() function called incorrectly"<<std::endl;
 }} {}
   }
-  Function {config_Item(std::string whichItem)} {} {
+  Function {config_Item(std::string whichItem)} {open
+  } {
     code {std::string RUNNINGAPPLIST=gettext("Running App List");
 std::string INDICATORS=gettext("Indicators");
 std::string CLOCK=gettext("Clock");
@@ -1758,12 +1758,10 @@ clock_button_menu->redraw();} {}
   Function {get_clock_button_stuff(int button)} {} {
     code {get_button_stuff(button,clock_prog,clock_button_menu,output_button_val);} {}
   }
-  Function {get_button_stuff(int button)} {open
-  } {
+  Function {get_button_stuff(int button)} {} {
     code {get_button_stuff(button,button_prog,button_menu,button_val);} {}
   }
-  Function {get_button_stuff(int button,Fl_Input *input_prog,Fl_Input *input_menu,Fl_Value_Output *mouse_button_current)} {open
-  } {
+  Function {get_button_stuff(int button,Fl_Input *input_prog,Fl_Input *input_menu,Fl_Value_Output *mouse_button_current)} {} {
     code {std::string num;
 mouse_button_current->value(button);
 switch(button){
@@ -1851,7 +1849,8 @@ if(result==NULL){return;}
 changeClock(result);
 clock_config_window->hide();} {}
   }
-  Function {save_traybutton()} {} {
+  Function {save_traybutton()} {open
+  } {
     code {std::string MENU,PROG,ICON,LABEL,MASK;
 const char* testMenu = button_menu->value();
 if(testMenu!=NULL){MENU=testMenu;}
@@ -1864,8 +1863,11 @@ if(newLabel!=NULL){LABEL=newLabel;}
 int masker=button_val->value();
 if(masker>0){MASK=linuxcommon::convert_num_to_string(masker);}
 int whichbutton=app_browser->value();
+PROG=buttonExec(PROG);
+MENU=buttonRoot(MENU);
 editButton(whichbutton,MENU,PROG,ICON,LABEL,MASK);
-conf_button_window->hide();} {}
+conf_button_window->hide();} {selected
+    }
   }
   Function {spacer_config()} {} {
     Fl_Window conf_spacer_win {
@@ -1895,8 +1897,7 @@ conf_button_window->hide();} {}
       }
     }
   }
-  Function {zone_check(Fl_Browser* o)} {open
-  } {
+  Function {zone_check(Fl_Browser* o)} {} {
     code {debug_out("zone_check");
 std::string timeZone;
 if(!checkFlBrowserItem(o)){return;}
@@ -1909,8 +1910,7 @@ if(!setElementAttribute(currentPanel(),"Tray","Clock","zone",timeZone)){
 }
 else{set_user_tz(timeZone);}} {}
   }
-  Function {zoneMenu(Fl_Browser *o)} {open
-  } {
+  Function {zoneMenu(Fl_Browser *o)} {} {
     code {std::vector<std::string> zoneVec=zoneVector();
 populateBrowserWithStringVector(zone_browser,zoneVec);} {}
   }
