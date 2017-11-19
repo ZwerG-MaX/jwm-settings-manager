@@ -126,7 +126,6 @@ class JSM_Panel
 		void deleteBattery();
 		void deleteNetworkMonitor();
 		void deletePanel();
-		void deletePanelItem(std::string item);
 		void deleteSomeIndicator(std::string indicator);
 		void deleteTrayButton(std::string text_to_find);
 		void deleteVolume();

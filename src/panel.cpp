@@ -459,31 +459,7 @@ void JSM_Panel::deleteNetworkMonitor(){
 }
 void JSM_Panel::deletePanel(){removeElement(currentPanel(),"Tray");}
 
-void JSM_Panel::deletePanelItem(std::string item){
-	debug_out("void deletePanelItem(std::string "+item+")");
-	if(item.compare("")==0){return;}
-	unsigned int whichPanel=currentPanel();
-	std::string RUNNINGAPPLIST=gettext("Running App List");
-	std::string INDICATORS=gettext("Indicators");
-	std::string CLOCK=gettext("Clock");
-	std::string SWALLOW=gettext("Swallow");
-	std::string MENU=gettext("Menu");
-	std::string DESKSWITCH=gettext("Desktop Switcher");
-	std::string LAUNCHER=gettext("Launcher");
-	if(item.compare(RUNNINGAPPLIST)==0){removeElement(whichPanel,"Tray","TaskList");}
-	else if(item.compare(DESKSWITCH)==0){removeElement(whichPanel,"Tray","Pager");}
-	else if(item.compare(INDICATORS)==0){removeElement(whichPanel,"Tray","Dock");}
-	else if(item.compare(CLOCK)==0){removeElement(whichPanel,"Tray","Clock");}
-	else if(item.find(SWALLOW)<item.length()){removeElement(whichPanel,"Tray","Swallow");}
-	else if(item.find(MENU)<item.length()){
-		std::string tempMenu = item;
-        tempMenu = tempMenu.erase(0,MENU.length());
-        deleteTrayButton(tempMenu);
-	}
-	else{
-		removeElement(whichPanel,"Tray",item);
-	}
-}
+
 void JSM_Panel::deleteSomeIndicator(std::string indicator){
 	debug_out("void deleteSomeIndicator(std::string "+indicator+")");
 	if(indicator.find("torios-")<indicator.length()){
