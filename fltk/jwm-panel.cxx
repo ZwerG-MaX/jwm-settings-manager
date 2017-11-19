@@ -2484,7 +2484,7 @@ Fl_Double_Window* PanelUI::config_button_window(int input_num) {
       button_menu->deactivate();
     } // Fl_Output* button_menu
     { menu_conf_gear = new Fl_Button(100, 120, 25, 25);
-      menu_conf_gear->tooltip(gettext("Configure the menu"));
+      menu_conf_gear->tooltip(gettext("Configure this menu"));
       menu_conf_gear->box(FL_FLAT_BOX);
       menu_conf_gear->color((Fl_Color)23);
       menu_conf_gear->image(image_gear16);
@@ -2769,10 +2769,10 @@ Fl_Double_Window* PanelUI::configure_manually_window(std::string icon) {
 }
 
 Fl_Double_Window* PanelUI::config_menu_window(std::string file) {
-  { Fl_Double_Window* o = conf_menu_window = new Fl_Double_Window(285, 150, gettext("Configure Menu"));
+  { Fl_Double_Window* o = conf_menu_window = new Fl_Double_Window(265, 105, gettext("Configure Menu"));
     conf_menu_window->labelfont(14);
     conf_menu_window->user_data((void*)(this));
-    { Fl_Button* o = new Fl_Button(220, 120, 60, 25, gettext("OK"));
+    { Fl_Button* o = new Fl_Button(195, 75, 60, 25, gettext("OK"));
       o->box(FL_FLAT_BOX);
       o->color((Fl_Color)69);
       o->labelfont(1);
@@ -2802,7 +2802,7 @@ Fl_Double_Window* PanelUI::config_menu_window(std::string file) {
     { tester = new Fl_Output(45, 70, 25, 25, gettext("Menu"));
       tester->tooltip(gettext("The root menu the button is tied to"));
       tester->box(FL_FLAT_BOX);
-      tester->color((Fl_Color)55);
+      tester->color((Fl_Color)23);
     } // Fl_Output* tester
     { Fl_Button* o = new Fl_Button(75, 65, 30, 30);
       o->tooltip(gettext("Configure the menu items"));
@@ -3276,6 +3276,7 @@ void PanelUI::get_button_stuff(int button,Fl_Input *input_prog,Fl_Input *input_m
     input_menu->value("");
     input_menu->redraw();
     input_menu->deactivate();
+    text=text.substr(5,std::string::npos);
   }
   if(text.find("root:")==0){
     o=input_menu;

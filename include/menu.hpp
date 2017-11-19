@@ -23,14 +23,17 @@
  */
 #ifndef menu_hpp
 #define menu_hpp
-#include <FL/Fl.H>
+//std
 #include <libintl.h>
 #include <string>
 #include <algorithm>
 #include <stdlib.h>
 #include <iostream>
+//mine
 #include "jwmrc.h"
-#include "ui.h"
+#include "fltkfunctions.hpp"
+//FLTK
+#include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Menu_Button.H>
@@ -44,24 +47,27 @@
 #include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Output.H>
-#include "fltkfunctions.hpp"
-//string
-std::string getLabel(std::string MENU);
-std::string getItemIcon(int menu, int itemline,std::string element);
-std::string getItemIcon(int menu, int item, int sub);
-std::string getItemIcon(std::string text2, std::string menu);
-std::string getItemLabel(int menu, int itemline, int sub);
-std::string getItemLabel(int menu, int itemline,std::string element);
-std::string getItemLabel(std::string text2, std::string menu);
-std::string getItemAttribute(int menu, int itemline,std::string element,std::string attrib);
-std::string getItemAttribute(std::string EXIT,std::string menu,std::string attrib);
+class JSM_Menu
+{
+	public:
+	//string
+		std::string getLabel(std::string MENU);
+		std::string getItemIcon(int menu, int itemline,std::string element);
+		std::string getItemIcon(int menu, int item, int sub);
+		std::string getItemIcon(std::string text2, std::string menu);
+		std::string getItemLabel(int menu, int itemline, int sub);
+		std::string getItemLabel(int menu, int itemline,std::string element);
+		std::string getItemLabel(std::string text2, std::string menu);
+		std::string getItemAttribute(int menu, int itemline,std::string element,std::string attrib);
+		std::string getItemAttribute(std::string EXIT,std::string menu,std::string attrib);
 //bool
-bool addRoot(std::string rootmenu);
-bool ConfigMenuItem(int menu,int item,Fl_Input* prog_label,Fl_Input* prog_icon,Fl_Input* prog_input,Fl_Check_Button* conf_button);
-bool ConfigSubMenuItem(int menu,int item,int sub,Fl_Input* prog_label,Fl_Input* prog_icon,Fl_Input* prog_input,Fl_Check_Button* conf_button);
-bool checkMenuItems(Fl_Browser* menuElement,std::string menu,Fl_Browser* menuElementText);
-bool checkMenuItems(Fl_Browser* menuElement,Fl_Browser* menuElementText);
+		bool addRoot(std::string rootmenu);
+		bool ConfigMenuItem(int menu,int item,Fl_Input* prog_label,Fl_Input* prog_icon,Fl_Input* prog_input,Fl_Check_Button* conf_button);
+		bool ConfigSubMenuItem(int menu,int item,int sub,Fl_Input* prog_label,Fl_Input* prog_icon,Fl_Input* prog_input,Fl_Check_Button* conf_button);
+		bool checkMenuItems(Fl_Browser* menuElement,std::string menu,Fl_Browser* menuElementText);
+		bool checkMenuItems(Fl_Browser* menuElement,Fl_Browser* menuElementText);
 //void
-void changeMenuInclude(std::string newInclude, std::string old, std::string MENU);
-void listMenus(Fl_Browser* o);
+		void changeMenuInclude(std::string newInclude, std::string old, std::string MENU);
+		void listMenus(Fl_Browser* o);
+};
 #endif

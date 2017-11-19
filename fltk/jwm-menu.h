@@ -49,7 +49,7 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Box.H>
 
-class MenuUI {
+class MenuUI : public JSM_Menu {
 public:
   int menuItemLineNumber; int JWMVERSION;int ROOTMENU;bool SUBMENU;int SUBSUB; 
   Fl_Double_Window* add_a_menu();

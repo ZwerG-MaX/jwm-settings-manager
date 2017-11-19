@@ -43,7 +43,7 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Browser.H>
 
-class AutostartUI {
+class AutostartUI : public JSM_Autostart {
 public:
   Fl_Double_Window* make_window();
   Fl_Double_Window *autostart_window;

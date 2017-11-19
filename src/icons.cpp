@@ -24,20 +24,20 @@
 
 #include "../include/icons.hpp"
 //BOOL//////////////////////////////////////////////////////////////////
-bool edit_value(Fl_Browser* iconsBrowser,Fl_Input* dir_edit_input){
+bool JSM_Icon::edit_value(Fl_Browser* iconsBrowser,Fl_Input* dir_edit_input){
 	const char* line=iconsBrowser->text(iconsBrowser->value());
 	if(line==NULL){return false;}
 	dir_edit_input->value(line);
 	dir_edit_input->redraw();
 	return true;
 }
-bool save_edit_value(Fl_Browser* iconsBrowser,Fl_Input* dir_edit_input){
+bool JSM_Icon::save_edit_value(Fl_Browser* iconsBrowser,Fl_Input* dir_edit_input){
 	const char* line=dir_edit_input->value();
 	if(line==NULL){return false;}
 	
 	return true;
 }
-bool switchTheme(Fl_Browser* o,int size){
+bool JSM_Icon::switchTheme(Fl_Browser* o,int size){
 	debug_out("bool switchTheme(Fl_Browser* o,int size)");
 	const char* theme_selection=o->text(o->value());
 	if(theme_selection==NULL){
@@ -84,7 +84,7 @@ bool switchTheme(Fl_Browser* o,int size){
 	}
 	return false;
 }
-bool populateIncludes(std::string themefile,int size_to_use){
+bool JSM_Icon::populateIncludes(std::string themefile,int size_to_use){
 	debug_out("bool populateIncludes(std::string "+themefile+",int size_to_use)");
 	bool non_empty=false;
 	std::string icPATH="IconPath";
@@ -105,7 +105,7 @@ bool populateIncludes(std::string themefile,int size_to_use){
 	return non_empty;
 }
 //VECTOR////////////////////////////////////////////////////////////////
-std::vector<std::string> icon_themefiles_vector(){
+std::vector<std::string> JSM_Icon::icon_themefiles_vector(){
 	debug_out("std::vector<std::string> icon_themefiles_vector()");
 	std::string DIRECTORY=linuxcommon::find_xdg_data_dir_subdir("icons");
 	std::vector<std::string> thisISmyVector;
@@ -114,7 +114,7 @@ std::vector<std::string> icon_themefiles_vector(){
 	if(thisISmyVector.empty()){errorOUT("Didn't find and Icon themes");}
 	return thisISmyVector;
 }
-std::vector<std::string> list_icon_dirs_in_themefile(std::string themefile,int size_to_use){
+std::vector<std::string> JSM_Icon::list_icon_dirs_in_themefile(std::string themefile,int size_to_use){
 	debug_out("std::vector<std::string> list_icon_dirs_in_themefile(std::string "+themefile+",int size_to_use)");
 	std::vector<std::string> ListOfIconDirs;
 	std::string SIZE_TO_USE=linuxcommon::convert_num_to_string(size_to_use);
@@ -238,7 +238,7 @@ std::vector<std::string> list_icon_dirs_in_themefile(std::string themefile,int s
 	return ListOfIconDirs;
 }
 //VOID//////////////////////////////////////////////////////////////////
-void populateIconThemes(Fl_Browser* o){
+void JSM_Icon::populateIconThemes(Fl_Browser* o){
 	debug_out("void populateIconThemes(Fl_Browser* o)");
 	o->clear();
 	int chosen=1;

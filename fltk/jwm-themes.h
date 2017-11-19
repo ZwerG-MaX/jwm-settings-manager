@@ -41,7 +41,7 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Input.H>
 
-class ThemesUI {
+class ThemesUI : public Theme {
 public:
   Fl_Double_Window* make_window();
   Fl_Double_Window *themes_window;

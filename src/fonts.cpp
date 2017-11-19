@@ -26,12 +26,12 @@
 
 /*FUNCTIONS*/
 //Integer///////////////////////////////////////////////////////////////
-unsigned int getFontColor(std::string whichElement){
+unsigned int JSM_Fonts::getFontColor(std::string whichElement){
 	debug_out("unsigned int getFontColor(std::string "+whichElement+")");
 	std::string color=getElementText(whichElement,"Foreground");
 	return flCOLOR(color);
 }
-int gtk_get_font_size(){
+int JSM_Fonts::gtk_get_font_size(){
 	std::string TMP=getGTKfont();
 	std::string tmp=TMP;
 	unsigned int finder=tmp.rfind(" ");
@@ -41,7 +41,7 @@ int gtk_get_font_size(){
 	}
 	return 12;
 }
-int get_font_size(std::string whichElement){
+int JSM_Fonts::get_font_size(std::string whichElement){
 	debug_out("int get_font_size(std::string "+ whichElement+")");
 	int font_size=12;
 	std::string font =fontTest(whichElement);
@@ -69,14 +69,14 @@ int get_font_size(std::string whichElement){
 	*/
 }
 //String////////////////////////////////////////////////////////////////
-std::string fontTest(std::string whichElement){
+std::string JSM_Fonts::fontTest(std::string whichElement){
 	debug_out("std::string fontTest(std::string "+whichElement+")");
 	std::string font=getElementText(whichElement,"Font");
 	if(font.compare("")==0){missingFont(whichElement);}
 	debug_out("FONT="+font);
 	return font;
 }
-std::string getDefaultFONT(){
+std::string JSM_Fonts::getDefaultFONT(){
 	std::vector<std::string> defaults;
 	defaults.push_back("sans");
 	defaults.push_back("droid");
@@ -90,7 +90,7 @@ std::string getDefaultFONT(){
 	}
 	return "sans";
 }
-std::string processFont(std::string font){
+std::string JSM_Fonts::processFont(std::string font){
 	//TODO replace with getFonrOPT
 	debug_out("std::string processFont(std::string "+font+")");
 	// make sure we process the font correctly
@@ -108,7 +108,7 @@ std::string processFont(std::string font){
 	debug_out("processFont TOTAL-> result="+result);
 	return result;
 }
-std::string getFontOPT(std::string whichElement, std::string option){
+std::string JSM_Fonts::getFontOPT(std::string whichElement, std::string option){
 	debug_out("std::string getFontOPT(std::string "+whichElement+", std::string "+option+")");
 	std::string fontLine=getElementText(whichElement,"Font");
 	std::vector<std::string> optsVec=linuxcommon::delimiter_vector_from_string(fontLine,":");
@@ -128,10 +128,10 @@ std::string getFontOPT(std::string whichElement, std::string option){
 	}
 	return "";
 }
-std::string getGTKfont(){
+std::string JSM_Fonts::getGTKfont(){
 	return linuxcommon::get_gtk_item("font-name","Sans 10");
 }
-std::string changeFontOPT(std::string fontLine, std::string option, std::string value){
+std::string JSM_Fonts::changeFontOPT(std::string fontLine, std::string option, std::string value){
 	debug_out("std::string changeFontOPT(std::string "+fontLine+", std::string "+option+", std::string "+value+")");
 	std::vector<std::string> optsVec=linuxcommon::delimiter_vector_from_string(fontLine,":");
 	std::string opts;
@@ -161,7 +161,7 @@ std::string changeFontOPT(std::string fontLine, std::string option, std::string 
 	if(opts.compare("")==0){opts=fontLine;}//just in case we screwed up somewhere :D
 	return opts;
 }
-std::string processFontOPTS(std::string font,std::string currentOPTS){
+std::string JSM_Fonts::processFontOPTS(std::string font,std::string currentOPTS){
 	//TODO remove bold/italic if they are not in the current font, and in the OLD options...
 	debug_out("std::string processFontOPTS(std::string "+font+",std::string "+currentOPTS+")");
 	// make sure we process the font Options correctly
@@ -179,7 +179,7 @@ std::string processFontOPTS(std::string font,std::string currentOPTS){
 	return type;
 }
 //Boolean////////////////////////////////////////////////////////////////
-bool isFONT(std::string font){
+bool JSM_Fonts::isFONT(std::string font){
 	Fl_Font a;
 	a = Fl::set_fonts("-*");
     std::string v;
@@ -190,7 +190,7 @@ bool isFONT(std::string font){
     }
 	return false;
 }
-bool newOne(){
+bool JSM_Fonts::newOne(){
 	debug_out("bool newOne()");
 	switch (newStyle()){
 		case -1:
@@ -207,24 +207,24 @@ bool newOne(){
 			break;
 	}
 }
-bool getFontOpt(std::string fontLine,std::string item){
+bool JSM_Fonts::getFontOpt(std::string fontLine,std::string item){
 	std::string tmp=getFontOPT(fontLine,item);
 	std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
 	if(tmp.compare("true")==0)return true;
 	return false;
 }
-bool setGTKFont(std::string value){
+bool JSM_Fonts::setGTKFont(std::string value){
 	debug_out("bool setGTKFont(std::string "+value+")");
 	return linuxcommon::switch_gtk_setting("font-name",value);
 }
 //Void//////////////////////////////////////////////////////////////////
-void missingFont(std::string whichElement){
+void JSM_Fonts::missingFont(std::string whichElement){
 	debug_out("");
 	std::string DEFAULTfont=getDefaultFONT();
     DEFAULTfont=DEFAULTfont+"-12:antialias=true:encoding=utf8";
     if(!setElementText(whichElement,"Font",DEFAULTfont)){debug_out("Missing font FAILED to set: "+DEFAULTfont+" for "+whichElement);}
 }
-void font_browser_cb(Fl_Browser* font_browser,Fl_Output *font_name,Fl_Slider* font_size_slider){
+void JSM_Fonts::font_browser_cb(Fl_Browser* font_browser,Fl_Output *font_name,Fl_Slider* font_size_slider){
 	const char * item = font_browser->text(font_browser->value());
 	if(item==NULL){
 		debug_out("NULL item in font_browser->text(font_browser->value()) ");
@@ -241,7 +241,7 @@ void font_browser_cb(Fl_Browser* font_browser,Fl_Output *font_name,Fl_Slider* fo
 	font_name->textfont(b);
 	font_name->redraw();
 }
-void gtk_font_chooser_cb(Fl_Output *Widget,Fl_Value_Output *chooser_size,Fl_Output *font_name){
+void JSM_Fonts::gtk_font_chooser_cb(Fl_Output *Widget,Fl_Value_Output *chooser_size,Fl_Output *font_name){
 	const char* fontFamily = font_name->value();
 	if(fontFamily==NULL){return;}
 	std::string family = fontFamily;
@@ -255,7 +255,7 @@ void gtk_font_chooser_cb(Fl_Output *Widget,Fl_Value_Output *chooser_size,Fl_Outp
 	}
 	else{debug_out("Didn't set GTK font="+item);}
 }
-void font_chooser_cb(Fl_Output *Widget,Fl_Value_Output *chooser_size,Fl_Output *font_name,std::string currentElement){
+void JSM_Fonts::font_chooser_cb(Fl_Output *Widget,Fl_Value_Output *chooser_size,Fl_Output *font_name,std::string currentElement){
 	const char* fontFamily = font_name->value();
 	if(fontFamily==NULL){return;}
 	std::string family = fontFamily;
@@ -267,7 +267,7 @@ void font_chooser_cb(Fl_Output *Widget,Fl_Value_Output *chooser_size,Fl_Output *
 	set_font_size(chooser_size,currentElement);
 	saveChanges();
 }
-void font_color(Fl_Widget *o, std::string active){
+void JSM_Fonts::font_color(Fl_Widget *o, std::string active){
 	debug_out("void font_color(Fl_Widget *o, std::string "+active+")");
 	int c;
 	double* colors = choose_a_color(c,o);
@@ -282,7 +282,7 @@ void font_color(Fl_Widget *o, std::string active){
 		o->redraw();
 	}
 }
-void font_populate(Fl_Browser *o){
+void JSM_Fonts::font_populate(Fl_Browser *o){
 	debug_out("void font_populate(Fl_Browser *o)");
 	Fl_Font a;a = Fl::set_fonts("-*");
 	std::string v;
@@ -292,7 +292,7 @@ void font_populate(Fl_Browser *o){
 		o->add(v.c_str());
 	}
 }
-void get_font(std::string element, Fl_Output *o){
+void JSM_Fonts::get_font(std::string element, Fl_Output *o){
 	debug_out("void get_font(std::string "+element+", Fl_Output *o)");
 	std::string result;
 	std::string font=fontTest(element);
@@ -305,14 +305,14 @@ void get_font(std::string element, Fl_Output *o){
     else{debug_out("font is empty string");}
     if(result.compare("")!=0){o->value(result.c_str());}
 }
-void get_font_color(Fl_Widget *o, std::string whichStyle){
+void JSM_Fonts::get_font_color(Fl_Widget *o, std::string whichStyle){
   debug_out("void get_font_color(Fl_Widget *o, std::string "+whichStyle+")");
   unsigned int colour;
   std::string COLOR = getElementText(whichStyle,"Foreground");
   colour=flCOLOR(COLOR);
   o->color(colour);
 }
-void get_window_font_color(Fl_Widget *o, int Active1_Inactive2){
+void JSM_Fonts::get_window_font_color(Fl_Widget *o, int Active1_Inactive2){
   debug_out("void get_window_font_color(Fl_Widget *o, int Active1_Inactive2)");
   unsigned int colorSet;
   std::string color;
@@ -322,7 +322,7 @@ void get_window_font_color(Fl_Widget *o, int Active1_Inactive2){
   o->color(colorSet);
   o->redraw();
 }
-void gtk_get_font(Fl_Output *o){
+void JSM_Fonts::gtk_get_font(Fl_Output *o){
 	debug_out("void gtk_get_font(Fl_Output *o)");
 	std::string TMP=getGTKfont();
 	std::string tmp=TMP;
@@ -336,7 +336,7 @@ void gtk_get_font(Fl_Output *o){
 	}
 	o->value(TMP.c_str());
 }
-void set_font_size(Fl_Value_Output *chooser_size,std::string currentElement){
+void JSM_Fonts::set_font_size(Fl_Value_Output *chooser_size,std::string currentElement){
 	debug_out("void set_font_size(Fl_Value_Output *chooser_size,std::string "+currentElement+")");
 	unsigned int sizer = chooser_size->value();
 	std::stringstream converter;
@@ -359,7 +359,7 @@ void set_font_size(Fl_Value_Output *chooser_size,std::string currentElement){
 	result = temp1+SIZE+temp2;
 	if(!setElementText(currentElement,"Font",result)){debug_out("FAILED to set the size for the font in "+currentElement);}
 }
-void setFontOption(std::string currentElement, std::string option, std::string value){
+void JSM_Fonts::setFontOption(std::string currentElement, std::string option, std::string value){
 	std::string current=fontTest(currentElement);
 	std::string newFont=changeFontOPT(current,option,value);
 	if(!setElementText(currentElement,"Font",newFont)){
@@ -367,7 +367,7 @@ void setFontOption(std::string currentElement, std::string option, std::string v
 	}
 	else{debug_out(currentElement+" font was successfully set to: "+newFont);}
 }
-void setFontName(std::string family, std::string currentElement){
+void JSM_Fonts::setFontName(std::string family, std::string currentElement){
 	debug_out("void setFontName(std::string "+family+", std::string "+currentElement+")");
 	std::string font=fontTest(currentElement);
 	std::string fontName ="";
@@ -389,7 +389,7 @@ void setFontName(std::string family, std::string currentElement){
 		else{debug_out(currentElement+" font was successfully set to: "+fontName);}
 	}
 }
-void setSize(unsigned int &fontSize,std::string whichElement){
+void JSM_Fonts::setSize(unsigned int &fontSize,std::string whichElement){
 	debug_out("void setSize(unsigned int &fontSize,std::string "+whichElement+")");
 	std::string font=getElementText(whichElement,"Font");
 	std::stringstream converter;
@@ -407,13 +407,13 @@ void setSize(unsigned int &fontSize,std::string whichElement){
 	result = temp1+fontSizeSTR+temp2;
 	if(!setElementText(whichElement,"Font",result)){debug_out("Setting "+whichElement+"->Font to:"+result+" FAILED");}
 }
-void setFontColor(const double* colors, std::string whichElement){
+void JSM_Fonts::setFontColor(const double* colors, std::string whichElement){
 	debug_out("void setFontColor(const double* colors, std::string "+whichElement+")");
 	std::string COLOR=colorToString(colors);
 	if(!setElementText(whichElement,"Foreground",COLOR)){debug_out("Could not set: "+whichElement+"->Foreground to: "+COLOR);}
 	return;
 }
-void window_font_color(Fl_Widget *o, int Active1_Inactive2){
+void JSM_Fonts::window_font_color(Fl_Widget *o, int Active1_Inactive2){
 	debug_out("void window_font_color(Fl_Widget *o, int Active1_Inactive2)");
 	int c;
 	double* colors = choose_a_color(c,o);

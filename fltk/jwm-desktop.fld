@@ -60,7 +60,7 @@ decl {\#include "../data/icons/jsm-desktop.xpm"} {public global
 decl {\#include <FL/Fl_Menu_Button.H>} {public global
 } 
 
-class DesktopUI {open
+class DesktopUI {open selected : {public JSM_Desktop}
 } {
   decl {std::string thisBG;std::string FILEMANAGER;unsigned int DESKTOPNUM;} {public local
   }
@@ -209,8 +209,7 @@ unsigned int counter = 0;
 for (counter=1;counter<=num;++counter){
   std::string numero=linuxcommon::convert_unsigned_to_string(counter);
   o->add(numero.c_str());
-}} {selected
-    }
+}} {}
   }
   Function {desktop_menu_cb(Fl_Menu_ *o)} {open return_type {static void}
   } {

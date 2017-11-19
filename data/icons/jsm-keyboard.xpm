@@ -1,3 +1,5 @@
+#ifndef jsm_keyboard_XPM
+#define jsm_keyboard_XPM
 /* XPM */
 static const char* jsm_keyboard_xpm[] = {
 "48 48 129 2",
@@ -178,3 +180,4 @@ static const char* jsm_keyboard_xpm[] = {
 "                                                                                                ",
 "                                                                                                ",
 "                                                                                                "};
+#endif

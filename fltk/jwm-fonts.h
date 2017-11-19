@@ -51,7 +51,7 @@
 #include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Input.H>
 
-class FontUI {
+class FontUI : public JSM_Fonts {
   std::string currentElement; 
   Fl_Output* Widget; 
 public:

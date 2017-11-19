@@ -57,7 +57,7 @@ decl {\#include "../include/ui.h"} {public global
 decl {\#include "../include/menu.hpp"} {public global
 } 
 
-class MenuUI {open
+class MenuUI {open selected : {public JSM_Menu}
 } {
   decl {int menuItemLineNumber; int JWMVERSION;int ROOTMENU;bool SUBMENU;int SUBSUB;} {public local
   }
@@ -371,8 +371,8 @@ change_include();}
 JWMVERSION=JWMversion();} {}
     Fl_Window menu_window {
       label {Menu properties} open
-      xywh {823 374 440 230} type Double color 31 resizable
-      code0 {startup(o);} xclass {jsm-panel} visible
+      xywh {823 374 440 230} type Double color 31 hide resizable
+      code0 {startup(o);} xclass {jsm-panel}
     } {
       Fl_Scroll {} {open
         xywh {0 0 435 230} color 31
@@ -963,7 +963,7 @@ getMenus(root_menu);
 menuElement->clear();
 menuElementText->clear();} {}
   }
-  Function {save_cb()} {open selected return_type int
+  Function {save_cb()} {open return_type int
   } {
     code {//save
 const char* result = item_display->value();

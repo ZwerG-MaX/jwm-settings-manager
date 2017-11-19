@@ -829,7 +829,6 @@ Fl_Double_Window* FontUI::font_chooser_window() {
         o->box(FL_FLAT_BOX);
         o->color(FL_LIGHT1);
         o->selection_color(FL_DARK2);
-        o->hide();
         { Fl_Browser* o = font_browser = new Fl_Browser(5, 25, 305, 285);
           font_browser->type(2);
           font_browser->box(FL_FLAT_BOX);
@@ -876,6 +875,7 @@ Fl_Double_Window* FontUI::font_chooser_window() {
       } // Fl_Group* o
       { Fl_Group* o = new Fl_Group(0, 25, 315, 405, gettext("Advanced"));
         o->selection_color(FL_DARK2);
+        o->hide();
         { Fl_Check_Button* o = hint_check = new Fl_Check_Button(10, 240, 85, 25, gettext("Hinting"));
           hint_check->tooltip(gettext("Whether the rasterizer should use hinting"));
           hint_check->down_box(FL_GTK_DOWN_BOX);

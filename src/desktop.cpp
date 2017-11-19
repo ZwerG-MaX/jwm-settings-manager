@@ -32,7 +32,7 @@
 #include <libintl.h>
 #include "../include/desktop.hpp"
 ///Void//////////////////////////////////////////////////////////////////
-void allBGS(Fl_Box* Image, Fl_Box* Color1,Fl_Box* Color2, std::string choice, unsigned int num, Fl_Input *in){
+void JSM_Desktop::allBGS(Fl_Box* Image, Fl_Box* Color1,Fl_Box* Color2, std::string choice, unsigned int num, Fl_Input *in){
 	debug_out("void allBGS(Fl_Box* Image, Fl_Box* Color1,Fl_Box* Color2, std::string "+choice+", unsigned int num, Fl_Input *in)");
 	const char* img=in->value();
 	if(choice.compare(img)==0){return;}
@@ -43,7 +43,7 @@ void allBGS(Fl_Box* Image, Fl_Box* Color1,Fl_Box* Color2, std::string choice, un
 }
 //b
 /** Set the background image of an Fl_Box*/
-void background(Fl_Box*o,std::string thisBG,unsigned int bgnum){
+void JSM_Desktop::background(Fl_Box*o,std::string thisBG,unsigned int bgnum){
 	debug_out("void background(Fl_Box*o,std::string "+thisBG+",unsigned int bgnum)");
 	std::string bg;
 	/** Check the string and get the background from the jwmrc if it is empty*/
@@ -64,7 +64,7 @@ void background(Fl_Box*o,std::string thisBG,unsigned int bgnum){
 	}
 }
 /** Set the Background color of an Fl_Box*/
-void background1(Fl_Box*o,std::string thisBG,unsigned int bgnum){
+void JSM_Desktop::background1(Fl_Box*o,std::string thisBG,unsigned int bgnum){
 	debug_out("void background1(Fl_Box*o,std::string "+thisBG+",unsigned int bgnum)");
 	std::string bg;
 	/** Check the string and get the background from the jwmrc if it is empty*/
@@ -89,7 +89,7 @@ void background1(Fl_Box*o,std::string thisBG,unsigned int bgnum){
 	}
 }
 /** Set the Background color of an Fl_Box*/
-void background2(Fl_Box*o,std::string thisBG,unsigned int bgnum){
+void JSM_Desktop::background2(Fl_Box*o,std::string thisBG,unsigned int bgnum){
 	debug_out("void background1(Fl_Box*o,std::string "+thisBG+",unsigned int bgnum)");
 	std::string bg;
 	/** Check the string and get the background from the jwmrc if it is empty*/
@@ -115,7 +115,7 @@ void background2(Fl_Box*o,std::string thisBG,unsigned int bgnum){
 	}
 }
 /** Open a file dialog to pick an image*/
-void bg_chooser_cb(Fl_Box *background_displayer_thingie,Fl_Output *current_bg,Fl_Box *color_display1,Fl_Box *color_display2,unsigned int bgnum){
+void JSM_Desktop::bg_chooser_cb(Fl_Box *background_displayer_thingie,Fl_Output *current_bg,Fl_Box *color_display1,Fl_Box *color_display2,unsigned int bgnum){
 	debug_out("void bg_chooser_cb(Fl_Box *background_displayer_thingie,Fl_Box *current_bg,Fl_Box *color_display1,Fl_Box *color_display2,unsigned int bgnum)");
 	std::string background = linuxcommon::home_path();
 	background +="Pictures/";
@@ -134,7 +134,7 @@ void bg_chooser_cb(Fl_Box *background_displayer_thingie,Fl_Output *current_bg,Fl
 	}
 }
 /**Get the filename OR display text describing the background type*/
-void bg_name(Fl_Output *o,std::string thisBG,unsigned int bgnum){
+void JSM_Desktop::bg_name(Fl_Output *o,std::string thisBG,unsigned int bgnum){
 	debug_out("void bg_name(Fl_Output *o,std::string "+thisBG+")");
 	std::string bg;
 	/** Check the string and get the background from the jwmrc if it is empty*/
@@ -159,7 +159,7 @@ void bg_name(Fl_Output *o,std::string thisBG,unsigned int bgnum){
 }
 //n
 /** set value for the number of desktops wide or high then make sure it is at least 1 If there are more than 1 each turn on the check button*/
-void num_desktop_wh_cb(std::string whichone, int value,Fl_Value_Input* num_desktop_w,Fl_Value_Input* num_desktop_h, Fl_Check_Button* check){
+void JSM_Desktop::num_desktop_wh_cb(std::string whichone, int value,Fl_Value_Input* num_desktop_w,Fl_Value_Input* num_desktop_h, Fl_Check_Button* check){
 	debug_out("void num_desktop_wh_cb(std::string "+whichone+", int value)");
 	/** set the attribute here*/
 	setElementAttribute("Desktops",whichone,linuxcommon::convert_num_to_string(value));
@@ -181,7 +181,7 @@ void num_desktop_wh_cb(std::string whichone, int value,Fl_Value_Input* num_deskt
 }
 //o
 /** Choose a single color and save it to the file*/
-void one_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg,unsigned int bgnum){
+void JSM_Desktop::one_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg,unsigned int bgnum){
 	debug_out("void one_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg,unsigned int bgnum)");
 	int c;
 	/** open the color chooser dialog*/
@@ -206,7 +206,7 @@ void one_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_
 }
 //s
 /**Set the background of the filemanager to match the jwmrc*/
-void setFMBackground(std::string type, std::string wallpaper){
+void JSM_Desktop::setFMBackground(std::string type, std::string wallpaper){
 	debug_out("void setFMBackground(std::string "+type+", std::string "+wallpaper+")");
 	std::string current = whichFileManager();
 	std::string desktopCOMMAND,desktopCOMMAND2,picture;
@@ -303,7 +303,7 @@ void setFMBackground(std::string type, std::string wallpaper){
     if(linuxcommon::run_a_program(terminalCommand)!=0){errorOUT("Couldn't set the wallpaper using:"+terminalCommand);}
 }
 /** create an SVG file of a color/colors and then set it as the background*/
-void svgGradient(std::string color,unsigned int bgnum){
+void JSM_Desktop::svgGradient(std::string color,unsigned int bgnum){
 	debug_out("void svgGradient(std::string "+color+",unsigned int bgnum)");
 /**This just makes an svg file with a rectangle the size of the screen and the color(s) we send it*/
     std::string result;
@@ -359,7 +359,7 @@ void svgGradient(std::string color,unsigned int bgnum){
 }
 //t
 /** The two color chooser*/
-void two_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg,unsigned int bgnum){
+void JSM_Desktop::two_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg,unsigned int bgnum){
 	debug_out("void two_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_displayer_thingie,Fl_Output *current_bg,unsigned int bgnum)");
 	int c=0;
 	int c2=0;
@@ -394,7 +394,7 @@ void two_color(Fl_Box *color_display1,Fl_Box *color_display2,Fl_Box *background_
 //u
 /** Toggle the multiple desktops... if we are using them, make it so we are not
  * If we are not using them, add one to the right*/
-void useMultipleDesktops(Fl_Value_Input *num_desktop_w,Fl_Value_Input *num_desktop_h){
+void JSM_Desktop::useMultipleDesktops(Fl_Value_Input *num_desktop_w,Fl_Value_Input *num_desktop_h){
 	debug_out("void useMultipleDesktops(Fl_Value_Input *num_desktop_w,Fl_Value_Input *num_desktop_h)");
 	if(!multipleDesktops()){
 		int width = int((num_desktop_w->value()));
@@ -412,12 +412,14 @@ void useMultipleDesktops(Fl_Value_Input *num_desktop_w,Fl_Value_Input *num_deskt
 		num_desktop_h->value(1);
 	}
 }
+
+
 ///Boolean///////////////////////////////////////////////////////////////
 //f
 /** check if the default filemanager is running*/
-bool filemanagerRunning(){return filemanagerRunning(whichFileManager());}
+bool JSM_Desktop::filemanagerRunning(){return filemanagerRunning(whichFileManager());}
 /** check a specific filemanager to see if it is running*/
-bool filemanagerRunning(std::string filemanagerToCheck){
+bool JSM_Desktop::filemanagerRunning(std::string filemanagerToCheck){
 	debug_out("bool filemanagerRunning(std::string "+filemanagerToCheck+")");
 	/** if no filemanager came in return false*/
 	if(filemanagerToCheck.compare("")==0){return false;}
@@ -451,7 +453,7 @@ bool filemanagerRunning(std::string filemanagerToCheck){
 	return false;
 }
 /** open the filemanager's preferences dialog*/
-bool filemanagerPreferences(){
+bool JSM_Desktop::filemanagerPreferences(){
 	std::string command;
 	std::string FM=whichFileManager();
 	command=FM;
@@ -465,7 +467,7 @@ bool filemanagerPreferences(){
 }
 //i
 /** check to see if a filemanager is running*/
-bool icons_on_desktop(){
+bool JSM_Desktop::icons_on_desktop(){
 	debug_out("int icons_on_desktop()");
   /**1 is on 0 is off*/
   std::string fm=whichFileManagerRunning();
@@ -476,7 +478,7 @@ bool icons_on_desktop(){
   return 0;
 }
 /** a better function... just check if the filemanager is running*/
-bool isIconsOnDesktop(){
+bool JSM_Desktop::isIconsOnDesktop(){
 	debug_out("bool isIconsOnDesktop()");
 	if(filemanagerRunning()){
 		debug_out("File manager IS running");
@@ -487,7 +489,7 @@ bool isIconsOnDesktop(){
 }
 //m
 /** check to see if multiple desktops exist*/
-bool multipleDesktops(){
+bool JSM_Desktop::multipleDesktops(){
 	debug_out("bool multipleDesktops()");
 	/** get the attributes*/
 	int width = getIntAttribute("Desktops","width");
@@ -499,7 +501,7 @@ bool multipleDesktops(){
 }
 //r
 /** get rid of the filemanager that is running*/
-bool removeIconsOnDesktop(){
+bool JSM_Desktop::removeIconsOnDesktop(){
 	debug_out("bool removeIconsOnDesktop()");
 	std::string current = whichFileManagerRunning();
 	/** remove the current file manager.. might cause issues if there is some other reason the same filemanager is in startup commands*/
@@ -510,7 +512,7 @@ bool removeIconsOnDesktop(){
 }
 //s
 /** set the background in the jwmrc, and possibly filemanager*/
-bool setBackground(std::string type,std::string result,unsigned int bgnum){
+bool JSM_Desktop::setBackground(std::string type,std::string result,unsigned int bgnum){
 	debug_out("bool setBackground(std::string "+type+",std::string "+result+",unsigned int bgnum)");
 	/** get a good decent attribute based on what is sent in*/
 	if(isImage(result)){type="image";}
@@ -539,7 +541,7 @@ bool setBackground(std::string type,std::string result,unsigned int bgnum){
 	return true;
 }
 /** make the desktop handled by a filemanager*/
-bool setIconsOnDesktop(){
+bool JSM_Desktop::setIconsOnDesktop(){
 	debug_out("bool setIconsOnDesktop()");
     /**find out which filemanager is existant*/
     std::string current = whichFileManager();
@@ -572,7 +574,7 @@ bool setIconsOnDesktop(){
 }
 //u
 /**Toggle the icons on the desktop*/
-bool use_icons_on_desktop(Fl_Box *background_displayer_thingie,std::string thisBG){
+bool JSM_Desktop::use_icons_on_desktop(Fl_Box *background_displayer_thingie,std::string thisBG){
 	debug_out("bool use_icons_on_desktop(Fl_Box *background_displayer_thingie,std::string "+thisBG+")");
 	if(!isIconsOnDesktop()){
 		if(setIconsOnDesktop()){
@@ -585,10 +587,12 @@ bool use_icons_on_desktop(Fl_Box *background_displayer_thingie,std::string thisB
 	}
 	return isIconsOnDesktop();
 }
+
+
 ///String////////////////////////////////////////////////////////////////
 /** get the desktop background string*/
-std::string getBackground(){return getBackground(1);}
-std::string getBackground(unsigned int whichOne){
+std::string JSM_Desktop::getBackground(){return getBackground(1);}
+std::string JSM_Desktop::getBackground(unsigned int whichOne){
 	debug_out("std::string getBackground(unsigned int whichOne)");
 	std::string bg,JWMBG;
 	/** get the JWM background*/
@@ -622,7 +626,7 @@ std::string getBackground(unsigned int whichOne){
 	return bg;
 }
 /** Figure out which filemanager is running*/
-std::string whichFileManagerRunning(){
+std::string JSM_Desktop::whichFileManagerRunning(){
 	debug_out("std::string whichFileManagerRunning()");
 	std::string fm="";
 	std::vector<std::string> fileManagers;
@@ -640,7 +644,7 @@ std::string whichFileManagerRunning(){
 	return fm;
 }
 /** find the default filemanager from xdg-mime, or pick the first in the list*/
-std::string whichFileManager(){
+std::string JSM_Desktop::whichFileManager(){
 	debug_out("std::string whichFileManager()");
 	std::string XDGMIME = linuxcommon::term_out("xdg-mime query default inode/directory");
 	std::string desktopFile=linuxcommon::find_xdg_data_dir_subdir("applications");
@@ -668,7 +672,7 @@ std::string whichFileManager(){
 	return "";
 }
 /** get the filemanager's background*/
-std::string getFMBackground(){
+std::string JSM_Desktop::getFMBackground(){
 	debug_out("std::string getFMBackground()");
 	std::string wallpaper,desktopCOMMAND;
 	std::string current = whichFileManager();
@@ -705,8 +709,10 @@ std::string getFMBackground(){
     debug_out("gsettings bg="+wallpaper);
     return wallpaper;
 }
+
+///Vector////////////////////////////////////////////////////////////////
 /** my list of filemanagers I currently support in vector<string> format*/
-std::vector<std::string> ListFileManagers(){
+std::vector<std::string> JSM_Desktop::ListFileManagers(){
 	debug_out("std::vector<std::string> ListFileManagers()");
 	//TODO: support more filemanagers in the future...
 	std::vector<std::string> fileManagers;

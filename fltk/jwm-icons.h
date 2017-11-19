@@ -43,7 +43,7 @@
 #include <FL/Fl_Light_Button.H>
 #include <FL/Fl_Input.H>
 
-class IconsUI {
+class IconsUI : public JSM_Icon {
 public:
   Fl_Double_Window* make_window();
   Fl_Double_Window *icons_window;

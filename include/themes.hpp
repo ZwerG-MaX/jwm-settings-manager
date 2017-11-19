@@ -23,14 +23,16 @@
  */
 #ifndef themes_hpp
 #define themes_hpp
-#include <FL/Fl.H>
+//std
 #include <libintl.h>
 #include <string>
 #include <stdlib.h>
 #include <iostream>
+//mine
 #include "jwmrc.h"
 #include "fltkfunctions.hpp"
-#include "ui.h"
+//FLTK
+#include <FL/Fl.H>
 #include <FL/fl_ask.H>
 #include <FL/Fl_Native_File_Chooser.H>
 #include <FL/Fl_Double_Window.H>
@@ -39,14 +41,17 @@
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Box.H>
 // void
-void change_theme(std::string whichTheme, bool overwrite);
-void save_theme(Fl_Browser *usr_theme);
-void theme_copier(std::string theme);
-void setButton(std::string filename,std::string element);
-void setThemeElementTextwithSub(std::string filename,std::string element,std::string subelement);
-void setThemeElementTextwithSub(std::string filename,std::string element,std::string subelement,std::string SUBsubelement);
-void modCurrentTheme(std::string filename);
-void updateTheme( Fl_Browser *o,
+class Theme
+{
+	public:
+		void change_theme(std::string whichTheme, bool overwrite);
+		void save_theme(Fl_Browser *usr_theme);
+		void theme_copier(std::string theme);
+		void setButton(std::string filename,std::string element);
+		void setThemeElementTextwithSub(std::string filename,std::string element,std::string subelement);
+		void setThemeElementTextwithSub(std::string filename,std::string element,std::string subelement,std::string SUBsubelement);
+		void modCurrentTheme(std::string filename);
+		void updateTheme( Fl_Browser *o,
 					Fl_Box * button,
 					Fl_Box * button_icon,
 					Fl_Box *tray,
@@ -65,23 +70,24 @@ void updateTheme( Fl_Browser *o,
 					std::string filename,
 					bool user);
 //string
-std::string choose_directory(std::string whichChoice);
-std::string choose_file();
-std::string getTheme(std::string whichTheme);
-std::string sysThemeDir();
-std::string userThemeDir();
-std::string theme_cb(Fl_Browser* browser,bool systemTheme, Fl_Input* current_theme);
-std::string getButton(std::string element,std::string themefile);
+		std::string choose_directory(std::string whichChoice);
+		std::string choose_file();
+		std::string getTheme(std::string whichTheme);
+		std::string sysThemeDir();
+		std::string userThemeDir();
+		std::string theme_cb(Fl_Browser* browser,bool systemTheme, Fl_Input* current_theme);
+		std::string getButton(std::string element,std::string themefile);
 //int
-int saveAs(std::string save_name);
-int populateANYThemes(Fl_Browser *o,std::string checkHERE,bool backone);
-int populateThemes(Fl_Browser *o);
-int populateUserThemes(Fl_Browser *o);
-int loadTheme(std::string themePath);
-int themeNewStyle(std::string themefile);
+		int saveAs(std::string save_name);
+		int populateANYThemes(Fl_Browser *o,std::string checkHERE,bool backone);
+		int populateThemes(Fl_Browser *o);
+		int populateUserThemes(Fl_Browser *o);
+		int loadTheme(std::string themePath);
+		int themeNewStyle(std::string themefile);
 //bool
-bool checkForTheme(std::string theme);
-bool checkThemeVersion();
-bool oldThemesExist();
-bool themesExist();
+		bool checkForTheme(std::string theme);
+		bool checkThemeVersion();
+		bool oldThemesExist();
+		bool themesExist();
+};
 #endif

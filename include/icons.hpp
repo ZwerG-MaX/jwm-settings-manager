@@ -31,7 +31,7 @@
 #include <iostream>
 #include <algorithm>
 #include "jwmrc.h"
-#include "ui.h"
+//#include "ui.h"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Box.H>
@@ -40,13 +40,18 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Value_Input.H>
 //Boolean
-bool edit_value(Fl_Browser* iconsBrowser,Fl_Input* dir_edit_input);
-bool populateIncludes(std::string themefile,int size_to_use);
-bool save_edit_value(Fl_Browser* iconsBrowser,Fl_Input* dir_edit_input);
-bool switchTheme(Fl_Browser* o,int size);
+class JSM_Icon
+{
+	public:
+//Bool
+		bool edit_value(Fl_Browser* iconsBrowser,Fl_Input* dir_edit_input);
+		bool populateIncludes(std::string themefile,int size_to_use);
+		bool save_edit_value(Fl_Browser* iconsBrowser,Fl_Input* dir_edit_input);
+		bool switchTheme(Fl_Browser* o,int size);
 //Vector
-std::vector<std::string> list_icon_dirs_in_themefile(std::string themefile,int size_to_use);
-std::vector<std::string> icon_themefiles_vector();
+		std::vector<std::string> list_icon_dirs_in_themefile(std::string themefile,int size_to_use);
+		std::vector<std::string> icon_themefiles_vector();
 //Void
-void populateIconThemes(Fl_Browser* o);
+		void populateIconThemes(Fl_Browser* o);
+};
 #endif

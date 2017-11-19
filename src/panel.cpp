@@ -24,7 +24,7 @@
 #include <libintl.h>
 #include "../include/panel.hpp"
 //String////////////////////////////////////////////////////////////////
-std::string getAutoHide(int num){
+std::string JSM_Panel::getAutoHide(int num){
 	debug_out("std::string getAutoHide(int num)");
 	std::string retval;
 	if(newStyle()){
@@ -54,7 +54,7 @@ std::string getAutoHide(int num){
 	}
 	return retval;
 }
-std::string getClock(std::string timeString){
+std::string JSM_Panel::getClock(std::string timeString){
 	debug_out("std::string getClock(std::string timeString)");
 	time_t rawtime;
     struct tm * timeinfo;
@@ -65,27 +65,27 @@ std::string getClock(std::string timeString){
     std::string stringBuffer = buffer;
     return stringBuffer;
 }
-std::string getClock(){return getElementAttribute(currentPanel(),"Tray","Clock","format");}
-std::string getClockText(int position){return getItemText(getTraySubElement(position));}
-std::string getImageMenu(std::string item){return getAttribute(getMenu(item),"icon");}
-std::string getLabelMenu(std::string item){
+std::string JSM_Panel::getClock(){return getElementAttribute(currentPanel(),"Tray","Clock","format");}
+std::string JSM_Panel::getClockText(int position){return getItemText(getTraySubElement(position));}
+std::string JSM_Panel::getImageMenu(std::string item){return getAttribute(getMenu(item),"icon");}
+std::string JSM_Panel::getLabelMenu(std::string item){
 	debug_out("std::string getLabelMenu(std::string "+item+")");
 	std::string tmp= getAttribute(getMenu(item),"label");
 	debug_out("Label="+tmp);
 	return tmp;
 }
-std::string getButtonTooltip(std::string item){
+std::string JSM_Panel::getButtonTooltip(std::string item){
 	debug_out("std::string getButtonTooltip(std::string "+item+")");
 	std::string tmp= getAttribute(getMenu(item),"tooltip");
 	if(tmp.compare("")==0){tmp=getLabelMenu(item);}
 	debug_out("Label="+tmp);
 	return tmp;
 }
-std::string getItemVal(int position, std::string attribute){
+std::string JSM_Panel::getItemVal(int position, std::string attribute){
 	debug_out("std::string getItemVal(int position, std::string "+attribute+")");
 	return getAttribute(getTraySubElement(position),attribute);
 }
-std::string getTrayStyleattribute(std::string item){
+std::string JSM_Panel::getTrayStyleattribute(std::string item){
 	std::string value=getAttribute(parseNodes(1,"TrayStyle"),item);
 	std::string defaultval;
 	if(item.compare("list")==0)defaultval="desktop";
@@ -94,7 +94,7 @@ std::string getTrayStyleattribute(std::string item){
 	if(value.compare("")==0){value=defaultval;}
 	return value;
 }
-std::string Menu_Label(int num){
+std::string JSM_Panel::Menu_Label(int num){
 	debug_out("std::string Menu_Label(int num)");
 	changePanel(num);
 	currentPanel();
@@ -105,32 +105,32 @@ std::string Menu_Label(int num){
 	return LABEL;
 }
 //double////////////////////////////////////////////////////////////////
-double getItemH(int position){return getItemWH(position,"height");}
-double getItemW(int position){return getItemWH(position,"width");}
-double getSpacing(int position){return getItemWH(position,"spacing");}
-double getTaskW(int position){return getItemWH(position,"maxwidth");}
-double getItemWH(int position, std::string attribute){
+double JSM_Panel::getItemH(int position){return getItemWH(position,"height");}
+double JSM_Panel::getItemW(int position){return getItemWH(position,"width");}
+double JSM_Panel::getSpacing(int position){return getItemWH(position,"spacing");}
+double JSM_Panel::getTaskW(int position){return getItemWH(position,"maxwidth");}
+double JSM_Panel::getItemWH(int position, std::string attribute){
 	debug_out("std::string getItemWH(int position, std::string "+attribute+")");
 	std::string tmp=getItemVal(position, attribute);
 	double val=linuxcommon::convert_string_to_double(tmp);
 	return val;
 }
 //Integer///////////////////////////////////////////////////////////////
-int getBorder(){return linuxcommon::convert_string_to_number(getElementAttribute(currentPanel(),"Tray","border").c_str());}
-int getCoordinate(std::string xy){return linuxcommon::convert_string_to_number(getElementAttribute("Tray",xy).c_str());}
-int getHeight(){return linuxcommon::convert_string_to_number(getElementAttribute(currentPanel(),"Tray","height").c_str());}
-int getWidth(){return linuxcommon::convert_string_to_number(getElementAttribute(currentPanel(),"Tray","width").c_str());}
-int taskLabeled(int position){
+int JSM_Panel::getBorder(){return linuxcommon::convert_string_to_number(getElementAttribute(currentPanel(),"Tray","border").c_str());}
+int JSM_Panel::getCoordinate(std::string xy){return linuxcommon::convert_string_to_number(getElementAttribute("Tray",xy).c_str());}
+int JSM_Panel::getHeight(){return linuxcommon::convert_string_to_number(getElementAttribute(currentPanel(),"Tray","height").c_str());}
+int JSM_Panel::getWidth(){return linuxcommon::convert_string_to_number(getElementAttribute(currentPanel(),"Tray","width").c_str());}
+int JSM_Panel::taskLabeled(int position){
   std::string tmp=getItemVal(position,"labeled");
   if(tmp.compare("")==0){return 1;}
   if(TRUEorFALSE(tmp)){return 1;}
   return 0;
 }
 //Boolean///////////////////////////////////////////////////////////////
-bool addApp(std::string element){return addSubElement(currentPanel(),"Tray",element);}
-bool addApp(std::string element, std::string attribute,std::string value,std::string text){return addSubElementWithTextandAttribute(currentPanel(),"Tray",element,text,attribute,value);}
-bool addApp(std::string element,std::string attribute,std::string value){return addSubElementWithAttribute(currentPanel(),"Tray",element,attribute,value);}
-bool addButton(std::string icon,std::string execLine,std::string popup,int border){
+bool JSM_Panel::addApp(std::string element){return addSubElement(currentPanel(),"Tray",element);}
+bool JSM_Panel::addApp(std::string element, std::string attribute,std::string value,std::string text){return addSubElementWithTextandAttribute(currentPanel(),"Tray",element,text,attribute,value);}
+bool JSM_Panel::addApp(std::string element,std::string attribute,std::string value){return addSubElementWithAttribute(currentPanel(),"Tray",element,attribute,value);}
+bool JSM_Panel::addButton(std::string icon,std::string execLine,std::string popup,int border){
 	if(execLine.compare("")==0){errorOUT("Exec line is empty");return false;}
 	if(execLine.find("exec:")>execLine.length()){execLine="exec:"+execLine;}
 	debug_out("void addButton(std::string "+icon+",std::string "+execLine+",std::string "+popup+",int border)");
@@ -153,7 +153,7 @@ bool addButton(std::string icon,std::string execLine,std::string popup,int borde
 	debug_out("addButton failed to set the icon attribute");
 	return false;
 }
-bool add_new_shortcut(Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Input* tooltip,Fl_Box* icon_name,int border){
+bool JSM_Panel::add_new_shortcut(Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Input* tooltip,Fl_Box* icon_name,int border){
 	debug_out("void add_new_shortcut(Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Input* tooltip)");
 	const char* ICON= icon_name->label();
 	std::string icon;
@@ -187,7 +187,7 @@ bool add_new_shortcut(Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Inpu
 	}
 	return false;
 }
-bool addShortcut(std::string icon,std::string execLine,std::string popup,int border){
+bool JSM_Panel::addShortcut(std::string icon,std::string execLine,std::string popup,int border){
 	if(execLine.find("exec:")>execLine.length()){execLine="exec:"+execLine;}
 	debug_out("void addShortcut(std::string "+icon+",std::string "+execLine+",std::string "+popup+",int border)");
 	setAttribute(addNode(currentPanel(),"Tray", "TrayButton"),"icon",icon);
@@ -195,43 +195,43 @@ bool addShortcut(std::string icon,std::string execLine,std::string popup,int bor
 	setAttribute(getLastSubNode(currentPanel(),"Tray", "TrayButton"),"border",linuxcommon::convert_num_to_string(border));
 	return setNodeText(getLastSubNode(currentPanel(),"Tray", "TrayButton"),execLine);
 }
-bool style_gone(){
+bool JSM_Panel::style_gone(){
 	debug_out("bool style_gone()");
 	if(newStyle() ==1){return true;}
 	return false;
 }
-bool setClockText(int position,std::string text, std::string mask){
+bool JSM_Panel::setClockText(int position,std::string text, std::string mask){
 	if(JWMversion()<230){return setItemText(position,text);}
 	return setNodeButtonTextByMask(getTraySubElement(position),text,mask);
 }
-bool setItemH(int value,int position){return setItemWH("height",value,position);}
-bool setItemW(int value,int position){return setItemWH("width",value,position);}
-bool setTaskW(int value, int position){return setItemWH("maxwidth",value,position);}
-bool setItemWH(std::string attribute, int value,int position){
+bool JSM_Panel::setItemH(int value,int position){return setItemWH("height",value,position);}
+bool JSM_Panel::setItemW(int value,int position){return setItemWH("width",value,position);}
+bool JSM_Panel::setTaskW(int value, int position){return setItemWH("maxwidth",value,position);}
+bool JSM_Panel::setItemWH(std::string attribute, int value,int position){
 	debug_out("bool setItemWH(std::string "+attribute+", int value,int position)");
 	std::string val=linuxcommon::convert_num_to_string(value);
 	return setItemWH(attribute,val,position);
 }
-bool setItemWH(std::string attribute, std::string value,int position){
+bool JSM_Panel::setItemWH(std::string attribute, std::string value,int position){
 	debug_out("bool setItemWH(std::string "+attribute+", std::string "+value+",int position)");
 	return setAttribute(getTraySubElement(position),attribute,value);
 }
-bool setItemText(int position, std::string text){
+bool JSM_Panel::setItemText(int position, std::string text){
 	debug_out("bool setItemText(int position, std::string "+text+")");
 	return setNodeText(getTraySubElement(position),text);
 }
-bool TRUEorFALSE(std::string boolean){
+bool JSM_Panel::TRUEorFALSE(std::string boolean){
 	if(boolean.compare("true")==0){return true;}
 	return false;
 }
-bool toomanypanels(){
+bool JSM_Panel::toomanypanels(){
 	debug_out("bool toomanypanels()");
 	if(numPanels()>=4){return true;}
 	return false;
 }
 //Void//////////////////////////////////////////////////////////////////
 //////A
-void addBattery(){
+void JSM_Panel::addBattery(){
 	checkDock();
 	std::string batt="torios-battery";
 	if(!isExec(batt)){
@@ -243,7 +243,7 @@ void addBattery(){
 	}
 	addIndicator(batt);
 }
-void addClock(){
+void JSM_Panel::addClock(){
 	debug_out("");
 	std::string defaultFormat="%a, %e %b %l:%M %p";
 	std::string defaultclock=linuxcommon::term_out("which torios-calendar");
@@ -263,7 +263,7 @@ void addClock(){
 		setNodeText(getLastSubNode(curr_panel,"Tray", "Clock"),defaultclock);
 	}
 }
-void addIndicator(std::string indicator){
+void JSM_Panel::addIndicator(std::string indicator){
 	if(!linuxcommon::look_for_string_in_vector(AnythingVector("StartupCommand"),indicator)){
 		bool isauto=false;
 		std::vector<std::string> myVec=XDGautostart();
@@ -280,7 +280,7 @@ void addIndicator(std::string indicator){
 		}
 	}
 }
-void addNetworkMonitor(){
+void JSM_Panel::addNetworkMonitor(){
 	checkDock();
 	std::string nm="nm-applet";
 	if(!isExec(nm)){
@@ -295,18 +295,18 @@ void addNetworkMonitor(){
 	}
 	addIndicator(nm);
 }
-void add_new_menu(){
+void JSM_Panel::add_new_menu(){
 	debug_out("void add_new_menu()");
 	//TODO... launcher window for a 'root' rather than exec
-	showMenu();
+	//showMenu();
 }
-void addPager(){
+void JSM_Panel::addPager(){
 	debug_out("void addPager()");
 	if(!setAttribute(addNode(currentPanel(),"Tray", "Pager"),"labeled","true")){
 		debug_out("Couldn't add the Pager");
 	}
 }
-void addPanel(){
+void JSM_Panel::addPanel(){
 	debug_out("void addPanel()");
 	std::string position=getSmartLayout();
 	debug_out("Using position: "+position);
@@ -350,7 +350,7 @@ void addPanel(){
     if(!setAttribute(parseNodes(panels,"Tray"),"halign",halign)){errorOUT("FAILED to set halign");}
     if(!setAttribute(parseNodes(panels,"Tray"),"border","false")){errorOUT("FAILED to set border");}
 }
-void addSpacer(double w, double h, int position){
+void JSM_Panel::addSpacer(double w, double h, int position){
 	std::string width=linuxcommon::convert_num_to_string(w);
 	std::string height=linuxcommon::convert_num_to_string(h);
 	debug_out("void addSpacer(double "+width+", double "+height+")");
@@ -364,11 +364,11 @@ void addSpacer(double w, double h, int position){
 		setAttribute(getTraySubElement(position),"height",height);
 	}
 }
-void addTaskList(){
+void JSM_Panel::addTaskList(){
 	debug_out("void addTaskList()");
 	if(!setAttribute(addNode(currentPanel(),"Tray", "TaskList"),"maxwidth","256")){debug_out("Could not add the TaskList");}	
 }
-void addVolume(){
+void JSM_Panel::addVolume(){
 	checkDock();
 	std::string vol="torios-volume";
 	if(!isExec(vol)){
@@ -380,7 +380,7 @@ void addVolume(){
 	}
 	addIndicator(vol);
 }
-void app_command_CB(Fl_Input* o, Fl_Input* app_command){
+void JSM_Panel::app_command_CB(Fl_Input* o, Fl_Input* app_command){
 	debug_out("void app_command_CB(Fl_Input* o, Fl_Input* app_command)");
 	const char* result = o->value();
 	if(result!=NULL){
@@ -390,7 +390,7 @@ void app_command_CB(Fl_Input* o, Fl_Input* app_command){
 		app_command->value(exec.c_str());
 	}
 }
-void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide){
+void JSM_Panel::autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide){
 	debug_out("void autohide(Fl_Check_Button* autohide_check,Fl_Check_Button* choose_autohide)");
 	std::string a = getElementAttribute("Tray","autohide");
 	autohide_check->value(0);
@@ -402,7 +402,7 @@ void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide){
 		if((a.compare("")!=0)&&(a.compare("off")!=0)){autohide_check->value(1);}
 	}		
 }
-void autohide_position(std::string where,Fl_Output *autohide_pos){
+void JSM_Panel::autohide_position(std::string where,Fl_Output *autohide_pos){
 	debug_out("void autohide_position(std::string "+where+")");
 	if(where.compare("")==0){return;}
 	autohide_pos->value(where.c_str());
@@ -410,7 +410,7 @@ void autohide_position(std::string where,Fl_Output *autohide_pos){
 	setElementAttribute(currentPanel(),"Tray","autohide",where);
 }
 //////C
-void changeClock(std::string style){
+void JSM_Panel::changeClock(std::string style){
 	debug_out("void changeClock(std::string "+style+")");
 	std::string DAY=gettext("Day");
 	std::string TWELVE=gettext("12");
@@ -424,7 +424,7 @@ void changeClock(std::string style){
     else{format=style;}
     setElementAttribute(currentPanel(),"Tray","Clock","format",format);
 }
-void change_layer(std::string position,Fl_Output * layer){
+void JSM_Panel::change_layer(std::string position,Fl_Output * layer){
 	if(!setElementAttribute(currentPanel(),"Tray","layer",position)){
 		errorOUT("Could not set layer to "+position);
 	}
@@ -433,22 +433,22 @@ void change_layer(std::string position,Fl_Output * layer){
 		layer->redraw();
 	}
 }
-void changePanel(int number){
+void JSM_Panel::changePanel(int number){
 	debug_out("void changePanel(int number)");
 	if(!setJSMItem("panel",linuxcommon::convert_num_to_string(number))){debug_out("FAILED to change panel");}
 }
-void checkDock(){
+void JSM_Panel::checkDock(){
 	if(!isTrayElement("Dock")){addSubElement(currentPanel(),"Tray","Dock");}
 }
 //////D
-void deleteBattery(){
+void JSM_Panel::deleteBattery(){
 	debug_out("void deleteBattery()");
 	std::string TORI="torios-battery";
 	std::string XFCEB="xfce4-power-manager";
 	if(checkExec("yad")&&checkExec(TORI)){deleteSomeIndicator(TORI);}
 	if(checkExec(XFCEB)){deleteSomeIndicator(XFCEB);}
 }
-void deleteNetworkMonitor(){
+void JSM_Panel::deleteNetworkMonitor(){
 	debug_out("void deleteNetworkMonitor()");
 	//std::string TORI="torios-network";
 	std::string NM="nm-applet";
@@ -457,8 +457,9 @@ void deleteNetworkMonitor(){
 	if(checkExec(WICD)){deleteSomeIndicator(WICD);}
 	//else if(.compare("")!=0){deleteSomeIndicator();}
 }
-void deletePanel(){removeElement(currentPanel(),"Tray");}
-void deletePanelItem(std::string item){
+void JSM_Panel::deletePanel(){removeElement(currentPanel(),"Tray");}
+
+void JSM_Panel::deletePanelItem(std::string item){
 	debug_out("void deletePanelItem(std::string "+item+")");
 	if(item.compare("")==0){return;}
 	unsigned int whichPanel=currentPanel();
@@ -483,7 +484,7 @@ void deletePanelItem(std::string item){
 		removeElement(whichPanel,"Tray",item);
 	}
 }
-void deleteSomeIndicator(std::string indicator){
+void JSM_Panel::deleteSomeIndicator(std::string indicator){
 	debug_out("void deleteSomeIndicator(std::string "+indicator+")");
 	if(indicator.find("torios-")<indicator.length()){
 		debug_out("found torios program");
@@ -493,11 +494,11 @@ void deleteSomeIndicator(std::string indicator){
 	if(linuxcommon::program_is_running(indicator)){linuxcommon::run_a_program("pkill "+indicator);}
 	removeAutostart(indicator);
 }
-void deleteTrayButton(std::string text_to_find){
+void JSM_Panel::deleteTrayButton(std::string text_to_find){
 	debug_out("void deleteTrayButton(std::string "+text_to_find+")");
 	
 }
-void deleteVolume(){
+void JSM_Panel::deleteVolume(){
 	debug_out("void deleteVolume()");
 	std::string TORI="torios-volume";
 	std::string VOL="volumeicon";
@@ -505,7 +506,7 @@ void deleteVolume(){
 	else if(checkExec(VOL)){deleteSomeIndicator(VOL);}
 }
 //////E
-void editButton(int whichbutton, std::string MENU,std::string PROG,std::string ICON,std::string LABEL,std::string MASK){
+void JSM_Panel::editButton(int whichbutton, std::string MENU,std::string PROG,std::string ICON,std::string LABEL,std::string MASK){
 	debug_out("void editButton(std::string "+MENU+",std::string "+PROG+",std::string "+ICON+",std::string "+LABEL+",std::string "+MASK+")");
 	if(MASK.compare("")!=0){
 		if((PROG.compare("")!=0)&&(MENU.compare("")!=0)){errorOUT("Both program and Menu are together on the same mask.... This will default to MENU");}
@@ -529,19 +530,19 @@ void editButton(int whichbutton, std::string MENU,std::string PROG,std::string I
 	}
 }
 //////G
-void getTrayStyleattribute(std::string item,Fl_Output* list_out){
+void JSM_Panel::getTrayStyleattribute(std::string item,Fl_Output* list_out){
 	std::string value=getTrayStyleattribute(item);
 	list_out->value(value.c_str());
 	list_out->redraw();
 }
-void getColorFromItem(bool active, std::string element,std::string subelement,Fl_Button* o){
+void JSM_Panel::getColorFromItem(bool active, std::string element,std::string subelement,Fl_Button* o){
 	debug_out("void getColorFromItem(bool active, std::string "+element+",std::string "+subelement+")");
 	unsigned int color=0;
 	std::string COLOR=getElementText(element,subelement);
 	if(active)COLOR=getElementText(element,"Active",subelement);
 	o->color(color);
 }
-void getGroupWin(Fl_Check_Button *o){
+void JSM_Panel::getGroupWin(Fl_Check_Button *o){
 	std::string val=getTrayStyleattribute("group");
 	if(val.compare("true")==0){
 		o->value(1);
@@ -549,7 +550,7 @@ void getGroupWin(Fl_Check_Button *o){
 	else{o->value(0);}
 	
 }
-void getIndicators(Fl_Browser* o){
+void JSM_Panel::getIndicators(Fl_Browser* o){
 	debug_out("void getIndicators(Fl_Browser* o)");
 	o->clear();
 	o->redraw();
@@ -569,7 +570,7 @@ void getIndicators(Fl_Browser* o){
 	getIndicatorsPopulate(o,myVec);
 	
 }
-void getIndicatorsPopulate(Fl_Browser* o,std::vector<std::string> list){
+void JSM_Panel::getIndicatorsPopulate(Fl_Browser* o,std::vector<std::string> list){
 	for(std::vector<std::string>::iterator it = list.begin();it!=list.end();++it){
 		std::string item=*it;
 		if(checkExec(item)){o->add(item.c_str());}
@@ -577,14 +578,14 @@ void getIndicatorsPopulate(Fl_Browser* o,std::vector<std::string> list){
 	o->redraw();
 }
 //////H
-void hide_menu(Fl_Menu_Item * o, int whichOne){
+void JSM_Panel::hide_menu(Fl_Menu_Item * o, int whichOne){
 	debug_out("void hide_menu(Fl_Menu_Item * o, int whichOne)");
 	int num = numPanels();
 	if (whichOne > num) o->hide();
 	else o->show();
 }
 //////I
-void icon_for_desktop(Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Box* icon_name,Fl_Input* tooltip,Fl_Button* app_icon_box){
+void JSM_Panel::icon_for_desktop(Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Box* icon_name,Fl_Input* tooltip,Fl_Button* app_icon_box){
 	debug_out("void icon_for_desktop(Fl_Input* app_command,Fl_Box* icon_name,Fl_Input* tooltip,Fl_Box* app_icon_box)");
 	std::string chooseName=gettext("Choose a program");
 	std::string result=nativeFileDialog(chooseName,"/usr/share/applications","*.desktop");
@@ -603,7 +604,7 @@ void icon_for_desktop(Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Box*
     //Fl_Browser* shortcut_browser,Fl_Input* app_command,Fl_Input* tooltip,Fl_Box* icon_name,int border
     add_new_shortcut(shortcut_browser,app_command,tooltip,icon_name,0);
 }
-void input_width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension){
+void JSM_Panel::input_width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension){
 	debug_out("void input_width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension)");
 	if(dimension==NULL){return;}
 	std::string border=dimension;
@@ -620,14 +621,14 @@ void input_width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, con
 	setValue(dimension,stringInt);
 }
 //////L
-void labelMenu(std::string testNum,std::string newLabel){
+void JSM_Panel::labelMenu(std::string testNum,std::string newLabel){
 	debug_out("void labelMenu(unsigned int testNum,std::string newLabel)");
 	testNum="root:"+testNum;
 	if(!setAttribute(getMenu(testNum),"label",newLabel)){
 		debug_out("Didn't set the label "+newLabel+" for the Menu");
 	}
 }
-void layout(std::string position,Fl_Output *layOut){
+void JSM_Panel::layout(std::string position,Fl_Output *layOut){
 	if(!setElementAttribute(currentPanel(),"Tray","layout",position)){
 		errorOUT("Could not set layout to "+position);
 	}
@@ -636,7 +637,7 @@ void layout(std::string position,Fl_Output *layOut){
 		layOut->redraw();
 	}
 }
-void listIndicators(Fl_Browser *o){
+void JSM_Panel::listIndicators(Fl_Browser *o){
 	std::string filename=linuxcommon::test_file_in_vector_path("jwm-settings-manager/indicators.list",linuxcommon::desktop_dirs());
 	std::vector<std::string> myVec;
 	if(linuxcommon::test_file(filename)){myVec=linuxcommon::file_to_vector(filename);}
@@ -657,7 +658,7 @@ void listIndicators(Fl_Browser *o){
 	}
 }
 //////N
-void new_panel_items(Fl_Browser *o){
+void JSM_Panel::new_panel_items(Fl_Browser *o){
 	debug_out("void new_panel_items(Fl_Browser *o)");
 	std::string RUNNINGAPPLIST=gettext("Running App List");
 	std::string INDICATORS=gettext("Indicators");
@@ -676,7 +677,7 @@ void new_panel_items(Fl_Browser *o){
 	o->add(SWALLOW.c_str());
 	o->add(SPACER.c_str());
 }
-void num_desktop_wh_CB(std::string whichone, int value,Fl_Value_Input* num_desktop_w, Fl_Value_Input* num_desktop_h){
+void JSM_Panel::num_desktop_wh_CB(std::string whichone, int value,Fl_Value_Input* num_desktop_w, Fl_Value_Input* num_desktop_h){
 	debug_out("void num_desktop_wh_cb(std::string "+whichone+", int value)");
 	std::string VAL=linuxcommon::convert_num_to_string(value);
 	setElementAttribute("Desktops",whichone,VAL);
@@ -687,7 +688,7 @@ void num_desktop_wh_CB(std::string whichone, int value,Fl_Value_Input* num_deskt
 	if(h==0){setElementAttribute("Desktops","height",defaultValue);}
 }
 //////P
-void panel_label(Fl_Menu_Button *o){
+void JSM_Panel::panel_label(Fl_Menu_Button *o){
 	debug_out("void panel_label(Fl_Menu_Button *o)");
 	std::string PANEL=gettext("Panel");
 	int num = 1;
@@ -696,9 +697,9 @@ void panel_label(Fl_Menu_Button *o){
 	o->copy_label(l.c_str());
 	o->redraw();
 }
-void panel_h(int num, Fl_Output * align){panel_hv("halign",num,align);}
-void panel_v(int num, Fl_Output * align){panel_hv("valign",num,align);}
-void panel_hv(std::string attrib, int num, Fl_Output * align){
+void JSM_Panel::panel_h(int num, Fl_Output * align){panel_hv("halign",num,align);}
+void JSM_Panel::panel_v(int num, Fl_Output * align){panel_hv("valign",num,align);}
+void JSM_Panel::panel_hv(std::string attrib, int num, Fl_Output * align){
 	std::string item;
 	switch(num){
 		case 1:
@@ -730,7 +731,7 @@ void panel_hv(std::string attrib, int num, Fl_Output * align){
 		align->redraw();
 	}
 }
-void panel_menu_button_label(Fl_Menu_Button* o){
+void JSM_Panel::panel_menu_button_label(Fl_Menu_Button* o){
 	debug_out("void panel_menu_button_label(Fl_Menu_Button* o)");
 	int num=currentPanel();
 	std::string labeler=linuxcommon::convert_num_to_string(num);
@@ -741,7 +742,7 @@ void panel_menu_button_label(Fl_Menu_Button* o){
 	o->copy_label(LABEL.c_str());
 	o->redraw();
 }
-void panel_position(std::string position){
+void JSM_Panel::panel_position(std::string position){
 	debug_out("void panel_position(std::string "+position+")");
 	if((position.compare("top")==0)||(position.compare("bottom")==0)){
 		setElementAttribute(currentPanel(),"Tray","halign","fixed");
@@ -754,7 +755,7 @@ void panel_position(std::string position){
 		setElementAttribute(currentPanel(),"Tray","halign",position);
 	}
 }
-void populateClocks(Fl_Browser* o){
+void JSM_Panel::populateClocks(Fl_Browser* o){
 	debug_out("void populateClocks(Fl_Browser* o)");
 	std::string filename = linuxcommon::find_xdg_data_dir_subdir("jwm-settings-manager");
 	if(filename.compare("")==0){
@@ -772,15 +773,15 @@ void populateClocks(Fl_Browser* o){
     }
 }
 //////R
-void refresh_app_browser(Fl_Browser* app_browser){populateApps(app_browser);}
-void remove_app(Fl_Browser* app_browser){
+void JSM_Panel::refresh_app_browser(Fl_Browser* app_browser){populateApps(app_browser);}
+void JSM_Panel::remove_app(Fl_Browser* app_browser){
 	debug_out("void remove_app(Fl_Browser* app_browser)");
 	if(checkFlBrowserItem(app_browser)){
 		deletePanelItem(app_browser->value());
 		refresh_app_browser(app_browser);
 	}
 }
-void removeIndicator(Fl_Browser* o){
+void JSM_Panel::removeIndicator(Fl_Browser* o){
 	debug_out("void removeIndicator(Fl_Browser* o)");
 	if(!checkFlBrowserItem(o))return;
 	std::string item=o->text(o->value());
@@ -806,37 +807,37 @@ void removeIndicator(Fl_Browser* o){
 	deleteSomeIndicator(item);
 	getIndicators(o);
 }
-void removeAutostart(std::string exec){
+void JSM_Panel::removeAutostart(std::string exec){
 	debug_out("void removeAutostart(std::string "+exec+")");
 	removeElement("StartupCommand",exec);
 	//TODO xdg remove autostart
 }
 //////S
-void setImageMenu(std::string testNum,std::string icon){
+void JSM_Panel::setImageMenu(std::string testNum,std::string icon){
 	debug_out("void setImageMenu(unsigned int testNum,std::string "+icon+")");
 	if(!setAttribute(getMenu(testNum),"icon",icon)){
 		debug_out("Did not set "+icon+" for Menu");
 	}
 	
 }
-void setCoordinate(std::string xy, int value){if(!setElementAttribute(currentPanel(),"Tray",xy,convert(value))){debug_out("Couldn't set value of "+xy);}}
-void setTaskListValue(std::string attribute, std::string value){
+void JSM_Panel::setCoordinate(std::string xy, int value){if(!setElementAttribute(currentPanel(),"Tray",xy,convert(value))){debug_out("Couldn't set value of "+xy);}}
+void JSM_Panel::setTaskListValue(std::string attribute, std::string value){
 	if(!setElementAttribute("TrayStyle",attribute,value)){
 		errorOUT("Could not set "+attribute+" to "+value+" for the TrayStyle");
 	}
 }
-void setValue(std::string attribute, std::string value){
+void JSM_Panel::setValue(std::string attribute, std::string value){
 	debug_out("void setValue(std::string "+attribute+", std::string "+value+")");
 	unsigned int panel = currentPanel();
 	setElementAttribute(panel,"Tray",attribute,value);
 	saveChangesTemp();
 }
-void setItemBool(int position, int value){
+void JSM_Panel::setItemBool(int position, int value){
 	std::string retval="true";
 	if(value==0){retval="false";}
 	if(!setItemWH("labeled",retval,position)){errorOUT("Labeled Not set...");}
 }
-void switchButton(std::string OLD,std::string NEW,std::string tooltip,std::string icon,std::string label){
+void JSM_Panel::switchButton(std::string OLD,std::string NEW,std::string tooltip,std::string icon,std::string label){
 	debug_out("void switchButton(std::string "+OLD+",std::string "+NEW+",std::string "+tooltip+",std::string "+icon+",std::string "+label+")");
 	if(icon.compare("")!=0){
 		if(!setAttribute(getMenu(OLD),"icon",icon)){debug_out("Did not set icon="+icon+" for Item");}
@@ -852,7 +853,7 @@ void switchButton(std::string OLD,std::string NEW,std::string tooltip,std::strin
 	}
 }
 //////W
-void width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension){
+void JSM_Panel::width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension){
 	debug_out("void width_height_border(Fl_Slider *slider_o, Fl_Value_Input *input_o, const char* dimension)");
 	if(dimension==NULL){return;}
 	int panelSize=slider_o->value();

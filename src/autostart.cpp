@@ -23,7 +23,7 @@
  */
 #include <libintl.h>
 #include "../include/autostart.hpp"
-int desktopFileEdit(Fl_Browser* o){
+int JSM_Autostart::desktopFileEdit(Fl_Browser* o){
 	const char* line=o->text(o->value());
 	if(line==NULL) return 1;
 	std::string temp=line;
@@ -46,7 +46,7 @@ int desktopFileEdit(Fl_Browser* o){
 	else{debug_out("Desktop File editor was not found!");}
 	return -1;
 }
-int desktopFileEdit(std::string line){
+int JSM_Autostart::desktopFileEdit(std::string line){
 	debug_out("int desktopFileEdit(const char* "+line+")");
 	if(line.compare("")==0) return 1;
 	std::string temp=line;
@@ -69,7 +69,7 @@ int desktopFileEdit(std::string line){
 	else{debug_out("Desktop File editor was not found!");}
 	return -1;
 }
-void add_program_to_autostart(Fl_Browser *o,std::string input) {
+void JSM_Autostart::add_program_to_autostart(Fl_Browser *o,std::string input) {
 	o->clear();
 	bool tryADD=addElementWithText("StartupCommand",input);
 	if(!tryADD){errorOUT("ADDING  StartupCommand->"+input+" FAILED");return;}
@@ -81,7 +81,7 @@ void add_program_to_autostart(Fl_Browser *o,std::string input) {
 	}
 	else{errorOUT("Couldn't save the file correctly");}
 }
-void remove_program_from_autostart(Fl_Browser *o) {
+void JSM_Autostart::remove_program_from_autostart(Fl_Browser *o) {
 	int item = o->value();
 	if( (item<1) && (item > o->size()) ){std::cerr<<"Please click on an item to remove!"<<std::endl;}
 	else{
@@ -94,7 +94,7 @@ void remove_program_from_autostart(Fl_Browser *o) {
 		else{std::cerr<<"Couldn't save the file correctly"<<std::endl;}
 	}
 }
-void remove_program_from_xdg_autostart(Fl_Browser* o){
+void JSM_Autostart::remove_program_from_xdg_autostart(Fl_Browser* o){
 	debug_out("void remove_program_from_xdg_autostart(Fl_Browser* o)");
 	const char* item=o->text(o->value());
 	if(item==NULL){

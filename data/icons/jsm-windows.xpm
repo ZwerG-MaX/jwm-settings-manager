@@ -1,3 +1,5 @@
+#ifndef jsm_windows_XPM
+#define jsm_windows_XPM
 /* XPM */
 static const char*  jsm_windows_xpm[] = {
 "48 48 326 2",
@@ -375,3 +377,4 @@ static const char*  jsm_windows_xpm[] = {
 "                                                                                                ",
 "                                                                                                ",
 "                                                                                                "};
+#endif

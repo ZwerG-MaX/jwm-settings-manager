@@ -1,3 +1,5 @@
+#ifndef jwm_settings_manager_XPM
+#define jwm_settings_manager_XPM
 /* XPM */
 static const char* jwm_settings_manager[] = {
 "48 48 422 2",
@@ -471,3 +473,4 @@ static const char* jwm_settings_manager[] = {
 "                                                                                                ",
 "                                                                                                ",
 "                                                                                                "};
+#endif

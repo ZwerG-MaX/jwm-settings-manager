@@ -52,7 +52,7 @@
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Value_Output.H>
 
-class PanelUI {
+class PanelUI : public JSM_Panel {
   int BUTTON_NUM;int JWM_VERSION; 
 public:
   Fl_Double_Window* add_spacer();

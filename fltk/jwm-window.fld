@@ -51,7 +51,7 @@ decl {\#include "../include/window.hpp"} {public global
 decl {\#include "../data/icons/jsm-windows.xpm"} {public global
 } 
 
-class WindowUI {open
+class WindowUI {open selected : {public JSM_Window}
 } {
   decl {int JWMVERSION;} {private local
   }
@@ -787,7 +787,7 @@ x Close button} xywh {25 15 190 25} box FLAT_BOX selection_color 80 align 2
         label OK
         callback {std::string val=ordering->value();
 setElementText("TitleButtonOrder",val);
-saveChanges();} selected
+saveChanges();}
         tooltip {Write to configuration file} xywh {125 125 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
       }
     }

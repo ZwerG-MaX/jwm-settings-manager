@@ -1,3 +1,5 @@
+#ifndef jsm_theme_XPM
+#define jsm_theme_XPM
 /* XPM */
 static const char*  jsm_theme_xpm[] = {
 "48 48 89 1",
@@ -138,3 +140,4 @@ static const char*  jsm_theme_xpm[] = {
 "                                                ",
 "                                                ",
 "                                                "};
+#endif

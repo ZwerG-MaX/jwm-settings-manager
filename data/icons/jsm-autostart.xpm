@@ -1,3 +1,5 @@
+#ifndef jsm_autostart_XPM
+#define jsm_autostart_XPM
 /* XPM */
 static const char* jsm_autostart_xpm[] = {
 "48 48 104 2",
@@ -153,3 +155,4 @@ static const char* jsm_autostart_xpm[] = {
 "                                                                                                ",
 "                                                                                                ",
 "                                                                                                "};
+#endif

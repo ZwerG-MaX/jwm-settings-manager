@@ -44,7 +44,7 @@
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Scroll.H>
 
-class KeyboardUI {
+class KeyboardUI : public JWM_Keyboard {
   int JWMVERSION; 
 public:
   Fl_Double_Window* config_key_win();

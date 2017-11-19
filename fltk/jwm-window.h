@@ -47,7 +47,7 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Value_Output.H>
 
-class WindowUI {
+class WindowUI : public JSM_Window {
   int JWMVERSION; 
 public:
   Fl_Double_Window* add_option_window();

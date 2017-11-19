@@ -63,7 +63,7 @@ decl {\#include "../include/fltkfunctions.hpp"} {public global
 decl {//\#include "jwm-menu.h"} {public global
 } 
 
-class PanelUI {open
+class PanelUI {open selected : {public JSM_Panel}
 } {
   decl {int BUTTON_NUM;int JWM_VERSION;} {private local
   }
@@ -113,7 +113,7 @@ JWM_VERSION=JWMversion();} {}
         xywh {0 0 355 665} color 31
       } {
         Fl_Menu_Button panel_chooser {
-          callback {panel_menu_button_label(o);} open
+          callback {panel_menu_button_label(o);}
           xywh {5 5 110 25} box FLAT_BOX down_box FLAT_BOX color 23 selection_color 51 when 3
           code0 {panel_menu_button_label(o);}
         } {
@@ -221,7 +221,7 @@ if(appLine <= size && appLine !=0){
             }
           }
           Fl_Group {} {
-            label Appearance open
+            label Appearance
             xywh {0 60 280 350} selection_color 45 hide
             code0 {const char* text=gettext("Appearance");o->label(text);}
           } {
@@ -362,7 +362,7 @@ tray_outline->redraw();}
             }
           }
           Fl_Group {} {
-            label {Size And Position} open
+            label {Size And Position}
             xywh {5 65 280 350} selection_color 45 hide
             code0 {const char* text=gettext("Size And Position");o->label(text);}
           } {
@@ -1040,7 +1040,7 @@ if(program.compare("")==0){
 button_menu->activate();
 if(tmpTST!=NULL){showMenu(tmpTST);}
 else{showMenu();}}
-        tooltip {Configure the menu} image {custom_buttons/gear16.png} xywh {100 120 25 25} box FLAT_BOX color 23
+        tooltip {Configure this menu} image {custom_buttons/gear16.png} xywh {100 120 25 25} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label OK
@@ -1303,10 +1303,11 @@ if(iconFILE.compare("")!=0){
       }
     }
   }
-  Function {config_menu_window(std::string file)} {} {
+  Function {config_menu_window(std::string file)} {open
+  } {
     Fl_Window conf_menu_window {
       label {Configure Menu} open
-      xywh {810 232 285 150} type Double labelfont 14 hide
+      xywh {810 232 265 105} type Double labelfont 14 hide
       code0 {startup(o,jsm_panel_xpm);} xclass {jsm-panel}
     } {
       Fl_Button {} {
@@ -1320,7 +1321,7 @@ if(newLabel==NULL){newLabel=gettext("Menu");}
 labelMenu(testNum,newLabel);
 setImageMenu(testNum,icon);
 conf_menu_window->hide();}
-        xywh {220 120 60 25} box FLAT_BOX color 69 labelfont 1 labelcolor 7
+        xywh {195 75 60 25} box FLAT_BOX color 69 labelfont 1 labelcolor 7
       }
       Fl_Input app_menu {
         label Label
@@ -1338,7 +1339,7 @@ if(iconFILE.compare("")!=0)makeWidgetIcon(iconFILE,o,48);}
       }
       Fl_Output tester {
         label Menu
-        tooltip {The root menu the button is tied to} xywh {45 70 25 25} box FLAT_BOX color 55
+        tooltip {The root menu the button is tied to} xywh {45 70 25 25} box FLAT_BOX color 23
       }
       Fl_Button {} {
         callback {const char* tmpTST =tester->value();
@@ -1758,10 +1759,12 @@ clock_button_menu->redraw();} {}
   Function {get_clock_button_stuff(int button)} {} {
     code {get_button_stuff(button,clock_prog,clock_button_menu,output_button_val);} {}
   }
-  Function {get_button_stuff(int button)} {} {
+  Function {get_button_stuff(int button)} {open
+  } {
     code {get_button_stuff(button,button_prog,button_menu,button_val);} {}
   }
-  Function {get_button_stuff(int button,Fl_Input *input_prog,Fl_Input *input_menu,Fl_Value_Output *mouse_button_current)} {} {
+  Function {get_button_stuff(int button,Fl_Input *input_prog,Fl_Input *input_menu,Fl_Value_Output *mouse_button_current)} {open
+  } {
     code {std::string num;
 mouse_button_current->value(button);
 switch(button){
@@ -1782,6 +1785,7 @@ if(text.find("exec:")==0){
   input_menu->value("");
   input_menu->redraw();
   input_menu->deactivate();
+  text=text.substr(5,std::string::npos);
 }
 if(text.find("root:")==0){
   o=input_menu;
@@ -1866,8 +1870,7 @@ int whichbutton=app_browser->value();
 PROG=buttonExec(PROG);
 MENU=buttonRoot(MENU);
 editButton(whichbutton,MENU,PROG,ICON,LABEL,MASK);
-conf_button_window->hide();} {selected
-    }
+conf_button_window->hide();} {}
   }
   Function {spacer_config()} {} {
     Fl_Window conf_spacer_win {

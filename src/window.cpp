@@ -24,7 +24,7 @@
 
 #include "../include/window.hpp"
 //A
-void active_color_loader(Fl_Button *o, unsigned int one_or_two){
+void JSM_Window::active_color_loader(Fl_Button *o, unsigned int one_or_two){
   unsigned int color=0;
   unsigned int c = 0;
   std::string colors,newOrOld;
@@ -42,7 +42,7 @@ void active_color_loader(Fl_Button *o, unsigned int one_or_two){
   else{o->color(color);}
   debug_out("<-active color loader");
 }
-void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser* browser){
+void JSM_Window::add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser* browser){
 	debug_out("void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser* browser)");
 	int whichGroup=browser->value();
 	if((whichGroup==0)||(whichGroup>browser->size())){
@@ -99,26 +99,26 @@ void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl
 		addGroupItem( whichGroup, "Option",thisitem);
 	}
 }
-void add_thingie(Fl_Browser *groups_browser,std::string input,std::string Item){
+void JSM_Window::add_thingie(Fl_Browser *groups_browser,std::string input,std::string Item){
 	debug_out("void add_thingie(Fl_Browser *groups_browser,std::string "+input+",std::string "+Item+")");
 	if(input.compare("")!=0){
 		unsigned int line = groups_browser->value();
 		addGroupItem(line,Item,input);
 	}
 }
-void addGroup(){
+void JSM_Window::addGroup(){
 	debug_out("void addGroup()");
 	if(!addElement("Group")){errorOUT("Could not add new group");}
 }
-void addGroupItem(unsigned int whichone, std::string subelement,std::string value){
+void JSM_Window::addGroupItem(unsigned int whichone, std::string subelement,std::string value){
 	debug_out("void addGroupItem(unsigned int whichone, std::string "+subelement+",std::string "+value+")");
 	bool ans=addSubElementWithText(whichone,"Group",subelement,value);
 	if(!ans){debug_out("addSubElementWithText(whichone,Group, "+subelement+"," +value +") FAILED");}
 }
-void add_prog(Fl_Browser *groups_browser,std::string input){return add_thingie(groups_browser,input,"Name");}
-void add_class(Fl_Browser *groups_browser,std::string input){return add_thingie(groups_browser,input,"Class");}
+void JSM_Window::add_prog(Fl_Browser *groups_browser,std::string input){return add_thingie(groups_browser,input,"Name");}
+void JSM_Window::add_class(Fl_Browser *groups_browser,std::string input){return add_thingie(groups_browser,input,"Class");}
 //B
-void border_color_loader(Fl_Widget *o, int Active1_Inactive2, int first_or_second){
+void JSM_Window::border_color_loader(Fl_Widget *o, int Active1_Inactive2, int first_or_second){
 	debug_out("void border_color_loader(Fl_Widget *o, int Active1_Inactive2)");
 	std::string colour;
 	std::string OUT="Outline";
@@ -128,7 +128,7 @@ void border_color_loader(Fl_Widget *o, int Active1_Inactive2, int first_or_secon
 	unsigned int colourInt=flCOLOR(colour);
 	o->color(colourInt);
 }
-void border_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2){
+void JSM_Window::border_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2){
 	debug_out("void border_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2)");
 	int whichone = 0;
 	if(change_o1_or_o2==1){
@@ -144,14 +144,14 @@ void border_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2){
 	setElementInt("WindowStyle","Width",whichone);
 }
 
-void border_modifier(Fl_Slider *o1, Fl_Value_Output *o2){
+void JSM_Window::border_modifier(Fl_Slider *o1, Fl_Value_Output *o2){
 	debug_out("void border_modifier(Fl_Slider *o1, Fl_Value_Output *o2)");
 	int slider = o1->value();
 	o2->value(slider);
 	setElementInt("WindowStyle","Width",slider);
 }
 //C
-void check_opts(std::string itemValue,Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Input* icon_value, Fl_Menu_Button* layer_chooser){
+void JSM_Window::check_opts(std::string itemValue,Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Input* icon_value, Fl_Menu_Button* layer_chooser){
 	debug_out("void check_opts(std::string "+itemValue+",Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Input* icon_value, Fl_Menu_Button* layer_chooser)");
 	if(itemValue.compare("")==0){return;}
 	desktop_num->deactivate();
@@ -192,7 +192,7 @@ void check_opts(std::string itemValue,Fl_Value_Input* desktop_num, Fl_Output* la
 		desktop_num->tooltip("Set the initial x-coordinate for windows in this group");
 	}
 }
-void choose_button(std::string whichButton){
+void JSM_Window::choose_button(std::string whichButton){
 	debug_out("void choose_button(std::string "+whichButton+")");
 	std::string label = "Choose ";
 	label += whichButton;
@@ -204,7 +204,7 @@ void choose_button(std::string whichButton){
 	std::string ICON=choose_an_icon(tempPath);
 	if(ICON.compare("")!=0){setElementText(whichButton, ICON);}
 }
-void corner_change(Fl_Slider *o){
+void JSM_Window::corner_change(Fl_Slider *o){
 	debug_out("void corner_change(Fl_Slider *o)");
 	if(newStyle() == -1){o->hide();}
 	else{
@@ -212,7 +212,7 @@ void corner_change(Fl_Slider *o){
 		setElementInt("WindowStyle","Corner",corner);
 	}
 }
-void corner_load(Fl_Slider *o){
+void JSM_Window::corner_load(Fl_Slider *o){
 	debug_out("void corner_load(Fl_Slider *o)");
 	if(JWMversion() < 230){o->hide();}
 	else{
@@ -223,12 +223,12 @@ void corner_load(Fl_Slider *o){
 	}
 }
 //D
-void display(std::string filename, Fl_Widget *o){
+void JSM_Window::display(std::string filename, Fl_Widget *o){
 	debug_out("void display(std::string "+filename+", Fl_Widget *o)");
 	makeWidgetIcon(filename,o,32);
 }
 //F
-void font_color_loader(Fl_Widget *o, int Active1_Inactive2){
+void JSM_Window::font_color_loader(Fl_Widget *o, int Active1_Inactive2){
 	debug_out("void font_color_loader(Fl_Widget *o, int Active1_Inactive2)->");
 	std::string colour="";
 	std::string colors,newOrOld;
@@ -243,7 +243,7 @@ void font_color_loader(Fl_Widget *o, int Active1_Inactive2){
 	debug_out("<-font color loader");
 }
 //G
-void getGroups(Fl_Browser *o){
+void JSM_Window::getGroups(Fl_Browser *o){
 	debug_out("void getGroups(Fl_Browser *o)");
 	int groups=elementCounter("Group");
 	o->clear();
@@ -253,7 +253,7 @@ void getGroups(Fl_Browser *o){
 	}
 	o->redraw();
 }
-void get_button(Fl_Widget*o, std::string whichElement,Fl_Widget* a_title_color1){
+void JSM_Window::get_button(Fl_Widget*o, std::string whichElement,Fl_Widget* a_title_color1){
 	debug_out("void get_button(Fl_Widget*o, std::string "+whichElement+",Fl_Button* a_title_color1)");
 	o->color(a_title_color1->color());
 	std::string result=getElementText(whichElement);
@@ -262,7 +262,7 @@ void get_button(Fl_Widget*o, std::string whichElement,Fl_Widget* a_title_color1)
 	o->redraw();
 	debug_out("<-button loader");
 }
-void get_button_inactive(Fl_Widget*o, std::string whichElement,Fl_Button* inactive_color,Fl_Button* inactive_font_color){
+void JSM_Window::get_button_inactive(Fl_Widget*o, std::string whichElement,Fl_Button* inactive_color,Fl_Button* inactive_font_color){
 	debug_out("void get_button_inactive(Fl_Widget*o, std::string "+whichElement+",Fl_Button* inactive_color,Fl_Button* inactive_font_color)");
 	o->color(inactive_color->color());
 	o->labelcolor(inactive_font_color->color());
@@ -272,7 +272,7 @@ void get_button_inactive(Fl_Widget*o, std::string whichElement,Fl_Button* inacti
 	o->redraw();
 }
 //I
-void inactive_color_loader(Fl_Button *o, int one_or_two){
+void JSM_Window::inactive_color_loader(Fl_Button *o, int one_or_two){
 	debug_out("void inactive_color_loader(Fl_Button *o, int one_or_two)");
 	unsigned int color=0;
 	unsigned int c = 0;
@@ -285,7 +285,7 @@ void inactive_color_loader(Fl_Button *o, int one_or_two){
 	else{o->color(color);}
 }
 //O
-void opacity_loader(Fl_Slider *o, int Active1_Inactive2){
+void JSM_Window::opacity_loader(Fl_Slider *o, int Active1_Inactive2){
 	debug_out("void opacity_loader(Fl_Slider *o, int Active1_Inactive2)");
 	float opacity;
 	if (Active1_Inactive2==1){opacity=getElementFloat("WindowStyle","Active","Opacity");}
@@ -293,7 +293,7 @@ void opacity_loader(Fl_Slider *o, int Active1_Inactive2){
 	o->value(opacity);
 }
 //P
-void populate_groups(Fl_Browser *groups_browser,Fl_Browser *opt_browser,Fl_Browser *class_browser,Fl_Browser *name_browser){
+void JSM_Window::populate_groups(Fl_Browser *groups_browser,Fl_Browser *opt_browser,Fl_Browser *class_browser,Fl_Browser *name_browser){
 	debug_out("void populate_groups(Fl_Browser *groups_browser,Fl_Browser *opt_browser,Fl_Browser *class_browser,Fl_Browser *name_browser)");
 	int line = groups_browser->value();
 	opt_browser->clear();
@@ -306,7 +306,7 @@ void populate_groups(Fl_Browser *groups_browser,Fl_Browser *opt_browser,Fl_Brows
 		populateFLBrowser(name_browser,"Group","Name",line);
 	}
 }
-void populateGTKThemes(Fl_Browser* o){
+void JSM_Window::populateGTKThemes(Fl_Browser* o){
 	debug_out("void populateIconThemes(Fl_Browser* o)");
 	o->clear();
 	int chosen=1;
@@ -337,10 +337,10 @@ void populateGTKThemes(Fl_Browser* o){
 	themesVector.clear();
 }
 //R
-void removeGroup(int hidethis){removeElement(hidethis,"Group");}
-void removeGroupTHING(int hidethis, std::string value,std::string THING){removeElement(hidethis,"Group",THING,value);}
+void JSM_Window::removeGroup(int hidethis){removeElement(hidethis,"Group");}
+void JSM_Window::removeGroupTHING(int hidethis, std::string value,std::string THING){removeElement(hidethis,"Group",THING,value);}
 //S
-void set_border_color(Fl_Widget *o, int Active1_Inactive2, int first_or_second){
+void JSM_Window::set_border_color(Fl_Widget *o, int Active1_Inactive2, int first_or_second){
 	debug_out("void set_border_color(Fl_Widget *o, int Active1_Inactive2)");
 	int c;
 	double* colors = choose_a_color(c,o);
@@ -363,7 +363,7 @@ void set_border_color(Fl_Widget *o, int Active1_Inactive2, int first_or_second){
 		o->redraw();
 	}
 }
-void set_font_color(Fl_Widget *o, int Active1_Inactive2){
+void JSM_Window::set_font_color(Fl_Widget *o, int Active1_Inactive2){
 	debug_out("void set_font_color(Fl_Widget *o, int Active1_Inactive2)");
 	int c;
 	double* colors = choose_a_color(c,o);
@@ -394,13 +394,13 @@ void set_font_color(Fl_Widget *o, int Active1_Inactive2){
 	o->color(theANS);
 	o->redraw();
 }
-void set_one_title_color(Fl_Widget *o,  int Active1_Inactive2){
+void JSM_Window::set_one_title_color(Fl_Widget *o,  int Active1_Inactive2){
 	debug_out("void set_one_title_color(Fl_Widget *o,  int Active1_Inactive2)");
 	unsigned int c=set_title_color(o,Active1_Inactive2,1);
 	o->color(c);
 	o->redraw();
 }
-void set_one_title_color(Fl_Widget *o, int Active1_Inactive2, Fl_Widget* max_a_image, Fl_Widget* max_image, Fl_Widget* min_image, Fl_Widget* close_image){
+void JSM_Window::set_one_title_color(Fl_Widget *o, int Active1_Inactive2, Fl_Widget* max_a_image, Fl_Widget* max_image, Fl_Widget* min_image, Fl_Widget* close_image){
 	debug_out("void set_one_title_color(Fl_Widget *o, int Active1_Inactive2, Fl_Widget* max_a_image, Fl_Widget* max_image, Fl_Widget* min_image, Fl_Widget* close_image)");
 	unsigned int c=set_title_color(o,Active1_Inactive2,1);
 	get_button(max_a_image,"ButtonMaxActive",o);
@@ -410,7 +410,7 @@ void set_one_title_color(Fl_Widget *o, int Active1_Inactive2, Fl_Widget* max_a_i
 	o->color(c);
 	o->redraw();
 }
-void set_opacity(Fl_Slider *o, Fl_Value_Input *o2, int Active1_or_Inactive2){
+void JSM_Window::set_opacity(Fl_Slider *o, Fl_Value_Input *o2, int Active1_or_Inactive2){
 	debug_out("void set_opacity(Fl_Slider *o, Fl_Value_Input *o2, int Active1_or_Inactive2)");
 	double opac=o->value();
 	double* opacity=&opac;
@@ -418,30 +418,30 @@ void set_opacity(Fl_Slider *o, Fl_Value_Input *o2, int Active1_or_Inactive2){
 	else{setElementFloat("WindowStyle","Opacity",opacity);}
 	o2->value(opac*100);
 }
-void set_two_title_colors(Fl_Widget *o, int Active1_Inactive2){
+void JSM_Window::set_two_title_colors(Fl_Widget *o, int Active1_Inactive2){
 	debug_out("void set_two_title_colors(Fl_Widget *o, int Active1_Inactive2)");
 	unsigned int c=set_title_color(o,Active1_Inactive2,2);
 	o->color(c);
 	o->redraw();
 }
-void setThing(std::string thing,std::string mode){
+void JSM_Window::setThing(std::string thing,std::string mode){
 	debug_out("void setThing(std::string "+thing+",std::string "+mode+")");
 	setElementText(thing,mode);
 }
-void setThings(std::string thing,std::string mode,int &distance){
+void JSM_Window::setThings(std::string thing,std::string mode,int &distance){
 	debug_out("void setThings(std::string "+thing+",std::string "+mode+",int &distance)");
 	setElementText(thing,mode);
 	setSnap(distance);
 }
 //T
-void title_bar_modifier(Fl_Slider *o1, Fl_Value_Output *o2){
+void JSM_Window::title_bar_modifier(Fl_Slider *o1, Fl_Value_Output *o2){
 	debug_out("void title_bar_modifier(Fl_Slider *o1, Fl_Value_Output *o2)");
 	int slider = o1->value();
 	o2->value(slider);
 	bool ans=setElementInt("WindowStyle","Height",slider);
 	if(!ans){debug_out("title bar modifier FAILED");}
 }
-void title_bar_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2){
+void JSM_Window::title_bar_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2){
 	int whichone = 0;
 	if(change_o1_or_o2==1){
 		int input = o2->value();
@@ -457,7 +457,7 @@ void title_bar_modifier(Fl_Slider *o1, Fl_Value_Input *o2, int change_o1_or_o2){
 	if(!ans){debug_out("title bar modifier FAILED");}
 }
 //X
-void XminusG(Fl_Browser *groups_browser){
+void JSM_Window::XminusG(Fl_Browser *groups_browser){
 	int hidethis = groups_browser->value();
 	if ((hidethis == 0) || (hidethis > groups_browser->size())){return;}
 	else{
@@ -465,27 +465,27 @@ void XminusG(Fl_Browser *groups_browser){
 		getGroups(groups_browser);
 	}
 }
-void XplusG(Fl_Browser *groups_browser){
+void JSM_Window::XplusG(Fl_Browser *groups_browser){
 	addGroup();
 	getGroups(groups_browser);
 }
 ///INT//////////////////////////////////////////////////////////////////
-int getBorderHeight(){
+int JSM_Window::getBorderHeight(){
 	debug_out("int getBorderHeight()");
 	return getElementInt("WindowStyle","Height");
 }
-int getBorderWidth(){
+int JSM_Window::getBorderWidth(){
 	debug_out("int getBorderWidth()");
 	return getElementInt("WindowStyle","Width");
 }
-int getSnap(){
+int JSM_Window::getSnap(){
 	debug_out("int getSnap()");
 	std::string dist= getElementAttribute("SnapMode","distance");
 	debug_out("current Snap="+dist);
 	if(dist.compare("")==0) return 0;//TODO default snap
 	return convert(dist.c_str());
 }
-unsigned int set_title_color(Fl_Widget *o, int Active1_Inactive2,int First1_or_Second2){
+unsigned int JSM_Window::set_title_color(Fl_Widget *o, int Active1_Inactive2,int First1_or_Second2){
 	debug_out("");
 	bool ans=false;
 	int c;
@@ -530,14 +530,14 @@ unsigned int set_title_color(Fl_Widget *o, int Active1_Inactive2,int First1_or_S
 	return splitColor(colorSet,First1_or_Second2);
 }
 //STRING//////////////////////////////////////////////////////////////////
-std::string buttonPath(){
+std::string JSM_Window::buttonPath(){
 	debug_out("std::string buttonPath()");
 	std::string defaultPath=linuxcommon::find_xdg_data_dir_subdir("jwm-settings-manager");
 	std::string ButtonPath = defaultPath + "Buttons/";
 	debug_out("Button Path="+ButtonPath);
 	return ButtonPath;
 }
-std::string XplusO(Fl_Browser *groups_browser){
+std::string JSM_Window::XplusO(Fl_Browser *groups_browser){
 	int hidethis = groups_browser->value();
 	if ((hidethis == 0) || (hidethis > groups_browser->size())){return "";}
 	else{
@@ -550,7 +550,7 @@ std::string XplusO(Fl_Browser *groups_browser){
 	return "";
 }
 //BOOL//////////////////////////////////////////////////////////////////
-bool secondColor(Fl_Widget *o){
+bool JSM_Window::secondColor(Fl_Widget *o){
 	if(JWMversion()<236){
 		o->hide();
 		return false;
@@ -559,13 +559,13 @@ bool secondColor(Fl_Widget *o){
 	if(decor.compare("motif")==0){return true;}
 	return false;
 }
-bool setSnap(int &distance){
+bool JSM_Window::setSnap(int &distance){
 	debug_out("bool setSnap(int &distance)");
 	const char* conversion=convert(distance);
 	if(conversion==NULL){return false;}
 	return setElementAttribute("SnapMode","distance",conversion);
 }
-bool switchGTKTheme(Fl_Browser* o){
+bool JSM_Window::switchGTKTheme(Fl_Browser* o){
 	debug_out("bool switchGTKTheme(Fl_Browser* o,int size)");
 	const char* theme_selection=o->text(o->value());
 	if(theme_selection==NULL){
@@ -575,10 +575,10 @@ bool switchGTKTheme(Fl_Browser* o){
 	std::string SELECTION=theme_selection;
 	return linuxcommon::switch_gtk_item("theme",SELECTION);
 }
-bool XminusO(Fl_Browser *groups_browser, Fl_Browser *opt_browser){return Xminus(groups_browser,opt_browser,"Option");}
-bool XminusN(Fl_Browser *groups_browser,Fl_Browser *opt_browser){return Xminus(groups_browser,opt_browser,"Name");}
-bool XminusC(Fl_Browser *groups_browser,Fl_Browser *opt_browser){return Xminus(groups_browser,opt_browser,"Class");}
-bool Xminus(Fl_Browser *groups_browser, Fl_Browser *opt_browser, std::string THING){
+bool JSM_Window::XminusO(Fl_Browser *groups_browser, Fl_Browser *opt_browser){return Xminus(groups_browser,opt_browser,"Option");}
+bool JSM_Window::XminusN(Fl_Browser *groups_browser,Fl_Browser *opt_browser){return Xminus(groups_browser,opt_browser,"Name");}
+bool JSM_Window::XminusC(Fl_Browser *groups_browser,Fl_Browser *opt_browser){return Xminus(groups_browser,opt_browser,"Class");}
+bool JSM_Window::Xminus(Fl_Browser *groups_browser, Fl_Browser *opt_browser, std::string THING){
 	if(THING.compare("")==0){return false;}
 	int hidethis = groups_browser->value();
 	if ((hidethis == 0) || (hidethis > groups_browser->size())){return false;}
@@ -597,15 +597,15 @@ bool Xminus(Fl_Browser *groups_browser, Fl_Browser *opt_browser, std::string THI
 	}
 	return false;
 }
-bool XplusN(Fl_Browser *groups_browser){return Xplus(groups_browser);}
-bool XplusC(Fl_Browser *groups_browser){return Xplus(groups_browser);}
-bool Xplus(Fl_Browser *groups_browser){
+bool JSM_Window::XplusN(Fl_Browser *groups_browser){return Xplus(groups_browser);}
+bool JSM_Window::XplusC(Fl_Browser *groups_browser){return Xplus(groups_browser);}
+bool JSM_Window::Xplus(Fl_Browser *groups_browser){
   int hidethis = groups_browser->value();
   if ((hidethis == 0) || (hidethis > groups_browser->size())){return false;}
   return true;
 }
 //VECTOR
-std::vector<std::string> gtk_themefiles_vector(){
+std::vector<std::string> JSM_Window::gtk_themefiles_vector(){
 	debug_out("std::vector<std::string> gtk_themefiles_vector()");
 	std::string DIRECTORY=linuxcommon::find_xdg_data_dir_subdir("themes");
 	std::vector<std::string> thisISmyVector;

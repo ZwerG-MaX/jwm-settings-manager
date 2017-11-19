@@ -1,3 +1,5 @@
+#ifndef jsm_panel_XPM
+#define jsm_panel_XPM
 /* XPM */
 static const char* jsm_panel_xpm[] = {
 "48 48 82 1",
@@ -131,3 +133,4 @@ static const char* jsm_panel_xpm[] = {
 "                                                ",
 "                                                ",
 "                                                "};
+#endif

@@ -106,7 +106,7 @@ decl {struct keycode_table{int n; const char* text;} table[] = {
 };} {private global
 } 
 
-class KeyboardUI {open
+class KeyboardUI {open selected : {public JWM_Keyboard}
 } {
   decl {int JWMVERSION;} {private local
   }
@@ -929,7 +929,7 @@ o->deactivate();}
   } {
     Fl_Window layout_win {
       label Layout open
-      xywh {561 233 490 310} type Double visible
+      xywh {561 233 490 310} type Double hide
     } {
       Fl_Browser {} {
         label Layout
@@ -965,7 +965,7 @@ modeloutput->redraw();}
         label Option
         callback {std::string val =fixLayoutString(o);
 optionoutput->value(val.c_str());
-optionoutput->redraw();} selected
+optionoutput->redraw();}
         tooltip {Additional quirks} xywh {320 5 165 220} type Hold box FLAT_BOX selection_color 80
         code0 {keyOptionPopulate(o);}
       }

@@ -60,7 +60,7 @@ decl {\#include "../include/fonts.hpp"} {public global
 decl {\#include "../data/icons/jsm-fonts.xpm"} {public global
 } 
 
-class FontUI {open
+class FontUI {open selected : {public JSM_Fonts}
 } {
   decl {std::string currentElement} {private local
   }
@@ -229,7 +229,7 @@ font_choosing->hide();}
           xywh {0 25 315 400} box FLAT_BOX color 50 selection_color 45
         } {
           Fl_Browser font_browser {
-            callback {font_browser_cb(font_browser,font_name,font_size_slider);} selected
+            callback {font_browser_cb(font_browser,font_name,font_size_slider);}
             xywh {5 25 305 285} type Hold box FLAT_BOX color 55 selection_color 72 labelfont 8 when 4
             code0 {font_populate(o);}
           }

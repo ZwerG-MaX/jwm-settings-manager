@@ -54,14 +54,14 @@ decl {\#include "../include/ui.h"} {public global
 decl {\#include "../data/icons/jsm-theme.xpm"} {public global
 } 
 
-class ThemesUI {open
+class ThemesUI {open selected : {public Theme}
 } {
   Function {make_window()} {open
   } {
     Fl_Window themes_window {
       label Themes open
-      xywh {619 259 590 300} type Double color 47 labelcolor 7
-      code0 {startup(o,jsm_theme_xpm);} xclass {jsm-theme} visible
+      xywh {619 259 590 300} type Double color 47 labelcolor 7 hide
+      code0 {startup(o,jsm_theme_xpm);} xclass {jsm-theme}
     } {
       Fl_Scroll {} {open
         xywh {0 0 585 295} color 31
@@ -80,7 +80,7 @@ if(result!=NULL){
           callback {std::string filename=theme_cb(o, true,current_theme);
 if(usr_theme->value()>0)
   usr_theme->select(usr_theme->value(),0);
-updateTheme(o,button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,amin,amax,aclose,imin,imax,iclose,filename,false);} selected
+updateTheme(o,button,button_icon,tray,awin,awin2,awin_text,iwin,iwin2,iwin_text,amin,amax,aclose,imin,imax,iclose,filename,false);}
           tooltip {All the installed system themes} xywh {15 20 130 105} type Hold box FLAT_BOX selection_color 72 align 1
           code1 {populateThemes(o);}
         }

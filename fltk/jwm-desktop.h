@@ -45,7 +45,7 @@
 #include <FL/Fl_Value_Input.H>
 #include <FL/Fl_Menu_Button.H>
 
-class DesktopUI {
+class DesktopUI : public JSM_Desktop {
 public:
   std::string thisBG;std::string FILEMANAGER;unsigned int DESKTOPNUM; 
   Fl_Double_Window* make_window();

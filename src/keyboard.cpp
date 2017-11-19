@@ -1,25 +1,25 @@
 #include "../include/keyboard.hpp"
 //Void//////////////////////////////////////////////////////////////////
-void addKey(std::string key, std::string shortcut){
+void JWM_Keyboard::addKey(std::string key, std::string shortcut){
 	debug_out("void addKey(std::string "+ key+", std::string " +shortcut+ ")");
     if(!addElementWithTextAndAttribute("Key","key",key,shortcut)){debug_out("Add Key Failed");}
 }
-void addKey(std::string keyMod, std::string key, std::string shortcut){
+void JWM_Keyboard::addKey(std::string keyMod, std::string key, std::string shortcut){
 	debug_out("void addKey(std::string "+keyMod+", std::string "+key+", std::string "+shortcut=")");
     if(!addElementWithTextAndAttribute("Key","key",key,"mask",keyMod,shortcut)){debug_out("Add Key Failed");}
 }
-void changemod(std::string mod,Fl_Output* Aout,Fl_Output* Bout){
+void JWM_Keyboard::changemod(std::string mod,Fl_Output* Aout,Fl_Output* Bout){
 	if(OutputIsEmpty(Aout)){Aout->value(mod.c_str());}
 	else if(OutputIsEmpty(Bout)){Bout->value(mod.c_str());}
 	else{debug_out("All Mods are filled");}
 }
-void changemod(std::string mod,Fl_Output* Aout,Fl_Output* Bout,Fl_Output* Cout){
+void JWM_Keyboard::changemod(std::string mod,Fl_Output* Aout,Fl_Output* Bout,Fl_Output* Cout){
 	if(OutputIsEmpty(Aout)){Aout->value(mod.c_str());}
 	else if(OutputIsEmpty(Bout)){Bout->value(mod.c_str());}
 	else if(OutputIsEmpty(Cout)){Cout->value(mod.c_str());}
 	else{debug_out("All Mods are filled");}
 }
-void configureKey(std::string keyShortcut, std::string newmod1, std::string newmod2, std::string newmod3, std::string newkey, std::string newaction){
+void JWM_Keyboard::configureKey(std::string keyShortcut, std::string newmod1, std::string newmod2, std::string newmod3, std::string newkey, std::string newaction){
 	debug_out("void configureKey(std::string "+keyShortcut+", std::string "+newmod1+", std::string "+newmod2+", std::string "+newmod3+", std::string "+newkey+", std::string "+newaction+")");
     if(keyShortcut.compare("")==0){return;}
     std::string mod1FromProg,
@@ -47,7 +47,7 @@ void configureKey(std::string keyShortcut, std::string newmod1, std::string newm
     }
 
 }
-void Choose_Action(Fl_Input* action_name){
+void JWM_Keyboard::Choose_Action(Fl_Input* action_name){
 	debug_out("void Choose_Action(Fl_Input* action_name)");
 	std::string result = choose_a_program();
 	debug_out(result);
@@ -55,7 +55,7 @@ void Choose_Action(Fl_Input* action_name){
 	exec+=result;
 	action_name->value(exec.c_str());
 }
-void deleteKey(std::string keyShortcut){
+void JWM_Keyboard::deleteKey(std::string keyShortcut){
 	debug_out("void deleteKey(std::string "+keyShortcut+")");
     if(keyShortcut.compare("")==0){return;}
     std::string mod1FromProg,mod2FromProg,mod3FromProg,keyFromProg,actionFromProg,totalMod;
@@ -67,7 +67,7 @@ void deleteKey(std::string keyShortcut){
     actionFromProg=getAction(keyShortcut);
     removeElementCompare2Attr("Key","key",keyFromProg,"mask",totalMod,actionFromProg);
 }
-void key_event(Fl_Input* o, Fl_Output* out, Fl_Output* modder){
+void JWM_Keyboard::key_event(Fl_Input* o, Fl_Output* out, Fl_Output* modder){
 	debug_out("void key_event(Fl_Input* o, Fl_Output* out)");
 	int k = Fl::event_key();
 	std::string modifier_text =getINPUT(o);
@@ -119,10 +119,10 @@ void key_event(Fl_Input* o, Fl_Output* out, Fl_Output* modder){
 		o->value(key_display.c_str());
 	}
 }
-void keyLayoutPopulate(Fl_Browser *o){keyPopulate(o,"layout");}
-void keyModelPopulate(Fl_Browser *o){keyPopulate(o,"model");}
-void keyOptionPopulate(Fl_Browser *o){keyPopulate(o,"option");}
-void keyPopulate(Fl_Browser *o,std::string thingToGet){
+void JWM_Keyboard::keyLayoutPopulate(Fl_Browser *o){keyPopulate(o,"layout");}
+void JWM_Keyboard::keyModelPopulate(Fl_Browser *o){keyPopulate(o,"model");}
+void JWM_Keyboard::keyOptionPopulate(Fl_Browser *o){keyPopulate(o,"option");}
+void JWM_Keyboard::keyPopulate(Fl_Browser *o,std::string thingToGet){
 	debug_out("void keyPopulate(Fl_Browser *o,std::string "+thingToGet+")");
 	std::string list=linuxcommon::term_out("localectl list-x11-keymap-"+thingToGet+"s --no-pager");
 	if(list.compare("")==0){
@@ -150,17 +150,17 @@ void keyPopulate(Fl_Browser *o,std::string thingToGet){
 	}
 	populateBrowserWithString(o,list);
 }
-void mod_cb(std::string mod, Fl_Output *o){
+void JWM_Keyboard::mod_cb(std::string mod, Fl_Output *o){
   if(mod.compare("")!=0){
     o->value(mod.c_str());
     o->redraw();
   }
 }
-void mod2_cb(std::string mod, Fl_Output *o){
+void JWM_Keyboard::mod2_cb(std::string mod, Fl_Output *o){
 	if(mod.compare("")==0){return;}
 	o->value(mod.c_str());
 }
-void remove_key(Fl_Browser* o){
+void JWM_Keyboard::remove_key(Fl_Browser* o){
 	debug_out("void remove_key(Fl_Browser* o)");
 	const char* mykey = o->text(o->value());
 	if(mykey==NULL){return;}
@@ -176,11 +176,11 @@ void remove_key(Fl_Browser* o){
 		fl_message("Please click on an item to remove!");
 	}
 }
-void setLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput){
+void JWM_Keyboard::setLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput){
 	debug_out("void setLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput)");
 	someLayout(layoutput, modeloutput, optionoutput,true);
 }
-void someLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput, bool save){
+void JWM_Keyboard::someLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput, bool save){
 	std::string SAVE="Don't Save";
 	if(save){SAVE="SAVE!";}
 	debug_out("void someLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput, "+SAVE+")");
@@ -239,12 +239,12 @@ void someLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutp
 	int retval=linuxcommon::run_a_program(command);
 	if(retval!=0){errorOUT("Could not run "+command);}
 }
-void testLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput){
+void JWM_Keyboard::testLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput){
 	debug_out("void testLayout(Fl_Input *layoutput, Fl_Input *modeloutput, Fl_Input *optionoutput)");
 	someLayout(layoutput, modeloutput, optionoutput,false);
 }
 //String////////////////////////////////////////////////////////////////
-std::string fixLayoutString(Fl_Browser *o){
+std::string JWM_Keyboard::fixLayoutString(Fl_Browser *o){
 	debug_out("std::string fixLayoutString(Fl_Browser *o)");
 	std::string retval;
 	if(checkFlBrowserItem(o)){
@@ -259,7 +259,7 @@ std::string fixLayoutString(Fl_Browser *o){
 	}
 	return retval;
 }
-std::string getAction(std::string keyShortcut){
+std::string JWM_Keyboard::getAction(std::string keyShortcut){
 	debug_out("std::string getAction(std::string "+keyShortcut+")");
     if(keyShortcut.compare("")==0){return "";}
     std::string fromProgram = keyShortcut;
@@ -273,7 +273,7 @@ std::string getAction(std::string keyShortcut){
     }
     return "";
 }
-std::string getKey(std::string keyShortcut){
+std::string JWM_Keyboard::getKey(std::string keyShortcut){
 	debug_out("std::string getKey(std::string "+keyShortcut+")");
     if(keyShortcut.compare("")==0){return "";}
     std::string fromProgram = keyShortcut;
@@ -296,7 +296,7 @@ std::string getKey(std::string keyShortcut){
     }
     return "";
 }
-std::string getLayout(Fl_Input *o,std::string whichOne){
+std::string JWM_Keyboard::getLayout(Fl_Input *o,std::string whichOne){
 	debug_out("std::string getLayout()");
 	std::string test_command=linuxcommon::term_out("which localectl");
 	std::string command="localectl";
@@ -331,7 +331,7 @@ std::string getLayout(Fl_Input *o,std::string whichOne){
 		}
 	return layout;
 }
-std::string getMod(std::string keyShortcut){
+std::string JWM_Keyboard::getMod(std::string keyShortcut){
 	debug_out("std::string getMod(std::string "+keyShortcut+")");
     if(keyShortcut.compare("")==0){return "";}
     std::string keymod =keyShortcut;
@@ -344,7 +344,7 @@ std::string getMod(std::string keyShortcut){
     }
     return "";
 }
-std::string getMod1(std::string keyShortcut){
+std::string JWM_Keyboard::getMod1(std::string keyShortcut){
 	debug_out("std::string getMod1(std::string "+keyShortcut+")");
     if(keyShortcut.compare("")==0){return "";}
     std::string result =getMod(keyShortcut);
@@ -354,7 +354,7 @@ std::string getMod1(std::string keyShortcut){
     return result;
 
 }
-std::string getMod2(std::string keyShortcut){
+std::string JWM_Keyboard::getMod2(std::string keyShortcut){
 	debug_out("std::string getMod2(std::string "+keyShortcut+")");
     if(keyShortcut.compare("")==0){return "";}
     std::string result =getMod(keyShortcut);
@@ -365,7 +365,7 @@ std::string getMod2(std::string keyShortcut){
     debug_out("mod2:"+result);
     return result;
 }
-std::string getMod3(std::string keyShortcut){
+std::string JWM_Keyboard::getMod3(std::string keyShortcut){
 	debug_out("std::string getMod3(std::string "+keyShortcut+")");
     if(keyShortcut.compare("")==0){return "";}
     std::string result =getMod(keyShortcut);
@@ -375,7 +375,7 @@ std::string getMod3(std::string keyShortcut){
     debug_out("mod3:"+result);
     return result;
 }
-std::string getINPUT(Fl_Input *o){
+std::string JWM_Keyboard::getINPUT(Fl_Input *o){
 	debug_out("std::string getINPUT(Fl_Input *o)");
 	if(o->visible()!=0){return "";}
 	const char* out=o->value();
@@ -384,7 +384,7 @@ std::string getINPUT(Fl_Input *o){
 	debug_out("INPUT="+outer);
 	return outer;
 }
-std::string getOUTPUT(Fl_Output *o){
+std::string JWM_Keyboard::getOUTPUT(Fl_Output *o){
 	debug_out("std::string getOUTPUT(Fl_Output *o)");
 	if(o->visible()!=0){return "";}
 	const char* out=o->value();
@@ -393,7 +393,7 @@ std::string getOUTPUT(Fl_Output *o){
 	debug_out("OUTPUT="+outer);
 	return outer;
 }
-std::string grabbedKey(){
+std::string JWM_Keyboard::grabbedKey(){
     struct termios oldSettings, newSettings;
     tcgetattr( fileno( stdin ), &oldSettings );
     newSettings = oldSettings;
@@ -433,7 +433,7 @@ std::string grabbedKey(){
     return result;
 
 }
-std::string oldvalue(Fl_Output* old_action, Fl_Output* current_key,Fl_Output* current_mod1,Fl_Output* current_mod2,Fl_Output* current_mod3){
+std::string JWM_Keyboard::oldvalue(Fl_Output* old_action, Fl_Output* current_key,Fl_Output* current_mod1,Fl_Output* current_mod2,Fl_Output* current_mod3){
 	std::string temp;
 	const char* mod1=current_mod1->value();
 	if(mod1!=NULL){temp=mod1;}
@@ -452,7 +452,7 @@ std::string oldvalue(Fl_Output* old_action, Fl_Output* current_key,Fl_Output* cu
 	return temp;
 }
 //Boolean///////////////////////////////////////////////////////////////
-bool add_cb(Fl_Input *action_name, Fl_Output *key_output, Fl_Output *mod_output, Fl_Output *mod2_output, Fl_Output * mod3_output, Fl_Browser *o){
+bool JWM_Keyboard::add_cb(Fl_Input *action_name, Fl_Output *key_output, Fl_Output *mod_output, Fl_Output *mod2_output, Fl_Output * mod3_output, Fl_Browser *o){
 	debug_out("void add_cb(Fl_Input *action_name,Fl_Output *key_output,Fl_Output *mod_output,Fl_Browser *o)");
 	std::string action,keyInput,mod;
 	const char* testAction=action_name->value();
@@ -479,7 +479,7 @@ bool add_cb(Fl_Input *action_name, Fl_Output *key_output, Fl_Output *mod_output,
 	}
 	return false;
 }
-bool Configure(Fl_Browser *key_browser,
+bool JWM_Keyboard::Configure(Fl_Browser *key_browser,
 	Fl_Input *action_name1,
 	Fl_Output *current_shortcut,
 	Fl_Output *mod1_output,
@@ -512,7 +512,7 @@ bool Configure(Fl_Browser *key_browser,
 	else{fl_message("Please click on an item to remove!");}
 	return false;
 }
-bool Configure_CB(Fl_Output* mod1_output, Fl_Output* mod2_output,Fl_Output* mod3_output, Fl_Input * keyshortcut,Fl_Input * action_name1,std::string CURRENT){
+bool JWM_Keyboard::Configure_CB(Fl_Output* mod1_output, Fl_Output* mod2_output,Fl_Output* mod3_output, Fl_Input * keyshortcut,Fl_Input * action_name1,std::string CURRENT){
 	debug_out("void Configure_CB(Fl_Output* mod1_output, Fl_Output* mod2_output,Fl_Output* mod3_output, Fl_Input * keyshortcut,Fl_Input * action_name1,std::string "+CURRENT+")");
 	std::string MOD1,MOD2,MOD3,KEY,ACTION;
 	MOD1=getOUTPUT(mod1_output);
@@ -525,12 +525,12 @@ bool Configure_CB(Fl_Output* mod1_output, Fl_Output* mod2_output,Fl_Output* mod3
 	configureKey(CURRENT,MOD1,MOD2,MOD3,KEY,ACTION);
 	return true;
 }
-bool newpanel(){
+bool JWM_Keyboard::newpanel(){
 	debug_out("bool newpanel()");
 	if(newStyle() == -1){return false;}
 	return true;
 }
-bool getKeys(Fl_Browser* o){
+bool JWM_Keyboard::getKeys(Fl_Browser* o){
 	populateFLBrowser2Attr(o,"Key","key","mask");
 	return false;
 }
