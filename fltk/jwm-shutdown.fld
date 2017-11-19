@@ -45,10 +45,10 @@ decl {\#include <iostream>} {public global
 decl {\#include "../include/fltkfunctions.hpp"} {public global
 } 
 
-decl {\#include "../include/jwmrc.h"} {public global
+decl {\#include "../include/jwmrc.hpp"} {public global
 } 
 
-class shutdown {open
+class shutdown {open selected : {public FLTK_FUNCTIONS}
 } {
   decl {std::string SUSPEND,LOGOUT,SHUTDOWN,RESTART;} {private local
   }
@@ -88,7 +88,7 @@ if(warn!=0){std::cerr<<"Could not run commang"<<std::endl;}}
       Fl_Button log {
         label Logout
         callback {int warn = linuxcommon::run_a_program(LOGOUT);;
-if(warn!=0){std::cerr<<"Could not run commang"<<std::endl;}} selected
+if(warn!=0){std::cerr<<"Could not run commang"<<std::endl;}}
         xywh {125 95 105 75} box FLAT_BOX color 41 labelcolor 55
         code1 {makeWidgetIcon("system-logout",o,48);}
       }

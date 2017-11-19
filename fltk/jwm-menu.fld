@@ -45,19 +45,19 @@ decl {\#include <stdlib.h>} {public global
 decl {\#include <iostream>} {public global
 } 
 
-decl {\#include "../include/jwmrc.h"} {public global
+decl {\#include "../include/jwmrc.hpp"} {public global
 } 
 
 decl {\#include <FL/Fl_Select_Browser.H>} {public global
 } 
 
-decl {\#include "../include/ui.h"} {public global
+decl {\#include "../include/ui.hpp"} {selected public global
 } 
 
 decl {\#include "../include/menu.hpp"} {public global
 } 
 
-class MenuUI {open selected : {public JSM_Menu}
+class MenuUI {open : {public JSM_Menu}
 } {
   decl {int menuItemLineNumber; int JWMVERSION;int ROOTMENU;bool SUBMENU;int SUBSUB;} {public local
   }

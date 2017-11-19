@@ -31,8 +31,8 @@
 #include <string>
 #include <stdlib.h>
 #include <iostream>
-#include "../include/jwmrc.h"
-#include "../include/ui.h"
+#include "../include/jwmrc.hpp"
+#include "../include/ui.hpp"
 #include "../include/keyboard.hpp"
 #include "../data/icons/jsm-keyboard.xpm"
 #include <FL/Fl_Double_Window.H>

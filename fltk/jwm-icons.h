@@ -31,11 +31,11 @@
 #include <string>
 #include <stdlib.h>
 #include <iostream>
-#include "../include/jwmrc.h"
+#include "../include/jwmrc.hpp"
 #include "../include/icons.hpp"
 #include "../data/icons/jsm-icons.xpm"
+#include "../include/ui.hpp"
 #include <FL/Fl_Select_Browser.H>
-#include "../include/ui.h"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Button.H>

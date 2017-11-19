@@ -27,9 +27,10 @@
 #define jwm_popups_h
 #include <FL/Fl.H>
 #include <libintl.h>
-#include "../include/jwmrc.h"
+#include "../include/jwmrc.hpp"
 #include "../include/common.hpp"
 #include "../include/fltkfunctions.hpp"
+#include "../include/ui.hpp"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Button.H>
@@ -42,7 +43,7 @@
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Input.H>
 
-class PopupsUI {
+class PopupsUI : public FLTK_FUNCTIONS {
   std::string DUNSTCONF; 
 public:
   Fl_Double_Window* make_window();

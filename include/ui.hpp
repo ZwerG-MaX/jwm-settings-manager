@@ -26,7 +26,7 @@
 //FLTK stuff
 #include "../fltk/jwm-autostart.h"
 #include "../fltk/jwm-window.h"
-#include "../fltk/jwm-settings.h"
+//#include "../fltk/jwm-settings.h"
 #include "../fltk/jwm-keyboard.h"
 #include "../fltk/jwm-fonts.h"
 #include "../fltk/jwm-themes.h"
@@ -35,20 +35,24 @@
 #include "../fltk/jwm-panel.h"
 #include "../fltk/jwm-menu.h"
 #include "../fltk/jwm-popups.h"
-#include "../include/jwmrc.h"
-int showPanel();
-int showClock();
-int showDesktop();
-int showThemes();
-int showWindow();
-int showIcons();
-int showFonts();
-int showKeyboard();
-int showMouse();
-int showMenu();
-int showMenu(std::string menu);
-int showAutostart();
-int showSettings();
-int showShortcuts();
-int showPopus();
+#include "jwmrc.hpp"
+#include "fltkfunctions.hpp"
+class JSM_UI : public FLTK_FUNCTIONS
+{
+	public:
+		int showPanel();
+		int showClock();
+		int showDesktop();
+		int showThemes();
+		int showWindow();
+		int showIcons();
+		int showFonts();
+		int showKeyboard();
+		int showMouse();
+		int showMenu();
+		int showMenu(std::string menu);
+		int showAutostart();
+		int showShortcuts();
+		int showPopus();
+};
 #endif

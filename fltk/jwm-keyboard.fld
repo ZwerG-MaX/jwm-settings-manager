@@ -45,10 +45,10 @@ decl {\#include <stdlib.h>} {public global
 decl {\#include <iostream>} {public global
 } 
 
-decl {\#include "../include/jwmrc.h"} {public global
+decl {\#include "../include/jwmrc.hpp"} {public global
 } 
 
-decl {\#include "../include/ui.h"} {public global
+decl {\#include "../include/ui.hpp"} {selected public global
 } 
 
 decl {\#include "../include/keyboard.hpp"} {public global
@@ -106,7 +106,7 @@ decl {struct keycode_table{int n; const char* text;} table[] = {
 };} {private global
 } 
 
-class KeyboardUI {open selected : {public JWM_Keyboard}
+class KeyboardUI {open : {public JWM_Keyboard}
 } {
   decl {int JWMVERSION;} {private local
   }

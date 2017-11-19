@@ -45,7 +45,7 @@ decl {\#include <stdlib.h>} {public global
 decl {\#include <iostream>} {public global
 } 
 
-decl {\#include "../include/jwmrc.h"} {public global
+decl {\#include "../include/jwmrc.hpp"} {public global
 } 
 
 decl {\#include <getopt.h>} {public global
@@ -90,14 +90,14 @@ decl {\#include <fstream>} {public local
 decl {\#include "../include/fltkfunctions.hpp"} {public global
 } 
 
-class MouseUI {open
+class MouseUI {open selected : {public FLTK_FUNCTIONS}
 } {
   decl {bool verbose;int m_pid;bool deltaChanged;bool doubleChanged;bool JWM;} {public local
   }
   Function {cursors_window()} {open
   } {
     Fl_Window CURSOR_win {
-      label {Mouse Cursors} open selected
+      label {Mouse Cursors} open
       xywh {455 361 265 220} type Double hide
       code0 {startup(o,jsm_mouse_xpm);} xclass JSM
     } {
@@ -218,9 +218,9 @@ deltaChanged = false;
 doubleChanged = false;} {}
     Fl_Window mouse_window {
       label {Touchpad Settings} open
-      xywh {194 133 370 345} type Double color 47 resizable
+      xywh {194 133 370 345} type Double color 47 hide resizable
       code0 {readsynclientoutput();}
-      code1 {startup(o,jsm_mouse_xpm);} xclass {jsm-mouse} visible
+      code1 {startup(o,jsm_mouse_xpm);} xclass {jsm-mouse}
     } {
       Fl_Scroll {} {open
         xywh {-5 0 545 520} color 31

@@ -42,19 +42,19 @@ decl {\#include <stdlib.h>} {public global
 decl {\#include <iostream>} {public global
 } 
 
-decl {\#include "../include/jwmrc.h"} {public global
+decl {\#include "../include/jwmrc.hpp"} {public global
 } 
 
 decl {\#include "../include/themes.hpp"} {public global
 } 
 
-decl {\#include "../include/ui.h"} {public global
+decl {\#include "../include/ui.hpp"} {selected public global
 } 
 
 decl {\#include "../data/icons/jsm-theme.xpm"} {public global
 } 
 
-class ThemesUI {open selected : {public Theme}
+class ThemesUI {open : {public Theme}
 } {
   Function {make_window()} {open
   } {

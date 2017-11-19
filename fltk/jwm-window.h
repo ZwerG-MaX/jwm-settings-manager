@@ -30,9 +30,10 @@
 #include <string>
 #include <stdlib.h>
 #include <iostream>
-#include "../include/jwmrc.h"
+#include "../include/jwmrc.hpp"
 #include "../include/window.hpp"
 #include "../data/icons/jsm-windows.xpm"
+#include "../include/ui.hpp"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Browser.H>

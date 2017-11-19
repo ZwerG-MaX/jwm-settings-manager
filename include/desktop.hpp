@@ -39,7 +39,7 @@
 #include <iostream>
 #include <algorithm>
 //My stuff
-#include "jwmrc.h"
+#include "jwmrc.hpp"
 #include "fltkfunctions.hpp"
 //FLTK
 #include <FL/Fl.H>
@@ -50,7 +50,7 @@
 #include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Value_Input.H>
-class JSM_Desktop
+class JSM_Desktop : public FLTK_FUNCTIONS
 {
 	public:
 //void//////////////////////////////////////////////////////////////////

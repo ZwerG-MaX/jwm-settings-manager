@@ -42,7 +42,7 @@ decl {\#include <stdlib.h>} {public global
 decl {\#include <iostream>} {public global
 } 
 
-decl {\#include "../include/jwmrc.h"} {public global
+decl {\#include "../include/jwmrc.hpp"} {public global
 } 
 
 decl {\#include "../include/autostart.hpp"} {public global
@@ -51,13 +51,16 @@ decl {\#include "../include/autostart.hpp"} {public global
 decl {\#include "../include/fltkfunctions.hpp"} {public global
 } 
 
+decl {\#include "../include/ui.hpp"} {selected public global
+} 
+
 decl {\#include <FL/Fl_Select_Browser.H>} {public global
 } 
 
 decl {\#include "../data/icons/jsm-autostart.xpm"} {public global
 } 
 
-class AutostartUI {open selected : {public JSM_Autostart}
+class AutostartUI {open : {public JSM_Autostart}
 } {
   Function {make_window()} {open
   } {

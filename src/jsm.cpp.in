@@ -27,8 +27,9 @@
 #include <iomanip>
 #include <string>
 //my common functions
-#include "../include/jwmrc.h"
-#include "../include/ui.h"
+#include "../include/jwmrc.hpp"
+#include "../include/ui.hpp"
+#include "../fltk/jwm-settings.h"
 #include "../fltk/jwm-shutdown.h"
 int showHelp();
 int makeWindow();
@@ -90,6 +91,8 @@ std::string ARGpopup="@ARGpopup@";
 int main(int argc, char *argv[]){
 
     try{
+    SettingsUI ux;
+    JSM_UI ui;
     //integers for searching the argv
     std::string command;
     if(argc>0){
@@ -109,46 +112,46 @@ int main(int argc, char *argv[]){
                     return 0;
                 }
                 else if((command.compare(ARGautostart)==0)||(command.compare("-a")==0)){
-                    return showAutostart();
+                    return ui.showAutostart();
                 }
                 else if((command.compare(ARGshutdown)==0)||(command.compare(halt)==0)){
                     return Shutdown();
                 }
                 else if((command.compare(ARGwindow)==0)||(command.compare("-w")==0)){
-                    return showWindow();
+                    return ui.showWindow();
                 }
                 else if((command.compare(ARGclock)==0)||(command.compare("-l")==0)){
-                    return showClock();
+                    return ui.showClock();
                 }
                 else if((command.compare(ARGdesktop)==0)||(command.compare("-d")==0)){
-                    return showDesktop();
+                    return ui.showDesktop();
                 }
                 else if((command.compare(ARGpanel)==0)||(command.compare("-p")==0)){
-                    return showPanel();
+                    return ui.showPanel();
                 }
                 else if((command.compare(themes)==0)||(command.compare("-t")==0)){
-                    return showThemes();
+                    return ui.showThemes();
                 }
                 else if((command.compare(ARGicons)==0)||(command.compare("-i")==0)){
-                    return showIcons();
+                    return ui.showIcons();
                 }
                 else if((command.compare(ARGfont)==0)||(command.compare("-f")==0)){
-                    return showFonts();
+                    return ui.showFonts();
                 }
                 else if((command.compare(ARGkeyboard)==0)||(command.compare("-k")==0)){
-                    return showKeyboard();
+                    return ui.showKeyboard();
                 }
                 else if((command.compare(menu)==0)||(command.compare("-u")==0)){
-                    return showMenu();
+                    return ui.showMenu();
                 }
                 else if((command.compare(ARGmouse)==0)||(command.compare("-m")==0)){
-                    return showMouse();
+                    return ui.showMouse();
                 }
                 else if((command.compare(ARGshortcuts)==0)||(command.compare("-s")==0)){
-                    return showShortcuts();
+                    return ui.showShortcuts();
                 }
                 else if(command.compare(ARGpopup)==0){
-                    return showPopus();
+                    return ui.showPopus();
                 }
                 else if((command.compare(ARGcopyright)==0)||(command.compare("-c")==0)){
                     copyrightFile=linuxcommon::find_xdg_data_dir_subdir(programName);
@@ -172,7 +175,7 @@ int main(int argc, char *argv[]){
             }
         }
     }
-    return showSettings();
+    return ux.showSettings();
     }
     catch (const std::exception& e){
         std::cerr << "Unhandled exception:\n" << e.what() << std::endl;
@@ -212,10 +215,12 @@ int showHelp(){
     return 0;
 }
 int showDEBUG(){
+	SettingsUI ux;
+	JWMRC jwmrc;
 std::cout<<"int showDEBUG()"<<std::endl;
-	if(!setJSMItem("debug","true")){std::cerr<<"Could not activate debug settings";}
+	if(!jwmrc.setJSMItem("debug","true")){std::cerr<<"Could not activate debug settings";}
 	else{std::cout<<"I suppose the item was set correctly"<<std::endl;}
-	return showSettings();
+	return ux.showSettings();
 }
 int Shutdown(){
     shutdown ui;

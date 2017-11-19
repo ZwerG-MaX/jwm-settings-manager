@@ -42,7 +42,7 @@ decl {\#include <stdlib.h>} {public global
 decl {\#include <iostream>} {public global
 } 
 
-decl {\#include "../include/jwmrc.h"} {public global
+decl {\#include "../include/jwmrc.hpp"} {public global
 } 
 
 decl {\#include "../include/desktop.hpp"} {public global
@@ -51,7 +51,7 @@ decl {\#include "../include/desktop.hpp"} {public global
 decl {\#include <algorithm>} {public global
 } 
 
-decl {\#include "../include/ui.h"} {public global
+decl {\#include "../include/ui.hpp"} {selected public global
 } 
 
 decl {\#include "../data/icons/jsm-desktop.xpm"} {public global
@@ -60,7 +60,7 @@ decl {\#include "../data/icons/jsm-desktop.xpm"} {public global
 decl {\#include <FL/Fl_Menu_Button.H>} {public global
 } 
 
-class DesktopUI {open selected : {public JSM_Desktop}
+class DesktopUI {open : {public JSM_Desktop}
 } {
   decl {std::string thisBG;std::string FILEMANAGER;unsigned int DESKTOPNUM;} {public local
   }

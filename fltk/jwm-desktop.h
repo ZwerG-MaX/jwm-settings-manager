@@ -30,10 +30,10 @@
 #include <string>
 #include <stdlib.h>
 #include <iostream>
-#include "../include/jwmrc.h"
+#include "../include/jwmrc.hpp"
 #include "../include/desktop.hpp"
 #include <algorithm>
-#include "../include/ui.h"
+#include "../include/ui.hpp"
 #include "../data/icons/jsm-desktop.xpm"
 #include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Double_Window.H>

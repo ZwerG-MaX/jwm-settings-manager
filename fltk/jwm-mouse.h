@@ -31,7 +31,7 @@
 #include <string>
 #include <stdlib.h>
 #include <iostream>
-#include "../include/jwmrc.h"
+#include "../include/jwmrc.hpp"
 #include <getopt.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -60,7 +60,7 @@
 #include <FL/Fl_Value_Slider.H>
 #include <FL/Fl_Value_Output.H>
 
-class MouseUI {
+class MouseUI : public FLTK_FUNCTIONS {
 public:
   bool verbose;int m_pid;bool deltaChanged;bool doubleChanged;bool JWM; 
   Fl_Double_Window* cursors_window();

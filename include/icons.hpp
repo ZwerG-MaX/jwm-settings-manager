@@ -30,7 +30,8 @@
 #include <stdlib.h>
 #include <iostream>
 #include <algorithm>
-#include "jwmrc.h"
+#include "jwmrc.hpp"
+#include "fltkfunctions.hpp"
 //#include "ui.h"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
@@ -40,7 +41,7 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Value_Input.H>
 //Boolean
-class JSM_Icon
+class JSM_Icon : public FLTK_FUNCTIONS
 {
 	public:
 //Bool

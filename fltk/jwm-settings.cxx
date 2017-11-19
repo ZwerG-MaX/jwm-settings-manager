@@ -28,7 +28,7 @@
 
 void SettingsUI::cb_Panel_i(Fl_Button*, void*) {
   settings_window->hide();
-showPanel();
+ui.showPanel();
 }
 void SettingsUI::cb_Panel(Fl_Button* o, void* v) {
   ((SettingsUI*)(o->parent()->user_data()))->cb_Panel_i(o,v);
@@ -469,7 +469,7 @@ static Fl_RGB_Image image_jsm(idata_jsm, 48, 48, 4, 0);
 
 void SettingsUI::cb_Keyboard_i(Fl_Button*, void*) {
   settings_window->hide();
-showKeyboard();
+ui.showKeyboard();
 }
 void SettingsUI::cb_Keyboard(Fl_Button* o, void* v) {
   ((SettingsUI*)(o->parent()->user_data()))->cb_Keyboard_i(o,v);
@@ -919,7 +919,7 @@ static Fl_RGB_Image image_jsm1(idata_jsm1, 48, 48, 4, 0);
 
 void SettingsUI::cb_Icons_i(Fl_Button*, void*) {
   settings_window->hide();
-showIcons();
+ui.showIcons();
 }
 void SettingsUI::cb_Icons(Fl_Button* o, void* v) {
   ((SettingsUI*)(o->parent()->user_data()))->cb_Icons_i(o,v);
@@ -1368,7 +1368,7 @@ static Fl_RGB_Image image_jsm2(idata_jsm2, 48, 48, 4, 0);
 
 void SettingsUI::cb_Desktop_i(Fl_Button*, void*) {
   settings_window->hide();
-showDesktop();
+ui.showDesktop();
 }
 void SettingsUI::cb_Desktop(Fl_Button* o, void* v) {
   ((SettingsUI*)(o->parent()->user_data()))->cb_Desktop_i(o,v);
@@ -1814,7 +1814,7 @@ static Fl_RGB_Image image_jsm3(idata_jsm3, 48, 48, 4, 0);
 
 void SettingsUI::cb_Touchpad_i(Fl_Button*, void*) {
   settings_window->hide();
-showMouse();
+ui.showMouse();
 }
 void SettingsUI::cb_Touchpad(Fl_Button* o, void* v) {
   ((SettingsUI*)(o->parent()->user_data()))->cb_Touchpad_i(o,v);
@@ -2259,7 +2259,7 @@ static Fl_RGB_Image image_jsm4(idata_jsm4, 48, 48, 4, 0);
 
 void SettingsUI::cb_Fonts_i(Fl_Button*, void*) {
   settings_window->hide();
-showFonts();
+ui.showFonts();
 }
 void SettingsUI::cb_Fonts(Fl_Button* o, void* v) {
   ((SettingsUI*)(o->parent()->user_data()))->cb_Fonts_i(o,v);
@@ -2707,7 +2707,7 @@ static Fl_RGB_Image image_jsm5(idata_jsm5, 48, 48, 4, 0);
 
 void SettingsUI::cb_Windows_i(Fl_Button*, void*) {
   settings_window->hide();
-showWindow();
+ui.showWindow();
 }
 void SettingsUI::cb_Windows(Fl_Button* o, void* v) {
   ((SettingsUI*)(o->parent()->user_data()))->cb_Windows_i(o,v);
@@ -3157,7 +3157,7 @@ static Fl_RGB_Image image_jsm6(idata_jsm6, 48, 48, 4, 0);
 
 void SettingsUI::cb_Themes_i(Fl_Button*, void*) {
   settings_window->hide();
-showThemes();
+ui.showThemes();
 }
 void SettingsUI::cb_Themes(Fl_Button* o, void* v) {
   ((SettingsUI*)(o->parent()->user_data()))->cb_Themes_i(o,v);
@@ -3606,7 +3606,7 @@ static Fl_RGB_Image image_jsm7(idata_jsm7, 48, 48, 4, 0);
 
 void SettingsUI::cb_Autostart_i(Fl_Button*, void*) {
   settings_window->hide();
-showAutostart();
+ui.showAutostart();
 }
 void SettingsUI::cb_Autostart(Fl_Button* o, void* v) {
   ((SettingsUI*)(o->parent()->user_data()))->cb_Autostart_i(o,v);
@@ -4069,13 +4069,14 @@ void SettingsUI::cb_System(Fl_Button* o, void* v) {
 
 void SettingsUI::cb_Popups_i(Fl_Button*, void*) {
   settings_window->hide();
-showPopus();
+ui.showPopus();
 }
 void SettingsUI::cb_Popups(Fl_Button* o, void* v) {
   ((SettingsUI*)(o->parent()->user_data()))->cb_Popups_i(o,v);
 }
 
 Fl_Double_Window* SettingsUI::make_window() {
+  printf("Hello, World!\n");
   { Fl_Double_Window* o = settings_window = new Fl_Double_Window(260, 345, gettext("Settings Manager"));
     settings_window->color(FL_DARK2);
     settings_window->labelcolor(FL_BACKGROUND2_COLOR);
@@ -4165,8 +4166,8 @@ Fl_Double_Window* SettingsUI::make_window() {
 
 bool SettingsUI::isAdduser(Fl_Button *o) {
   bool isfladduser = testExec("fladduser");
-  if(isfladduser){o->show();}
-  else{o->hide();}
+  if(isfladduser){o->activate();}
+  else{o->deactivate();}
   return isfladduser;
 }
 
@@ -4179,10 +4180,10 @@ void SettingsUI::adduser() {
 bool SettingsUI::isInfo(Fl_Button *o) {
   bool isexec = testExec("torios-info");
   if(isexec){
-    o->show();
+    o->activate();
   }
   else{
-    o->hide();
+    o->deactivate();
   }
   return isexec;
 }
@@ -4193,4 +4194,9 @@ void SettingsUI::addinfo() {
   if(retval !=0){
     std::cerr<<"system(\"bash -c 'torios-info &disown'\") did not return 0"<<std::endl;
   }
+}
+
+int SettingsUI::showSettings() {
+  make_window()->show();
+  return Fl::run();
 }

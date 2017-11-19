@@ -602,7 +602,8 @@ void PanelUI::cb_save_button(Fl_Button* o, void* v) {
 
 void PanelUI::cb_Edit_i(Fl_Button*, void*) {
   panel_window->hide();
-showMenu();
+JSM_UI ui;
+ui.showMenu();
 }
 void PanelUI::cb_Edit(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->user_data()))->cb_Edit_i(o,v);
@@ -912,8 +913,10 @@ void PanelUI::cb_prog_conf_gear(Fl_Button* o, void* v) {
 void PanelUI::cb_menu_conf_gear_i(Fl_Button*, void*) {
   const char* tmpTST =button_menu->value();
 button_menu->activate();
-if(tmpTST!=NULL){showMenu(tmpTST);}
-else{showMenu();};
+if(tmpTST!=NULL){JSM_UI ui;
+ui.showMenu(tmpTST);}
+else{JSM_UI ui;
+ui.showMenu();};
 }
 void PanelUI::cb_menu_conf_gear(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_menu_conf_gear_i(o,v);
@@ -1048,8 +1051,10 @@ void PanelUI::cb_clock_prog_conf_gear(Fl_Button* o, void* v) {
 void PanelUI::cb_clock_menu_conf_gear_i(Fl_Button*, void*) {
   const char* tmpTST =clock_button_menu->value();
 clock_button_menu->activate();
-if(tmpTST!=NULL){showMenu(tmpTST);}
-else{showMenu();};
+if(tmpTST!=NULL){JSM_UI ui;
+ui.showMenu(tmpTST);}
+else{JSM_UI ui;
+ui.showMenu();};
 }
 void PanelUI::cb_clock_menu_conf_gear(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->user_data()))->cb_clock_menu_conf_gear_i(o,v);
@@ -1215,8 +1220,10 @@ void PanelUI::cb_icon_view(Fl_Button* o, void* v) {
 
 void PanelUI::cb_8_i(Fl_Button*, void*) {
   const char* tmpTST =tester->value();
-if(tmpTST!=NULL){showMenu(tmpTST);}
-else{showMenu();};
+if(tmpTST!=NULL){JSM_UI ui;
+ui.showMenu(tmpTST);}
+else{JSM_UI ui;
+ui.showMenu();};
 }
 void PanelUI::cb_8(Fl_Button* o, void* v) {
   ((PanelUI*)(o->parent()->user_data()))->cb_8_i(o,v);

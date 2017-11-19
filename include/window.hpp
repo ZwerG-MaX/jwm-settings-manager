@@ -29,7 +29,7 @@
 #include <stdlib.h>
 #include <iostream>
 //My includes
-#include "jwmrc.h"
+#include "jwmrc.hpp"
 #include "fltkfunctions.hpp"
 //FLTK
 #include <FL/Fl.H>
@@ -49,7 +49,7 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Value_Output.H>
-class JSM_Window
+class JSM_Window : public FLTK_FUNCTIONS
 {
 	public:
 ///Void

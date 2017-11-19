@@ -35,7 +35,7 @@
 #include <termios.h>
 #include <iostream>
 //mine
-#include "jwmrc.h"
+#include "jwmrc.hpp"
 #include "fltkfunctions.hpp"
 //FLTK
 #include <FL/Fl.H>
@@ -51,7 +51,7 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Value_Output.H>
-class JWM_Keyboard
+class JWM_Keyboard : public FLTK_FUNCTIONS
 {
 	public:
 	//void

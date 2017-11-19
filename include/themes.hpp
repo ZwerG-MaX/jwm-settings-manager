@@ -29,7 +29,7 @@
 #include <stdlib.h>
 #include <iostream>
 //mine
-#include "jwmrc.h"
+#include "jwmrc.hpp"
 #include "fltkfunctions.hpp"
 //FLTK
 #include <FL/Fl.H>
@@ -41,7 +41,7 @@
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Box.H>
 // void
-class Theme
+class Theme : public FLTK_FUNCTIONS
 {
 	public:
 		void change_theme(std::string whichTheme, bool overwrite);

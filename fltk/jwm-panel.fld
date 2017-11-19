@@ -48,10 +48,10 @@ decl {\#include <iostream>} {public global
 decl {\#include "../include/panel.hpp"} {public global
 } 
 
-decl {\#include "../include/jwmrc.h"} {public global
+decl {\#include "../include/jwmrc.hpp"} {public global
 } 
 
-decl {\#include "../include/ui.h"} {public global
+decl {\#include "../include/ui.hpp"} {selected public global
 } 
 
 decl {\#include "../data/icons/jsm-panel.xpm"} {public global
@@ -63,7 +63,7 @@ decl {\#include "../include/fltkfunctions.hpp"} {public global
 decl {//\#include "jwm-menu.h"} {public global
 } 
 
-class PanelUI {open selected : {public JSM_Panel}
+class PanelUI {open : {public JSM_Panel}
 } {
   decl {int BUTTON_NUM;int JWM_VERSION;} {private local
   }
@@ -651,7 +651,8 @@ Possible  values  are "left", "right", "top", "bottom", and "off".} xywh {10 380
         Fl_Button {} {
           label {Edit Menus}
           callback {panel_window->hide();
-showMenu();}
+JSM_UI ui;
+ui.showMenu();}
           xywh {15 420 110 25} box FLAT_BOX color 23
           code0 {const char* text=gettext("Edit Menus");o->label(text);}
         }
@@ -1038,8 +1039,10 @@ if(program.compare("")==0){
       Fl_Button menu_conf_gear {
         callback {const char* tmpTST =button_menu->value();
 button_menu->activate();
-if(tmpTST!=NULL){showMenu(tmpTST);}
-else{showMenu();}}
+if(tmpTST!=NULL){JSM_UI ui;
+ui.showMenu(tmpTST);}
+else{JSM_UI ui;
+ui.showMenu();}}
         tooltip {Configure this menu} image {custom_buttons/gear16.png} xywh {100 120 25 25} box FLAT_BOX color 23
       }
       Fl_Button {} {
@@ -1185,8 +1188,10 @@ if(program.compare("")==0){
         Fl_Button clock_menu_conf_gear {
           callback {const char* tmpTST =clock_button_menu->value();
 clock_button_menu->activate();
-if(tmpTST!=NULL){showMenu(tmpTST);}
-else{showMenu();}}
+if(tmpTST!=NULL){JSM_UI ui;
+ui.showMenu(tmpTST);}
+else{JSM_UI ui;
+ui.showMenu();}}
           tooltip {Configure the menu} image {custom_buttons/gear16.png} xywh {385 145 25 25} box FLAT_BOX color 23
         }
         Fl_Button {} {
@@ -1343,8 +1348,10 @@ if(iconFILE.compare("")!=0)makeWidgetIcon(iconFILE,o,48);}
       }
       Fl_Button {} {
         callback {const char* tmpTST =tester->value();
-if(tmpTST!=NULL){showMenu(tmpTST);}
-else{showMenu();}}
+if(tmpTST!=NULL){JSM_UI ui;
+ui.showMenu(tmpTST);}
+else{JSM_UI ui;
+ui.showMenu();}}
         tooltip {Configure the menu items} image {custom_buttons/gear16.png} xywh {75 65 30 30} box FLAT_BOX color 23
       }
     }

@@ -32,8 +32,8 @@
 #include <stdlib.h>
 #include <iostream>
 #include "../include/panel.hpp"
-#include "../include/jwmrc.h"
-#include "../include/ui.h"
+#include "../include/jwmrc.hpp"
+#include "../include/ui.hpp"
 #include "../data/icons/jsm-panel.xpm"
 #include "../include/fltkfunctions.hpp"
 //#include "jwm-menu.h"

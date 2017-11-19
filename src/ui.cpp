@@ -21,24 +21,18 @@
  * You may redistribute this, but you must keep this comment in place
  * Jesus is my Lord, and if you don't like it feel free to ignore it.
  */
-#include "../include/ui.h"
+#include "../include/ui.hpp"
 //These functions simply call the UI
-//main window
-int showSettings(){
-    SettingsUI uiSettings;
-    uiSettings.make_window()->show();
-	return Fl::run();
-}
 
 //panel
-int showPanel(){
+int JSM_UI::showPanel(){
 	debug_out("Panel UI activated");
     PanelUI uiPanel;
     uiPanel.make_window()->show();
 	return Fl::run();
 }
 //clock
-int showClock(){
+int JSM_UI::showClock(){
 	debug_out("Clock UI activated");
     PanelUI uiPanel;
     uiPanel.make_window()->show();
@@ -46,7 +40,7 @@ int showClock(){
 	return Fl::run();
 }
 //desktop
-int showDesktop(){
+int JSM_UI::showDesktop(){
 debug_out("Desktop UI activated");
     DesktopUI uiDesktop;
     uiDesktop.make_window()->show();
@@ -54,7 +48,7 @@ debug_out("Desktop UI activated");
 }
 
 //windows
-int showWindow(){
+int JSM_UI::showWindow(){
 	debug_out("Window UI activated");
     WindowUI uiWindow;
     uiWindow.make_window()->show();
@@ -62,7 +56,7 @@ int showWindow(){
 }
 
 //Autostart
-int showAutostart(){
+int JSM_UI::showAutostart(){
 	debug_out("Autostart UI activated");
     AutostartUI uiAutostart;
     uiAutostart.make_window()->show();
@@ -70,7 +64,7 @@ int showAutostart(){
 }
 
 //fonts
-int showFonts(){
+int JSM_UI::showFonts(){
 	debug_out("Font UI activated");
     FontUI uiFonts;
     uiFonts.make_window()->show();
@@ -78,7 +72,7 @@ int showFonts(){
 }
 
 //keyboard
-int showKeyboard(){
+int JSM_UI::showKeyboard(){
 	debug_out("Keyboard UI activated");
     KeyboardUI uiKeyboard;
     uiKeyboard.make_window()->show();
@@ -86,7 +80,7 @@ int showKeyboard(){
 }
 
 //Themes
-int showThemes(){
+int JSM_UI::showThemes(){
 	debug_out("Themes UI activated");
     ThemesUI uiThemes;
     uiThemes.make_window()->show();
@@ -94,7 +88,7 @@ int showThemes(){
 }
 
 //icons
-int showIcons(){
+int JSM_UI::showIcons(){
 	debug_out("Icons UI activated");
     IconsUI uiIcons;
     //uiIcons.make_window()->xclass("jsm-icons");
@@ -102,7 +96,7 @@ int showIcons(){
 	return Fl::run();
 }
 //mouse
-int showMouse(){
+int JSM_UI::showMouse(){
 	debug_out("Mouse UI activated");
 	std::string progname="fltk-mouse";
 	int retval=system(progname.c_str());
@@ -114,21 +108,21 @@ int showMouse(){
 	return retval;
 }
 //menu
-int showMenu(){
+int JSM_UI::showMenu(){
 	debug_out("Menu UI activated");
     MenuUI Menu;
 	std::string menu="";
     Menu.make_window(menu)->show();
 	return Fl::run();
 }
-int showMenu(std::string menu){
+int JSM_UI::showMenu(std::string menu){
 	debug_out("Menu UI activated");
     MenuUI Menu;
     Menu.make_window(menu)->show();
 	return Fl::run();
 }
 //Shortcuts
-int showShortcuts(){
+int JSM_UI::showShortcuts(){
 	std::string EDITOR="desktop-file-editor";
     if(!linuxcommon::test_exec(EDITOR)){
 		EDITOR="torios-shortcut";
@@ -137,7 +131,7 @@ int showShortcuts(){
 	return linuxcommon::run_a_program(EDITOR);
 }
 //Popups
-int showPopus(){
+int JSM_UI::showPopus(){
 	debug_out("Popus UI activated");
 	PopupsUI Pop;
 	Pop.make_window()->show();

@@ -141,6 +141,8 @@ set( FLTK_SRCS2
 )
 ### ALL the source code
 set(JSM_SRCS
+	src/ui.cpp
+	${FLTK_SRCS2}
     src/menu.cpp
 	src/autostart.cpp
 	src/common.cpp
@@ -152,10 +154,8 @@ set(JSM_SRCS
 	src/fltkfunctions.cpp
 	src/panel.cpp
 	src/themes.cpp
-	src/ui.cpp
 	src/window.cpp
 	${XML_SOURCES}
-	${FLTK_SRCS2}
 )
 ## Turn the source code into a library
 add_library(JSM STATIC ${JSM_SRCS})

@@ -27,15 +27,14 @@
 #define jwm_settings_h
 #include <FL/Fl.H>
 #include <libintl.h>
-#include "../include/ui.h"
-#include "../include/jwmrc.h"
+#include "../include/ui.hpp"
 #include "../include/common.hpp"
-#include "../include/fltkfunctions.hpp"
 #include "../data/icons/jwm-settings-manager.xpm"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Button.H>
 
-class SettingsUI {
+class SettingsUI : public FLTK_FUNCTIONS {
+  JSM_UI ui; 
 public:
   Fl_Double_Window* make_window();
   Fl_Double_Window *settings_window;
@@ -69,5 +68,6 @@ public:
   void adduser();
   bool isInfo(Fl_Button *o);
   void addinfo();
+  int showSettings();
 };
 #endif

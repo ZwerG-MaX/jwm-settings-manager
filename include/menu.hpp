@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <iostream>
 //mine
-#include "jwmrc.h"
+#include "jwmrc.hpp"
 #include "fltkfunctions.hpp"
 //FLTK
 #include <FL/Fl.H>
@@ -47,7 +47,7 @@
 #include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Output.H>
-class JSM_Menu
+class JSM_Menu : public FLTK_FUNCTIONS
 {
 	public:
 	//string

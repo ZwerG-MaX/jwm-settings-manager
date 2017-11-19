@@ -30,9 +30,10 @@
 #include <string>
 #include <stdlib.h>
 #include <iostream>
-#include "../include/jwmrc.h"
+#include "../include/jwmrc.hpp"
 #include "../include/autostart.hpp"
 #include "../include/fltkfunctions.hpp"
+#include "../include/ui.hpp"
 #include <FL/Fl_Select_Browser.H>
 #include "../data/icons/jsm-autostart.xpm"
 #include <FL/Fl_Double_Window.H>

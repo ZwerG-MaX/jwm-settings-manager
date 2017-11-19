@@ -31,11 +31,11 @@
 #include <stdlib.h>
 #include <iostream>
 #include "../include/fltkfunctions.hpp"
-#include "../include/jwmrc.h"
+#include "../include/jwmrc.hpp"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Button.H>
 
-class shutdown {
+class shutdown : public FLTK_FUNCTIONS {
   std::string SUSPEND,LOGOUT,SHUTDOWN,RESTART; 
 public:
   Fl_Double_Window* make_window();

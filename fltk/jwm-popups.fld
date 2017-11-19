@@ -33,7 +33,7 @@ comment {/*                 Joe's Window Manager Configuration
 decl {\#include <libintl.h>} {public global
 } 
 
-decl {\#include "../include/jwmrc.h"} {public global
+decl {\#include "../include/jwmrc.hpp"} {public global
 } 
 
 decl {\#include "../include/common.hpp"} {public global
@@ -42,7 +42,10 @@ decl {\#include "../include/common.hpp"} {public global
 decl {\#include "../include/fltkfunctions.hpp"} {public global
 } 
 
-class PopupsUI {open
+decl {\#include "../include/ui.hpp"} {selected public global
+} 
+
+class PopupsUI {open : {public FLTK_FUNCTIONS}
 } {
   decl {std::string DUNSTCONF;} {private local
   }
@@ -50,7 +53,7 @@ class PopupsUI {open
   } {
     Fl_Window popup_window {
       label Popups open
-      xywh {439 195 275 220} type Double color 45 labelcolor 7 xclass {preferences-system-notifications} visible
+      xywh {439 195 275 220} type Double color 45 labelcolor 7 hide xclass {preferences-system-notifications}
     } {
       Fl_Scroll {} {open
         tooltip {This controls the look of popup tooltips such as those shown when the mouse sits over a panel item.} xywh {0 0 270 215}
@@ -74,7 +77,7 @@ class PopupsUI {open
           code0 {get_delay(o);}
         }
         Fl_Menu_Button {} {
-          label enabled open selected
+          label enabled open
           tooltip {Determine if popups are shown. This is a comma-separated list of one or more of the following: true (all enabled), false (no  popups  enabled),  button (tray buttons), clock (clocks), menu (menus), pager (pagers), and task (task list items). The default is true.} xywh {10 135 85 25} box FLAT_BOX color 23 selection_color 72
         } {
           MenuItem {} {

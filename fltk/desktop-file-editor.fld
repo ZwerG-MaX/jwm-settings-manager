@@ -38,9 +38,6 @@ decl {\#include <float.h>} {public local
 decl {\#include "../include/fltkfunctions.hpp"} {public global
 } 
 
-decl {\#include "../include/jwmrc.h"} {public global
-} 
-
 decl {\#include <sstream>} {public local
 } 
 
@@ -50,7 +47,7 @@ decl {\#include <FL/Fl_Text_Buffer.H>} {public global
 decl {\#include "../include/common.hpp"} {public global
 } 
 
-class Desktop {open
+class Desktop {open : {public FLTK_FUNCTIONS}
 } {
   decl {std::string LOCALE_STRING, CURRENT_FILE;} {private local
   }
@@ -62,8 +59,8 @@ class Desktop {open
 CURRENT_FILE=filePassedIn;} {}
     Fl_Window {} {
       label {Desktop File Editor} open
-      xywh {474 54 410 570} type Double color 47
-      code0 {load(filePassedIn);} xclass {desktop-file-editor} visible
+      xywh {474 54 410 570} type Double color 47 hide
+      code0 {load(filePassedIn);} xclass {desktop-file-editor}
     } {
       Fl_Scroll {} {open
         xywh {0 0 415 563}
@@ -72,7 +69,7 @@ CURRENT_FILE=filePassedIn;} {}
           xywh {5 5 410 460} box FLAT_BOX color 47
         } {
           Fl_Group {} {
-            label Normal open selected
+            label Normal open
             xywh {5 30 402 430} box FLAT_BOX selection_color 45
           } {
             Fl_Input name {
@@ -1380,7 +1377,7 @@ try{
         if(tmp.compare("")!=0)command=tmp;
         if(linuxcommon::test_file(command)){
           Desktop D;
-          debug_out("Command argument:"+command);
+          std::cout<<"Command argument:"<<command<<std::endl;
           D.make_window(command)->show();
           return Fl::run();
         }
@@ -1398,5 +1395,6 @@ catch (const std::exception& e){
 catch (...){
   std::cerr << "Unknown exception!" << std::endl;
   return EXIT_FAILURE;
-}} {}
+}} {selected
+  }
 } 

@@ -26,11 +26,6 @@
 
 /*FUNCTIONS*/
 //Integer///////////////////////////////////////////////////////////////
-unsigned int JSM_Fonts::getFontColor(std::string whichElement){
-	debug_out("unsigned int getFontColor(std::string "+whichElement+")");
-	std::string color=getElementText(whichElement,"Foreground");
-	return flCOLOR(color);
-}
 int JSM_Fonts::gtk_get_font_size(){
 	std::string TMP=getGTKfont();
 	std::string tmp=TMP;

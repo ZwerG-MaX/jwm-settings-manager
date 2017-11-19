@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <float.h>
 #include "../include/fltkfunctions.hpp"
-#include "../include/jwmrc.h"
 #include <sstream>
 #include <FL/Fl_Text_Buffer.H>
 #include "../include/common.hpp"
@@ -30,7 +29,7 @@
 #include <FL/Fl_Text_Editor.H>
 #include <FL/Fl_Output.H>
 
-class Desktop {
+class Desktop : public FLTK_FUNCTIONS {
   std::string LOCALE_STRING, CURRENT_FILE; 
 public:
   Fl_Text_Buffer * textBuffer; 

@@ -1920,7 +1920,7 @@ int main(int argc, char *argv[]) {
           if(tmp.compare("")!=0)command=tmp;
           if(linuxcommon::test_file(command)){
             Desktop D;
-            debug_out("Command argument:"+command);
+            std::cout<<"Command argument:"<<command<<std::endl;
             D.make_window(command)->show();
             return Fl::run();
           }

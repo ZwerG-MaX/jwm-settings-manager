@@ -31,9 +31,9 @@
 #include <string>
 #include <stdlib.h>
 #include <iostream>
-#include "../include/jwmrc.h"
+#include "../include/jwmrc.hpp"
 #include <FL/Fl_Select_Browser.H>
-#include "../include/ui.h"
+#include "../include/ui.hpp"
 #include "../include/menu.hpp"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Browser.H>

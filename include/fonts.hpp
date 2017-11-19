@@ -29,7 +29,7 @@
 #include <stdlib.h>
 #include <iostream>
 //mine
-#include "jwmrc.h"
+#include "jwmrc.hpp"
 #include "fltkfunctions.hpp"
 //FLTK
 #include <FL/Fl_File_Chooser.H>
@@ -43,11 +43,10 @@
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Slider.H>
 #include <FL/Fl_Value_Output.H>
-class JSM_Fonts
+class JSM_Fonts : public FLTK_FUNCTIONS
 {
 	public:
 	//integer
-		unsigned int getFontColor(std::string whichElement);
 		int get_font_size(std::string whichElement);
 		int gtk_get_font_size();
 	//string

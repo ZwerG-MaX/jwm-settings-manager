@@ -33,82 +33,79 @@ comment {/*                 Joe's Window Manager Configuration
 decl {\#include <libintl.h>} {public global
 } 
 
-decl {\#include "../include/ui.h"} {public global
-} 
-
-decl {\#include "../include/jwmrc.h"} {public global
+decl {\#include "../include/ui.hpp"} {public global
 } 
 
 decl {\#include "../include/common.hpp"} {public global
 } 
 
-decl {\#include "../include/fltkfunctions.hpp"} {public global
-} 
-
 decl {\#include "../data/icons/jwm-settings-manager.xpm"} {public global
 } 
 
-class SettingsUI {open
+class SettingsUI {open selected : {public FLTK_FUNCTIONS}
 } {
+  decl {JSM_UI ui;} {private local
+  }
   Function {make_window()} {open
   } {
+    code {printf("Hello, World!\\n");} {}
     Fl_Window settings_window {
       label {Settings Manager} open
-      xywh {948 119 260 345} type Double color 45 labelcolor 7
-      code1 {startup(o,jwm_settings_manager);} xclass {jwm-settings-manager} visible
+      xywh {948 119 260 345} type Double color 45 labelcolor 7 hide
+      code1 {startup(o,jwm_settings_manager);} xclass {jwm-settings-manager}
     } {
       Fl_Button {} {
         label Panel
         callback {settings_window->hide();
-showPanel();}
+ui.showPanel();}
         image {../data/img/jsm-panel.png} xywh {5 5 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Keyboard
         callback {settings_window->hide();
-showKeyboard();}
+ui.showKeyboard();}
         image {../data/img/jsm-keyboard.png} xywh {90 5 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Icons
         callback {settings_window->hide();
-showIcons();}
+ui.showIcons();}
         image {../data/img/jsm-icons.png} xywh {175 5 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Desktop
         callback {settings_window->hide();
-showDesktop();}
+ui.showDesktop();}
         image {../data/img/jsm-desktop.png} xywh {5 90 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Touchpad
         callback {settings_window->hide();
-showMouse();}
+ui.showMouse();}
         image {../data/img/jsm-mouse.png} xywh {90 90 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Fonts
         callback {settings_window->hide();
-showFonts();}
+ui.showFonts();}
         image {../data/img/jsm-fonts.png} xywh {175 90 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Windows
         callback {settings_window->hide();
-showWindow();}
+ui.showWindow();}
         image {../data/img/jsm-windows.png} xywh {5 175 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Themes
         callback {settings_window->hide();
-showThemes();}
+ui.showThemes();}
         tooltip {This is for Predefined Thems} image {../data/img/jsm-theme.png} xywh {90 175 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
         label Autostart
         callback {settings_window->hide();
-showAutostart();}
+ui.showAutostart();}
         image {../data/img/jsm-autostart.png} xywh {175 175 80 80} box FLAT_BOX color 23
       }
       Fl_Button {} {
@@ -119,14 +116,14 @@ showAutostart();}
       }
       Fl_Button {} {
         label {System Details}
-        callback {addinfo();} selected
+        callback {addinfo();}
         xywh {90 260 80 80} box FLAT_BOX color 23 align 128
         code0 {if(isInfo(o))makeWidgetIcon("help-browser",o,48);}
       }
       Fl_Button {} {
         label Popups
         callback {settings_window->hide();
-showPopus();}
+ui.showPopus();}
         xywh {175 260 80 80} box FLAT_BOX color 23 align 128
         code0 {makeWidgetIcon("preferences-system-notifications",o,48);}
       }
@@ -135,8 +132,8 @@ showPopus();}
   Function {isAdduser(Fl_Button *o)} {open return_type bool
   } {
     code {bool isfladduser = testExec("fladduser");
-if(isfladduser){o->show();}
-else{o->hide();}
+if(isfladduser){o->activate();}
+else{o->deactivate();}
 return isfladduser;} {}
   }
   Function {adduser()} {open
@@ -149,10 +146,10 @@ if(retval !=0){errorOUT("Could not run the user adding program");}} {}
   } {
     code {bool isexec = testExec("torios-info");
 if(isexec){
-  o->show();
+  o->activate();
 }
 else{
-  o->hide();
+  o->deactivate();
 }
 return isexec;} {}
   }
@@ -163,5 +160,10 @@ int retval = linuxcommon::run_a_program_in_background("torios-info");
 if(retval !=0){
   std::cerr<<"system(\\"bash -c 'torios-info &disown'\\") did not return 0"<<std::endl;
 }} {}
+  }
+  Function {showSettings()} {open return_type int
+  } {
+    code {make_window()->show();
+return Fl::run();} {}
   }
 } 
