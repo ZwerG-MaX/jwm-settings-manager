@@ -384,18 +384,23 @@ void FLTK_FUNCTIONS::makeWidgetIcon(std::string icon_file, Fl_Widget * widget, i
 		debug_out("Icon file is empty");
 		return;
 	}
+	widget->image(NULL);
+	delete(widget->image());
 	Fl_Image* image2=NULL;
 	if(linuxcommon::has_file_extention_at_end(icon_file,".png")){
         Fl_Image* image = new Fl_PNG_Image(icon_file.c_str());
         image2 = image->copy(w,h);
+        delete(image);
     }
     else if(linuxcommon::has_file_extention_at_end(icon_file,".xpm")){
     	Fl_Image* image = new Fl_XPM_Image(icon_file.c_str());
     	image2 = image->copy(w,h);
+    	delete(image);
 	}
 	else if(linuxcommon::has_file_extention_at_end(icon_file,".xbm")){
     	Fl_Image* image = new Fl_XBM_Image(icon_file.c_str());
     	image2 = image->copy(w,h);
+    	delete(image);
 	}
 	else if(linuxcommon::has_file_extention_at_end(icon_file,".svg")){
 		NSVGimage *svg_image = NULL;
@@ -424,16 +429,19 @@ void FLTK_FUNCTIONS::makeWidgetIcon(std::string icon_file, Fl_Widget * widget, i
 		nsvgRasterize(rast, svg_image, 0, 0, 1, img_data, width, height, (width * depth));
 		Fl_Image* image  = new Fl_RGB_Image(img_data, width, height, depth);
 		image2 = image->copy(w,h);
+		delete(image);
 		nsvgDeleteRasterizer(rast);
 		nsvgDelete(svg_image);
 	}
 	else if((linuxcommon::has_file_extention_at_end(icon_file,".jpg"))||(linuxcommon::has_file_extention_at_end(icon_file,".jpeg"))){
 		Fl_Image* image = new Fl_JPEG_Image(icon_file.c_str());
 		image2 = image->copy(w,h);
+		delete(image);
 	}
 	else if(linuxcommon::has_file_extention_at_end(icon_file,".gif")){
 		Fl_Image* image = new Fl_GIF_Image(icon_file.c_str());
 		image2 = image->copy(w,h);
+		delete(image);
 	}
 	else{return;}
 	widget->image(image2);
