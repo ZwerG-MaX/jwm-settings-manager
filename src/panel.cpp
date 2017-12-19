@@ -642,7 +642,7 @@ void JSM_Panel::new_panel_items(Fl_Browser *o){
 	std::string SWALLOW=gettext("Swallow");
 	std::string MENU=gettext("Menu");
 	std::string DESKSWITCH=gettext("Desktop Switcher");
-	std::string LAUNCHER=gettext("Launcher");
+	std::string LAUNCHER=gettext("Program Launcher");
 	std::string SPACER=gettext("Spacer");
 	o->add(MENU.c_str());
 	o->add(CLOCK.c_str());
