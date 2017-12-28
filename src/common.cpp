@@ -1452,6 +1452,10 @@ LINUX_COMMON__NS_BEGIN
 		std::string extention_check;
 		std::transform(filename.begin(), filename.end(), filename.begin(), ::tolower);
 		std::transform(extention.begin(), extention.end(), extention.begin(), ::tolower);
+		unsigned int period = extention.find(".");
+		//add period to extention
+		if(period != 0)
+			extention="."+extention;
 		unsigned int found=filename.find(extention);
 		unsigned int ext_len=extention.length();
 		unsigned int file_len=filename.length();

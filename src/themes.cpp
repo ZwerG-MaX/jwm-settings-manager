@@ -461,9 +461,20 @@ int Theme::populateANYThemes(Fl_Browser *o,std::string checkHERE,bool backone){
     if ((dir = opendir (checkHERE.c_str())) != NULL) {
         while ((ent = readdir (dir)) != NULL) {
             itemName=ent->d_name;
+			std::string fullpath=ent->d_name;
             itemName=itemName.substr(0,(itemName.length()));
             if (!(itemName.compare(".")==0)&&!(itemName.compare("..")==0)&&!(itemName.compare("old")==0)&&!(itemName.compare("2.3.0")==0)){
-				o->add(itemName.c_str());
+				//Don't add our random stuff
+				if( (!linuxcommon::has_file_extention_at_end(itemName,".in")) && !linuxcommon::has_file_extention_at_end(itemName,".txt") ){
+					pugi::xml_document tmp;
+					if(checkHERE.rfind('/')!=checkHERE.length()-1){checkHERE+="/";}
+					std::string subber = checkHERE+fullpath;
+					fullpath=checkHERE+fullpath+"/"+fullpath;
+					debug_out(fullpath);
+					if( (tmp.load_file(fullpath.c_str())) || (tmp.load_file( subber.c_str())) ){
+						o->add(itemName.c_str());
+					}
+				}
 			}
         }
         if(dir!=NULL){closedir (dir);}
