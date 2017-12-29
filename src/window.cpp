@@ -306,6 +306,10 @@ void JSM_Window::populate_groups(Fl_Browser *groups_browser,Fl_Browser *opt_brow
 		populateFLBrowser(name_browser,"Group","Name",line);
 	}
 }
+void JSM_Window::populateMouseContext(Fl_Browser *o, std::string context){
+	if(!populateFLBrowser(o,"Mouse","context",context,"button"))
+		debug_out("Failed to populate for  "+context);
+}
 void JSM_Window::populateGTKThemes(Fl_Browser* o){
 	debug_out("void populateIconThemes(Fl_Browser* o)");
 	o->clear();

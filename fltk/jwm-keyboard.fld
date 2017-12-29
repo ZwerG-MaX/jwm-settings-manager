@@ -48,7 +48,7 @@ decl {\#include <iostream>} {public global
 decl {\#include "../include/jwmrc.hpp"} {public global
 } 
 
-decl {\#include "../include/ui.hpp"} {selected public global
+decl {\#include "../include/ui.hpp"} {public global
 } 
 
 decl {\#include "../include/keyboard.hpp"} {public global
@@ -985,16 +985,16 @@ JWMVERSION=JWMversion();
 //Fl::add_handler(handle);} {}
     Fl_Window keyboard_window {
       label {Keyboard Settings} open
-      xywh {676 429 480 295} type Double color 31 hide resizable
-      code0 {startup(o,jsm_keyboard_xpm);} xclass {jsm-keyboard}
+      xywh {676 429 480 295} type Double color 31 resizable
+      code0 {startup(o,jsm_keyboard_xpm);} xclass {jsm-keyboard} visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 490 310} color 31 resizable
       } {
         Fl_Browser key_browser {
-          label {Keyboard Shortcuts}
+          label {Keyboard Shortcuts} selected
           xywh {5 20 470 235} type Hold box FLAT_BOX selection_color 80 labelfont 1 align 1
-          code1 {static int widths[] = {35,175,105,0};o->column_widths(widths);}
+          code1 {static int widths[] = {50,175,105,0};o->column_widths(widths);}
           code3 {populateFLBrowser2Attr(key_browser,"Key","mask","key");}
         }
         Fl_Button {} {

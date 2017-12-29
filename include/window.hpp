@@ -83,6 +83,7 @@ class JSM_Window : public FLTK_FUNCTIONS
 		void opacity_loader(Fl_Slider *o, int Active1_Inactive2);
 	//p
 		void populate_groups(Fl_Browser *groups_browser,Fl_Browser *opt_browser,Fl_Browser *class_browser,Fl_Browser *name_browser);
+		void populateMouseContext(Fl_Browser *o, std::string conext);
 		void populateGTKThemes(Fl_Browser* o);
 	//r
 		void removeGroup(int hidethis);

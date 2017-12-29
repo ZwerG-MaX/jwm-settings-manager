@@ -51,11 +51,15 @@ decl {\#include "../include/window.hpp"} {public global
 decl {\#include "../data/icons/jsm-windows.xpm"} {public global
 } 
 
-decl {\#include "../include/ui.hpp"} {selected public global
+decl {\#include "../include/ui.hpp"} {public global
 } 
 
 class WindowUI {open : {public JSM_Window}
 } {
+  decl {std::string browser_line} {protected global
+  }
+  decl {std::string context} {protected global
+  }
   decl {int JWMVERSION;} {private local
   }
   Function {add_option_window()} {} {
@@ -193,8 +197,8 @@ if(input!=NULL){
 JWMVERSION=JWMversion();} {}
     Fl_Window window_window {
       label {Window Settings} open
-      xywh {648 133 510 315} type Double color 47 hide resizable
-      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows}
+      xywh {134 80 510 310} type Double color 47 resizable
+      code0 {startup(o,jsm_windows_xpm);} xclass {jsm-windows} visible
     } {
       Fl_Scroll {} {open
         xywh {0 0 510 315} color 31
@@ -368,15 +372,21 @@ get_button(o,"ButtonClose",a_title_color1);}
               tooltip {If motif window decorations are  specified,  two colors  may  be  given separated by a ':' to set the down and up colors respetively.} xywh {175 135 60 25} box FLAT_BOX color 23 when 6
               code0 {if(secondColor(o)){border_color_loader(o,1,2);}}
             }
+            Fl_Button button_actions {
+              label {Button Actions}
+              callback {mouse_bindings_window()->show();}
+              tooltip {Configure buttons for many features} xywh {385 240 110 35} box FLAT_BOX color 23 align 256
+              code0 {hideWidgetForVersion(o,240);}
+            }
             Fl_Button button_order {
               label {Button Order}
-              callback {button_order_window()->show();}
-              tooltip {Choose an icon to display for the close button on client windows instead of the default.} xywh {385 205 100 35} box FLAT_BOX color 23 align 256
+              callback {button_order_window()->show();} selected
+              tooltip {Choose an icon to display for the close button on client windows instead of the default.} xywh {385 200 110 35} box FLAT_BOX color 23 align 256
               code0 {hideWidgetForVersion(o,240);}
             }
           }
           Fl_Group {} {
-            label Settings open
+            label Settings
             xywh {10 35 485 245} selection_color 45 hide
           } {
             Fl_Slider t_slider {
@@ -408,7 +418,7 @@ get_button(o,"ButtonClose",a_title_color1);}
               code1 {o->value(v);}
             }
             Fl_Menu_Button focus_menu {
-              label {Choose how the Window comes to the front of the screen} open
+              label {Choose how the Window comes to the front of the screen}
               tooltip {This determines how windows are brought to the front} xywh {20 125 450 25} box FLAT_BOX color 23 selection_color 72 labelcolor 35 textcolor 35
             } {
               MenuItem {} {
@@ -435,7 +445,7 @@ get_button(o,"ButtonClose",a_title_color1);}
               }
             }
             Fl_Menu_Button resize_menu {
-              label {Appearance of the Window while Resizing} open
+              label {Appearance of the Window while Resizing}
               tooltip {What the windows look like while resizing} xywh {20 155 450 25} box FLAT_BOX color 23 selection_color 72 labelcolor 35 textcolor 35
             } {
               MenuItem {} {
@@ -450,7 +460,7 @@ get_button(o,"ButtonClose",a_title_color1);}
               }
             }
             Fl_Menu_Button move_menu {
-              label {Appearance of Window while Moving} open
+              label {Appearance of Window while Moving}
               tooltip {What the windows look like while moving} xywh {20 185 450 25} box FLAT_BOX color 23 selection_color 72 labelcolor 35 textcolor 35
             } {
               MenuItem {} {
@@ -465,7 +475,7 @@ get_button(o,"ButtonClose",a_title_color1);}
               }
             }
             Fl_Menu_Button snap_menu {
-              label {Choose what the Windows will snap to} open
+              label {Choose what the Windows will snap to}
               tooltip {This determines how windows 'Snap' to other windows, and screen edges} xywh {20 215 450 25} box FLAT_BOX color 23 selection_color 72 labelcolor 35 textcolor 35
             } {
               MenuItem {} {
@@ -506,7 +516,7 @@ setSnap(d);}
             }
           }
           Fl_Group {} {
-            label Groups open
+            label Groups
             xywh {0 30 510 230} selection_color 45 hide
           } {
             Fl_Browser groups_browser {
@@ -573,7 +583,7 @@ populate_groups(groups_browser,opt_browser,class_browser,name_browser);}
             }
           }
           Fl_Group {} {
-            label Advanced open
+            label Advanced
             xywh {5 40 465 240} selection_color 45 hide
           } {
             Fl_Slider a_b_slider {
@@ -647,7 +657,7 @@ if(icon.compare("")!=0){
               code0 {if(JWMVERSION<236){o->hide();}}
             }
             Fl_Menu_Button {} {
-              label {title decorations} open
+              label {title decorations}
               xywh {35 170 150 25} box FLAT_BOX color 23
               code0 {if(JWMVERSION<236){o->hide();}}
             } {
@@ -677,7 +687,7 @@ decorations->value(decor.c_str());decorations->redraw();}
               code2 {else{std::string decor=getElementAttribute("WindowStyle","decorations");if(decor.compare("")!=0){o->value(decor.c_str());o->redraw();}}}
             }
             Fl_Menu_Button {} {
-              label {border decorations} open
+              label {border decorations}
               xywh {35 140 150 25} box FLAT_BOX color 23
               code0 {if(JWMVERSION<236){o->hide();}}
             } {
@@ -731,8 +741,7 @@ quit();}
       }
     }
   }
-  Function {make_gtk_theme_window()} {open
-  } {
+  Function {make_gtk_theme_window()} {} {
     Fl_Window theme_window {
       label {Widget theme} open
       xywh {358 429 310 265} type Double hide
@@ -759,8 +768,7 @@ theme_window->hide();}
       }
     }
   }
-  Function {button_order_window()} {open
-  } {
+  Function {button_order_window()} {} {
     Fl_Window button_orderer {open
       xywh {527 387 225 165} type Double hide
     } {
@@ -792,6 +800,388 @@ x Close button} xywh {25 15 190 25} box FLAT_BOX selection_color 80 align 2
 setElementText("TitleButtonOrder",val);
 saveChanges();}
         tooltip {Write to configuration file} xywh {125 125 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+      }
+    }
+  }
+  Function {mouse_bindings_window()} {open
+  } {
+    Fl_Window action_window {
+      label {Window Button Actions} open
+      xywh {714 222 430 170} type Double hide
+    } {
+      Fl_Scroll {} {open
+        xywh {0 0 435 175}
+      } {
+        Fl_Button context_close {
+          callback {context="close";
+populateMouseContext(context_browser,context);}
+          tooltip {The close button on a window.} xywh {10 10 40 40} box FLAT_BOX color 23
+          code0 {get_button(o,"ButtonClose",a_title_color1);}
+        }
+        Fl_Button context_minimize {
+          callback {context="minimize";
+populateMouseContext(context_browser,context);}
+          tooltip {The maximize button on a window.} xywh {55 10 40 40} box FLAT_BOX color 23 align 256
+          code0 {get_button(o,"ButtonMin",a_title_color1);}
+        }
+        Fl_Button context_maximize {
+          callback {context="maximize";
+populateMouseContext(context_browser,context);}
+          tooltip {The maximize button on a window.} xywh {100 10 40 40} box FLAT_BOX color 23 align 256
+          code0 {get_button(o,"ButtonMaxActive",a_title_color1);}
+        }
+        Fl_Button context_title {
+          label {Title Bar}
+          callback {context="title";
+populateMouseContext(context_browser,context);}
+          tooltip {The title bar of a window.} xywh {145 10 90 40} box FLAT_BOX color 23 align 256
+        }
+        Fl_Button context_icon {
+          label Icon
+          callback {context="icon";
+populateMouseContext(context_browser,context);}
+          tooltip {The icon button on a window.} xywh {240 10 40 40} box FLAT_BOX color 23 align 256
+        }
+        Fl_Button context_border {
+          label Border
+          callback {context="border";
+populateMouseContext(context_browser,context);}
+          tooltip {The window border.} xywh {285 10 70 40} box FLAT_BOX color 23 align 256
+        }
+        Fl_Button context_root {
+          label Root
+          callback {context="root";
+populateMouseContext(context_browser,context);}
+          tooltip {The title bar of a window} xywh {360 10 70 40} box FLAT_BOX color 23 align 256
+        }
+        Fl_Browser context_browser {
+          callback {browser_line=o->text(o->value());}
+          xywh {10 55 260 105} type Hold box FLAT_BOX selection_color 80
+        }
+        Fl_Button {} {
+          label {@+}
+          tooltip {Add Item} xywh {275 60 35 35} box FLAT_BOX color 23 align 256
+        }
+        Fl_Button {} {
+          callback {if(!checkFlBrowserItem(context_browser))return;
+configure_context()->show();}
+          tooltip {Configure Item} image {custom_buttons/gear16.png} xywh {320 60 35 35} box FLAT_BOX color 23 align 256
+        }
+        Fl_Button {} {
+          label {-}
+          callback {if(!checkFlBrowserItem(context_browser))return;}
+          tooltip {Remove Item} xywh {275 100 35 35} box FLAT_BOX color 23 labelfont 1 labelsize 40 align 256
+        }
+      }
+      Fl_Button {} {
+        label Cancel
+        callback {action_window->hide();}
+        xywh {310 140 55 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+      }
+      Fl_Button {} {
+        label OK
+        callback {action_window->hide();
+saveChanges();}
+        tooltip {Write to configuration file} xywh {381 140 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+      }
+    }
+  }
+  Function {menu_cb(const char* action, Fl_Output * o)} {open
+  } {
+    code {if(context.compare("")==0) return;
+o->value(action);
+o->redraw();} {}
+  }
+  Function {button_choice_cb(int buttonnum, Fl_Output* o)} {open
+  } {
+    code {std::string num = linuxcommon::convert_num_to_string(buttonnum);} {}
+  }
+  Function {configure_context()} {open
+  } {
+    Fl_Window context_config {
+      label {Configure Item} open
+      xywh {28 78 310 135} type Double visible
+    } {
+      Fl_Menu_Button {} {
+        label {Button Action}
+        tooltip {Typically the left button} xywh {15 50 130 30} box FLAT_BOX color 23 selection_color 80
+      } {
+        MenuItem {} {
+          label {move to the next window in the task list}
+          callback {const char * action = "next";
+menu_cb(action,value_1);}
+          xywh {35 35 100 20}
+        }
+        MenuItem {} {
+          label {move to the next window in the stacking order}
+          callback {const char * action = "nextstacked";
+menu_cb(action,value_1);}
+          xywh {45 45 100 20}
+        }
+        MenuItem {} {
+          label {move to the previous window in the task list}
+          callback {const char * action = "prev";
+menu_cb(action,value_1);}
+          xywh {45 45 100 20}
+        }
+        MenuItem {} {
+          label {move to the previous window in the stacking order}
+          callback {const char * action = "prevstacked";
+menu_cb(action,value_1);}
+          xywh {55 55 100 20}
+        }
+        MenuItem {} {
+          label {close window}
+          callback {const char * action = "close";
+menu_cb(action,value_1);}
+          xywh {55 55 100 20}
+        }
+        MenuItem {} {
+          label {fullscreen window}
+          callback {const char * action = "fullscreen";
+menu_cb(action,value_1);}
+          xywh {65 65 100 20}
+        }
+        MenuItem {} {
+          label {minimize window}
+          callback {const char * action = "minimize";
+menu_cb(action,value_1);}
+          xywh {75 75 100 20}
+        }
+        MenuItem {} {
+          label {maximize window}
+          callback {const char * action = "maximize";
+menu_cb(action,value_1);}
+          xywh {85 85 100 20}
+        }
+        MenuItem {} {
+          label {roll up window}
+          callback {const char * action = "shade";
+menu_cb(action,value_1);}
+          xywh {95 95 100 20}
+        }
+        MenuItem {} {
+          label {move window}
+          callback {const char * action = "move";
+menu_cb(action,value_1);}
+          xywh {105 105 100 20}
+        }
+        MenuItem {} {
+          label {resize window}
+          callback {const char * action = "resize";
+menu_cb(action,value_1);}
+          xywh {115 115 100 20}
+        }
+        MenuItem {} {
+          label {show window menu}
+          callback {const char * action = "window";
+menu_cb(action,value_1);}
+          xywh {125 125 100 20}
+        }
+        MenuItem {} {
+          label {Show Application menu}
+          callback {const char * action = "root:5";
+menu_cb(action,value_1);}
+          xywh {135 135 100 20}
+        }
+        MenuItem {} {
+          label {Show Places Menu}
+          callback {const char * action = "root:7";
+menu_cb(action,value_1);}
+          xywh {145 145 100 20}
+        }
+        MenuItem {} {
+          label {Show Shutdown menu}
+          callback {const char * action = "root:9";
+menu_cb(action,value_1);}
+          xywh {155 155 100 20}
+        }
+        MenuItem {} {
+          label {move one desktop to the right}
+          callback {const char * action = "rdesktop";
+menu_cb(action,value_1);}
+          xywh {115 115 100 20}
+        }
+        MenuItem {} {
+          label {move one desktop to the left}
+          callback {const char * action = "ldesktop";
+menu_cb(action,value_1);}
+          xywh {125 125 100 20}
+        }
+        MenuItem {} {
+          label {move one desktop up}
+          callback {const char * action = "udesktop";
+menu_cb(action,value_1);}
+          xywh {135 135 100 20}
+        }
+        MenuItem {} {
+          label {move one desktop down}
+          callback {const char * action = "ddesktop";
+menu_cb(action,value_1);}
+          xywh {145 145 100 20}
+        }
+        MenuItem {} {
+          label {restart the Window Manager}
+          callback {const char * action = "restart";
+menu_cb(action,value_1);}
+          xywh {155 155 100 20}
+        }
+        MenuItem {} {
+          label {exit the Window Manager}
+          callback {const char * action = "exit";
+menu_cb(action,value_1);}
+          xywh {165 165 100 20}
+        }
+        MenuItem {} {
+          label {Show any hidden Panels}
+          callback {const char * action = "showtray";
+menu_cb(action,value_1);}
+          xywh {175 175 100 20}
+        }
+        MenuItem {} {
+          label {Maximize to the Top of the screen}
+          callback {if(JWMVERSION>=230){
+  const char * action = "maxtop";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+}}
+          xywh {125 125 100 20}
+        }
+        MenuItem {} {
+          label {Maximize to the Bottom of the screen}
+          callback {if(JWMVERSION>=230){
+  const char * action = "maxbottom";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+}}
+          xywh {135 135 100 20}
+        }
+        MenuItem {} {
+          label {Maximize to the Left of the screen}
+          callback {if(JWMVERSION>=230){
+  const char * action = "maxleft";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+}}
+          xywh {145 145 100 20}
+        }
+        MenuItem {} {
+          label {Maximize to the Right of the screen}
+          callback {if(JWMVERSION>=230){
+  const char * action = "maxright";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+}}
+          xywh {155 155 100 20}
+        }
+        MenuItem {} {
+          label {Maximize Vertical}
+          callback {if(JWMVERSION>=230){
+  const char * action = "maxv";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+}}
+          xywh {165 165 100 20}
+        }
+        MenuItem {} {
+          label {Maximize Horizontal}
+          callback {if(JWMVERSION>=230){
+  const char * action = "maxh";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+}}
+          xywh {175 175 100 20}
+        }
+        MenuItem {} {
+          label {Send Window Up a Desktop}
+          callback {if(JWMVERSION>=230){
+  const char * action = "sendu";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+}}
+          xywh {185 185 100 20}
+        }
+        MenuItem {} {
+          label {Send Window Down a Desktop}
+          callback {if(JWMVERSION>=230){
+  const char * action = "sendd";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+}}
+          xywh {195 195 100 20}
+        }
+        MenuItem {} {
+          label {Send Window Right a Desktop}
+          callback {if(JWMVERSION>=230){
+  const char * action = "sendr";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+}}
+          xywh {205 205 100 20}
+        }
+        MenuItem {} {
+          label {Send Window Left a Desktop}
+          callback {if(JWMVERSION>=230){
+  const char * action = "sendl";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+}}
+          xywh {215 215 100 20}
+        }
+        MenuItem {} {
+          label {Restore a minimized window}
+          callback {if(JWMVERSION>=233){
+  const char * action = "restore";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+}}
+          xywh {25 25 100 20}
+        }
+      }
+      Fl_Output value_1 {
+        xywh {155 50 135 30} box FLAT_BOX selection_color 72
+        code0 {o->value(getTabItem(1,browser_line).c_str());}
+      }
+      Fl_Output button {
+        xywh {160 10 135 30} box FLAT_BOX selection_color 72
+        code0 {o->value(getTabItem(0,browser_line).c_str());}
+      }
+      Fl_Output context_button {
+        xywh {15 10 135 30} box FLAT_BOX selection_color 72
+        code0 {o->value(context.c_str());}
+      }
+      Fl_Button {} {
+        label Cancel
+        callback {context_config->hide();}
+        xywh {180 90 55 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+      }
+      Fl_Button {} {
+        label OK
+        callback {saveChangesTemp();
+context_config->hide();}
+        tooltip {Write to configuration file} xywh {251 90 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
       }
     }
   }

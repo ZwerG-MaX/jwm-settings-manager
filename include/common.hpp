@@ -160,10 +160,12 @@ namespace linuxcommon{
 	int mkdir_p(std::string dirToMake);
 	int run_a_program(std::string program);
 	int run_a_program_in_background(std::string program);
+	int convert_string_to_int(std::string num);
 	///double
 	double convert_string_to_double(std::string num);
 	///unsigned int
 	unsigned int convert_string_to_number(const char* num);
+	
 	#ifdef LINUX_COMMON_HAS_X
 	unsigned int get_fl_color(std::string color);
 	unsigned int get_fl_color(std::string color, unsigned int &color2);

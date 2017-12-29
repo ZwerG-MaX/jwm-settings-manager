@@ -126,10 +126,11 @@ class JWMRC
 		bool newVersionJWM();
 	//P
 		bool populateFLBrowser(Fl_Browser *o, pugi::xml_node noder);
-		bool populateFLBrowser(Fl_Browser *o,std::string element);
-		bool populateFLBrowser(Fl_Browser *o,std::string element,std::string subelement, unsigned int whichMainElement);
+		bool populateFLBrowser(Fl_Browser *o, std::string element);
+		bool populateFLBrowser(Fl_Browser *o, std::string element, std::string attribute, std::string attribute_value, std::string attribute2);
+		bool populateFLBrowser(Fl_Browser *o, std::string element, std::string subelement, unsigned int whichMainElement);
 		bool populateFLBrowserElements(Fl_Browser *o, pugi::xml_node noder);
-		bool populateFLBrowser2Attr(Fl_Browser *o,std::string element,std::string attribute1, std::string attribute2);
+		bool populateFLBrowser2Attr(Fl_Browser *o, std::string element, std::string attribute1, std::string attribute2);
 	//R
 		bool removeMenu(std::string value);
 	//S
@@ -191,6 +192,7 @@ class JWMRC
 		std::string getElementText(unsigned int whichOne, std::string element, std::string subelement);
 		std::string getElementText(std::string element, unsigned int whichElement, std::string subelement,std::string subsub);
 		std::string getElementText(std::string element, std::string subelement, std::string SUBsubsubelement);
+		std::string getElementText2Attributes(std::string element, std::string attr1, std::string attr1v, std::string attr2, std::string attr2v);
 		std::string getElementAttribute(std::string element, std::string attribute);
 		std::string getElementAttribute(std::string element, std::string subelement, std::string attribute);
 		std::string getElementAttribute(std::string element, std::string subelement, std::string SUBsubsubelement, std::string attribute);
@@ -212,6 +214,7 @@ class JWMRC
 		std::string getSmartHoriz(std::string layout);
 		std::string getSmartVert(std::string layout);
 		std::string getSmartLayout();
+		std::string getTabItem(unsigned int whichOne, std::string browser_line);
 	//h
 		std::string homePath();
 		std::string horizontalORvertical(int horizontalValue, int verticalValue);
@@ -286,7 +289,7 @@ class JWMRC
 	//A
 		void addCursorsToBrowser(Fl_Browser *o);
 	//C
-		void cancel();
+		void cancel(bool Quit = true);
 		void createElement(std::string element,std::string text);
 		void changeElementText(std::string element,std::string text,std::string NEWTEXT);
 	//D

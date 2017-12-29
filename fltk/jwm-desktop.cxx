@@ -47,6 +47,13 @@ void DesktopUI::cb_Choose2(Fl_Button* o, void* v) {
   ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_Choose2_i(o,v);
 }
 
+void DesktopUI::cb_fm_pref_i(Fl_Button*, void*) {
+  filemanagerPreferences();
+}
+void DesktopUI::cb_fm_pref(Fl_Button* o, void* v) {
+  ((DesktopUI*)(o->parent()->parent()->user_data()))->cb_fm_pref_i(o,v);
+}
+
 void DesktopUI::cb_icons_check_i(Fl_Check_Button* o, void*) {
   bool useful=use_icons_on_desktop(background_displayer_thingie,thisBG);
 o->value(0);
@@ -170,7 +177,8 @@ Fl_Double_Window* DesktopUI::make_window() {
         fm_pref->tooltip(gettext("Open the filemanager to change preferences"));
         fm_pref->box(FL_FLAT_BOX);
         fm_pref->color((Fl_Color)23);
-        fm_pref->deactivate();
+        fm_pref->callback((Fl_Callback*)cb_fm_pref);
+        fm_pref->hide();
       } // Fl_Button* fm_pref
       { Fl_Check_Button* o = icons_check = new Fl_Check_Button(5, 345, 140, 25, gettext("Icons on Desktop"));
         icons_check->box(FL_FLAT_BOX);

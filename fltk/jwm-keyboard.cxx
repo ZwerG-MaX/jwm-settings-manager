@@ -1601,7 +1601,7 @@ Fl_Double_Window* KeyboardUI::make_window() {
         key_browser->selection_color((Fl_Color)80);
         key_browser->labelfont(1);
         key_browser->align(Fl_Align(FL_ALIGN_TOP));
-        static int widths[] = {35,175,105,0};o->column_widths(widths);
+        static int widths[] = {50,175,105,0};o->column_widths(widths);
         populateFLBrowser2Attr(key_browser,"Key","mask","key");
       } // Fl_Browser* key_browser
       { Fl_Button* o = new Fl_Button(50, 260, 35, 30, gettext("-"));

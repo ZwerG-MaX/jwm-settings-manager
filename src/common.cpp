@@ -1946,6 +1946,13 @@ LINUX_COMMON__NS_BEGIN
 		return TOTAL;
 	}
 	//INTEGER FUNCTIONS/////////////////////////////////////////////////
+	int convert_string_to_int(std::string num){
+		unsigned int NUM=0;
+		try{NUM=std::stoi(num);}
+		catch(std::invalid_argument e){return 0;}
+		catch(std::out_of_range e){return 0;}
+		return NUM;
+	}
 	/** get a process ID from a name like 'pgrep'
 	 * @param  procName the process name to look for
 	 */
