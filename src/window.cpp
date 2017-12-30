@@ -25,22 +25,8 @@
 #include "../include/window.hpp"
 //A
 void JSM_Window::active_color_loader(Fl_Button *o, unsigned int one_or_two){
-  unsigned int color=0;
-  unsigned int c = 0;
-  std::string colors,newOrOld;
-  debug_out("void active_color_loader(Fl_Button *o, unsigned int one_or_two)->");
-  if(newStyle() !=-1){
-    colors=getElementText("WindowStyle","Active","Background");
-  }
-  else{
-    colors=getElementText("WindowStyle","Active","Title");
-  }
-  color=splitColor(colors,1);
-  c=splitColor(colors,2);
-  std::cout<<"one OR two="<<one_or_two<<" Color1="<<c<<" Color2="<<color<<std::endl;
-  if(one_or_two ==1){o->color(c);}
-  else{o->color(color);}
-  debug_out("<-active color loader");
+	debug_out("void active_color_loader(Fl_Button *o, unsigned int one_or_two)->");
+	o->color(activeBGColor(one_or_two));
 }
 void JSM_Window::add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser* browser){
 	debug_out("void add_option_to_group(Fl_Browser *options_available, Fl_Input* icon_value, Fl_Value_Input* desktop_num, Fl_Output* layer_value, Fl_Slider* opacity_value, Fl_Browser* browser)");
@@ -230,17 +216,7 @@ void JSM_Window::display(std::string filename, Fl_Widget *o){
 //F
 void JSM_Window::font_color_loader(Fl_Widget *o, int Active1_Inactive2){
 	debug_out("void font_color_loader(Fl_Widget *o, int Active1_Inactive2)->");
-	std::string colour="";
-	std::string colors,newOrOld;
-	std::string newORold;
-	if(newStyle() !=-1){newORold="Foreground";}
-	else{newORold="Text";}
-	if (Active1_Inactive2==1){colour=getElementText("WindowStyle","Active",newORold);}
-	else{colour = getElementText("WindowStyle",newORold);}
-	unsigned int colorint=0;
-	if(colour.compare("")!=0){colorint=flCOLOR(colour);}
-	o->color(colorint);
-	debug_out("<-font color loader");
+	o->color(fontColor(Active1_Inactive2));
 }
 //G
 void JSM_Window::getGroups(Fl_Browser *o){
@@ -307,7 +283,7 @@ void JSM_Window::populate_groups(Fl_Browser *groups_browser,Fl_Browser *opt_brow
 	}
 }
 void JSM_Window::populateMouseContext(Fl_Browser *o, std::string context){
-	if(!populateFLBrowser(o,"Mouse","context",context,"button"))
+	if(!populateFLBrowser(o,"Mouse","context",context,"button","mask"))
 		debug_out("Failed to populate for  "+context);
 }
 void JSM_Window::populateGTKThemes(Fl_Browser* o){
@@ -488,6 +464,33 @@ int JSM_Window::getSnap(){
 	debug_out("current Snap="+dist);
 	if(dist.compare("")==0) return 0;//TODO default snap
 	return convert(dist.c_str());
+}
+unsigned int JSM_Window::activeBGColor(unsigned int one_or_two){
+	unsigned int color=0;
+	unsigned int c = 0;
+	std::string colors,newOrOld;
+	if(newStyle() !=-1){
+		colors=getElementText("WindowStyle","Active","Background");
+	}
+	else{
+		colors=getElementText("WindowStyle","Active","Title");
+	}
+	color=splitColor(colors,1);
+	c=splitColor(colors,2);
+	if(one_or_two ==1){return c;}
+	return color;
+}
+unsigned int JSM_Window::fontColor(int Active1_Inactive2){
+	std::string colour="";
+	std::string colors,newOrOld;
+	std::string newORold;
+	if(newStyle() !=-1){newORold="Foreground";}
+	else{newORold="Text";}
+	if (Active1_Inactive2==1){colour=getElementText("WindowStyle","Active",newORold);}
+	else{colour = getElementText("WindowStyle",newORold);}
+	unsigned int colorint=0;
+	if(colour.compare("")!=0){colorint=flCOLOR(colour);}
+	return colorint;
 }
 unsigned int JSM_Window::set_title_color(Fl_Widget *o, int Active1_Inactive2,int First1_or_Second2){
 	debug_out("");

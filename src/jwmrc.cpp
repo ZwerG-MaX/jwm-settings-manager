@@ -755,9 +755,9 @@ bool JWMRC::populateFLBrowser(Fl_Browser *o,std::string element){
     }
     return result;
 }
-bool JWMRC::populateFLBrowser(Fl_Browser *o,std::string element,std::string attribute, std::string attribute_value, std::string attribute2){
+bool JWMRC::populateFLBrowser(Fl_Browser *o,std::string element,std::string attribute, std::string attribute_value, std::string attribute2, std::string optional_attribute){
 	o->clear();
-	debug_out("bool populateFLBrowser(Fl_Browser *o,std::string "+element+",std::string "+attribute+", std::string "+attribute_value + " ,std::string "+attribute2+")");
+	debug_out("bool populateFLBrowser(Fl_Browser *o,std::string "+element+",std::string "+attribute+", std::string "+attribute_value + " ,std::string "+attribute2+", std::string "+optional_attribute+")");
 	if(element.compare("")==0){return false;}
 	if(attribute.compare("")==0){return false;}
 	if(attribute_value.compare("")==0){return false;}
@@ -771,8 +771,9 @@ bool JWMRC::populateFLBrowser(Fl_Browser *o,std::string element,std::string attr
         if(a1.compare(attribute_value)==0){
 			std::string a2=node.attribute(attribute2.c_str()).as_string();
 			std::string value  = node.text().as_string();
+			std::string a3=node.attribute(optional_attribute.c_str()).as_string();
 			if(value.compare("")!=0){
-				value=a2 + '\t'+value;
+				value=a2 + '\t'+value+'\t'+a3;
 				o->add(value.c_str());
 				result=true;
 			}
@@ -1359,6 +1360,14 @@ bool JWMRC::set_user_tz(std::string timeZone){
 //T
 bool JWMRC::testExec(std::string command){return linuxcommon::test_exec(command);}
 //String////////////////////////////////////////////////////////////////
+//A
+std::string JWMRC::addExecToLine(std::string line){
+	std::string execLine = "exec:";
+	unsigned int finder = line.find(execLine);
+	if(finder > 1)
+		line=execLine+line;
+	return line;
+}
 //B
 std::string JWMRC::buttonExec(std::string line){return buttonFixer(line,"exec:");}
 //check for either exec: or root: and fix the line!

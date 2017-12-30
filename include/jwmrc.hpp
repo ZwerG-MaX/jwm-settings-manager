@@ -127,7 +127,7 @@ class JWMRC
 	//P
 		bool populateFLBrowser(Fl_Browser *o, pugi::xml_node noder);
 		bool populateFLBrowser(Fl_Browser *o, std::string element);
-		bool populateFLBrowser(Fl_Browser *o, std::string element, std::string attribute, std::string attribute_value, std::string attribute2);
+		bool populateFLBrowser(Fl_Browser *o, std::string element, std::string attribute, std::string attribute_value, std::string attribute2, std::string optional_attribute);
 		bool populateFLBrowser(Fl_Browser *o, std::string element, std::string subelement, unsigned int whichMainElement);
 		bool populateFLBrowserElements(Fl_Browser *o, pugi::xml_node noder);
 		bool populateFLBrowser2Attr(Fl_Browser *o, std::string element, std::string attribute1, std::string attribute2);
@@ -176,6 +176,8 @@ class JWMRC
 
 
 //String////////////////////////////////////////////////////////////////
+	//a
+		std::string addExecToLine(std::string line);
 	//b
 		std::string buttonExec(std::string line);
 		std::string buttonFixer(std::string line, std::string thing);

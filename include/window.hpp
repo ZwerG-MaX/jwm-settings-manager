@@ -108,6 +108,8 @@ class JSM_Window : public FLTK_FUNCTIONS
 		int getBorderWidth();
 		void getGroups(Fl_Browser *o);
 		int getSnap();
+		unsigned int activeBGColor(unsigned int one_or_two);
+		unsigned int fontColor(int Active1_Inactive2);
 		unsigned int set_title_color(Fl_Widget *o, int Active1_Inactive2,int First1_or_Second2);
 ///String
 		std::string buttonPath();
