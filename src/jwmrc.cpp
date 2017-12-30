@@ -252,6 +252,19 @@ bool JWMRC::addElementWithTextAndAttribute(std::string element, std::string attr
     node.append_attribute(attribute2.c_str())=value2.c_str();
     return saveChangesTemp();
 }
+bool JWMRC::addElementWithTextAndAttributes(std::string element, std::string text, std::string attribute1, std::string value1, std::string attribute2, std::string value2, std::string attribute3, std::string value3){
+	if(element.compare("")==0){return false;}
+	pugi::xml_node node =  doc.child("JWM").append_child(element.c_str());
+	if(text.compare("")!=0)
+		node.text().set(text.c_str());
+    if( (attribute1.compare("")!=0) && (value1.compare("")!=0) )
+		node.append_attribute(attribute1.c_str())=value1.c_str();
+    if( (attribute2.compare("")!=0) && (value2.compare("")!=0) )
+		node.append_attribute(attribute2.c_str())=value2.c_str();
+	if( (attribute3.compare("")!=0) && (value3.compare("")!=0) )
+		node.append_attribute(attribute3.c_str())=value3.c_str();
+    return saveChangesTemp();
+}
 bool JWMRC::addElementWithSubAndText(std::string element, std::string subelement, std::string text){
 //	if(!loadTemp()){return false;}
 	debug_out("addElementWithSubAndText(std::string "+ element+ ", std::string " +subelement + ", std::string " + text+ ")");
@@ -379,6 +392,11 @@ bool JWMRC::deleteElements(std::string element){
 		testnode=baseNode.child(element.c_str());
 	}
 	return saveChangesTemp();
+}
+bool JWMRC::deleteNode(pugi::xml_node node){
+	if(!node) return false;
+	pugi::xml_node baseNode=doc.child("JWM");
+	return baseNode.remove_child(node);
 }
 bool JWMRC::deleteSubElement(std::string element, int whichElement){
 	pugi::xml_node baseNode=doc.child("JWM");
@@ -699,6 +717,38 @@ bool JWMRC::load(std::string fileName, bool saveTemp){
     }
     return true;
 }
+//M
+//Used for Window 'modifyContext'
+bool JWMRC::modifyElement(
+							std::string element,
+							std::string old_text,
+							std::string text,
+							
+							std::string attribute1,
+							std::string attribute_value1,
+							std::string attribute_value1_new,
+							
+							std::string attribute2,
+							std::string attribute_value2,
+							std::string attribute_value2_new,
+							
+							std::string attribute3,
+							std::string attribute_value3_new,
+							std::string attribute3_value){
+								
+	if(text.compare("")==0)return false;
+	if(element.compare("")==0)return false;
+	pugi::xml_node node=compareNode(element,old_text,attribute1,attribute_value1,attribute2,attribute_value2,attribute3,attribute3_value);
+	if(!node)return false;
+	if(setAttribute(node,attribute1,attribute_value1_new)){attribute_value1=attribute_value1_new;}
+	node=compareNode(element,old_text,attribute1,attribute_value1,attribute2,attribute_value2,attribute3,attribute3_value);
+	if(setAttribute(node,attribute2,attribute_value2_new)){attribute_value2=attribute_value2_new;}
+	node=compareNode(element,old_text,attribute1,attribute_value1,attribute2,attribute_value2,attribute3,attribute3_value);
+	if(setAttribute(node,attribute3,attribute_value3_new)){attribute3_value=attribute_value3_new;}
+	node=compareNode(element,old_text,attribute1,attribute_value1,attribute2,attribute_value2,attribute3,attribute3_value);
+	node.text().set(text.c_str());
+	return saveChangesTemp();
+}
 //N
 bool JWMRC::newVersionJWM(){
 	debug_out("bool newVersionJWM()");
@@ -947,18 +997,26 @@ bool JWMRC::setAttribute(pugi::xml_node node,std::string attribute,std::string v
 	if(name.compare("")==0){name="node";}
 	debug_out("bool setAttribute(pugi::xml_node "+name+",std::string "+attribute+",std::string "+value+")");
 	if(attribute.compare("")==0){return false;}
-	if(value.compare("")==0){return false;}
+	std::string nodename;
 	if(!node.attribute(attribute.c_str())){
-		node.append_attribute(attribute.c_str())=value.c_str();
+		if(value.compare("")==0){
+			node.remove_attribute(attribute.c_str());
+			nodename = attribute + " was deleted";
+		}
+		else{
+			node.append_attribute(attribute.c_str())=value.c_str();
+			nodename = node.attribute(attribute.c_str()).as_string();
+		}
 	}
 	else{
+		if(value.compare("")==0){return false;}
 		node.attribute(attribute.c_str()).set_value(value.c_str());
+		nodename = node.attribute(attribute.c_str()).as_string();
 	}
-	std::string nodename;
-	nodename = node.attribute(attribute.c_str()).as_string();
 	debug_out("Attribute name:"+nodename);
 	return saveChangesTemp();
 }
+
 bool JWMRC::setElementAttribute(std::string element, std::string attribute, std::string value){
 	debug_out("bool setElementAttribute(std::string "+ element+ ", std::string " + attribute+ ", std::string "+ value+")");
 	if(element.compare("")==0){return false;}
@@ -3044,6 +3102,13 @@ pugi::xml_node JWMRC::addNextSubelement(std::string element){
 	if(!newnode)newnode=parseNodes(currentPanel(),element.c_str());
 	return newnode;
 }
+pugi::xml_node JWMRC::addNode(std::string element){
+	pugi::xml_node node;
+	if(element.compare("")==0){return node;}
+	node =doc.child("JWM");
+	node.append_child(element.c_str());
+	return node.last_child();
+}
 pugi::xml_node JWMRC::addNode(unsigned int whichElement,std::string element, std::string subelement){
 	debug_out("pugi::xml_node addNode(unsigned int whichElement,std::string "+element+", std::string "+subelement+")");
 	pugi::xml_node node;
@@ -3255,9 +3320,8 @@ debug_out("std::string checkIncludes(std::string "+element+","+subelement+","+SU
 	}
 	return node;
 }
-pugi::xml_node JWMRC::compareNode(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text){
+pugi::xml_node JWMRC::compareNode(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2, std::string text){
 	debug_out("");
-	//TODO fix for check includes
 	pugi::xml_node basenode =doc.child("JWM");
 	pugi::xml_node node;
 	pugi::xml_node node2;
@@ -3290,6 +3354,69 @@ pugi::xml_node JWMRC::compareNode(std::string element, std::string attribute, st
 			return node;
 		}
 
+	}
+	return node;
+}
+pugi::xml_node JWMRC::compareNode(std::string element, std::string text, std::string attribute, std::string value, std::string attribute2, std::string value2, std::string attribute3, std::string value3){
+	debug_out("pugi::xml_node compareNode(std::string "+element+", std::string "+text+", std::string "+attribute+", std::string "+value+", std::string "+attribute2+", std::string "+value2+", std::string "+attribute3+", std::string "+value3+")");
+	pugi::xml_node basenode =doc.child("JWM");
+	pugi::xml_node node;
+	pugi::xml_node node2;
+	if(element.compare("")==0){return node;}
+	if(text.compare("")==0){return node;}
+	node=basenode.child(element.c_str());
+	if(!node){node=checkIncludes(element);}
+	if(!node){return node;}
+	std::string Text1,Text2;
+	//Are we looking for 3?
+	if(
+		(attribute.compare("")!=0) &&
+		(attribute2.compare("")!=0) &&
+		(attribute3.compare("")!=0)
+	){
+		for(node;node;node=node.next_sibling()){
+			std::string a1=node.attribute(attribute.c_str()).as_string();
+			if(a1.compare(value)==0){
+				std::string a2=node.attribute(attribute2.c_str()).as_string();
+				if(a2.compare(value2)==0){
+					std::string a3=node.attribute(attribute3.c_str()).as_string();
+					if(a3.compare(value3)==0){
+						std::string txt=node.text().as_string();
+						if((node)&&(txt.compare(text)==0))return node;
+					}
+				}
+			}
+		}
+	}
+	//Are we looking for two?
+	else if(
+		(attribute.compare("")!=0) &&
+		(attribute2.compare("")!=0) &&
+		(attribute3.compare("")==0)
+	){
+		for(node;node;node=node.next_sibling()){
+			std::string a1=node.attribute(attribute.c_str()).as_string();
+			if(a1.compare(value)==0){
+				std::string a2=node.attribute(attribute2.c_str()).as_string();
+				if(a2.compare(value2)==0){
+					std::string txt=node.text().as_string();
+					if((node)&&(txt.compare(text)==0))return node;
+				}
+			}
+		}
+	}
+	else if(
+		(attribute.compare("")!=0) &&
+		(attribute2.compare("")==0) &&
+		(attribute3.compare("")==0)
+	){
+		for(node;node;node=node.next_sibling()){
+			std::string a1=node.attribute(attribute.c_str()).as_string();
+			if(a1.compare(value)==0){
+				std::string txt=node.text().as_string();
+				if((node)&&(txt.compare(text)==0))return node;
+			}
+		}
 	}
 	return node;
 }

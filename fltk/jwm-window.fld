@@ -62,6 +62,8 @@ class WindowUI {open : {public JSM_Window}
   }
   decl {int JWMVERSION;} {private local
   }
+  decl {int whichElement;} {private local
+  }
   Function {add_option_window()} {} {
     Fl_Window add_opt_window {
       label {Add an Option}
@@ -191,6 +193,429 @@ if(input!=NULL){
       }
     }
   }
+  Function {add_context_window()} {open
+  } {
+    Fl_Window context_add_win {
+      label {Add Item} open
+      xywh {851 111 310 155} type Double hide
+    } {
+      Fl_Menu_Button {} {
+        label {Button Action}
+        tooltip {Typically the left button} xywh {10 80 135 30} box FLAT_BOX color 23 selection_color 80
+      } {
+        MenuItem {} {
+          label {move to the next window in the task list}
+          callback {const char * action = "next";
+menu_cb(action,action_input);}
+          xywh {35 35 100 20}
+        }
+        MenuItem {} {
+          label {move to the next window in the stacking order}
+          callback {const char * action = "nextstacked";
+menu_cb(action,action_input);}
+          xywh {45 45 100 20}
+        }
+        MenuItem {} {
+          label {move to the previous window in the task list}
+          callback {const char * action = "prev";
+menu_cb(action,action_input);}
+          xywh {45 45 100 20}
+        }
+        MenuItem {} {
+          label {move to the previous window in the stacking order}
+          callback {const char * action = "prevstacked";
+menu_cb(action,action_input);}
+          xywh {55 55 100 20}
+        }
+        MenuItem {} {
+          label {close window}
+          callback {const char * action = "close";
+menu_cb(action,action_input);}
+          xywh {55 55 100 20}
+        }
+        MenuItem {} {
+          label {fullscreen window}
+          callback {const char * action = "fullscreen";
+menu_cb(action,action_input);}
+          xywh {65 65 100 20}
+        }
+        MenuItem {} {
+          label {minimize window}
+          callback {const char * action = "minimize";
+menu_cb(action,action_input);}
+          xywh {75 75 100 20}
+        }
+        MenuItem {} {
+          label {maximize window}
+          callback {const char * action = "maximize";
+menu_cb(action,action_input);}
+          xywh {85 85 100 20}
+        }
+        MenuItem {} {
+          label {roll up window}
+          callback {const char * action = "shade";
+menu_cb(action,action_input);}
+          xywh {95 95 100 20}
+        }
+        MenuItem {} {
+          label {move window}
+          callback {const char * action = "move";
+menu_cb(action,action_input);}
+          xywh {105 105 100 20}
+        }
+        MenuItem {} {
+          label {resize window}
+          callback {const char * action = "resize";
+menu_cb(action,action_input);}
+          xywh {115 115 100 20}
+        }
+        MenuItem {} {
+          label {show window menu}
+          callback {const char * action = "window";
+menu_cb(action,action_input);}
+          xywh {125 125 100 20}
+        }
+        MenuItem {} {
+          label {Show Application menu}
+          callback {const char * action = "root:5";
+menu_cb(action,action_input);}
+          xywh {135 135 100 20}
+        }
+        MenuItem {} {
+          label {Show Places Menu}
+          callback {const char * action = "root:7";
+menu_cb(action,action_input);}
+          xywh {145 145 100 20}
+        }
+        MenuItem {} {
+          label {Show Shutdown menu}
+          callback {const char * action = "root:9";
+menu_cb(action,action_input);}
+          xywh {155 155 100 20}
+        }
+        MenuItem {} {
+          label {move one desktop to the right}
+          callback {const char * action = "rdesktop";
+menu_cb(action,action_input);}
+          xywh {115 115 100 20}
+        }
+        MenuItem {} {
+          label {move one desktop to the left}
+          callback {const char * action = "ldesktop";
+menu_cb(action,action_input);}
+          xywh {125 125 100 20}
+        }
+        MenuItem {} {
+          label {move one desktop up}
+          callback {const char * action = "udesktop";
+menu_cb(action,action_input);}
+          xywh {135 135 100 20}
+        }
+        MenuItem {} {
+          label {move one desktop down}
+          callback {const char * action = "ddesktop";
+menu_cb(action,action_input);}
+          xywh {145 145 100 20}
+        }
+        MenuItem {} {
+          label {restart the Window Manager}
+          callback {const char * action = "restart";
+menu_cb(action,action_input);}
+          xywh {155 155 100 20}
+        }
+        MenuItem {} {
+          label {exit the Window Manager}
+          callback {const char * action = "exit";
+menu_cb(action,action_input);}
+          xywh {165 165 100 20}
+        }
+        MenuItem {} {
+          label {Show any hidden Panels}
+          callback {const char * action = "showtray";
+menu_cb(action,action_input);}
+          xywh {175 175 100 20}
+        }
+        MenuItem {} {
+          label {Maximize to the Top of the screen}
+          callback {if(JWMVERSION>=230){
+  const char * action = "maxtop";
+  menu_cb(action,action_input);
+}
+else{
+  o->hide();
+}}
+          xywh {125 125 100 20}
+        }
+        MenuItem {} {
+          label {Maximize to the Bottom of the screen}
+          callback {if(JWMVERSION>=230){
+  const char * action = "maxbottom";
+  menu_cb(action,action_input);
+}
+else{
+  o->hide();
+}}
+          xywh {135 135 100 20}
+        }
+        MenuItem {} {
+          label {Maximize to the Left of the screen}
+          callback {if(JWMVERSION>=230){
+  const char * action = "maxleft";
+  menu_cb(action,action_input);
+}
+else{
+  o->hide();
+}}
+          xywh {145 145 100 20}
+        }
+        MenuItem {} {
+          label {Maximize to the Right of the screen}
+          callback {if(JWMVERSION>=230){
+  const char * action = "maxright";
+  menu_cb(action,action_input);
+}
+else{
+  o->hide();
+}}
+          xywh {155 155 100 20}
+        }
+        MenuItem {} {
+          label {Maximize Vertical}
+          callback {if(JWMVERSION>=230){
+  const char * action = "maxv";
+  menu_cb(action,action_input);
+}
+else{
+  o->hide();
+}}
+          xywh {165 165 100 20}
+        }
+        MenuItem {} {
+          label {Maximize Horizontal}
+          callback {if(JWMVERSION>=230){
+  const char * action = "maxh";
+  menu_cb(action,action_input);
+}
+else{
+  o->hide();
+}}
+          xywh {175 175 100 20}
+        }
+        MenuItem {} {
+          label {Send Window Up a Desktop}
+          callback {if(JWMVERSION>=230){
+  const char * action = "sendu";
+  menu_cb(action,action_input);
+}
+else{
+  o->hide();
+}}
+          xywh {185 185 100 20}
+        }
+        MenuItem {} {
+          label {Send Window Down a Desktop}
+          callback {if(JWMVERSION>=230){
+  const char * action = "sendd";
+  menu_cb(action,action_input);
+}
+else{
+  o->hide();
+}}
+          xywh {195 195 100 20}
+        }
+        MenuItem {} {
+          label {Send Window Right a Desktop}
+          callback {if(JWMVERSION>=230){
+  const char * action = "sendr";
+  menu_cb(action,action_input);
+}
+else{
+  o->hide();
+}}
+          xywh {205 205 100 20}
+        }
+        MenuItem {} {
+          label {Send Window Left a Desktop}
+          callback {if(JWMVERSION>=230){
+  const char * action = "sendl";
+  menu_cb(action,action_input);
+}
+else{
+  o->hide();
+}}
+          xywh {215 215 100 20}
+        }
+        MenuItem {} {
+          label {Restore a minimized window}
+          callback {if(JWMVERSION>=233){
+  const char * action = "restore";
+  menu_cb(action,action_input);
+}
+else{
+  o->hide();
+}}
+          xywh {25 25 100 20}
+        }
+      }
+      Fl_Output add_button {
+        tooltip {The mouse button you click} xywh {95 45 50 30} box FLAT_BOX selection_color 72
+      }
+      Fl_Output add_context_button {
+        tooltip {The part of the window you click} xywh {155 10 150 30} box FLAT_BOX selection_color 72
+        code0 {o->value(context.c_str());}
+      }
+      Fl_Button {} {
+        label Cancel
+        callback {context_add_win->hide();}
+        xywh {195 120 55 25} box FLAT_BOX down_box GTK_DOWN_BOX color 80 selection_color 81 labelcolor 7
+      }
+      Fl_Button {} {
+        label OK
+        callback {add_context();
+context_add_win->hide();}
+        tooltip {Write to configuration file} xywh {260 120 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
+      }
+      Fl_Button {} {
+        callback {std::string program = choose_a_program();
+if(program.compare("")==0){
+  return;
+}
+program=addExecToLine(program);
+action_input->value(program.c_str());
+action_input->redraw();}
+        tooltip {Choose a program} image {custom_buttons/gear16.png} xywh {110 115 35 35} box FLAT_BOX color 23 align 256
+      }
+      Fl_Box {} {
+        label {OR program}
+        xywh {15 115 90 35}
+      }
+      Fl_Menu_Button {} {
+        label Button
+        tooltip {Negative values are for Button Release, positive are for Click.  Double values are Double Click.} xywh {10 45 80 30} box FLAT_BOX color 23 selection_color 72
+      } {
+        MenuItem {} {
+          label 1
+          callback {std::string value="1";
+add_button->value(value.c_str());}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label {-1}
+          callback {std::string value="-1";
+add_button->value(value.c_str());}
+          xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label 11
+          callback {std::string value="11";
+add_button->value(value.c_str());}
+          xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label 2
+          callback {std::string value="2";
+add_button->value(value.c_str());}
+          xywh {10 10 100 20}
+        }
+        MenuItem {} {
+          label {-2}
+          callback {std::string value="-2";
+add_button->value(value.c_str());}
+          xywh {20 20 100 20}
+        }
+        MenuItem {} {
+          label 22
+          callback {std::string value="22";
+add_button->value(value.c_str());}
+          xywh {20 20 100 20}
+        }
+        MenuItem {} {
+          label 3
+          callback {std::string value="3";
+add_button->value(value.c_str());}
+          xywh {20 20 100 20}
+        }
+        MenuItem {} {
+          label {-3}
+          callback {std::string value="-3";
+add_button->value(value.c_str());}
+          xywh {30 30 100 20}
+        }
+        MenuItem {} {
+          label 33
+          callback {std::string value="33";
+add_button->value(value.c_str());}
+          xywh {30 30 100 20}
+        }
+        MenuItem {} {
+          label 4
+          callback {std::string value="4";
+add_button->value(value.c_str());}
+          xywh {30 30 100 20}
+        }
+        MenuItem {} {
+          label 5
+          callback {std::string value="5";
+add_button->value(value.c_str());}
+          xywh {40 40 100 20}
+        }
+      }
+      Fl_Input action_input {
+        tooltip {The action to perform} xywh {155 80 150 30} box FLAT_BOX selection_color 72
+      }
+      Fl_Input add_mask {
+        label Modifier
+        tooltip {The modifier key} xywh {250 45 55 30} box FLAT_BOX selection_color 72
+      }
+      Fl_Menu_Button {} {
+        label {Item to add}
+        xywh {10 10 135 30} box FLAT_BOX color 23 selection_color 72
+      } {
+        MenuItem {} {
+          label {Title Bar}
+          callback {std::string item="title";
+add_context_button->value(item.c_str());}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label Icon
+          callback {std::string item="icon";
+add_context_button->value(item.c_str());}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label Border
+          callback {std::string item="border";
+add_context_button->value(item.c_str());}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label Close
+          callback {std::string item="close";
+add_context_button->value(item.c_str());}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label Maximize
+          callback {std::string item="maximize";
+add_context_button->value(item.c_str());}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label Minimize
+          callback {std::string item="minimize";
+add_context_button->value(item.c_str());}
+          xywh {0 0 100 20}
+        }
+        MenuItem {} {
+          label Root
+          callback {std::string item="root";
+add_context_button->value(item.c_str());}
+          xywh {0 0 100 20}
+        }
+      }
+    }
+  }
   Function {button_order_window()} {} {
     Fl_Window button_orderer {open
       xywh {527 387 225 165} type Double hide
@@ -226,11 +651,10 @@ saveChanges();}
       }
     }
   }
-  Function {configure_context()} {open
-  } {
+  Function {configure_context()} {} {
     Fl_Window context_config {
       label {Configure Item} open
-      xywh {731 85 310 155} type Double visible
+      xywh {841 101 310 155} type Double hide
     } {
       Fl_Menu_Button {} {
         label {Button Action}
@@ -508,7 +932,7 @@ else{
         label OK
         callback {save_context();
 saveChangesTemp();
-context_config->hide();} selected
+context_config->hide();}
         tooltip {Write to configuration file} xywh {260 120 45 25} box FLAT_BOX down_box GTK_DOWN_BOX color 61 selection_color 59 labelcolor 55
       }
       Fl_Button {} {
@@ -526,7 +950,7 @@ value_1->redraw();}
         xywh {15 115 90 35}
       }
       Fl_Menu_Button {} {
-        label Button open
+        label Button
         tooltip {Negative values are for Button Release, positive are for Click.  Double values are Double Click.} xywh {10 45 80 30} box FLAT_BOX color 23 selection_color 72
       } {
         MenuItem {} {
@@ -634,8 +1058,7 @@ theme_window->hide();}
       }
     }
   }
-  Function {make_window()} {open
-  } {
+  Function {make_window()} {} {
     code {if(!load()){debug_out("DIDN'T LOAD in jwm-window");}
 JWMVERSION=JWMversion();} {}
     Fl_Window window_window {
@@ -1188,7 +1611,7 @@ quit();}
   } {
     Fl_Window action_window {
       label {Window Actions} open
-      xywh {745 189 280 310} type Double visible
+      xywh {96 393 280 310} type Double hide
     } {
       Fl_Scroll {} {open
         xywh {0 0 285 310}
@@ -1243,19 +1666,28 @@ populateMouseContext(context_browser,context);}
           label {Button          Action               Modifier}
           callback {browser_line=o->text(o->value());}
           xywh {15 115 260 145} type Hold box FLAT_BOX selection_color 80 align 5
+          code0 {static int widths[] = { 70,150,70 };}
+          code1 {o->column_widths(widths);}
         }
         Fl_Button {} {
           label {@+}
+          callback {context_browser->clear();
+add_context_window()->show();}
           tooltip {Add Item} xywh {15 265 35 35} box FLAT_BOX color 23 align 256
         }
         Fl_Button {} {
           callback {if(!checkFlBrowserItem(context_browser))return;
+context_browser->clear();
 configure_context()->show();}
           tooltip {Configure Item} image {custom_buttons/gear16.png} xywh {95 265 35 35} box FLAT_BOX color 23 align 256
         }
         Fl_Button {} {
           label {-}
-          callback {if(!checkFlBrowserItem(context_browser))return;}
+          callback {if(!checkFlBrowserItem(context_browser))return;
+if(deleteContext(getTabItem(1,browser_line),context,getTabItem(0,browser_line),getTabItem(2,browser_line))){
+  if(saveChangesTemp())
+    context_browser->remove(context_browser->value());
+}}
           tooltip {Remove Item} xywh {55 265 35 35} box FLAT_BOX color 23 labelfont 1 labelsize 40 align 256
         }
         Fl_Button {} {
@@ -1291,14 +1723,28 @@ std::string Button=button->value();
 std::string Action=value_1->value();
 context=context_button->value();
 std::string Mask;
+std::string old_action=getTabItem(1,browser_line).c_str();
+std::string old_button=getTabItem(0,browser_line).c_str();
+std::string old_mask=getTabItem(2,browser_line).c_str();
 if(!InputIsEmpty(mask)){
   Mask=mask->value();
-//<Mouse context="context" mask="mask" button="Button">Action</Mouse>
-
 }
-else{
-//<Mouse context="context" button="Button">Action</Mouse>
-
-}} {}
+modifyContext(old_action,Action,context,old_button,Button,old_mask,Mask);} {}
+  }
+  Function {add_context()} {open
+  } {
+    code {debug_out("add_context()");
+if(OutputIsEmpty(add_context_button))return;
+if(OutputIsEmpty(add_button))return;
+if(InputIsEmpty(action_input))return;
+std::string Button=add_button->value();
+std::string Action=action_input->value();
+context=add_context_button->value();
+std::string Mask;
+if(!InputIsEmpty(add_mask)){
+  Mask=add_mask->value();
+}
+addContext(Action,context,Button,Mask);} {selected
+    }
   }
 } 

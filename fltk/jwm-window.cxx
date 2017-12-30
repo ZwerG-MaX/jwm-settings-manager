@@ -126,25 +126,9 @@ void WindowUI::cb_Program(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_Program_i(o,v);
 }
 
-void WindowUI::cb_Cancel1_i(Fl_Button*, void*) {
-  button_orderer->hide();
-}
-void WindowUI::cb_Cancel1(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->user_data()))->cb_Cancel1_i(o,v);
-}
-
-void WindowUI::cb_OK3_i(Fl_Button*, void*) {
-  std::string val=ordering->value();
-setElementText("TitleButtonOrder",val);
-saveChanges();
-}
-void WindowUI::cb_OK3(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->user_data()))->cb_OK3_i(o,v);
-}
-
 void WindowUI::cb_move_i(Fl_Menu_*, void*) {
   const char * action = "next";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_move(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_move_i(o,v);
@@ -152,7 +136,7 @@ void WindowUI::cb_move(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_move1_i(Fl_Menu_*, void*) {
   const char * action = "nextstacked";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_move1(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_move1_i(o,v);
@@ -160,7 +144,7 @@ void WindowUI::cb_move1(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_move2_i(Fl_Menu_*, void*) {
   const char * action = "prev";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_move2(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_move2_i(o,v);
@@ -168,7 +152,7 @@ void WindowUI::cb_move2(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_move3_i(Fl_Menu_*, void*) {
   const char * action = "prevstacked";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_move3(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_move3_i(o,v);
@@ -176,7 +160,7 @@ void WindowUI::cb_move3(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_close_i(Fl_Menu_*, void*) {
   const char * action = "close";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_close(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_close_i(o,v);
@@ -184,7 +168,7 @@ void WindowUI::cb_close(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_fullscreen_i(Fl_Menu_*, void*) {
   const char * action = "fullscreen";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_fullscreen(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_fullscreen_i(o,v);
@@ -192,7 +176,7 @@ void WindowUI::cb_fullscreen(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_minimize_i(Fl_Menu_*, void*) {
   const char * action = "minimize";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_minimize(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_minimize_i(o,v);
@@ -200,7 +184,7 @@ void WindowUI::cb_minimize(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_maximize_i(Fl_Menu_*, void*) {
   const char * action = "maximize";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_maximize(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_maximize_i(o,v);
@@ -208,7 +192,7 @@ void WindowUI::cb_maximize(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_roll_i(Fl_Menu_*, void*) {
   const char * action = "shade";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_roll(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_roll_i(o,v);
@@ -216,7 +200,7 @@ void WindowUI::cb_roll(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_move4_i(Fl_Menu_*, void*) {
   const char * action = "move";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_move4(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_move4_i(o,v);
@@ -224,7 +208,7 @@ void WindowUI::cb_move4(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_resize_i(Fl_Menu_*, void*) {
   const char * action = "resize";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_resize(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_resize_i(o,v);
@@ -232,7 +216,7 @@ void WindowUI::cb_resize(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_show_i(Fl_Menu_*, void*) {
   const char * action = "window";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_show(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_show_i(o,v);
@@ -240,7 +224,7 @@ void WindowUI::cb_show(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_Show_i(Fl_Menu_*, void*) {
   const char * action = "root:5";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_Show(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_Show_i(o,v);
@@ -248,7 +232,7 @@ void WindowUI::cb_Show(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_Show1_i(Fl_Menu_*, void*) {
   const char * action = "root:7";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_Show1(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_Show1_i(o,v);
@@ -256,7 +240,7 @@ void WindowUI::cb_Show1(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_Show2_i(Fl_Menu_*, void*) {
   const char * action = "root:9";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_Show2(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_Show2_i(o,v);
@@ -264,7 +248,7 @@ void WindowUI::cb_Show2(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_move5_i(Fl_Menu_*, void*) {
   const char * action = "rdesktop";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_move5(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_move5_i(o,v);
@@ -272,7 +256,7 @@ void WindowUI::cb_move5(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_move6_i(Fl_Menu_*, void*) {
   const char * action = "ldesktop";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_move6(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_move6_i(o,v);
@@ -280,7 +264,7 @@ void WindowUI::cb_move6(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_move7_i(Fl_Menu_*, void*) {
   const char * action = "udesktop";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_move7(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_move7_i(o,v);
@@ -288,7 +272,7 @@ void WindowUI::cb_move7(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_move8_i(Fl_Menu_*, void*) {
   const char * action = "ddesktop";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_move8(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_move8_i(o,v);
@@ -296,7 +280,7 @@ void WindowUI::cb_move8(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_restart_i(Fl_Menu_*, void*) {
   const char * action = "restart";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_restart(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_restart_i(o,v);
@@ -304,7 +288,7 @@ void WindowUI::cb_restart(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_exit_i(Fl_Menu_*, void*) {
   const char * action = "exit";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_exit(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_exit_i(o,v);
@@ -312,7 +296,7 @@ void WindowUI::cb_exit(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_Show3_i(Fl_Menu_*, void*) {
   const char * action = "showtray";
-menu_cb(action,value_1);
+menu_cb(action,action_input);
 }
 void WindowUI::cb_Show3(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_Show3_i(o,v);
@@ -321,7 +305,7 @@ void WindowUI::cb_Show3(Fl_Menu_* o, void* v) {
 void WindowUI::cb_Maximize_i(Fl_Menu_* o, void*) {
   if(JWMVERSION>=230){
   const char * action = "maxtop";
-  menu_cb(action,value_1);
+  menu_cb(action,action_input);
 }
 else{
   o->hide();
@@ -334,7 +318,7 @@ void WindowUI::cb_Maximize(Fl_Menu_* o, void* v) {
 void WindowUI::cb_Maximize1_i(Fl_Menu_* o, void*) {
   if(JWMVERSION>=230){
   const char * action = "maxbottom";
-  menu_cb(action,value_1);
+  menu_cb(action,action_input);
 }
 else{
   o->hide();
@@ -347,7 +331,7 @@ void WindowUI::cb_Maximize1(Fl_Menu_* o, void* v) {
 void WindowUI::cb_Maximize2_i(Fl_Menu_* o, void*) {
   if(JWMVERSION>=230){
   const char * action = "maxleft";
-  menu_cb(action,value_1);
+  menu_cb(action,action_input);
 }
 else{
   o->hide();
@@ -360,7 +344,7 @@ void WindowUI::cb_Maximize2(Fl_Menu_* o, void* v) {
 void WindowUI::cb_Maximize3_i(Fl_Menu_* o, void*) {
   if(JWMVERSION>=230){
   const char * action = "maxright";
-  menu_cb(action,value_1);
+  menu_cb(action,action_input);
 }
 else{
   o->hide();
@@ -373,7 +357,7 @@ void WindowUI::cb_Maximize3(Fl_Menu_* o, void* v) {
 void WindowUI::cb_Maximize4_i(Fl_Menu_* o, void*) {
   if(JWMVERSION>=230){
   const char * action = "maxv";
-  menu_cb(action,value_1);
+  menu_cb(action,action_input);
 }
 else{
   o->hide();
@@ -386,7 +370,7 @@ void WindowUI::cb_Maximize4(Fl_Menu_* o, void* v) {
 void WindowUI::cb_Maximize5_i(Fl_Menu_* o, void*) {
   if(JWMVERSION>=230){
   const char * action = "maxh";
-  menu_cb(action,value_1);
+  menu_cb(action,action_input);
 }
 else{
   o->hide();
@@ -399,7 +383,7 @@ void WindowUI::cb_Maximize5(Fl_Menu_* o, void* v) {
 void WindowUI::cb_Send_i(Fl_Menu_* o, void*) {
   if(JWMVERSION>=230){
   const char * action = "sendu";
-  menu_cb(action,value_1);
+  menu_cb(action,action_input);
 }
 else{
   o->hide();
@@ -412,7 +396,7 @@ void WindowUI::cb_Send(Fl_Menu_* o, void* v) {
 void WindowUI::cb_Send1_i(Fl_Menu_* o, void*) {
   if(JWMVERSION>=230){
   const char * action = "sendd";
-  menu_cb(action,value_1);
+  menu_cb(action,action_input);
 }
 else{
   o->hide();
@@ -425,7 +409,7 @@ void WindowUI::cb_Send1(Fl_Menu_* o, void* v) {
 void WindowUI::cb_Send2_i(Fl_Menu_* o, void*) {
   if(JWMVERSION>=230){
   const char * action = "sendr";
-  menu_cb(action,value_1);
+  menu_cb(action,action_input);
 }
 else{
   o->hide();
@@ -438,7 +422,7 @@ void WindowUI::cb_Send2(Fl_Menu_* o, void* v) {
 void WindowUI::cb_Send3_i(Fl_Menu_* o, void*) {
   if(JWMVERSION>=230){
   const char * action = "sendl";
-  menu_cb(action,value_1);
+  menu_cb(action,action_input);
 }
 else{
   o->hide();
@@ -451,7 +435,7 @@ void WindowUI::cb_Send3(Fl_Menu_* o, void* v) {
 void WindowUI::cb_Restore_i(Fl_Menu_* o, void*) {
   if(JWMVERSION>=233){
   const char * action = "restore";
-  menu_cb(action,value_1);
+  menu_cb(action,action_input);
 }
 else{
   o->hide();
@@ -499,20 +483,19 @@ Fl_Menu_Item WindowUI::menu_Button[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
-void WindowUI::cb_Cancel2_i(Fl_Button*, void*) {
-  context_config->hide();
+void WindowUI::cb_Cancel1_i(Fl_Button*, void*) {
+  context_add_win->hide();
 }
-void WindowUI::cb_Cancel2(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->user_data()))->cb_Cancel2_i(o,v);
+void WindowUI::cb_Cancel1(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Cancel1_i(o,v);
 }
 
-void WindowUI::cb_OK4_i(Fl_Button*, void*) {
-  save_context();
-saveChangesTemp();
-context_config->hide();
+void WindowUI::cb_OK3_i(Fl_Button*, void*) {
+  add_context();
+context_add_win->hide();
 }
-void WindowUI::cb_OK4(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->user_data()))->cb_OK4_i(o,v);
+void WindowUI::cb_OK3(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_OK3_i(o,v);
 }
 
 void WindowUI::cb_1_i(Fl_Button*, void*) {
@@ -521,8 +504,8 @@ if(program.compare("")==0){
   return;
 }
 program=addExecToLine(program);
-value_1->value(program.c_str());
-value_1->redraw();
+action_input->value(program.c_str());
+action_input->redraw();
 }
 void WindowUI::cb_1(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_1_i(o,v);
@@ -573,7 +556,7 @@ static Fl_RGB_Image image_gear16(idata_gear16, 24, 24, 2, 0);
 
 void WindowUI::cb_11_i(Fl_Menu_*, void*) {
   std::string value="1";
-button->value(value.c_str());
+add_button->value(value.c_str());
 }
 void WindowUI::cb_11(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_11_i(o,v);
@@ -581,7 +564,7 @@ void WindowUI::cb_11(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_12_i(Fl_Menu_*, void*) {
   std::string value="-1";
-button->value(value.c_str());
+add_button->value(value.c_str());
 }
 void WindowUI::cb_12(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_12_i(o,v);
@@ -589,7 +572,7 @@ void WindowUI::cb_12(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_111_i(Fl_Menu_*, void*) {
   std::string value="11";
-button->value(value.c_str());
+add_button->value(value.c_str());
 }
 void WindowUI::cb_111(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_111_i(o,v);
@@ -597,7 +580,7 @@ void WindowUI::cb_111(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_2_i(Fl_Menu_*, void*) {
   std::string value="2";
-button->value(value.c_str());
+add_button->value(value.c_str());
 }
 void WindowUI::cb_2(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_2_i(o,v);
@@ -605,7 +588,7 @@ void WindowUI::cb_2(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_21_i(Fl_Menu_*, void*) {
   std::string value="-2";
-button->value(value.c_str());
+add_button->value(value.c_str());
 }
 void WindowUI::cb_21(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_21_i(o,v);
@@ -613,7 +596,7 @@ void WindowUI::cb_21(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_22_i(Fl_Menu_*, void*) {
   std::string value="22";
-button->value(value.c_str());
+add_button->value(value.c_str());
 }
 void WindowUI::cb_22(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_22_i(o,v);
@@ -621,7 +604,7 @@ void WindowUI::cb_22(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_3_i(Fl_Menu_*, void*) {
   std::string value="3";
-button->value(value.c_str());
+add_button->value(value.c_str());
 }
 void WindowUI::cb_3(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_3_i(o,v);
@@ -629,7 +612,7 @@ void WindowUI::cb_3(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_31_i(Fl_Menu_*, void*) {
   std::string value="-3";
-button->value(value.c_str());
+add_button->value(value.c_str());
 }
 void WindowUI::cb_31(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_31_i(o,v);
@@ -637,7 +620,7 @@ void WindowUI::cb_31(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_33_i(Fl_Menu_*, void*) {
   std::string value="33";
-button->value(value.c_str());
+add_button->value(value.c_str());
 }
 void WindowUI::cb_33(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_33_i(o,v);
@@ -645,7 +628,7 @@ void WindowUI::cb_33(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_4_i(Fl_Menu_*, void*) {
   std::string value="4";
-button->value(value.c_str());
+add_button->value(value.c_str());
 }
 void WindowUI::cb_4(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_4_i(o,v);
@@ -653,7 +636,7 @@ void WindowUI::cb_4(Fl_Menu_* o, void* v) {
 
 void WindowUI::cb_5_i(Fl_Menu_*, void*) {
   std::string value="5";
-button->value(value.c_str());
+add_button->value(value.c_str());
 }
 void WindowUI::cb_5(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->user_data()))->cb_5_i(o,v);
@@ -675,19 +658,593 @@ Fl_Menu_Item WindowUI::menu_Button1[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
+void WindowUI::cb_Title_i(Fl_Menu_*, void*) {
+  std::string item="title";
+add_context_button->value(item.c_str());
+}
+void WindowUI::cb_Title(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Title_i(o,v);
+}
+
+void WindowUI::cb_Icon_i(Fl_Menu_*, void*) {
+  std::string item="icon";
+add_context_button->value(item.c_str());
+}
+void WindowUI::cb_Icon(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Icon_i(o,v);
+}
+
+void WindowUI::cb_Border_i(Fl_Menu_*, void*) {
+  std::string item="border";
+add_context_button->value(item.c_str());
+}
+void WindowUI::cb_Border(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Border_i(o,v);
+}
+
+void WindowUI::cb_Close_i(Fl_Menu_*, void*) {
+  std::string item="close";
+add_context_button->value(item.c_str());
+}
+void WindowUI::cb_Close(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Close_i(o,v);
+}
+
+void WindowUI::cb_Maximize6_i(Fl_Menu_*, void*) {
+  std::string item="maximize";
+add_context_button->value(item.c_str());
+}
+void WindowUI::cb_Maximize6(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Maximize6_i(o,v);
+}
+
+void WindowUI::cb_Minimize_i(Fl_Menu_*, void*) {
+  std::string item="minimize";
+add_context_button->value(item.c_str());
+}
+void WindowUI::cb_Minimize(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Minimize_i(o,v);
+}
+
+void WindowUI::cb_Root_i(Fl_Menu_*, void*) {
+  std::string item="root";
+add_context_button->value(item.c_str());
+}
+void WindowUI::cb_Root(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Root_i(o,v);
+}
+
+unsigned char WindowUI::menu_Item_i18n_done = 0;
+Fl_Menu_Item WindowUI::menu_Item[] = {
+ {"Title Bar", 0,  (Fl_Callback*)WindowUI::cb_Title, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Icon", 0,  (Fl_Callback*)WindowUI::cb_Icon, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Border", 0,  (Fl_Callback*)WindowUI::cb_Border, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Close", 0,  (Fl_Callback*)WindowUI::cb_Close, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize", 0,  (Fl_Callback*)WindowUI::cb_Maximize6, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Minimize", 0,  (Fl_Callback*)WindowUI::cb_Minimize, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Root", 0,  (Fl_Callback*)WindowUI::cb_Root, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void WindowUI::cb_Cancel2_i(Fl_Button*, void*) {
+  button_orderer->hide();
+}
+void WindowUI::cb_Cancel2(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Cancel2_i(o,v);
+}
+
+void WindowUI::cb_OK4_i(Fl_Button*, void*) {
+  std::string val=ordering->value();
+setElementText("TitleButtonOrder",val);
+saveChanges();
+}
+void WindowUI::cb_OK4(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_OK4_i(o,v);
+}
+
+void WindowUI::cb_move9_i(Fl_Menu_*, void*) {
+  const char * action = "next";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_move9(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_move9_i(o,v);
+}
+
+void WindowUI::cb_movea_i(Fl_Menu_*, void*) {
+  const char * action = "nextstacked";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_movea(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_movea_i(o,v);
+}
+
+void WindowUI::cb_moveb_i(Fl_Menu_*, void*) {
+  const char * action = "prev";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_moveb(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_moveb_i(o,v);
+}
+
+void WindowUI::cb_movec_i(Fl_Menu_*, void*) {
+  const char * action = "prevstacked";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_movec(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_movec_i(o,v);
+}
+
+void WindowUI::cb_close1_i(Fl_Menu_*, void*) {
+  const char * action = "close";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_close1(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_close1_i(o,v);
+}
+
+void WindowUI::cb_fullscreen1_i(Fl_Menu_*, void*) {
+  const char * action = "fullscreen";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_fullscreen1(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_fullscreen1_i(o,v);
+}
+
+void WindowUI::cb_minimize1_i(Fl_Menu_*, void*) {
+  const char * action = "minimize";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_minimize1(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_minimize1_i(o,v);
+}
+
+void WindowUI::cb_maximize1_i(Fl_Menu_*, void*) {
+  const char * action = "maximize";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_maximize1(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_maximize1_i(o,v);
+}
+
+void WindowUI::cb_roll1_i(Fl_Menu_*, void*) {
+  const char * action = "shade";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_roll1(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_roll1_i(o,v);
+}
+
+void WindowUI::cb_moved_i(Fl_Menu_*, void*) {
+  const char * action = "move";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_moved(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_moved_i(o,v);
+}
+
+void WindowUI::cb_resize1_i(Fl_Menu_*, void*) {
+  const char * action = "resize";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_resize1(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_resize1_i(o,v);
+}
+
+void WindowUI::cb_show1_i(Fl_Menu_*, void*) {
+  const char * action = "window";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_show1(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_show1_i(o,v);
+}
+
+void WindowUI::cb_Show4_i(Fl_Menu_*, void*) {
+  const char * action = "root:5";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_Show4(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Show4_i(o,v);
+}
+
+void WindowUI::cb_Show5_i(Fl_Menu_*, void*) {
+  const char * action = "root:7";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_Show5(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Show5_i(o,v);
+}
+
+void WindowUI::cb_Show6_i(Fl_Menu_*, void*) {
+  const char * action = "root:9";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_Show6(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Show6_i(o,v);
+}
+
+void WindowUI::cb_movee_i(Fl_Menu_*, void*) {
+  const char * action = "rdesktop";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_movee(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_movee_i(o,v);
+}
+
+void WindowUI::cb_movef_i(Fl_Menu_*, void*) {
+  const char * action = "ldesktop";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_movef(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_movef_i(o,v);
+}
+
+void WindowUI::cb_move10_i(Fl_Menu_*, void*) {
+  const char * action = "udesktop";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_move10(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_move10_i(o,v);
+}
+
+void WindowUI::cb_move11_i(Fl_Menu_*, void*) {
+  const char * action = "ddesktop";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_move11(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_move11_i(o,v);
+}
+
+void WindowUI::cb_restart1_i(Fl_Menu_*, void*) {
+  const char * action = "restart";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_restart1(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_restart1_i(o,v);
+}
+
+void WindowUI::cb_exit1_i(Fl_Menu_*, void*) {
+  const char * action = "exit";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_exit1(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_exit1_i(o,v);
+}
+
+void WindowUI::cb_Show7_i(Fl_Menu_*, void*) {
+  const char * action = "showtray";
+menu_cb(action,value_1);
+}
+void WindowUI::cb_Show7(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Show7_i(o,v);
+}
+
+void WindowUI::cb_Maximize7_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "maxtop";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+};
+}
+void WindowUI::cb_Maximize7(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Maximize7_i(o,v);
+}
+
+void WindowUI::cb_Maximize8_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "maxbottom";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+};
+}
+void WindowUI::cb_Maximize8(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Maximize8_i(o,v);
+}
+
+void WindowUI::cb_Maximize9_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "maxleft";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+};
+}
+void WindowUI::cb_Maximize9(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Maximize9_i(o,v);
+}
+
+void WindowUI::cb_Maximizea_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "maxright";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+};
+}
+void WindowUI::cb_Maximizea(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Maximizea_i(o,v);
+}
+
+void WindowUI::cb_Maximizeb_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "maxv";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+};
+}
+void WindowUI::cb_Maximizeb(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Maximizeb_i(o,v);
+}
+
+void WindowUI::cb_Maximizec_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "maxh";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+};
+}
+void WindowUI::cb_Maximizec(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Maximizec_i(o,v);
+}
+
+void WindowUI::cb_Send4_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "sendu";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+};
+}
+void WindowUI::cb_Send4(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Send4_i(o,v);
+}
+
+void WindowUI::cb_Send5_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "sendd";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+};
+}
+void WindowUI::cb_Send5(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Send5_i(o,v);
+}
+
+void WindowUI::cb_Send6_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "sendr";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+};
+}
+void WindowUI::cb_Send6(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Send6_i(o,v);
+}
+
+void WindowUI::cb_Send7_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=230){
+  const char * action = "sendl";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+};
+}
+void WindowUI::cb_Send7(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Send7_i(o,v);
+}
+
+void WindowUI::cb_Restore1_i(Fl_Menu_* o, void*) {
+  if(JWMVERSION>=233){
+  const char * action = "restore";
+  menu_cb(action,value_1);
+}
+else{
+  o->hide();
+};
+}
+void WindowUI::cb_Restore1(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_Restore1_i(o,v);
+}
+
+unsigned char WindowUI::menu_Button2_i18n_done = 0;
+Fl_Menu_Item WindowUI::menu_Button2[] = {
+ {"move to the next window in the task list", 0,  (Fl_Callback*)WindowUI::cb_move9, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move to the next window in the stacking order", 0,  (Fl_Callback*)WindowUI::cb_movea, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move to the previous window in the task list", 0,  (Fl_Callback*)WindowUI::cb_moveb, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move to the previous window in the stacking order", 0,  (Fl_Callback*)WindowUI::cb_movec, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"close window", 0,  (Fl_Callback*)WindowUI::cb_close1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"fullscreen window", 0,  (Fl_Callback*)WindowUI::cb_fullscreen1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"minimize window", 0,  (Fl_Callback*)WindowUI::cb_minimize1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"maximize window", 0,  (Fl_Callback*)WindowUI::cb_maximize1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"roll up window", 0,  (Fl_Callback*)WindowUI::cb_roll1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move window", 0,  (Fl_Callback*)WindowUI::cb_moved, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"resize window", 0,  (Fl_Callback*)WindowUI::cb_resize1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"show window menu", 0,  (Fl_Callback*)WindowUI::cb_show1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Show Application menu", 0,  (Fl_Callback*)WindowUI::cb_Show4, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Show Places Menu", 0,  (Fl_Callback*)WindowUI::cb_Show5, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Show Shutdown menu", 0,  (Fl_Callback*)WindowUI::cb_Show6, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move one desktop to the right", 0,  (Fl_Callback*)WindowUI::cb_movee, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move one desktop to the left", 0,  (Fl_Callback*)WindowUI::cb_movef, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move one desktop up", 0,  (Fl_Callback*)WindowUI::cb_move10, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"move one desktop down", 0,  (Fl_Callback*)WindowUI::cb_move11, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"restart the Window Manager", 0,  (Fl_Callback*)WindowUI::cb_restart1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"exit the Window Manager", 0,  (Fl_Callback*)WindowUI::cb_exit1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Show any hidden Panels", 0,  (Fl_Callback*)WindowUI::cb_Show7, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize to the Top of the screen", 0,  (Fl_Callback*)WindowUI::cb_Maximize7, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize to the Bottom of the screen", 0,  (Fl_Callback*)WindowUI::cb_Maximize8, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize to the Left of the screen", 0,  (Fl_Callback*)WindowUI::cb_Maximize9, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize to the Right of the screen", 0,  (Fl_Callback*)WindowUI::cb_Maximizea, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize Vertical", 0,  (Fl_Callback*)WindowUI::cb_Maximizeb, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maximize Horizontal", 0,  (Fl_Callback*)WindowUI::cb_Maximizec, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Send Window Up a Desktop", 0,  (Fl_Callback*)WindowUI::cb_Send4, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Send Window Down a Desktop", 0,  (Fl_Callback*)WindowUI::cb_Send5, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Send Window Right a Desktop", 0,  (Fl_Callback*)WindowUI::cb_Send6, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Send Window Left a Desktop", 0,  (Fl_Callback*)WindowUI::cb_Send7, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Restore a minimized window", 0,  (Fl_Callback*)WindowUI::cb_Restore1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
 void WindowUI::cb_Cancel3_i(Fl_Button*, void*) {
-  theme_window->hide();
+  context_config->hide();
 }
 void WindowUI::cb_Cancel3(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Cancel3_i(o,v);
+  ((WindowUI*)(o->parent()->user_data()))->cb_Cancel3_i(o,v);
 }
 
 void WindowUI::cb_OK5_i(Fl_Button*, void*) {
+  save_context();
+saveChangesTemp();
+context_config->hide();
+}
+void WindowUI::cb_OK5(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_OK5_i(o,v);
+}
+
+void WindowUI::cb_6_i(Fl_Button*, void*) {
+  std::string program = choose_a_program();
+if(program.compare("")==0){
+  return;
+}
+program=addExecToLine(program);
+value_1->value(program.c_str());
+value_1->redraw();
+}
+void WindowUI::cb_6(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_6_i(o,v);
+}
+
+void WindowUI::cb_13_i(Fl_Menu_*, void*) {
+  std::string value="1";
+button->value(value.c_str());
+}
+void WindowUI::cb_13(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_13_i(o,v);
+}
+
+void WindowUI::cb_14_i(Fl_Menu_*, void*) {
+  std::string value="-1";
+button->value(value.c_str());
+}
+void WindowUI::cb_14(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_14_i(o,v);
+}
+
+void WindowUI::cb_112_i(Fl_Menu_*, void*) {
+  std::string value="11";
+button->value(value.c_str());
+}
+void WindowUI::cb_112(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_112_i(o,v);
+}
+
+void WindowUI::cb_23_i(Fl_Menu_*, void*) {
+  std::string value="2";
+button->value(value.c_str());
+}
+void WindowUI::cb_23(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_23_i(o,v);
+}
+
+void WindowUI::cb_24_i(Fl_Menu_*, void*) {
+  std::string value="-2";
+button->value(value.c_str());
+}
+void WindowUI::cb_24(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_24_i(o,v);
+}
+
+void WindowUI::cb_221_i(Fl_Menu_*, void*) {
+  std::string value="22";
+button->value(value.c_str());
+}
+void WindowUI::cb_221(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_221_i(o,v);
+}
+
+void WindowUI::cb_32_i(Fl_Menu_*, void*) {
+  std::string value="3";
+button->value(value.c_str());
+}
+void WindowUI::cb_32(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_32_i(o,v);
+}
+
+void WindowUI::cb_34_i(Fl_Menu_*, void*) {
+  std::string value="-3";
+button->value(value.c_str());
+}
+void WindowUI::cb_34(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_34_i(o,v);
+}
+
+void WindowUI::cb_331_i(Fl_Menu_*, void*) {
+  std::string value="33";
+button->value(value.c_str());
+}
+void WindowUI::cb_331(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_331_i(o,v);
+}
+
+void WindowUI::cb_41_i(Fl_Menu_*, void*) {
+  std::string value="4";
+button->value(value.c_str());
+}
+void WindowUI::cb_41(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_41_i(o,v);
+}
+
+void WindowUI::cb_51_i(Fl_Menu_*, void*) {
+  std::string value="5";
+button->value(value.c_str());
+}
+void WindowUI::cb_51(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->user_data()))->cb_51_i(o,v);
+}
+
+unsigned char WindowUI::menu_Button3_i18n_done = 0;
+Fl_Menu_Item WindowUI::menu_Button3[] = {
+ {"1", 0,  (Fl_Callback*)WindowUI::cb_13, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"-1", 0,  (Fl_Callback*)WindowUI::cb_14, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"11", 0,  (Fl_Callback*)WindowUI::cb_112, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"2", 0,  (Fl_Callback*)WindowUI::cb_23, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"-2", 0,  (Fl_Callback*)WindowUI::cb_24, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"22", 0,  (Fl_Callback*)WindowUI::cb_221, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"3", 0,  (Fl_Callback*)WindowUI::cb_32, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"-3", 0,  (Fl_Callback*)WindowUI::cb_34, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"33", 0,  (Fl_Callback*)WindowUI::cb_331, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"4", 0,  (Fl_Callback*)WindowUI::cb_41, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"5", 0,  (Fl_Callback*)WindowUI::cb_51, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+void WindowUI::cb_Cancel4_i(Fl_Button*, void*) {
+  theme_window->hide();
+}
+void WindowUI::cb_Cancel4(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Cancel4_i(o,v);
+}
+
+void WindowUI::cb_OK6_i(Fl_Button*, void*) {
   if(!switchGTKTheme(theme_browser)){debug_out("Failed to change the GTK theme");}
 theme_window->hide();
 }
-void WindowUI::cb_OK5(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK5_i(o,v);
+void WindowUI::cb_OK6(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK6_i(o,v);
 }
 
 void WindowUI::cb_a_title_color1_i(Fl_Button* o, void*) {
@@ -906,17 +1463,17 @@ void WindowUI::cb_Make(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Make_i(o,v);
 }
 
-void WindowUI::cb_Show4_i(Fl_Menu_*, void*) {
+void WindowUI::cb_Show8_i(Fl_Menu_*, void*) {
   setThing("ResizeMode","outline");
 }
-void WindowUI::cb_Show4(Fl_Menu_* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Show4_i(o,v);
+void WindowUI::cb_Show8(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Show8_i(o,v);
 }
 
 unsigned char WindowUI::menu_resize_menu_i18n_done = 0;
 Fl_Menu_Item WindowUI::menu_resize_menu[] = {
  {"Make it an Opaque box", 0,  (Fl_Callback*)WindowUI::cb_Make, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Show an Outline only", 0,  (Fl_Callback*)WindowUI::cb_Show4, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Show an Outline only", 0,  (Fl_Callback*)WindowUI::cb_Show8, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
 
@@ -927,17 +1484,17 @@ void WindowUI::cb_Make1(Fl_Menu_* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Make1_i(o,v);
 }
 
-void WindowUI::cb_Show5_i(Fl_Menu_*, void*) {
+void WindowUI::cb_Show9_i(Fl_Menu_*, void*) {
   setThing("MoveMode","outline");
 }
-void WindowUI::cb_Show5(Fl_Menu_* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Show5_i(o,v);
+void WindowUI::cb_Show9(Fl_Menu_* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Show9_i(o,v);
 }
 
 unsigned char WindowUI::menu_move_menu_i18n_done = 0;
 Fl_Menu_Item WindowUI::menu_move_menu[] = {
  {"Make it an Opaque box", 0,  (Fl_Callback*)WindowUI::cb_Make1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Show an Outline only", 0,  (Fl_Callback*)WindowUI::cb_Show5, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Show an Outline only", 0,  (Fl_Callback*)WindowUI::cb_Show9, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
 
@@ -1174,21 +1731,21 @@ Fl_Menu_Item WindowUI::menu_border[] = {
 Fl_Menu_Item* WindowUI::motif_border = WindowUI::menu_border + 0;
 Fl_Menu_Item* WindowUI::flat_border = WindowUI::menu_border + 1;
 
-void WindowUI::cb_Cancel4_i(Fl_Button*, void*) {
+void WindowUI::cb_Cancel5_i(Fl_Button*, void*) {
   window_window->hide();
 cancel();
 //showSettings();
 }
-void WindowUI::cb_Cancel4(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Cancel4_i(o,v);
+void WindowUI::cb_Cancel5(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Cancel5_i(o,v);
 }
 
-void WindowUI::cb_OK6_i(Fl_Button*, void*) {
+void WindowUI::cb_OK7_i(Fl_Button*, void*) {
   saveChanges();
 quit();
 }
-void WindowUI::cb_OK6(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK6_i(o,v);
+void WindowUI::cb_OK7(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK7_i(o,v);
 }
 
 void WindowUI::cb_Change_i(Fl_Button*, void*) {
@@ -1261,34 +1818,47 @@ void WindowUI::cb_context_browser(Fl_Browser* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->user_data()))->cb_context_browser_i(o,v);
 }
 
-void WindowUI::cb_6_i(Fl_Button*, void*) {
-  if(!checkFlBrowserItem(context_browser))return;
-configure_context()->show();
-}
-void WindowUI::cb_6(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_6_i(o,v);
-}
-
 void WindowUI::cb_7_i(Fl_Button*, void*) {
-  if(!checkFlBrowserItem(context_browser))return;
+  context_browser->clear();
+add_context_window()->show();
 }
 void WindowUI::cb_7(Fl_Button* o, void* v) {
   ((WindowUI*)(o->parent()->parent()->user_data()))->cb_7_i(o,v);
 }
 
-void WindowUI::cb_Cancel5_i(Fl_Button*, void*) {
-  action_window->hide();
+void WindowUI::cb_8_i(Fl_Button*, void*) {
+  if(!checkFlBrowserItem(context_browser))return;
+context_browser->clear();
+configure_context()->show();
 }
-void WindowUI::cb_Cancel5(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Cancel5_i(o,v);
+void WindowUI::cb_8(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_8_i(o,v);
 }
 
-void WindowUI::cb_OK7_i(Fl_Button*, void*) {
+void WindowUI::cb_9_i(Fl_Button*, void*) {
+  if(!checkFlBrowserItem(context_browser))return;
+if(deleteContext(getTabItem(1,browser_line),context,getTabItem(0,browser_line),getTabItem(2,browser_line))){
+  if(saveChangesTemp())
+    context_browser->remove(context_browser->value());
+};
+}
+void WindowUI::cb_9(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_9_i(o,v);
+}
+
+void WindowUI::cb_Cancel6_i(Fl_Button*, void*) {
+  action_window->hide();
+}
+void WindowUI::cb_Cancel6(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_Cancel6_i(o,v);
+}
+
+void WindowUI::cb_OK8_i(Fl_Button*, void*) {
   action_window->hide();
 saveChanges();
 }
-void WindowUI::cb_OK7(Fl_Button* o, void* v) {
-  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK7_i(o,v);
+void WindowUI::cb_OK8(Fl_Button* o, void* v) {
+  ((WindowUI*)(o->parent()->parent()->user_data()))->cb_OK8_i(o,v);
 }
 
 Fl_Double_Window* WindowUI::add_option_window() {
@@ -1433,45 +2003,9 @@ Fl_Double_Window* WindowUI::add_program_window() {
   return prog_win;
 }
 
-Fl_Double_Window* WindowUI::button_order_window() {
-  { button_orderer = new Fl_Double_Window(225, 165);
-    button_orderer->user_data((void*)(this));
-    { Fl_Input* o = ordering = new Fl_Input(25, 15, 190, 25, gettext("m Maximize button\ni Minimize (iconify) button\nt Window title\nw Window menu\
- button\nx Close button"));
-      ordering->tooltip(gettext("Title Button Order\n\nm Maximize button\ni Minimize (iconify) button\nt Windo\
-w title\nw Window menu button\nx Close button"));
-      ordering->box(FL_FLAT_BOX);
-      ordering->selection_color((Fl_Color)80);
-      ordering->align(Fl_Align(FL_ALIGN_BOTTOM));
-      std::string val=getElementText("TitleButtonOrder");
-      if(val.compare("")==0){val="wtimx";}
-      o->value(val.c_str());
-    } // Fl_Input* ordering
-    { Fl_Button* o = new Fl_Button(60, 125, 55, 25, gettext("Cancel"));
-      o->box(FL_FLAT_BOX);
-      o->down_box(FL_GTK_DOWN_BOX);
-      o->color((Fl_Color)80);
-      o->selection_color((Fl_Color)81);
-      o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_Cancel1);
-    } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(125, 125, 45, 25, gettext("OK"));
-      o->tooltip(gettext("Write to configuration file"));
-      o->box(FL_FLAT_BOX);
-      o->down_box(FL_GTK_DOWN_BOX);
-      o->color((Fl_Color)61);
-      o->selection_color((Fl_Color)59);
-      o->labelcolor((Fl_Color)55);
-      o->callback((Fl_Callback*)cb_OK3);
-    } // Fl_Button* o
-    button_orderer->end();
-  } // Fl_Double_Window* button_orderer
-  return button_orderer;
-}
-
-Fl_Double_Window* WindowUI::configure_context() {
-  { context_config = new Fl_Double_Window(310, 155, gettext("Configure Item"));
-    context_config->user_data((void*)(this));
+Fl_Double_Window* WindowUI::add_context_window() {
+  { context_add_win = new Fl_Double_Window(310, 155, gettext("Add Item"));
+    context_add_win->user_data((void*)(this));
     { Fl_Menu_Button* o = new Fl_Menu_Button(10, 80, 135, 30, gettext("Button Action"));
       o->tooltip(gettext("Typically the left button"));
       o->box(FL_FLAT_BOX);
@@ -1486,25 +2020,24 @@ Fl_Double_Window* WindowUI::configure_context() {
       }
       o->menu(menu_Button);
     } // Fl_Menu_Button* o
-    { Fl_Output* o = button = new Fl_Output(95, 45, 50, 30);
-      button->tooltip(gettext("The mouse button you click"));
-      button->box(FL_FLAT_BOX);
-      button->selection_color(FL_DARK_RED);
-      o->value(getTabItem(0,browser_line).c_str());
-    } // Fl_Output* button
-    { Fl_Output* o = context_button = new Fl_Output(135, 10, 170, 30, gettext("Item to configure"));
-      context_button->tooltip(gettext("The part of the window you click"));
-      context_button->box(FL_FLAT_BOX);
-      context_button->selection_color(FL_DARK_RED);
+    { add_button = new Fl_Output(95, 45, 50, 30);
+      add_button->tooltip(gettext("The mouse button you click"));
+      add_button->box(FL_FLAT_BOX);
+      add_button->selection_color(FL_DARK_RED);
+    } // Fl_Output* add_button
+    { Fl_Output* o = add_context_button = new Fl_Output(155, 10, 150, 30);
+      add_context_button->tooltip(gettext("The part of the window you click"));
+      add_context_button->box(FL_FLAT_BOX);
+      add_context_button->selection_color(FL_DARK_RED);
       o->value(context.c_str());
-    } // Fl_Output* context_button
+    } // Fl_Output* add_context_button
     { Fl_Button* o = new Fl_Button(195, 120, 55, 25, gettext("Cancel"));
       o->box(FL_FLAT_BOX);
       o->down_box(FL_GTK_DOWN_BOX);
       o->color((Fl_Color)80);
       o->selection_color((Fl_Color)81);
       o->labelcolor(FL_BACKGROUND2_COLOR);
-      o->callback((Fl_Callback*)cb_Cancel2);
+      o->callback((Fl_Callback*)cb_Cancel1);
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(260, 120, 45, 25, gettext("OK"));
       o->tooltip(gettext("Write to configuration file"));
@@ -1513,7 +2046,7 @@ Fl_Double_Window* WindowUI::configure_context() {
       o->color((Fl_Color)61);
       o->selection_color((Fl_Color)59);
       o->labelcolor((Fl_Color)55);
-      o->callback((Fl_Callback*)cb_OK4);
+      o->callback((Fl_Callback*)cb_OK3);
     } // Fl_Button* o
     { Fl_Button* o = new Fl_Button(110, 115, 35, 35);
       o->tooltip(gettext("Choose a program"));
@@ -1539,6 +2072,141 @@ s are Double Click."));
         menu_Button1_i18n_done = 1;
       }
       o->menu(menu_Button1);
+    } // Fl_Menu_Button* o
+    { action_input = new Fl_Input(155, 80, 150, 30);
+      action_input->tooltip(gettext("The action to perform"));
+      action_input->box(FL_FLAT_BOX);
+      action_input->selection_color(FL_DARK_RED);
+    } // Fl_Input* action_input
+    { add_mask = new Fl_Input(250, 45, 55, 30, gettext("Modifier"));
+      add_mask->tooltip(gettext("The modifier key"));
+      add_mask->box(FL_FLAT_BOX);
+      add_mask->selection_color(FL_DARK_RED);
+    } // Fl_Input* add_mask
+    { Fl_Menu_Button* o = new Fl_Menu_Button(10, 10, 135, 30, gettext("Item to add"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->selection_color(FL_DARK_RED);
+      if (!menu_Item_i18n_done) {
+        int i=0;
+        for ( ; i<7; i++)
+          if (menu_Item[i].label())
+            menu_Item[i].label(gettext(menu_Item[i].label()));
+        menu_Item_i18n_done = 1;
+      }
+      o->menu(menu_Item);
+    } // Fl_Menu_Button* o
+    context_add_win->end();
+  } // Fl_Double_Window* context_add_win
+  return context_add_win;
+}
+
+Fl_Double_Window* WindowUI::button_order_window() {
+  { button_orderer = new Fl_Double_Window(225, 165);
+    button_orderer->user_data((void*)(this));
+    { Fl_Input* o = ordering = new Fl_Input(25, 15, 190, 25, gettext("m Maximize button\ni Minimize (iconify) button\nt Window title\nw Window menu\
+ button\nx Close button"));
+      ordering->tooltip(gettext("Title Button Order\n\nm Maximize button\ni Minimize (iconify) button\nt Windo\
+w title\nw Window menu button\nx Close button"));
+      ordering->box(FL_FLAT_BOX);
+      ordering->selection_color((Fl_Color)80);
+      ordering->align(Fl_Align(FL_ALIGN_BOTTOM));
+      std::string val=getElementText("TitleButtonOrder");
+      if(val.compare("")==0){val="wtimx";}
+      o->value(val.c_str());
+    } // Fl_Input* ordering
+    { Fl_Button* o = new Fl_Button(60, 125, 55, 25, gettext("Cancel"));
+      o->box(FL_FLAT_BOX);
+      o->down_box(FL_GTK_DOWN_BOX);
+      o->color((Fl_Color)80);
+      o->selection_color((Fl_Color)81);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_Cancel2);
+    } // Fl_Button* o
+    { Fl_Button* o = new Fl_Button(125, 125, 45, 25, gettext("OK"));
+      o->tooltip(gettext("Write to configuration file"));
+      o->box(FL_FLAT_BOX);
+      o->down_box(FL_GTK_DOWN_BOX);
+      o->color((Fl_Color)61);
+      o->selection_color((Fl_Color)59);
+      o->labelcolor((Fl_Color)55);
+      o->callback((Fl_Callback*)cb_OK4);
+    } // Fl_Button* o
+    button_orderer->end();
+  } // Fl_Double_Window* button_orderer
+  return button_orderer;
+}
+
+Fl_Double_Window* WindowUI::configure_context() {
+  { context_config = new Fl_Double_Window(310, 155, gettext("Configure Item"));
+    context_config->user_data((void*)(this));
+    { Fl_Menu_Button* o = new Fl_Menu_Button(10, 80, 135, 30, gettext("Button Action"));
+      o->tooltip(gettext("Typically the left button"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->selection_color((Fl_Color)80);
+      if (!menu_Button2_i18n_done) {
+        int i=0;
+        for ( ; i<33; i++)
+          if (menu_Button2[i].label())
+            menu_Button2[i].label(gettext(menu_Button2[i].label()));
+        menu_Button2_i18n_done = 1;
+      }
+      o->menu(menu_Button2);
+    } // Fl_Menu_Button* o
+    { Fl_Output* o = button = new Fl_Output(95, 45, 50, 30);
+      button->tooltip(gettext("The mouse button you click"));
+      button->box(FL_FLAT_BOX);
+      button->selection_color(FL_DARK_RED);
+      o->value(getTabItem(0,browser_line).c_str());
+    } // Fl_Output* button
+    { Fl_Output* o = context_button = new Fl_Output(135, 10, 170, 30, gettext("Item to configure"));
+      context_button->tooltip(gettext("The part of the window you click"));
+      context_button->box(FL_FLAT_BOX);
+      context_button->selection_color(FL_DARK_RED);
+      o->value(context.c_str());
+    } // Fl_Output* context_button
+    { Fl_Button* o = new Fl_Button(195, 120, 55, 25, gettext("Cancel"));
+      o->box(FL_FLAT_BOX);
+      o->down_box(FL_GTK_DOWN_BOX);
+      o->color((Fl_Color)80);
+      o->selection_color((Fl_Color)81);
+      o->labelcolor(FL_BACKGROUND2_COLOR);
+      o->callback((Fl_Callback*)cb_Cancel3);
+    } // Fl_Button* o
+    { Fl_Button* o = new Fl_Button(260, 120, 45, 25, gettext("OK"));
+      o->tooltip(gettext("Write to configuration file"));
+      o->box(FL_FLAT_BOX);
+      o->down_box(FL_GTK_DOWN_BOX);
+      o->color((Fl_Color)61);
+      o->selection_color((Fl_Color)59);
+      o->labelcolor((Fl_Color)55);
+      o->callback((Fl_Callback*)cb_OK5);
+    } // Fl_Button* o
+    { Fl_Button* o = new Fl_Button(110, 115, 35, 35);
+      o->tooltip(gettext("Choose a program"));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->image(image_gear16);
+      o->callback((Fl_Callback*)cb_6);
+      o->align(Fl_Align(256));
+    } // Fl_Button* o
+    { new Fl_Box(15, 115, 90, 35, gettext("OR program"));
+    } // Fl_Box* o
+    { Fl_Menu_Button* o = new Fl_Menu_Button(10, 45, 80, 30, gettext("Button"));
+      o->tooltip(gettext("Negative values are for Button Release, positive are for Click.  Double value\
+s are Double Click."));
+      o->box(FL_FLAT_BOX);
+      o->color((Fl_Color)23);
+      o->selection_color(FL_DARK_RED);
+      if (!menu_Button3_i18n_done) {
+        int i=0;
+        for ( ; i<11; i++)
+          if (menu_Button3[i].label())
+            menu_Button3[i].label(gettext(menu_Button3[i].label()));
+        menu_Button3_i18n_done = 1;
+      }
+      o->menu(menu_Button3);
     } // Fl_Menu_Button* o
     { Fl_Input* o = value_1 = new Fl_Input(155, 80, 150, 30);
       value_1->tooltip(gettext("The action to perform"));
@@ -1575,7 +2243,7 @@ Fl_Double_Window* WindowUI::make_gtk_theme_window() {
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
         o->labelcolor(FL_BACKGROUND2_COLOR);
-        o->callback((Fl_Callback*)cb_Cancel3);
+        o->callback((Fl_Callback*)cb_Cancel4);
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(255, 240, 45, 25, gettext("OK"));
         o->tooltip(gettext("You will need to close any open windows to see the change"));
@@ -1584,7 +2252,7 @@ Fl_Double_Window* WindowUI::make_gtk_theme_window() {
         o->color((Fl_Color)61);
         o->selection_color((Fl_Color)59);
         o->labelcolor((Fl_Color)55);
-        o->callback((Fl_Callback*)cb_OK5);
+        o->callback((Fl_Callback*)cb_OK6);
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
@@ -2247,7 +2915,7 @@ specify an icon."));
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
         o->labelcolor(FL_BACKGROUND2_COLOR);
-        o->callback((Fl_Callback*)cb_Cancel4);
+        o->callback((Fl_Callback*)cb_Cancel5);
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(455, 285, 45, 25, gettext("OK"));
         o->tooltip(gettext("Write to configuration file"));
@@ -2256,7 +2924,7 @@ specify an icon."));
         o->color((Fl_Color)61);
         o->selection_color((Fl_Color)59);
         o->labelcolor((Fl_Color)55);
-        o->callback((Fl_Callback*)cb_OK6);
+        o->callback((Fl_Callback*)cb_OK7);
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(10, 285, 205, 25, gettext("Change GTK Widget theme"));
         o->tooltip(gettext("You will need to close any open windows to see the change"));
@@ -2334,17 +3002,20 @@ Fl_Double_Window* WindowUI::mouse_bindings_window() {
         context_root->callback((Fl_Callback*)cb_context_root);
         context_root->align(Fl_Align(256));
       } // Fl_Button* context_root
-      { context_browser = new Fl_Browser(15, 115, 260, 145, gettext("Button          Action               Modifier"));
+      { Fl_Browser* o = context_browser = new Fl_Browser(15, 115, 260, 145, gettext("Button          Action               Modifier"));
         context_browser->type(2);
         context_browser->box(FL_FLAT_BOX);
         context_browser->selection_color((Fl_Color)80);
         context_browser->callback((Fl_Callback*)cb_context_browser);
         context_browser->align(Fl_Align(FL_ALIGN_TOP_LEFT));
+        static int widths[] = { 70,150,70 };
+        o->column_widths(widths);
       } // Fl_Browser* context_browser
       { Fl_Button* o = new Fl_Button(15, 265, 35, 35, gettext("@+"));
         o->tooltip(gettext("Add Item"));
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
+        o->callback((Fl_Callback*)cb_7);
         o->align(Fl_Align(256));
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(95, 265, 35, 35);
@@ -2352,7 +3023,7 @@ Fl_Double_Window* WindowUI::mouse_bindings_window() {
         o->box(FL_FLAT_BOX);
         o->color((Fl_Color)23);
         o->image(image_gear16);
-        o->callback((Fl_Callback*)cb_6);
+        o->callback((Fl_Callback*)cb_8);
         o->align(Fl_Align(256));
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(55, 265, 35, 35, gettext("-"));
@@ -2361,7 +3032,7 @@ Fl_Double_Window* WindowUI::mouse_bindings_window() {
         o->color((Fl_Color)23);
         o->labelfont(1);
         o->labelsize(40);
-        o->callback((Fl_Callback*)cb_7);
+        o->callback((Fl_Callback*)cb_9);
         o->align(Fl_Align(256));
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(160, 275, 55, 25, gettext("Cancel"));
@@ -2370,7 +3041,7 @@ Fl_Double_Window* WindowUI::mouse_bindings_window() {
         o->color((Fl_Color)80);
         o->selection_color((Fl_Color)81);
         o->labelcolor(FL_BACKGROUND2_COLOR);
-        o->callback((Fl_Callback*)cb_Cancel5);
+        o->callback((Fl_Callback*)cb_Cancel6);
       } // Fl_Button* o
       { Fl_Button* o = new Fl_Button(221, 275, 45, 25, gettext("OK"));
         o->tooltip(gettext("Write to configuration file"));
@@ -2379,7 +3050,7 @@ Fl_Double_Window* WindowUI::mouse_bindings_window() {
         o->color((Fl_Color)61);
         o->selection_color((Fl_Color)59);
         o->labelcolor((Fl_Color)55);
-        o->callback((Fl_Callback*)cb_OK7);
+        o->callback((Fl_Callback*)cb_OK8);
       } // Fl_Button* o
       o->end();
     } // Fl_Scroll* o
@@ -2406,13 +3077,26 @@ void WindowUI::save_context() {
   std::string Action=value_1->value();
   context=context_button->value();
   std::string Mask;
+  std::string old_action=getTabItem(1,browser_line).c_str();
+  std::string old_button=getTabItem(0,browser_line).c_str();
+  std::string old_mask=getTabItem(2,browser_line).c_str();
   if(!InputIsEmpty(mask)){
     Mask=mask->value();
-  //<Mouse context="context" mask="mask" button="Button">Action</Mouse>
-  
   }
-  else{
-  //<Mouse context="context" button="Button">Action</Mouse>
-  
+  modifyContext(old_action,Action,context,old_button,Button,old_mask,Mask);
+}
+
+void WindowUI::add_context() {
+  debug_out("add_context()");
+  if(OutputIsEmpty(add_context_button))return;
+  if(OutputIsEmpty(add_button))return;
+  if(InputIsEmpty(action_input))return;
+  std::string Button=add_button->value();
+  std::string Action=action_input->value();
+  context=add_context_button->value();
+  std::string Mask;
+  if(!InputIsEmpty(add_mask)){
+    Mask=add_mask->value();
   }
+  addContext(Action,context,Button,Mask);
 }

@@ -54,6 +54,7 @@ protected:
   std::string context; 
 private:
   int JWMVERSION; 
+  int whichElement; 
 public:
   Fl_Double_Window* add_option_window();
   Fl_Double_Window *add_opt_window;
@@ -104,17 +105,8 @@ private:
   inline void cb_Program_i(Fl_Button*, void*);
   static void cb_Program(Fl_Button*, void*);
 public:
-  Fl_Double_Window* button_order_window();
-  Fl_Double_Window *button_orderer;
-  Fl_Input *ordering;
-private:
-  inline void cb_Cancel1_i(Fl_Button*, void*);
-  static void cb_Cancel1(Fl_Button*, void*);
-  inline void cb_OK3_i(Fl_Button*, void*);
-  static void cb_OK3(Fl_Button*, void*);
-public:
-  Fl_Double_Window* configure_context();
-  Fl_Double_Window *context_config;
+  Fl_Double_Window* add_context_window();
+  Fl_Double_Window *context_add_win;
   static unsigned char menu_Button_i18n_done;
   static Fl_Menu_Item menu_Button[];
 private:
@@ -185,13 +177,13 @@ private:
   inline void cb_Restore_i(Fl_Menu_*, void*);
   static void cb_Restore(Fl_Menu_*, void*);
 public:
-  Fl_Output *button;
-  Fl_Output *context_button;
+  Fl_Output *add_button;
+  Fl_Output *add_context_button;
 private:
-  inline void cb_Cancel2_i(Fl_Button*, void*);
-  static void cb_Cancel2(Fl_Button*, void*);
-  inline void cb_OK4_i(Fl_Button*, void*);
-  static void cb_OK4(Fl_Button*, void*);
+  inline void cb_Cancel1_i(Fl_Button*, void*);
+  static void cb_Cancel1(Fl_Button*, void*);
+  inline void cb_OK3_i(Fl_Button*, void*);
+  static void cb_OK3(Fl_Button*, void*);
   inline void cb_1_i(Fl_Button*, void*);
   static void cb_1(Fl_Button*, void*);
   static unsigned char menu_Button1_i18n_done;
@@ -219,16 +211,151 @@ private:
   inline void cb_5_i(Fl_Menu_*, void*);
   static void cb_5(Fl_Menu_*, void*);
 public:
+  Fl_Input *action_input;
+  Fl_Input *add_mask;
+  static unsigned char menu_Item_i18n_done;
+  static Fl_Menu_Item menu_Item[];
+private:
+  inline void cb_Title_i(Fl_Menu_*, void*);
+  static void cb_Title(Fl_Menu_*, void*);
+  inline void cb_Icon_i(Fl_Menu_*, void*);
+  static void cb_Icon(Fl_Menu_*, void*);
+  inline void cb_Border_i(Fl_Menu_*, void*);
+  static void cb_Border(Fl_Menu_*, void*);
+  inline void cb_Close_i(Fl_Menu_*, void*);
+  static void cb_Close(Fl_Menu_*, void*);
+  inline void cb_Maximize6_i(Fl_Menu_*, void*);
+  static void cb_Maximize6(Fl_Menu_*, void*);
+  inline void cb_Minimize_i(Fl_Menu_*, void*);
+  static void cb_Minimize(Fl_Menu_*, void*);
+  inline void cb_Root_i(Fl_Menu_*, void*);
+  static void cb_Root(Fl_Menu_*, void*);
+public:
+  Fl_Double_Window* button_order_window();
+  Fl_Double_Window *button_orderer;
+  Fl_Input *ordering;
+private:
+  inline void cb_Cancel2_i(Fl_Button*, void*);
+  static void cb_Cancel2(Fl_Button*, void*);
+  inline void cb_OK4_i(Fl_Button*, void*);
+  static void cb_OK4(Fl_Button*, void*);
+public:
+  Fl_Double_Window* configure_context();
+  Fl_Double_Window *context_config;
+  static unsigned char menu_Button2_i18n_done;
+  static Fl_Menu_Item menu_Button2[];
+private:
+  inline void cb_move9_i(Fl_Menu_*, void*);
+  static void cb_move9(Fl_Menu_*, void*);
+  inline void cb_movea_i(Fl_Menu_*, void*);
+  static void cb_movea(Fl_Menu_*, void*);
+  inline void cb_moveb_i(Fl_Menu_*, void*);
+  static void cb_moveb(Fl_Menu_*, void*);
+  inline void cb_movec_i(Fl_Menu_*, void*);
+  static void cb_movec(Fl_Menu_*, void*);
+  inline void cb_close1_i(Fl_Menu_*, void*);
+  static void cb_close1(Fl_Menu_*, void*);
+  inline void cb_fullscreen1_i(Fl_Menu_*, void*);
+  static void cb_fullscreen1(Fl_Menu_*, void*);
+  inline void cb_minimize1_i(Fl_Menu_*, void*);
+  static void cb_minimize1(Fl_Menu_*, void*);
+  inline void cb_maximize1_i(Fl_Menu_*, void*);
+  static void cb_maximize1(Fl_Menu_*, void*);
+  inline void cb_roll1_i(Fl_Menu_*, void*);
+  static void cb_roll1(Fl_Menu_*, void*);
+  inline void cb_moved_i(Fl_Menu_*, void*);
+  static void cb_moved(Fl_Menu_*, void*);
+  inline void cb_resize1_i(Fl_Menu_*, void*);
+  static void cb_resize1(Fl_Menu_*, void*);
+  inline void cb_show1_i(Fl_Menu_*, void*);
+  static void cb_show1(Fl_Menu_*, void*);
+  inline void cb_Show4_i(Fl_Menu_*, void*);
+  static void cb_Show4(Fl_Menu_*, void*);
+  inline void cb_Show5_i(Fl_Menu_*, void*);
+  static void cb_Show5(Fl_Menu_*, void*);
+  inline void cb_Show6_i(Fl_Menu_*, void*);
+  static void cb_Show6(Fl_Menu_*, void*);
+  inline void cb_movee_i(Fl_Menu_*, void*);
+  static void cb_movee(Fl_Menu_*, void*);
+  inline void cb_movef_i(Fl_Menu_*, void*);
+  static void cb_movef(Fl_Menu_*, void*);
+  inline void cb_move10_i(Fl_Menu_*, void*);
+  static void cb_move10(Fl_Menu_*, void*);
+  inline void cb_move11_i(Fl_Menu_*, void*);
+  static void cb_move11(Fl_Menu_*, void*);
+  inline void cb_restart1_i(Fl_Menu_*, void*);
+  static void cb_restart1(Fl_Menu_*, void*);
+  inline void cb_exit1_i(Fl_Menu_*, void*);
+  static void cb_exit1(Fl_Menu_*, void*);
+  inline void cb_Show7_i(Fl_Menu_*, void*);
+  static void cb_Show7(Fl_Menu_*, void*);
+  inline void cb_Maximize7_i(Fl_Menu_*, void*);
+  static void cb_Maximize7(Fl_Menu_*, void*);
+  inline void cb_Maximize8_i(Fl_Menu_*, void*);
+  static void cb_Maximize8(Fl_Menu_*, void*);
+  inline void cb_Maximize9_i(Fl_Menu_*, void*);
+  static void cb_Maximize9(Fl_Menu_*, void*);
+  inline void cb_Maximizea_i(Fl_Menu_*, void*);
+  static void cb_Maximizea(Fl_Menu_*, void*);
+  inline void cb_Maximizeb_i(Fl_Menu_*, void*);
+  static void cb_Maximizeb(Fl_Menu_*, void*);
+  inline void cb_Maximizec_i(Fl_Menu_*, void*);
+  static void cb_Maximizec(Fl_Menu_*, void*);
+  inline void cb_Send4_i(Fl_Menu_*, void*);
+  static void cb_Send4(Fl_Menu_*, void*);
+  inline void cb_Send5_i(Fl_Menu_*, void*);
+  static void cb_Send5(Fl_Menu_*, void*);
+  inline void cb_Send6_i(Fl_Menu_*, void*);
+  static void cb_Send6(Fl_Menu_*, void*);
+  inline void cb_Send7_i(Fl_Menu_*, void*);
+  static void cb_Send7(Fl_Menu_*, void*);
+  inline void cb_Restore1_i(Fl_Menu_*, void*);
+  static void cb_Restore1(Fl_Menu_*, void*);
+public:
+  Fl_Output *button;
+  Fl_Output *context_button;
+private:
+  inline void cb_Cancel3_i(Fl_Button*, void*);
+  static void cb_Cancel3(Fl_Button*, void*);
+  inline void cb_OK5_i(Fl_Button*, void*);
+  static void cb_OK5(Fl_Button*, void*);
+  inline void cb_6_i(Fl_Button*, void*);
+  static void cb_6(Fl_Button*, void*);
+  static unsigned char menu_Button3_i18n_done;
+  static Fl_Menu_Item menu_Button3[];
+  inline void cb_13_i(Fl_Menu_*, void*);
+  static void cb_13(Fl_Menu_*, void*);
+  inline void cb_14_i(Fl_Menu_*, void*);
+  static void cb_14(Fl_Menu_*, void*);
+  inline void cb_112_i(Fl_Menu_*, void*);
+  static void cb_112(Fl_Menu_*, void*);
+  inline void cb_23_i(Fl_Menu_*, void*);
+  static void cb_23(Fl_Menu_*, void*);
+  inline void cb_24_i(Fl_Menu_*, void*);
+  static void cb_24(Fl_Menu_*, void*);
+  inline void cb_221_i(Fl_Menu_*, void*);
+  static void cb_221(Fl_Menu_*, void*);
+  inline void cb_32_i(Fl_Menu_*, void*);
+  static void cb_32(Fl_Menu_*, void*);
+  inline void cb_34_i(Fl_Menu_*, void*);
+  static void cb_34(Fl_Menu_*, void*);
+  inline void cb_331_i(Fl_Menu_*, void*);
+  static void cb_331(Fl_Menu_*, void*);
+  inline void cb_41_i(Fl_Menu_*, void*);
+  static void cb_41(Fl_Menu_*, void*);
+  inline void cb_51_i(Fl_Menu_*, void*);
+  static void cb_51(Fl_Menu_*, void*);
+public:
   Fl_Input *value_1;
   Fl_Input *mask;
   Fl_Double_Window* make_gtk_theme_window();
   Fl_Double_Window *theme_window;
   Fl_Browser *theme_browser;
 private:
-  inline void cb_Cancel3_i(Fl_Button*, void*);
-  static void cb_Cancel3(Fl_Button*, void*);
-  inline void cb_OK5_i(Fl_Button*, void*);
-  static void cb_OK5(Fl_Button*, void*);
+  inline void cb_Cancel4_i(Fl_Button*, void*);
+  static void cb_Cancel4(Fl_Button*, void*);
+  inline void cb_OK6_i(Fl_Button*, void*);
+  static void cb_OK6(Fl_Button*, void*);
 public:
   Fl_Double_Window* make_window();
   Fl_Double_Window *window_window;
@@ -371,8 +498,8 @@ public:
 private:
   inline void cb_Make_i(Fl_Menu_*, void*);
   static void cb_Make(Fl_Menu_*, void*);
-  inline void cb_Show4_i(Fl_Menu_*, void*);
-  static void cb_Show4(Fl_Menu_*, void*);
+  inline void cb_Show8_i(Fl_Menu_*, void*);
+  static void cb_Show8(Fl_Menu_*, void*);
 public:
   Fl_Menu_Button *move_menu;
   static unsigned char menu_move_menu_i18n_done;
@@ -380,8 +507,8 @@ public:
 private:
   inline void cb_Make1_i(Fl_Menu_*, void*);
   static void cb_Make1(Fl_Menu_*, void*);
-  inline void cb_Show5_i(Fl_Menu_*, void*);
-  static void cb_Show5(Fl_Menu_*, void*);
+  inline void cb_Show9_i(Fl_Menu_*, void*);
+  static void cb_Show9(Fl_Menu_*, void*);
 public:
   Fl_Menu_Button *snap_menu;
   static unsigned char menu_snap_menu_i18n_done;
@@ -503,10 +630,10 @@ private:
 public:
   Fl_Output *decorations_border;
 private:
-  inline void cb_Cancel4_i(Fl_Button*, void*);
-  static void cb_Cancel4(Fl_Button*, void*);
-  inline void cb_OK6_i(Fl_Button*, void*);
-  static void cb_OK6(Fl_Button*, void*);
+  inline void cb_Cancel5_i(Fl_Button*, void*);
+  static void cb_Cancel5(Fl_Button*, void*);
+  inline void cb_OK7_i(Fl_Button*, void*);
+  static void cb_OK7(Fl_Button*, void*);
   inline void cb_Change_i(Fl_Button*, void*);
   static void cb_Change(Fl_Button*, void*);
 public:
@@ -551,17 +678,20 @@ public:
 private:
   inline void cb_context_browser_i(Fl_Browser*, void*);
   static void cb_context_browser(Fl_Browser*, void*);
-  inline void cb_6_i(Fl_Button*, void*);
-  static void cb_6(Fl_Button*, void*);
   inline void cb_7_i(Fl_Button*, void*);
   static void cb_7(Fl_Button*, void*);
-  inline void cb_Cancel5_i(Fl_Button*, void*);
-  static void cb_Cancel5(Fl_Button*, void*);
-  inline void cb_OK7_i(Fl_Button*, void*);
-  static void cb_OK7(Fl_Button*, void*);
+  inline void cb_8_i(Fl_Button*, void*);
+  static void cb_8(Fl_Button*, void*);
+  inline void cb_9_i(Fl_Button*, void*);
+  static void cb_9(Fl_Button*, void*);
+  inline void cb_Cancel6_i(Fl_Button*, void*);
+  static void cb_Cancel6(Fl_Button*, void*);
+  inline void cb_OK8_i(Fl_Button*, void*);
+  static void cb_OK8(Fl_Button*, void*);
 public:
   void menu_cb(const char* action, Fl_Input * o);
   void button_choice_cb(int buttonnum, Fl_Output* o);
   void save_context();
+  void add_context();
 };
 #endif

@@ -115,6 +115,9 @@ class JSM_Window : public FLTK_FUNCTIONS
 		std::string buttonPath();
 		std::string XplusO(Fl_Browser *groups_browser);
 ///Boolean
+		bool addContext(std::string text, std::string context, std::string button, std::string mask);
+		bool deleteContext(std::string text, std::string context, std::string button, std::string mask);
+		bool modifyContext(std::string old_text, std::string text, std::string context, std::string button, std::string old_button, std::string mask, std::string old_mask);
 		bool secondColor(Fl_Widget *o);
 		bool setSnap(int &distance);
 		bool switchGTKTheme(Fl_Browser* o);

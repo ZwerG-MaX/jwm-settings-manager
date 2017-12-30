@@ -78,6 +78,7 @@ class JWMRC
 		bool addElementWithAttribute(std::string element, std::string attribute, std::string value);
 		bool addElementWithTextAndAttribute(std::string element, std::string attribute, std::string value,std::string text);
 		bool addElementWithTextAndAttribute(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text);
+		bool addElementWithTextAndAttributes(std::string element, std::string text, std::string attribute1, std::string value1, std::string attribute2="", std::string value2="", std::string attribute3="", std::string value3="");
 		bool addElementWithSubAndText(std::string element, std::string subelement, std::string text);
 		bool addMenuElement(unsigned int whichMenu,std::string element);
 		bool addMenuElement(pugi::xml_node node,std::string element);
@@ -95,6 +96,7 @@ class JWMRC
 		bool checkVector(std::vector<std::string> myVec,std::string item);
 	//D
 		bool deleteElements(std::string element);
+		bool deleteNode(pugi::xml_node node);
 		bool deleteSubElement(std::string element, int whichElement);
 	//E
 		bool elementTextExists(std::string element, std::string text);
@@ -122,6 +124,8 @@ class JWMRC
 		bool load(std::string filename);
 		bool load(std::string filename, bool saveTemp);
 		bool loadTemp();
+	//M
+		bool modifyElement(std::string element,std::string old_text,std::string text, std::string attribute1, std::string attribute_value1, std::string attribute_value1_new, std::string attribute2, std::string attribute_value2, std::string attribute_value2_new, std::string attribute3, std::string attribute_value3_new, std::string attribute3_value);
 	//N
 		bool newVersionJWM();
 	//P
@@ -332,12 +336,14 @@ class JWMRC
 	//a
 		pugi::xml_node addNextSubelement(std::string element);
 		pugi::xml_node addNode(unsigned int whichElement,std::string element, std::string subelement);
+		pugi::xml_node addNode(std::string element);
 	//c
 		pugi::xml_node checkIncludes(unsigned int whichOne,std::string element);
 		pugi::xml_node checkIncludes(std::string element);
 		pugi::xml_node checkIncludes(std::string element,std::string subelement);
 		pugi::xml_node checkIncludes(std::string element,std::string subelement,std::string SUBsubelement);
 		pugi::xml_node compareNode(std::string element, std::string attribute, std::string value, std::string attribute2, std::string value2,std::string text);
+		pugi::xml_node compareNode(std::string element, std::string text, std::string attribute, std::string value, std::string attribute2, std::string value2, std::string attribute3, std::string value3);
 	//g
 		pugi::xml_node getCurrentTrayNode();
 		pugi::xml_node getLastSubNode(unsigned int whichElement,std::string element, std::string subelement);

@@ -557,6 +557,16 @@ std::string JSM_Window::XplusO(Fl_Browser *groups_browser){
 	return "";
 }
 //BOOL//////////////////////////////////////////////////////////////////
+bool JSM_Window::addContext(std::string text, std::string context, std::string button, std::string mask){
+	debug_out("bool addContext(std::string "+text+", std::string "+context+", std::string "+button+", std::string "+mask+")");
+	return addElementWithTextAndAttributes("Mouse",text,"context",context,"button",button,"mask",mask);
+}
+bool JSM_Window::deleteContext(std::string text, std::string context, std::string button, std::string mask){
+	return deleteNode(compareNode("Mouse",text,"context",context,"button",button,"mask",mask));
+}
+bool JSM_Window::modifyContext(std::string old_text,std::string text, std::string context, std::string button, std::string old_button, std::string mask, std::string old_mask){
+	return modifyElement("Mouse",old_text,text,"context",context,context,"button",old_button,button,"mask",old_mask,mask);
+}
 bool JSM_Window::secondColor(Fl_Widget *o){
 	if(JWMversion()<236){
 		o->hide();
