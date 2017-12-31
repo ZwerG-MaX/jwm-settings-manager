@@ -72,10 +72,10 @@ This allows you to change the background, and amount of virtual desktops.
 It also supports filemanagers creating the desktop background (pcmanfm and gsettings... i.e. thunar/nautilus/etc..)
 
 ## Windows
-![Alt text](/screenshots/windows.png?raw=true "Windows Window") ![Alt text](/screenshots/windows-settings.png?raw=true "Windows Settings") ![Alt text](/screenshots/windows-groups.png?raw=true "Windows Groups") ![Alt text](/screenshots/windows-advanced.png?raw=true "Windows Advanced")
+![Alt text](/screenshots/windows.png?raw=true "Windows Window") ![Alt text](/screenshots/windows-settings.png?raw=true "Windows Settings") ![Alt text](/screenshots/windows-actions.png?raw=true "Window Actions") ![Alt text](/screenshots/windows-groups.png?raw=true "Windows Groups") ![Alt text](/screenshots/windows-advanced.png?raw=true "Windows Advanced")
 
 This allows you to change the window buttons, appearance, and configure window groups
-You can also change the GTK widget theme
+You can also change the GTK widget theme.  The newest version also allow configuring Mouse context actions for the window buttons
 
 ## Keyboard
 ![Alt text](/screenshots/keyboard.png?raw=true "Keyboard Window")
