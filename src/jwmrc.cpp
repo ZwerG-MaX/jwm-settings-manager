@@ -768,6 +768,18 @@ bool JWMRC::newVersionJWM(){
     return false;
 }
 //P
+//WILL THIS be USEFUL?!?!?!?!?!?
+bool JWMRC::populateActions(Fl_Menu_Bar *o, Fl_Callback *Menu_CB){
+	std::vector<std::string> Actions=getActions();
+	for(std::vector<std::string>::iterator it = Actions.begin();
+		it!=Bindings.end();
+		++it){
+		std::string item=*it;
+		o->add(item.c_str(),Menu_CB);
+	}
+	o->redraw();
+	return true;
+}
 bool JWMRC::populateFLBrowser(Fl_Browser *o, pugi::xml_node noder){
 //	if(!loadTemp()){return false;}
 	debug_out("bool populateFLBrowser(Fl_Browser *o,, pugi::xml_node noder");
@@ -2357,6 +2369,97 @@ std::vector<std::string> JWMRC::AnythingVector(std::string element){
         }
     }
 	return includeVec;
+}
+std::vector<std::string> JWMRC::getActions(){
+	std::vector<std::string> retVec;
+	int vernum=JWMversion();
+	retVec.push_back("up");
+	retVec.push_back("down");
+	retVec.push_back("right");
+	retVec.push_back("left");
+	retVec.push_back("escape");
+	retVec.push_back("select");
+	retVec.push_back("next");
+	retVec.push_back("nextstacked");
+	retVec.push_back("prev");
+	retVec.push_back("prevstacked");
+	retVec.push_back("close");
+	retVec.push_back("fullscreen");
+	retVec.push_back("minimize");
+	retVec.push_back("maximize");
+	retVec.push_back("maxv");
+	retVec.push_back("maxh");
+	retVec.push_back("maxtop");
+	retVec.push_back("maxbottom");
+	retVec.push_back("maxleft");
+	retVec.push_back("maxright");
+
+	if(vernum>233)retVec.push_back("restore");
+
+	retVec.push_back("shade");
+	retVec.push_back("move");
+	retVec.push_back("resize");
+	retVec.push_back("root:n");
+	retVec.push_back("window");
+	retVec.push_back("desktop#");
+	retVec.push_back("rdesktop");
+	retVec.push_back("ldesktop");
+	retVec.push_back("udesktop");
+	retVec.push_back("ddesktop");
+	retVec.push_back("sendl");
+	retVec.push_back("sendr");
+	retVec.push_back("sendu");
+	retVec.push_back("sendd");
+	retVec.push_back("exec:command");
+	retVec.push_back("restart");
+	retVec.push_back("exit");
+	retVec.push_back("showtray");
+	return retVec;
+}
+std::vector<std::string> JWMRC::getActionsDescriptions(){
+	std::vector<std::string> retVec;
+	retVec.push_back("Move up.");
+	retVec.push_back("Move down.");
+	retVec.push_back("Move right.");
+	retVec.push_back("Move left.");
+	retVec.push_back("Stop a move/resize or exit a menu.");
+	retVec.push_back("Make a selection.");
+	retVec.push_back("Switch to the next window in the task list.");
+	retVec.push_back("Switch to the next window in the stacking order.");
+	retVec.push_back("Switch to the previous window in the task list.");
+	retVec.push_back("Switch to the previous window in the stacking order.");
+	retVec.push_back("Close window.");
+	retVec.push_back("Toggle fullscreen.");
+	retVec.push_back("Minimize window.");
+	retVec.push_back("Maximize window.");
+	retVec.push_back("Maximize window vertically.");
+	retVec.push_back("Maximize window horizontally.");
+	retVec.push_back("Maximize window to the top half of the screen.");
+	retVec.push_back("Maximize window to the bottom half of the screen.");
+	retVec.push_back("Maximize window to the left half of the screen.");
+	retVec.push_back("Maximize window to the right half of the screen.");
+	
+	if(vernum>233)retVec.push_back("Restore maximized or minimized window (new as of version 2.3.3).");
+	
+	retVec.push_back("Shade window.");
+	retVec.push_back("Move window.");
+	retVec.push_back("Resize window.");
+	retVec.push_back("Show root menu n.");
+	retVec.push_back("Show the window menu.");
+	retVec.push_back("Switch to a specific desktop. To use this, # must be specified in the key section. Then numbers from 1 to the number of desktops configured are substituted for #.");
+	retVec.push_back("Move one desktop to the right.");
+	retVec.push_back("Move one desktop to the left.");
+	retVec.push_back("Move up one desktop.");
+	retVec.push_back("Move down one desktop.");
+	retVec.push_back("Send the active window left.");
+	retVec.push_back("Send the active window right.");
+	retVec.push_back("Send the active window up.");
+	retVec.push_back("Send the active window down.");
+	retVec.push_back("Execute command.");
+	retVec.push_back("Restart JWM.");
+	retVec.push_back("Exit JWM.");
+	retVec.push_back("Show trays.");
+	return retVec;
 }
 std::vector<std::string> JWMRC::IconPaths(){return AnythingVector("IconPath");}
 std::vector<std::string> JWMRC::Includes(){return AnythingVector("Include");}

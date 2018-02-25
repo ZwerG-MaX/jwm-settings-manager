@@ -129,6 +129,7 @@ class JWMRC
 	//N
 		bool newVersionJWM();
 	//P
+		bool populateBindings(Fl_Menu_Bar *o, Fl_Callback *Menu_CB);
 		bool populateFLBrowser(Fl_Browser *o, pugi::xml_node noder);
 		bool populateFLBrowser(Fl_Browser *o, std::string element);
 		bool populateFLBrowser(Fl_Browser *o, std::string element, std::string attribute, std::string attribute_value, std::string attribute2, std::string optional_attribute);
@@ -284,6 +285,8 @@ class JWMRC
 
 //Vector////////////////////////////////////////////////////////////////
 		std::vector<std::string> AnythingVector(std::string element);
+		std::vector<std::string> getActions();
+		std::vector<std::string> getActionsDescriptions();
 		std::vector<std::string> IconPaths();
 		std::vector<std::string> Includes();
 		std::vector<std::string> XDGautostart();

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(jwm-settings-manager CXX C)
 set(PROJECT_NAME jwm-settings-manager)
 set(VERMAJ "2")
-set(VERMIN "0")
+set(VERMIN "4")
 set(VERREV "0")
 SET(VERSION "${VERMAJ}.${VERMIN}.${VERREV}")
 set(YEAR "2016")
@@ -157,11 +157,20 @@ set(JSM_SRCS
 	src/window.cpp
 	${XML_SOURCES}
 )
+## gettext
+# https://cmake.org/cmake/help/v2.8.12/cmake.html#module:FindGettext
+find_package(Gettext)
+if(GETTEXT_FOUND)
+	file (GLOB PO_FILES ${CMAKE_SOURCE_DIR}/po/*.po)
+	message( "msgfmt: ${GETTEXT_MSGFMT_EXECUTABLE}")
+	message( "msgmerge: ${GETTEXT_MSGMERGE_EXECUTABLE}")
+    GETTEXT_CREATE_TRANSLATIONS(po/${PROJECT_NAME}.pot ALL ${PO_FILES})
+endif()
 ## Turn the source code into a library
 add_library(JSM STATIC ${JSM_SRCS})
 add_subdirectory(data)
 ## make the executable
-add_executable(jwm-settings-manager src/jsm.cpp)
+add_executable(${PROJECT_NAME} src/jsm.cpp)
 add_executable(fltk-mouse fltk/jwm-mouse.cxx)
 add_executable(desktop-file-editor fltk/desktop-file-editor.cxx)
 ## Linker settings
@@ -171,11 +180,11 @@ if(result)
 	set(ALL_LIBS ${ALL_LIBS} fltk_SHARED fltk_images_SHARED)
 endif()
 ## link them up!
-TARGET_LINK_LIBRARIES(jwm-settings-manager ${ALL_LIBS})
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${ALL_LIBS})
 TARGET_LINK_LIBRARIES(fltk-mouse ${ALL_LIBS})
 TARGET_LINK_LIBRARIES(desktop-file-editor ${ALL_LIBS})
 ## Install the binary to bin and the library to lib :)
-install(TARGETS jwm-settings-manager fltk-mouse desktop-file-editor JSM
+install(TARGETS ${PROJECT_NAME} fltk-mouse desktop-file-editor JSM
 	RUNTIME DESTINATION bin
 	ARCHIVE DESTINATION lib
 )
