@@ -769,10 +769,11 @@ bool JWMRC::newVersionJWM(){
 }
 //P
 //WILL THIS be USEFUL?!?!?!?!?!?
+#if 0
 bool JWMRC::populateActions(Fl_Menu_Bar *o, Fl_Callback *Menu_CB){
 	std::vector<std::string> Actions=getActions();
 	for(std::vector<std::string>::iterator it = Actions.begin();
-		it!=Bindings.end();
+		it!=Actions.end();
 		++it){
 		std::string item=*it;
 		o->add(item.c_str(),Menu_CB);
@@ -780,6 +781,7 @@ bool JWMRC::populateActions(Fl_Menu_Bar *o, Fl_Callback *Menu_CB){
 	o->redraw();
 	return true;
 }
+#endif
 bool JWMRC::populateFLBrowser(Fl_Browser *o, pugi::xml_node noder){
 //	if(!loadTemp()){return false;}
 	debug_out("bool populateFLBrowser(Fl_Browser *o,, pugi::xml_node noder");
@@ -2418,6 +2420,7 @@ std::vector<std::string> JWMRC::getActions(){
 }
 std::vector<std::string> JWMRC::getActionsDescriptions(){
 	std::vector<std::string> retVec;
+	int vernum=JWMversion();
 	retVec.push_back("Move up.");
 	retVec.push_back("Move down.");
 	retVec.push_back("Move right.");

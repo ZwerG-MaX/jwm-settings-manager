@@ -31,6 +31,7 @@
 #include <FL/fl_ask.H> //errorJWM
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_Menu_Button.H>
+#include <FL/Fl_Menu_Bar.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_File_Chooser.H>
@@ -129,7 +130,7 @@ class JWMRC
 	//N
 		bool newVersionJWM();
 	//P
-		bool populateBindings(Fl_Menu_Bar *o, Fl_Callback *Menu_CB);
+		bool populateActions(Fl_Menu_Bar *o, Fl_Callback *Menu_CB);
 		bool populateFLBrowser(Fl_Browser *o, pugi::xml_node noder);
 		bool populateFLBrowser(Fl_Browser *o, std::string element);
 		bool populateFLBrowser(Fl_Browser *o, std::string element, std::string attribute, std::string attribute_value, std::string attribute2, std::string optional_attribute);

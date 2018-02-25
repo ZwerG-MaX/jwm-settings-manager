@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \"jwm-settings-manager\" \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-05 19:50-0500\n"
+"POT-Creation-Date: 2017-12-19 16:15-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,97 +16,194 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 548
-msgid "Desktop File Editor"
+# File: fltk/jwm-menu.cxx, line: 641
+#. Fl_Browser* menuElementText
+msgid " "
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 556
-msgid "Normal"
+# File: fltk/jwm-window.cxx, line: 838
+#. Fl_Button* min_image
+msgid " Close"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 558
-msgid "Name"
+# File: fltk/jwm-window.cxx, line: 818
+#. Fl_Button* max_a_image
+msgid " Maximize"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 559
-msgid "Specific name of the application, for example \"Mozilla\"."
+# File: fltk/jwm-window.cxx, line: 807
+#. Fl_Box* o
+msgid " Maximize (Activated)"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 563
-#. Fl_Input* name
-msgid "Comment"
+# File: fltk/jwm-window.cxx, line: 828
+#. Fl_Button* max_image
+msgid " Minimize"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 564
+# File: fltk/jwm-panel.cxx, line: 1024
+# File: fltk/jwm-panel.cxx, line: 1066
+# File: fltk/jwm-window.cxx, line: 720
+# File: fltk/jwm-window.cxx, line: 792
+#. Fl_Slider* o_menu_slider
+#. Fl_Slider* o_slider
+#. Fl_Slider* active_o_slider
+#. Fl_Slider* inactive_o_slider
+msgid "%"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1546
+msgid "(Advanced) User Defined"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 992
+# File: fltk/jwm-panel.cxx, line: 940
+# File: fltk/jwm-panel.cxx, line: 1603
+# File: fltk/jwm-panel.cxx, line: 1858
+#. Fl_Browser* key_browser
+#. Fl_Browser* indicator_browser
+#. Fl_Browser* shortcut_browser
+msgid "-"
+msgstr "-"
+
+#
+# File: fltk/jwm-panel.cxx, line: 1152
+msgid "0 is Full Length"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1816
+msgid "0 will base size from the current items in the panel"
+msgstr ""
+
+#
+# File: src/panel.cpp, line: 236
+msgid "12"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1538
+msgid "12 Hour Clock"
+msgstr ""
+
+#
+# File: src/panel.cpp, line: 237
+msgid "24"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1534
+msgid "24 Hour Clock"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 1781
+#. Fl_Button* o
+msgid "?"
+msgstr ""
+
+#
+# File: fltk/jwm-autostart.cxx, line: 161
+# File: fltk/jwm-keyboard.cxx, line: 1014
+# File: fltk/jwm-menu.cxx, line: 648
+# File: fltk/jwm-menu.cxx, line: 669
+# File: fltk/jwm-panel.cxx, line: 960
+# File: fltk/jwm-panel.cxx, line: 1342
+# File: fltk/jwm-panel.cxx, line: 1610
+# File: fltk/jwm-panel.cxx, line: 1829
+# File: fltk/jwm-window.cxx, line: 515
+# File: fltk/jwm-window.cxx, line: 1004
+# File: fltk/jwm-window.cxx, line: 1020
+# File: fltk/jwm-window.cxx, line: 1036
+# File: fltk/jwm-window.cxx, line: 1052
+#. Fl_Button* save_button
+#. Fl_Button* o
+#. Fl_Browser* menuElement
+#. Fl_Button* o
+#. Fl_Browser* add_indicator_browser
+#. Fl_Browser* panel_items_browser
+#. Fl_Button* o
+#. Fl_Input* tooltip
+#. Fl_Browser* groups_browser
+#. Fl_Browser* opt_browser
+#. Fl_Browser* name_browser
+#. Fl_Browser* class_browser
+msgid "@+"
+msgstr "@+"
+
+#
+# File: fltk/jwm-panel.cxx, line: 971
+#. Fl_Button* o
+msgid "@+92>"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 965
+#. Fl_Button* choose_apps
+msgid "@+98>"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1140
+#. Fl_Button* o
+msgid "@->| Right"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1112
+#. Fl_Button* o
+msgid "@2->| Bottom"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1126
+#. Fl_Button* o
+msgid "@4->| Left"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1098
+msgid "@8->| Top"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 832
+# File: fltk/desktop-file-editor.cxx, line: 891
 msgid ""
-"Tooltip for the entry, for example \"View sites on the Internet\". The value "
-"should not be redundant with the values of Name and GenericName."
+"A boolean value specifying if D-Bus activation is supported for this "
+"application. If this key is missing, the default value is false. If the "
+"value is true then implementations should ignore the Exec key and send a D-"
+"Bus message to launch the application. See D-Bus Activation for more "
+"information on how this works. Applications should still include Exec= lines "
+"in their desktop files for compatibility with implementations that do not "
+"understand the DBusActivatable key."
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 568
-#. Fl_Input* comment
-msgid "TryExec"
+# File: fltk/jwm-panel.cxx, line: 1010
+# File: fltk/jwm-panel.cxx, line: 1052
+# File: fltk/jwm-window.cxx, line: 708
+# File: fltk/jwm-window.cxx, line: 780
+msgid "A compositor (like xcompmgr) must be installed"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 569
+# File: fltk/desktop-file-editor.cxx, line: 782
 msgid ""
-"Path to an executable file on disk used to determine if the program is "
-"actually installed. If the path is not an absolute path, the file is looked "
-"up in the $PATH environment variable. If the file is not present or if it is "
-"not executable, the entry may be ignored (not be used in menus, for example)."
+"A list of interfaces that this application implements. By default, a desktop "
+"file implements no interfaces. See http://standards.freedesktop.org/desktop-"
+"entry-spec/latest/ar01s08.html for more information on how this works."
 msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 575
-#. Fl_Input* tryexec
-msgid "Exec"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 576
-msgid ""
-"Program to execute, possibly with arguments. See the Exec key for details on "
-"how this key works. The Exec key is required if DBusActivatable is not set "
-"to true. Even if DBusActivatable is true, Exec should be specified for "
-"compatibility with implementations that do not understand DBusActivatable."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 582
-# File: fltk/jwm-menu.cxx, line: 479
-# File: fltk/jwm-menu.cxx, line: 531
-# File: fltk/jwm-menu.cxx, line: 571
-# File: fltk/jwm-panel.cxx, line: 1650
-# File: fltk/jwm-panel.cxx, line: 1682
-# File: fltk/jwm-window.cxx, line: 528
-#. Fl_Input* exec
-#. Fl_Input* add_label
-#. Fl_Input* hid_in
-#. Fl_Input* app_menu
-#. Fl_Browser* options_desc
-msgid "Icon"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 583
-msgid ""
-"Icon to display in file manager, menus, etc. If the name is an absolute "
-"path, the given file will be used. If the name is not an absolute path, the "
-"algorithm described in the Icon Theme Specification will be used to locate "
-"the icon."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 589
-msgid ""
-"This specification defines 3 types of desktop entries: Application (type 1), "
-"Link (type 2) and Directory (type 3). To allow the addition of new types in "
-"the future, implementations should ignore desktop entries with an unknown "
-"type"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 595
-# File: fltk/desktop-file-editor.cxx, line: 654
-msgid ""
-"Categories in which the entry should be shown in a menu (for possible values "
-"see the Desktop Menu Specification)."
-msgstr ""
+
 #
 # File: fltk/desktop-file-editor.cxx, line: 600
 # File: fltk/desktop-file-editor.cxx, line: 612
@@ -128,126 +225,7 @@ msgid ""
 "The same desktop name may not appear in both OnlyShowIn and NotShowIn of a "
 "group."
 msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 624
-# File: fltk/desktop-file-editor.cxx, line: 716
-msgid "Whether the program runs in a terminal window."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 628
-# File: fltk/desktop-file-editor.cxx, line: 731
-msgid ""
-"NoDisplay means \"this application exists, but don't display it in the menus"
-"\". This can be useful to e.g. associate this application with MIME types, "
-"so that it gets launched from a file manager (or other apps), without having "
-"a menu entry for it (there are tons of good reasons for this, including e.g. "
-"the netscape -remote, or kfmclient openURL kind of stuff)."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 635
-#. Fl_Input* nodisplay
-msgid "Type"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 636
-msgid ""
-"This specification defines 3 types of desktop entries: Application (type 1), "
-"Link (type 2) and Directory (type 3). To allow the addition of new types in "
-"the future, implementations should ignore desktop entries with an unknown "
-"type."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 653
-#. Fl_Menu_Button* o
-msgid "Categories"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 669
-#. Fl_Menu_Button* cat_Button
-msgid "NotShowIn"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 692
-#. Fl_Menu_Button* nsi_Button
-msgid "OnlyShowIn"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 715
-#. Fl_Menu_Button* osi_Button
-msgid "Terminal"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 730
-#. Fl_Menu_Button* term_Button
-msgid "NoDisplay"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 749
-#. Fl_Menu_Button* nod_Button
-msgid "ICON"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 758
-# File: fltk/jwm-window.cxx, line: 1065
-#. Fl_Group* o
-msgid "Advanced"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 763
-msgid "GenericName"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 764
-msgid "Generic name of the application, for example \"Web Browser\"."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 767
-#. Fl_Input* genericname
-msgid "Version"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 768
-msgid ""
-"Version of the Desktop Entry Specification that the desktop entry conforms "
-"with. Entries that confirm with this version of the specification should use "
-"1.0. Note that the version field is not required to be present."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 773
-#. Fl_Input* version
-msgid "Path"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 774
-msgid ""
-"If entry is of type Application, the working directory to run the program in."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 777
-#. Fl_Input* path
-msgid "MimeType"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 778
-msgid "The MIME type(s) supported by this application."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 781
-#. Fl_Input* mime
-msgid "Implements"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 782
-msgid ""
-"A list of interfaces that this application implements. By default, a desktop "
-"file implements no interfaces. See http://standards.freedesktop.org/desktop-"
-"entry-spec/latest/ar01s08.html for more information on how this works."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 787
-#. Fl_Input* implements
-msgid "Keywords"
-msgstr ""
+
 #
 # File: fltk/desktop-file-editor.cxx, line: 788
 msgid ""
@@ -256,145 +234,382 @@ msgid ""
 "entries. The values are not meant for display, and should not be redundant "
 "with the values of Name or GenericName."
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 794
-#. Fl_Input* keywords
-msgid "StartupWMClass"
+# File: fltk/jwm-mouse.cxx, line: 1180
+#. Fl_Value_Slider* MaxSpeed
+msgid "Acceleration"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 795
-msgid ""
-"If specified, it is known that the application will map at least one window "
-"with the given string as its WM class or WM name hint (see the Startup "
-"Notification Protocol Specification for more details)."
+# File: fltk/jwm-mouse.cxx, line: 1181
+msgid "Acceleration factor"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 800
-#. Fl_Input* wmclass
-msgid "URL"
+# File: fltk/jwm-keyboard.cxx, line: 1047
+# File: fltk/jwm-keyboard.cxx, line: 1125
+#. Fl_Button* o
+msgid "Action"
 msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 801
-msgid "If entry is Link type, the URL to access."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 806
-# File: fltk/desktop-file-editor.cxx, line: 842
-msgid ""
-"Identifiers for application actions. This can be used to tell the "
-"application to make a specific action, different from the default behavior. "
-"The Application actions section describes how actions work."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 813
-# File: fltk/desktop-file-editor.cxx, line: 850
-msgid ""
-"If true, it is KNOWN that the application will send a \"remove\" message "
-"when started with the DESKTOP_STARTUP_ID environment variable set. If false, "
-"it is KNOWN that the application does not work with startup notification at "
-"all (does not shown any window, breaks even when using StartupWMClass, "
-"etc.). If absent, a reasonable handling is up to implementations (assuming "
-"false, using StartupWMClass, etc.). (See the Startup Notification Protocol "
-"Specification for more details)."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 823
-# File: fltk/desktop-file-editor.cxx, line: 871
-msgid ""
-"Hidden should have been called Deleted. It means the user deleted (at his "
-"level) something that was present (at an upper level, e.g. in the system "
-"dirs). It's strictly equivalent to the .desktop file not existing at all, as "
-"far as that user is concerned. This can also be used to \"uninstall\" "
-"existing files (e.g. due to a renaming) - by letting make install install a "
-"file with Hidden=true in it."
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 832
-# File: fltk/desktop-file-editor.cxx, line: 891
-msgid ""
-"A boolean value specifying if D-Bus activation is supported for this "
-"application. If this key is missing, the default value is false. If the "
-"value is true then implementations should ignore the Exec key and send a D-"
-"Bus message to launch the application. See D-Bus Activation for more "
-"information on how this works. Applications should still include Exec= lines "
-"in their desktop files for compatibility with implementations that do not "
-"understand the DBusActivatable key."
-msgstr ""
+
 #
 # File: fltk/desktop-file-editor.cxx, line: 841
 #. Fl_Input* dbus
 msgid "Actions"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 849
+# File: fltk/jwm-fonts.cxx, line: 237
+# File: fltk/jwm-panel.cxx, line: 1757
+# File: fltk/jwm-panel.cxx, line: 1765
+#. Fl_Output* window_font
+#. Fl_Box* o
+#. Fl_Button* a_fg
+msgid "Active"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 665
+#. Fl_Box* o
+msgid "Active Window"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 601
+msgid "Add Class"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1288
+msgid "Add Indicator"
+msgstr ""
+
+#
+# File: fltk/jwm-autostart.cxx, line: 162
+msgid "Add OR chose a program"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 423
+msgid "Add a Menu"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 900
+# File: fltk/jwm-panel.cxx, line: 1893
+msgid "Add a Panel"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 822
+msgid "Add a menu"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 649
+# File: fltk/jwm-menu.cxx, line: 670
+msgid "Add a menu item"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1283
+msgid "Add a new Window class effected by the option"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1226
+msgid "Add a new group of options for windows"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1245
+msgid "Add a new option to the current group"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1264
+msgid "Add a program effected by the option"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 474
+msgid "Add an Item"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 505
+msgid "Add an Option"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1326
+# File: fltk/jwm-panel.cxx, line: 1355
+msgid "Add to Panel"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1570
+msgid "Additional quirks"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 758
+# File: fltk/jwm-window.cxx, line: 1065
+#. Fl_Group* o
+msgid "Advanced"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1205
+# File: fltk/jwm-panel.cxx, line: 1208
+#. Fl_Value_Input* height_input
+msgid "Advanced Options"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 953
+#. trans_slide->value(o->value());
+#. Fl_Value_Input* transparency
+msgid "Age threshold"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 731
+#. Fl_Output* font
+msgid "Alignment"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1243
+msgid ""
+"Alignment of Icons. Possible values are \"left\", \"center\" and \"right\"."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1229
+msgid ""
+"Alignment of icons. Possible values are \"left\", \"center\" and \"right\"."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 732
+# File: fltk/jwm-popups.cxx, line: 747
+msgid ""
+"Alignment of message text. Possible values are \"left\", \"center\" and "
+"\"right\"."
+msgstr ""
+
+#
+# File: fltk/jwm-themes.cxx, line: 101
+msgid "All the installed system themes"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 832
+#. Fl_Value_Input* bounce_freq
+msgid "Allow Markup"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1370
+msgid ""
+"An  icon to display for the menu button on client windows instead of the "
+"default. This is used for  client  windows that do not specify an icon."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1386
+msgid "An icon to display for windows that  do  not  specify  an icon."
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 888
+#. Fl_Check_Button* hint_check
+msgid "Antialiasing"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1713
 #. Fl_Button* o
-msgid "StartupNotify"
+msgid "App Name"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 870
-#. Fl_Menu_Button* notify_Button
-msgid "Hidden"
+# File: fltk/jwm-panel.cxx, line: 980
+# File: fltk/jwm-panel.cxx, line: 1081
+# File: fltk/jwm-window.cxx, line: 660
+#. Fl_Group* o
+#. Fl_Group* apps_tab
+#. Fl_Button* tray_outline2
+msgid "Appearance"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 890
+# File: fltk/jwm-window.cxx, line: 933
+#. Fl_Menu_Button* resize_menu
+msgid "Appearance of Window while Moving"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 917
+#. Fl_Menu_Button* focus_menu
+msgid "Appearance of the Window while Resizing"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1811
+msgid "Application"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 939
+# File: fltk/jwm-panel.cxx, line: 977
+# File: debian/postinst, line: 8
+#. Fl_Button* o
+msgid "Apps"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1777
 #. Fl_Menu_Button* o
-msgid "DBusActivatable"
+msgid "Autohide"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 915
-#. Fl_Tabs* o
-msgid "OPEN"
+# File: fltk/jwm-panel.cxx, line: 1112
+# File: fltk/jwm-panel.cxx, line: 1140
+#. Fl_Value_Input* border_input
+msgid "Autohide Position"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 916
-msgid "Open a desktop file"
+# File: fltk/jwm-panel.cxx, line: 1142
+# File: fltk/jwm-panel.cxx, line: 1149
+msgid "Autohide?"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 920
-# File: fltk/desktop-file-editor.cxx, line: 966
-# File: fltk/jwm-panel.cxx, line: 1835
+# File: fltk/jwm-fonts.cxx, line: 1011
+#. Fl_Output* hint_out
+msgid "Autohint"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 958
+msgid "Automatic hinting style"
+msgstr ""
+
+#
+# File: fltk/jwm-settings.cxx, line: 4260
 #. Fl_Button* o
-#. Fl_Scroll* o
+msgid "Autostart"
+msgstr ""
+
+#
+# File: fltk/jwm-autostart.cxx, line: 134
+msgid "Autostart Programs"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1753
+#. Fl_Button* clock_fg
+#. Fl_Box* o
 #. Fl_Button* o
-msgid "SAVE"
+#. Fl_Value_Input* Low_timeout
+#. Fl_Value_Input* Norm_timeout
+#. Fl_Value_Input* Crit_timeout
+msgid "Background"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 921
-# File: fltk/desktop-file-editor.cxx, line: 967
-msgid "Save the current data as a file"
+# File: fltk/jwm-window.cxx, line: 735
+#. Fl_Box* o
+msgid "Background  Window"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 927
-#. Fl_Button* o
-msgid "File Name"
+# File: fltk/jwm-popups.cxx, line: 1114
+# File: fltk/jwm-popups.cxx, line: 1132
+# File: fltk/jwm-popups.cxx, line: 1147
+# File: fltk/jwm-popups.cxx, line: 1165
+# File: fltk/jwm-popups.cxx, line: 1180
+# File: fltk/jwm-popups.cxx, line: 1198
+msgid "Background color"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 928
-msgid "The file you want to save (or the name of the current open file)"
+# File: fltk/jwm-fonts.cxx, line: 1035
+#. Fl_Check_Button* o
+msgid "Bold"
 msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 697
+# File: fltk/jwm-window.cxx, line: 769
+#. Fl_Button* a_font_color
+#. Fl_Button* inactive_font_color
+msgid "Border Color"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 882
+#. Fl_Choice* RTCornerButton
+msgid "Bottom Left Corner"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 900
+#. Fl_Choice* LBCornerButton
+msgid "Bottom Right Corner"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 821
+#. Fl_Check_Button* word_wrap
+msgid "Bounce Frequency"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1220
+#. Fl_Input* icon_folders_input
+msgid "Browser"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1221
+msgid "Browser for opening urls in context menu."
+msgstr ""
+
+#
+# File: fltk/jwm-themes.cxx, line: 107
+#. Fl_Box* button_icon
+msgid "Button"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2467
+msgid "Button 1 is Left, Button 2 is right. Button 3 is middle."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1045
+#. Fl_Button* a_border_color2
+msgid "Button Order"
+msgstr ""
+
 #
 # File: fltk/desktop-file-editor.cxx, line: 931
 #. Fl_Input* Filename
 msgid "CLEAR"
 msgstr ""
+
 #
 # File: fltk/desktop-file-editor.cxx, line: 932
 # File: fltk/desktop-file-editor.cxx, line: 974
 msgid "CLEAR EVERYTHING"
 msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 938
-#. Fl_Button* o
-msgid "PREVIEW"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 939
-msgid "Preview text"
-msgstr ""
-#
-# File: fltk/desktop-file-editor.cxx, line: 953
-msgid "Preview"
-msgstr ""
+
 #
 # File: fltk/desktop-file-editor.cxx, line: 973
 # File: fltk/jwm-panel.cxx, line: 1312
@@ -408,22 +623,31 @@ msgstr ""
 #. Fl_Button* app_icon_box
 msgid "CLOSE"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 1013
-msgid "Choose a Directory"
+# File: fltk/jwm-mouse.cxx, line: 1026
+#. Fl_Value_Slider* HorizScrollDelta
+msgid "CScroll Delta"
 msgstr ""
+
 #
-# File: fltk/desktop-file-editor.cxx, line: 1286
-msgid "Choose a Desktop File"
+# File: fltk/jwm-mouse.cxx, line: 1039
+#. Fl_Value_Slider* CircScrollDelta
+msgid "CScroll Start"
 msgstr ""
+
 #
-# File: fltk/jwm-autostart.cxx, line: 134
-msgid "Autostart Programs"
+# File: fltk/jwm-mouse.cxx, line: 1105
+# File: fltk/jwm-mouse.cxx, line: 1119
+# File: fltk/jwm-mouse.cxx, line: 1133
+# File: fltk/jwm-mouse.cxx, line: 1147
+#. Fl_Value_Output* TopEdge
+#. Fl_Value_Output* BottomEdge
+#. Fl_Value_Output* LeftEdge
+#. Fl_Value_Output* RightEdge
+msgid "Calibrate"
 msgstr ""
-#
-# File: fltk/jwm-autostart.cxx, line: 140
-msgid "You can add extra arguments here"
-msgstr ""
+
 #
 # File: fltk/jwm-autostart.cxx, line: 146
 # File: fltk/jwm-desktop.cxx, line: 186
@@ -448,15 +672,1717 @@ msgstr ""
 #. Fl_Button* o
 #. Fl_Box* o
 #. Fl_Button* o
+#. Fl_Scroll* o
 #. Fl_Browser* cursor_browser
 #. Fl_Button* save_button
 #. Fl_Tabs* o
-#. Fl_Button* sus
+#. Fl_Button* o
+#. Fl_Button* log
 #. Fl_Button* save_button
-#. Fl_Browser* add_tracker
+#. Fl_Value_Input* desktop_num
 #. Fl_Tabs* o
+#. Fl_Browser* theme_browser
+#. Fl_Input* ordering
 msgid "Cancel"
 msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 702
+msgid "Cancel changes"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 653
+#. Fl_Menu_Button* o
+msgid "Categories"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 595
+# File: fltk/desktop-file-editor.cxx, line: 654
+msgid ""
+"Categories in which the entry should be shown in a menu (for possible values "
+"see the Desktop Menu Specification)."
+msgstr ""
+
+#
+# File: fltk/jwm-themes.cxx, line: 88
+msgid "Change Colors ONLY"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1460
+#. Fl_Button* o
+msgid "Change GTK Widget theme"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 1046
+msgid "Change Locale text"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 802
+#. Fl_Value_Input* inactive_o_slider_v
+msgid "Change the Window Button Images"
+msgstr ""
+
+#
+# File: src/fltkfunctions.cpp, line: 142
+# File: src/themes.cpp, line: 263
+msgid "Choose"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 128
+#. Fl_Button* o
+msgid "Choose Color"
+msgstr ""
+
+#
+# File: src/fltkfunctions.cpp, line: 36
+# File: src/fltkfunctions.cpp, line: 60
+msgid "Choose Directory"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 134
+#. Fl_Button* o
+msgid "Choose Gradient"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 123
+#. Fl_Box* color_display2
+msgid "Choose Image"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1060
+# File: fltk/jwm-keyboard.cxx, line: 1138
+#. Fl_Menu_Button* o
+msgid "Choose Program"
+msgstr ""
+
+#
+# File: src/desktop.cpp, line: 86
+msgid "Choose a Background"
+msgstr ""
+
+#
+# File: src/fltkfunctions.cpp, line: 202
+msgid "Choose a Color"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 1286
+msgid "Choose a Desktop File"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 1013
+msgid "Choose a Directory"
+msgstr ""
+
+#
+# File: src/fltkfunctions.cpp, line: 89
+# File: src/fltkfunctions.cpp, line: 94
+# File: src/fltkfunctions.cpp, line: 99
+msgid "Choose a File"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 386
+msgid "Choose a Font"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1020
+msgid "Choose a color"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 720
+msgid "Choose a layer"
+msgstr ""
+
+#
+# File: fltk/jwm-icons.cxx, line: 197
+#. Fl_Input* dir_edit_input
+msgid "Choose a new directory"
+msgstr ""
+
+#
+# File: src/fltkfunctions.cpp, line: 105
+# File: src/fltkfunctions.cpp, line: 214
+# File: src/panel.cpp, line: 348
+msgid "Choose a program"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1061
+# File: fltk/jwm-keyboard.cxx, line: 1139
+msgid "Choose a program to add"
+msgstr ""
+
+#
+# File: src/fltkfunctions.cpp, line: 135
+msgid "Choose an Icon"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1809
+msgid "Choose an application to add"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 669
+msgid "Choose an icon"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1019
+# File: fltk/jwm-window.cxx, line: 1046
+msgid ""
+"Choose an icon to display for the close button on client windows instead of "
+"the default."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1008
+msgid ""
+"Choose an icon to display for the maximize button on client windows instead "
+"of the default."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 997
+msgid ""
+"Choose an icon to display for the maximize button on maximized client "
+"windows instead of the default."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 986
+msgid ""
+"Choose an icon to display for the minimize button on client windows instead "
+"of the default."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 901
+#. Fl_Value_Input* b_slider_v
+msgid "Choose how the Window comes to the front of the screen"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 949
+#. Fl_Menu_Button* move_menu
+msgid "Choose what the Windows will snap to"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 746
+#. Fl_Check_Button* GuestMouseOff
+msgid "Circular Pad"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 992
+#. Fl_Check_Button* LeftRightScrolling
+msgid "Circular Scroll"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 603
+msgid "Class to Add"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 767
+#. Fl_Value_Slider* FingerLowHigh
+msgid "Click Emulation Time"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2002
+# File: src/jwmrc.cpp, line: 1699
+# File: src/panel.cpp, line: 283
+# File: src/panel.cpp, line: 393
+msgid "Clock"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1525
+#. Fl_Browser* zone_browser
+msgid "Clock Format"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1071
+#. Fl_Box* o
+msgid "Close"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1080
+#. Fl_Output* close
+msgid "Close All"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1081
+msgid "Close all notifications."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1072
+msgid "Close notification."
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 505
+msgid "Close window"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1057
+#. Fl_Value_Input* Frame_width
+msgid "Color"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 673
+# File: fltk/jwm-window.cxx, line: 743
+#. Fl_Box* o
+msgid "Color 1"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 680
+# File: fltk/jwm-window.cxx, line: 751
+#. Fl_Button* a_title_color1
+#. Fl_Button* inactive_color
+msgid "Color 2"
+msgstr ""
+
+#
+# File: src/desktop.cpp, line: 115
+msgid "Color Gradient"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 563
+#. Fl_Input* name
+msgid "Comment"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 930
+msgid "Condensed, normal or expanded"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1723
+#. Fl_Input* swallow_name
+msgid "Configure"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2426
+msgid "Configure Button"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1363
+# File: fltk/jwm-panel.cxx, line: 1406
+# File: fltk/jwm-panel.cxx, line: 1523
+msgid "Configure Clock"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1588
+msgid "Configure Indicators"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 1057
+msgid "Configure Item"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1116
+msgid "Configure Keyboard Shortcut"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 1027
+msgid "Configure Locale specific Names"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1666
+msgid "Configure Menu"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1705
+msgid "Configure Swallowed Application"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1740
+msgid "Configure Switcher"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 1055
+msgid "Configure extra Actions"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 529
+# File: fltk/jwm-menu.cxx, line: 569
+msgid "Configure the Item"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2641
+msgid "Configure the menu"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2815
+msgid "Configure the menu items"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2481
+# File: fltk/jwm-panel.cxx, line: 2628
+msgid "Configure the program"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2494
+msgid "Configure this menu"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 485
+# File: fltk/jwm-menu.cxx, line: 540
+# File: fltk/jwm-menu.cxx, line: 580
+#. Fl_Button* add_prog_button
+#. Fl_Input* item_prog_input
+msgid "Confirm"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1099
+#. Fl_Output* history
+msgid "Context"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1100
+msgid "Context menu."
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1037
+msgid "Create Keyboard Shortcut"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1174
+#. Fl_Button* Norm_background
+msgid "Critical Urgency"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1170
+#. Fl_Output* mod3_output
+msgid "Current"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 994
+msgid "Current Groups"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1015
+#. Fl_Button* rm_group
+msgid "Current Options"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1851
+#. Fl_Check_Button* shortcut_border
+msgid "Current Panel Buttons"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1171
+# File: fltk/jwm-keyboard.cxx, line: 1188
+# File: fltk/jwm-keyboard.cxx, line: 1194
+# File: fltk/jwm-keyboard.cxx, line: 1200
+msgid "Current Shortcut to Edit"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 693
+# File: fltk/jwm-mouse.cxx, line: 1266
+#. Fl_Button* cancel_button3
+#. Fl_Button* ok_button
+msgid "Cursors"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 890
+#. Fl_Menu_Button* o
+msgid "DBusActivatable"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 897
+#. Fl_Check_Button* o
+msgid "DPI"
+msgstr ""
+
+#
+# File: src/panel.cpp, line: 235
+msgid "Day"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1530
+msgid "Day name Month Day 12 Hour"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1369
+#. Fl_Box* o
+msgid "Default Menu Button Icon"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1377
+msgid ""
+"Default Menu Button Icon.  An  icon to display for the menu button on client "
+"windows instead of the default. This is used for  client  windows that do "
+"not specify an icon."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1392
+msgid ""
+"Default Window  Icon.  An icon to display for windows that  do  not  "
+"specify  an icon."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1385
+#. Fl_Button* default_icon_button
+msgid "Default Window Icon"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 786
+# File: fltk/jwm-popups.cxx, line: 803
+msgid ""
+"Define a color for the separator. possible values are:  * auto: dunst tries "
+"to find a color fitting to the background;  * foreground: use the same color "
+"as the foreground;  * frame: use the same color as the frame;  * anything "
+"else will be interpreted as a X color."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 628
+#. Fl_Value_Input* delay_out
+msgid "Delay"
+msgstr ""
+
+#
+# File: fltk/jwm-settings.cxx, line: 4229
+# File: fltk/jwm-window.cxx, line: 542
+#. Fl_Button* o
+msgid "Desktop"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 548
+msgid "Desktop File Editor"
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 469
+msgid "Desktop List"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 100
+msgid "Desktop Settings"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2005
+# File: src/jwmrc.cpp, line: 1702
+# File: src/panel.cpp, line: 286
+# File: src/panel.cpp, line: 396
+msgid "Desktop Switcher"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 1127
+msgid "Determine if a confirm dialog appears before exiting. Default is true."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 642
+# File: fltk/jwm-popups.cxx, line: 659
+msgid ""
+"Determine if popups are shown. This is a comma-separated list of one or more "
+"of the following: true (all enabled), false (no  popups  enabled),  button "
+"(tray buttons), clock (clocks), menu (menus), pager (pagers), and task (task "
+"list items). The default is true."
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 427
+msgid ""
+"Determine which buttons on the root window activate the menu. This is a list "
+"of integers specifying buttons. The default is 123. Multiple root menus may "
+"be used by specifying different buttons to activate them. Valid values in "
+"this list are 0 to 9 and a to z. The usual mouse buttons are 1 for the left "
+"button, 2 for the middle button, 3 for the right button, and 4 and 5 for the "
+"scroll wheel. Therefore, accessing root menus that are assigned to buttons "
+"0, 6, 7, 8, 9, or a letter will typically require the use of a tray button "
+"or key binding."
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 1126
+msgid ""
+"Determines  if a label appears at the top of the menu. Default is false."
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 455
+msgid ""
+"Determines if a label appears at the top of the menu, this will have no "
+"effect if the label is not set"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2319
+msgid ""
+"Determines if a label is shown for items  in the task list.  The default is "
+"true."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2941
+msgid "Determines if the pager has text labels. Default is false."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2329
+msgid ""
+"Determines if windows are  grouped  by  class  when shown  in  task bars.  "
+"Possible values are true and false. The default is false."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2339
+msgid ""
+"Determines which windows are shown  in  task  bars. Possible values are "
+"desktop and all. The default is desktop."
+msgstr ""
+
+#
+# File: fltk/jwm-icons.cxx, line: 152
+#. Fl_Light_Button* icon_themes_button
+msgid "Directories"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 912
+msgid "Display indicators for URLs (U) and actions (A)"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 755
+# File: fltk/jwm-popups.cxx, line: 774
+msgid ""
+"Display notification on focused monitor.  Possible modes are:   mouse: "
+"follow mouse pointer   keyboard: follow window with keyboard focus   none: "
+"don't follow anything  \"keyboard\" needs a windowmanager that exports the "
+"_NET_ACTIVE_WINDOW property. This should be the case for almost all modern "
+"windowmanagers.  If this option is set to mouse or keyboard, the monitor "
+"option will be ignored."
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 750
+msgid "Display the Label in the Menu"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1035
+#. Fl_Check_Button* startup_notification
+msgid "Dmenu path"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 902
+msgid ""
+"Don't remove messages, if the user is idle (no mouse or keyboard input) for "
+"longer than idle_threshold seconds. Set to 0 to disable."
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 643
+# File: fltk/jwm-mouse.cxx, line: 1222
+#. Fl_Slider* double_click_slider2
+#. Fl_Value_Input* double_v
+msgid "Double Click Delta"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 628
+# File: fltk/jwm-mouse.cxx, line: 1197
+msgid "Double Click Speed"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 930
+#. Fl_Value_Slider* MaxTapTime
+msgid "Double Tap Time"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 992
+msgid ""
+"Draw a line of this pixel height between two notifications. Set to 0 to "
+"disable."
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 606
+msgid "ERROR"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1068
+#. Fl_Value_Slider* EdgeMotionMinSpeed
+msgid "Edge Max Speed"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1055
+#. Fl_Choice* CircScrollTrigger
+msgid "Edge Min Speed"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1081
+#. Fl_Value_Slider* EdgeMotionMaxSpeed
+msgid "Edge Sensitivity"
+msgstr ""
+
+#
+# File: fltk/jwm-icons.cxx, line: 177
+msgid "Edit Directory"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 609
+msgid "Edit Include Item"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1075
+# File: fltk/jwm-panel.cxx, line: 1079
+#. Fl_Button* save_button
+msgid "Edit Menus"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 1028
+msgid "Eliminate leading from line spacing"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 969
+msgid "Enable Horizontal Edge scrolling for this to work"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 961
+msgid "Enable Vertical Edge scrolling for this to work"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 1047
+#. Fl_Check_Button* o
+msgid "Encoding"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 575
+#. Fl_Input* tryexec
+msgid "Exec"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2619
+msgid "Execute a command."
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 509
+msgid "Exit"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 1054
+#. Fl_Group* o
+msgid "Extra Actions"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1069
+msgid "Fastest setting for edge motion speed"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 169
+#. Fl_Button* o
+msgid "Filemanager"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1082
+msgid "Finger pressure for  motion speed"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1081
+msgid "First keyboard modifier"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 970
+# File: fltk/jwm-panel.cxx, line: 1709
+# File: fltk/jwm-panel.cxx, line: 2362
+msgid "Flat or Motif style decorations"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 991
+# File: fltk/jwm-panel.cxx, line: 1723
+# File: fltk/jwm-panel.cxx, line: 2376
+msgid "Flat or Motif style decorations (flat is default)"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 754
+#. Fl_Output* alignment
+msgid "Follow"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 720
+msgid "Font"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 687
+# File: fltk/jwm-window.cxx, line: 759
+#. Fl_Button* a_title_color2
+#. Fl_Button* inactive_color2
+msgid "Font Color"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 220
+msgid "Font Settings"
+msgstr ""
+
+#
+# File: fltk/jwm-settings.cxx, line: 4241
+#. Fl_Button* o
+msgid "Fonts"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 833
+msgid ""
+"For a complete reference see <http://developer.gnome.org/pango/stable/"
+"PangoMarkupFormat.html>. If markup is not allowed, those tags will be "
+"stripped out of the message."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1749
+#. Fl_Value_Input* o
+#. Fl_Button* o
+#. Fl_Box* o
+msgid "Foreground"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 843
+#. Fl_Check_Button* allow_markup
+msgid "Format"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1043
+#. Fl_Output* dmenu
+msgid "Frame"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1090
+# File: fltk/jwm-keyboard.cxx, line: 1176
+#. Fl_Output* current_mod1
+#. Fl_Output* modder_output
+msgid "GRAB KEY"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 828
+msgid "General Options"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 764
+msgid "Generic name of the application, for example \"Web Browser\"."
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 763
+msgid "GenericName"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 920
+#. Fl_Check_Button* show_indicators
+msgid "Geometery"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2328
+#. Fl_Check_Button* o
+msgid "Group"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 992
+#. Fl_Group* o
+msgid "Groups"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 738
+#. Fl_Choice* TouchpadOff
+msgid "Guest Mouse Off"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1013
+#. Fl_Value_Slider* VertScrollDelta
+msgid "HScroll Delta"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 445
+#. Fl_Input* new_menu_label
+#. Fl_Slider* menu_height_slider
+#. Fl_Value_Input* spacer_w
+#. Fl_Value_Input* o
+#. Fl_Button* o
+#. Fl_Value_Input* o
+msgid "Height"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1190
+msgid "Height of Panel"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1178
+#. Fl_Value_Input* width_input
+msgid "Height of Panel  "
+msgstr ""
+
+#
+# File: debian/postinst, line: 10
+msgid "Help"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 870
+#. Fl_Menu_Button* notify_Button
+msgid "Hidden"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 823
+# File: fltk/desktop-file-editor.cxx, line: 871
+msgid ""
+"Hidden should have been called Deleted. It means the user deleted (at his "
+"level) something that was present (at an upper level, e.g. in the system "
+"dirs). It's strictly equivalent to the .desktop file not existing at all, as "
+"far as that user is concerned. This can also be used to \"uninstall\" "
+"existing files (e.g. due to a renaming) - by letting make install install a "
+"file with Hidden=true in it."
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 957
+#. Fl_Menu_Button* o
+msgid "Hint Style"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 879
+msgid "Hinting"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1089
+#. Fl_Output* close_all
+msgid "History"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 971
+#. Fl_Value_Input* monitor
+msgid "History Length"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 968
+#. Fl_Check_Button* VertTwoFingerScroll
+msgid "Horizontal 2 Finger Scroll"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1010
+#. Fl_Value_Input* padding
+msgid "Horizontal Padding"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 965
+#. Fl_Menu_Button* snap_menu
+msgid "How close (in pixels) does the window need to be to snap?"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 749
+#. Fl_Menu_Button* nod_Button
+msgid "ICON"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1417
+msgid ""
+"ISO 8601 week dates %G,  %g,  and  %V yield values calculated from the week-"
+"based year defined by the ISO 8601 standard.  In this system, weeks start  "
+"on a  Monday,  and are numbered from 01, for the first week, up to 52 or 53, "
+"for the last week.  Week 1 is the first week where four  or more  days fall "
+"within the new year (or, synonymously, week 01 is: the first week of the "
+"year that contains a Thursday; or, the  week that  has 4 January in it).  "
+"When three of fewer days of the first calendar week of the new year fall "
+"within that year, then the  ISO 8601 week-based system counts those days as "
+"part of week 53 of the preceding year.  For example, 1 January 2010 is a "
+"Friday,  meaning that  just  three  days of that calendar week fall in "
+"2010.  Thus, the ISO 8601 week-based system considers these days to be part  "
+"of week  53 (%V) of the year 2009 (%G); week 01 of ISO 8601 year 2010 starts "
+"on Monday, 4 January 2010."
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 582
+# File: fltk/jwm-menu.cxx, line: 479
+# File: fltk/jwm-menu.cxx, line: 531
+# File: fltk/jwm-menu.cxx, line: 571
+# File: fltk/jwm-panel.cxx, line: 1650
+# File: fltk/jwm-panel.cxx, line: 1682
+# File: fltk/jwm-window.cxx, line: 528
+#. Fl_Input* exec
+#. Fl_Output* item_display
+#. Fl_Input* button_label
+#. Fl_Input* hid_in
+#. Fl_Button* icon_view
+#. Fl_Browser* options_desc
+msgid "Icon"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1228
+#. Fl_Output* browser
+msgid "Icon Alignment"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1867
+#. Fl_Button* o
+msgid "Icon File Name"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1207
+#. Fl_Button* Crit_background
+msgid "Icon Folders"
+msgstr ""
+
+#
+# File: fltk/jwm-icons.cxx, line: 192
+msgid "Icon themes to choose from"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 583
+msgid ""
+"Icon to display in file manager, menus, etc. If the name is an absolute "
+"path, the given file will be used. If the name is not an absolute path, the "
+"algorithm described in the Icon Theme Specification will be used to locate "
+"the icon."
+msgstr ""
+
+#
+# File: fltk/jwm-icons.cxx, line: 116
+# File: fltk/jwm-settings.cxx, line: 4223
+#. Fl_Button* o
+msgid "Icons"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 140
+#. Fl_Button* fm_pref
+msgid "Icons on Desktop"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 806
+# File: fltk/desktop-file-editor.cxx, line: 842
+msgid ""
+"Identifiers for application actions. This can be used to tell the "
+"application to make a specific action, different from the default behavior. "
+"The Application actions section describes how actions work."
+msgstr ""
+
+#
+# File: fltk/jwm-autostart.cxx, line: 237
+msgid ""
+"If configuring JWM autostart, please re-add it once you have finished "
+"editing it"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 801
+msgid "If entry is Link type, the URL to access."
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 774
+msgid ""
+"If entry is of type Application, the working directory to run the program in."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1028
+# File: fltk/jwm-window.cxx, line: 1037
+msgid ""
+"If motif window decorations are  specified,  two colors  may  be  given "
+"separated by a ':' to set the down and up colors respetively."
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 993
+msgid "If on, circular scrolling is used"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 985
+msgid "If on, the left/right buttons generate button 6/7 events"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 977
+msgid "If on, the up/down buttons generate button 4/5 events"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 795
+msgid ""
+"If specified, it is known that the application will map at least one window "
+"with the given string as its WM class or WM name hint (see the Startup "
+"Notification Protocol Specification for more details)."
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 813
+# File: fltk/desktop-file-editor.cxx, line: 850
+msgid ""
+"If true, it is KNOWN that the application will send a \"remove\" message "
+"when started with the DESKTOP_STARTUP_ID environment variable set. If false, "
+"it is KNOWN that the application does not work with startup notification at "
+"all (does not shown any window, breaks even when using StartupWMClass, "
+"etc.). If absent, a reasonable handling is up to implementations (assuming "
+"false, using StartupWMClass, etc.). (See the Startup Notification Protocol "
+"Specification for more details)."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 872
+#. Fl_Check_Button* indicate_hidden
+msgid "Ignore newlines"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 873
+msgid "Ignore newlines '\\n' in notifications."
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 781
+#. Fl_Input* mime
+msgid "Implements"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 252
+#. Fl_Button* o
+#. Fl_Box* o
+msgid "Inactive"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 611
+msgid "Include"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 863
+#. Fl_Check_Button* sort
+msgid "Indicate hidden"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2001
+# File: src/jwmrc.cpp, line: 1698
+# File: src/panel.cpp, line: 282
+# File: src/panel.cpp, line: 392
+msgid "Indicators"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 1041
+#. Fl_Check_Button* o
+msgid "Italic"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 506
+msgid "Item to add"
+msgstr ""
+
+#
+# File: fltk/jwm-autostart.cxx, line: 177
+# File: fltk/jwm-mouse.cxx, line: 1195
+#. Fl_Group* o
+msgid "JWM"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 625
+msgid "JWM Mouse Settings"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1102
+# File: fltk/jwm-keyboard.cxx, line: 1183
+# File: fltk/jwm-keyboard.cxx, line: 1187
+#. Fl_Button* o
+#. Fl_Output* keyshortcut
+#. Fl_Output* modder3_output
+msgid "Key"
+msgstr ""
+
+#
+# File: fltk/jwm-settings.cxx, line: 4217
+#. Fl_Button* o
+msgid "Keyboard"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 978
+#. Fl::add_handler(handle);
+msgid "Keyboard Settings"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 983
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 787
+#. Fl_Input* implements
+msgid "Keywords"
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 501
+msgid "Kill window"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 883
+msgid ""
+"LBCornerButtonWhich mouse button is reported on a  bottom left corner finger "
+"tap"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 943
+#. Fl_Menu_Button* o
+msgid "LCD Filter"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 440
+# File: fltk/jwm-menu.cxx, line: 476
+# File: fltk/jwm-menu.cxx, line: 534
+# File: fltk/jwm-menu.cxx, line: 574
+# File: fltk/jwm-panel.cxx, line: 1635
+#. Fl_Browser* list_browser
+#. Fl_Input* add_icon
+#. Fl_Input* item_prog_icon
+#. Fl_Button* o
+msgid "Label"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 1125
+# File: fltk/jwm-menu.cxx, line: 1280
+# File: fltk/jwm-menu.cxx, line: 1366
+# File: fltk/jwm-panel.cxx, line: 2318
+#. Fl_Value_Input* o
+msgid "Labeled"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 749
+#. Fl_Input* prog_root
+msgid "Labeled?"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2940
+#. Fl_Value_Input* num_desktop_h
+msgid "Labled"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2006
+# File: src/jwmrc.cpp, line: 1703
+# File: src/panel.cpp, line: 287
+# File: src/panel.cpp, line: 397
+msgid "Launcher"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 569
+#. Fl_Button* o
+msgid "Layer"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1532
+# File: fltk/jwm-keyboard.cxx, line: 1534
+# File: fltk/jwm-keyboard.cxx, line: 1641
+#. Fl_Button* o
+msgid "Layout"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 984
+#. Fl_Check_Button* UpDownScrolling
+msgid "Left Right Buttons Scroll"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 980
+#. Fl_Value_Input* history_length
+msgid "Line Height"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2338
+#. Fl_Check_Button* o
+msgid "List"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 1026
+#. Fl_Group* o
+msgid "Locale"
+msgstr ""
+
+#
+# File: fltk/jwm-shutdown.cxx, line: 530
+#. Fl_Button* suspend
+msgid "Logout"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1108
+#. Fl_Output* context
+msgid "Low Urgency"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 1769
+msgid "Make sure you have permission to save."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1623
+msgid "Manual Editing"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1167
+#. Fl_Value_Slider* MinSpeed
+msgid "Max Speed"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2302
+#. Fl_Button* task_fg_color
+msgid "Max Width"
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 481
+msgid "Maximize window"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 972
+msgid "Maximum amount of notifications kept in history"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 944
+msgid "Maximum movement of the finger for detecting a tap"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1168
+msgid "Maximum speed factor"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 931
+msgid "Maximum time for detecting a double tap"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 918
+msgid "Maximum time for detecting a tap."
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 781
+msgid "Maximum time for middle button emulation."
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 426
+# File: fltk/jwm-panel.cxx, line: 698
+# File: fltk/jwm-panel.cxx, line: 1693
+# File: fltk/jwm-panel.cxx, line: 2004
+# File: src/jwmrc.cpp, line: 1701
+# File: src/panel.cpp, line: 285
+# File: src/panel.cpp, line: 395
+#. Fl_Button* prog_conf_gear
+#. Fl_Button* clock_prog_conf_gear
+#. Fl_Input* hidden_icon_name
+msgid "Menu"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 917
+msgid "Menu Active Background Color"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 961
+msgid "Menu Active Text Color"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 264
+#. Fl_Box* menu_box
+msgid "Menu Font"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 907
+msgid "Menu Inactive Background Color"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 927
+msgid "Menu Inactive Text Color"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 809
+msgid "Menu properties"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 817
+msgid "Menus"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 780
+#. Fl_Value_Slider* ClickTime
+msgid "Middle Button Emulation Time"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 668
+# File: fltk/jwm-mouse.cxx, line: 1212
+#. Fl_Value_Input* delta_v2
+#. Fl_Slider* double_click_slider
+msgid "Miliseconds"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 777
+#. Fl_Input* path
+msgid "MimeType"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1154
+#. Fl_Button* o
+msgid "Min Speed"
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 485
+msgid "Minimize window"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1155
+msgid "Minimum speed factor"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1561
+#. Fl_Button* o
+msgid "Model"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1399
+# File: fltk/jwm-panel.cxx, line: 1403
+# File: fltk/jwm-panel.cxx, line: 1451
+#. Fl_Button* o
+msgid "Modifier Notes"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1080
+# File: fltk/jwm-keyboard.cxx, line: 1158
+#. Fl_Button* o
+msgid "Modifiers"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 962
+#. Fl_Value_Input* show_age_threshold
+msgid "Monitor"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2453
+# File: fltk/jwm-panel.cxx, line: 2598
+#. Fl_Button* button_icon_view
+#. Fl_Value_Input* o
+msgid "Mouse Button"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 574
+msgid "Mouse Cursors"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1027
+msgid "Move angle (radians) of finger to generate a scroll event"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1001
+# File: fltk/jwm-mouse.cxx, line: 1014
+msgid "Move distance of the finger for a scroll event"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1751
+msgid "Move the current panel to a new position"
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 493
+msgid "Move window"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1096
+#. Fl_Group* o
+msgid "Movement"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 158
+#. Fl_Output* current_bg
+msgid "Multiple Desktops"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 558
+msgid "Name"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 240
+msgid "Name your workspaces"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 239
+#. Fl_Button* o
+msgid "Names"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 1027
+#. Fl_Check_Button* o
+msgid "No Leading space"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 358
+# File: fltk/jwm-fonts.cxx, line: 389
+msgid "No changes will be saved"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 615
+#. Fl_Button* o
+msgid "No touchpad detected"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 730
+#. Fl_Menu_Button* term_Button
+msgid "NoDisplay"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 628
+# File: fltk/desktop-file-editor.cxx, line: 731
+msgid ""
+"NoDisplay means \"this application exists, but don't display it in the menus"
+"\". This can be useful to e.g. associate this application with MIME types, "
+"so that it gets launched from a file manager (or other apps), without having "
+"a menu entry for it (there are tons of good reasons for this, including e.g. "
+"the netscape -remote, or kfmclient openURL kind of stuff)."
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 556
+msgid "Normal"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1141
+#. Fl_Button* Low_background
+msgid "Normal Urgency"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 669
+#. Fl_Menu_Button* cat_Button
+msgid "NotShowIn"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1393
+# File: fltk/jwm-panel.cxx, line: 1397
+# File: fltk/jwm-panel.cxx, line: 1414
+#. Fl_Output* clock_display
+msgid "Notes"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 727
+# File: fltk/jwm-menu.cxx, line: 730
+# File: fltk/jwm-panel.cxx, line: 1914
+# File: fltk/jwm-panel.cxx, line: 1917
+msgid "Nothing to Configure"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 700
+#. Fl_Button* o
+msgid "Notifications"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 178
+# File: fltk/jwm-panel.cxx, line: 1794
+#. Fl_Value_Input* num_desktop_w
+msgid "Number of Desktops High "
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 170
+# File: fltk/jwm-panel.cxx, line: 1787
+#. Fl_Button* t_bg
+msgid "Number of Desktops Wide"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2719
+msgid "Number of pixels to leave between items in the dock. The default is 0."
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 207
+msgid "Number of workspaces to the left and right"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 216
+msgid "Number of workspaces up and down"
+msgstr ""
+
 #
 # File: fltk/jwm-autostart.cxx, line: 153
 # File: fltk/jwm-desktop.cxx, line: 193
@@ -495,18 +2421,24 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 606
 # File: fltk/jwm-window.cxx, line: 628
 # File: fltk/jwm-window.cxx, line: 1133
+#. Fl_Output* o
+#. Fl_Button* o
+#. Fl_Input* layoutput
 #. Fl_Button* o
 #. Fl_Check_Button* islabeled_button
-#. Fl_Button* add_prog_button
+#. Fl_Input* add_tooltip
 #. Fl_Button* item_prog_button
-#. Fl_Button* prog_button
+#. Fl_Input* prog_label
 #. Fl_Input* include_input
 #. Fl_Button* o
+#. Fl_Button* config_sub
 #. Fl_Button* cancel_button2
 #. Fl_Value_Input* double_v2
 #. Fl_Tabs* o
 #. Fl_Button* o
-#. Fl_Menu_Button* clock_menu
+#. Fl_Box* o
+#. Fl_Button* menu_conf_gear
+#. Fl_Button* clock_menu_conf_gear
 #. Fl_Input* manually_in
 #. Fl_Box* o
 #. Fl_Button* o
@@ -515,6 +2447,1794 @@ msgstr ""
 #. Fl_Button* o
 msgid "OK"
 msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 915
+#. Fl_Tabs* o
+msgid "OPEN"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1070
+# File: fltk/jwm-keyboard.cxx, line: 1148
+#. Fl_Input* action_name1
+#. Fl_Input* action_name
+msgid "OR"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 797
+msgid "One Finger"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1895
+msgid "Only Four Panels are supported"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 692
+#. Fl_Menu_Button* nsi_Button
+msgid "OnlyShowIn"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 533
+#. Fl_Input* icon_value
+msgid "Opacity"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 779
+#. Fl_Button* inactive_border_color
+msgid "Opacity "
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 707
+#. Fl_Button* a_border_color
+msgid "Opacity  "
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1020
+#. Fl_Button* menu_font_color
+msgid "Opacity of Menu"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1062
+msgid "Opacity of Panel"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1051
+#. Fl_Button* button_color_font_a
+msgid "Opacity of Panel  "
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 916
+msgid "Open a desktop file"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 170
+msgid "Open the filemanager to change preferences"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 246
+# File: fltk/jwm-fonts.cxx, line: 272
+# File: fltk/jwm-fonts.cxx, line: 294
+# File: fltk/jwm-fonts.cxx, line: 321
+# File: fltk/jwm-fonts.cxx, line: 350
+msgid "Open the font list Window"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1569
+#. Fl_Browser* o
+msgid "Option"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2285
+# File: fltk/jwm-panel.cxx, line: 2294
+# File: fltk/jwm-panel.cxx, line: 2383
+# File: fltk/jwm-panel.cxx, line: 2391
+# File: fltk/jwm-panel.cxx, line: 2400
+# File: fltk/jwm-panel.cxx, line: 2409
+msgid "Optional, Will use Panel colors if not specified."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2573
+# File: fltk/jwm-panel.cxx, line: 2582
+msgid "Optional, this will use the Panel colors if not specified"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 837
+msgid ""
+"Options: Menu, Dynamic, Include, Program, Separator, Desktops, SendTo, "
+"Stick, Maximize, Minimize, Shade, Move, Resize, Kill, Close, Restart, Exit"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 983
+# File: fltk/jwm-panel.cxx, line: 1729
+# File: fltk/jwm-panel.cxx, line: 2382
+# File: fltk/jwm-popups.cxx, line: 611
+#. Fl_Menu_Button* o
+#. Fl_Output* panel_deco
+#. Fl_Output* tasklist_deco
+msgid "Outline"
+msgstr ""
+
+#
+# File: fltk/jwm-themes.cxx, line: 163
+#. Fl_Browser* usr_theme
+msgid "Overwrite Current Theme"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 938
+#. Fl_Button* o
+msgid "PREVIEW"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1002
+# File: fltk/jwm-popups.cxx, line: 1011
+msgid "Padding between text and separator."
+msgstr ""
+
+#
+# File: fltk/jwm-settings.cxx, line: 4211
+# File: fltk/jwm-themes.cxx, line: 110
+# File: src/panel.cpp, line: 58
+# File: src/panel.cpp, line: 467
+# File: src/panel.cpp, line: 478
+#. Fl_Button* panel_font
+#. Fl_Box* button
+msgid "Panel"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 904
+msgid "Panel 1"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 909
+msgid "Panel 2"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 914
+msgid "Panel 3"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 919
+msgid "Panel 4"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1686
+msgid "Panel Active Background Color"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1677
+msgid "Panel Active Text Color"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1657
+msgid "Panel Button Active Background Color"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1613
+msgid "Panel Button Active Text Color"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 285
+#. Fl_Button* menu_font_color_button
+msgid "Panel Button Font"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1647
+msgid "Panel Button Inactive Background Color"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1667
+msgid "Panel Button Inactive Text Color"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1705
+#. Fl_Box* o
+msgid "Panel Buttons"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 313
+#. Fl_Box* panel_box
+msgid "Panel Font"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1603
+msgid "Panel Inactive Background Color"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1695
+msgid "Panel Inactive Text Color"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1086
+# File: fltk/jwm-panel.cxx, line: 1110
+msgid "Panel Position"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 885
+msgid "Panel Settings"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 773
+#. Fl_Input* version
+msgid "Path"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 569
+msgid ""
+"Path to an executable file on disk used to determine if the program is "
+"actually installed. If the path is not an absolute path, the file is looked "
+"up in the $PATH environment variable. If the file is not present or if it is "
+"not executable, the entry may be ignored (not be used in menus, for example)."
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1416
+# File: fltk/jwm-keyboard.cxx, line: 1510
+msgid "Picture button keys on the keyboard"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 658
+# File: fltk/jwm-mouse.cxx, line: 1237
+#. Fl_Slider* delta_slider2
+#. Fl_Slider* delta_slider
+msgid "Pixels"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 604
+# File: fltk/jwm-settings.cxx, line: 4153
+#. Fl_Button* o
+msgid "Popups"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 953
+msgid "Preview"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 939
+msgid "Preview text"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1026
+msgid ""
+"Print a notification on startup. This is mainly for error detection, since "
+"dbus (re-)starts dunst automatically after a crash."
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 482
+# File: fltk/jwm-menu.cxx, line: 537
+# File: fltk/jwm-menu.cxx, line: 577
+#. Fl_Input* add_label
+#. Fl_Input* item_prog_label
+#. Fl_Value_Output* button_val
+#. Fl_Value_Output* output_button_val
+msgid "Program"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 637
+#. Fl_Button* o
+msgid "Program @+"
+msgstr ""
+
+#
+# File: src/panel.cpp, line: 645
+msgid "Program Launcher"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1031
+#. Fl_Button* rm_opt
+msgid "Program Name"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 995
+msgid ""
+"Program groups allow one to specify options which apply to a group of "
+"programs by their name and/or class. A program group is created with the "
+"Group tag. As many program groups can be created as desired."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 623
+msgid "Program to add"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 576
+msgid ""
+"Program to execute, possibly with arguments. See the Exec key for details on "
+"how this key works. The Exec key is required if DBusActivatable is not set "
+"to true. Even if DBusActivatable is true, Exec should be specified for "
+"compatibility with implementations that do not understand DBusActivatable."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1258
+msgid "Programs that are effected by the options"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 609
+# File: fltk/jwm-mouse.cxx, line: 1272
+#. Fl_Button* main_cursors_button
+msgid "QUIT"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1256
+#. Fl_Button* o
+msgid "Quit"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1117
+#. Fl_Box* o
+msgid "REALLY HUGE!"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 902
+#. Fl_Value_Input* o
+msgid "RGBA"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 865
+msgid ""
+"RTCornerButtonWhich mouse button is reported on a  top right corner finger "
+"tap"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1090
+msgid ""
+"Redisplay last message(s). On the US keyboard layout \"grave\" is normally "
+"above TAB and left of \"1\"."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 923
+msgid "Remove Current  Panel"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1232
+msgid "Remove ENTIRE selected group"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 1081
+msgid "Remove an Item"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1859
+msgid "Remove application launcher"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1270
+msgid "Remove selected Program name"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1289
+msgid "Remove selected Window Class"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1251
+msgid "Remove selected option"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1247
+#. Fl_Value_Input* delta_v
+msgid "Reset"
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 497
+msgid "Resize window"
+msgstr ""
+
+#
+# File: fltk/jwm-shutdown.cxx, line: 523
+# File: src/jwmrc.cpp, line: 465
+#. Fl_Button* shut
+msgid "Restart"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 745
+#. Fl_Button* o
+msgid "Root"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1492
+# File: fltk/jwm-panel.cxx, line: 2000
+# File: src/jwmrc.cpp, line: 1697
+# File: src/panel.cpp, line: 281
+# File: src/panel.cpp, line: 391
+msgid "Running App List"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 341
+#. Fl_Button* task_font_color_button
+msgid "Running App List Font"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 920
+# File: fltk/desktop-file-editor.cxx, line: 966
+# File: fltk/jwm-panel.cxx, line: 1835
+#. Fl_Button* o
+#. Fl_Scroll* o
+#. Fl_Button* o
+msgid "SAVE"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2662
+#. Fl_Input* tz_out
+msgid "SET"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1249
+#. Fl_Output* icon_position
+msgid "Save"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 711
+msgid "Save Changes"
+msgstr ""
+
+#
+# File: fltk/jwm-themes.cxx, line: 141
+#. Fl_Box* iclose
+msgid "Save Custom Theme"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 1766
+msgid "Save Error"
+msgstr ""
+
+#
+# File: src/themes.cpp, line: 32
+msgid "Save File"
+msgstr ""
+
+#
+# File: src/fltkfunctions.cpp, line: 80
+msgid "Save as "
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 921
+# File: fltk/desktop-file-editor.cxx, line: 967
+msgid "Save the current data as a file"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 958
+#. Fl_Group* o
+msgid "Scrolling"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1086
+# File: fltk/jwm-keyboard.cxx, line: 1098
+# File: fltk/jwm-keyboard.cxx, line: 1103
+msgid "Second keyboard modifier"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1477
+#. Fl_Scroll* o
+msgid "See also ctime"
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 473
+msgid "Send To Desktop Menu"
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 461
+msgid "Separator"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 785
+#. Fl_Output* follow
+msgid "Separator Color"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 991
+#. Fl_Value_Input* line_height
+msgid "Separator Height"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 850
+# File: debian/postinst, line: 19
+#. Fl_Group* o
+msgid "Settings"
+msgstr ""
+
+#
+# File: fltk/jwm-settings.cxx, line: 4207
+msgid "Settings Manager"
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 489
+msgid "Shade window"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1066
+#. Fl_Button* Frame_color
+msgid "Shortcuts"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 892
+msgid ""
+"Should a notification popped up from history be sticky or timeout as if it "
+"would normally do."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 911
+#. Fl_Value_Input* idle_threshold
+msgid "Show Indicators"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1843
+#. Fl_Button* ok_button
+msgid "Show a Border around the Button?"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 954
+msgid "Show age of message if message is older than this ammount in seconds"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 864
+msgid "Show how many messages are currently hidden (because of geometry)."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 881
+#. Fl_Check_Button* ignore_newline
+msgid "Shrink"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 882
+msgid ""
+"Shrink window if it's smaller than the width.  Will be ignored if width is 0."
+msgstr ""
+
+#
+# File: fltk/jwm-shutdown.cxx, line: 513
+# File: fltk/jwm-shutdown.cxx, line: 516
+# File: debian/postinst, line: 9
+msgid "Shutdown"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1084
+# File: fltk/jwm-panel.cxx, line: 1255
+#. Fl_Group* o
+#. Fl_Output* layer
+msgid "Size And Position"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 978
+#. Fl_Value_Input* snap_int
+msgid "Size of Corner"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 876
+#. Fl_Value_Input* t_slider_v
+msgid "Size of the Window Frame"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1056
+msgid "Slowest setting for edge motion speed"
+msgstr ""
+
+#
+# File: src/desktop.cpp, line: 114
+msgid "Solid Color"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1454
+msgid ""
+"Some conversion specifications can be modified  by  preceding  the "
+"conversion  specifier character by the E or O modifier to indicate that an "
+"alternative format should be  used.   If  the  alternative format or "
+"specification does not exist for the current locale, the behavior will be as "
+"if  the  unmodified  conversion  specification were  used.  (SU) The Single "
+"UNIX Specification mentions %Ec, %EC, %Ex, %EX, %Ey, %EY, %Od, %Oe, %OH, "
+"%OI, %Om, %OM, %OS,  %Ou,  %OU, %OV,  %Ow,  %OW, %Oy, where the effect of "
+"the O modifier is to use alternative numeric symbols (say, roman numerals), "
+"and that of the E  modifier  is  to use a locale-dependent alternative "
+"representation.\n"
+"The broken-down time structure tm is  defined  in  <time.h>."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 854
+#. Fl_Output* format
+msgid "Sort by urgency"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 855
+msgid "Sort messages by urgency."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1438
+# File: fltk/jwm-panel.cxx, line: 3183
+# File: fltk/jwm-panel.cxx, line: 3382
+# File: src/jwmrc.cpp, line: 2592
+# File: src/panel.cpp, line: 646
+msgid "Spacer"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2718
+#. Fl_Value_Input* o
+msgid "Spacing"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1415
+# File: fltk/jwm-keyboard.cxx, line: 1509
+#. Fl_Output* old_action
+#. Fl_Output* key
+msgid "Special Keys"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 559
+msgid "Specific name of the application, for example \"Mozilla\"."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1914
+msgid ""
+"Specifies  the  location  to hide the tray when not\n"
+"activated. Default  is  \"off\"  to  disable  hiding.\n"
+"Possible  values  are \"left\", \"right\", \"top\", \"bottom\", and \"off\"."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 813
+msgid ""
+"Split notifications into multiple lines if they don't fit into geometery"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1025
+#. Fl_Button* sep_col_b
+msgid "Startup Notification"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 849
+#. Fl_Button* o
+msgid "StartupNotify"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 794
+#. Fl_Input* keywords
+msgid "StartupWMClass"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 891
+#. Fl_Check_Button* shrink
+msgid "Sticky History"
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 477
+msgid "Sticky state of Window"
+msgstr ""
+
+#
+# File: src/jwmrc.cpp, line: 457
+msgid "Sub Menu"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 743
+msgid "Submenu"
+msgstr ""
+
+#
+# File: fltk/jwm-shutdown.cxx, line: 537
+#. Fl_Button* restart
+msgid "Suspend"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2003
+# File: src/jwmrc.cpp, line: 1700
+# File: src/panel.cpp, line: 284
+# File: src/panel.cpp, line: 394
+msgid "Swallow"
+msgstr ""
+
+#
+# File: fltk/jwm-settings.cxx, line: 4276
+#. Fl_Button* o
+msgid "System Details"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 717
+msgid "System Notifications"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 701
+msgid "Sytem notification pop up windows"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 1059
+msgid "TODO!"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 943
+#. Fl_Value_Slider* MaxDoubleTapTime
+msgid "Tap Move"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 917
+#. Fl_Choice* RBCornerButton
+msgid "Tap Time"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 795
+#. Fl_Group* o
+msgid "Tapping"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 898
+msgid "Target dots per inch"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 715
+#. Fl_Menu_Button* osi_Button
+msgid "Terminal"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 670
+#. Fl_Output* enabled_out
+msgid "Text"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1001
+#. Fl_Value_Input* separator_height
+msgid "Text Padding"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2790
+msgid "Text for the Button that shows the menu"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2430
+# File: fltk/jwm-panel.cxx, line: 2473
+msgid "Text for the Panel Button"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 818
+# File: fltk/jwm-window.cxx, line: 832
+msgid ""
+"The  color  of  the  title bar (gradients are supported).  The default is "
+"#CC7700:#884400."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 620
+# File: fltk/jwm-popups.cxx, line: 629
+msgid "The  delay  in milliseconds before popups activate. The default is 600."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2867
+msgid ""
+"The  height of the swallowed program. 0 indicates\n"
+"that the height  should  be  determined\n"
+"from  the  tray  and size requested from the\n"
+"program. 0 is the default."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2303
+msgid ""
+"The  maximum  width  of  an item in the task list. 0 indicates no maximum.   "
+"The  default is 0"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1802
+msgid ""
+"The  width  of  the tray. 0 indicates that the tray\n"
+"should compute an optimal width depending  on  what\n"
+"it  contains  and the layout. A negative value subtracts\n"
+"from with screen width. 0 is the default."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2858
+msgid ""
+"The  width of the swallowed program. 0 indicates\n"
+"that the width  should  be  determined\n"
+"from  the  tray  and size requested from the\n"
+"program. 0 is the default."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1301
+# File: fltk/jwm-window.cxx, line: 1318
+msgid ""
+"The  width of window borders in pixels. The default is 4, the minimum is 1, "
+"and the maximum is 128."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1863
+msgid ""
+"The  y-coordinate of the tray. This may be negative\n"
+"to indicate  an  offset  from  the  bottom  of  the\n"
+"screen."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 681
+msgid "The Icon Name"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 643
+msgid "The JWM Menu item to add"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1535
+msgid "The Keyboard regional layout"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 778
+msgid "The MIME type(s) supported by this application."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 679
+msgid "The background color"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 654
+msgid "The background window font color"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1844
+msgid "The button you are adding can be borderless, if you like"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 933
+msgid ""
+"The color of the text and  buttons  in  the  title bar of inactive windows.  "
+"The default is white."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 841
+# File: fltk/jwm-window.cxx, line: 853
+msgid ""
+"The color of the text and  buttons  in  the  title bar.  The default is "
+"white."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 910
+# File: fltk/jwm-window.cxx, line: 920
+msgid ""
+"The color of the title bar (gradients are  supported)  of inactive windows.  "
+"The default is #333333:#111111."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 945
+msgid ""
+"The color of the window  outline  for  inactive  windows. The  default  is  "
+"a  darkened version of the window background."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 612
+msgid "The color of the window  outline.  The  default  is black."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 865
+msgid ""
+"The color of the window outline.  The default is a darkened version of  the  "
+"window  background."
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 778
+msgid "The color of this cannot be chosen, this is the GTK font"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1197
+msgid ""
+"The corner width of the window border for rounded  window borders.   The  "
+"default is 4, the minimum is 0 (rectangular), and the maximum is 5 (most "
+"rounded)."
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 768
+msgid "The duration of the mouse click generated by tapping"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 928
+msgid "The file you want to save (or the name of the current open file)"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 638
+msgid "The foreground window font color"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 844
+msgid ""
+"The format of the message.  Possible variables are:   %a  appname   %s  "
+"summary   %b  body   %i  iconname (including its path)   %I  iconname "
+"(without its path)   %p  progress value if set ([  0%] to [100%]) or nothing"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 822
+msgid ""
+"The frequency with wich text that is longer than the notification window "
+"allows bounces back and forth. This option conflicts with \"word_wrap\". Set "
+"to 0 to disable."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 981
+msgid ""
+"The height of a single line.  If the height is smaller than the font height, "
+"it will get raised to the font height. This adds empty space above and under "
+"the text."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2310
+msgid ""
+"The height of an item in the  task  list.  0 indicates  that  the  height "
+"should be taken from the tray.  The default is 0."
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 446
+msgid ""
+"The height of each menu item in pixels 0 indicates that the height of the "
+"font will determine the height. The default is 0."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2591
+msgid ""
+"The height of the clock. 0 indicates that the height should be determined "
+"from the font used."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1452
+# File: fltk/jwm-panel.cxx, line: 3398
+msgid ""
+"The height of the spacer (0 to fill all available space).  0 is the default."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1832
+msgid ""
+"The height of the tray. 0 indicates that  the  tray\n"
+"should  compute an optimal height depending on what\n"
+"it contains and the layout. A negative  value  subtracts\n"
+"from the screen height. 0 is the default."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1333
+# File: fltk/jwm-window.cxx, line: 1350
+msgid ""
+"The height of window title bars  in  pixels.  By  default this is set to the "
+"size of the title font. The minimum is 1, and the maximum is 256."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1875
+msgid "The horizontal alignment of the Panel"
+msgstr ""
+
+#
+# File: fltk/jwm-icons.cxx, line: 198
+msgid "The icon directories JWM will search"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2438
+# File: fltk/jwm-panel.cxx, line: 2805
+msgid "The icon file name"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 647
+msgid "The icon to display for this item"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 441
+msgid "The label to display at the top of the menu, normally this is NOT shown"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 651
+msgid "The label to display for this item"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2012
+msgid "The layer of the tray. The default is above."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 734
+msgid "The layer this option effects"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1992
+msgid "The layout of the tray. The default is horizontal."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2711
+msgid ""
+"The maximum width of an item contained in the dock. This defaults to the "
+"width or height of the tray (whichever is smaller)."
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 755
+msgid "The minimum pressure to react to"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 659
+msgid "The popup tooltip"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 655
+msgid "The program to run"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 869
+msgid ""
+"The range of possible values is 0 to 9 inclusive as  well as  a to z "
+"inclusive, providing for up to 36 menus.  Note that only the numeric values "
+"map to mouse buttons."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2635
+msgid "The root menu the Clock is tied to"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2488
+# File: fltk/jwm-panel.cxx, line: 2810
+msgid "The root menu the button is tied to"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 671
+msgid "The text color"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1636
+# File: fltk/jwm-panel.cxx, line: 1654
+msgid "The text that pops up when you hover"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 929
+# File: fltk/jwm-popups.cxx, line: 940
+msgid ""
+"The transparency of the window.  Range: [0; 100]. This option will only work "
+"if a compositing windowmanager is present (e.g. xcompmgr, compiz, etc.)."
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1562
+msgid "The type of keyboard"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1882
+msgid "The vertical alignment of the Panel"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2565
+msgid ""
+"The width of the clock. 0 indicates that the width should be determined from "
+"the length of the text to be displayed."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1448
+# File: fltk/jwm-panel.cxx, line: 3392
+msgid ""
+"The width of the spacer (0 to fill all available space).  0 is the default."
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1851
+msgid ""
+"The x-coordinate of the tray. This may be  negative\n"
+"to indicate an offset from the right of the screen."
+msgstr ""
+
+#
+# File: fltk/jwm-icons.cxx, line: 144
+# File: fltk/jwm-settings.cxx, line: 4253
+# File: fltk/jwm-themes.cxx, line: 82
+# File: fltk/jwm-themes.cxx, line: 96
+#. Fl_Browser* iconsBrowser
+#. Fl_Button* o
+#. Fl_Button* ok
+msgid "Themes"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 1768
+msgid "There was an error saving the file:"
+msgstr ""
+
+#
+# File: fltk/jwm-menu.cxx, line: 860
+msgid "These options correspond to specific Root Menu items"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1714
+msgid "This MUST be the same as the executable's name"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 159
+msgid "This allows you to have multiple screens to work on from one Display"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1115
+#. Fl_Value_Output* a_t_slider_v
+msgid "This can make your window borders and Title bar"
+msgstr ""
+
+#
+# File: fltk/jwm-themes.cxx, line: 176
+msgid "This contains all the themes in ~/.themes which MAY NOT be JWM themes"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 609
+msgid ""
+"This controls the look of popup tooltips such as those shown when the mouse "
+"sits over a panel item."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 950
+msgid "This determines how windows 'Snap' to other windows, and screen edges"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 902
+msgid "This determines how windows are brought to the front"
+msgstr ""
+
+#
+# File: fltk/jwm-settings.cxx, line: 4254
+msgid "This is for Predefined Thems"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 853
+msgid "This is the top with the program name, and close button, etc.."
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 877
+msgid ""
+"This makes the edges of the window larger or smaller to help you grab them "
+"more easily"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 644
+# File: fltk/jwm-mouse.cxx, line: 1223
+msgid "This sets how closely you must click to Double Click"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 629
+# File: fltk/jwm-mouse.cxx, line: 1198
+msgid "This sets how fast you must click to Double Click"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 589
+msgid ""
+"This specification defines 3 types of desktop entries: Application (type 1), "
+"Link (type 2) and Directory (type 3). To allow the addition of new types in "
+"the future, implementations should ignore desktop entries with an unknown "
+"type"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 636
+msgid ""
+"This specification defines 3 types of desktop entries: Application (type 1), "
+"Link (type 2) and Directory (type 3). To allow the addition of new types in "
+"the future, implementations should ignore desktop entries with an unknown "
+"type."
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1250
+msgid "This will OVERWRITE the current configuration"
+msgstr ""
+
+#
+# File: fltk/jwm-themes.cxx, line: 89
+# File: fltk/jwm-themes.cxx, line: 142
+# File: fltk/jwm-themes.cxx, line: 148
+# File: fltk/jwm-themes.cxx, line: 164
+msgid "This will copy your current theme somewhere else"
+msgstr ""
+
+#
+# File: fltk/jwm-keyboard.cxx, line: 1091
+# File: fltk/jwm-keyboard.cxx, line: 1177
+msgid "This will grab a new key combo"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1143
+msgid "This will make the Panel hide when you aren't using it."
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 129
+# File: fltk/jwm-desktop.cxx, line: 135
+msgid "This will take icons off the desktop"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 830
+#. Fl_Choice* TapButton2
+msgid "Three Finger"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 1123
+# File: fltk/jwm-popups.cxx, line: 1156
+# File: fltk/jwm-popups.cxx, line: 1189
+#. Fl_Button* Low_foreground
+#. Fl_Button* Norm_foreground
+#. Fl_Button* Crit_foreground
+msgid "Timeout"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1518
+msgid ""
+"Title Button Order\n"
+"\n"
+"m Maximize button\n"
+"i Minimize (iconify) button\n"
+"t Window title\n"
+"w Window menu button\n"
+"x Close button"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 670
+# File: fltk/jwm-window.cxx, line: 740
+#. Fl_Box* o
+msgid "Title bar"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1120
+msgid "To calibrate push button and move finger on the bottom of the pad"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1134
+msgid "To calibrate push button and move finger on the left of the pad"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1148
+msgid "To calibrate push button and move finger on the right of the pad"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1106
+msgid "To calibrate push button and move finger on the top of the pad"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 739
+msgid "Toggle on/of the secondary pointer (tipically a joypad)"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 722
+msgid "Toggle the pad ON/OFF or only move (no scroll, tap, ecc.)"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1653
+#. Fl_Input* add_input
+#. Fl_Input* icon_file
+msgid "Tooltip"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1825
+#. Fl_Input* app_command
+msgid "Tooltip Label"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 564
+msgid ""
+"Tooltip for the entry, for example \"View sites on the Internet\". The value "
+"should not be redundant with the values of Name and GenericName."
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 847
+#. Fl_Choice* TapButton3
+msgid "Top Left Corner"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 864
+#. Fl_Choice* LTCornerButton
+msgid "Top Right Corner"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 754
+#. Fl_Check_Button* CircularPad
+msgid "Touch Sensitivity"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 720
+msgid "TouchPad"
+msgstr ""
+
+#
+# File: fltk/jwm-settings.cxx, line: 4235
+#. Fl_Button* o
+msgid "Touchpad"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 721
+msgid "Touchpad Mode"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 712
+msgid "Touchpad Settings"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 928
+#. Fl_Output* geometry
+msgid "Transparency"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 568
+#. Fl_Input* comment
+msgid "TryExec"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 813
+#. Fl_Choice* TapButton1
+msgid "Two Finger"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 635
+#. Fl_Input* nodisplay
+msgid "Type"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 944
+msgid "Type of LCD filter"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 2654
+msgid "Type to search"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 800
+#. Fl_Input* wmclass
+msgid "URL"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 976
+#. Fl_Check_Button* HorizTwoFingerScroll
+msgid "Up Down Buttons Scroll"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1953
+# File: fltk/jwm-panel.cxx, line: 1966
+# File: fltk/jwm-panel.cxx, line: 1979
+# File: fltk/jwm-panel.cxx, line: 1999
+msgid "Use 'Panel Position' for easy configuration"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 1012
+msgid "Use autohinter instead of normal hinter"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 747
+msgid "Use this if your touchpad is circular"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 1020
+msgid "Use vertical layout"
+msgstr ""
+
+#
+# File: fltk/jwm-themes.cxx, line: 155
+#. Fl_Button* cancel_button
+msgid "User Themes"
+msgstr ""
+
+#
+# File: fltk/jwm-settings.cxx, line: 4266
+#. Fl_Button* o
+msgid "Users and Groups"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1000
+#. Fl_Check_Button* CircularScrolling
+msgid "VScroll Delta"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 767
+#. Fl_Input* genericname
+msgid "Version"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 768
+msgid ""
+"Version of the Desktop Entry Specification that the desktop entry conforms "
+"with. Entries that confirm with this version of the specification should use "
+"1.0. Note that the version field is not required to be present."
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 960
+msgid "Vertical 2 Finger Scroll"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 1019
+#. Fl_Check_Button* o
+msgid "Vertical Layout"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 916
+#. Fl_Menu_Button* o
+msgid "Weight"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 934
+msgid "What the windows look like while moving"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 918
+msgid "What the windows look like while resizing"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 889
+msgid "Whether glyphs can be antialiased"
+msgstr ""
+
+#
+# File: fltk/desktop-file-editor.cxx, line: 624
+# File: fltk/desktop-file-editor.cxx, line: 716
+msgid "Whether the program runs in a terminal window."
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 880
+msgid "Whether the rasterizer should use hinting"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 963
+msgid "Which monitor should the notifications be displayed on."
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 901
+msgid "Which mouse button is reported on a  bottom right corner finger tap"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 848
+msgid "Which mouse button is reported on a  top left corner finger tap"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 798
+msgid "Which mouse button is reported on a non-corner one-finger tap"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 831
+msgid "Which mouse button is reported on a non-corner three-finger tap"
+msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 814
+msgid "Which mouse button is reported on a non-corner two-finger tap"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1478
+msgid "Widget theme"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 929
+# File: fltk/jwm-panel.cxx, line: 1447
+# File: fltk/jwm-panel.cxx, line: 2564
+# File: fltk/jwm-panel.cxx, line: 2710
+# File: fltk/jwm-panel.cxx, line: 2857
+# File: fltk/jwm-panel.cxx, line: 3391
+# File: fltk/jwm-popups.cxx, line: 1048
+#. Fl_Menu_Button* o
+#. Fl_Button* o
+#. copy_label(clock_text.c_str());
+#. _label();
+#. Fl_Output* clock_displayer
+#. Fl_Button* o
+#. Fl_Input* swallow_config
+#. Fl_Button* o
+#. Fl_Box* o
+msgid "Width"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1163
+msgid "Width of Panel"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1151
+#. Fl_Check_Button* autohide_check
+msgid "Width of Panel  "
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1230
+# File: fltk/jwm-panel.cxx, line: 1240
+#. Fl_Output* valign
+msgid "Width of Panel Border"
+msgstr ""
+
+#
+# File: fltk/jwm-themes.cxx, line: 119
+#. Fl_Box* awin
+msgid "Window (Active)"
+msgstr ""
+
+#
+# File: fltk/jwm-themes.cxx, line: 133
+#. Fl_Box* iwin2
+msgid "Window (Inactive)"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1067
+msgid "Window Border Size"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1047
+#. Fl_Button* rm_prog
+msgid "Window Class"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 777
+#. Fl_Button* o
+msgid "Window Interior Font"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 652
+msgid "Window Settings"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 852
+# File: fltk/jwm-window.cxx, line: 1091
+#. Fl_Value_Output* a_b_slider_v
+msgid "Window Title Bar Size"
+msgstr ""
+
+#
+# File: fltk/jwm-fonts.cxx, line: 229
+#. Fl_Box* window_box
+msgid "Window Title Font"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1277
+msgid "Window classes that effected by the options"
+msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1239
+msgid "Window specific options"
+msgstr ""
+
+#
+# File: fltk/jwm-settings.cxx, line: 4247
+#. Fl_Button* o
+msgid "Windows"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 812
+#. Fl_Output* separator_color
+msgid "Word wrap"
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 215
+#. Fl_Value_Input* num_desktop_w
+msgid "Workspaces High "
+msgstr ""
+
+#
+# File: fltk/jwm-desktop.cxx, line: 206
+#. Fl_Check_Button* check_desktops
+msgid "Workspaces Wide"
+msgstr ""
+
 #
 # File: fltk/jwm-autostart.cxx, line: 154
 # File: fltk/jwm-desktop.cxx, line: 194
@@ -537,1049 +4257,173 @@ msgstr ""
 # File: fltk/jwm-window.cxx, line: 1134
 msgid "Write to configuration file"
 msgstr ""
+
 #
-# File: fltk/jwm-autostart.cxx, line: 161
-# File: fltk/jwm-keyboard.cxx, line: 1014
-# File: fltk/jwm-menu.cxx, line: 648
-# File: fltk/jwm-menu.cxx, line: 669
-# File: fltk/jwm-panel.cxx, line: 960
-# File: fltk/jwm-panel.cxx, line: 1342
-# File: fltk/jwm-panel.cxx, line: 1610
-# File: fltk/jwm-panel.cxx, line: 1829
-# File: fltk/jwm-window.cxx, line: 515
-# File: fltk/jwm-window.cxx, line: 1004
-# File: fltk/jwm-window.cxx, line: 1020
-# File: fltk/jwm-window.cxx, line: 1036
-# File: fltk/jwm-window.cxx, line: 1052
-#. Fl_Button* save_button
-#. Fl_Button* o
-#. Fl_Browser* root_menu
-#. Fl_Browser* menuElement
-#. Fl_Button* o
-#. Fl_Browser* panel_items_browser
-#. Fl_Button* o
-#. Fl_Input* tooltip
-#. Fl_Browser* options_available
-#. Fl_Browser* groups_browser
-#. Fl_Browser* opt_browser
-#. Fl_Browser* name_browser
-#. Fl_Browser* class_browser
-msgid "@+"
-msgstr "@+"
-#
-# File: fltk/jwm-autostart.cxx, line: 162
-msgid "Add OR chose a program"
+# File: fltk/jwm-panel.cxx, line: 1850
+#. Fl_Box* o
+msgid "X coordinate"
 msgstr ""
+
 #
-# File: fltk/jwm-autostart.cxx, line: 177
-# File: fltk/jwm-mouse.cxx, line: 1195
-#. Fl_Group* o
-msgid "JWM"
+# File: fltk/jwm-mouse.cxx, line: 1127
+msgid "X coordinate for left edge"
 msgstr ""
+
+#
+# File: fltk/jwm-mouse.cxx, line: 1141
+msgid "X coordinate for right edge"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1210
+# File: fltk/jwm-panel.cxx, line: 1218
+msgid "X position of panel"
+msgstr ""
+
 #
 # File: fltk/jwm-autostart.cxx, line: 187
 #. Fl_Group* jwm_tab
 msgid "XDG"
 msgstr ""
+
 #
-# File: fltk/jwm-desktop.cxx, line: 100
-msgid "Desktop Settings"
+# File: fltk/jwm-panel.cxx, line: 1862
+#. Fl_Value_Input* o
+msgid "Y coordinate"
 msgstr ""
-#
-# File: fltk/jwm-desktop.cxx, line: 123
-#. Fl_Box* color_display2
-msgid "Choose Image"
-msgstr ""
-#
-# File: fltk/jwm-desktop.cxx, line: 128
-#. Fl_Button* o
-msgid "Choose Color"
-msgstr ""
-#
-# File: fltk/jwm-desktop.cxx, line: 129
-# File: fltk/jwm-desktop.cxx, line: 135
-msgid "This will take icons off the desktop"
-msgstr ""
-#
-# File: fltk/jwm-desktop.cxx, line: 134
-#. Fl_Button* o
-msgid "Choose Gradient"
-msgstr ""
-#
-# File: fltk/jwm-desktop.cxx, line: 140
-#. Fl_Button* o
-msgid "Icons on Desktop"
-msgstr ""
-#
-# File: fltk/jwm-desktop.cxx, line: 158
-#. Fl_Output* current_bg
-msgid "Multiple Desktops"
-msgstr ""
-#
-# File: fltk/jwm-desktop.cxx, line: 159
-msgid "This allows you to have multiple screens to work on from one Display"
-msgstr ""
-#
-# File: fltk/jwm-desktop.cxx, line: 170
-# File: fltk/jwm-panel.cxx, line: 1787
-#. Fl_Check_Button* check_desktops
-#. Fl_Button* o
-msgid "Number of Desktops Wide"
-msgstr ""
-#
-# File: fltk/jwm-desktop.cxx, line: 178
-# File: fltk/jwm-panel.cxx, line: 1794
-#. Fl_Value_Input* num_desktop_w
-msgid "Number of Desktops High "
-msgstr ""
-#
-# File: fltk/jwm-fonts.cxx, line: 220
-msgid "Font Settings"
-msgstr ""
-#
-# File: fltk/jwm-fonts.cxx, line: 229
-#. Fl_Box* window_box
-msgid "Window Title Font"
-msgstr ""
-#
-# File: fltk/jwm-fonts.cxx, line: 237
-# File: fltk/jwm-panel.cxx, line: 1757
-# File: fltk/jwm-panel.cxx, line: 1765
-#. Fl_Output* window_font
-#. Fl_Box* o
-#. Fl_Button* o
-msgid "Active"
-msgstr ""
-#
-# File: fltk/jwm-fonts.cxx, line: 246
-# File: fltk/jwm-fonts.cxx, line: 272
-# File: fltk/jwm-fonts.cxx, line: 294
-# File: fltk/jwm-fonts.cxx, line: 321
-# File: fltk/jwm-fonts.cxx, line: 350
-msgid "Open the font list Window"
-msgstr ""
-#
-# File: fltk/jwm-fonts.cxx, line: 252
-#. Fl_Button* o
-msgid "Inactive"
-msgstr ""
-#
-# File: fltk/jwm-fonts.cxx, line: 264
-#. Fl_Box* menu_box
-msgid "Menu Font"
-msgstr ""
-#
-# File: fltk/jwm-fonts.cxx, line: 285
-#. Fl_Button* menu_font_color_button
-msgid "Panel Button Font"
-msgstr ""
-#
-# File: fltk/jwm-fonts.cxx, line: 313
-#. Fl_Box* panel_box
-msgid "Panel Font"
-msgstr ""
-#
-# File: fltk/jwm-fonts.cxx, line: 341
-#. Fl_Button* task_font_color_button
-msgid "Running App List Font"
-msgstr ""
-#
-# File: fltk/jwm-fonts.cxx, line: 358
-# File: fltk/jwm-fonts.cxx, line: 389
-msgid "No changes will be saved"
-msgstr ""
-#
-# File: fltk/jwm-fonts.cxx, line: 386
-msgid "Choose a Font"
-msgstr ""
-#
-# File: fltk/jwm-icons.cxx, line: 116
-# File: fltk/jwm-settings.cxx, line: 4223
-#. Fl_Button* o
-msgid "Icons"
-msgstr ""
-#
-# File: fltk/jwm-icons.cxx, line: 144
-# File: fltk/jwm-settings.cxx, line: 4253
-# File: fltk/jwm-themes.cxx, line: 82
-# File: fltk/jwm-themes.cxx, line: 96
-#. Fl_Browser* iconsBrowser
-#. Fl_Button* o
-#. Fl_Button* ok
-msgid "Themes"
-msgstr ""
-#
-# File: fltk/jwm-icons.cxx, line: 152
-#. Fl_Light_Button* icon_themes_button
-msgid "Directories"
-msgstr ""
-#
-# File: fltk/jwm-icons.cxx, line: 158
-#. Fl_Light_Button* directories_button
-msgid "Edit"
-msgstr ""
-#
-# File: fltk/jwm-icons.cxx, line: 177
-msgid "Edit Directory"
-msgstr ""
-#
-# File: fltk/jwm-icons.cxx, line: 197
-#. Fl_Input* dir_edit_input
-msgid "Choose a new directory"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 978
-#. Fl::add_handler(handle);
-msgid "Keyboard Settings"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 983
-msgid "Keyboard Shortcuts"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 992
-# File: fltk/jwm-panel.cxx, line: 940
-# File: fltk/jwm-panel.cxx, line: 1603
-# File: fltk/jwm-panel.cxx, line: 1858
-#. Fl_Browser* key_browser
-#. Fl_Browser* indicator_browser
-#. Fl_Browser* shortcut_browser
-msgid "-"
-msgstr "-"
-#
-# File: fltk/jwm-keyboard.cxx, line: 1037
-msgid "Create Keyboard Shortcut"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1047
-# File: fltk/jwm-keyboard.cxx, line: 1125
-#. Fl_Button* o
-msgid "Action"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1060
-# File: fltk/jwm-keyboard.cxx, line: 1138
-#. Fl_Menu_Button* o
-msgid "Choose Program"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1061
-# File: fltk/jwm-keyboard.cxx, line: 1139
-msgid "Choose a program to add"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1070
-# File: fltk/jwm-keyboard.cxx, line: 1148
-#. Fl_Input* action_name
-#. Fl_Input* action_name1
-msgid "OR"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1080
-# File: fltk/jwm-keyboard.cxx, line: 1158
-#. Fl_Button* o
-msgid "Modifiers"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1081
-msgid "First keyboard modifier"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1086
-# File: fltk/jwm-keyboard.cxx, line: 1098
-# File: fltk/jwm-keyboard.cxx, line: 1103
-msgid "Second keyboard modifier"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1090
-# File: fltk/jwm-keyboard.cxx, line: 1176
-#. Fl_Output* modder_output
-#. Fl_Output* current_mod1
-msgid "GRAB KEY"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1091
-# File: fltk/jwm-keyboard.cxx, line: 1177
-msgid "This will grab a new key combo"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1102
-# File: fltk/jwm-keyboard.cxx, line: 1183
-# File: fltk/jwm-keyboard.cxx, line: 1187
-#. Fl_Output* modder3_output
-#. Fl_Button* o
-#. Fl_Output* keyshortcut
-msgid "Key"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1116
-msgid "Configure Keyboard Shortcut"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1170
-#. Fl_Output* mod3_output
-msgid "Current"
-msgstr ""
-#
-# File: fltk/jwm-keyboard.cxx, line: 1171
-# File: fltk/jwm-keyboard.cxx, line: 1188
-# File: fltk/jwm-keyboard.cxx, line: 1194
-# File: fltk/jwm-keyboard.cxx, line: 1200
-msgid "Current Shortcut to Edit"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 423
-msgid "Add a Menu"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 426
-# File: fltk/jwm-panel.cxx, line: 698
-# File: fltk/jwm-panel.cxx, line: 1693
-# File: fltk/jwm-panel.cxx, line: 2004
-# File: src/jwmrc.cpp, line: 1701
-# File: src/panel.cpp, line: 285
-# File: src/panel.cpp, line: 395
-#. Fl_Input* hidden_icon_name
-msgid "Menu"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 427
-msgid ""
-"Determine which buttons on the root window activate the menu. This is a list "
-"of integers specifying buttons. The default is 123. Multiple root menus may "
-"be used by specifying different buttons to activate them. Valid values in "
-"this list are 0 to 9 and a to z. The usual mouse buttons are 1 for the left "
-"button, 2 for the middle button, 3 for the right button, and 4 and 5 for the "
-"scroll wheel. Therefore, accessing root menus that are assigned to buttons "
-"0, 6, 7, 8, 9, or a letter will typically require the use of a tray button "
-"or key binding."
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 440
-# File: fltk/jwm-menu.cxx, line: 476
-# File: fltk/jwm-menu.cxx, line: 534
-# File: fltk/jwm-menu.cxx, line: 574
-# File: fltk/jwm-panel.cxx, line: 1635
-#. Fl_Browser* list_browser
-#. Fl_Input* item_prog_icon
-#. Fl_Input* prog_icon
-#. Fl_Button* o
-msgid "Label"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 441
-msgid "The label to display at the top of the menu, normally this is NOT shown"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 445
-#. Fl_Input* new_menu_label
-msgid "Height"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 446
-msgid ""
-"The height of each menu item in pixels 0 indicates that the height of the "
-"font will determine the height. The default is 0."
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 454
-#. Fl_Slider* menu_height
-msgid "Labeled        "
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 455
-msgid ""
-"Determines if a label appears at the top of the menu, this will have no "
-"effect if the label is not set"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 474
-msgid "Add an Item"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 482
-# File: fltk/jwm-menu.cxx, line: 537
-# File: fltk/jwm-menu.cxx, line: 577
-#. Fl_Input* add_icon
-#. Fl_Input* item_prog_label
-#. Fl_Input* prog_label
-msgid "Program"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 485
-# File: fltk/jwm-menu.cxx, line: 540
-# File: fltk/jwm-menu.cxx, line: 580
-#. Fl_Input* add_input
-#. Fl_Input* item_prog_input
-#. Fl_Input* prog_input
-msgid "Confirm"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 506
-#. Fl_Button* add_icon_button
-msgid "Item to add"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 529
-# File: fltk/jwm-menu.cxx, line: 569
-msgid "Configure the Item"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 609
-msgid "Edit Include Item"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 611
-msgid "Include"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 636
-msgid "Menu proerties"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 641
-msgid " "
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 649
-# File: fltk/jwm-menu.cxx, line: 670
-msgid "Add a menu item"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 656
-# File: fltk/jwm-menu.cxx, line: 677
-msgid "remove a menu item"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 693
-msgid "Configure the item"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 727
-# File: fltk/jwm-menu.cxx, line: 730
-# File: fltk/jwm-panel.cxx, line: 1914
-# File: fltk/jwm-panel.cxx, line: 1917
-msgid "Nothing to Configure"
-msgstr ""
-#
-# File: fltk/jwm-menu.cxx, line: 743
-msgid "Submenu"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 574
-msgid "Mouse Cursors"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 606
-msgid "ERROR"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 609
-# File: fltk/jwm-mouse.cxx, line: 1272
-#. Fl_Button* main_cursors_button
-msgid "QUIT"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 615
-#. Fl_Button* o
-msgid "No touchpad detected"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 625
-msgid "JWM Mouse Settings"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 628
-# File: fltk/jwm-mouse.cxx, line: 1197
-msgid "Double Click Speed"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 629
-# File: fltk/jwm-mouse.cxx, line: 1198
-msgid "This sets how fast you must click to Double Click"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 643
-# File: fltk/jwm-mouse.cxx, line: 1222
-#. Fl_Slider* double_click_slider2
-#. Fl_Value_Input* double_v
-msgid "Double Click Delta"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 644
-# File: fltk/jwm-mouse.cxx, line: 1223
-msgid "This sets how closely you must click to Double Click"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 658
-# File: fltk/jwm-mouse.cxx, line: 1237
-#. Fl_Slider* delta_slider2
-#. Fl_Slider* delta_slider
-msgid "Pixels"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 668
-# File: fltk/jwm-mouse.cxx, line: 1212
-#. Fl_Value_Input* delta_v2
-#. Fl_Slider* double_click_slider
-msgid "Miliseconds"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 693
-# File: fltk/jwm-mouse.cxx, line: 1266
-#. Fl_Button* cancel_button3
-#. Fl_Button* ok_button
-msgid "Cursors"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 712
-msgid "Touchpad Settings"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 720
-msgid "TouchPad"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 721
-msgid "Touchpad Mode"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 722
-msgid "Toggle the pad ON/OFF or only move (no scroll, tap, ecc.)"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 738
-#. Fl_Choice* TouchpadOff
-msgid "Guest Mouse Off"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 739
-msgid "Toggle on/of the secondary pointer (tipically a joypad)"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 746
-#. Fl_Check_Button* GuestMouseOff
-msgid "Circular Pad"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 747
-msgid "Use this if your touchpad is circular"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 754
-#. Fl_Check_Button* CircularPad
-msgid "Touch Sensitivity"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 755
-msgid "The minimum pressure to react to"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 767
-#. Fl_Value_Slider* FingerLowHigh
-msgid "Click Emulation Time"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 768
-msgid "The duration of the mouse click generated by tapping"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 780
-#. Fl_Value_Slider* ClickTime
-msgid "Middle Button Emulation Time"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 781
-msgid "Maximum time for middle button emulation."
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 795
-#. Fl_Group* o
-msgid "Tapping"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 797
-msgid "One Finger"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 798
-msgid "Which mouse button is reported on a non-corner one-finger tap"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 813
-#. Fl_Choice* TapButton1
-msgid "Two Finger"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 814
-msgid "Which mouse button is reported on a non-corner two-finger tap"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 830
-#. Fl_Choice* TapButton2
-msgid "Three Finger"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 831
-msgid "Which mouse button is reported on a non-corner three-finger tap"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 847
-#. Fl_Choice* TapButton3
-msgid "Top Left Corner"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 848
-msgid "Which mouse button is reported on a  top left corner finger tap"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 864
-#. Fl_Choice* LTCornerButton
-msgid "Top Right Corner"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 865
-msgid ""
-"RTCornerButtonWhich mouse button is reported on a  top right corner finger "
-"tap"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 882
-#. Fl_Choice* RTCornerButton
-msgid "Bottom Left Corner"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 883
-msgid ""
-"LBCornerButtonWhich mouse button is reported on a  bottom left corner finger "
-"tap"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 900
-#. Fl_Choice* LBCornerButton
-msgid "Bottom Right Corner"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 901
-msgid "Which mouse button is reported on a  bottom right corner finger tap"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 917
-#. Fl_Choice* RBCornerButton
-msgid "Tap Time"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 918
-msgid "Maximum time for detecting a tap."
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 930
-#. Fl_Value_Slider* MaxTapTime
-msgid "Double Tap Time"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 931
-msgid "Maximum time for detecting a double tap"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 943
-#. Fl_Value_Slider* MaxDoubleTapTime
-msgid "Tap Move"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 944
-msgid "Maximum movement of the finger for detecting a tap"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 958
-#. Fl_Group* o
-msgid "Scrolling"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 960
-msgid "Vertical 2 Finger Scroll"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 961
-msgid "Enable Vertical Edge scrolling for this to work"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 968
-#. Fl_Check_Button* VertTwoFingerScroll
-msgid "Horizontal 2 Finger Scroll"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 969
-msgid "Enable Horizontal Edge scrolling for this to work"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 976
-#. Fl_Check_Button* HorizTwoFingerScroll
-msgid "Up Down Buttons Scroll"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 977
-msgid "If on, the up/down buttons generate button 4/5 events"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 984
-#. Fl_Check_Button* UpDownScrolling
-msgid "Left Right Buttons Scroll"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 985
-msgid "If on, the left/right buttons generate button 6/7 events"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 992
-#. Fl_Check_Button* LeftRightScrolling
-msgid "Circular Scroll"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 993
-msgid "If on, circular scrolling is used"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1000
-#. Fl_Check_Button* CircularScrolling
-msgid "VScroll Delta"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1001
-# File: fltk/jwm-mouse.cxx, line: 1014
-msgid "Move distance of the finger for a scroll event"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1013
-#. Fl_Value_Slider* VertScrollDelta
-msgid "HScroll Delta"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1026
-#. Fl_Value_Slider* HorizScrollDelta
-msgid "CScroll Delta"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1027
-msgid "Move angle (radians) of finger to generate a scroll event"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1039
-#. Fl_Value_Slider* CircScrollDelta
-msgid "CScroll Start"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1055
-#. Fl_Choice* CircScrollTrigger
-msgid "Edge Min Speed"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1056
-msgid "Slowest setting for edge motion speed"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1068
-#. Fl_Value_Slider* EdgeMotionMinSpeed
-msgid "Edge Max Speed"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1069
-msgid "Fastest setting for edge motion speed"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1081
-#. Fl_Value_Slider* EdgeMotionMaxSpeed
-msgid "Edge Sensitivity"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1082
-msgid "Finger pressure for  motion speed"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1096
-#. Fl_Group* o
-msgid "Movement"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1098
-msgid "@8->| Top"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1099
-msgid "Y coordinate for top edge"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1105
-# File: fltk/jwm-mouse.cxx, line: 1119
-# File: fltk/jwm-mouse.cxx, line: 1133
-# File: fltk/jwm-mouse.cxx, line: 1147
-#. Fl_Value_Output* TopEdge
-#. Fl_Value_Output* BottomEdge
-#. Fl_Value_Output* LeftEdge
-#. Fl_Value_Output* RightEdge
-msgid "Calibrate"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1106
-msgid "To calibrate push button and move finger on the top of the pad"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1112
-#. Fl_Button* o
-msgid "@2->| Bottom"
-msgstr ""
+
 #
 # File: fltk/jwm-mouse.cxx, line: 1113
 msgid "Y coordinate for bottom edge"
 msgstr ""
+
 #
-# File: fltk/jwm-mouse.cxx, line: 1120
-msgid "To calibrate push button and move finger on the bottom of the pad"
+# File: fltk/jwm-mouse.cxx, line: 1099
+msgid "Y coordinate for top edge"
 msgstr ""
+
 #
-# File: fltk/jwm-mouse.cxx, line: 1126
-#. Fl_Button* o
-msgid "@4->| Left"
+# File: fltk/jwm-panel.cxx, line: 1220
+# File: fltk/jwm-panel.cxx, line: 1228
+msgid "Y position of panel"
 msgstr ""
+
 #
-# File: fltk/jwm-mouse.cxx, line: 1127
-msgid "X coordinate for left edge"
+# File: src/panel.cpp, line: 238
+msgid "Year"
 msgstr ""
+
 #
-# File: fltk/jwm-mouse.cxx, line: 1134
-msgid "To calibrate push button and move finger on the left of the pad"
+# File: fltk/jwm-panel.cxx, line: 1542
+msgid "Year Month Day 24 Hour clock"
 msgstr ""
+
 #
-# File: fltk/jwm-mouse.cxx, line: 1140
-#. Fl_Button* o
-msgid "@->| Right"
+# File: fltk/jwm-panel.cxx, line: 1818
+msgid "You can add arguments here"
 msgstr ""
+
 #
-# File: fltk/jwm-mouse.cxx, line: 1141
-msgid "X coordinate for right edge"
+# File: fltk/jwm-autostart.cxx, line: 140
+msgid "You can add extra arguments here"
 msgstr ""
+
 #
-# File: fltk/jwm-mouse.cxx, line: 1148
-msgid "To calibrate push button and move finger on the right of the pad"
+# File: fltk/jwm-window.cxx, line: 1461
+# File: fltk/jwm-window.cxx, line: 1481
+# File: fltk/jwm-window.cxx, line: 1482
+# File: fltk/jwm-window.cxx, line: 1498
+msgid "You will need to close any open windows to see the change"
 msgstr ""
+
 #
-# File: fltk/jwm-mouse.cxx, line: 1154
-#. Fl_Button* o
-msgid "Min Speed"
+# File: fltk/jwm-fonts.cxx, line: 1080
+msgid "You will need to reopen active apps"
 msgstr ""
+
 #
-# File: fltk/jwm-mouse.cxx, line: 1155
-msgid "Minimum speed factor"
+# File: fltk/jwm-window.cxx, line: 1419
+#. Fl_Output* decorations
+msgid "border decorations"
 msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1167
-#. Fl_Value_Slider* MinSpeed
-msgid "Max Speed"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1168
-msgid "Maximum speed factor"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1180
-#. Fl_Value_Slider* MaxSpeed
-msgid "Acceleration"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1181
-msgid "Acceleration factor"
-msgstr ""
-#
-# File: fltk/jwm-mouse.cxx, line: 1247
-#. Fl_Value_Input* delta_v
-msgid "Reset"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 885
-msgid "Panel Settings"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 900
-# File: fltk/jwm-panel.cxx, line: 1893
-msgid "Add a Panel"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 904
-msgid "Panel 1"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 909
-msgid "Panel 2"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 914
-msgid "Panel 3"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 919
-msgid "Panel 4"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 923
-msgid "Remove Current  Panel"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 939
-# File: fltk/jwm-panel.cxx, line: 977
-#. Fl_Button* o
-#. # Applications menu
-# File: debian/postinst, line: 8
-msgid "Apps"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 965
-#. Fl_Button* choose_apps
-msgid "@+98>"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 971
-#. Fl_Button* o
-msgid "@+92>"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 980
-# File: fltk/jwm-panel.cxx, line: 1081
-# File: fltk/jwm-window.cxx, line: 660
-#. Fl_Group* o
-#. Fl_Button* o
-msgid "Appearance"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 982
-msgid "Menu Background"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 991
-#. Fl_Button* menu_bg_color
-msgid "Menu Selection"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1000
-#. Fl_Button* menu_fg_color
-msgid "Menu Font Color"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1009
-#. Fl_Button* menu_font_color
-msgid "Opacity of Menu "
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1010
-# File: fltk/jwm-panel.cxx, line: 1052
-# File: fltk/jwm-window.cxx, line: 708
-# File: fltk/jwm-window.cxx, line: 780
-msgid "A compositor (like xcompmgr) must be installed"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1020
-msgid "Opacity of Menu"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1024
-# File: fltk/jwm-panel.cxx, line: 1066
-# File: fltk/jwm-window.cxx, line: 720
-# File: fltk/jwm-window.cxx, line: 792
-#. Fl_Slider* o_menu_slider
-#. Fl_Slider* o_slider
-#. Fl_Slider* active_o_slider
-#. Fl_Slider* inactive_o_slider
-msgid "%"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1033
-#. Fl_Value_Input* o_menu_slider_v
-msgid "Panel Color"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1042
-#. Fl_Button* b_color
-msgid "Panel Button Color"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1051
-#. Fl_Button* button_color
-msgid "Opacity of Panel  "
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1062
-msgid "Opacity of Panel"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1075
-# File: fltk/jwm-panel.cxx, line: 1079
-#. Fl_Value_Input* o_slider_v
-msgid "Edit Menus"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1084
-# File: fltk/jwm-panel.cxx, line: 1255
-#. Fl_Group* o
-#. Fl_Value_Input* border_input
-msgid "Size And Position"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1086
-# File: fltk/jwm-panel.cxx, line: 1110
-msgid "Panel Position"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1091
-# File: fltk/jwm-panel.cxx, line: 1117
-msgid "top"
-msgstr ""
+
 #
 # File: fltk/jwm-panel.cxx, line: 1094
 # File: fltk/jwm-panel.cxx, line: 1120
 msgid "bottom"
 msgstr ""
+
 #
-# File: fltk/jwm-panel.cxx, line: 1097
-# File: fltk/jwm-panel.cxx, line: 1100
-# File: fltk/jwm-panel.cxx, line: 1123
-msgid "right"
+# File: fltk/jwm-panel.cxx, line: 1947
+msgid "current autohide position (if any)"
 msgstr ""
+
 #
-# File: fltk/jwm-panel.cxx, line: 1112
-# File: fltk/jwm-panel.cxx, line: 1140
+# File: fltk/jwm-menu.cxx, line: 969
+# File: fltk/jwm-panel.cxx, line: 1708
+# File: fltk/jwm-panel.cxx, line: 2361
+#. Fl_Button* menu_font_a
+#. Fl_Box* o
+#. Fl_Output* list_out
+msgid "decorations"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 641
+#. Fl_Slider* delay_slider
+msgid "enabled"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1952
+#. Fl_Output* autohide_pos
+msgid "halign"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 901
+#. Fl_Check_Button* sticky_history
+msgid "idle threshold"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1998
+#. Fl_Output* layOut
+msgid "layer"
+msgstr ""
+
+#
+# File: fltk/jwm-panel.cxx, line: 1978
 #. Fl_Menu_Button* o
-msgid "Autohide Position"
+msgid "layout"
 msgstr ""
+
 #
 # File: fltk/jwm-panel.cxx, line: 1126
 msgid "left"
 msgstr ""
+
+#
+# File: fltk/jwm-window.cxx, line: 1516
+msgid ""
+"m Maximize button\n"
+"i Minimize (iconify) button\n"
+"t Window title\n"
+"w Window menu button\n"
+"x Close button"
+msgstr ""
+
+#
+# File: fltk/jwm-popups.cxx, line: 619
+#. Fl_Button* outline
+msgid "milliseconds"
+msgstr ""
+
 #
 # File: fltk/jwm-panel.cxx, line: 1129
 msgid "off"
 msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1142
-# File: fltk/jwm-panel.cxx, line: 1149
-#. Fl_Menu_Button* choose_autohide
-msgid "Autohide?"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1143
-msgid "This will make the Panel hide when you aren't using it."
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1151
-#. Fl_Check_Button* autohide_check
-msgid "Width of Panel  "
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1152
-msgid "0 is Full Length"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1163
-msgid "Width of Panel"
-msgstr ""
+
 #
 # File: fltk/jwm-panel.cxx, line: 1167
 # File: fltk/jwm-panel.cxx, line: 1176
@@ -1600,1047 +4444,56 @@ msgstr ""
 #. Fl_Slider* a_t_slider
 msgid "pixels"
 msgstr ""
+
 #
-# File: fltk/jwm-panel.cxx, line: 1178
-#. Fl_Value_Input* width_input
-msgid "Height of Panel  "
+# File: src/keyboard.cpp, line: 283
+msgid "read input command did not return 0"
 msgstr ""
+
 #
-# File: fltk/jwm-panel.cxx, line: 1179
-msgid "0 bases the height on the items"
+# File: fltk/jwm-menu.cxx, line: 829
+msgid "remove a menu"
 msgstr ""
+
 #
-# File: fltk/jwm-panel.cxx, line: 1190
-msgid "Height of Panel"
+# File: fltk/jwm-menu.cxx, line: 656
+# File: fltk/jwm-menu.cxx, line: 677
+msgid "remove a menu item"
 msgstr ""
+
 #
-# File: fltk/jwm-panel.cxx, line: 1205
-# File: fltk/jwm-panel.cxx, line: 1208
-#. Fl_Value_Input* height_input
-msgid "Advanced Options"
+# File: fltk/jwm-fonts.cxx, line: 903
+msgid "rgb, bgr, vrgb, vbgr, none - subpixel geometry"
 msgstr ""
+
 #
-# File: fltk/jwm-panel.cxx, line: 1210
-# File: fltk/jwm-panel.cxx, line: 1218
-#. Fl_Box* o
-msgid "X position of panel"
+# File: fltk/jwm-panel.cxx, line: 1097
+# File: fltk/jwm-panel.cxx, line: 1100
+# File: fltk/jwm-panel.cxx, line: 1123
+msgid "right"
 msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1220
-# File: fltk/jwm-panel.cxx, line: 1228
-#. Fl_Value_Input* o
-msgid "Y position of panel"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1230
-# File: fltk/jwm-panel.cxx, line: 1240
-#. Fl_Value_Input* o
-msgid "Width of Panel Border"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1288
-msgid "Add Indicator"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1290
-msgid "Battery"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1295
-#. Fl_Button* o
-msgid "Volume"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1300
-#. Fl_Button* o
-msgid "Network"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1326
-# File: fltk/jwm-panel.cxx, line: 1355
-msgid "Add to Panel"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1363
-# File: fltk/jwm-panel.cxx, line: 1406
-# File: fltk/jwm-panel.cxx, line: 1523
-msgid "Configure Clock"
-msgstr ""
+
 #
 # File: fltk/jwm-panel.cxx, line: 1373
 # File: fltk/jwm-panel.cxx, line: 1378
 #. Fl_Button* o
 msgid "style"
 msgstr ""
+
 #
-# File: fltk/jwm-panel.cxx, line: 1393
-# File: fltk/jwm-panel.cxx, line: 1397
-# File: fltk/jwm-panel.cxx, line: 1414
-#. Fl_Output* clock_display
-msgid "Notes"
+# File: fltk/jwm-window.cxx, line: 1399
+#. Fl_Button* default_icon_button_win
+msgid "title decorations"
 msgstr ""
+
 #
-# File: fltk/jwm-panel.cxx, line: 1399
-# File: fltk/jwm-panel.cxx, line: 1403
-# File: fltk/jwm-panel.cxx, line: 1451
-#. Fl_Button* o
-msgid "Modifier Notes"
+# File: fltk/jwm-panel.cxx, line: 1091
+# File: fltk/jwm-panel.cxx, line: 1117
+msgid "top"
 msgstr ""
+
 #
-# File: fltk/jwm-panel.cxx, line: 1417
-msgid ""
-"ISO 8601 week dates %G,  %g,  and  %V yield values calculated from the week-"
-"based year defined by the ISO 8601 standard.  In this system, weeks start  "
-"on a  Monday,  and are numbered from 01, for the first week, up to 52 or 53, "
-"for the last week.  Week 1 is the first week where four  or more  days fall "
-"within the new year (or, synonymously, week 01 is: the first week of the "
-"year that contains a Thursday; or, the  week that  has 4 January in it).  "
-"When three of fewer days of the first calendar week of the new year fall "
-"within that year, then the  ISO 8601 week-based system counts those days as "
-"part of week 53 of the preceding year.  For example, 1 January 2010 is a "
-"Friday,  meaning that  just  three  days of that calendar week fall in "
-"2010.  Thus, the ISO 8601 week-based system considers these days to be part  "
-"of week  53 (%V) of the year 2009 (%G); week 01 of ISO 8601 year 2010 starts "
-"on Monday, 4 January 2010."
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1454
-msgid ""
-"Some conversion specifications can be modified  by  preceding  the "
-"conversion  specifier character by the E or O modifier to indicate that an "
-"alternative format should be  used.   If  the  alternative format or "
-"specification does not exist for the current locale, the behavior will be as "
-"if  the  unmodified  conversion  specification were  used.  (SU) The Single "
-"UNIX Specification mentions %Ec, %EC, %Ex, %EX, %Ey, %EY, %Od, %Oe, %OH, "
-"%OI, %Om, %OM, %OS,  %Ou,  %OU, %OV,  %Ow,  %OW, %Oy, where the effect of "
-"the O modifier is to use alternative numeric symbols (say, roman numerals), "
-"and that of the E  modifier  is  to use a locale-dependent alternative "
-"representation.\n"
-"The broken-down time structure tm is  defined  in  <time.h>."
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1477
-#. Fl_Scroll* o
-msgid "See also ctime"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1492
-# File: fltk/jwm-panel.cxx, line: 2000
-# File: src/jwmrc.cpp, line: 1697
-# File: src/panel.cpp, line: 281
-# File: src/panel.cpp, line: 391
-msgid "Running App List"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1501
-#. Fl_Button* o
-msgid "Open Apps"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1508
-#. Fl_Button* task_bg_color
-msgid "Current App"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1525
-msgid "Clock Format"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1530
-msgid "Day name Month Day 12 Hour"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1534
-msgid "24 Hour Clock"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1538
-msgid "12 Hour Clock"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1542
-msgid "Year Month Day 24 Hour clock"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1546
-msgid "(Advanced) User Defined"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1571
-#. Fl_Output* clock_displayer
-msgid "Program to Launch"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1572
-msgid "Usually used for a calendar or analog clock"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1588
-msgid "Configure Indicators"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1623
-msgid "Manual Editing"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1636
-# File: fltk/jwm-panel.cxx, line: 1654
-msgid "The text that pops up when you hover"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1653
-#. Fl_Input* icon_file
-msgid "Tooltip"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1666
-msgid "Configure Menu"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1676
-#. Fl_Button* o
-msgid "Menu Label"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1705
-msgid "Configure Swallowed Application"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1713
-#. Fl_Button* o
-msgid "App Name"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1714
-msgid "This MUST be the same as the executable's name"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1723
-#. Fl_Input* swallow_name
-msgid "Configure"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1740
-msgid "Configure Switcher"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1749
-#. Fl_Button* o
-msgid "Foreground"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1753
-#. Fl_Box* o
-msgid "Background"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1809
-msgid "Choose an application to add"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1811
-msgid "Application"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1818
-msgid "You can add arguments here"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1825
-#. Fl_Input* app_command
-msgid "Tooltip Label"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1843
-#. Fl_Button* ok_button
-msgid "Show a Border around the Button?"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1844
-msgid "The button you are adding can be borderless, if you like"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1851
-#. Fl_Check_Button* shortcut_border
-msgid "Current Panel Buttons"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1859
-msgid "Remove application launcher"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1867
-#. Fl_Button* o
-msgid "Icon File Name"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 1895
-msgid "Only Four Panels are supported"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 2001
-# File: src/jwmrc.cpp, line: 1698
-# File: src/panel.cpp, line: 282
-# File: src/panel.cpp, line: 392
-msgid "Indicators"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 2002
-# File: src/jwmrc.cpp, line: 1699
-# File: src/panel.cpp, line: 283
-# File: src/panel.cpp, line: 393
-msgid "Clock"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 2003
-# File: src/jwmrc.cpp, line: 1700
-# File: src/panel.cpp, line: 284
-# File: src/panel.cpp, line: 394
-msgid "Swallow"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 2005
-# File: src/jwmrc.cpp, line: 1702
-# File: src/panel.cpp, line: 286
-# File: src/panel.cpp, line: 396
-msgid "Desktop Switcher"
-msgstr ""
-#
-# File: fltk/jwm-panel.cxx, line: 2006
-# File: src/jwmrc.cpp, line: 1703
-# File: src/panel.cpp, line: 287
-# File: src/panel.cpp, line: 397
-msgid "Launcher"
-msgstr ""
-#
-# File: fltk/jwm-settings.cxx, line: 4207
-msgid "Settings Manager"
-msgstr ""
-#
-# File: fltk/jwm-settings.cxx, line: 4211
-# File: fltk/jwm-themes.cxx, line: 110
-# File: src/panel.cpp, line: 58
-# File: src/panel.cpp, line: 467
-# File: src/panel.cpp, line: 478
-#. Fl_Box* button
-msgid "Panel"
-msgstr ""
-#
-# File: fltk/jwm-settings.cxx, line: 4217
-#. Fl_Button* o
-msgid "Keyboard"
-msgstr ""
-#
-# File: fltk/jwm-settings.cxx, line: 4229
-# File: fltk/jwm-window.cxx, line: 542
-#. Fl_Button* o
-#. Fl_Slider* opacity_value
-msgid "Desktop"
-msgstr ""
-#
-# File: fltk/jwm-settings.cxx, line: 4235
-#. Fl_Button* o
-msgid "Touchpad"
-msgstr ""
-#
-# File: fltk/jwm-settings.cxx, line: 4241
-#. Fl_Button* o
-msgid "Fonts"
-msgstr ""
-#
-# File: fltk/jwm-settings.cxx, line: 4247
-#. Fl_Button* o
-msgid "Windows"
-msgstr ""
-#
-# File: fltk/jwm-settings.cxx, line: 4254
-msgid "This is for Predefined Thems"
-msgstr ""
-#
-# File: fltk/jwm-settings.cxx, line: 4260
-#. Fl_Button* o
-msgid "Autostart"
-msgstr ""
-#
-# File: fltk/jwm-settings.cxx, line: 4266
-#. Fl_Button* o
-msgid "Users and Groups"
-msgstr ""
-#
-# File: fltk/jwm-settings.cxx, line: 4276
-#. isAdduser(o);
-#. Fl_Button* o
-msgid "System Details"
-msgstr ""
-#
-# File: fltk/jwm-shutdown.cxx, line: 513
-# File: fltk/jwm-shutdown.cxx, line: 516
-# File: debian/postinst, line: 9
-msgid "Shutdown"
-msgstr ""
-#
-# File: fltk/jwm-shutdown.cxx, line: 523
-# File: src/jwmrc.cpp, line: 465
-#. Fl_Button* shut
-msgid "Restart"
-msgstr ""
-#
-# File: fltk/jwm-shutdown.cxx, line: 530
-#. Fl_Button* restart
-msgid "Logout"
-msgstr ""
-#
-# File: fltk/jwm-shutdown.cxx, line: 537
-#. Fl_Button* log
-msgid "Suspend"
-msgstr ""
-#
-# File: fltk/jwm-shutdown.cxx, line: 538
-msgid "NOTE: this does not work with all computers"
-msgstr ""
-#
-# File: fltk/jwm-themes.cxx, line: 88
-msgid "Change Colors ONLY"
-msgstr ""
-#
-# File: fltk/jwm-themes.cxx, line: 89
-# File: fltk/jwm-themes.cxx, line: 142
-# File: fltk/jwm-themes.cxx, line: 148
-# File: fltk/jwm-themes.cxx, line: 164
-msgid "This will copy your current theme somewhere else"
-msgstr ""
-#
-# File: fltk/jwm-themes.cxx, line: 107
-#. Fl_Box* button_icon
-msgid "Button"
-msgstr ""
-#
-# File: fltk/jwm-themes.cxx, line: 119
-#. Fl_Box* awin
-msgid "Window (Active)"
-msgstr ""
-#
-# File: fltk/jwm-themes.cxx, line: 133
-#. Fl_Box* iwin2
-msgid "Window (Inactive)"
-msgstr ""
-#
-# File: fltk/jwm-themes.cxx, line: 141
-#. Fl_Box* iclose
-msgid "Save Custom Theme"
-msgstr ""
-#
-# File: fltk/jwm-themes.cxx, line: 155
-#. Fl_Button* cancel_button
-msgid "User Themes"
-msgstr ""
-#
-# File: fltk/jwm-themes.cxx, line: 163
-#. Fl_Browser* usr_theme
-msgid "Overwrite Current Theme"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 505
-msgid "Add an Option"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 533
-#. Fl_Input* icon_value
-msgid "Opacity"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 548
-#. Fl_Value_Input* desktop_num
-msgid "Adding"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 569
-#. Fl_Button* o
-msgid "Layer"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 601
-msgid "Add Class"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 603
-msgid "Class to Add"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 623
-msgid "Program to add"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 637
-#. Fl_Button* o
-msgid "Program @+"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 652
-msgid "Window Settings"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 665
-#. Fl_Box* o
-msgid "Active Window"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 670
-# File: fltk/jwm-window.cxx, line: 740
-#. Fl_Box* o
-msgid "Title bar"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 673
-# File: fltk/jwm-window.cxx, line: 743
-#. Fl_Box* o
-msgid "Color 1"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 680
-# File: fltk/jwm-window.cxx, line: 751
-#. Fl_Button* a_title_color1
-#. Fl_Button* inactive_color
-msgid "Color 2"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 687
-# File: fltk/jwm-window.cxx, line: 759
-#. Fl_Button* a_title_color2
-#. Fl_Button* inactive_color2
-msgid "Font Color"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 697
-# File: fltk/jwm-window.cxx, line: 769
-#. Fl_Button* a_font_color
-#. Fl_Button* inactive_font_color
-msgid "Border Color"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 707
-#. Fl_Button* a_border_color
-msgid "Opacity  "
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 735
-#. Fl_Box* o
-msgid "Background  Window"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 779
-#. Fl_Button* inactive_border_color
-msgid "Opacity "
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 802
-#. Fl_Value_Input* inactive_o_slider_v
-msgid "Change the Window Button Images"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 807
-#. Fl_Box* o
-msgid " Maximize (Activated)"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 811
-# File: fltk/jwm-window.cxx, line: 821
-# File: fltk/jwm-window.cxx, line: 831
-# File: fltk/jwm-window.cxx, line: 841
-msgid "Choose an image (XBM) for the Maximized button"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 818
-#. Fl_Button* max_a_image
-msgid " Maximize"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 828
-#. Fl_Button* max_image
-msgid " Minimize"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 838
-#. Fl_Button* min_image
-msgid " Close"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 850
-#. Fl_Group* o
-#. # This is the general settings
-# File: debian/postinst, line: 19
-msgid "Settings"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 852
-# File: fltk/jwm-window.cxx, line: 1091
-#. Fl_Value_Output* a_b_slider_v
-msgid "Window Title Bar Size"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 853
-msgid "This is the top with the program name, and close button, etc.."
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 876
-#. Fl_Value_Input* t_slider_v
-msgid "Size of the Window Frame"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 877
-msgid ""
-"This makes the edges of the window larger or smaller to help you grab them "
-"more easily"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 901
-#. Fl_Value_Input* b_slider_v
-msgid "Choose how the Window comes to the front of the screen"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 902
-msgid "This determines how windows are brought to the front"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 917
-#. Fl_Menu_Button* focus_menu
-msgid "Appearance of the Window while Resizing"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 918
-msgid "What the windows look like while resizing"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 933
-#. Fl_Menu_Button* resize_menu
-msgid "Appearance of Window while Moving"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 934
-msgid "What the windows look like while moving"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 949
-#. Fl_Menu_Button* move_menu
-msgid "Choose what the Windows will snap to"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 950
-msgid "This determines how windows 'Snap' to other windows, and screen edges"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 965
-#. Fl_Menu_Button* snap_menu
-msgid "How close (in pixels) does the window need to be to snap?"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 978
-#. Fl_Value_Input* snap_int
-msgid "Size of Corner"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 979
-msgid "This changes the curvature of the window's corners"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 992
-#. Fl_Group* o
-msgid "Groups"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 994
-msgid "Current Groups"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 995
-msgid ""
-"Program groups allow one to specify options which apply to a group of "
-"programs by their name and/or class. A program group is created with the "
-"Group tag. As many program groups can be created as desired."
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 1015
-#. Fl_Button* rm_group
-msgid "Current Options"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 1031
-#. Fl_Button* rm_opt
-msgid "Program Name"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 1047
-#. Fl_Button* rm_prog
-msgid "Window Class"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 1067
-msgid "Window Border Size"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 1068
-msgid "Width of the window borders"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 1092
-msgid "Height of the Window's Title Bar"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 1115
-#. Fl_Value_Output* a_t_slider_v
-msgid "This can make your window borders and Title bar"
-msgstr ""
-#
-# File: fltk/jwm-window.cxx, line: 1117
-#. Fl_Box* o
-msgid "REALLY HUGE!"
-msgstr ""
-#
-# File: src/desktop.cpp, line: 86
-msgid "Choose a Background"
-msgstr ""
-#
-# File: src/desktop.cpp, line: 114
-msgid "Solid Color"
-msgstr ""
-#
-# File: src/desktop.cpp, line: 115
-msgid "Color Gradient"
-msgstr ""
-#
-# File: src/fltkfunctions.cpp, line: 36
-# File: src/fltkfunctions.cpp, line: 60
-msgid "Choose Directory"
-msgstr ""
-#
-# File: src/fltkfunctions.cpp, line: 80
-msgid "Save as "
-msgstr ""
-#
-# File: src/fltkfunctions.cpp, line: 89
-# File: src/fltkfunctions.cpp, line: 94
-# File: src/fltkfunctions.cpp, line: 99
-msgid "Choose a File"
-msgstr ""
-#
-# File: src/fltkfunctions.cpp, line: 105
-# File: src/fltkfunctions.cpp, line: 214
-# File: src/panel.cpp, line: 348
-msgid "Choose a program"
-msgstr ""
-#
-# File: src/fltkfunctions.cpp, line: 135
-msgid "Choose an Icon"
-msgstr ""
-#
-# File: src/fltkfunctions.cpp, line: 142
-# File: src/themes.cpp, line: 263
-msgid "Choose"
-msgstr ""
-#
-# File: src/fltkfunctions.cpp, line: 202
-msgid "Choose a Color"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 457
-msgid "Sub Menu"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 461
-msgid "Separator"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 469
-msgid "Desktop List"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 473
-msgid "Send To Desktop Menu"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 477
-msgid "Sticky state of Window"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 481
-msgid "Maximize window"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 485
-msgid "Minimize window"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 489
-msgid "Shade window"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 493
-msgid "Move window"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 497
-msgid "Resize window"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 501
-msgid "Kill window"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 505
-msgid "Close window"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 509
-msgid "Exit"
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1601
-#. see BELOW function to see how I generated this code
-#. these are all the descriptions of the options above
-msgid "Enables the border on windows in this group."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1602
-msgid ""
-"Center windows in this group upon initial placement instead of using "
-"cascaded placement."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1603
-msgid "Prevent clients in this group from moving off-screen."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1604
-msgid "The desktop on which windows in this group will be started."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1605
-msgid "Make windows in this group maximize horizontally by default."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1606
-msgid "The icon to be used for windows in this group."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1607
-msgid "Ignore the increment size hint when maximizing windows in this group."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1608
-msgid ""
-"The layer on which windows in this group will be started. Valid options are "
-"below, normal, and above."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1609
-msgid "Make windows in this group maximized."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1610
-msgid "Make windows in this group minimized."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1611
-msgid "Disables the border for windows in this group."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1612
-msgid "Prevents windows in this group from grabbing the focus when mapped."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1613
-msgid "Causes the tray to ignore windows in this group."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1614
-msgid "Causes the pager to ignore windows in this group."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1615
-msgid "Disallows shading for windows in this group."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1616
-msgid "Disallows maximization for windows in this group."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1617
-msgid "Disallows minimization for windows in this group."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1618
-msgid "Hides the close button for windows in this group."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1619
-msgid "Prevents windows in this group from being moved."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1620
-msgid "Prevents windows in this group from being resized."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1621
-msgid "Prevents windows in this group from being fullscreen."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1622
-msgid "Disables the title bar for windows in this group."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1623
-msgid ""
-"Ignore the urgent hint for windows in this group. Without this option set, "
-"JWM will flash the border of urgent windows."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1624
-msgid ""
-"Set the opacity for windows in this group. The value is a number between 0.0 "
-"and 1.0 inclusive."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1625
-msgid "Ignore program-specified initial position."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1626
-msgid "Make windows in this group shaded."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1627
-msgid "Make windows in this group sticky."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1628
-msgid ""
-"Attempt to tile windows in this group upon initial placement. If tiled "
-"placement fails, windows will fall back to cascaded (the default) or "
-"centered if specified."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1629
-msgid "Enables the title bar for windows in this group."
-msgstr ""
-#
-# File: src/jwmrc.cpp, line: 1630
-msgid "Make windows in this group maximize vertically by default."
-msgstr ""
-#
-# File: src/keyboard.cpp, line: 283
-msgid "read input command did not return 0"
-msgstr ""
-#
-# File: src/panel.cpp, line: 235
-msgid "Day"
-msgstr ""
-#
-# File: src/panel.cpp, line: 236
-msgid "12"
-msgstr ""
-#
-# File: src/panel.cpp, line: 237
-msgid "24"
-msgstr ""
-#
-# File: src/panel.cpp, line: 238
-msgid "Year"
-msgstr ""
-#
-# File: src/themes.cpp, line: 32
-msgid "Save File"
-msgstr ""
-#
-#. ####################################################################################
-#. # Places Menu
-# File: debian/postinst, line: 6
-msgid "Places"
-msgstr ""
-#
-# File: debian/postinst, line: 10
-msgid "Help"
-msgstr ""
-#
-# File: debian/postinst, line: 11
-msgid "Calendar"
-msgstr ""
-#
-#. # This menu item refreshes/reloads the window manager
-# File: debian/postinst, line: 13
-msgid "Reload Desktop"
-msgstr ""
-#
-# File: debian/postinst, line: 14
-msgid "Clock Settings"
-msgstr ""
-#
-#. # this opens the home folder
-# File: debian/postinst, line: 16
-msgid "Home"
-msgstr ""
-#
-# File: debian/postinst, line: 17
-msgid "Timezone Settings"
-msgstr ""
-#
-# File: debian/postinst, line: 20
-msgid "Edit Panel"
-msgstr ""
-#
-# File: debian/postinst, line: 21
-msgid "Change Desktop Background"
-msgstr ""
-#
-# File: debian/postinst, line: 22
-msgid "About ToriOS"
-msgstr ""
-#
-# File: debian/postinst, line: 23
-msgid "About Us"
-msgstr ""
-#
-# File: debian/postinst, line: 24
-msgid "Software Installer"
-msgstr ""
-#
-#. # this is to run a program
-# File: debian/postinst, line: 26
-msgid "Run"
-msgstr ""
-#
-#. # This is to locate a file
-# File: debian/postinst, line: 28
-msgid "Locate"
-msgstr ""
-#
-# File: debian/postinst, line: 29
-msgid "Update System"
-msgstr ""
-#
-#. # Software packages, or programs
-# File: debian/postinst, line: 31
-msgid "Install Packages"
-msgstr ""
-#
-# File: debian/postinst, line: 32
-msgid "Information"
-msgstr ""
-#
-# File: debian/postinst, line: 33
-msgid "About Software installer"
-msgstr ""
-#
-#. # Software packages, or programs
-# File: debian/postinst, line: 35
-msgid "List All Installed Packages"
-msgstr ""
-#
-#. # Software packages, or programs
-# File: debian/postinst, line: 37
-msgid "Fix broken packages"
-msgstr ""
-#
-#. # Add an icon to the desktop
-# File: debian/postinst, line: 39
-msgid "Add new items to Desktop"
+# File: fltk/jwm-panel.cxx, line: 1965
+#. Fl_Menu_Button* o
+msgid "valign"
 msgstr ""
