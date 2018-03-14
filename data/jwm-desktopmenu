@@ -163,37 +163,31 @@ DEFAULT_ICON="${ICON}"
 {	#parse .desktop files and sort generated menu entries into subcategories
 for DESKTOP_FILE in /usr/share/applications/*.desktop
 do
-  NAME="" ICON="" CATS="" EXEC="" LINE="" TERMIE="" #prevent carryover from previous file
-  while read LINE || [ "$LINE" ]
-  do
-  case $LINE in
-      NoDisplay=true)
-        NAME=""
-        ICON=""
-        CATS=""
-        EXEC=""
-        TERMIE=""
-        break;;
-      Name?${myLANG%_*}?=*|Name=*) NAME="${LINE#*=}"'' ;; # sc0ttman... should use "Name[$myLANG]=" if found
-      '[Desktop Entry'*) continue ;;
-      TryExec=*|Exec=*) EXEC="${LINE#*=}"'' ;;
-      Categories=*) CATS="${LINE#*=}"'' ;;
-      Icon=*) ICON="${LINE#*=}"''  ;;
-      Terminal=*) TERMIE="${LINE#*=}"'';;
-      "["*) break ;; ##any other groups thanks to technosaurus
-      OnlyShowIn=*)
-        NAME=""
-        ICON=""
-        CATS=""
-        EXEC=""
-        TERMIE=""
-        break;;
-      # Comment=*|Comment?${LANG%_*}?=*) COMMENT="${LINE#*=}"''  ;; #jwm doesn't support tooltips on menu items yet ... uncomment this if it ever does
-  esac
-  done < "$DESKTOP_FILE"
+	unset NAME ICON CATS EXEC TERMIE #prevent carryover from previous file
+	while read LINE || [ "$LINE" ]
+	do
+		case $LINE in
+			NoDisplay=true)
+				unset NAME ICON CATS EXEC TERMIE
+				break
+				;;
+			'Name'?${myLANG%_*}?=* | 'Name='*) NAME="${LINE#*=}"'' ;; # sc0ttman... should use "Name[$myLANG]=" if found
+			'[Desktop Entry'*) continue ;;
+			'TryExec='* | 'Exec='*) EXEC="${LINE#*=}"'' ;;
+			'Categories='*) CATS="${LINE#*=}"'' ;;
+			'Icon='*) ICON="${LINE#*=}"''  ;;
+			'Terminal='*) TERMIE="${LINE#*=}"'';;
+			"["*) break ;; ##any other groups thanks to technosaurus
+			'OnlyShowIn='*)
+				unset NAME ICON CATS EXEC TERMIE
+				break
+				;;
+			'Comment='*|'Comment'?${LANG%_*}?=*) COMMENT="${LINE#*=}"''  ;; #jwm doesn't support tooltips on menu items yet ... uncomment this if it ever does
+		esac
+	done < "$DESKTOP_FILE"
   
-  if [ "${TERMIE}" == "true" ]
-  then
+	if [ "${TERMIE}" == "true" ]
+	then
 
     if [ "$(which xterm)" ]
     then

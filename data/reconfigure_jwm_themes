@@ -1,5 +1,8 @@
 #!/bin/bash
-. gettext.sh
+gettext(){
+	printf "%s" "$*"
+}
+source gettext.sh
 export TEXTDOMAIN=jwm-settings-manager
 #####################################################################################
 ## Places Menu
