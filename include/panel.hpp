@@ -115,7 +115,7 @@ class JSM_Panel : public FLTK_FUNCTIONS
 		void addTaskList();
 		void addVolume();
 		void app_command_CB(Fl_Input* o, Fl_Input* app_command);
-		void autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide);
+		void autohide(Fl_Check_Button* autohide_check,Fl_Widget* choose_autohide);
 		void autohide_position(std::string where,Fl_Output *autohide_pos);
 //         C
 		void changeClock(std::string style);

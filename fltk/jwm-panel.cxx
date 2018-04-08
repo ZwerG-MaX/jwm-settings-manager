@@ -348,14 +348,16 @@ Fl_Menu_Item PanelUI::menu_Panel[] = {
 };
 
 void PanelUI::cb_autohide_check_i(Fl_Check_Button* o, void*) {
-  int autohide=o->value();
-std::string val = getAutoHide(autohide);
+  int Autohide=o->value();
+std::string val = getAutoHide(Autohide);
 if(val.compare("off")==0){
   o->value(0);
-  if(autohide!=0){errorOUT("Something went wrong with autohide");}
+  if(Autohide!=0){errorOUT("Something went wrong with autohide");}
 }
 setElementAttribute(currentPanel(),"Tray","autohide",val);
 autohide_position(val,autohide_pos);
+autohide(o,choose_autohide);
+autohide(o,autohide_pos);
 }
 void PanelUI::cb_autohide_check(Fl_Check_Button* o, void* v) {
   ((PanelUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_autohide_check_i(o,v);
@@ -1857,7 +1859,7 @@ om the right of the screen."));
             o->callback((Fl_Callback*)cb_X);
             o->align(Fl_Align(FL_ALIGN_RIGHT));
             coordinate("x",o,1);
-            const char* text=gettext("X position of panel");o->label(text);
+            const char* text=gettext("X coordinate");o->label(text);
           } // Fl_Value_Input* o
           { Fl_Value_Input* o = new Fl_Value_Input(155, 230, 25, 25, gettext("Y coordinate"));
             o->tooltip(gettext("The  y-coordinate of the tray. This may be negative\nto indicate  an  offset \
@@ -1869,7 +1871,7 @@ om the right of the screen."));
             o->callback((Fl_Callback*)cb_Y);
             o->align(Fl_Align(FL_ALIGN_RIGHT));
             coordinate("y",o,1);
-            const char* text=gettext("Y position of panel");o->label(text);
+            const char* text=gettext("Y coordinate");o->label(text);
           } // Fl_Value_Input* o
           { Fl_Output* o = halign = new Fl_Output(155, 295, 60, 25);
             halign->tooltip(gettext("The horizontal alignment of the Panel"));
@@ -1940,14 +1942,15 @@ p\", \"bottom\", and \"off\"."));
               menu_choose_autohide_i18n_done = 1;
             }
             choose_autohide->menu(menu_choose_autohide);
-            autohide(autohide_check,choose_autohide);
+            autohide(autohide_check,o);
             const char* text=gettext("Autohide Position");o->label(text);
           } // Fl_Menu_Button* choose_autohide
           { Fl_Output* o = autohide_pos = new Fl_Output(165, 380, 105, 25);
             autohide_pos->tooltip(gettext("current autohide position (if any)"));
             autohide_pos->box(FL_FLAT_BOX);
             std::string val=getElementAttribute(currentPanel(),"Tray","autohide");
-            if(val.compare("")!=0){o->value(val.c_str());}
+            if(val.compare("")!=0){o->value(val.c_str());}else{o->value("off");}
+            autohide(autohide_check,o);
           } // Fl_Output* autohide_pos
           { Fl_Menu_Button* o = new Fl_Menu_Button(155, 260, 60, 25, gettext("halign"));
             o->tooltip(gettext("Use \'Panel Position\' for easy configuration"));
@@ -3147,6 +3150,13 @@ void PanelUI::change_panel_position(std::string position) {
     halign->value(hval.c_str());
     halign->redraw();
   }
+  int w = getWidth();
+  int h = getHeight();
+  //update width/height
+  w_slider->value(w);
+  h_slider->value(h);
+  height_input->value(h);
+  width_input->value(w);
 }
 
 void PanelUI::change_clock(std::string clockFMT) {

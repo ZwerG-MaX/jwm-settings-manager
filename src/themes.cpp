@@ -354,20 +354,21 @@ std::string Theme::getTheme(std::string whichTheme){
     std::string themePATH230=themePATH+"old/";
     int isOLDjwmrc = newStyle();
     bool existant = false;
-    if(isOLDjwmrc == -1){
-        existant = oldThemesExist();
-        theme = OLDthemePATH + stringTheme + "/" + stringTheme;
-        themeTest = OLDthemePATH + stringTheme + "/";
-    }
-    else if (isOLDjwmrc == 0){
-        existant = oldThemesExist();
-        theme = themePATH230 + stringTheme + "/" + stringTheme;
-        themeTest = themePATH230 + stringTheme + "/";
-    }
-    else{
-        existant = themesExist();
-        theme = themePATH + stringTheme + "/" + stringTheme;
-        themeTest = themePATH + stringTheme + "/";
+    switch(isOLDjwmrc){
+		case -1:
+			existant = oldThemesExist();
+			theme = OLDthemePATH + stringTheme + "/" + stringTheme;
+			themeTest = OLDthemePATH + stringTheme + "/";
+			break;
+		case 0:
+			existant = oldThemesExist();
+			theme = themePATH230 + stringTheme + "/" + stringTheme;
+			themeTest = themePATH230 + stringTheme + "/";
+			break;
+		default:
+			existant = themesExist();
+			theme = themePATH + stringTheme + "/" + stringTheme;
+			themeTest = themePATH + stringTheme + "/";
     }
     if (existant){
         existant = checkForTheme(themeTest);

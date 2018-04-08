@@ -27,7 +27,7 @@
 std::string JSM_Panel::getAutoHide(int num){
 	debug_out("std::string getAutoHide(int num)");
 	std::string retval;
-	if(newStyle()){
+	if(newStyle()>=0){
 		if(num==0){retval="off";}
 		else{
 			std::string layout=getElementAttribute(currentPanel(),"Tray","layout");
@@ -390,11 +390,11 @@ void JSM_Panel::app_command_CB(Fl_Input* o, Fl_Input* app_command){
 		app_command->value(exec.c_str());
 	}
 }
-void JSM_Panel::autohide(Fl_Check_Button* autohide_check,Fl_Menu_Button* choose_autohide){
-	debug_out("void autohide(Fl_Check_Button* autohide_check,Fl_Check_Button* choose_autohide)");
+void JSM_Panel::autohide(Fl_Check_Button* autohide_check,Fl_Widget* choose_autohide){
+	debug_out("void autohide(Fl_Check_Button* autohide_check,Fl_Widget* choose_autohide)");
 	std::string a = getElementAttribute("Tray","autohide");
 	autohide_check->value(0);
-	if(!newStyle()){
+	if(newStyle()==-1){
 		choose_autohide->hide();
 		if(a=="true"){autohide_check->value(1);}
 	}
@@ -719,13 +719,39 @@ void JSM_Panel::panel_menu_button_label(Fl_Menu_Button* o){
 	o->redraw();
 }
 void JSM_Panel::panel_position(std::string position){
+	//TODO set w/h to normal values
 	debug_out("void panel_position(std::string "+position+")");
+	int tH = getHeight();
+	int tW = getWidth();
+		//This is my standard icon size for the panel
+	std::string StandardHeight = "32";
+	std::string StandardWidth = "0";
 	if((position.compare("top")==0)||(position.compare("bottom")==0)){
+		if( (tW < 100) && (tW != 0 ) ){
+			//Is the panel long enough??  Or will it look weird??  If so... make it the full screen width
+			int screenW = Fl::w();
+			std::string Width = linuxcommon::convert_num_to_string(screenW);
+			setElementAttribute(currentPanel(),"Tray","width",Width);
+		}
+		//Is is too tall??
+		if( (tH > 100) || (tH == 0 ) ){
+			setElementAttribute(currentPanel(),"Tray","height",StandardHeight);
+		}
 		setElementAttribute(currentPanel(),"Tray","halign","fixed");
 		setElementAttribute(currentPanel(),"Tray","layout","horizontal");
 		setElementAttribute(currentPanel(),"Tray","valign",position);
 	}
 	else{
+		if( (tH < 100) && (tH != 0 ) ){
+			int screenH = Fl::h();
+			//Is the panel long enough??  Or will it look weird??  If so... make it the full screen height
+			std::string Height = linuxcommon::convert_num_to_string(screenH);
+			setElementAttribute(currentPanel(),"Tray","height",Height);
+		}
+		//Is is too wide??
+		if( (tW > 100) || ( tW == 0 ) ){
+			setElementAttribute(currentPanel(),"Tray","width",StandardWidth);
+		}
 		setElementAttribute(currentPanel(),"Tray","layout","vertical");
 		setElementAttribute(currentPanel(),"Tray","valign","center");
 		setElementAttribute(currentPanel(),"Tray","halign",position);
