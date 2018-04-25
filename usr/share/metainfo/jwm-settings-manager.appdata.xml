@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+​<!-- Copyright 2018 Israel Dahl <israeldahl@gmail.com> -->
+​<component type="desktop-application">
+<id>jwm-settings-manager</id>
+​  <metadata_license>FSFAP</metadata_license>
+​  <project_license>GPL-2.0+</project_license>
+​  <name>JWM Settings Manager</name>
+​  <summary>Observe power management</summary>
+​
+​  <description>
+​    <p>
+​      A tool to easily configure JWM.  Built using nanosvg, pugixml and FLTK,
+   is fast, and light, but doesn't sacrifice aesthetics.
+​    </p>
+​  </description>
+​
+​  <launchable type="desktop-id">jwm-settings-manager.desktop</launchable>
+<screenshots>
+    <screenshot type="default">
+       <caption>Panel</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/panel.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Panel - Appearance</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/panel-appearance.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Panel - Size</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/panel-size.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Desktop</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/desktop.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Windows</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/windows.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Windows - Settings</caption>
+            <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/windows-settings.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Windows - Actions</caption>
+            <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/windows-actions.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Windows - Groups</caption>
+            <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/windows-groups.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Windows - Advanced</caption>
+            <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/windows-advanced.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Keyboard</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/keyboard.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Key Grabber</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/keyboard-grabber.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Touchpad</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/touchpad.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Themes</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/themes.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Icons</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/icons.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Fonts</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/fonts.png?raw=true</image>
+​    </screenshot>
+
+    <screenshot>
+       <caption>Fonts - Advanced</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/fonts-subwin.png?raw=true</image>
+​    </screenshot>
+<screenshot>
+       <caption>Font Chooser</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/fonts-subwin-advanced.png?raw=true</image>
+​    </screenshot>
+
+    <screenshot>
+       <caption>Autostart</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/autostart.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Desktop File Editor</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/desktop-file-editor.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Menus</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/menus.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Clock Settings</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/clock.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Shutdown window</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/shutdown.png?raw=true</image>
+​    </screenshot>
+    <screenshot>
+       <caption>Popups window</caption>
+           <image>https://github.com/Israel-D/jwm-settings-manager/blob/master/screenshots/popups.png?raw=true</image>
+​    </screenshot>
+</screenshots>
+​
+​  <url type="homepage">https://github.com/Israel-D/jwm-settings-manager</url>
+​  <project_group>ToriOS</project_group>
+​
+​  <provides>
+​    <binary>jwm-settings-manager</binary>
+​  </provides>
+​  <developer_name>Israel Dahl</developer_name>
+​</component>
