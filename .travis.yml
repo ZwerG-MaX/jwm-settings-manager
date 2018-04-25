@@ -34,18 +34,28 @@ script:
 - "./linuxdeployqt*.AppImage ./appdir/usr/share/applications/jwm-settings-manager.desktop
   -appimage"
 after_success:
-- mkdir Deploy
-- find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " "
-  -f 2-3 | sort | uniq
-- cp ./JWM_Settings_Manager*.AppImage Deploy/
-- curl --upload-file ./JWM_Settings_Manager*.AppImage https://transfer.sh/JWM_Settings_Manager-git.$(git
-  rev-parse --short HEAD)-x86_64.AppImage
+  - find appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
+  - mkdir Deploy
+  - mv -v JWM_Settings_Manage*.AppImage* Deploy/
+- curl --upload-file "{$(echo out/* | tr ' ' ',')}" https://transfer.sh/
 notifications: 
 email: false
+branches:
+  except:
+    - # Do not build tags that we create when we upload to GitHub Releases
+    - /^(?i:continuous)$/
+
+before_deploy:
+- if [ -z "$TRAVIS_TAG" ]; then export TRAVIS_TAG="continuous"; git tag -f $TRAVIS_TAG; fi
 deploy:
-  provider: bintray
-  file: "$TRAVIS_BUILD_DIR/bintray.json"
-  key:
-    secure: RwztdzAw69BDiLl2TAGFhW/PTXhBvBgx0Kf/CDLUK+QU2xuNHCWZgMbqBAaWJo9lWmxX/koArgrQcm66fFpcb+2nTI20FDtCrHyKwlGy6gDptDWr/wM2ruGraaifn8SrzyiYX1S83KY3V1MAha+AWmYjx3/h/TRNOxg/AhjKOQe5d7IUXK+soOV80uRwSrO6LTjjqa8SgWlAUm09uJfa+zs+p5eTdZRpQNdocrMptW4fLFj53dKuw5LLyfJx3bxw3AsBlpATkMnnZzQq2Hw1hz3onEtZfQK4blFCq3WbG4zRE1gRZTWB7p0aaF7Qntcg0uXl8MpWo36pJzrtLY+mbfsdrkooNW1U839a7vud1W52Ml8Iv10ItuUE7NNEMkfWWDwOCkPQEcPpyLBg2C/fvtcQKXtq8HImdamQGlSwUa87UvV2wY4TQexOgXeRads07Wwj6oQQbu2WXMX2t2yEM5TEdhhOBYpEVVttdp3RQD7LLYxzOvVQTVi6n3IIQvhve0R6laa9mQTGq/FFKMuj7+lcbwVw9gvAHS4cAVo8On4qWlqhCtltpxwWW2hIfjR3fGzlb8zYUhvuby7p4FMve0T2y6sJuzniv1L7JRXz8vo2bXPVfnJBFv0FdYwlOHg4fRhe2WyzISl8K6QWVV9fI1d6dHCDepbwlzpDPrn+P7Q=
-  user:
-    secure: iqweh0qkWsDaNOTX9joEvA9fWPW6aFt5e+2pvLJTOLsxU17ysRWcOzNn615rmY7Rv9yzWUXPi0YMa2VDnKBdP/+6guQcCrcR0fdRRZYOTbbMdZ3a/jT8fvholU4O3jCU5eJoN7sEOeAySPMX2ZdHw3EipMQogVPp7vQtBrZZ0k1qTeuHCRaJ16zsLsoetm8DgTut0I0tdBtUhijaVljLqOJ2MYH/s5pJ3bkjk9V8NvOVPckmlBj8K4prFT4RN4NKJdacWnwFWJxysEYQpbZJMa8ft03Wrx8f8/12HeJl189/xpKQQum8ku5L0J4gQchmokdjOmgG77odxaUeKmWlEe8bEp8XIax3IN0Z5d7Bo976ZUH5ZWDJcQArk0r3z4pLfvsEeKhkhT4b2TYiWmHuB5za1dawza49EUyciMI52X/Nee9hX4a5OrJXfsazEOai6ykJL73Jkic0GvcvNsp+eSY9Xn2RoH6FfLe5tPD5Jzw5d0YxC79ZewWC/zJ5KxF7C9j7We57OLJnEv/NZQCBWfEWpASQCYqkV/70bYJG9Dmi06489iBmzQ66RgpaFl5xhilR4DbKfUP1ROnptPqcCSfOllrX79iFhVgj7UNI1edeKS+zBstdutISYTkonwaWZV7PiT1IVr8nBNpILg/Wvz/XgJ4LracY2tOLc85OKEo=
+  provider: releases
+  api_key: "$GITHUB_TOKEN"
+  file_glob: true
+  file: out/*
+  skip_cleanup: true
+  prerelease: true
+  overwrite: true
+  on:
+    repo: Israel-D/jwm-settings-manager
+    branch: master
+    tags: true
