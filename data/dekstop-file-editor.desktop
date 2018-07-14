@@ -7,4 +7,4 @@ Categories=Utility;GTK;
 MimeType=application/x-desktop;
 Comment=Create new or change existing desktop entry
 Icon=applications-other
-NoDisplay=False
+NoDisplay=false
